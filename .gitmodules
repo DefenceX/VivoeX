@@ -1,6 +1,6 @@
 [submodule "Fast-RTPS"]
-	path = Fast-RTPS
-	url = https://github.com/eProsima/Fast-RTPS
+	path = FastDDS
+	url = https://github.com/eProsima/Fast-DDS
 [submodule "libosmscout"]
 	path = libosmscout
 	url = https://github.com/Framstag/libosmscout

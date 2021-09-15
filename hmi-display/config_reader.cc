@@ -1,26 +1,22 @@
 //
 // MIT License
 //
-// Copyright (c) 2020 Ross Newman (ross@rossnewman.com)
+// Copyright (c) 2022 Ross Newman (ross@rossnewman.com)
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+// permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+// Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+// WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+// COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+
 #include "config_reader.h"
 
 #include <fstream>
@@ -59,8 +55,7 @@ ConfigData::ConfigData() {
   }
   {
     // Write the new config back to disk.
-    fstream output(CONFIG_FILE, std::fstream::out | std::fstream::trunc |
-                                    std::fstream::binary);
+    fstream output(CONFIG_FILE, std::fstream::out | std::fstream::trunc | std::fstream::binary);
     if (!current_config_->SerializeToOstream(&output)) {
       logGva::log("Failed to write config file.", LOG_INFO);
       return;
@@ -70,8 +65,7 @@ ConfigData::ConfigData() {
 
 ConfigData::~ConfigData() {
   // Write the config back to disk.
-  fstream output(CONFIG_FILE, std::fstream::out | std::fstream::trunc |
-                                  std::fstream::binary);
+  fstream output(CONFIG_FILE, std::fstream::out | std::fstream::trunc | std::fstream::binary);
   if (!current_config_->SerializeToOstream(&output)) {
     logGva::log("Failed to update config file.", LOG_INFO);
     return;
@@ -97,21 +91,16 @@ void ConfigData::SetTestLat(double lat) { current_config_->set_test_lat(lat); }
 
 bool ConfigData::GetFullscreen() { return current_config_->fullscreen(); }
 
-void ConfigData::SetFullscreen(bool fullscreen) {
-  current_config_->set_fullscreen(fullscreen);
-}
+void ConfigData::SetFullscreen(bool fullscreen) { current_config_->set_fullscreen(fullscreen); }
 
-unsigned int ConfigData::GetThemeBackground() {
-  return (unsigned int)current_config_->theme().theme_background();
-}
+unsigned int ConfigData::GetThemeBackground() { return (unsigned int)current_config_->theme().theme_background(); }
 
 unsigned int ConfigData::GetThemeLabelBackgroundActive() {
   return (unsigned int)current_config_->theme().theme_label_background_active();
 }
 
 unsigned int ConfigData::GetThemeLabelBackgroundInactive() {
-  return (unsigned int)current_config_->theme()
-      .theme_label_background_inactive();
+  return (unsigned int)current_config_->theme().theme_label_background_inactive();
 }
 
 unsigned int ConfigData::GetThemeLabelTextActive() {
@@ -138,21 +127,13 @@ unsigned int ConfigData::GetThemeStatusBackground() {
   return (unsigned int)current_config_->theme().theme_status_background();
 }
 
-unsigned int ConfigData::GetThemeStatusBorder() {
-  return (unsigned int)current_config_->theme().theme_status_border();
-}
+unsigned int ConfigData::GetThemeStatusBorder() { return (unsigned int)current_config_->theme().theme_status_border(); }
 
-unsigned int ConfigData::GetThemeStatusText() {
-  return (unsigned int)current_config_->theme().theme_status_text();
-}
+unsigned int ConfigData::GetThemeStatusText() { return (unsigned int)current_config_->theme().theme_status_text(); }
 
-unsigned int ConfigData::GetThemeAlert() {
-  return (unsigned int)current_config_->theme().theme_alert();
-}
+unsigned int ConfigData::GetThemeAlert() { return (unsigned int)current_config_->theme().theme_alert(); }
 
-unsigned int ConfigData::GetThemeCritical() {
-  return (unsigned int)current_config_->theme().theme_critical();
-}
+unsigned int ConfigData::GetThemeCritical() { return (unsigned int)current_config_->theme().theme_critical(); }
 
 char* ConfigData::GetThemeFont() {
   return (char*)current_config_->theme().theme_font().c_str();

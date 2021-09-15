@@ -1,0 +1,11 @@
+{
+    "cmake.configureOnOpen": false,
+    "C_Cpp.clang_format_path": "/usr/bin/clang-format",
+    "editor.formatOnSave": true,
+    "cpplint.languages": [
+        "cpp",
+        "cc",
+        "c"
+    ],
+    "C_Cpp.clang_format_fallbackStyle": "{BasedOnStyle: Google, ColumnLimit: 120}",
+}

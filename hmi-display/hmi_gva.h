@@ -3,23 +3,18 @@
 //
 // Copyright (c) 2020 Ross Newman (ross@rossnewman.com)
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+// permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+// Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+// WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+// COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
 #ifndef HMI_GVA_H
@@ -42,19 +37,14 @@ using namespace gva;
 //
 
 //                              Visible    Active    Hidden
-#define COMMON_KEYS                                                          \
-  {                                                                          \
-    true, 0b0010000, 0b10110000, "Up", "Alarms", "Threats", "Ack", "↑", "↓", \
-        "Labels", "Enter"                                                    \
-  }
+#define COMMON_KEYS \
+  { true, 0b0010000, 0b10110000, "Up", "Alarms", "Threats", "Ack", "↑", "↓", "Labels", "Enter" }
 #define COMMON_FUNCTION_KEYS_TOP \
   { true, 0b01000000, 0b0000100 }
-#define COMMON_STATUS_BAR                                                     \
-  {                                                                           \
-    true, DEFAULT_HEIGHT - 11, 0,                                             \
-        {LOCATION_FORMAT_MGRS, 51.500655, -0.124240}, "12:30:00, 03/06/2019", \
-        "LON/LAT", "Lat:51.500655 Lon:-0.124240    [1,3]", "W:0", "A:5",      \
-        "C:1", "O:2"                                                          \
+#define COMMON_STATUS_BAR                                                                                          \
+  {                                                                                                                \
+    true, DEFAULT_HEIGHT - 11, 0, {LOCATION_FORMAT_MGRS, 51.500655, -0.124240}, "12:30:00, 03/06/2019", "LON/LAT", \
+        "Lat:51.500655 Lon:-0.124240    [1,3]", "W:0", "A:5", "C:1", "O:2"                                         \
   }
 #define COMPASS \
   { true, 165, 370, 0, 55 }
@@ -75,11 +65,9 @@ using namespace gva;
       "Wpn Sight", "Quad", LABEL_NULL, "Front right", "Front", "Front left" \
     }                                                                       \
   }
-#define SA_FUNCTION_KEYS_RIGHT                                    \
-  {                                                               \
-    true, 0b000000, 0b000111, 0b000000, 0b000000, {               \
-      LABEL_NULL, LABEL_NULL, LABEL_NULL, "Right", "Rear", "Left" \
-    }                                                             \
+#define SA_FUNCTION_KEYS_RIGHT                                                                                    \
+  {                                                                                                               \
+    true, 0b000000, 0b000111, 0b000000, 0b000000, { LABEL_NULL, LABEL_NULL, LABEL_NULL, "Right", "Rear", "Left" } \
   }
 
 #define WPN_FUNCTION_KEYS_LEFT                                                \
@@ -95,11 +83,9 @@ using namespace gva;
     }                                                                        \
   }
 
-#define DEF_FUNCTION_KEYS_LEFT                                       \
-  {                                                                  \
-    true, 0b100000, 0b110000, 0b110000, 0b000000, {                  \
-      "ECM", "Spike", LABEL_NULL, LABEL_NULL, LABEL_NULL, LABEL_NULL \
-    }                                                                \
+#define DEF_FUNCTION_KEYS_LEFT                                                                                       \
+  {                                                                                                                  \
+    true, 0b100000, 0b110000, 0b110000, 0b000000, { "ECM", "Spike", LABEL_NULL, LABEL_NULL, LABEL_NULL, LABEL_NULL } \
   }
 #define DEF_FUNCTION_KEYS_RIGHT                                              \
   {                                                                          \
@@ -108,18 +94,15 @@ using namespace gva;
     }                                                                        \
   }
 
-#define SYS_FUNCTION_KEYS_LEFT                                      \
-  {                                                                 \
-    true, 0b100000, 0b111111, 0b000000, 0b000000, {                 \
-      "Overview", "Automotive", "HUMS", "System", "Licences", "BIT" \
-    }                                                               \
+#define SYS_FUNCTION_KEYS_LEFT                                                                                      \
+  {                                                                                                                 \
+    true, 0b100000, 0b111111, 0b000000, 0b000000, { "Overview", "Automotive", "HUMS", "System", "Licences", "BIT" } \
   }
-#define SYS_FUNCTION_KEYS_RIGHT                                                \
-  {                                                                            \
-    true, 0b000000, 0b111111, 0b000000, 0b000000, {                            \
-      "Commander.Health", "Gunner.Health", "Driver.Health", "Roll.Allocation", \
-          "Blackout", "icon:exit"                                              \
-    }                                                                          \
+#define SYS_FUNCTION_KEYS_RIGHT                                                                        \
+  {                                                                                                    \
+    true, 0b000000, 0b111111, 0b000000, 0b000000, {                                                    \
+      "Commander.Health", "Gunner.Health", "Driver.Health", "Roll.Allocation", "Blackout", "icon:exit" \
+    }                                                                                                  \
   }
 
 #define DRV_FUNCTION_KEYS_LEFT                                             \
@@ -164,19 +147,17 @@ using namespace gva;
 //#define BMS_FUNCTION_KEYS_LEFT   { true, 0b100000, 0b101111, 0b000000,
 // 0b000000, { "Mission", LABEL_NULL, "Shift.up", "Shift.down", "Zoom +",
 //"Rotate.>>" } }
-#define BMS_FUNCTION_KEYS_LEFT                                              \
-  {                                                                         \
-    true, 0b100000, 0b101111, 0b000000, 0b000000, {                         \
-      "Mission", LABEL_NULL, "icon:uparrow", "icon:downarrow", "icon:plus", \
-          "icon:rotateleft"                                                 \
-    }                                                                       \
+#define BMS_FUNCTION_KEYS_LEFT                                                                \
+  {                                                                                           \
+    true, 0b100000, 0b101111, 0b000000, 0b000000, {                                           \
+      "Mission", LABEL_NULL, "icon:uparrow", "icon:downarrow", "icon:plus", "icon:rotateleft" \
+    }                                                                                         \
   }
-#define BMS_FUNCTION_KEYS_RIGHT                                    \
-  {                                                                \
-    true, 0b000000, 0b001111, 0b000000, 0b000000, {                \
-      LABEL_NULL, LABEL_NULL, "icon:leftarrow", "icon:rightarrow", \
-          "icon:minus", "icon:rotateright"                         \
-    }                                                              \
+#define BMS_FUNCTION_KEYS_RIGHT                                                                     \
+  {                                                                                                 \
+    true, 0b000000, 0b001111, 0b000000, 0b000000, {                                                 \
+      LABEL_NULL, LABEL_NULL, "icon:leftarrow", "icon:rightarrow", "icon:minus", "icon:rotateright" \
+    }                                                                                               \
   }
 
 #define ALARM_KEYS_LEFT                                                        \

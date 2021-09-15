@@ -3,24 +3,20 @@
 //
 // Copyright (c) 2020 Ross Newman (ross@rossnewman.com)
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+// permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+// Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+// WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+// COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+
 #include "hmi_gva.h"
 
 void HmiHelper::TableLicences(TableWidget *table) {
@@ -115,9 +111,8 @@ void HmiHelper::TableAlarms(TableWidget *table) {
   table->AddCell("W", 10);
   table->AddCell("RES", 20);
 
-  table->AddRow(Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_RED),
-                Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_YELLOW),
-                WEIGHT_NORMAL);
+  table->AddRow(Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_RED), Renderer::PackRgb(HMI_WHITE),
+                Renderer::PackRgb(HMI_YELLOW), WEIGHT_NORMAL);
   table->AddCell("15/6 15:26", 20);
   table->AddCell("Engine over tempreture", 50);
   table->AddCell("W", 10);
@@ -142,17 +137,15 @@ void HmiHelper::TableAlarms(TableWidget *table) {
   table->AddCell("A", 10);
   table->AddCell("ACT", 20);
 
-  table->AddRow(Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_GREY),
-                Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_YELLOW),
-                WEIGHT_NORMAL);
+  table->AddRow(Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_GREY), Renderer::PackRgb(HMI_WHITE),
+                Renderer::PackRgb(HMI_YELLOW), WEIGHT_NORMAL);
   table->AddCell("15/6 19:03", 20);
   table->AddCell("Gun barrel over tempreture", 50);
   table->AddCell("C", 10);
   table->AddCell("ACT(OVR)", 20);
 
-  table->AddRow(Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_ORANGE),
-                Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_YELLOW),
-                WEIGHT_NORMAL);
+  table->AddRow(Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_ORANGE), Renderer::PackRgb(HMI_WHITE),
+                Renderer::PackRgb(HMI_YELLOW), WEIGHT_NORMAL);
   table->AddCell("15/6 19:", 20);
   table->AddCell("LRU xx fault", 50);
   table->AddCell("C", 10);

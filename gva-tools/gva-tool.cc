@@ -1,7 +1,7 @@
 //
 // MIT License
 //
-// Copyright (c) 2020 Ross Newman (ross@rossnewman.com)
+// Copyright (c) 2022 Ross Newman (ross@rossnewman.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -160,8 +160,7 @@ void winPanicBox(char *str);
 
 void gvaLog(char *message, int type);
 
-void xmlparseKeyword(xmlDocPtr doc, xmlNodePtr cur, xmlChar *keyword,
-                     char *value) {
+void xmlparseKeyword(xmlDocPtr doc, xmlNodePtr cur, xmlChar *keyword, char *value) {
   unsigned char *key;
   cur = cur->xmlChildrenNode;
   while (cur != NULL) {
@@ -354,8 +353,7 @@ void winBezelRedraw(WINDOW *win_bezel, gvaInput *keys, int activekey) {
   /* Top of screen */
   for (c = KEY_SA; c <= KEY_BLACKOUT; c++) {
     strcpy(keytext, keys[c].name);
-    (c == activekey) ? wattron(win_bezel, COLOR_PAIR(4))
-                     : wattron(win_bezel, COLOR_PAIR(1));
+    (c == activekey) ? wattron(win_bezel, COLOR_PAIR(4)) : wattron(win_bezel, COLOR_PAIR(1));
     mvwprintw(win_bezel, line, column_offset + column, keytext);
     column += 7;
     if (c == KEY_BMS) {
@@ -498,8 +496,7 @@ void winHelp() {
   wattron(help_win, COLOR_PAIR(1));
   mvwprintw(help_win, 5, 44, "h - Help");
   mvwprintw(help_win, 6, 44, "Press 'q' to quit application.");
-  mvwprintw(help_win, 10, 3,
-            "Use these keys to switch to different helper screens:");
+  mvwprintw(help_win, 10, 3, "Use these keys to switch to different helper screens:");
   mvwprintw(help_win, 11, 3, "  a - Alarm generator     g - GPS generation");
   mvwprintw(help_win, 12, 3, "  b - Bezel key inputs");
   mvwprintw(help_win, 13, 3, "  d - Display Emulator");
@@ -642,7 +639,7 @@ int main(int argc, char **argv) {
   initscr(); /* Start curses mode */
   clear();
   noecho();
-  cbreak(); /* Line buffering disabled, Pass on everty thing to me */
+  cbreak();             /* Line buffering disabled, Pass on everty thing to me */
   keypad(stdscr, TRUE); /* I need that nifty F1 */
 
   if (has_colors() == FALSE) {
