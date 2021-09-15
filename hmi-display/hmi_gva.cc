@@ -30,7 +30,7 @@ using namespace std;
   { true, SURFACE_NONE, "", 0 }
 //#define SCREEN { "Situational Awareness", "/dev/ttyUSB0", SA, canvas_, &top_,
 //&status_, SYS_FUNCTION_KEYS_LEFT, SYS_FUNCTION_KEYS_RIGHT, COMMON_KEYS,
-//COMPASS, keyboard_, alarms_ }
+// COMPASS, keyboard_, alarms_ }
 #define init(var, typ, data) \
   {                          \
     typ x = data;            \
@@ -50,10 +50,7 @@ void Hmi::Reset() {
   screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(false);
   screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetX(165);
   screen_render_->GetWidget(WIDGET_TYPE_KEYBOARD)
-      ->SetVisible(
-          (screen_render_->GetWidget(WIDGET_TYPE_KEYBOARD)->GetVisible())
-              ? true
-              : false);
+      ->SetVisible((screen_render_->GetWidget(WIDGET_TYPE_KEYBOARD)->GetVisible()) ? true : false);
   screen_.table.visible_ = false;
   screen_.control->active = 0x0;
   screen_.message.visible = false;
@@ -63,8 +60,7 @@ void Hmi::Reset() {
 void Hmi::Labels(LabelModeEnum labels) {
   switch (labels) {
     case LABEL_ALL:
-      if ((screen_.currentFunction == SA) || (screen_.currentFunction == WPN) ||
-          (screen_.currentFunction == DRV))
+      if ((screen_.currentFunction == SA) || (screen_.currentFunction == WPN) || (screen_.currentFunction == DRV))
         screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(true);
       screen_.function_left.visible = true;
       screen_.function_right.visible = true;
@@ -317,9 +313,7 @@ void Hmi::KeySYS(int keypress) {
       break;
     case KEY_F11:
       // Blackout
-      screen_.info.mode = (screen_.info.mode == MODE_BLACKOUT)
-                              ? MODE_MAINTINENCE
-                              : MODE_BLACKOUT;
+      screen_.info.mode = (screen_.info.mode == MODE_BLACKOUT) ? MODE_MAINTINENCE : MODE_BLACKOUT;
       screen_.canvas.visible = true;
       if (screen_.info.mode == MODE_BLACKOUT)
         screen_.canvas.bufferType = SURFACE_BLACKOUT;
@@ -328,8 +322,7 @@ void Hmi::KeySYS(int keypress) {
       break;
     case KEY_F12:
       // Exit
-      if (RendererCairo::render_.surface)
-        cairo_surface_destroy(RendererCairo::render_.surface);
+      if (RendererCairo::render_.surface) cairo_surface_destroy(RendererCairo::render_.surface);
       g_application_quit(G_APPLICATION(RendererCairo::render_.win.app));
       break;
   }
@@ -450,6 +443,7 @@ double conv(int zoom) {
 }
 
 void Hmi::KeyBMS(int keypress) {
+#if OSMSCOUT_ENABLED
   bool update = true;
   screen_.function_left.active = 0;
   screen_.function_right.active = 0;
@@ -498,20 +492,18 @@ void Hmi::KeyBMS(int keypress) {
 
   if (update) {
     char tmp[100];
-    sprintf(tmp, "[BMS] Zoom level %d lat %f, %f", configuration.GetZoom(),
-            configuration.GetTestLat(),
-            ((double)configuration.GetZoom() / 10000000) *
-                ((double)configuration.GetZoom() / 10000));
+    sprintf(tmp, "[BMS] Zoom level %d lat %f, %f", configuration.GetZoom(), configuration.GetTestLat(),
+            ((double)configuration.GetZoom() / 10000000) * ((double)configuration.GetZoom() / 10000));
     logGva::log(tmp, LOG_INFO);
     map_->SetWidth((double)screen_render_->GetWidth() / DEFAULT_WIDTH);
     map_->SetHeight((double)screen_render_->GetHeight() / DEFAULT_HEIGHT);
-    sprintf(tmp, "[BMS] res %d x %d", screen_render_->GetWidth(),
-            screen_render_->GetHeight());
+    sprintf(tmp, "[BMS] res %d x %d", screen_render_->GetWidth(), screen_render_->GetHeight());
     logGva::log(tmp, LOG_INFO);
-    map_->Project(configuration.GetZoom(), configuration.GetTestLon(),
-                  configuration.GetTestLat(), &screen_.canvas.surface);
+    map_->Project(configuration.GetZoom(), configuration.GetTestLon(), configuration.GetTestLat(),
+                  &screen_.canvas.surface);
     screen_.canvas.bufferType = SURFACE_CAIRO;
   }
+#endif
 }
 
 struct StateSA : Hmi {
@@ -522,8 +514,7 @@ struct StateSA : Hmi {
       Reset();
       screen_.function_top->visible = true;
 
-      if (screen_.labels != LABEL_MINIMAL)
-        screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(true);
+      if (screen_.labels != LABEL_MINIMAL) screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(true);
       screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(true);
       if (!screen_.canvas.surface) SET_CANVAS_PNG("FRONT_CENTRE.png");
       screen_.function_top->active = 0x1 << 7;
@@ -548,8 +539,7 @@ struct StateWPN : Hmi {
       lastState_ = WPN;
       Reset();
 
-      if (screen_.labels != LABEL_MINIMAL)
-        screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(true);
+      if (screen_.labels != LABEL_MINIMAL) screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(true);
       screen_.canvas.visible = true;
       SET_CANVAS_PNG("FRONT_CENTRE.png");
       screen_.function_top->active = 0x1 << 6;
@@ -626,8 +616,7 @@ struct StateDRV : Hmi {
       lastState_ = DRV;
       Reset();
 
-      if (screen_.labels != LABEL_MINIMAL)
-        screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(true);
+      if (screen_.labels != LABEL_MINIMAL) screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(true);
       screen_.status_bar->visible = true;
       screen_.function_top->active = 0x1 << 3;
     }
@@ -654,16 +643,26 @@ struct StateSTR : Hmi {
       screen_.function_top->active = 0x1 << 2;
     }
   };
-  void react(EventKeyPowerOn const &) override { transit<StateOff>(); };
-  void react(EventKeySA const &) override { transit<StateSA>(); };
-  void react(EventKeyWPN const &) override { transit<StateWPN>(); };
-  void react(EventKeyDEF const &) override { transit<StateDEF>(); };
-  void react(EventKeySYS const &) override { transit<StateSYS>(); };
-  void react(EventKeyDRV const &) override { transit<StateDRV>(); };
-  void react(EventKeyCOM const &) override { transit<StateCOM>(); };
-  void react(EventKeyBMS const &) override { transit<StateBMS>(); };
-  void react(EventKeyAlarms const &) override { transit<StateAlarms>(); };
-  void react(EventKeyFunction const &e) { KeySTR(e.key); };
+  void react(EventKeyPowerOn const &) override {
+    transit<StateOff>(); };
+  void react(EventKeySA const &) override {
+    transit<StateSA>(); };
+  void react(EventKeyWPN const &) override {
+    transit<StateWPN>(); };
+  void react(EventKeyDEF const &) override {
+    transit<StateDEF>(); };
+  void react(EventKeySYS const &) override {
+    transit<StateSYS>(); };
+  void react(EventKeyDRV const &) override {
+    transit<StateDRV>(); };
+  void react(EventKeyCOM const &) override {
+    transit<StateCOM>(); };
+  void react(EventKeyBMS const &) override {
+    transit<StateBMS>(); };
+  void react(EventKeyAlarms const &) override {
+    transit<StateAlarms>(); };
+  void react(EventKeyFunction const &e) {
+    KeySTR(e.key); };
 };
 
 struct StateCOM : Hmi {
@@ -696,13 +695,13 @@ struct StateBMS : Hmi {
       Reset();
 
       screen_.canvas.visible = true;
-
+#if OSMSCOUT_ENABLED
       map_->SetWidth((double)screen_render_->GetWidth() / DEFAULT_WIDTH);
       map_->SetHeight((double)screen_render_->GetHeight() / DEFAULT_HEIGHT);
-      map_->Project(configuration.GetZoom(), configuration.GetTestLon(),
-                    configuration.GetTestLat(), &screen_.canvas.surface);
+      map_->Project(configuration.GetZoom(), configuration.GetTestLon(), configuration.GetTestLat(),
+                    &screen_.canvas.surface);
       screen_.canvas.bufferType = SURFACE_CAIRO;
-
+#endif
       screen_.function_top->active = 0x1 << 0;
     }
   };
@@ -775,10 +774,11 @@ struct StateOn : Hmi {
 
     if (!manager_) manager_ = new ViewGvaManager(&status_);
 
+#if OSMSCOUT_ENABLED
     // Render a map for BMS
-    map_ = new rendererMap("/opt/osmscout/maps/australia-latest/",
-                           "/opt/osmscout/stylesheets/standard.oss", MIN_WIDTH,
+    map_ = new rendererMap("/opt/osmscout/maps/australia-latest/", "/opt/osmscout/stylesheets/standard.oss", MIN_WIDTH,
                            MIN_HEIGHT);
+#endif
 
     init(top_, FunctionSelectType, COMMON_FUNCTION_KEYS_TOP);
     init(bottom_, CommonTaskKeysType, COMMON_KEYS);
@@ -786,33 +786,23 @@ struct StateOn : Hmi {
     init(canvas_, CanvasType, CANVAS);
 
     // Setup the main screens
-    manager_->GetNewView(SA, &top_, &bottom_,
-                         (FunctionKeys)SA_FUNCTION_KEYS_LEFT,
+    manager_->GetNewView(SA, &top_, &bottom_, (FunctionKeys)SA_FUNCTION_KEYS_LEFT,
                          (FunctionKeys)SA_FUNCTION_KEYS_RIGHT);
-    manager_->GetNewView(WPN, &top_, &bottom_,
-                         (FunctionKeys)WPN_FUNCTION_KEYS_LEFT,
+    manager_->GetNewView(WPN, &top_, &bottom_, (FunctionKeys)WPN_FUNCTION_KEYS_LEFT,
                          (FunctionKeys)WPN_FUNCTION_KEYS_RIGHT);
-    manager_->GetNewView(DEF, &top_, &bottom_,
-                         (FunctionKeys)DEF_FUNCTION_KEYS_LEFT,
+    manager_->GetNewView(DEF, &top_, &bottom_, (FunctionKeys)DEF_FUNCTION_KEYS_LEFT,
                          (FunctionKeys)DEF_FUNCTION_KEYS_RIGHT);
-    manager_->GetNewView(SYS, &top_, &bottom_,
-                         (FunctionKeys)SYS_FUNCTION_KEYS_LEFT,
+    manager_->GetNewView(SYS, &top_, &bottom_, (FunctionKeys)SYS_FUNCTION_KEYS_LEFT,
                          (FunctionKeys)SYS_FUNCTION_KEYS_RIGHT);
-    manager_->GetNewView(DRV, &top_, &bottom_,
-                         (FunctionKeys)DRV_FUNCTION_KEYS_LEFT,
+    manager_->GetNewView(DRV, &top_, &bottom_, (FunctionKeys)DRV_FUNCTION_KEYS_LEFT,
                          (FunctionKeys)DRV_FUNCTION_KEYS_RIGHT);
-    manager_->GetNewView(STR, &top_, &bottom_,
-                         (FunctionKeys)STR_FUNCTION_KEYS_LEFT,
+    manager_->GetNewView(STR, &top_, &bottom_, (FunctionKeys)STR_FUNCTION_KEYS_LEFT,
                          (FunctionKeys)STR_FUNCTION_KEYS_RIGHT);
-    manager_->GetNewView(COM, &top_, &bottom_,
-                         (FunctionKeys)COM_FUNCTION_KEYS_LEFT,
+    manager_->GetNewView(COM, &top_, &bottom_, (FunctionKeys)COM_FUNCTION_KEYS_LEFT,
                          (FunctionKeys)COM_FUNCTION_KEYS_RIGHT);
-    manager_->GetNewView(BMS, &top_, &bottom_,
-                         (FunctionKeys)BMS_FUNCTION_KEYS_LEFT,
+    manager_->GetNewView(BMS, &top_, &bottom_, (FunctionKeys)BMS_FUNCTION_KEYS_LEFT,
                          (FunctionKeys)BMS_FUNCTION_KEYS_RIGHT);
-    manager_->GetNewView(ALARMSX, &top_, &bottom_,
-                         (FunctionKeys)ALARM_KEYS_LEFT,
-                         (FunctionKeys)ALARM_KEYS_RIGHT);
+    manager_->GetNewView(ALARMSX, &top_, &bottom_, (FunctionKeys)ALARM_KEYS_LEFT, (FunctionKeys)ALARM_KEYS_RIGHT);
 
     screen_ = manager_->GetScreen(SYS);
 
@@ -820,15 +810,13 @@ struct StateOn : Hmi {
     screen_render_ = new ScreenGva(&screen_, view_.width, view_.height);
 
     // Configure the widgets
-    ((Compass *)screen_render_->GetWidget(WIDGET_TYPE_COMPASS))->bearingSight_ =
-        33;
+    ((Compass *)screen_render_->GetWidget(WIDGET_TYPE_COMPASS))->bearingSight_ = 33;
     screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetX(165);
     screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetY(370);
     screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(true);
     screen_render_->GetWidget(WIDGET_TYPE_ALARM_INDICATOR)->SetVisible(true);
     screen_render_->GetWidget(WIDGET_TYPE_ALARM_INDICATOR)->SetY(422);
-    AlarmIndicator *ai = (AlarmIndicator *)screen_render_->GetWidget(
-        WIDGET_TYPE_ALARM_INDICATOR);
+    AlarmIndicator *ai = (AlarmIndicator *)screen_render_->GetWidget(WIDGET_TYPE_ALARM_INDICATOR);
     strcpy(ai->text_, "Engine over tempreture");
 
     screen_.canvas = canvas_;

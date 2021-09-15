@@ -4,12 +4,9 @@
         {
             "label": "make",
             "type": "shell",
-            "command": "cd build && make",
+            "command": "cd build && make -j$(nproc)",
             "problemMatcher": [],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
+            "group": "build"
         }
     ]
 }

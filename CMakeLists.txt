@@ -31,36 +31,37 @@ option(HMI_ONLY "only build HMI and Tools" OFF)
 
 if (HMI_ONLY)
 # Dummy the targets our for quicker build
-add_custom_target(Fast_RTPS)
+add_custom_target(Fast_DDS)
 add_custom_target(libosmscout)
 add_custom_target(libnmea)
 add_custom_target(rtp_payloader)
 else (HMI_ONLY)
 
 # ------------------------------------------------------------------------------
-# Fast-RTPS
+# Fast-DDS
 # ------------------------------------------------------------------------------
-message(STATUS "SUBPROJECT_NAME = fastrtps")
+message(STATUS "SUBPROJECT_NAME = fastdds")
 set(BUILD_DOCUMENTATION OFF CACHE BOOL "Disable build documentation")
 
 ExternalProject_Add(
-    Fast_RTPS
-    GIT_REPOSITORY      https://github.com/eProsima/Fast-RTPS
-    GIT_TAG             v1.8.1
+    Fast_DDS
+    GIT_REPOSITORY      https://github.com/eProsima/Fast-DDS
+    GIT_TAG             v2.3.0
     GIT_SHALLOW         5
     GIT_CONFIG          fetch.recurseSubmodules=true
 #    URL                 https://github.com/protocolbuffers/protobuf/releases/download/v3.8.0/protobuf-cpp-3.8.0.zip
     CMAKE_ARGS          "-DTHIRDPARTY=ON -DCMAKE_BUILD_TYPE=Release"
-    PREFIX              ${CMAKE_BINARY_DIR}/external/Fast-RTPS/prefix
-    TMP_DIR             ${CMAKE_BINARY_DIR}/external/Fast-RTPS/tmp
-    STAMP_DIR           ${CMAKE_BINARY_DIR}/external/Fast-RTPS/stamp
-    DOWNLOAD_DIR        ${CMAKE_BINARY_DIR}/external/Fast-RTPS/download
-    SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/Fast-RTPS/src
-    BINARY_DIR          ${CMAKE_BINARY_DIR}/external/Fast-RTPS/build
+    PREFIX              ${CMAKE_BINARY_DIR}/external/Fast-DDS/prefix
+    TMP_DIR             ${CMAKE_BINARY_DIR}/external/Fast-DDS/tmp
+    STAMP_DIR           ${CMAKE_BINARY_DIR}/external/Fast-DDS/stamp
+    DOWNLOAD_DIR        ${CMAKE_BINARY_DIR}/external/Fast-DDS/download
+    SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/Fast-DDS/src
+    BINARY_DIR          ${CMAKE_BINARY_DIR}/external/Fast-DDS/build
     SOURCE_SUBDIR        "../src"
     INSTALL_COMMAND     ""
     TEST_COMMAND        ""
     UPDATE_DISCONNECTED 1
+    BUILD_ALWAYS        0
 )
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "MSYS")
@@ -91,6 +92,7 @@ ExternalProject_Add(
     INSTALL_COMMAND     ""
     TEST_COMMAND        ""
     UPDATE_DISCONNECTED 1
+    BUILD_ALWAYS        0
 )
 endif()
 
@@ -111,6 +113,7 @@ ExternalProject_Add(
     BINARY_DIR          ${CMAKE_BINARY_DIR}/external/rtp-payloader/build
     INSTALL_COMMAND     ""
     UPDATE_DISCONNECTED 1
+    BUILD_ALWAYS        0
 )
 
 # ------------------------------------------------------------------------------
@@ -130,6 +133,7 @@ ExternalProject_Add(
     BINARY_DIR          ${CMAKE_BINARY_DIR}/external/libnmea/build
     INSTALL_COMMAND     ""
     UPDATE_DISCONNECTED 1
+    BUILD_ALWAYS        0
 )
 
 # ------------------------------------------------------------------------------

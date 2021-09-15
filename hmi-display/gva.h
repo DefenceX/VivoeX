@@ -24,7 +24,7 @@
 
 #define MAJOR 0
 #define MINOR 1
-#define PATCH 3548
+#define PATCH 5148
 
 #define MIN_HEIGHT 480
 #define MIN_WIDTH 640

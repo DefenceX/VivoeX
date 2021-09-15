@@ -45,7 +45,7 @@ struct opts {
   char config[256];
 };
 
-opts opt = {0};
+opts opt = {false, false, ""};
 static GvaVideoRtpYuv *rtp_stream1;
 char *rtp_buffer;
 
@@ -56,21 +56,22 @@ void Dispatch(GvaKeyEnum key) {
   hmi::dispatch(input);
 };
 
-int GetOpt(int argc, char *argv[]) {
+int GetOpt(int argc, char *argv[], opts *opt) {
   int c = 0;
 
-  while ((c = getopt(argc, argv, "hvwxcl:f::")) != -1) switch (c) {
+  while ((c = getopt(argc, argv, "hvwclf::")) != -1) switch (c) {
       case 'v':
         cout << "Version " << MAJOR << "." << MINOR << "." << PATCH << endl;
         return 0;
       case 'w':
-        opt.windowEnabled = true;
+        opt->windowEnabled = true;
         return -1;
       case 'c':
-        strcpy(opt.config, optarg);
+        strcpy(opt->config, optarg);
         return -1;
-      case 'x':
-        opt.videoEnabled = true;
+      case 'l':
+        printf("-l selected");
+        opt->videoEnabled = true;
         break;
       case 'f':
         configuration.SetFullscreen(true);
@@ -105,12 +106,12 @@ void fullscreen(HandleType *render) {
 }
 
 void Update(void *arg, gpointer user_data) {
-  EventsGva *io = (EventsGva *)arg;
+  EventsGva *io = static_cast<EventsGva *>(arg);
   EventGvaType event;
   bool update = true;
   static int c = 0;
   static unsigned int count = 0;
-  HandleType *render = (HandleType *)user_data;
+  HandleType *render = static_cast<HandleType *>(user_data);
 
   io->NextGvaEvent(&event);
   if (opt.videoEnabled) {
@@ -118,7 +119,7 @@ void Update(void *arg, gpointer user_data) {
     if (hmi::GetScreen()->currentFunction == DRV) {
       hmi::GetScreen()->canvas.bufferType = SURFACE_CAIRO;
       hmi::GetScreen()->canvas.surface = cairo_image_surface_create(CAIRO_FORMAT_RGB24, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-      char *test = (char *)cairo_image_surface_get_data(hmi::GetScreen()->canvas.surface);
+      char *test = reinterpret_cast<char *>(cairo_image_surface_get_data(hmi::GetScreen()->canvas.surface));
       rtp_stream1->GvaRecieveFrame(test, RGBA_COLOUR);
       cairo_surface_mark_dirty(hmi::GetScreen()->canvas.surface);
 
@@ -131,8 +132,8 @@ void Update(void *arg, gpointer user_data) {
   hmi::GetRendrer()->Update();
   switch (event.type) {
     case KEY_EVENT: {
-      Compass *compass = (Compass *)(hmi::GetRendrer()->GetWidget(WIDGET_TYPE_COMPASS));
-      Keyboard *keyboard = (Keyboard *)(hmi::GetRendrer()->GetWidget(WIDGET_TYPE_KEYBOARD));
+      Compass *compass = static_cast<Compass *>(hmi::GetRendrer()->GetWidget(WIDGET_TYPE_COMPASS));
+      Keyboard *keyboard = static_cast<Keyboard *>(hmi::GetRendrer()->GetWidget(WIDGET_TYPE_KEYBOARD));
       switch (event.key_) {
         case KEY_ESC:
           // exit on ESC key press
@@ -339,7 +340,7 @@ int main(int argc, char *argv[]) {
 
   cout << "hmi_display (author: ross@rossnewman.com)..." << endl;
 
-  int ret = GetOpt(argc, argv);
+  int ret = GetOpt(argc, argv, &opt);
 
   if (ret >= 0) return ret;
 
@@ -361,9 +362,8 @@ int main(int argc, char *argv[]) {
   // Setup video sources (default size will be 640 x 480 unless specified)
   // @todo hmi_display: Fix issue with stream blocking execution on RTP input
   // @body The RTP stream blocks for a whole frame slowing down the HMI.
-  rtp_stream1 = new GvaVideoRtpYuv(ipaddr, port);
-
-  if (opt.videoEnabled) {
+  if (opt.videoEnabled == true) {
+    rtp_stream1 = new GvaVideoRtpYuv(ipaddr, port);
     sprintf(tmp, "Resolution %dx%d", rtp_stream1->GetHeight(), rtp_stream1->GetWidth());
     logGva::log(tmp, LOG_INFO);
     rtp_buffer = (char *)malloc(rtp_stream1->GetHeight() * rtp_stream1->GetWidth() * 4);

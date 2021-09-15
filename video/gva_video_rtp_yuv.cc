@@ -24,15 +24,13 @@
 
 using namespace std;
 
-GvaVideoRtpYuv::GvaVideoRtpYuv(char* ip, int port, int height, int width)
-    : GvaVideoSource(height, width) {
+GvaVideoRtpYuv::GvaVideoRtpYuv(char* ip, int port, int height, int width) : GvaVideoSource(height, width) {
   strcpy(ip_, ip);
   port_ = port;
   frame_counter_ = 0;
 };
 
-GvaVideoRtpYuv::GvaVideoRtpYuv(char* ip, int port)
-    : GvaVideoSource(VIDEO_DEFAULT_HEIGHT, VIDEO_DEFAULT_WIDTH) {
+GvaVideoRtpYuv::GvaVideoRtpYuv(char* ip, int port) : GvaVideoSource(VIDEO_DEFAULT_HEIGHT, VIDEO_DEFAULT_WIDTH) {
   strcpy(ip_, ip);
   port_ = port;
   stream_ = new RtpStream(VIDEO_DEFAULT_HEIGHT, VIDEO_DEFAULT_WIDTH);
@@ -57,4 +55,5 @@ int GvaVideoRtpYuv::GvaRecieveFrame(char* buffer, VideoFormat format) {
       break;
   }
   frame_counter_++;
+  return 0;
 }

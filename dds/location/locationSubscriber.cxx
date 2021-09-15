@@ -40,8 +40,8 @@ bool locationSubscriber::init()
     // Create RTPSParticipant
 
     ParticipantAttributes PParam;
-    PParam.rtps.builtin.domainId = 0; //MUST BE THE SAME AS IN THE PUBLISHER
-    PParam.rtps.builtin.leaseDuration = c_TimeInfinite;
+    PParam.domainId = 0; //MUST BE THE SAME AS IN THE PUBLISHER
+//    PParam.rtps.builtin.leaseDuration = c_TimeInfinite;
     PParam.rtps.setName("Participant_subscriber"); //You can put the name you want
     mp_participant = Domain::createParticipant(PParam);
     if(mp_participant == nullptr)
