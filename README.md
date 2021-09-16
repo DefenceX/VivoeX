@@ -27,7 +27,7 @@ The project includes an reference implementation of the GVA (Generic Vehicle Arc
 
 Dont have deep pockets and need a cheep alternative then the ARM (Raspberry Pi CM4) could be a cost effective solution. GVA in your pocket.
 
-![GVA HMI](images/Display_RD104_02_sm.jpg#left)
+![GVA HMI](images/reTerminal-drv.jpg#left)
 **Seeed reTerminal**
 <br>
 
