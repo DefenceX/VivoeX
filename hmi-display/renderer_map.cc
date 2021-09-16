@@ -19,9 +19,11 @@
 
 #include "renderer_map.h"
 
+#ifdef ENABLE_OSMSCOUT
 #include <osmscout/Database.h>
 #include <osmscout/MapPainterCairo.h>
 #include <osmscout/MapService.h>
+#endif
 
 #include <iomanip>
 #include <iostream>
@@ -33,6 +35,8 @@
 
 rendererMap::rendererMap(string map, string style, int width, int height)
     : width_(width), height_(height), map_(map), style_(style) {
+#ifdef ENABLE_OSMSCOUT
+
   database_ =
       (osmscout::DatabaseRef)(new osmscout::Database(databaseParameter_));
   mapService_ = (osmscout::MapServiceRef)(new osmscout::MapService(database_));
@@ -63,12 +67,16 @@ rendererMap::rendererMap(string map, string style, int width, int height)
   DrawParameter_.SetLabelLineFitToWidth(
       std::min(projection_.GetWidth(), projection_.GetHeight()));
   painter_ = new osmscout::MapPainterCairo(styleConfig_);
+#endif
+
 };
 
 rendererMap::~rendererMap() {
   cairo_destroy(cairo_);
   cairo_surface_destroy(surface_);
+#ifdef ENABLE_OSMSCOUT
   free(painter_);
+#endif
 };
 
 int rendererMap::Project(double zoom, double lon, double lat,
@@ -82,6 +90,7 @@ int rendererMap::Project(double zoom, double lon, double lat,
       DrawParameter.SetIconPaths(paths);
       */
 
+#ifdef ENABLE_OSMSCOUT
       projection_.Set(osmscout::GeoCoord(lat, lon),
                       osmscout::Magnification(zoom), DPI, width_, height_);
 
@@ -92,6 +101,7 @@ int rendererMap::Project(double zoom, double lon, double lat,
       if (painter_->DrawMap(projection_, DrawParameter_, data_, cairo_)) {
         // Map rendered
       }
+#endif
     }
   } else {
     return GVA_ERROR;

@@ -37,6 +37,8 @@ option(HMI_ONLY "only build HMI and Tools" OFF)
 
 if (HMI_ONLY)
 # Dummy the targets our for quicker build
+add_custom_target(Fast_CDR)
+add_custom_target(foonathan_memory_vendor)
 add_custom_target(Fast_DDS)
 add_custom_target(libosmscout)
 add_custom_target(libnmea)
@@ -49,14 +51,52 @@ else (HMI_ONLY)
 message(STATUS "SUBPROJECT_NAME = fastdds")
 set(BUILD_DOCUMENTATION OFF CACHE BOOL "Disable build documentation")
 
+
+ExternalProject_Add(
+    Fast_CDR
+    GIT_REPOSITORY      https://github.com/eProsima/Fast-CDR.git
+    GIT_TAG             "v1.0.21"
+    GIT_SHALLOW         5
+    GIT_CONFIG          fetch.recurseSubmodules=true
+    CMAKE_ARGS          "--build . --target install"
+    PREFIX              ${CMAKE_BINARY_DIR}/external/Fast-CDR/prefix
+    TMP_DIR             ${CMAKE_BINARY_DIR}/external/Fast-CDR/tmp
+    STAMP_DIR           ${CMAKE_BINARY_DIR}/external/Fast-CDR/stamp
+    DOWNLOAD_DIR        ${CMAKE_BINARY_DIR}/external/Fast-CDR/download
+    SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/Fast-CDR/src
+    BINARY_DIR          ${CMAKE_BINARY_DIR}/external/Fast-CDR/build
+    SOURCE_SUBDIR       ""
+    INSTALL_COMMAND     cd ${CMAKE_BINARY_DIR}/external/Fast-CDR/build; sudo make build
+    TEST_COMMAND        ""
+    UPDATE_DISCONNECTED 1
+    BUILD_ALWAYS        0
+)
+ExternalProject_Add(
+    foonathan_memory_vendor
+    GIT_REPOSITORY      https://github.com/eProsima/foonathan_memory_vendor.git
+    GIT_TAG             "v1.1.0"
+    GIT_SHALLOW         5
+    GIT_CONFIG          fetch.recurseSubmodules=true
+    CMAKE_ARGS          "--build . --target install"
+    PREFIX              ${CMAKE_BINARY_DIR}/external/foonathan_memory_vendor/prefix
+    TMP_DIR             ${CMAKE_BINARY_DIR}/external/foonathan_memory_vendor/tmp
+    STAMP_DIR           ${CMAKE_BINARY_DIR}/external/foonathan_memory_vendor/stamp
+    DOWNLOAD_DIR        ${CMAKE_BINARY_DIR}/external/foonathan_memory_vendor/download
+    SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/foonathan_memory_vendor/src
+    BINARY_DIR          ${CMAKE_BINARY_DIR}/external/foonathan_memory_vendor/build
+    SOURCE_SUBDIR        "../src"
+    INSTALL_COMMAND     cd ${CMAKE_BINARY_DIR}/external/foonathan_memory_vendor/build; sudo make build
+    TEST_COMMAND        ""
+    UPDATE_DISCONNECTED 1
+    BUILD_ALWAYS        0
+)
 ExternalProject_Add(
     Fast_DDS
     GIT_REPOSITORY      https://github.com/eProsima/Fast-DDS
     GIT_TAG             v2.3.0
     GIT_SHALLOW         5
     GIT_CONFIG          fetch.recurseSubmodules=true
-#    URL                 https://github.com/protocolbuffers/protobuf/releases/download/v3.8.0/protobuf-cpp-3.8.0.zip
-    CMAKE_ARGS          "-DTHIRDPARTY=ON -DCMAKE_BUILD_TYPE=Release"
+    CMAKE_ARGS          "--build . --target install"
     PREFIX              ${CMAKE_BINARY_DIR}/external/Fast-DDS/prefix
     TMP_DIR             ${CMAKE_BINARY_DIR}/external/Fast-DDS/tmp
     STAMP_DIR           ${CMAKE_BINARY_DIR}/external/Fast-DDS/stamp
@@ -70,36 +110,38 @@ ExternalProject_Add(
     BUILD_ALWAYS        0
 )
 
-if (${CMAKE_SYSTEM_NAME} MATCHES "MSYS")
-message("libosmscout not currently supported under MSYS2...")
-else()
-# ------------------------------------------------------------------------------
-# libosmscout
-# ------------------------------------------------------------------------------
-message(STATUS "SUBPROJECT_NAME = libosmscout")
-set(OSMSCOUT_BUILD_TEST OFF CACHE BOOL "Disable build of test library")
-list(APPEND CMAKE_MODULE_PATH ../libosmscout/cmake)
+if (ENABLE_OSMSCOUT)
+	if (${CMAKE_SYSTEM_NAME} MATCHES "MSYS")
+		message("libosmscout not currently supported under MSYS2...")
+	else()
+	# ------------------------------------------------------------------------------
+	# libosmscout
+	# ------------------------------------------------------------------------------
+	message(STATUS "SUBPROJECT_NAME = libosmscout")
+	set(OSMSCOUT_BUILD_TEST OFF CACHE BOOL "Disable build of test library")
+	list(APPEND CMAKE_MODULE_PATH ../libosmscout/cmake)
 
-ExternalProject_Add(
-    libosmscout
-    GIT_REPOSITORY      https://github.com/Framstag/libosmscout
-#    GIT_TAG             1.1.0
-    GIT_SHALLOW         1
-    CMAKE_ARGS          "-DCMAKE_BUILD_TYPE=Release -DOSMSCOUT_BUILD_DOC_API=Off -DOSMSCOUT_BUILD_TESTS=Off -DOSMSCOUT_BUILD_GPX=Off -DOSMSCOUT_BUILD_MAP_AGG=Off -DOSMSCOUT_BUILD_MAP_SVG=Off -DOSMSCOUT_BUILD_MAP_OPENGL=Off -DOSMSCOUT_BUILD_MAP_QT=Off -D=OSMSCOUT_BUILD_CLIENT_QT=Off -DOSMSCOUT_BUILD_MAP_SVG=Off -DOSMSCOUT_BUILD_WEBPAGE=Off"
-    PREFIX              ${CMAKE_BINARY_DIR}/external/libosmscout/prefix
-    TMP_DIR             ${CMAKE_BINARY_DIR}/external/libosmscout/tmp
-    STAMP_DIR           ${CMAKE_BINARY_DIR}/external/libosmscout/stamp
-    DOWNLOAD_DIR        ${CMAKE_BINARY_DIR}/external/libosmscout/download
-    SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/libosmscout/src
-    BINARY_DIR          ${CMAKE_BINARY_DIR}/external/libosmscout/build
-    CONFIGURE_COMMAND   cmake ../src -DOSMSCOUT_BUILD_DOC_API=OFF -DOSMSCOUT_BUILD_TESTS=OFF -DOSMSCOUT_BUILD_TOOL_OSMSCOUT2=OFF -DOSMSCOUT_BUILD_GPX=OFF -DOSMSCOUT_BUILD_MAP_AGG=OFF -DOSMSCOUT_BUILD_MAP_SVG=OFF -DOSMSCOUT_BUILD_MAP_OPENGL=OFF -DOSMSCOUT_BUILD_MAP_QT=OFF -DOSMSCOUT_BUILD_CLIENT_QT=OFF -DOSMSCOUT_BUILD_TOOL_STYLEEDITOR=OFF -DOSMSCOUT_BUILD_MAP_SVG=OFF -DOSMSCOUT_BUILD_WEBPAGE=OFF
-    BUILD_COMMAND       ${MAKE}
-    SOURCE_SUBDIR       "../src"
-    INSTALL_COMMAND     ""
-    TEST_COMMAND        ""
-    UPDATE_DISCONNECTED 1
-    BUILD_ALWAYS        0
-)
+	ExternalProject_Add(
+	    libosmscout
+	    GIT_REPOSITORY      https://github.com/Framstag/libosmscout
+#	    GIT_TAG             1.1.0
+	    GIT_SHALLOW         1
+	    CMAKE_ARGS          "-DCMAKE_BUILD_TYPE=Release -DOSMSCOUT_BUILD_DOC_API=Off -DOSMSCOUT_BUILD_TESTS=Off -DOSMSCOUT_BUILD_GPX=Off -DOSMSCOUT_BUILD_MAP_AGG=Off -DOSMSCOUT_BUILD_MAP_SVG=Off -DOSMSCOUT_BUILD_MAP_OPENGL=Off -DOSMSCOUT_BUILD_MAP_QT=Off -D=OSMSCOUT_BUILD_CLIENT_QT=Off -DOSMSCOUT_BUILD_MAP_SVG=Off -DOSMSCOUT_BUILD_WEBPAGE=Off"
+	    PREFIX              ${CMAKE_BINARY_DIR}/external/libosmscout/prefix
+	    TMP_DIR             ${CMAKE_BINARY_DIR}/external/libosmscout/tmp
+	    STAMP_DIR           ${CMAKE_BINARY_DIR}/external/libosmscout/stamp
+	    DOWNLOAD_DIR        ${CMAKE_BINARY_DIR}/external/libosmscout/download
+	    SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/libosmscout/src
+	    BINARY_DIR          ${CMAKE_BINARY_DIR}/external/libosmscout/build
+	    CONFIGURE_COMMAND   cmake ../src -DOSMSCOUT_BUILD_DOC_API=OFF -DOSMSCOUT_BUILD_TESTS=OFF -DOSMSCOUT_BUILD_TOOL_OSMSCOUT2=OFF -DOSMSCOUT_BUILD_GPX=OFF -DOSMSCOUT_BUILD_MAP_AGG=OFF -DOSMSCOUT_BUILD_MAP_SVG=OFF -DOSMSCOUT_BUILD_MAP_OPENGL=OFF -DOSMSCOUT_BUILD_MAP_QT=OFF -DOSMSCOUT_BUILD_CLIENT_QT=OFF -DOSMSCOUT_BUILD_TOOL_STYLEEDITOR=OFF -DOSMSCOUT_BUILD_MAP_SVG=OFF -DOSMSCOUT_BUILD_WEBPAGE=OFF
+	    BUILD_COMMAND       ${MAKE}
+	    SOURCE_SUBDIR       "../src"
+	    INSTALL_COMMAND     ""
+	    TEST_COMMAND        ""
+	    UPDATE_DISCONNECTED 1
+	    BUILD_ALWAYS        0
+	)
+	endif()
 endif()
 
 # ------------------------------------------------------------------------------
@@ -180,17 +222,19 @@ include(FindPkgConfig)
 # ------------------------------------------------------------------------------
 
 include_directories(include)
-include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/src/libosmscout/include)
-include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/src/libosmscout-map/include)
-include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/src/libosmscout-map-cairo/include)
-include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout/include)
-include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout-map/include)
-include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout-map-cairo/include)
+if (ENABLE_OSMSCOUT)
+	include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/src/libosmscout/include)
+	include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/src/libosmscout-map/include)
+	include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/src/libosmscout-map-cairo/include)
+	include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout/include)
+	include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout-map/include)
+	include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout-map-cairo/include)
+	include_directories(${PROJECT_SOURCE_DIR}/../libosmscout/libosmscout/include)
+	include_directories(${PROJECT_SOURCE_DIR}/../libosmscout/libosmscout-map/include)
+	include_directories(${PROJECT_SOURCE_DIR}/../libosmscout/libosmscout-map-cairo/include)
+endif()
 include_directories(${CMAKE_BINARY_DIR}/external/rtp-payloader/src)
 include_directories(${CMAKE_BINARY_DIR}/external/libnmea/src/include)
-include_directories(${PROJECT_SOURCE_DIR}/../libosmscout/libosmscout/include)
-include_directories(${PROJECT_SOURCE_DIR}/../libosmscout/libosmscout-map/include)
-include_directories(${PROJECT_SOURCE_DIR}/../libosmscout/libosmscout-map-cairo/include)
 include_directories(SYSTEM ${CMAKE_BINARY_DIR}/include)
 
 project(test_catch)
@@ -208,18 +252,23 @@ endif()
 
 add_library(business_logic STATIC ${PROTO_SRCS} hmi-display/events_gva.cc hmi-display/hmi_gva.cc hmi-display/hmi_gva_helpers.cc hmi-display/screen_gva.cc hmi-display/renderer_gva.cc hmi-display/renderer.cc hmi-display/renderer_cairo.cc hmi-display/common/log_gva.cc hmi-display/view_gva.cc hmi-display/renderer_map.cc hmi-display/config_reader.cc )
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std=c++11")
-add_dependencies(business_logic libnmea hmi-video rtp_payloader libosmscout)
+if (ENABLE_OSMSCOUT)
+	set(EXTRA_LIBS libosmscout)
+	include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/src/libosmscout/include)
+	include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/src/libosmscout-map/include)
+	include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/src/libosmscout-map-cairo/include)
+	include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout/include)
+	include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout-map/include)
+	include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout-map-cairo/include)
+        SET(OSMSCOUT_LIBS ${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout ${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout-map ${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout-map-cairo)
+endif()
+add_dependencies(business_logic libnmea hmi-video rtp_payloader $EXTRA_LIBS)
 pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
 pkg_check_modules(CAIRO REQUIRED cairo)
 pkg_check_modules(PANGO REQUIRED pango)
 pkg_check_modules(SWSCALE REQUIRED libswscale)
-include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/src/libosmscout/include)
-include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/src/libosmscout-map/include)
-include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/src/libosmscout-map-cairo/include)
-include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout/include)
-include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout-map/include)
-include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout-map-cairo/include)
-link_directories(${CMAKE_BINARY_DIR}/external/libnmea/build/src ${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout ${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout-map ${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout-map-cairo)
+
+link_directories(${CMAKE_BINARY_DIR}/external/libnmea/build/src ${OSMSCOUT_LIBS})
 target_link_libraries(business_logic ${Protobuf_LIBRARIES} ${GTK3_LIBRARIES} ${CAIRO_LIBRARIES} ${PANGO_LIBRARIES} ${SWSCALE_LIBRARIES} X11 pthread Geographic nmealib osmscout osmscout_map osmscout_map_cairo)
 target_compile_definitions(business_logic PRIVATE VIRTUAL=virtual MAIN=unittest_main)
 target_include_directories(business_logic PUBLIC ${GTK3_INCLUDE_DIRS} ${CAIRO_INCLUDE_DIRS} ${PANGO_INCLUDE_DIRS} ${SWSCALE_INCLUDE_DIRS} catch nmealib rtp-payloader video hmi-display hmi-display/common )
