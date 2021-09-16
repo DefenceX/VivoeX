@@ -1,6 +1,4 @@
-*.png
 *.bak
-*.jpg
 *.so
 *.cmake
 *.tcl

@@ -21,7 +21,16 @@ The BMS function can be configured with Open Street Maps but these need to be co
 # HMI
 The project includes an reference implementation of the GVA (Generic Vehicle Architecture) like Human Machine Interface (HMI). This is meant as a designed for testing different live video sources and working with streaming protocols and does not implement functionality defined in the GVA Land Data Model (LDM). Its primerially used to demonstrate various video streaming pipelines and control mechanisms for real time video processing. Its primary purpose is for research and development and experimentation with different HMI elements for human factors and sensor integration, test, monitoring and detection of system wide events.
 
-![GVA HMI](images/Display_RD104_02_sm.jpg#left)<br>
+![GVA HMI](images/Display_RD104_02_sm.jpg#left)
+**Leonardo DRS military display**
+<br>
+
+Dont have deep pockets and need a cheep alternative then the ARM (Raspberry Pi CM4) could be a cost effective solution. GVA in your pocket.
+
+![GVA HMI](images/Display_RD104_02_sm.jpg#left)
+**Seeed reTerminal**
+<br>
+
 
 > NOTE: Not all labels are currently implemented, project in heavy development! See [DEVELOPER.md](docs/DEVELOPER.md) for issues and features.
 
