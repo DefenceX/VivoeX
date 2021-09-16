@@ -540,7 +540,8 @@ struct StateSA : Hmi {
   void react(EventKeyBMS const &) override { transit<StateBMS>(); };
   void react(EventKeyAlarms const &) override { transit<StateAlarms>(); };
   void react(EventKeyFunction const &e) {
-    if (KeySA(e.key) == KEY_NEXT_LABEL) transit<StateWPN>();
+    KeySA(e.key);
+    if (e.key == KEY_NEXT_LABEL) transit<StateWPN>();
   };
 };
 
@@ -567,8 +568,9 @@ struct StateWPN : Hmi {
   void react(EventKeyBMS const &) override { transit<StateBMS>(); };
   void react(EventKeyAlarms const &) override { transit<StateAlarms>(); };
   void react(EventKeyFunction const &e) {
-    if (KeySA(e.key) == KEY_PREV_LABEL) transit<StateSA>();
-    if (KeySA(e.key) == KEY_NEXT_LABEL) transit<StateDEF>();
+    KeyWPN(e.key);
+    if (e.key == KEY_PREV_LABEL) transit<StateSA>();
+    if (e.key == KEY_NEXT_LABEL) transit<StateDEF>();
   };
 };
 
@@ -593,8 +595,9 @@ struct StateDEF : Hmi {
   void react(EventKeyBMS const &) override { transit<StateBMS>(); };
   void react(EventKeyAlarms const &) override { transit<StateAlarms>(); };
   void react(EventKeyFunction const &e) {
-    if (KeySA(e.key) == KEY_PREV_LABEL) transit<StateWPN>();
-    if (KeySA(e.key) == KEY_NEXT_LABEL) transit<StateSYS>();
+    KeyDEF(e.key);
+    if (e.key == KEY_PREV_LABEL) transit<StateWPN>();
+    if (e.key == KEY_NEXT_LABEL) transit<StateSYS>();
   };
 };
 
@@ -625,8 +628,9 @@ struct StateSYS : Hmi {
   void react(EventKeyBMS const &) override { transit<StateBMS>(); };
   void react(EventKeyAlarms const &) override { transit<StateAlarms>(); };
   void react(EventKeyFunction const &e) {
-    if (KeySA(e.key) == KEY_PREV_LABEL) transit<StateDEF>();
-    if (KeySA(e.key) == KEY_NEXT_LABEL) transit<StateDRV>();
+    KeySYS(e.key);
+    if (e.key == KEY_PREV_LABEL) transit<StateDEF>();
+    if (e.key == KEY_NEXT_LABEL) transit<StateDRV>();
   };
 };
 
@@ -652,8 +656,9 @@ struct StateDRV : Hmi {
   void react(EventKeyBMS const &) override { transit<StateBMS>(); };
   void react(EventKeyAlarms const &) override { transit<StateAlarms>(); };
   void react(EventKeyFunction const &e) {
-    if (KeySA(e.key) == KEY_PREV_LABEL) transit<StateSYS>();
-    if (KeySA(e.key) == KEY_NEXT_LABEL) transit<StateSTR>();
+    KeyDRV(e.key);
+    if (e.key == KEY_PREV_LABEL) transit<StateSYS>();
+    if (e.key == KEY_NEXT_LABEL) transit<StateSTR>();
   };
 };
 
@@ -677,8 +682,9 @@ struct StateSTR : Hmi {
   void react(EventKeyBMS const &) override { transit<StateBMS>(); };
   void react(EventKeyAlarms const &) override { transit<StateAlarms>(); };
   void react(EventKeyFunction const &e) {
-    if (KeySA(e.key) == KEY_PREV_LABEL) transit<StateDRV>();
-    if (KeySA(e.key) == KEY_NEXT_LABEL) transit<StateCOM>();
+    KeySTR(e.key);
+    if (e.key == KEY_PREV_LABEL) transit<StateDRV>();
+    if (e.key == KEY_NEXT_LABEL) transit<StateCOM>();
   };
 };
 
@@ -702,8 +708,9 @@ struct StateCOM : Hmi {
   void react(EventKeyBMS const &) override { transit<StateBMS>(); };
   void react(EventKeyAlarms const &) override { transit<StateAlarms>(); };
   void react(EventKeyFunction const &e) {
-    if (KeySA(e.key) == KEY_PREV_LABEL) transit<StateSTR>();
-    if (KeySA(e.key) == KEY_NEXT_LABEL) transit<StateBMS>();
+    KeyCOM(e.key);
+    if (e.key == KEY_PREV_LABEL) transit<StateSTR>();
+    if (e.key == KEY_NEXT_LABEL) transit<StateBMS>();
   };
 };
 
@@ -735,7 +742,8 @@ struct StateBMS : Hmi {
   void react(EventKeyCOM const &) override { transit<StateCOM>(); };
   void react(EventKeyAlarms const &) override { transit<StateAlarms>(); };
   void react(EventKeyFunction const &e) {
-    if (KeySA(e.key) == KEY_PREV_LABEL) transit<StateCOM>();
+    KeyBMS(e.key);
+    if (e.key == KEY_PREV_LABEL) transit<StateCOM>();
   };
 };
 
