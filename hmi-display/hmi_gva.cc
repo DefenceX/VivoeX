@@ -95,7 +95,7 @@ void Hmi::Labels(LabelModeEnum labels) {
   }
 };
 
-void Hmi::KeySide(int key) {
+void Hmi::KeySide(GvaKeyEnum key) {
   screen_.message.visible = false;
   switch (key) {
     case KEY_F1:
@@ -137,7 +137,7 @@ void Hmi::KeySide(int key) {
   }
 }
 
-void Hmi::Key(int keypress) {
+GvaKeyEnum Hmi::Key(GvaKeyEnum keypress) {
   screen_.function_left.active = 0;
   screen_.function_right.active = 0;
   screen_.control->active = 0;
@@ -184,9 +184,10 @@ void Hmi::Key(int keypress) {
       screen_.control->active = 0;
       break;
   }
+  return keypress;
 }
 
-void Hmi::KeySA(int keypress) {
+GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
   screen_.function_left.active = 0;
   screen_.function_right.active = 0;
 
@@ -226,9 +227,10 @@ void Hmi::KeySA(int keypress) {
       strcpy(screen_.message.detail.text, "Operation not implemented!");
       break;
   }
+  return keypress;
 }
 
-void Hmi::KeyWPN(int keypress) {
+GvaKeyEnum Hmi::KeyWPN(GvaKeyEnum keypress) {
   screen_.function_left.active = 0;
   screen_.function_right.active = 0;
 
@@ -254,9 +256,10 @@ void Hmi::KeyWPN(int keypress) {
       strcpy(screen_.message.detail.text, "Operation not implemented!");
       break;
   }
+  return keypress;
 }
 
-void Hmi::KeyDEF(int keypress) {
+GvaKeyEnum Hmi::KeyDEF(GvaKeyEnum keypress) {
   screen_.function_left.active = 0;
   screen_.function_right.active = 0;
 
@@ -282,9 +285,10 @@ void Hmi::KeyDEF(int keypress) {
       strcpy(screen_.message.detail.text, "Operation not implemented!");
       break;
   }
+  return keypress;
 }
 
-void Hmi::KeySYS(int keypress) {
+GvaKeyEnum Hmi::KeySYS(GvaKeyEnum keypress) {
   screen_.function_left.active = 0;
   screen_.function_right.active = 0;
 
@@ -326,9 +330,10 @@ void Hmi::KeySYS(int keypress) {
       g_application_quit(G_APPLICATION(RendererCairo::render_.win.app));
       break;
   }
+  return keypress;
 }
 
-void Hmi::KeyDRV(int keypress) {
+GvaKeyEnum Hmi::KeyDRV(GvaKeyEnum keypress) {
   screen_.function_left.active = 0;
   screen_.function_right.active = 0;
 
@@ -354,9 +359,10 @@ void Hmi::KeyDRV(int keypress) {
       strcpy(screen_.message.detail.text, "Operation not implemented!");
       break;
   }
+  return keypress;
 }
 
-void Hmi::KeySTR(int keypress) {
+GvaKeyEnum Hmi::KeySTR(GvaKeyEnum keypress) {
   screen_.function_left.active = 0;
   screen_.function_right.active = 0;
 
@@ -382,9 +388,10 @@ void Hmi::KeySTR(int keypress) {
       strcpy(screen_.message.detail.text, "Operation not implemented!");
       break;
   }
+  return keypress;
 }
 
-void Hmi::KeyCOM(int keypress) {
+GvaKeyEnum Hmi::KeyCOM(GvaKeyEnum keypress) {
   screen_.function_left.active = 0;
   screen_.function_right.active = 0;
   screen_.message.visible = false;
@@ -411,6 +418,7 @@ void Hmi::KeyCOM(int keypress) {
       strcpy(screen_.message.detail.text, "Operation not implemented!");
       break;
   }
+  return keypress;
 }
 
 double conv(int zoom) {
@@ -442,14 +450,15 @@ double conv(int zoom) {
   }
 }
 
-void Hmi::KeyBMS(int keypress) {
-#if OSMSCOUT_ENABLED
-  bool update = true;
+GvaKeyEnum Hmi::KeyBMS(GvaKeyEnum keypress) {
   screen_.function_left.active = 0;
   screen_.function_right.active = 0;
-  int zoom_level = configuration.GetZoom();
+
   KeySide(keypress);
   Key(keypress);
+#ifdef ENABLE_OSMSCOUT
+  bool update = true;
+  int zoom_level = configuration.GetZoom();
   switch (keypress) {
     case KEY_F3:
       // Shift UP
@@ -504,6 +513,7 @@ void Hmi::KeyBMS(int keypress) {
     screen_.canvas.bufferType = SURFACE_CAIRO;
   }
 #endif
+  return keypress;
 }
 
 struct StateSA : Hmi {
@@ -529,7 +539,9 @@ struct StateSA : Hmi {
   void react(EventKeyCOM const &) override { transit<StateCOM>(); };
   void react(EventKeyBMS const &) override { transit<StateBMS>(); };
   void react(EventKeyAlarms const &) override { transit<StateAlarms>(); };
-  void react(EventKeyFunction const &e) { KeySA(e.key); };
+  void react(EventKeyFunction const &e) {
+    if (KeySA(e.key) == KEY_NEXT_LABEL) transit<StateWPN>();
+  };
 };
 
 struct StateWPN : Hmi {
@@ -554,7 +566,10 @@ struct StateWPN : Hmi {
   void react(EventKeyCOM const &) override { transit<StateCOM>(); };
   void react(EventKeyBMS const &) override { transit<StateBMS>(); };
   void react(EventKeyAlarms const &) override { transit<StateAlarms>(); };
-  void react(EventKeyFunction const &e) { KeyWPN(e.key); };
+  void react(EventKeyFunction const &e) {
+    if (KeySA(e.key) == KEY_PREV_LABEL) transit<StateSA>();
+    if (KeySA(e.key) == KEY_NEXT_LABEL) transit<StateDEF>();
+  };
 };
 
 struct StateDEF : Hmi {
@@ -577,7 +592,10 @@ struct StateDEF : Hmi {
   void react(EventKeyCOM const &) override { transit<StateCOM>(); };
   void react(EventKeyBMS const &) override { transit<StateBMS>(); };
   void react(EventKeyAlarms const &) override { transit<StateAlarms>(); };
-  void react(EventKeyFunction const &e) { KeyDEF(e.key); };
+  void react(EventKeyFunction const &e) {
+    if (KeySA(e.key) == KEY_PREV_LABEL) transit<StateWPN>();
+    if (KeySA(e.key) == KEY_NEXT_LABEL) transit<StateSYS>();
+  };
 };
 
 struct StateSYS : Hmi {
@@ -606,7 +624,10 @@ struct StateSYS : Hmi {
   void react(EventKeyCOM const &) override { transit<StateCOM>(); };
   void react(EventKeyBMS const &) override { transit<StateBMS>(); };
   void react(EventKeyAlarms const &) override { transit<StateAlarms>(); };
-  void react(EventKeyFunction const &e) { KeySYS(e.key); };
+  void react(EventKeyFunction const &e) {
+    if (KeySA(e.key) == KEY_PREV_LABEL) transit<StateDEF>();
+    if (KeySA(e.key) == KEY_NEXT_LABEL) transit<StateDRV>();
+  };
 };
 
 struct StateDRV : Hmi {
@@ -630,7 +651,10 @@ struct StateDRV : Hmi {
   void react(EventKeyCOM const &) override { transit<StateCOM>(); };
   void react(EventKeyBMS const &) override { transit<StateBMS>(); };
   void react(EventKeyAlarms const &) override { transit<StateAlarms>(); };
-  void react(EventKeyFunction const &e) { KeyDRV(e.key); };
+  void react(EventKeyFunction const &e) {
+    if (KeySA(e.key) == KEY_PREV_LABEL) transit<StateSYS>();
+    if (KeySA(e.key) == KEY_NEXT_LABEL) transit<StateSTR>();
+  };
 };
 
 struct StateSTR : Hmi {
@@ -643,26 +667,19 @@ struct StateSTR : Hmi {
       screen_.function_top->active = 0x1 << 2;
     }
   };
-  void react(EventKeyPowerOn const &) override {
-    transit<StateOff>(); };
-  void react(EventKeySA const &) override {
-    transit<StateSA>(); };
-  void react(EventKeyWPN const &) override {
-    transit<StateWPN>(); };
-  void react(EventKeyDEF const &) override {
-    transit<StateDEF>(); };
-  void react(EventKeySYS const &) override {
-    transit<StateSYS>(); };
-  void react(EventKeyDRV const &) override {
-    transit<StateDRV>(); };
-  void react(EventKeyCOM const &) override {
-    transit<StateCOM>(); };
-  void react(EventKeyBMS const &) override {
-    transit<StateBMS>(); };
-  void react(EventKeyAlarms const &) override {
-    transit<StateAlarms>(); };
+  void react(EventKeyPowerOn const &) override { transit<StateOff>(); };
+  void react(EventKeySA const &) override { transit<StateSA>(); };
+  void react(EventKeyWPN const &) override { transit<StateWPN>(); };
+  void react(EventKeyDEF const &) override { transit<StateDEF>(); };
+  void react(EventKeySYS const &) override { transit<StateSYS>(); };
+  void react(EventKeyDRV const &) override { transit<StateDRV>(); };
+  void react(EventKeyCOM const &) override { transit<StateCOM>(); };
+  void react(EventKeyBMS const &) override { transit<StateBMS>(); };
+  void react(EventKeyAlarms const &) override { transit<StateAlarms>(); };
   void react(EventKeyFunction const &e) {
-    KeySTR(e.key); };
+    if (KeySA(e.key) == KEY_PREV_LABEL) transit<StateDRV>();
+    if (KeySA(e.key) == KEY_NEXT_LABEL) transit<StateCOM>();
+  };
 };
 
 struct StateCOM : Hmi {
@@ -684,7 +701,10 @@ struct StateCOM : Hmi {
   void react(EventKeySTR const &) override { transit<StateSTR>(); };
   void react(EventKeyBMS const &) override { transit<StateBMS>(); };
   void react(EventKeyAlarms const &) override { transit<StateAlarms>(); };
-  void react(EventKeyFunction const &e) { KeyCOM(e.key); };
+  void react(EventKeyFunction const &e) {
+    if (KeySA(e.key) == KEY_PREV_LABEL) transit<StateSTR>();
+    if (KeySA(e.key) == KEY_NEXT_LABEL) transit<StateBMS>();
+  };
 };
 
 struct StateBMS : Hmi {
@@ -695,7 +715,7 @@ struct StateBMS : Hmi {
       Reset();
 
       screen_.canvas.visible = true;
-#if OSMSCOUT_ENABLED
+#ifdef ENABLE_OSMSCOUT
       map_->SetWidth((double)screen_render_->GetWidth() / DEFAULT_WIDTH);
       map_->SetHeight((double)screen_render_->GetHeight() / DEFAULT_HEIGHT);
       map_->Project(configuration.GetZoom(), configuration.GetTestLon(), configuration.GetTestLat(),
@@ -714,7 +734,9 @@ struct StateBMS : Hmi {
   void react(EventKeySTR const &) override { transit<StateSTR>(); };
   void react(EventKeyCOM const &) override { transit<StateCOM>(); };
   void react(EventKeyAlarms const &) override { transit<StateAlarms>(); };
-  void react(EventKeyFunction const &e) { KeyBMS(e.key); };
+  void react(EventKeyFunction const &e) {
+    if (KeySA(e.key) == KEY_PREV_LABEL) transit<StateCOM>();
+  };
 };
 
 struct StateAlarms : Hmi {
@@ -774,7 +796,7 @@ struct StateOn : Hmi {
 
     if (!manager_) manager_ = new ViewGvaManager(&status_);
 
-#if OSMSCOUT_ENABLED
+#ifdef ENABLE_OSMSCOUT
     // Render a map for BMS
     map_ = new rendererMap("/opt/osmscout/maps/australia-latest/", "/opt/osmscout/stylesheets/standard.oss", MIN_WIDTH,
                            MIN_HEIGHT);

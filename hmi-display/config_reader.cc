@@ -93,47 +93,49 @@ bool ConfigData::GetFullscreen() { return current_config_->fullscreen(); }
 
 void ConfigData::SetFullscreen(bool fullscreen) { current_config_->set_fullscreen(fullscreen); }
 
-unsigned int ConfigData::GetThemeBackground() { return (unsigned int)current_config_->theme().theme_background(); }
+uint32_t ConfigData::GetThemeBackground() { return (uint32_t)current_config_->theme().theme_background(); }
 
-unsigned int ConfigData::GetThemeLabelBackgroundActive() {
-  return (unsigned int)current_config_->theme().theme_label_background_active();
+uint16_t ConfigData::GetThemeLabelStyle() { return (uint32_t)current_config_->theme().theme_label_style(); }
+
+uint32_t ConfigData::GetThemeLabelBackgroundActive() {
+  return (uint32_t)current_config_->theme().theme_label_background_active();
 }
 
-unsigned int ConfigData::GetThemeLabelBackgroundInactive() {
-  return (unsigned int)current_config_->theme().theme_label_background_inactive();
+uint32_t ConfigData::GetThemeLabelBackgroundInactive() {
+  return (uint32_t)current_config_->theme().theme_label_background_inactive();
 }
 
-unsigned int ConfigData::GetThemeLabelTextActive() {
-  return (unsigned int)current_config_->theme().theme_label_text_active();
+uint32_t ConfigData::GetThemeLabelTextActive() { return (uint32_t)current_config_->theme().theme_label_text_active(); }
+
+uint32_t ConfigData::GetThemeLabelTextInactive() {
+  return (uint32_t)current_config_->theme().theme_label_text_inactive();
 }
 
-unsigned int ConfigData::GetThemeLabelTextInactive() {
-  return (unsigned int)current_config_->theme().theme_label_text_inactive();
+uint32_t ConfigData::GetThemeLabelBorderSelected() {
+  return (uint32_t)current_config_->theme().theme_label_border_selected();
 }
 
-unsigned int ConfigData::GetThemeLabelBorderSelected() {
-  return (unsigned int)current_config_->theme().theme_label_border_selected();
+uint32_t ConfigData::GetThemeLabelBorderActive() {
+  return (uint32_t)current_config_->theme().theme_label_border_active();
 }
 
-unsigned int ConfigData::GetThemeLabelBorderActive() {
-  return (unsigned int)current_config_->theme().theme_label_border_active();
+uint32_t ConfigData::GetThemeLabelBorderInactive() {
+  return (uint32_t)current_config_->theme().theme_label_border_inactive();
 }
 
-unsigned int ConfigData::GetThemeLabelBorderInactive() {
-  return (unsigned int)current_config_->theme().theme_label_border_inactive();
+uint32_t ConfigData::GetThemeLabelBorderThickness() {
+  return (uint32_t)current_config_->theme().theme_label_border_thickness();
 }
 
-unsigned int ConfigData::GetThemeStatusBackground() {
-  return (unsigned int)current_config_->theme().theme_status_background();
-}
+uint32_t ConfigData::GetThemeStatusBackground() { return (uint32_t)current_config_->theme().theme_status_background(); }
 
-unsigned int ConfigData::GetThemeStatusBorder() { return (unsigned int)current_config_->theme().theme_status_border(); }
+uint32_t ConfigData::GetThemeStatusBorder() { return (uint32_t)current_config_->theme().theme_status_border(); }
 
-unsigned int ConfigData::GetThemeStatusText() { return (unsigned int)current_config_->theme().theme_status_text(); }
+uint32_t ConfigData::GetThemeStatusText() { return (uint32_t)current_config_->theme().theme_status_text(); }
 
-unsigned int ConfigData::GetThemeAlert() { return (unsigned int)current_config_->theme().theme_alert(); }
+uint32_t ConfigData::GetThemeAlert() { return (uint32_t)current_config_->theme().theme_alert(); }
 
-unsigned int ConfigData::GetThemeCritical() { return (unsigned int)current_config_->theme().theme_critical(); }
+uint32_t ConfigData::GetThemeCritical() { return (uint32_t)current_config_->theme().theme_critical(); }
 
 char* ConfigData::GetThemeFont() {
   return (char*)current_config_->theme().theme_font().c_str();

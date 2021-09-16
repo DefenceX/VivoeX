@@ -201,7 +201,7 @@ struct EventKeyCOM : tinyfsm::Event {};
 struct EventKeyBMS : tinyfsm::Event {};
 struct EventKeyAlarms : tinyfsm::Event {};
 struct EventKeyFunction : tinyfsm::Event {
-  int key;
+  GvaKeyEnum key;
 };
 
 //
@@ -243,16 +243,16 @@ struct Hmi : tinyfsm::Fsm<Hmi> {
   static bool alarmson_;
 
  public:
-  static void KeySide(int key);
-  static void Key(int key);
-  static void KeySA(int key);
-  static void KeyWPN(int key);
-  static void KeyDEF(int key);
-  static void KeySYS(int key);
-  static void KeyDRV(int key);
-  static void KeySTR(int key);
-  static void KeyCOM(int key);
-  static void KeyBMS(int key);
+  static void KeySide(GvaKeyEnum key);
+  static GvaKeyEnum Key(GvaKeyEnum key);
+  static GvaKeyEnum KeySA(GvaKeyEnum key);
+  static GvaKeyEnum KeyWPN(GvaKeyEnum key);
+  static GvaKeyEnum KeyDEF(GvaKeyEnum key);
+  static GvaKeyEnum KeySYS(GvaKeyEnum key);
+  static GvaKeyEnum KeyDRV(GvaKeyEnum key);
+  static GvaKeyEnum KeySTR(GvaKeyEnum key);
+  static GvaKeyEnum KeyCOM(GvaKeyEnum key);
+  static GvaKeyEnum KeyBMS(GvaKeyEnum key);
   static void Reset();
   static ScreenGva *GetRendrer() { return screen_render_; }
   static ScreenType *GetScreen() { return &screen_; }

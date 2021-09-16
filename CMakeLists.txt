@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 project(hmi-display)
 message(STATUS "PROJECT_NAME = ${PROJECT_NAME}")
+include(ExternalProject)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -11,6 +12,13 @@ if(ENABLE_COVERAGE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ftest-coverage")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
+endif()
+
+
+if (ENABLE_OSMSCOUT)
+    # lots of warnings and all warnings as errors
+    Message(STATUS "Building OSM Scout into BMS")
+    add_compile_options(-DENABLE_OSMSCOUT)
 endif()
 
 execute_process(COMMAND ../update.sh)
@@ -24,8 +32,6 @@ file(COPY images/FRONT_RIGHT.png
 images/FRONT_CENTRE.png images/FRONT_LEFT.png images/RIGHT.png 
 images/REAR.png images/LEFT.png images/QUAD.png 
      DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME})
-
-include(ExternalProject)
 
 option(HMI_ONLY "only build HMI and Tools" OFF)
 
@@ -187,6 +193,7 @@ include_directories(${PROJECT_SOURCE_DIR}/../libosmscout/libosmscout-map/include
 include_directories(${PROJECT_SOURCE_DIR}/../libosmscout/libosmscout-map-cairo/include)
 include_directories(SYSTEM ${CMAKE_BINARY_DIR}/include)
 
+project(test_catch)
 add_library(test_catch STATIC test/test.cc)
 add_dependencies(test_catch catch)
 

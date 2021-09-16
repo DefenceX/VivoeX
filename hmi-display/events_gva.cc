@@ -330,6 +330,25 @@ gboolean EventsGva::KeyPressEventCb(GtkWidget* Widget, GdkEventKey* event) {
       gvaEvent.type = KEY_EVENT;
       gvaEvent.key_ = KEY_LESS;
       break;
+    case 0x41:
+    case 0x61:
+      /* [a|A] Move to previous label */
+      gvaEvent.type = KEY_EVENT;
+      gvaEvent.key_ = KEY_F14;
+      break;
+    case 0x50:
+    case 0x70:
+      /* [p|P] Move to previous label */
+      gvaEvent.type = KEY_EVENT;
+      gvaEvent.key_ = KEY_PREV_LABEL;
+      break;
+    case 0x4e:
+    case 0x6e:
+      /* [n|N] Move to next label */
+      gvaEvent.type = KEY_EVENT;
+      gvaEvent.key_ = KEY_NEXT_LABEL;
+      break;
+
     default:
       printf("[GVA] KeyPress not defined 0x%x\n", event->keyval);
       previous_key_ = event->keyval;

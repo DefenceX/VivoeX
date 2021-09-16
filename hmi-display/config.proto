@@ -22,38 +22,48 @@ enum Colour {
   COLOUR_ORANGE = 0xFFA500;
 }
 
+// Lable style
+enum LabelStyle {
+  LABEL_SQUARE = 0;
+  LABEL_ROUNDED = 1;
+}
+
 message ThemeDefault {
   optional Colour theme_background = 1 [default = COLOUR_GREEN];
-  optional Colour theme_label_background_active = 2 [default = COLOUR_DARK_GREEN];
-  optional Colour theme_label_background_inactive = 3 [default = COLOUR_GREY];
-  optional Colour theme_label_text_active = 4 [default = COLOUR_WHITE];
-  optional Colour theme_label_text_inactive = 5 [default = COLOUR_BLACK];
-  optional Colour theme_label_border_selected = 6 [default = COLOUR_YELLOW];
-  optional Colour theme_label_border_active = 7 [default = COLOUR_DARK_GREEN2];
-  optional Colour theme_label_border_inactive = 8 [default = COLOUR_DARK_GREY];
-  optional Colour theme_status_background = 9 [default = COLOUR_DARK_GREEN];
-  optional Colour theme_status_border = 10 [default = COLOUR_DARK_GREEN];
-  optional Colour theme_status_text = 11 [default = COLOUR_WHITE];
-  optional Colour theme_alert = 12 [default = COLOUR_AMBER];
-  optional Colour theme_critical = 13 [default = COLOUR_RED];
-  optional string theme_font = 14 [default = "DejaVu Sans Mono Book"];
+  optional LabelStyle theme_label_style = 2 [default = LABEL_SQUARE];
+  optional Colour theme_label_background_active = 3 [default = COLOUR_DARK_GREEN];
+  optional Colour theme_label_background_inactive = 4 [default = COLOUR_GREY];
+  optional Colour theme_label_text_active = 5 [default = COLOUR_WHITE];
+  optional Colour theme_label_text_inactive = 6 [default = COLOUR_BLACK];
+  optional Colour theme_label_border_selected = 7 [default = COLOUR_YELLOW];
+  optional Colour theme_label_border_active = 8 [default = COLOUR_DARK_GREEN2];
+  optional Colour theme_label_border_inactive = 9 [default = COLOUR_DARK_GREY];
+  optional int32 theme_label_border_thickness = 10 [default = 2];
+  optional Colour theme_status_background = 11 [default = COLOUR_DARK_GREEN];
+  optional Colour theme_status_border = 12 [default = COLOUR_DARK_GREEN];
+  optional Colour theme_status_text = 13 [default = COLOUR_WHITE];
+  optional Colour theme_alert = 14 [default = COLOUR_AMBER];
+  optional Colour theme_critical = 15 [default = COLOUR_RED];
+  optional string theme_font = 16 [default = "DejaVu Sans Mono Book"];
 }
 
 message ThemeHighContrast {
   optional Colour theme_background = 1 [default = COLOUR_BLACK];
-  optional Colour theme_label_background_active = 2 [default = COLOUR_BLACK];
-  optional Colour theme_label_background_inactive = 3 [default = COLOUR_GREY];
-  optional Colour theme_label_text_active = 4 [default = COLOUR_WHITE];
-  optional Colour theme_label_text_inactive = 5 [default = COLOUR_BLACK];
-  optional Colour theme_label_border_selected = 6 [default = COLOUR_GREY];
-  optional Colour theme_label_border_active = 7 [default = COLOUR_WHITE];
-  optional Colour theme_label_border_inactive = 8 [default = COLOUR_DARK_GREY];
-  optional Colour theme_status_background = 9 [default = COLOUR_BLACK];
-  optional Colour theme_status_border = 10 [default = COLOUR_BLACK];
-  optional Colour theme_status_text = 11 [default = COLOUR_WHITE];
-  optional Colour theme_alert = 12 [default = COLOUR_AMBER];
-  optional Colour theme_critical = 13 [default = COLOUR_RED];
-  optional string theme_font = 14 [default = "Courier 10 Pitch"];
+  optional LabelStyle theme_label_style = 2 [default = LABEL_ROUNDED];
+  optional Colour theme_label_background_active = 3 [default = COLOUR_BLACK];
+  optional Colour theme_label_background_inactive = 4 [default = COLOUR_GREY];
+  optional Colour theme_label_text_active = 5 [default = COLOUR_WHITE];
+  optional Colour theme_label_text_inactive = 6 [default = COLOUR_BLACK];
+  optional Colour theme_label_border_selected = 7 [default = COLOUR_GREY];
+  optional Colour theme_label_border_active = 8 [default = COLOUR_WHITE];
+  optional Colour theme_label_border_inactive = 9 [default = COLOUR_DARK_GREY];
+  optional int32 theme_label_border_thickness = 10 [default = 1];
+  optional Colour theme_status_background = 11 [default = COLOUR_BLACK];
+  optional Colour theme_status_border = 12 [default = COLOUR_BLACK];
+  optional Colour theme_status_text = 13 [default = COLOUR_WHITE];
+  optional Colour theme_alert = 14 [default = COLOUR_AMBER];
+  optional Colour theme_critical = 15 [default = COLOUR_RED];
+  optional string theme_font = 16 [default = "Courier 10 Pitch"];
 }
 
 message Gva {
@@ -72,7 +82,7 @@ message Gva {
   optional int32 zoom = 9 [default = 20000];
   optional string device = 10;
     
-// Big Ben    
+// Big Ben    ENABLE_OSMSCOUT
 //    optional double test_lon = 11 [default = -0.124240];
 //    optional double test_lat = 12 [default = 51.500655];
 
@@ -89,7 +99,9 @@ message Gva {
   // ODB Options
   optional string odb_device = 14 [default = "/dev/ttyUSB1"];    
   
-  optional ThemeDefault theme = 15;
+  optional ThemeHighContrast theme = 15;
+  //optional ThemeDefault theme = 15;
+  
   
   message BezelKeyset {
     required int32 act = 1;

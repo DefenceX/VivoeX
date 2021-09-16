@@ -34,19 +34,21 @@ class ConfigData {
   void SetTestLat(double lat);
   bool GetFullscreen();
   void SetFullscreen(bool fullscreen);
-  unsigned int GetThemeBackground();
-  unsigned int GetThemeLabelBackgroundActive();
-  unsigned int GetThemeLabelBackgroundInactive();
-  unsigned int GetThemeLabelTextActive();
-  unsigned int GetThemeLabelTextInactive();
-  unsigned int GetThemeLabelBorderSelected();
-  unsigned int GetThemeLabelBorderActive();
-  unsigned int GetThemeLabelBorderInactive();
-  unsigned int GetThemeStatusBackground();
-  unsigned int GetThemeStatusBorder();
-  unsigned int GetThemeStatusText();
-  unsigned int GetThemeAlert();
-  unsigned int GetThemeCritical();
+  uint32_t GetThemeBackground();
+  uint16_t GetThemeLabelStyle();
+  uint32_t GetThemeLabelBackgroundActive();
+  uint32_t GetThemeLabelBackgroundInactive();
+  uint32_t GetThemeLabelTextActive();
+  uint32_t GetThemeLabelTextInactive();
+  uint32_t GetThemeLabelBorderSelected();
+  uint32_t GetThemeLabelBorderActive();
+  uint32_t GetThemeLabelBorderInactive();
+  uint32_t GetThemeLabelBorderThickness();
+  uint32_t GetThemeStatusBackground();
+  uint32_t GetThemeStatusBorder();
+  uint32_t GetThemeStatusText();
+  uint32_t GetThemeAlert();
+  uint32_t GetThemeCritical();
   char* GetThemeFont();
 
  private:

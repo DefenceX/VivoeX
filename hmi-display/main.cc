@@ -36,9 +36,6 @@
 #include "renderer_map.h"
 #include "rtp_stream.h"
 
-using namespace std;
-using namespace gva;
-
 struct opts {
   bool videoEnabled;
   bool windowEnabled;
@@ -304,6 +301,12 @@ void Update(void *arg, gpointer user_data) {
         case KEY_LESS:
           compass->bearingSight_ -= 2;
           break;
+        case KEY_NEXT_LABEL: {
+          Dispatch(KEY_NEXT_LABEL);
+        } break;
+        case KEY_PREV_LABEL: {
+          Dispatch(KEY_PREV_LABEL);
+        } break;
         default:
           printf("[GVA] KeyPress not defined 0x%x\n", event.key_);
           update = false;
@@ -364,17 +367,17 @@ int main(int argc, char *argv[]) {
   // @body The RTP stream blocks for a whole frame slowing down the HMI.
   if (opt.videoEnabled == true) {
     rtp_stream1 = new GvaVideoRtpYuv(ipaddr, port);
-    sprintf(tmp, "Resolution %dx%d", rtp_stream1->GetHeight(), rtp_stream1->GetWidth());
+    snprintf(tmp, strlen(tmp), "Resolution %dx%d", rtp_stream1->GetHeight(), rtp_stream1->GetWidth());
     logGva::log(tmp, LOG_INFO);
-    rtp_buffer = (char *)malloc(rtp_stream1->GetHeight() * rtp_stream1->GetWidth() * 4);
-    sprintf(tmp, "GVA Incoming RTP stream initalized %s:%d", ipaddr, port);
+    rtp_buffer = reinterpret_cast<char *>(malloc(rtp_stream1->GetHeight() * rtp_stream1->GetWidth() * 4));
+    snprintf(tmp, strlen(tmp), "GVA Incoming RTP stream initalized %s:%d", ipaddr, port);
     logGva::log(tmp, LOG_INFO);
   }
 
   //
   // Start the render and event loop
   //
-  hmi::GetRendrer()->init(640, 480, configuration.GetFullscreen(), Update, (void *)&io);
+  hmi::GetRendrer()->init(640, 480, configuration.GetFullscreen(), Update, reinterpret_cast<void *>(&io));
 
   //
   // Clean up code goes here

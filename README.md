@@ -3,13 +3,21 @@
 [![License](https://img.shields.io/badge/licence-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/2927/badge)](https://bestpractices.coreinfrastructure.org/projects/2927)
 [![codecov](https://codecov.io/gh/ross-newman/vivoe-lite/branch/master/graph/badge.svg)](https://codecov.io/gh/ross-newman/vivoe-lite)
-![Version](https://img.shields.io/badge/version-0.2.51-red.svg)
+![Version](https://img.shields.io/badge/version-0.2.58-red.svg)
 [![ZenHub](https://img.shields.io/badge/plan-ZenHub-%2349569D.svg)](https://www.zenhub.com/)
 # Dependancies
 This VIVOE (Vetronics Infrastructure for Video Over Ethernet) environment is currently tested on Ubuntu 18.04 LTS. Please ensure you have the following packages installed prior to building the application:
 ```
-sudo apt install libcairo2-dev libxt-dev libsdl2-dev doxygen libxml2-dev ncurses-dev libxext-dev libswscale-dev libprotobuf-dev libgeographic-dev cmake g++ libgtk-3-dev --no-install-recommends
+sudo apt install libcairo2-dev libxt-dev doxygen libxml2-dev ncurses-dev libxext-dev libswscale-dev libprotobuf-dev libgeographic-dev cmake g++ libgtk-3-dev --no-install-recommends
 ```
+# Build
+This project has a couple of options that can be specified at compile time:
+```
+cmake -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE=ON -DENABLE_OSMSCOUT=ON ..
+```
+To enable code coverage reports set ENABLE_COVERAGE. The gdb debugger is avaiable and configured for use with Microsoft Visual Code and the workspace files are part of the repo (recommended for developers).
+
+The BMS function can be configured with Open Street Maps but these need to be compiled and installed onto the system. Its recommeded that you run wit these switched off if you do not need this functionality. See below for more information on creating maps for your region / territory.
 # HMI
 The project includes an reference implementation of the GVA (Generic Vehicle Architecture) like Human Machine Interface (HMI). This is meant as a designed for testing different live video sources and working with streaming protocols and does not implement functionality defined in the GVA Land Data Model (LDM). Its primerially used to demonstrate various video streaming pipelines and control mechanisms for real time video processing. Its primary purpose is for research and development and experimentation with different HMI elements for human factors and sensor integration, test, monitoring and detection of system wide events.
 
@@ -36,6 +44,9 @@ The following keys can be used to interact with the display:
 * ESC Quit
 * L Toggle labels
 * A Alarms
+* B Blackout
+* [p|P] Previous Function
+* [n|N] Next Function
 * K Keyboard
   * CAPS-LOCK toggle upper case
   * NUM-LOCK toggle special chars

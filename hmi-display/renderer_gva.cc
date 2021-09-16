@@ -29,10 +29,8 @@
 
 #include "debug.h"
 
-#define PLOT_CIRCLE_X(x, radius, degree) \
-  x + (radius)*cos(((M_PI * 2) / 360) * degree)
-#define PLOT_CIRCLE_Y(y, radius, degree) \
-  y - (radius)*sin(((M_PI * 2) / 360) * degree)
+#define PLOT_CIRCLE_X(x, radius, degree) x + (radius)*cos(((M_PI * 2) / 360) * degree)
+#define PLOT_CIRCLE_Y(y, radius, degree) y - (radius)*sin(((M_PI * 2) / 360) * degree)
 #define degreesToRadians(angleDegrees) ((angleDegrees)*M_PI / 180.0)
 #define radiansToDegrees(angleRadians) ((angleRadians)*180.0 / M_PI)
 
@@ -42,12 +40,9 @@ int GvaRow::addCell(GvaCellType newcell, int width) {
   return cells_;
 };
 
-RendererGva::RendererGva(int width, int height) : RendererCairo(height, width) {
-  touch_.SetResolution(width, height);
-}
+RendererGva::RendererGva(int width, int height) : RendererCairo(height, width) { touch_.SetResolution(width, height); }
 
-void FunctionKeySimple::Draw(RendererGva *r, int x, int y, int width,
-                             int height, char *text) {
+void FunctionKeySimple::Draw(RendererGva *r, int x, int y, int width, int height, char *text) {
   char copy[256];
   char delim[] = ".";
   char *ptr = NULL;
@@ -56,24 +51,15 @@ void FunctionKeySimple::Draw(RendererGva *r, int x, int y, int width,
   r->DrawColor(HMI_WHITE);
 
   if (!strncmp(text, "icon:", 5)) {
-    if (!strcmp(&text[5], "exit"))
-      r->DrawIcon(ICON_POWER_OFF, x + width / 2, y + height / 2, 20, 20);
-    if (!strcmp(&text[5], "uparrow"))
-      r->DrawIcon(ICON_UP_ARROW, x + width / 2, y + height / 2, 20, 20);
-    if (!strcmp(&text[5], "downarrow"))
-      r->DrawIcon(ICON_DOWN_ARROW, x + width / 2, y + height / 2, 20, 20);
-    if (!strcmp(&text[5], "rightarrow"))
-      r->DrawIcon(ICON_RIGHT_ARROW, x + width / 2, y + height / 2, 20, 20);
-    if (!strcmp(&text[5], "leftarrow"))
-      r->DrawIcon(ICON_LEFT_ARROW, x + width / 2, y + height / 2, 20, 20);
-    if (!strcmp(&text[5], "rotateleft"))
-      r->DrawIcon(ICON_ROTATE_LEFT, x + width / 2, y + height / 2, 20, 20);
-    if (!strcmp(&text[5], "rotateright"))
-      r->DrawIcon(ICON_ROTATE_RIGHT, x + width / 2, y + height / 2, 20, 20);
-    if (!strcmp(&text[5], "plus"))
-      r->DrawIcon(ICON_PLUS, x + width / 2, y + height / 2, 20, 20);
-    if (!strcmp(&text[5], "minus"))
-      r->DrawIcon(ICON_MINUS, x + width / 2, y + height / 2, 20, 20);
+    if (!strcmp(&text[5], "exit")) r->DrawIcon(ICON_POWER_OFF, x + width / 2, y + height / 2, 20, 20);
+    if (!strcmp(&text[5], "uparrow")) r->DrawIcon(ICON_UP_ARROW, x + width / 2, y + height / 2, 20, 20);
+    if (!strcmp(&text[5], "downarrow")) r->DrawIcon(ICON_DOWN_ARROW, x + width / 2, y + height / 2, 20, 20);
+    if (!strcmp(&text[5], "rightarrow")) r->DrawIcon(ICON_RIGHT_ARROW, x + width / 2, y + height / 2, 20, 20);
+    if (!strcmp(&text[5], "leftarrow")) r->DrawIcon(ICON_LEFT_ARROW, x + width / 2, y + height / 2, 20, 20);
+    if (!strcmp(&text[5], "rotateleft")) r->DrawIcon(ICON_ROTATE_LEFT, x + width / 2, y + height / 2, 20, 20);
+    if (!strcmp(&text[5], "rotateright")) r->DrawIcon(ICON_ROTATE_RIGHT, x + width / 2, y + height / 2, 20, 20);
+    if (!strcmp(&text[5], "plus")) r->DrawIcon(ICON_PLUS, x + width / 2, y + height / 2, 20, 20);
+    if (!strcmp(&text[5], "minus")) r->DrawIcon(ICON_MINUS, x + width / 2, y + height / 2, 20, 20);
   } else {
     strncpy(copy, text, 40);
     ptr = strtok(copy, delim);
@@ -103,28 +89,25 @@ void FunctionKeyToggle::toggle(RendererGva *r, char *label1, char *label2) {
   r->DrawText(GetX() + 56, GetY() + 9, label2, 14);
 }
 
-void RendererGva::DrawFunctionLabels(int x, int active, int hide, int toggle,
-                                     int toggleOn, char labels[6][40]) {
+void RendererGva::DrawFunctionLabels(int x, int active, int hide, int toggle, int toggleOn, char labels[6][40]) {
   int i = 0;
   int offset = DEFAULT_HEIGHT - 88;
 
   SetColourForground(gva::configuration.GetThemeLabelBorderActive());
   SetColourBackground(gva::configuration.GetThemeLabelBackgroundActive());
   setLineType(CAIRO_LINE_JOIN_ROUND);
-  SetLineThickness(2, LINE_SOLID);
-  SetTextFont((int)CAIRO_FONT_SLANT_NORMAL, (int)CAIRO_FONT_WEIGHT_NORMAL,
-              gva::configuration.GetThemeFont());
+  SetLineThickness(gva::configuration.GetThemeLabelBorderThickness(), LINE_SOLID);
+  SetTextFont((int)CAIRO_FONT_SLANT_NORMAL, (int)CAIRO_FONT_WEIGHT_NORMAL, gva::configuration.GetThemeFont());
 
   int firstKey = (x < DEFAULT_WIDTH / 2) ? KEY_F1 : KEY_F7;
   int group = (x < DEFAULT_WIDTH / 2) ? LEFT : RIGHT;
 
   for (i = 0; i < 6; i++) {
-    SetLineThickness(2, LINE_SOLID);
+    SetLineThickness(gva::configuration.GetThemeLabelBorderThickness(), LINE_SOLID);
     SetColourBackground(gva::configuration.GetThemeLabelBackgroundActive());
     if ((1 << (5 - i) & hide)) {
-      (1 << (5 - i) & active)
-          ? SetColourForground(gva::configuration.GetThemeLabelBorderSelected())
-          : SetColourForground(gva::configuration.GetThemeLabelBorderActive());
+      (1 << (5 - i) & active) ? SetColourForground(gva::configuration.GetThemeLabelBorderSelected())
+                              : SetColourForground(gva::configuration.GetThemeLabelBorderActive());
       FunctionKeyToggle *key = new FunctionKeyToggle();
 
       key->Draw(this, x, offset - (i * 72), 100, 50, labels[i]);
@@ -144,17 +127,15 @@ void RendererGva::DrawTopLabels(int y, int active, int hide) {
   SetColourForground(gva::configuration.GetThemeLabelBorderActive());
   SetColourBackground(gva::configuration.GetThemeLabelBackgroundActive());
   setLineType(CAIRO_LINE_JOIN_ROUND);
-  SetLineThickness(2, LINE_SOLID);
+  SetLineThickness(gva::configuration.GetThemeLabelBorderThickness(), LINE_SOLID);
 
   for (i = 0; i < 8; i++) {
     if (!(1 << (7 - i) & hide)) {
-      (1 << (7 - i) & active)
-          ? SetColourForground(gva::configuration.GetThemeLabelBorderSelected())
-          : SetColourForground(gva::configuration.GetThemeLabelBorderActive());
-      DrawRectangle((i * width) + offset, y,
-                    (i * width) + width - spacing + offset, y + 10, true);
-      touch_.AddAbsolute(TOP, (int)(KEY_SA + i), (i * width) + offset, y,
-                         (i * width) + width - spacing + offset, y + 10);
+      (1 << (7 - i) & active) ? SetColourForground(gva::configuration.GetThemeLabelBorderSelected())
+                              : SetColourForground(gva::configuration.GetThemeLabelBorderActive());
+      DrawRectangle((i * width) + offset, y, (i * width) + width - spacing + offset, y + 10, true);
+      touch_.AddAbsolute(TOP, (int)(KEY_SA + i), (i * width) + offset, y, (i * width) + width - spacing + offset,
+                         y + 10);
     }
   }
 }
@@ -164,34 +145,29 @@ void RendererGva::DrawControlLabels(int y, int active, int hide) {
   int offset = 20;
   int w = 75;
 
-  char labels[8][80] = {"Up", "Alarms", "Threats", "Ack",
-                        "",   "",       "Labels",  "Enter"};
+  char labels[8][80] = {"Up", "Alarms", "Threats", "Ack", "", "", "Labels", "Enter"};
 
   SetColourForground(gva::configuration.GetThemeLabelBorderActive());
   SetColourBackground(gva::configuration.GetThemeLabelBackgroundActive());
   setLineType(CAIRO_LINE_JOIN_ROUND);
-  SetLineThickness(2, LINE_SOLID);
-  SetTextFont((int)CAIRO_FONT_SLANT_NORMAL, (int)CAIRO_FONT_WEIGHT_BOLD,
-              gva::configuration.GetThemeFont());
+  SetLineThickness(gva::configuration.GetThemeLabelBorderThickness(), LINE_SOLID);
+  SetTextFont((int)CAIRO_FONT_SLANT_NORMAL, (int)CAIRO_FONT_WEIGHT_BOLD, gva::configuration.GetThemeFont());
 
   for (i = 0; i < 8; i++) {
-    SetLineThickness(2, LINE_SOLID);
+    SetLineThickness(gva::configuration.GetThemeLabelBorderThickness(), LINE_SOLID);
     if ((1 << (7 - i) & hide)) {
       SetColourBackground(gva::configuration.GetThemeLabelBackgroundInactive());
       SetColourForground(gva::configuration.GetThemeLabelBorderInactive());
     } else {
       SetColourBackground(gva::configuration.GetThemeLabelBackgroundActive());
-      (1 << (7 - i) & active)
-          ? SetColourForground(gva::configuration.GetThemeLabelBorderSelected())
-          : SetColourForground(gva::configuration.GetThemeLabelBorderActive());
+      (1 << (7 - i) & active) ? SetColourForground(gva::configuration.GetThemeLabelBorderSelected())
+                              : SetColourForground(gva::configuration.GetThemeLabelBorderActive());
     }
     DrawRectangle((i * w) + offset, y, (i * w) + w - 5 + offset, y + 20, true);
 
-    (1 << (7 - i) & hide)
-        ? DrawColor(gva::configuration.GetThemeLabelTextInactive())
-        : DrawColor(gva::configuration.GetThemeLabelTextActive());
-    touch_.AddAbsolute(BOTTOM, (int)(KEY_F13 + i), (i * w) + offset, y,
-                       (i * w) + w - 5 + offset, y + 20);
+    (1 << (7 - i) & hide) ? DrawColor(gva::configuration.GetThemeLabelTextInactive())
+                          : DrawColor(gva::configuration.GetThemeLabelTextActive());
+    touch_.AddAbsolute(BOTTOM, (int)(KEY_F13 + i), (i * w) + offset, y, (i * w) + w - 5 + offset, y + 20);
     DrawText((i * w) + offset + 5, y + 6, labels[i], 12);
     if (i == 4) DrawIcon(ICON_UP_ARROW, (i * w) + offset + 34, y + 11, 15, 8);
     if (i == 5) DrawIcon(ICON_DOWN_ARROW, (i * w) + offset + 34, y + 10, 15, 8);
@@ -200,8 +176,7 @@ void RendererGva::DrawControlLabels(int y, int active, int hide) {
 
 void RendererGva::DrawIcon(IconType icon, int x, int y, int width, int height) {
   double sx, sy;
-  int arrow[8][2] = {{-5, -10}, {-4, -10}, {-4, 0}, {-8, 0},
-                     {0, +10},  {8, 0},    {+4, 0}, {+4, -10}};
+  int arrow[8][2] = {{-5, -10}, {-4, -10}, {-4, 0}, {-8, 0}, {0, +10}, {8, 0}, {+4, 0}, {+4, -10}};
 
   DrawColor(HMI_WHITE);
   SetColourBackground(HMI_WHITE);
@@ -364,19 +339,15 @@ void RendererGva::DrawPPI(int x, int y, int degrees, int sightAzimuth) {
   Restore();
 
   // Compass Markings
-  SetTextFont((int)CAIRO_FONT_SLANT_NORMAL, (int)CAIRO_FONT_WEIGHT_BOLD,
-              "Courier");
+  SetTextFont((int)CAIRO_FONT_SLANT_NORMAL, (int)CAIRO_FONT_WEIGHT_BOLD, "Courier");
   d = degreesToRadians(d);
   int pos = 6;
 
-  DrawText(x - 3 + (radius - pos) * cos(d + (M_PI * 2)),
-           y - 2 - (radius - pos) * sin(d + (M_PI * 2)), "N", 10);
-  DrawText(x - 3 + (radius - pos) * cos(d + (M_PI)),
-           y - 2 - (radius - pos) * sin(d + (M_PI)), "S", 10);
-  DrawText(x - 3 + (radius - pos) * cos(d + (M_PI / 2)),
-           y - 2 - (radius - pos) * sin(d + (M_PI / 2)), "E", 10);
-  DrawText(x - 3 + (radius - pos) * cos(d + (M_PI + M_PI / 2)),
-           y - 2 - (radius - pos) * sin(d + (M_PI + M_PI / 2)), "W", 10);
+  DrawText(x - 3 + (radius - pos) * cos(d + (M_PI * 2)), y - 2 - (radius - pos) * sin(d + (M_PI * 2)), "N", 10);
+  DrawText(x - 3 + (radius - pos) * cos(d + (M_PI)), y - 2 - (radius - pos) * sin(d + (M_PI)), "S", 10);
+  DrawText(x - 3 + (radius - pos) * cos(d + (M_PI / 2)), y - 2 - (radius - pos) * sin(d + (M_PI / 2)), "E", 10);
+  DrawText(x - 3 + (radius - pos) * cos(d + (M_PI + M_PI / 2)), y - 2 - (radius - pos) * sin(d + (M_PI + M_PI / 2)),
+           "W", 10);
 
   SetLineThickness(1, LINE_SOLID);
   float step = (M_PI * 2) / 32;
@@ -384,8 +355,7 @@ void RendererGva::DrawPPI(int x, int y, int degrees, int sightAzimuth) {
   int c = 0;
 
   d = degrees;
-  for (d = degreesToRadians(degrees);
-       d <= degreesToRadians(degrees) + (M_PI * 2); d += step) {
+  for (d = degreesToRadians(degrees); d <= degreesToRadians(degrees) + (M_PI * 2); d += step) {
     p = c % 4 ? 14 : 10;
     c++;
     MovePen(x + (radius - 21) * cos(d), y - (radius - 21) * sin(d));
@@ -430,14 +400,12 @@ void RendererGva::DrawMode() {
   SetColourBackground(HMI_DARK_BLUE);
   SetLineThickness(1, LINE_SOLID);
 
-  SetTextFont((int)CAIRO_FONT_SLANT_NORMAL, (int)CAIRO_FONT_WEIGHT_NORMAL,
-              gva::configuration.GetThemeFont());
+  SetTextFont((int)CAIRO_FONT_SLANT_NORMAL, (int)CAIRO_FONT_WEIGHT_NORMAL, gva::configuration.GetThemeFont());
 
   int w = GetTextWidth("Maintinance Mode", 12);
   int h = GetTextHeight("Maintinance Mode", 12);
 
-  DrawRectangle(DEFAULT_WIDTH / 2 - (w / 2) - 5, y,
-                DEFAULT_WIDTH / 2 + (w / 2) + 10, y + (h) + 15, true);
+  DrawRectangle(DEFAULT_WIDTH / 2 - (w / 2) - 5, y, DEFAULT_WIDTH / 2 + (w / 2) + 10, y + (h) + 15, true);
   DrawText(DEFAULT_WIDTH / 2 - (w / 2), y + 8, "Maintinance Mode", 12);
 }
 
@@ -448,34 +416,29 @@ void RendererGva::DrawTable(GvaTable *table) {
   int columns;
 
   SetLineThickness(table->border_, LINE_SOLID);
-  SetTextFont((int)CAIRO_FONT_SLANT_NORMAL, (int)CAIRO_FONT_WEIGHT_NORMAL,
-              table->fontname_);
+  SetTextFont((int)CAIRO_FONT_SLANT_NORMAL, (int)CAIRO_FONT_WEIGHT_NORMAL, table->fontname_);
 
   for (row = 0; row < table->rows_; row++) {
     int offset = table->GetX();
 
     for (column = 0; column < table->row_[row].cells_; column++) {
       int pos = 0;
-      int tmp =
-          table->row_[row].widths_[column] * ((double)table->GetWidth() / 100);
+      int tmp = table->row_[row].widths_[column] * ((double)table->GetWidth() / 100);
 
-      SetTextFont((int)CAIRO_FONT_SLANT_NORMAL,
-                  (int)table->row_[row].cell_[column].weight == WEIGHT_BOLD
-                      ? CAIRO_FONT_WEIGHT_BOLD
-                      : CAIRO_FONT_WEIGHT_NORMAL,
-                  table->fontname_);
+      SetTextFont(
+          (int)CAIRO_FONT_SLANT_NORMAL,
+          (int)table->row_[row].cell_[column].weight == WEIGHT_BOLD ? CAIRO_FONT_WEIGHT_BOLD : CAIRO_FONT_WEIGHT_NORMAL,
+          table->fontname_);
 
-      SetColourForground(table->row_[row].cell_[column].foreground.red,
-                         table->row_[row].cell_[column].foreground.green,
+      SetColourForground(table->row_[row].cell_[column].foreground.red, table->row_[row].cell_[column].foreground.green,
                          table->row_[row].cell_[column].foreground.blue);
       SetColourBackground(table->row_[row].cell_[column].background.red,
                           table->row_[row].cell_[column].background.green,
                           table->row_[row].cell_[column].background.blue);
-      DrawRectangle(offset, table->GetY() - (height * row), offset + tmp,
-                    table->GetY() - (height * row) + height, true);
+      DrawRectangle(offset, table->GetY() - (height * row), offset + tmp, table->GetY() - (height * row) + height,
+                    true);
 
-      DrawColor(table->row_[row].cell_[column].textcolour.red,
-                table->row_[row].cell_[column].textcolour.green,
+      DrawColor(table->row_[row].cell_[column].textcolour.red, table->row_[row].cell_[column].textcolour.green,
                 table->row_[row].cell_[column].textcolour.blue);
 
       int w = GetTextWidth(table->row_[row].cell_[column].text, 12);
@@ -493,27 +456,23 @@ void RendererGva::DrawTable(GvaTable *table) {
           pos = offset + 4;
           break;
       }
-      DrawText(pos, table->GetY() - (height * row) + 5,
-               table->row_[row].cell_[column].text, 12);
+      DrawText(pos, table->GetY() - (height * row) + 5, table->row_[row].cell_[column].text, 12);
       offset += tmp;
     }
   }
 }
 
-void RendererGva::DrawButton(char *keyText, int fontSize, int x, int y,
-                             int size) {
+void RendererGva::DrawButton(char *keyText, int fontSize, int x, int y, int size) {
   DrawButton(keyText, fontSize, x, y, size, size, ALIGN_LEFT);
 }
 
-void RendererGva::DrawButton(char *keyText, int fontSize, int x, int y,
-                             int width, int height, int align) {
+void RendererGva::DrawButton(char *keyText, int fontSize, int x, int y, int width, int height, int align) {
   int textX = 6;
 
   SetColourForground(HMI_GREY);
   DrawRoundedRectangle(x, y, width, height, 6, true);
   SetColourForground(HMI_WHITE);
-  SetTextFont((int)CAIRO_FONT_SLANT_NORMAL, (int)CAIRO_FONT_WEIGHT_BOLD,
-              gva::configuration.GetThemeFont());
+  SetTextFont((int)CAIRO_FONT_SLANT_NORMAL, (int)CAIRO_FONT_WEIGHT_BOLD, gva::configuration.GetThemeFont());
   int textHeight = GetTextHeight("qh", fontSize);
   int textWidth = GetTextWidth(keyText, fontSize);
 
@@ -549,33 +508,27 @@ void RendererGva::DrawKeyboard(KeyboardModeType mode) {
 
   //  DrawRoundedRectangle (110, yLocation, 530,
   //                 yLocation + padding + ((bSize + 5) * 4) + 1, 10, true);
-  DrawRectangle(110, yLocation, 530,
-                yLocation + padding + ((bSize + 5) * 4) + 1, true);
+  DrawRectangle(110, yLocation, 530, yLocation + padding + ((bSize + 5) * 4) + 1, true);
   SetColourBackground(HMI_DARK_GREY);
   SetLineThickness(1, LINE_SOLID);
-  SetTextFont((int)CAIRO_FONT_SLANT_NORMAL, (int)CAIRO_FONT_WEIGHT_BOLD,
-              gva::configuration.GetThemeFont());
+  SetTextFont((int)CAIRO_FONT_SLANT_NORMAL, (int)CAIRO_FONT_WEIGHT_BOLD, gva::configuration.GetThemeFont());
 
   // Draw keys
   SetColourForground(HMI_WHITE);
   DrawColor(HMI_WHITE);
   for (i = 0; i < 10; i++) {
     sprintf(keyText, "%c", keyboard[0][i]);
-    DrawButton(keyText, fontSize, 125 + (i * (bSize + 5)),
-               yLocation + padding + (bSize + 5) * 3, bSize);
+    DrawButton(keyText, fontSize, 125 + (i * (bSize + 5)), yLocation + padding + (bSize + 5) * 3, bSize);
   }
   for (i = 0; i < 9; i++) {
     sprintf(keyText, "%c", keyboard[1][i]);
-    DrawButton(keyText, fontSize, 140 + (i * (bSize + 5)),
-               yLocation + padding + (bSize + 5) * 2, bSize);
+    DrawButton(keyText, fontSize, 140 + (i * (bSize + 5)), yLocation + padding + (bSize + 5) * 2, bSize);
   }
   for (i = 0; i < 8; i++) {
     sprintf(keyText, "%c", keyboard[2][i]);
-    DrawButton(keyText, fontSize, 160 + (i * (bSize + 5)),
-               yLocation + padding + (bSize + 5) * 1, bSize);
+    DrawButton(keyText, fontSize, 160 + (i * (bSize + 5)), yLocation + padding + (bSize + 5) * 1, bSize);
   }
-  DrawIcon(ICON_LEFT_ARROW, 426 + bSize / 2,
-           yLocation + padding + (bSize + 5) + bSize / 2, 8, 10);
+  DrawIcon(ICON_LEFT_ARROW, 426 + bSize / 2, yLocation + padding + (bSize + 5) + bSize / 2, 8, 10);
   SetColourBackground(HMI_DARK_GREY);
   SetLineThickness(1, LINE_SOLID);
   SetColourForground(HMI_WHITE);
@@ -583,13 +536,10 @@ void RendererGva::DrawKeyboard(KeyboardModeType mode) {
   //
   // Space Bar and Mode
   //
-  DrawButton("123", fontSize, 144, yLocation + 5, bSize + 5, bSize,
-             ALIGN_RIGHT);
-  DrawButton("SPACE", fontSize, 185, yLocation + 5, bSize + 202, bSize,
-             ALIGN_CENTRE);
+  DrawButton("123", fontSize, 144, yLocation + 5, bSize + 5, bSize, ALIGN_RIGHT);
+  DrawButton("SPACE", fontSize, 185, yLocation + 5, bSize + 202, bSize, ALIGN_CENTRE);
   DrawButton("", fontSize, 426, yLocation + 5, bSize, bSize, ALIGN_RIGHT);
-  DrawIcon(ICON_UP_ARROW, 426 + bSize / 2, yLocation + 5 + bSize / 2 + 2, 12,
-           11);
+  DrawIcon(ICON_UP_ARROW, 426 + bSize / 2, yLocation + 5 + bSize / 2 + 2, 12, 11);
   SetColourBackground(HMI_DARK_GREY);
   SetLineThickness(1, LINE_SOLID);
   SetColourForground(HMI_WHITE);
