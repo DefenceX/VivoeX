@@ -21,9 +21,11 @@
 #define RENDERER_MAP_H
 
 #include <cairo.h>
+#ifdef ENABLE_OSMSCOUT
 #include <osmscout/Database.h>
 #include <osmscout/MapPainterCairo.h>
 #include <osmscout/MapService.h>
+#endif
 
 #include <iostream>
 #include <string>
@@ -43,6 +45,7 @@ class rendererMap {
   int height_;
   string map_;
   string style_;
+#ifdef ENABLE_OSMSCOUT
   osmscout::MapServiceRef mapService_;
   osmscout::StyleConfigRef styleConfig_;
   osmscout::DatabaseParameter databaseParameter_;
@@ -53,6 +56,7 @@ class rendererMap {
   osmscout::MapData data_;
   std::list<osmscout::TileRef> tiles_;
   osmscout::MapPainterCairo *painter_;
+#endif
   cairo_surface_t *surface_;
   cairo_t *cairo_;
 };
