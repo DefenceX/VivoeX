@@ -376,14 +376,27 @@ int ScreenGva::Update() {
     GvaRow newrow;
     GvaRow newrow1;
 
-    table.border_ = 2;
+    table.border_ = gva::configuration.GetThemeLabelBorderThickness();
 
     strcpy(tmp[0], screen_->message.brief.text);
-    newrow.addCell({tmp[0], ALIGN_CENTRE, {HMI_WHITE}, {HMI_DARK_GREEN}, {HMI_WHITE}, WEIGHT_BOLD}, 100);
+    uint32_t background = gva::configuration.GetThemeLabelBackgroundActive();
+    newrow.addCell({tmp[0],
+                    ALIGN_CENTRE,
+                    {HMI_WHITE},
+                    {background << 16 && 0xff, background << 8 && 0xff, background && 0xff},
+                    {HMI_WHITE},
+                    WEIGHT_BOLD},
+                   100);
     table.AddRow(newrow);
 
     strcpy(tmp[1], screen_->message.detail.text);
-    newrow1.addCell({tmp[1], ALIGN_CENTRE, {HMI_WHITE}, {HMI_DARK_GREEN}, {HMI_WHITE}, WEIGHT_NORMAL}, 100);
+    newrow1.addCell({tmp[1],
+                     ALIGN_CENTRE,
+                     {HMI_WHITE},
+                     {background << 16 && 0xff, background << 8 && 0xff, background && 0xff},
+                     {HMI_WHITE},
+                     WEIGHT_NORMAL},
+                    100);
     table.AddRow(newrow1);
     DrawTable(&table);
 
