@@ -101,7 +101,7 @@ ExternalProject_Add(
     GIT_TAG             "0.10.2"
     GIT_SHALLOW         5
     GIT_CONFIG          fetch.recurseSubmodules=true
-    CMAKE_ARGS          "--build . --target install"
+    CMAKE_ARGS          "mkdir build && cd build && cmake .."
     PREFIX              ${CMAKE_BINARY_DIR}/external/cyclonedds/prefix
     TMP_DIR             ${CMAKE_BINARY_DIR}/external/cyclonedds/tmp
     STAMP_DIR           ${CMAKE_BINARY_DIR}/external/cyclonedds/stamp
