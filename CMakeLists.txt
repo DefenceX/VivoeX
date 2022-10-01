@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 project(hmi-display)
-message(STATUS "PROJECT_NAME = ${PROJECT_NAME}")
-include(ExternalProject)
+
+include(scripts/cmake/dds.cmake)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -36,79 +36,11 @@ images/REAR.png images/LEFT.png images/QUAD.png
 option(HMI_ONLY "only build HMI and Tools" OFF)
 
 if (HMI_ONLY)
-# Dummy the targets our for quicker build
-add_custom_target(Fast_CDR)
-add_custom_target(foonathan_memory_vendor)
-add_custom_target(Fast_DDS)
 add_custom_target(libosmscout)
 add_custom_target(libnmea)
 add_custom_target(rtp_payloader)
 else (HMI_ONLY)
 
-# ------------------------------------------------------------------------------
-# Fast-DDS
-# ------------------------------------------------------------------------------
-message(STATUS "SUBPROJECT_NAME = fastdds")
-set(BUILD_DOCUMENTATION OFF CACHE BOOL "Disable build documentation")
-
-
-ExternalProject_Add(
-    Fast_CDR
-    GIT_REPOSITORY      https://github.com/eProsima/Fast-CDR.git
-    GIT_TAG             "v1.0.21"
-    GIT_SHALLOW         5
-    GIT_CONFIG          fetch.recurseSubmodules=true
-    CMAKE_ARGS          "--build . --target install"
-    PREFIX              ${CMAKE_BINARY_DIR}/external/Fast-CDR/prefix
-    TMP_DIR             ${CMAKE_BINARY_DIR}/external/Fast-CDR/tmp
-    STAMP_DIR           ${CMAKE_BINARY_DIR}/external/Fast-CDR/stamp
-    DOWNLOAD_DIR        ${CMAKE_BINARY_DIR}/external/Fast-CDR/download
-    SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/Fast-CDR/src
-    BINARY_DIR          ${CMAKE_BINARY_DIR}/external/Fast-CDR/build
-    SOURCE_SUBDIR       ""
-    INSTALL_COMMAND     cd ${CMAKE_BINARY_DIR}/external/Fast-CDR/build; sudo make build
-    TEST_COMMAND        ""
-    UPDATE_DISCONNECTED 1
-    BUILD_ALWAYS        0
-)
-ExternalProject_Add(
-    foonathan_memory_vendor
-    GIT_REPOSITORY      https://github.com/eProsima/foonathan_memory_vendor.git
-    GIT_TAG             "v1.1.0"
-    GIT_SHALLOW         5
-    GIT_CONFIG          fetch.recurseSubmodules=true
-    CMAKE_ARGS          "--build . --target install"
-    PREFIX              ${CMAKE_BINARY_DIR}/external/foonathan_memory_vendor/prefix
-    TMP_DIR             ${CMAKE_BINARY_DIR}/external/foonathan_memory_vendor/tmp
-    STAMP_DIR           ${CMAKE_BINARY_DIR}/external/foonathan_memory_vendor/stamp
-    DOWNLOAD_DIR        ${CMAKE_BINARY_DIR}/external/foonathan_memory_vendor/download
-    SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/foonathan_memory_vendor/src
-    BINARY_DIR          ${CMAKE_BINARY_DIR}/external/foonathan_memory_vendor/build
-    SOURCE_SUBDIR        "../src"
-    INSTALL_COMMAND     cd ${CMAKE_BINARY_DIR}/external/foonathan_memory_vendor/build; sudo make build
-    TEST_COMMAND        ""
-    UPDATE_DISCONNECTED 1
-    BUILD_ALWAYS        0
-)
-ExternalProject_Add(
-    Fast_DDS
-    GIT_REPOSITORY      https://github.com/eProsima/Fast-DDS
-    GIT_TAG             v2.3.0
-    GIT_SHALLOW         5
-    GIT_CONFIG          fetch.recurseSubmodules=true
-    CMAKE_ARGS          "--build . --target install"
-    PREFIX              ${CMAKE_BINARY_DIR}/external/Fast-DDS/prefix
-    TMP_DIR             ${CMAKE_BINARY_DIR}/external/Fast-DDS/tmp
-    STAMP_DIR           ${CMAKE_BINARY_DIR}/external/Fast-DDS/stamp
-    DOWNLOAD_DIR        ${CMAKE_BINARY_DIR}/external/Fast-DDS/download
-    SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/Fast-DDS/src
-    BINARY_DIR          ${CMAKE_BINARY_DIR}/external/Fast-DDS/build
-    SOURCE_SUBDIR        "../src"
-    INSTALL_COMMAND     ""
-    TEST_COMMAND        ""
-    UPDATE_DISCONNECTED 1
-    BUILD_ALWAYS        0
-)
 
 if (ENABLE_OSMSCOUT)
 	if (${CMAKE_SYSTEM_NAME} MATCHES "MSYS")
