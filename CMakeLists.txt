@@ -169,9 +169,9 @@ include_directories(${CMAKE_BINARY_DIR}/external/rtp-payloader/src)
 include_directories(${CMAKE_BINARY_DIR}/external/libnmea/src/include)
 include_directories(SYSTEM ${CMAKE_BINARY_DIR}/include)
 
-project(test_catch)
-add_library(test_catch STATIC test/test.cc)
-add_dependencies(test_catch catch)
+# project(test_catch)
+# add_library(test_catch STATIC test/test.cc)
+# add_dependencies(test_catch catch)
 
 if (MSYS)
 else()
