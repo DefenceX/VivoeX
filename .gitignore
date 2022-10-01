@@ -1,6 +1,5 @@
 *.bak
 *.so
-*.cmake
 *.tcl
 *.swp
 external
