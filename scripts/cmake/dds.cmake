@@ -1,4 +1,5 @@
 include(ExternalProject)
+include(FindPkgConfig)
 
 if (NOT DDS)
     set(DDS "CYCLONE") # Default option for DDS if not specified
@@ -86,7 +87,7 @@ if ("${DDS}" STREQUAL "CYCLONE")
 # ------------------------------------------------------------------------------
 # Cyclone-DDS
 # ------------------------------------------------------------------------------
-set(DDS_STACK "cycloneDds")
+set(DDS_STACK "CycloneDDS")
 
 if (HMI_ONLY)
 # Dummy the targets our for quicker build
@@ -96,7 +97,7 @@ endif()
 ExternalProject_Add(
     ${DDS_STACK}
     GIT_REPOSITORY      https://github.com/eclipse-cyclonedds/cyclonedds
-    GIT_TAG             "0.9.0"
+    GIT_TAG             "0.10.2"
     GIT_SHALLOW         5
     GIT_CONFIG          fetch.recurseSubmodules=true
     CMAKE_ARGS          "--build . --target install"
@@ -106,12 +107,40 @@ ExternalProject_Add(
     DOWNLOAD_DIR        ${CMAKE_BINARY_DIR}/external/cyclonedds/download
     SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/cyclonedds/src
     BINARY_DIR          ${CMAKE_BINARY_DIR}/external/cyclonedds/build
+    INSTALL_DIR         ${CMAKE_BINARY_DIR}/external/cyclonedds/install
     SOURCE_SUBDIR       ""
     INSTALL_COMMAND     cd ${CMAKE_BINARY_DIR}/external/cyclonedds/build; sudo make build
     TEST_COMMAND        ""
     UPDATE_DISCONNECTED 1
     BUILD_ALWAYS        0
 )
+
+ExternalProject_Add(
+    cyclonedds-cxx
+    GIT_REPOSITORY      https://github.com/eclipse-cyclonedds/cyclonedds-cxx
+    GIT_TAG             "0.10.2"
+    GIT_SHALLOW         5
+    GIT_CONFIG          fetch.recurseSubmodules=true
+    CMAKE_ARGS          "--build . --target install -DCMAKE_PREFIX_PATH=${CMAKE_BINARY_DIR}/external/cyclonedds/install"
+    PREFIX              ${CMAKE_BINARY_DIR}/external/cyclonedds-cxx/prefix
+    TMP_DIR             ${CMAKE_BINARY_DIR}/external/cyclonedds-cxx/tmp
+    STAMP_DIR           ${CMAKE_BINARY_DIR}/external/cyclonedds-cxx/stamp
+    DOWNLOAD_DIR        ${CMAKE_BINARY_DIR}/external/cyclonedds-cxx/download
+    SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/cyclonedds-cxx/src
+    BINARY_DIR          ${CMAKE_BINARY_DIR}/external/cyclonedds-cxx/build
+    SOURCE_SUBDIR       ""
+    INSTALL_COMMAND     cd ${CMAKE_BINARY_DIR}/external/cyclonedds-cxx/build; sudo make build
+    TEST_COMMAND        ""
+    UPDATE_DISCONNECTED 1
+    BUILD_ALWAYS        0
+)
+
+add_dependencies(cyclonedds-cxx ${DDS_STACK})
+
+
+set(DDS_LIBRARY_DIRS"${CMAKE_BINARY_DIR}/external/cyclonedds/lib/")
+set(DDS_LIBRARIES "ddsc cycloneddsidl dds_security_auth cycloneddsidl dds_security_ac dds_security_crypto")
+set(DDS_INCLUDES "${CMAKE_BINARY_DIR}/external/cyclonedds/src/src")
 
 endif()
 
