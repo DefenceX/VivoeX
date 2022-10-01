@@ -11,7 +11,7 @@ permissions:
   pull-requests: read
 
 jobs:
-  check-links:
+  build-ubuntu:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v2
