@@ -84,10 +84,10 @@ ExternalProject_Add(
 )
 endif()
 
-if ("${DDS}" STREQUAL "CYCLONE")
 # ------------------------------------------------------------------------------
 # Cyclone-DDS
 # ------------------------------------------------------------------------------
+if ("${DDS}" STREQUAL "CYCLONE")
 set(DDS_STACK "CycloneDDS")
 
 if (HMI_ONLY)
@@ -101,7 +101,7 @@ ExternalProject_Add(
     GIT_TAG             "0.10.2"
     GIT_SHALLOW         5
     GIT_CONFIG          fetch.recurseSubmodules=true
-    CMAKE_ARGS          "mkdir build && cd build && cmake .."
+    CMAKE_ARGS          ""
     PREFIX              ${CMAKE_BINARY_DIR}/external/cyclonedds/prefix
     TMP_DIR             ${CMAKE_BINARY_DIR}/external/cyclonedds/tmp
     STAMP_DIR           ${CMAKE_BINARY_DIR}/external/cyclonedds/stamp
@@ -109,6 +109,7 @@ ExternalProject_Add(
     SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/cyclonedds/src
     BINARY_DIR          ${CMAKE_BINARY_DIR}/external/cyclonedds/build
     INSTALL_DIR         ${CMAKE_BINARY_DIR}/external/cyclonedds/install
+    # INSTALL_COMMAND     "cd ${CMAKE_BINARY_DIR}/external/cyclonedds/build && make install"
     SOURCE_SUBDIR       ""
     INSTALL_COMMAND     cd ${CMAKE_BINARY_DIR}/external/cyclonedds/build; sudo make install
     TEST_COMMAND        ""
@@ -122,12 +123,13 @@ ExternalProject_Add(
     GIT_TAG             "0.10.2"
     GIT_SHALLOW         5
     GIT_CONFIG          fetch.recurseSubmodules=true
-    CMAKE_ARGS          "--build . --target install -DCMAKE_PREFIX_PATH=${CMAKE_BINARY_DIR}/external/cyclonedds/install"
+    CMAKE_ARGS          "-DCMAKE_PREFIX_PATH=${CMAKE_BINARY_DIR}/external/cyclonedds/src"
     PREFIX              ${CMAKE_BINARY_DIR}/external/cyclonedds-cxx/prefix
     TMP_DIR             ${CMAKE_BINARY_DIR}/external/cyclonedds-cxx/tmp
     STAMP_DIR           ${CMAKE_BINARY_DIR}/external/cyclonedds-cxx/stamp
     DOWNLOAD_DIR        ${CMAKE_BINARY_DIR}/external/cyclonedds-cxx/download
     SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/cyclonedds-cxx/src
+    INSTALL_DIR         "/"
     BINARY_DIR          ${CMAKE_BINARY_DIR}/external/cyclonedds-cxx/build
     SOURCE_SUBDIR       ""
     INSTALL_COMMAND     cd ${CMAKE_BINARY_DIR}/external/cyclonedds-cxx/build; sudo make build
