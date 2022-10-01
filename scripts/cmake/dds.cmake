@@ -7,7 +7,7 @@ endif()
 
 message(STATUS "Setting DDS to ${DDS}")
 
-if (DDS EQUAL "FASTDDS")
+if ("${DDS}" STREQUAL "FASTDDS")
 # ------------------------------------------------------------------------------
 # Fast-DDS
 # ------------------------------------------------------------------------------
@@ -142,6 +142,44 @@ add_dependencies(cyclonedds-cxx ${DDS_STACK})
 set(DDS_LIBRARY_DIRS"${CMAKE_BINARY_DIR}/external/cyclonedds/lib/")
 set(DDS_LIBRARIES "ddsc cycloneddsidl dds_security_auth cycloneddsidl dds_security_ac dds_security_crypto")
 set(DDS_INCLUDES "${CMAKE_BINARY_DIR}/external/cyclonedds/src/src")
+
+endif()
+
+if ("${DDS}" STREQUAL "OSPL-CE")
+# ------------------------------------------------------------------------------
+# Opensplice-DDS
+# ------------------------------------------------------------------------------
+set(DDS_STACK "OpenspliceDDS")
+
+if (HMI_ONLY)
+# Dummy the targets our for quicker build
+add_custom_target(${DDS_STACK})
+endif()
+
+ExternalProject_Add(
+    ${DDS_STACK}
+    GIT_REPOSITORY      https://github.com/ADLINK-IST/opensplice
+    GIT_TAG             "OSPL_V6_9_210323OSS_RELEASE"
+    GIT_SHALLOW         5
+    GIT_CONFIG          fetch.recurseSubmodules=true
+    CONFIGURE_COMMAND   "echo \"15\" | ./configure"
+    PREFIX              ${CMAKE_BINARY_DIR}/external/opensplice/prefix
+    TMP_DIR             ${CMAKE_BINARY_DIR}/external/opensplice/tmp
+    STAMP_DIR           ${CMAKE_BINARY_DIR}/external/opensplice/stamp
+    DOWNLOAD_DIR        ${CMAKE_BINARY_DIR}/external/opensplice/download
+    SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/opensplice/src
+    BINARY_DIR          ${CMAKE_BINARY_DIR}/external/opensplice/build
+    INSTALL_DIR         ${CMAKE_BINARY_DIR}/external/opensplice/install
+    SOURCE_SUBDIR       ""
+    INSTALL_COMMAND     cd ${CMAKE_BINARY_DIR}/external/opensplice/build; sudo make install
+    TEST_COMMAND        ""
+    UPDATE_DISCONNECTED 1
+    BUILD_ALWAYS        0
+)
+
+set(DDS_LIBRARY_DIRS"${CMAKE_BINARY_DIR}/external/opensplice/lib/")
+set(DDS_LIBRARIES "ddsc cycloneddsidl dds_security_auth cycloneddsidl dds_security_ac dds_security_crypto")
+set(DDS_INCLUDES "${CMAKE_BINARY_DIR}/external/opensplice/src/src")
 
 endif()
 
