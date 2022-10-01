@@ -22,7 +22,7 @@ if (ENABLE_OSMSCOUT)
 endif()
 
 execute_process(COMMAND ../update.sh)
-add_subdirectory(dds)
+# add_subdirectory(dds)
 add_subdirectory(video)
 add_subdirectory(hmi-display)
 add_subdirectory(gva-tools)
