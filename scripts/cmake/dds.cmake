@@ -62,6 +62,7 @@ ExternalProject_Add(
     UPDATE_DISCONNECTED 1
     BUILD_ALWAYS        0
 )
+
 ExternalProject_Add(
     ${DDS_STACK}
     GIT_REPOSITORY      https://github.com/eProsima/Fast-DDS
@@ -109,7 +110,7 @@ ExternalProject_Add(
     BINARY_DIR          ${CMAKE_BINARY_DIR}/external/cyclonedds/build
     INSTALL_DIR         ${CMAKE_BINARY_DIR}/external/cyclonedds/install
     SOURCE_SUBDIR       ""
-    INSTALL_COMMAND     cd ${CMAKE_BINARY_DIR}/external/cyclonedds/build; sudo make build
+    INSTALL_COMMAND     cd ${CMAKE_BINARY_DIR}/external/cyclonedds/build; sudo make install
     TEST_COMMAND        ""
     UPDATE_DISCONNECTED 1
     BUILD_ALWAYS        0
