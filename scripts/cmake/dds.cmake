@@ -162,7 +162,7 @@ ExternalProject_Add(
     GIT_TAG             "OSPL_V6_9_210323OSS_RELEASE"
     GIT_SHALLOW         5
     GIT_CONFIG          fetch.recurseSubmodules=true
-    CONFIGURE_COMMAND   "echo \"15\" | ./configure"
+    CONFIGURE_COMMAND   "echo \"15\" | ${CMAKE_BINARY_DIR}/external/opensplice/build/configure"
     PREFIX              ${CMAKE_BINARY_DIR}/external/opensplice/prefix
     TMP_DIR             ${CMAKE_BINARY_DIR}/external/opensplice/tmp
     STAMP_DIR           ${CMAKE_BINARY_DIR}/external/opensplice/stamp
