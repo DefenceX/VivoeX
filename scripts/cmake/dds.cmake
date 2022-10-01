@@ -96,7 +96,7 @@ endif()
 ExternalProject_Add(
     ${DDS_STACK}
     GIT_REPOSITORY      https://github.com/eclipse-cyclonedds/cyclonedds
-    GIT_TAG             "0.10.2"
+    GIT_TAG             "0.9.0"
     GIT_SHALLOW         5
     GIT_CONFIG          fetch.recurseSubmodules=true
     CMAKE_ARGS          "--build . --target install"
