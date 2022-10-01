@@ -184,6 +184,7 @@ endif()
 
 add_library(business_logic STATIC ${PROTO_SRCS} hmi-display/events_gva.cc hmi-display/hmi_gva.cc hmi-display/hmi_gva_helpers.cc hmi-display/screen_gva.cc hmi-display/renderer_gva.cc hmi-display/renderer.cc hmi-display/renderer_cairo.cc hmi-display/common/log_gva.cc hmi-display/view_gva.cc hmi-display/renderer_map.cc hmi-display/config_reader.cc )
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std=c++11")
+set(EXTRA_LIBS "")
 if (ENABLE_OSMSCOUT)
 	set(EXTRA_LIBS libosmscout)
 	include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/src/libosmscout/include)
