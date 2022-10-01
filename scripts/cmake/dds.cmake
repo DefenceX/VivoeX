@@ -123,7 +123,7 @@ ExternalProject_Add(
     GIT_TAG             "0.10.2"
     GIT_SHALLOW         5
     GIT_CONFIG          fetch.recurseSubmodules=true
-    CMAKE_ARGS          "-DCMAKE_PREFIX_PATH=${CMAKE_BINARY_DIR}/external/cyclonedds/src"
+    CMAKE_ARGS          "-DCMAKE_PREFIX_PATH=${CMAKE_BINARY_DIR}/external/cyclonedds/build/"
     PREFIX              ${CMAKE_BINARY_DIR}/external/cyclonedds-cxx/prefix
     TMP_DIR             ${CMAKE_BINARY_DIR}/external/cyclonedds-cxx/tmp
     STAMP_DIR           ${CMAKE_BINARY_DIR}/external/cyclonedds-cxx/stamp
