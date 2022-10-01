@@ -27,7 +27,7 @@ jobs:
         run: pkg-config gtk+-3.0  --libs --cflags
 
       - name: CMake and Build
-        run: mkdir build && cd build && cmake .. -DENABLE_COVERAGE=ON -DBUILD_TESTS=ON .. && make -j ${nproc}
+        run: mkdir build && cd build && cmake .. -DENABLE_COVERAGE=ON -DBUILD_TESTS=ON -DDDS=CYCLONE .. && make -j ${nproc}
 
       - name: CTest
         run: xvfb-run --server-args="-screen 0 1024x768x24" ctest -T memcheck
