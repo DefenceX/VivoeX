@@ -1,5 +1,5 @@
 ![VIVOE-LITE](images/Vivoe-lite-banner.png)
-![Actions](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-ubuntu.yaml/badge.svg)
+![Actions](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-ubuntu-cyclone.yaml/badge.svg)
 [![License](https://img.shields.io/badge/licence-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/2927/badge)](https://bestpractices.coreinfrastructure.org/projects/2927)
 [![codecov](https://codecov.io/gh/ross-newman/vivoe-lite/branch/master/graph/badge.svg)](https://codecov.io/gh/ross-newman/vivoe-lite)
