@@ -11,7 +11,7 @@ permissions:
   pull-requests: read
 
 jobs:
-  build-centos-stream:
+  build-ubuntu-opensplice:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
