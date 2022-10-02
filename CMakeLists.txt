@@ -52,7 +52,6 @@ if (ENABLE_OSMSCOUT)
 	# ------------------------------------------------------------------------------
 	# libosmscout
 	# ------------------------------------------------------------------------------
-	message(STATUS "SUBPROJECT_NAME = libosmscout")
 	set(OSMSCOUT_BUILD_TEST OFF CACHE BOOL "Disable build of test library")
 	list(APPEND CMAKE_MODULE_PATH ../libosmscout/cmake)
 
@@ -82,7 +81,6 @@ endif()
 # ------------------------------------------------------------------------------
 # rtp-payloader
 # ------------------------------------------------------------------------------
-message(STATUS "SUBPROJECT_NAME = rtp-payloader")
 ExternalProject_Add(
     rtp_payloader
     GIT_REPOSITORY      https://github.com/ross-newman/rtp-payloader
@@ -102,7 +100,6 @@ ExternalProject_Add(
 # ------------------------------------------------------------------------------
 # libnema
 # ------------------------------------------------------------------------------
-message(STATUS "SUBPROJECT_NAME = libnmea")
 ExternalProject_Add(
     libnmea
     GIT_REPOSITORY      https://github.com/ross-newman/nmealib
@@ -122,7 +119,6 @@ ExternalProject_Add(
 # # ------------------------------------------------------------------------------
 # # Catch
 # # ------------------------------------------------------------------------------
-# message(STATUS "SUBPROJECT_NAME = catch")
 # list(APPEND CATCH_CMAKE_ARGS
 #     "-DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}"
 # )
