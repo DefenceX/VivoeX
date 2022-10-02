@@ -1,6 +1,6 @@
-![VIVOE-LITE](images/Vivoe-lite-banner.png)
-![Actions](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-ubuntu-cyclone.yaml/badge.svg)
-![Actions](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-ubuntu-opensplice.yaml/badge.svg)
+![vivoe-lite banner](images/Vivoe-lite-banner.png)
+[![Action cyclone](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-ubuntu-cyclone.yaml/badge.svg)](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-ubuntu-cyclone.yaml)
+[![Action opensplice](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-ubuntu-opensplice.yaml/badge.svg)](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-ubuntu-opensplice.yaml)
 [![License](https://img.shields.io/badge/licence-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/2927/badge)](https://bestpractices.coreinfrastructure.org/projects/2927)
 [![codecov](https://codecov.io/gh/ross-newman/vivoe-lite/branch/master/graph/badge.svg)](https://codecov.io/gh/ross-newman/vivoe-lite)
@@ -14,8 +14,11 @@ sudo apt install libcairo2-dev libxt-dev doxygen libxml2-dev ncurses-dev libxext
 # Build
 This project has a couple of options that can be specified at compile time:
 ```
-cmake -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE=ON -DENABLE_OSMSCOUT=ON ..
+cmake -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE=ON -DENABLE_OSMSCOUT=ON -DDDS=CYCLONE ..
 ```
+
+Default DDS stack is currently [CycloneDDS](https://github.com/eclipse-cyclonedds/cyclonedds) (default if not specified) but can also be built with [Opensplice](https://github.com/ADLINK-IST/opensplice) by setting -DDDS=OSPL. 
+
 To enable code coverage reports set ENABLE_COVERAGE. The gdb debugger is avaiable and configured for use with Microsoft Visual Code and the workspace files are part of the repo (recommended for developers).
 
 The BMS function can be configured with Open Street Maps but these need to be compiled and installed onto the system. Its recommeded that you run wit these switched off if you do not need this functionality. See below for more information on creating maps for your region / territory.
