@@ -116,11 +116,7 @@ ExternalProject_Add(
     BUILD_ALWAYS        0
 )
 
-message(STATUS ">>>>> " ${CMAKE_BINARY_DIR}/external/install)
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/cmake/CycloneDDS)
-list(APPEND CMAKE_CURRENT_LIST_DIR ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/cmake/CycloneDDS)
-
-message(STATUS ">>>>> " ${CMAKE_MODULE_PATH})
+list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/cmake/CycloneDDS)
 
 ExternalProject_Add(
     cyclonedds-cxx
