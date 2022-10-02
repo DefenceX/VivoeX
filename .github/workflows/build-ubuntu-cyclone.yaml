@@ -25,8 +25,8 @@ jobs:
       - name: CMake and Build
         run: mkdir build && cd build && cmake .. -DDDS=CYCLONE .. && make -j ${nproc}
 
-      - name: CTest
-        run: xvfb-run --server-args="-screen 0 1024x768x24" ctest -T memcheck
+      # - name: CTest
+      #   run: xvfb-run --server-args="-screen 0 1024x768x24" ctest -T memcheck
 
       - name: Post
         run: cd .. && bash <(curl -s https://codecov.io/bash)
