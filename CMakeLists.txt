@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
-project(hmi-display)
+project(vivoe-lite)
+add_custom_target(vivoe-lite)
+add_dependencies(vivoe-lite hmi-display)
 
 include(scripts/cmake/dds.cmake)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -85,7 +87,7 @@ ExternalProject_Add(
     rtp_payloader
     GIT_REPOSITORY      https://github.com/ross-newman/rtp-payloader
     GIT_SHALLOW         1
-    CMAKE_ARGS          ""
+	CMAKE_ARGS          -DCMAKE_INSTALL_PREFIX:PATH=/opt/gva/libs
     PREFIX              ${CMAKE_BINARY_DIR}/external/rtp-payloader/prefix
     TMP_DIR             ${CMAKE_BINARY_DIR}/external/rtp-payloader/tmp
     STAMP_DIR           ${CMAKE_BINARY_DIR}/external/rtp-payloader/stamp
@@ -219,3 +221,7 @@ do_test(events)
 do_test(log)
 #do_test(hmi)
 endif (BUILD_TESTS)
+
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/vivoe-lite.conf "/opt/gva/libs\n")
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/vivoe-lite.conf DESTINATION "/etc/ld.so.conf.d")
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/external/rtp-payloader/build/librtp-payloader.so DESTINATION "/opt/gva/libs")
