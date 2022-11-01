@@ -34,6 +34,9 @@
 #define MIN_HEIGHT 480
 #define MIN_WIDTH 640
 
+#define RENDER_HEIGHT 1024
+#define RENDER_WIDTH 1920
+
 enum GvaFunctionEnum {
   SA = 0,
   WPN,

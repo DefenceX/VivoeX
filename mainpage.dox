@@ -10,7 +10,7 @@
  * 
  * \code sudo apt install libcairo2-dev libxt-dev doxygen libxml2-dev ncurses-dev libxext-dev libswscale-dev \endcode
  * 
- * \subsection ssec12 CentOS
+ * \subsection ssec12 CentOS 9
  *
  * \code sudo dnf install cairo-devel libxt-devel doxygen libxml2-devel ncurses-devel libxext-devel libswscale-devel \endcode
  *

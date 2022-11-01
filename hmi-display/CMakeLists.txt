@@ -46,6 +46,7 @@ else()
 endif()
 
 set(SOURCES main.cc 
+			gva_application.cc
             renderer.cc 
 			renderer_cairo.cc 
 			renderer_gva.cc 
