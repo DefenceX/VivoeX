@@ -84,23 +84,30 @@ typename _state_instance<S>::value_type _state_instance<S>::value;
 template <typename F>
 class Fsm {
  public:
+  /// \brief Finite state machine type templated class
   using fsmtype = Fsm<F>;
+  /// \brief Current state pointer
   using state_ptr_t = F *;
-
+  /// \brief Current state pointer
   static state_ptr_t current_state_ptr;
 
-  // public, leaving ability to access state instance (e.g. on Reset)
+  /// \brief public, leaving ability to access state instance (e.g. on Reset)
   template <typename S>
   static constexpr S &state(void) {
-    static_assert(is_same_fsm<F, S>::value,
-                  "accessing state of different state machine");
+    static_assert(is_same_fsm<F, S>::value, "accessing state of different state machine");
     return _state_instance<S>::value;
   }
 
+  ///
+  /// \brief Check if in state
+  ///
+  /// \tparam S
+  /// \return true
+  /// \return false
+  ///
   template <typename S>
   static constexpr bool is_in_state(void) {
-    static_assert(is_same_fsm<F, S>::value,
-                  "accessing state of different state machine");
+    static_assert(is_same_fsm<F, S>::value, "accessing state of different state machine");
     return current_state_ptr == &_state_instance<S>::value;
   }
 
@@ -109,15 +116,24 @@ class Fsm {
   // explicitely specialized in FSM_INITIAL_STATE macro
   static void set_initial_state();
 
+  /// \brief Reset state machine
   static void Reset(){};
 
+  /// \brief Enter state
   static void enter() { current_state_ptr->entry(); }
 
+  /// \brief start state
   static void start() {
     set_initial_state();
     enter();
   }
 
+  ///
+  /// \brief Dispatch a new state
+  ///
+  /// \tparam E
+  /// \param event
+  ///
   template <typename E>
   static void dispatch(E const &event) {
     current_state_ptr->react(event);
@@ -125,19 +141,29 @@ class Fsm {
 
   /// state transition functions
  protected:
+  ///
+  /// \brief Transition to new state
+  ///
+  /// \tparam S
+  ///
   template <typename S>
   void transit(void) {
-    static_assert(is_same_fsm<F, S>::value,
-                  "transit to different state machine");
+    static_assert(is_same_fsm<F, S>::value, "transit to different state machine");
     current_state_ptr->exit();
     current_state_ptr = &_state_instance<S>::value;
     current_state_ptr->entry();
   }
 
+  ///
+  /// \brief Transition to new state
+  ///
+  /// \tparam S
+  /// \tparam ActionFunction
+  /// \param action_function
+  ///
   template <typename S, typename ActionFunction>
   void transit(ActionFunction action_function) {
-    static_assert(is_same_fsm<F, S>::value,
-                  "transit to different state machine");
+    static_assert(is_same_fsm<F, S>::value, "transit to different state machine");
     current_state_ptr->exit();
     // NOTE: we get into deep trouble if the action_function sends a new event.
     // TODO: implement a mechanism to check for reentrancy
@@ -146,9 +172,17 @@ class Fsm {
     current_state_ptr->entry();
   }
 
+  ///
+  /// \brief Transit to new state
+  ///
+  /// \tparam S
+  /// \tparam ActionFunction
+  /// \tparam ConditionFunction
+  /// \param action_function
+  /// \param condition_function
+  ///
   template <typename S, typename ActionFunction, typename ConditionFunction>
-  void transit(ActionFunction action_function,
-               ConditionFunction condition_function) {
+  void transit(ActionFunction action_function, ConditionFunction condition_function) {
     if (condition_function()) {
       transit<S>(action_function);
     }
@@ -165,9 +199,13 @@ struct FsmList;
 
 template <>
 struct FsmList<> {
+  /// \brief Set the inital state
   static void set_initial_state() {}
+  /// \brief Reset the state
   static void Reset() {}
+  /// \brief Enter a state
   static void enter() {}
+  /// \brief Dispatch FSM
   template <typename E>
   static void dispatch(E const &) {}
 };
@@ -176,26 +214,48 @@ template <typename F, typename... FF>
 struct FsmList<F, FF...> {
   using fsmtype = Fsm<F>;
 
+  ///
+  /// \brief Set the initial state object
+  ///
+  ///
   static void set_initial_state() {
     fsmtype::set_initial_state();
     FsmList<FF...>::set_initial_state();
   }
 
+  ///
+  /// \brief Reset
+  ///
+  ///
   static void Reset() {
     F::Reset();
     FsmList<FF...>::Reset();
   }
 
+  ///
+  /// \brief Enter
+  ///
+  ///
   static void enter() {
     fsmtype::enter();
     FsmList<FF...>::enter();
   }
 
+  ///
+  /// \brief Start
+  ///
+  ///
   static void start() {
     set_initial_state();
     enter();
   }
 
+  ///
+  /// \brief Dispatch
+  ///
+  /// \tparam E
+  /// \param event
+  ///
   template <typename E>
   static void dispatch(E const &event) {
     fsmtype::template dispatch<E>(event);
@@ -209,10 +269,12 @@ template <typename... SS>
 struct StateList;
 template <>
 struct StateList<> {
+  /// \brief Reset state list
   static void Reset() {}
 };
 template <typename S, typename... SS>
 struct StateList<S, SS...> {
+  /// \brief Reset state
   static void Reset() {
     _state_instance<S>::value = S();
     StateList<SS...>::Reset();
@@ -223,8 +285,10 @@ struct StateList<S, SS...> {
 
 template <typename F>
 struct MooreMachine : tinyfsm::Fsm<F> {
-  virtual void entry(void){}; /* entry actions in some states */
-  void exit(void){};          /* no exit actions */
+  /// \brief entry actions in some states
+  virtual void entry(void){};
+  /// \brief no exit actions
+  void exit(void){};
 };
 
 template <typename F>
@@ -232,11 +296,13 @@ struct MealyMachine : tinyfsm::Fsm<F> {
   // input actions are modeled in react():
   // - conditional dependent of event type or payload
   // - transit<>(ActionFunction)
-  void entry(void){}; /* no entry actions */
-  void exit(void){};  /* no exit actions */
+  /// \brief no entry actions
+  void entry(void){};
+  /// \brief no exit actions
+  void exit(void){};
 };
 
-} /* namespace tinyfsm */
+}  // namespace tinyfsm
 
 #define FSM_INITIAL_STATE(_FSM, _STATE)                  \
   namespace tinyfsm {                                    \
@@ -246,4 +312,4 @@ struct MealyMachine : tinyfsm::Fsm<F> {
   }                                                      \
   }
 
-#endif /* TINYFSM_HPP_INCLUDED */
+#endif  // TINYFSM_HPP_INCLUDED
