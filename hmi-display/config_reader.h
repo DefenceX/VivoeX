@@ -27,6 +27,7 @@
 #include "config.pb.h"
 
 namespace gva {
+
 class ConfigData {
  public:
   ConfigData();
@@ -62,5 +63,6 @@ class ConfigData {
 
 // Static configuration object
 static ConfigData configuration;
-};  // namespace gva
+
+}  // namespace gva
 #endif

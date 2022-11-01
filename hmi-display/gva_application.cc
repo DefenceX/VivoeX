@@ -113,7 +113,10 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
   HandleType *render = static_cast<HandleType *>(user_data);
 
   io->NextGvaEvent(&event);
+  printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
+
   if (options_.videoEnabled) {
+    printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
     // Get the live video frame if Driver (DRV)
     if (hmi::GetScreen()->currentFunction == DRV) {
       hmi::GetScreen()->canvas.bufferType = SURFACE_CAIRO;
@@ -121,12 +124,14 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
       char *test = reinterpret_cast<char *>(cairo_image_surface_get_data(hmi::GetScreen()->canvas.surface));
       rtp_stream1_->GvaRecieveFrame(test, RGBA_COLOUR);
       cairo_surface_mark_dirty(hmi::GetScreen()->canvas.surface);
+      printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
 
       // @todo hmi_display: Add RTP HMI streaming output to display.
       // @body The HMI window is only a preview. Add RTP output and headless
       // mode.
     }
   }
+  printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
 
   hmi::GetRendrer()->Update();
   switch (event.type) {

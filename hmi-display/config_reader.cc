@@ -42,9 +42,10 @@ ConfigData::ConfigData() {
   // Verify that the version of the library that we linked against is
   // compatible with the version of the headers we compiled against.
   GOOGLE_PROTOBUF_VERIFY_VERSION;
+  logGva::log("Created new config reader.", LOG_INFO);
   current_config_ = new config::Gva();
   {
-    // Read the existing address book.
+    // Read the existing configuration file.
     fstream input(CONFIG_FILE, std::fstream::in | std::fstream::binary);
     if (!input) {
       char tmp[100];

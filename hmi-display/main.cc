@@ -66,7 +66,7 @@ int32_t GetOpt(int argc, char *argv[], GvaApplication::Options *opt) {
         opt->videoEnabled = true;
         break;
       case 'f':
-        configuration.SetFullscreen(true);
+        gva::configuration.SetFullscreen(true);
         break;
       case 'h':
         cout << "  -c : XML config file" << endl;
@@ -89,7 +89,7 @@ int32_t GetOpt(int argc, char *argv[], GvaApplication::Options *opt) {
   return -1;
 };
 
-// printf("File %s, Function %s, Line %d\n", __FILE__, __FUNCTION__, __LINE__);
+// printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
 int main(int argc, char *argv[]) {
   uint32_t done = 0;
   uint32_t hndl;
@@ -97,7 +97,7 @@ int main(int argc, char *argv[]) {
   char ipaddr[] = "127.0.0.1";
   uint32_t port = 5004;
 
-  cout << "hmi_display (author: ross@rossnewman.com)..." << endl;
+  cout << "hmi_display (By defencex.com.au)..." << endl;
 
   int32_t ret = GetOpt(argc, argv, &options);
 
@@ -107,7 +107,6 @@ int main(int argc, char *argv[]) {
 
   // Blocking call to the application constructor
   app.Exec();
-  cout << "here 1..." << endl;
 
   logGva::log("Exiting hmi_display...\n", LOG_INFO);
 }

@@ -1,6 +1,11 @@
 include(FindPkgConfig)
 project(hmi-display)
 
+pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
+pkg_check_modules(CAIRO REQUIRED cairo)
+pkg_check_modules(PANGO REQUIRED pango)
+pkg_check_modules(SWSCALE REQUIRED libswscale)
+
 if(ENABLE_COVERAGE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g ")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
@@ -74,15 +79,10 @@ target_link_libraries (hmi-display Geographic ${OSMSCOUT_LIBS} ${Protobuf_LIBRAR
 add_subdirectory(widgets)
 add_subdirectory(common)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std=c++11")
-pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
-pkg_check_modules(CAIRO REQUIRED cairo)
-pkg_check_modules(PANGO REQUIRED pango)
-pkg_check_modules(SWSCALE REQUIRED libswscale)
-link_directories(${CMAKE_BINARY_DIR}/external/rtp-payloader/build)
-link_directories(${CMAKE_BINARY_DIR}/external/libnmea/build/src)
-target_link_libraries(hmi-display png pthread hmi-video rtp-payloader nmealib)
-target_link_libraries(hmi-display ${CAIRO_LIBRARIES} ${PANGO_LIBRARIES} ${SWSCALE_LIBRARIES} ${GTK3_LIBRARIES})
-target_include_directories(hmi-display PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/widgets ${CAIRO_INCLUDE_DIRS} ${PANGO_INCLUDE_DIRS} ${SWSCALE_INCLUDE_DIRS} ${GTK3_INCLUDE_DIRS} common dds dds/location display)
+
+link_directories(${CMAKE_BINARY_DIR}/external/rtp-payloader/build ${CMAKE_BINARY_DIR}/external/libnmea/build/src)
+target_link_libraries(hmi-display png pthread hmi-video rtp-payloader nmealib ${CAIRO_LIBRARIES} ${PANGO_LIBRARIES} ${SWSCALE_LIBRARIES} ${GTK3_LIBRARIES})
+target_include_directories(hmi-display PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/widgets   ${CMAKE_CURRENT_SOURCE_DIR}/common  ${CMAKE_BINARY_DIR}/hmi_display ${CAIRO_INCLUDE_DIRS} ${PANGO_INCLUDE_DIRS} ${SWSCALE_INCLUDE_DIRS} ${GTK3_INCLUDE_DIRS} common dds dds/location display)
 target_compile_options(hmi-display PUBLIC ${CAIRO_CFLAGS_OTHER} ${GTK3_CFLAGS_OTHER})
 
 install(TARGETS hmi-display DESTINATION /opt/gva/hmi)
