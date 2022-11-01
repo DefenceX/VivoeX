@@ -17,6 +17,11 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+#include "screen_gva.h"
+
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include <termios.h>
 #include <time.h>
 #include <unistd.h>
@@ -26,16 +31,12 @@
 #include <GeographicLib/UTMUPS.hpp>
 #include <iostream>
 #include <string>
-//#include <X11/Xlib.h>
-//#include <X11/Xutil.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <termios.h>
 
 #include "debug.h"
 #include "log_gva.h"
-#include "screen_gva.h"
+#include "widgets/alarm_indicator.h"
+#include "widgets/compass.h"
+#include "widgets/keyboard.h"
 
 using namespace std;
 using namespace GeographicLib;
@@ -49,37 +50,6 @@ float toDegrees(float lon) {
 }
 
 namespace gva {
-void Compass::Draw() {
-  if (GetVisible()) {
-    screen_->DrawPPI(GetX(), GetY(), bearing_, bearingSight_);
-  }
-}
-
-Keyboard::Keyboard(ScreenGva *screen) : WidgetX(screen, WIDGET_TYPE_KEYBOARD) {
-  // Initalise keyboard widget, hidden on creation
-  mode_ = KEYBOARD_UPPER;
-  SetVisible(false);
-}
-
-void Keyboard::Draw() {
-  if (GetVisible()) {
-    screen_->DrawKeyboard(mode_);
-  }
-}
-
-void AlarmIndicator::Draw() {
-  if (GetVisible()) {
-    GvaTable table(104, GetY(), 432);
-    table.SetFontName(gva::configuration.GetThemeFont());
-    GvaRow alarmrow;
-    GvaCellType cell = {text_, ALIGN_CENTRE, {HMI_WHITE}, {HMI_RED}, {HMI_WHITE}, WEIGHT_NORMAL};
-
-    table.border_ = 0;
-    alarmrow.addCell(cell, 100);
-    table.AddRow(alarmrow);
-    screen_->DrawTable(&table);
-  }
-}
 
 ScreenGva::ScreenGva(ScreenType *screen, int width, int height) : RendererGva(width, height) {
   screen_ = screen;
@@ -256,7 +226,7 @@ int ScreenGva::Update() {
   // If BLACKOUT then nothing to render
   if (screen_->info.mode == MODE_BLACKOUT) {
     //
-    // Refersh display
+    // Refresh display
     //
     Draw();
     printf("Drawing blckout\n");

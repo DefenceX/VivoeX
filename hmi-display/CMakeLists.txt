@@ -45,7 +45,24 @@ else()
 	protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS config.proto)
 endif()
 
-add_executable(hmi-display ${PROTO_SRCS} main.cc renderer.cc renderer_cairo.cc renderer_gva.cc screen_gva.cc events_gva.cc ./common/debug.cc ./common/log_gva.cc hmi_gva.cc hmi_gva_helpers.cc view_gva.cc renderer_map.cc config_reader.cc)
+set(SOURCES main.cc 
+            renderer.cc 
+			renderer_cairo.cc 
+			renderer_gva.cc 
+			screen_gva.cc 
+			events_gva.cc .
+			widgets/keyboard.cc
+			widgets/compass.cc
+			widgets/alarm_indicator.cc
+			common/debug.cc 
+			common/log_gva.cc 
+			hmi_gva.cc 
+			hmi_gva_helpers.cc 
+			view_gva.cc 
+			renderer_map.cc 
+			config_reader.cc)
+
+add_executable(hmi-display ${PROTO_SRCS} ${SOURCES})
 if (ENABLE_OSMSCOUT)
 	add_dependencies(hmi-display hmi-video libosmscout)
         set(OSMSCOUT_LIBS osmscout osmscout_map osmscout_map_cairo)
@@ -53,6 +70,7 @@ else()
 	add_dependencies(hmi-display hmi-video ${DDS_STACK})
 endif()
 target_link_libraries (hmi-display Geographic ${OSMSCOUT_LIBS} ${Protobuf_LIBRARIES})
+add_subdirectory(widgets)
 add_subdirectory(common)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std=c++11")
 pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
@@ -63,7 +81,7 @@ link_directories(${CMAKE_BINARY_DIR}/external/rtp-payloader/build)
 link_directories(${CMAKE_BINARY_DIR}/external/libnmea/build/src)
 target_link_libraries(hmi-display png pthread hmi-video rtp-payloader nmealib)
 target_link_libraries(hmi-display ${CAIRO_LIBRARIES} ${PANGO_LIBRARIES} ${SWSCALE_LIBRARIES} ${GTK3_LIBRARIES})
-target_include_directories(hmi-display PUBLIC ${CAIRO_INCLUDE_DIRS} ${PANGO_INCLUDE_DIRS} ${SWSCALE_INCLUDE_DIRS} ${GTK3_INCLUDE_DIRS} common dds dds/location display)
+target_include_directories(hmi-display PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/widgets ${CAIRO_INCLUDE_DIRS} ${PANGO_INCLUDE_DIRS} ${SWSCALE_INCLUDE_DIRS} ${GTK3_INCLUDE_DIRS} common dds dds/location display)
 target_compile_options(hmi-display PUBLIC ${CAIRO_CFLAGS_OTHER} ${GTK3_CFLAGS_OTHER})
 
 install(TARGETS hmi-display DESTINATION /opt/gva/hmi)

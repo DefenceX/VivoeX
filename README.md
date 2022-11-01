@@ -1,4 +1,3 @@
-![vivoe-lite banner](images/Vivoe-lite-banner.png)
 [![Action cyclone](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-ubuntu-cyclone.yaml/badge.svg)](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-ubuntu-cyclone.yaml)
 [![Action opensplice](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-ubuntu-opensplice.yaml/badge.svg)](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-ubuntu-opensplice.yaml)
 [![License](https://img.shields.io/badge/licence-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)

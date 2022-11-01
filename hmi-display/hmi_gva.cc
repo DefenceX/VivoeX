@@ -22,6 +22,8 @@
 #include <iostream>
 
 #include "view_gva.h"
+#include "widgets/alarm_indicator.h"
+#include "widgets/compass.h"
 
 using namespace gva;
 using namespace std;
