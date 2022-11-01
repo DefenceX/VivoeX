@@ -27,7 +27,8 @@
 
 using namespace std;
 
-#define CONFIG_FILE "/opt/gva/hmi/config.pb"
+// #define CONFIG_FILE "/opt/gva/hmi/config.pb"
+#define CONFIG_FILE "./config.pb"
 
 namespace gva {
 static config::Gva* configuration_;
