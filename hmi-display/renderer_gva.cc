@@ -1,28 +1,27 @@
-//
-// MIT License
-//
-// Copyright (c) 2020 Ross Newman (ross@rossnewman.com)
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
-// permit persons to whom the Software is furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
-// Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
-// WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-// COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
+///
+/// MIT License
+///
+/// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+///
+/// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+/// associated documentation files (the 'Software'), to deal in the Software without restriction,
+/// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+/// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+/// subject to the following conditions:
+///
+/// The above copyright notice and this permission notice shall be included in all copies or substantial
+/// portions of the Software.
+/// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+/// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+/// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+/// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+/// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+///
+/// \brief
+///
+/// \file renderer_gva.cc
+///
 
-// @file renderer_gva.cc
-// @author ross@rossnewman.com
-// @date 15 August 2019
-// @brief Rendering functions for all the complex Widgets needed by the HMI.
-// Widgets are reusable components of the HMI.
-//
 #include "renderer_gva.h"
 
 #include <math.h> /* sqrt */
@@ -93,21 +92,21 @@ void RendererGva::DrawFunctionLabels(int x, int active, int hide, int toggle, in
   int i = 0;
   int offset = DEFAULT_HEIGHT - 88;
 
-  SetColourForground(gva::configuration.GetThemeLabelBorderActive());
-  SetColourBackground(gva::configuration.GetThemeLabelBackgroundActive());
+  SetColourForground(config_->GetThemeLabelBorderActive());
+  SetColourBackground(config_->GetThemeLabelBackgroundActive());
   setLineType(CAIRO_LINE_JOIN_ROUND);
-  SetLineThickness(gva::configuration.GetThemeLabelBorderThickness(), LINE_SOLID);
-  SetTextFont((int)CAIRO_FONT_SLANT_NORMAL, (int)CAIRO_FONT_WEIGHT_NORMAL, gva::configuration.GetThemeFont());
+  SetLineThickness(config_->GetThemeLabelBorderThickness(), LINE_SOLID);
+  SetTextFont((int)CAIRO_FONT_SLANT_NORMAL, (int)CAIRO_FONT_WEIGHT_NORMAL, config_->GetThemeFont());
 
   int firstKey = (x < DEFAULT_WIDTH / 2) ? KEY_F1 : KEY_F7;
   int group = (x < DEFAULT_WIDTH / 2) ? LEFT : RIGHT;
 
   for (i = 0; i < 6; i++) {
-    SetLineThickness(gva::configuration.GetThemeLabelBorderThickness(), LINE_SOLID);
-    SetColourBackground(gva::configuration.GetThemeLabelBackgroundActive());
+    SetLineThickness(config_->GetThemeLabelBorderThickness(), LINE_SOLID);
+    SetColourBackground(config_->GetThemeLabelBackgroundActive());
     if ((1 << (5 - i) & hide)) {
-      (1 << (5 - i) & active) ? SetColourForground(gva::configuration.GetThemeLabelBorderSelected())
-                              : SetColourForground(gva::configuration.GetThemeLabelBorderActive());
+      (1 << (5 - i) & active) ? SetColourForground(config_->GetThemeLabelBorderSelected())
+                              : SetColourForground(config_->GetThemeLabelBorderActive());
       FunctionKeyToggle *key = new FunctionKeyToggle();
 
       key->Draw(this, x, offset - (i * 72), 100, 50, labels[i]);
@@ -124,15 +123,15 @@ void RendererGva::DrawTopLabels(int y, int active, int hide) {
   int width = (DEFAULT_WIDTH - offset * 2) / 8;
   int spacing = width * 0.1;
 
-  SetColourForground(gva::configuration.GetThemeLabelBorderActive());
-  SetColourBackground(gva::configuration.GetThemeLabelBackgroundActive());
+  SetColourForground(config_->GetThemeLabelBorderActive());
+  SetColourBackground(config_->GetThemeLabelBackgroundActive());
   setLineType(CAIRO_LINE_JOIN_ROUND);
-  SetLineThickness(gva::configuration.GetThemeLabelBorderThickness(), LINE_SOLID);
+  SetLineThickness(config_->GetThemeLabelBorderThickness(), LINE_SOLID);
 
   for (i = 0; i < 8; i++) {
     if (!(1 << (7 - i) & hide)) {
-      (1 << (7 - i) & active) ? SetColourForground(gva::configuration.GetThemeLabelBorderSelected())
-                              : SetColourForground(gva::configuration.GetThemeLabelBorderActive());
+      (1 << (7 - i) & active) ? SetColourForground(config_->GetThemeLabelBorderSelected())
+                              : SetColourForground(config_->GetThemeLabelBorderActive());
       DrawRectangle((i * width) + offset, y, (i * width) + width - spacing + offset, y + 10, true);
       touch_.AddAbsolute(TOP, (int)(KEY_SA + i), (i * width) + offset, y, (i * width) + width - spacing + offset,
                          y + 10);
@@ -147,26 +146,26 @@ void RendererGva::DrawControlLabels(int y, int active, int hide) {
 
   char labels[8][80] = {"Up", "Alarms", "Threats", "Ack", "", "", "Labels", "Enter"};
 
-  SetColourForground(gva::configuration.GetThemeLabelBorderActive());
-  SetColourBackground(gva::configuration.GetThemeLabelBackgroundActive());
+  SetColourForground(config_->GetThemeLabelBorderActive());
+  SetColourBackground(config_->GetThemeLabelBackgroundActive());
   setLineType(CAIRO_LINE_JOIN_ROUND);
-  SetLineThickness(gva::configuration.GetThemeLabelBorderThickness(), LINE_SOLID);
-  SetTextFont((int)CAIRO_FONT_SLANT_NORMAL, (int)CAIRO_FONT_WEIGHT_BOLD, gva::configuration.GetThemeFont());
+  SetLineThickness(config_->GetThemeLabelBorderThickness(), LINE_SOLID);
+  SetTextFont((int)CAIRO_FONT_SLANT_NORMAL, (int)CAIRO_FONT_WEIGHT_BOLD, config_->GetThemeFont());
 
   for (i = 0; i < 8; i++) {
-    SetLineThickness(gva::configuration.GetThemeLabelBorderThickness(), LINE_SOLID);
+    SetLineThickness(config_->GetThemeLabelBorderThickness(), LINE_SOLID);
     if ((1 << (7 - i) & hide)) {
-      SetColourBackground(gva::configuration.GetThemeLabelBackgroundInactive());
-      SetColourForground(gva::configuration.GetThemeLabelBorderInactive());
+      SetColourBackground(config_->GetThemeLabelBackgroundInactive());
+      SetColourForground(config_->GetThemeLabelBorderInactive());
     } else {
-      SetColourBackground(gva::configuration.GetThemeLabelBackgroundActive());
-      (1 << (7 - i) & active) ? SetColourForground(gva::configuration.GetThemeLabelBorderSelected())
-                              : SetColourForground(gva::configuration.GetThemeLabelBorderActive());
+      SetColourBackground(config_->GetThemeLabelBackgroundActive());
+      (1 << (7 - i) & active) ? SetColourForground(config_->GetThemeLabelBorderSelected())
+                              : SetColourForground(config_->GetThemeLabelBorderActive());
     }
     DrawRectangle((i * w) + offset, y, (i * w) + w - 5 + offset, y + 20, true);
 
-    (1 << (7 - i) & hide) ? DrawColor(gva::configuration.GetThemeLabelTextInactive())
-                          : DrawColor(gva::configuration.GetThemeLabelTextActive());
+    (1 << (7 - i) & hide) ? DrawColor(config_->GetThemeLabelTextInactive())
+                          : DrawColor(config_->GetThemeLabelTextActive());
     touch_.AddAbsolute(BOTTOM, (int)(KEY_F13 + i), (i * w) + offset, y, (i * w) + w - 5 + offset, y + 20);
     DrawText((i * w) + offset + 5, y + 6, labels[i], 12);
     if (i == 4) DrawIcon(ICON_UP_ARROW, (i * w) + offset + 34, y + 11, 15, 8);
@@ -400,7 +399,7 @@ void RendererGva::DrawMode() {
   SetColourBackground(HMI_DARK_BLUE);
   SetLineThickness(1, LINE_SOLID);
 
-  SetTextFont((int)CAIRO_FONT_SLANT_NORMAL, (int)CAIRO_FONT_WEIGHT_NORMAL, gva::configuration.GetThemeFont());
+  SetTextFont((int)CAIRO_FONT_SLANT_NORMAL, (int)CAIRO_FONT_WEIGHT_NORMAL, config_->GetThemeFont());
 
   int w = GetTextWidth("Maintinance Mode", 12);
   int h = GetTextHeight("Maintinance Mode", 12);
@@ -472,7 +471,7 @@ void RendererGva::DrawButton(char *keyText, int fontSize, int x, int y, int widt
   SetColourForground(HMI_GREY);
   DrawRoundedRectangle(x, y, width, height, 6, true);
   SetColourForground(HMI_WHITE);
-  SetTextFont((int)CAIRO_FONT_SLANT_NORMAL, (int)CAIRO_FONT_WEIGHT_BOLD, gva::configuration.GetThemeFont());
+  SetTextFont((int)CAIRO_FONT_SLANT_NORMAL, (int)CAIRO_FONT_WEIGHT_BOLD, config_->GetThemeFont());
   int textHeight = GetTextHeight("qh", fontSize);
   int textWidth = GetTextWidth(keyText, fontSize);
 
@@ -511,7 +510,7 @@ void RendererGva::DrawKeyboard(KeyboardModeType mode) {
   DrawRectangle(110, yLocation, 530, yLocation + padding + ((bSize + 5) * 4) + 1, true);
   SetColourBackground(HMI_DARK_GREY);
   SetLineThickness(1, LINE_SOLID);
-  SetTextFont((int)CAIRO_FONT_SLANT_NORMAL, (int)CAIRO_FONT_WEIGHT_BOLD, gva::configuration.GetThemeFont());
+  SetTextFont((int)CAIRO_FONT_SLANT_NORMAL, (int)CAIRO_FONT_WEIGHT_BOLD, config_->GetThemeFont());
 
   // Draw keys
   SetColourForground(HMI_WHITE);

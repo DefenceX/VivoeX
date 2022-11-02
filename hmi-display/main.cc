@@ -51,6 +51,8 @@ GvaApplication::Options options = {false, false, ""};
 int32_t GetOpt(int argc, char *argv[], GvaApplication::Options *opt) {
   uint32_t c = 0;
 
+  ConfigData *configuration = gva::ConfigData::GetInstance();
+
   while ((c = getopt(argc, argv, "hvwclf::")) != -1) switch (c) {
       case 'v':
         cout << "Version " << MAJOR << "." << MINOR << "." << PATCH << endl;
@@ -66,7 +68,7 @@ int32_t GetOpt(int argc, char *argv[], GvaApplication::Options *opt) {
         opt->videoEnabled = true;
         break;
       case 'f':
-        gva::configuration.SetFullscreen(true);
+        configuration->SetFullscreen(true);
         break;
       case 'h':
         cout << "  -c : XML config file" << endl;

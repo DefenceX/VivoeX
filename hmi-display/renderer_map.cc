@@ -1,21 +1,26 @@
-//
-// MIT License
-//
-// Copyright (c) 2020 Ross Newman (ross@rossnewman.com)
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
-// permit persons to whom the Software is furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
-// Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
-// WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-// COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
+///
+/// MIT License
+///
+/// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+///
+/// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+/// associated documentation files (the 'Software'), to deal in the Software without restriction,
+/// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+/// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+/// subject to the following conditions:
+///
+/// The above copyright notice and this permission notice shall be included in all copies or substantial
+/// portions of the Software.
+/// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+/// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+/// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+/// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+/// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+///
+/// \brief
+///
+/// \file renderer_map.cc
+///
 
 #include "renderer_map.h"
 
@@ -37,16 +42,14 @@ rendererMap::rendererMap(string map, string style, int width, int height)
     : width_(width), height_(height), map_(map), style_(style) {
 #ifdef ENABLE_OSMSCOUT
 
-  database_ =
-      (osmscout::DatabaseRef)(new osmscout::Database(databaseParameter_));
+  database_ = (osmscout::DatabaseRef)(new osmscout::Database(databaseParameter_));
   mapService_ = (osmscout::MapServiceRef)(new osmscout::MapService(database_));
 
   if (!database_->Open(map_.c_str())) {
     logGva::log("Cannot open libosmscout database", LOG_ERROR);
   }
 
-  styleConfig_ = (osmscout::StyleConfigRef) new osmscout::StyleConfig(
-      database_->GetTypeConfig());
+  styleConfig_ = (osmscout::StyleConfigRef) new osmscout::StyleConfig(database_->GetTypeConfig());
 
   if (!styleConfig_->Load(style_)) {
     logGva::log("Cannot open libosmscout style", LOG_ERROR);
@@ -64,11 +67,9 @@ rendererMap::rendererMap(string map, string style, int width, int height)
   DrawParameter_.SetLabelLineMinCharCount(15);
   DrawParameter_.SetLabelLineMaxCharCount(30);
   DrawParameter_.SetLabelLineFitToArea(true);
-  DrawParameter_.SetLabelLineFitToWidth(
-      std::min(projection_.GetWidth(), projection_.GetHeight()));
+  DrawParameter_.SetLabelLineFitToWidth(std::min(projection_.GetWidth(), projection_.GetHeight()));
   painter_ = new osmscout::MapPainterCairo(styleConfig_);
 #endif
-
 };
 
 rendererMap::~rendererMap() {
@@ -79,8 +80,7 @@ rendererMap::~rendererMap() {
 #endif
 };
 
-int rendererMap::Project(double zoom, double lon, double lat,
-                         cairo_surface_t **surface) {
+int rendererMap::Project(double zoom, double lon, double lat, cairo_surface_t **surface) {
   if (surface_ != nullptr) {
     if (cairo_ != nullptr) {
       /*
@@ -91,8 +91,7 @@ int rendererMap::Project(double zoom, double lon, double lat,
       */
 
 #ifdef ENABLE_OSMSCOUT
-      projection_.Set(osmscout::GeoCoord(lat, lon),
-                      osmscout::Magnification(zoom), DPI, width_, height_);
+      projection_.Set(osmscout::GeoCoord(lat, lon), osmscout::Magnification(zoom), DPI, width_, height_);
 
       mapService_->LookupTiles(projection_, tiles_);
       mapService_->LoadMissingTileData(searchParameter_, *styleConfig_, tiles_);

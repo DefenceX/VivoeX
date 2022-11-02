@@ -24,6 +24,7 @@
 
 #include "config_reader.h"
 
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -33,23 +34,25 @@
 using namespace std;
 
 // #define CONFIG_FILE "/opt/gva/hmi/config.pb"
-#define CONFIG_FILE "./config.pb"
+#define CONFIG_FILE "config.pb"
 
 namespace gva {
-static config::Gva* configuration_;
+ConfigData* ConfigData::config_ = nullptr;
 
 ConfigData::ConfigData() {
+  char tmp[100];
   // Verify that the version of the library that we linked against is
   // compatible with the version of the headers we compiled against.
   GOOGLE_PROTOBUF_VERIFY_VERSION;
-  logGva::log("Created new config reader.", LOG_INFO);
+  sprintf(tmp, "Created new config reader %s/%s", std::filesystem::current_path().c_str(), CONFIG_FILE);
+
+  logGva::log(tmp, LOG_INFO);
   current_config_ = new config::Gva();
   {
     // Read the existing configuration file.
     fstream input(CONFIG_FILE, std::fstream::in | std::fstream::binary);
     if (!input) {
-      char tmp[100];
-      sprintf(tmp, "%s : File not found. Creating a new file.", CONFIG_FILE);
+      sprintf(tmp, "File not found. Creating a new file %s/%s", std::filesystem::current_path().c_str(), CONFIG_FILE);
       logGva::log(tmp, LOG_INFO);
       current_config_->set_name("Test HMI configuration.");
       // Doesnt write defaults unless they have been set once
@@ -70,7 +73,16 @@ ConfigData::ConfigData() {
   }
 }
 
-ConfigData::~ConfigData() {
+ConfigData* ConfigData::GetInstance() {
+  //  This is a safer way to create an instance. instance = new Singleton is
+  //  dangeruous in case two instance threads wants to access at the same time
+  if (config_ == nullptr) {
+    config_ = new ConfigData();
+  }
+  return config_;
+}
+
+void ConfigData::WriteData() {
   // Write the config back to disk.
   fstream output(CONFIG_FILE, std::fstream::out | std::fstream::trunc | std::fstream::binary);
   if (!current_config_->SerializeToOstream(&output)) {
@@ -81,7 +93,6 @@ ConfigData::~ConfigData() {
   logGva::log("Updated configuration file", LOG_INFO);
   // Optional:  Delete all global objects allocated by libprotobuf.
   google::protobuf::ShutdownProtobufLibrary();
-  free(configuration_);
 }
 
 int ConfigData::GetZoom() { return current_config_->zoom(); };

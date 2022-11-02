@@ -195,6 +195,7 @@ class ScreenGva : public RendererGva {
   pthread_t clock_thread_;
   nmeaINFO info_;
   nmeaPARSER parser_;
+  gva::ConfigData *config_;
 };
 }  // namespace gva
 #endif

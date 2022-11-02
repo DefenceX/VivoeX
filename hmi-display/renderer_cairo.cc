@@ -42,6 +42,7 @@ RendererCairo::RendererCairo(int width, int height) : Renderer(width, height) {
   background_colour_ = {0, 0, 0};
   texture_ = 0;
   image_tail_ = 0;
+  config_ = gva::ConfigData::GetInstance();
 }
 
 RendererCairo::~RendererCairo() {
@@ -519,7 +520,7 @@ int RendererCairo::GetTextWidth(char *str, int fontSize) {
   cairo_t *cr = render_.cr;
   cairo_text_extents_t extents;
 
-  cairo_select_font_face(cr, gva::configuration.GetThemeFont(), CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
+  cairo_select_font_face(cr, config_->GetThemeFont(), CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
   cairo_set_font_size(cr, fontSize);
   cairo_text_extents(cr, str, &extents);
   return extents.x_advance;

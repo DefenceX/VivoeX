@@ -24,45 +24,226 @@
 
 #ifndef CONFIG_READER_H
 #define CONFIG_READER_H
+
 #include "config.pb.h"
 
 namespace gva {
 
 class ConfigData {
  public:
-  ConfigData();
+  ///
+  /// \brief Destroy the Config Data object
+  ///
   ~ConfigData();
+
+  ///
+  /// \brief Singletons should not be cloneable.
+  ///
+  ConfigData(ConfigData& other) = delete;
+
+  ///
+  /// \brief Singletons should not be assignable.
+  ///
+  void operator=(const ConfigData&) = delete;
+
+  ///
+  /// \brief Write contents of protobuf
+  ///
+  void WriteData();
+
+  // Static methods should be defined outside the class.
+
+  ///
+  /// \brief Get the Instance object
+  ///
+  /// On the first run, it creates a singleton object and places it
+  /// into the static field. On subsequent runs, it returns the client existing
+  /// object stored in the static field.
+  ///
+  /// \return ConfigData*
+  ///
+  static ConfigData* GetInstance();
+
+  ///
+  /// \brief Get the Zoom object
+  ///
+  /// \return int
+  ///
   int GetZoom();
+
+  ///
+  /// \brief Set the Zoom object
+  ///
+  /// \param zoom
+  ///
   void SetZoom(int zoom);
+
+  ///
+  /// \brief Get the Test Lon object
+  ///
+  /// \return double
+  ///
   double GetTestLon();
+
+  ///
+  /// \brief Set the Test Lon object
+  ///
+  /// \param lon
+  ///
   void SetTestLon(double lon);
+
+  ///
+  /// \brief Get the Test Lat object
+  ///
+  /// \return double
+  ///
   double GetTestLat();
+
+  ///
+  /// \brief Set the Test Lat object
+  ///
+  /// \param lat
+  ///
   void SetTestLat(double lat);
+
+  ///
+  /// \brief Get the Fullscreen object
+  ///
+  /// \return true
+  /// \return false
+  ///
   bool GetFullscreen();
+
+  ///
+  /// \brief Set the Fullscreen object
+  ///
+  /// \param fullscreen
+  ///
   void SetFullscreen(bool fullscreen);
+
+  ///
+  /// \brief Get the Theme Background object
+  ///
+  /// \return uint32_t
+  ///
   uint32_t GetThemeBackground();
+
+  ///
+  /// \brief Get the Theme Label Style object
+  ///
+  /// \return uint16_t
+  ///
   uint16_t GetThemeLabelStyle();
+
+  ///
+  /// \brief Get the Theme Label Background Active object
+  ///
+  /// \return uint32_t
+  ///
   uint32_t GetThemeLabelBackgroundActive();
+
+  ///
+  /// \brief Get the Theme Label Background Inactive object
+  ///
+  /// \return uint32_t
+  ///
   uint32_t GetThemeLabelBackgroundInactive();
+
+  ///
+  /// \brief Get the Theme Label Text Active object
+  ///
+  /// \return uint32_t
+  ///
   uint32_t GetThemeLabelTextActive();
+
+  ///
+  /// \brief Get the Theme Label Text Inactive object
+  ///
+  /// \return uint32_t
+  ///
   uint32_t GetThemeLabelTextInactive();
+
+  ///
+  /// \brief Get the Theme Label Border Selected object
+  ///
+  /// \return uint32_t
+  ///
   uint32_t GetThemeLabelBorderSelected();
+
+  ///
+  /// \brief Get the Theme Label Border Active object
+  ///
+  /// \return uint32_t
+  ///
   uint32_t GetThemeLabelBorderActive();
+
+  ///
+  /// \brief Get the Theme Label Border Inactive object
+  ///
+  /// \return uint32_t
+  ///
   uint32_t GetThemeLabelBorderInactive();
+
+  ///
+  /// \brief Get the Theme Label Border Thickness object
+  ///
+  /// \return uint32_t
+  ///
   uint32_t GetThemeLabelBorderThickness();
+
+  ///
+  /// \brief Get the Theme Status Background object
+  ///
+  /// \return uint32_t
+  ///
   uint32_t GetThemeStatusBackground();
+
+  ///
+  /// \brief Get the Theme Status Border object
+  ///
+  /// \return uint32_t
+  ///
   uint32_t GetThemeStatusBorder();
+
+  ///
+  /// \brief Get the Theme Status Text object
+  ///
+  /// \return uint32_t
+  ///
   uint32_t GetThemeStatusText();
+
+  ///
+  /// \brief Get the Theme Alert object
+  ///
+  /// \return uint32_t
+  ///
   uint32_t GetThemeAlert();
+
+  ///
+  /// \brief Get the Theme Critical object
+  ///
+  /// \return uint32_t
+  ///
   uint32_t GetThemeCritical();
+
+  ///
+  /// \brief Get the Theme Font object
+  ///
+  /// \return char*
+  ///
   char* GetThemeFont();
 
- private:
-  config::Gva* current_config_;
-};
+ protected:
+  ///
+  /// \brief Construct a new Config Data object
+  ///
+  ///
+  ConfigData();
+  static ConfigData* config_;
 
-// Static configuration object
-static ConfigData configuration;
+ private:
+  config::Gva* current_config_ = nullptr;
+};
 
 }  // namespace gva
 #endif

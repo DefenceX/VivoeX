@@ -1,21 +1,26 @@
-//
-// MIT License
-//
-// Copyright (c) 2020 Ross Newman (ross@rossnewman.com)
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
-// permit persons to whom the Software is furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
-// Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
-// WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-// COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
+///
+/// MIT License
+///
+/// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+///
+/// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+/// associated documentation files (the 'Software'), to deal in the Software without restriction,
+/// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+/// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+/// subject to the following conditions:
+///
+/// The above copyright notice and this permission notice shall be included in all copies or substantial
+/// portions of the Software.
+/// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+/// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+/// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+/// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+/// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+///
+/// \brief
+///
+/// \file screen_gva.cc
+///
 
 #include "screen_gva.h"
 
@@ -56,6 +61,8 @@ ScreenGva::ScreenGva(ScreenType *screen, int width, int height) : RendererGva(wi
 
   char tmp[100];
   struct termios settings;
+
+  config_ = gva::ConfigData::GetInstance();
 
   sprintf(tmp, "GVA screen initalised (%dx%d)", width_, height_);
   logGva::log(tmp, LOG_INFO);
@@ -211,8 +218,8 @@ int ScreenGva::Update() {
     default:
     case SURFACE_NONE:
       // Set background green
-      SetColourForground(gva::configuration.GetThemeBackground());
-      SetColourBackground(gva::configuration.GetThemeBackground());
+      SetColourForground(config_->GetThemeBackground());
+      SetColourBackground(config_->GetThemeBackground());
       DrawRectangle(0, 0, width_, height_, true);
       break;
     case SURFACE_BLACKOUT:
@@ -272,19 +279,17 @@ int ScreenGva::Update() {
     // Setup and Draw the status bar, one row table
     int widths[7] = {23, 8, 37, 8, 8, 8, 8};
     GvaTable table(1, screen_->status_bar->y, 640);
-    table.SetFontName(gva::configuration.GetThemeFont());
+    table.SetFontName(config_->GetThemeFont());
     GvaRow newrow;
 
     // Use theme colours
-    GvaColourType border = {UnpackRed(gva::configuration.GetThemeStatusBorder()),
-                            UnpackGreen(gva::configuration.GetThemeStatusBorder()),
-                            UnpackBlue(gva::configuration.GetThemeStatusBorder())};
-    GvaColourType background = {UnpackRed(gva::configuration.GetThemeStatusBackground()),
-                                UnpackGreen(gva::configuration.GetThemeStatusBackground()),
-                                UnpackBlue(gva::configuration.GetThemeStatusBackground())};
-    GvaColourType text = {UnpackRed(gva::configuration.GetThemeStatusText()),
-                          UnpackGreen(gva::configuration.GetThemeStatusText()),
-                          UnpackBlue(gva::configuration.GetThemeStatusText())};
+    GvaColourType border = {UnpackRed(config_->GetThemeStatusBorder()), UnpackGreen(config_->GetThemeStatusBorder()),
+                            UnpackBlue(config_->GetThemeStatusBorder())};
+    GvaColourType background = {UnpackRed(config_->GetThemeStatusBackground()),
+                                UnpackGreen(config_->GetThemeStatusBackground()),
+                                UnpackBlue(config_->GetThemeStatusBackground())};
+    GvaColourType text = {UnpackRed(config_->GetThemeStatusText()), UnpackGreen(config_->GetThemeStatusText()),
+                          UnpackBlue(config_->GetThemeStatusText())};
 
     for (i = 0; i < 7; i++) {
       cellAlignType align = ALIGN_LEFT;
@@ -302,7 +307,7 @@ int ScreenGva::Update() {
   // Setup and Draw the alarms
   if (screen_->table.visible_) {
     GvaTable table(screen_->table.x_, screen_->table.y_, screen_->table.width_);
-    table.SetFontName(gva::configuration.GetThemeFont());
+    table.SetFontName(config_->GetThemeFont());
     table.border_ = 1;
     for (int row = 0; row < screen_->table.row_count_; row++) {
       GvaRow newrow;
@@ -342,14 +347,14 @@ int ScreenGva::Update() {
   if (screen_->message.visible) {
     char tmp[2][MAX_TEXT];
     GvaTable table(320 - 150, 260, 300);
-    table.SetFontName(gva::configuration.GetThemeFont());
+    table.SetFontName(config_->GetThemeFont());
     GvaRow newrow;
     GvaRow newrow1;
 
-    table.border_ = gva::configuration.GetThemeLabelBorderThickness();
+    table.border_ = config_->GetThemeLabelBorderThickness();
 
     strcpy(tmp[0], screen_->message.brief.text);
-    uint32_t background = gva::configuration.GetThemeLabelBackgroundActive();
+    uint32_t background = config_->GetThemeLabelBackgroundActive();
     newrow.addCell({tmp[0],
                     ALIGN_CENTRE,
                     {HMI_WHITE},
