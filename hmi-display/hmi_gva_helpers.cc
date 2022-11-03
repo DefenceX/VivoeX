@@ -38,7 +38,7 @@ void HmiHelper::TableLicences(TableWidget *table) {
 
   table->AddRow();
   char tmp[100];
-  sprintf(tmp, "Vivoe Lite");
+  snprintf(tmp, sizeof(tmp), "Vivoe Lite");
   table->AddCell(tmp, 80);
   table->AddCell("MIT", 20);
 
@@ -77,7 +77,7 @@ void HmiHelper::TableSystem(TableWidget *table) {
 
   table->AddRow();
   char tmp[100];
-  sprintf(tmp, "HMI Version %d.%d.%d", MAJOR, MINOR, PATCH);
+  snprintf(tmp, sizeof(tmp), "HMI Version %d.%d.%d", MAJOR, MINOR, PATCH);
   table->AddCell(tmp, 80);
   table->AddCell("Ok", 20);
 

@@ -117,7 +117,7 @@ class GvaTable : public RenderBase {
     row_[rows_++] = newrow;
     return rows_;
   };
-  void SetFontName(char *name) { strcpy(fontname_, name); };
+  void SetFontName(const char *name) { strcpy(fontname_, name); };
   void SetBorderThickness(int thickness) { border_ = thickness; };
   int rows_ = 0;
   int border_ = 2;

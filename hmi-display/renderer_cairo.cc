@@ -1,21 +1,26 @@
-//
-// MIT License
-//
-// Copyright (c) 2020 Ross Newman (ross@rossnewman.com)
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
-// permit persons to whom the Software is furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
-// Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
-// WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-// COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
+///
+/// MIT License
+///
+/// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+///
+/// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+/// associated documentation files (the 'Software'), to deal in the Software without restriction,
+/// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+/// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+/// subject to the following conditions:
+///
+/// The above copyright notice and this permission notice shall be included in all copies or substantial
+/// portions of the Software.
+/// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+/// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+/// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+/// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+/// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+///
+/// \brief
+///
+/// \file renderer_cairo.cc
+///
 
 #include "renderer_cairo.h"
 
@@ -29,8 +34,6 @@
 
 #include "events_gva.h"
 #define INVERTED 1
-using namespace std;
-using namespace gva;
 
 static CallbackType callback_;
 static void *arg_;
@@ -47,7 +50,7 @@ RendererCairo::RendererCairo(int width, int height) : Renderer(width, height) {
 
 RendererCairo::~RendererCairo() {
   if (texture_) {
-    free(texture_);
+    std::free(texture_);
     texture_ = 0;
   }
   cairo_destroy(render_.cr);
@@ -509,7 +512,7 @@ int RendererCairo::DrawColor(int r, int g, int b) {
 
 int RendererCairo::DrawColor(unsigned int rgb) { DrawColor((rgb & 0xff0000) >> 16, (rgb & 0xff00) >> 8, rgb & 0xff); }
 
-void RendererCairo::SetTextFont(int slope, int weight, char *fontName) {
+void RendererCairo::SetTextFont(int slope, int weight, const char *fontName) {
   Draw_commands_[draw_tail_].command = COMMAND_TEXT_FONT;
   Draw_commands_[draw_tail_].arg1 = slope;
   Draw_commands_[draw_tail_].arg2 = weight;
@@ -658,8 +661,8 @@ void RendererCairo::Activate(GtkApplication *app, gpointer user_data) {
   // Event signals
   //
   g_signal_connect(render_.win.win, "destroy", G_CALLBACK(CloseWindow), NULL);
-  g_signal_connect(render_.win.draw, "button-press-event", G_CALLBACK(EventsGva::ButtonPressEventCb), NULL);
-  g_signal_connect(render_.win.win, "key-press-event", G_CALLBACK(EventsGva::KeyPressEventCb), NULL);
+  g_signal_connect(render_.win.draw, "button-press-event", G_CALLBACK(gva::EventsGva::ButtonPressEventCb), NULL);
+  g_signal_connect(render_.win.win, "key-press-event", G_CALLBACK(gva::EventsGva::KeyPressEventCb), NULL);
   //  g_signal_connect (render_.win.win, "key-release-event",
   //                    G_CALLBACK (EventsGva::KeyPressEventCb), NULL);
 

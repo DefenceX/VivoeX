@@ -6,6 +6,11 @@ pkg_check_modules(CAIRO REQUIRED cairo)
 pkg_check_modules(PANGO REQUIRED pango)
 pkg_check_modules(SWSCALE REQUIRED libswscale)
 
+add_subdirectory(widgets)
+add_subdirectory(common)
+#add_subdirectory(dds)
+#add_subdirectory(display)
+
 if(ENABLE_COVERAGE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g ")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
@@ -13,9 +18,6 @@ if(ENABLE_COVERAGE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ftest-coverage")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
 endif()
-
-#add_subdirectory(dds)
-#add_subdirectory(display)
 
 include_directories(../video)
 include_directories(./video)
@@ -76,8 +78,7 @@ else()
 	add_dependencies(hmi-display hmi-video ${DDS_STACK})
 endif()
 target_link_libraries (hmi-display Geographic ${OSMSCOUT_LIBS} ${Protobuf_LIBRARIES})
-add_subdirectory(widgets)
-add_subdirectory(common)
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std=c++11")
 
 link_directories(${CMAKE_BINARY_DIR}/external/rtp-payloader/build ${CMAKE_BINARY_DIR}/external/libnmea/build/src)

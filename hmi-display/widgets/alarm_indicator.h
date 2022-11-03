@@ -21,8 +21,8 @@
 ///
 /// \file alarm_indicator.h
 ///
-#ifndef ALARM_INDICATOR_H
-#define ALARM_INDICATOR_H
+#ifndef HMI_DISPLAY_WIDGETS_ALARM_INDICATOR_H_
+#define HMI_DISPLAY_WIDGETS_ALARM_INDICATOR_H_
 
 #include "widget.h"
 
@@ -34,11 +34,11 @@ namespace gva {
 ///
 class AlarmIndicator : public WidgetX {
  public:
-  AlarmIndicator(ScreenGva *screen) : WidgetX(screen, WIDGET_TYPE_ALARM_INDICATOR) {}
+  explicit AlarmIndicator(ScreenGva *screen) : WidgetX(screen, WIDGET_TYPE_ALARM_INDICATOR) {}
   void Draw();
   char text_[256];
   GvaAlarmType type_;
 };
 
 }  // namespace gva
-#endif
+#endif  // HMI_DISPLAY_WIDGETS_ALARM_INDICATOR_H_

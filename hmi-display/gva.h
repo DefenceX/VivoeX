@@ -22,8 +22,8 @@
 /// \file gva.h
 ///
 
-#ifndef GVA_H
-#define GVA_H
+#ifndef HMI_DISPLAY_GVA_H_
+#define HMI_DISPLAY_GVA_H_
 #include "debug.h"
 #include "log_gva.h"
 
@@ -104,4 +104,4 @@ enum GvaKeyEnum {
 
 enum GvaStatusTypes { GVA_SUCCESS = 0, GVA_ERROR, GVA_NETWORK_ERROR, GVA_DDS_ERROR, GVA_XML_ERROR, GVA_RTP_ERROR };
 
-#endif
+#endif  // HMI_DISPLAY_GVA_H_

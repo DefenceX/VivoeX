@@ -22,8 +22,8 @@
 /// \file gva_application.cc
 ///
 
-#ifndef GVA_APPLICATION_H
-#define GVA_APPLICATION_H
+#ifndef HMI_DISPLAY_GVA_APPLICATION_H_
+#define HMI_DISPLAY_GVA_APPLICATION_H_
 #include <unistd.h>
 
 #include <iostream>
@@ -99,4 +99,4 @@ class GvaApplication {
   shared_ptr<EventsGva> io_;
   EventsGva *io_test_;
 };
-#endif
+#endif  // HMI_DISPLAY_GVA_APPLICATION_H_

@@ -31,8 +31,6 @@
 
 #include "log_gva.h"
 
-using namespace std;
-
 // #define CONFIG_FILE "/opt/gva/hmi/config.pb"
 #define CONFIG_FILE "config.pb"
 
@@ -44,18 +42,19 @@ ConfigData::ConfigData() {
   // Verify that the version of the library that we linked against is
   // compatible with the version of the headers we compiled against.
   GOOGLE_PROTOBUF_VERIFY_VERSION;
-  sprintf(tmp, "Created new config reader %s/%s", std::filesystem::current_path().c_str(), CONFIG_FILE);
+  snprintf(tmp, sizeof(tmp), "Created new config reader %s/%s", std::filesystem::current_path().c_str(), CONFIG_FILE);
 
   logGva::log(tmp, LOG_INFO);
   current_config_ = new config::Gva();
   {
     // Read the existing configuration file.
-    fstream input(CONFIG_FILE, std::fstream::in | std::fstream::binary);
+    std::fstream input(CONFIG_FILE, std::fstream::in | std::fstream::binary);
     if (!input) {
-      sprintf(tmp, "File not found. Creating a new file %s/%s", std::filesystem::current_path().c_str(), CONFIG_FILE);
+      snprintf(tmp, sizeof(tmp), "File not found. Creating a new file %s/%s", std::filesystem::current_path().c_str(),
+               CONFIG_FILE);
       logGva::log(tmp, LOG_INFO);
       current_config_->set_name("Test HMI configuration.");
-      // Doesnt write defaults unless they have been set once
+      // Doesn't write defaults unless they have been set once
       current_config_->set_height(current_config_->height());
       current_config_->set_width(current_config_->width());
     } else if (!current_config_->ParseFromIstream(&input)) {
@@ -65,7 +64,7 @@ ConfigData::ConfigData() {
   }
   {
     // Write the new config back to disk.
-    fstream output(CONFIG_FILE, std::fstream::out | std::fstream::trunc | std::fstream::binary);
+    std::fstream output(CONFIG_FILE, std::fstream::out | std::fstream::trunc | std::fstream::binary);
     if (!current_config_->SerializeToOstream(&output)) {
       logGva::log("Failed to write config file.", LOG_INFO);
       return;
@@ -73,9 +72,14 @@ ConfigData::ConfigData() {
   }
 }
 
+ConfigData::~ConfigData() {
+  logGva::log("Closing config reader.", LOG_INFO);
+  WriteData();
+}
+
 ConfigData* ConfigData::GetInstance() {
   //  This is a safer way to create an instance. instance = new Singleton is
-  //  dangeruous in case two instance threads wants to access at the same time
+  //  dangerous in case two instance threads wants to access at the same time
   if (config_ == nullptr) {
     config_ = new ConfigData();
   }
@@ -84,7 +88,7 @@ ConfigData* ConfigData::GetInstance() {
 
 void ConfigData::WriteData() {
   // Write the config back to disk.
-  fstream output(CONFIG_FILE, std::fstream::out | std::fstream::trunc | std::fstream::binary);
+  std::fstream output(CONFIG_FILE, std::fstream::out | std::fstream::trunc | std::fstream::binary);
   if (!current_config_->SerializeToOstream(&output)) {
     logGva::log("Failed to update config file.", LOG_INFO);
     return;
@@ -95,15 +99,15 @@ void ConfigData::WriteData() {
   google::protobuf::ShutdownProtobufLibrary();
 }
 
-int ConfigData::GetZoom() { return current_config_->zoom(); };
+int ConfigData::GetZoom() { return current_config_->zoom(); }
 
 void ConfigData::SetZoom(int zoom) { current_config_->set_zoom(zoom); }
 
-double ConfigData::GetTestLon() { return current_config_->test_lon(); };
+double ConfigData::GetTestLon() { return current_config_->test_lon(); }
 
 void ConfigData::SetTestLon(double lon) { current_config_->set_test_lon(lon); }
 
-double ConfigData::GetTestLat() { return current_config_->test_lat(); };
+double ConfigData::GetTestLat() { return current_config_->test_lat(); }
 
 void ConfigData::SetTestLat(double lat) { current_config_->set_test_lat(lat); }
 
@@ -155,8 +159,7 @@ uint32_t ConfigData::GetThemeAlert() { return (uint32_t)current_config_->theme()
 
 uint32_t ConfigData::GetThemeCritical() { return (uint32_t)current_config_->theme().theme_critical(); }
 
-char* ConfigData::GetThemeFont() {
-  return (char*)current_config_->theme().theme_font().c_str();
-  ;
+const char* ConfigData::GetThemeFont() {
+  return reinterpret_cast<const char*>(current_config_->theme().theme_font().c_str());
 }
 }  // namespace gva

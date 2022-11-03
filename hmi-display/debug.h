@@ -22,12 +22,12 @@
 /// \file debug.h
 ///
 
-#ifndef DEBUG_H
-#define DEBUG_H
+#ifndef HMI_DISPLAY_DEBUG_H_
+#define HMI_DISPLAY_DEBUG_H_
 
 // Big Ben
-//#define DUMMY_LON -0.124240
-//#define DUMMY_LAT 51.500655
+// #define DUMMY_LON -0.124240
+// #define DUMMY_LAT 51.500655
 
 // DSEI (Excel London)
 #define DUMMY_LON 0.029900
@@ -40,4 +40,4 @@
 #include <stdio.h>
 void DumpHex(const void* data, size_t size);
 
-#endif
+#endif  // HMI_DISPLAY_DEBUG_H_

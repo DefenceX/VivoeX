@@ -39,7 +39,10 @@ int GvaRow::addCell(GvaCellType newcell, int width) {
   return cells_;
 };
 
-RendererGva::RendererGva(int width, int height) : RendererCairo(height, width) { touch_.SetResolution(width, height); }
+RendererGva::RendererGva(int width, int height) : RendererCairo(height, width) {
+  config_ = gva::ConfigData::GetInstance();
+  touch_.SetResolution(width, height);
+}
 
 void FunctionKeySimple::Draw(RendererGva *r, int x, int y, int width, int height, char *text) {
   char copy[256];

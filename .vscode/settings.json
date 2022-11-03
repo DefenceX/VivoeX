@@ -108,6 +108,29 @@
     // Provide intellisense and snippet for doxygen commands
     "doxdocgen.generic.commandSuggestion": true,
     // Add `\\` in doxygen command suggestion for better readbility (need to enable commandSuggestion)
-    "doxdocgen.generic.commandSuggestionAddPrefix": false
-],
+    "doxdocgen.generic.commandSuggestionAddPrefix": false,
+    "C_Cpp.doxygen.generateOnType": false,
+    "cSpell.language": "en-GB",
+    "cSpell.userWords": [
+        "ALARMSX",
+        "DSEI",
+        "eventqueue",
+        "Fullscreen",
+        "gboolean",
+        "gpointer",
+        "keyval",
+        "libprotobuf",
+        "copyright",
+        "licence",
+        "Rendrer"
+    ],
+    "cSpell.patterns": [],
+    "cSpell.enableFiletypes": [
+        "cc",
+        "cpp",
+        "h"
+    ],
+    "sonarlint.pathToCompileCommands": "${workspaceFolder}/build/compile_commands.json",
+    "clang-format.fallbackStyle": "Google",
+    "clang-format.language.apex.enable": false
 }

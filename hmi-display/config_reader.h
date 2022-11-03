@@ -231,7 +231,7 @@ class ConfigData {
   ///
   /// \return char*
   ///
-  char* GetThemeFont();
+  const char* GetThemeFont();
 
  protected:
   ///

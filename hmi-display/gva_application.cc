@@ -24,6 +24,8 @@
 
 #include "gva_application.h"
 
+#include <memory>
+
 GvaApplication::GvaApplication(const Options options, char *ipaddr, const uint32_t port) {
   options_ = options;
   char tmp[256];
@@ -38,7 +40,7 @@ GvaApplication::GvaApplication(const Options options, char *ipaddr, const uint32
   hmi::dispatch(on);
 
   //
-  // Initalise the display events
+  // Initialise the display events
   //
   io_ = make_shared<EventsGva>(hmi::GetRendrer()->GetWindow(), hmi::GetRendrer()->GetTouch());
 
@@ -62,6 +64,8 @@ void GvaApplication::Exec() {
   //
   hmi::GetRendrer()->init(640, 480, gva::ConfigData::GetInstance()->GetFullscreen(), Update,
                           reinterpret_cast<void *>(io_.get()));
+  // Free the config reader (writes data back to disk)
+  gva::ConfigData::GetInstance()->WriteData();
 }
 
 GvaApplication::~GvaApplication() {
@@ -81,7 +85,7 @@ void GvaApplication::Dispatch(GvaKeyEnum key) {
 
   input.key = key;
   hmi::dispatch(input);
-};
+}
 
 ///
 /// \brief Toggle full screen mode

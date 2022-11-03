@@ -153,7 +153,7 @@ class RendererCairo : public Renderer {
   void DrawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, bool fill);
   int DrawColor(int r, int g, int b);
   int DrawColor(unsigned int rgb);
-  void SetTextFont(int slope, int weight, char *fontName);
+  void SetTextFont(int slope, int weight, const char *fontName);
   int GetTextWidth(char *str, int fontSize);
   int GetTextHeight(char *str, int fontSize);
   void DrawText(int x, int y, char *text, int size);
