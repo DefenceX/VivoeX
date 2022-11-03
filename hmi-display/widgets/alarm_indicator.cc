@@ -31,11 +31,9 @@ namespace gva {
 void AlarmIndicator::Draw() {
   if (GetVisible()) {
     GvaTable table(104, GetY(), 432);
-    table.SetFontName(gva::configuration.GetThemeFont());
+    table.SetFontName(gva::ConfigData::GetInstance()->GetThemeFont());
     GvaRow alarmrow;
     GvaCellType cell = {text_, ALIGN_CENTRE, {HMI_WHITE}, {HMI_RED}, {HMI_WHITE}, WEIGHT_NORMAL};
-#include "screen_gva.h" #include "screen_gva.h"
-
     table.border_ = 0;
     alarmrow.addCell(cell, 100);
     table.AddRow(alarmrow);

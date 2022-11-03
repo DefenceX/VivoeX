@@ -21,6 +21,7 @@
 ///
 /// \file main.cc
 ///
+
 #include <unistd.h>
 
 #include <iostream>
@@ -30,6 +31,7 @@
 #include "compass.h"
 #include "events_gva.h"
 #include "gva.h"
+#include "gva_application.h"
 #include "gva_video_rtp_yuv.h"
 #include "hmi_gva.h"
 #include "keyboard.h"
@@ -37,25 +39,19 @@
 #include "renderer_map.h"
 #include "rtp_stream.h"
 
-struct opts {
-  bool videoEnabled;
-  bool windowEnabled;
-  char config[256];
-};
+GvaApplication::Options options = {false, false, ""};
 
-opts opt = {false, false, ""};
-static GvaVideoRtpYuv *rtp_stream1;
-char *rtp_buffer;
+///
+/// \brief Parse the command line options
+///
+/// \param argc Argument count
+/// \param argv Argument array
+/// \param opt HMI application options
+///
+int32_t GetOpt(int argc, char *argv[], GvaApplication::Options *opt) {
+  uint32_t c = 0;
 
-void Dispatch(GvaKeyEnum key) {
-  EventKeyFunction input;
-
-  input.key = key;
-  hmi::dispatch(input);
-};
-
-int GetOpt(int argc, char *argv[], opts *opt) {
-  int c = 0;
+  ConfigData *configuration = gva::ConfigData::GetInstance();
 
   while ((c = getopt(argc, argv, "hvwclf::")) != -1) switch (c) {
       case 'v':
@@ -72,7 +68,7 @@ int GetOpt(int argc, char *argv[], opts *opt) {
         opt->videoEnabled = true;
         break;
       case 'f':
-        configuration.SetFullscreen(true);
+        configuration->SetFullscreen(true);
         break;
       case 'h':
         cout << "  -c : XML config file" << endl;
@@ -95,294 +91,24 @@ int GetOpt(int argc, char *argv[], opts *opt) {
   return -1;
 };
 
-void fullscreen(HandleType *render) {
-  render->fullscreen ? gtk_window_unfullscreen(GTK_WINDOW(render->win.win))
-                     : gtk_window_fullscreen(GTK_WINDOW(render->win.win));
-  render->fullscreen = render->fullscreen ? false : true;
-  configuration.SetFullscreen(render->fullscreen);
-  logGva::log("Toggle fullscreen", LOG_INFO);
-}
-
-void Update(void *arg, gpointer user_data) {
-  EventsGva *io = static_cast<EventsGva *>(arg);
-  EventGvaType event;
-  bool update = true;
-  static int c = 0;
-  static unsigned int count = 0;
-  HandleType *render = static_cast<HandleType *>(user_data);
-
-  io->NextGvaEvent(&event);
-  if (opt.videoEnabled) {
-    // Get the live video frame if Driver (DRV)
-    if (hmi::GetScreen()->currentFunction == DRV) {
-      hmi::GetScreen()->canvas.bufferType = SURFACE_CAIRO;
-      hmi::GetScreen()->canvas.surface = cairo_image_surface_create(CAIRO_FORMAT_RGB24, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-      char *test = reinterpret_cast<char *>(cairo_image_surface_get_data(hmi::GetScreen()->canvas.surface));
-      rtp_stream1->GvaRecieveFrame(test, RGBA_COLOUR);
-      cairo_surface_mark_dirty(hmi::GetScreen()->canvas.surface);
-
-      // @todo hmi_display: Add RTP HMI streaming output to display.
-      // @body The HMI window is only a preview. Add RTP output and headless
-      // mode.
-    }
-  }
-
-  hmi::GetRendrer()->Update();
-  switch (event.type) {
-    case KEY_EVENT: {
-      Compass *compass = static_cast<Compass *>(hmi::GetRendrer()->GetWidget(WIDGET_TYPE_COMPASS));
-      Keyboard *keyboard = static_cast<Keyboard *>(hmi::GetRendrer()->GetWidget(WIDGET_TYPE_KEYBOARD));
-      switch (event.key_) {
-        case KEY_ESC:
-          // exit on ESC key press
-          if (render->surface) cairo_surface_destroy(render->surface);
-          g_application_quit(G_APPLICATION(render->win.app));
-          break;
-        case KEY_SA:
-          // 1 maps to F1
-          {
-            EventKeySA sa;
-
-            hmi::dispatch(sa);
-          }
-          break;
-        case KEY_WPN:
-          // 2 maps to F2
-          {
-            EventKeyWPN wpn;
-
-            hmi::dispatch(wpn);
-          }
-          break;
-        case KEY_DEF:
-          // 3 maps to F3
-          {
-            EventKeyDEF def;
-
-            hmi::dispatch(def);
-          }
-          break;
-        case KEY_SYS:
-          // 4 maps to F4
-          {
-            EventKeySYS sys;
-
-            hmi::dispatch(sys);
-          }
-          break;
-        case KEY_DRV:
-          // 5 maps to F5
-          {
-            EventKeyDRV drv;
-
-            hmi::dispatch(drv);
-          }
-          break;
-        case KEY_STR:
-          // 6 maps to F6
-          {
-            EventKeySTR str;
-
-            hmi::dispatch(str);
-          }
-          break;
-        case KEY_COM:
-          // 7 maps to F7
-          {
-            EventKeyCOM com;
-
-            hmi::dispatch(com);
-          }
-          break;
-        case KEY_BMS:
-          // 8 maps to F8
-          {
-            EventKeyBMS bms;
-
-            hmi::dispatch(bms);
-          }
-          break;
-        case KEY_F1:
-          Dispatch(KEY_F1);
-          break;
-        case KEY_F2:
-          Dispatch(KEY_F2);
-          break;
-        case KEY_F3:
-          Dispatch(KEY_F3);
-          break;
-        case KEY_F4:
-          Dispatch(KEY_F4);
-          break;
-        case KEY_F5:
-          Dispatch(KEY_F5);
-          break;
-        case KEY_F6:
-          Dispatch(KEY_F6);
-          break;
-        case KEY_F7:
-          Dispatch(KEY_F7);
-          break;
-        case KEY_F8:
-          Dispatch(KEY_F8);
-          break;
-        case KEY_F9:
-          Dispatch(KEY_F9);
-          break;
-        case KEY_F10:
-          Dispatch(KEY_F10);
-          break;
-        case KEY_F11:
-          Dispatch(KEY_F11);
-          break;
-        case KEY_F12:
-          Dispatch(KEY_F12);
-          break;
-        case KEY_F13:
-          // Control UP
-          { Dispatch(KEY_F13); }
-          break;
-        case KEY_F14:
-          // Control Alarms
-          {
-            EventKeyAlarms alarms;
-
-            hmi::dispatch(alarms);
-            Dispatch(KEY_F14);
-          }
-          break;
-        case KEY_F15:
-          // F15
-          { Dispatch(KEY_F15); }
-          break;
-        case KEY_F16:
-          // F16
-          { Dispatch(KEY_F16); }
-          break;
-        case KEY_F17:
-          // F17 Control Arrow Up
-          {
-            keyboard->mode_ = (keyboard->mode_ == KEYBOARD_UPPER) ? KEYBOARD_LOWER : KEYBOARD_UPPER;
-            Dispatch(KEY_F17);
-          }
-          break;
-        case KEY_F18:
-          // F18 Control Arrow Down
-          {
-            keyboard->mode_ = (keyboard->mode_ == KEYBOARD_NUMBERS) ? KEYBOARD_UPPER : KEYBOARD_NUMBERS;
-            Dispatch(KEY_F18);
-          }
-          break;
-        case KEY_F19:
-          // F19 Control labels
-          { Dispatch(KEY_F19); }
-          break;
-        case KEY_F20:
-          // F20
-          { Dispatch(KEY_F20); }
-          break;
-        case KEY_FULLSCREEN:
-          // f toggle fullscreen
-          fullscreen(render);
-          hmi::GetRendrer()->GetTouch()->SetResolution(gdk_screen_width(), gdk_screen_height());
-          break;
-        case KEY_KEYBOARD:
-          // k toggle keyboard
-          { keyboard->SetVisible(keyboard->GetVisible() ? false : true); }
-          break;
-        case KEY_PLUS:
-          compass->bearing_ += 2;
-          break;
-        case KEY_GREATER:
-          compass->bearingSight_ += 2;
-          break;
-        case KEY_MINUS:
-          compass->bearing_ -= 2;
-          break;
-        case KEY_LESS:
-          compass->bearingSight_ -= 2;
-          break;
-        case KEY_NEXT_LABEL: {
-          Dispatch(KEY_NEXT_LABEL);
-        } break;
-        case KEY_PREV_LABEL: {
-          Dispatch(KEY_PREV_LABEL);
-        } break;
-        default:
-          printf("[GVA] KeyPress not defined 0x%x\n", event.key_);
-          update = false;
-          break;
-      }
-    }
-      if (update) hmi::GetRendrer()->Update();
-      break;
-    case RESIZE_EVENT: {
-      printf("[GVA] WindowResize: %d x %d\n", event.resize_.width, event.resize_.height);
-      if (event.resize_.width != hmi::GetRendrer()->GetWidth() ||
-          event.resize_.height != hmi::GetRendrer()->GetHeight()) {
-        printf("[GVA] WindowResize: %d x %d\n", event.resize_.width, event.resize_.height);
-        hmi::GetRendrer()->SetWidth(event.resize_.width);
-        hmi::GetRendrer()->SetHeight(event.resize_.height);
-        hmi::GetRendrer()->Update();
-        hmi::GetRendrer()->GetTouch()->SetResolution(event.resize_.width, event.resize_.height);
-      }
-    } break;
-    case REDRAW_EVENT: {
-      hmi::GetRendrer()->Update();
-    } break;
-  }
-}
-
-// printf("File %s, Function %s, Line %d\n", __FILE__, __FUNCTION__, __LINE__);
+// printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
 int main(int argc, char *argv[]) {
-  int done = 0;
-  int hndl;
+  uint32_t done = 0;
+  uint32_t hndl;
   bool update;
   char ipaddr[] = "127.0.0.1";
-  int port = 5004;
-  char tmp[256];
+  uint32_t port = 5004;
 
-  cout << "hmi_display (author: ross@rossnewman.com)..." << endl;
+  cout << "hmi_display (By defencex.com.au)..." << endl;
 
-  int ret = GetOpt(argc, argv, &opt);
+  int32_t ret = GetOpt(argc, argv, &options);
 
   if (ret >= 0) return ret;
 
-  // instantiate events
-  EventKeyPowerOn on;
+  GvaApplication app = GvaApplication(options, ipaddr, port);
 
-  // Start the state machine
-  hmi::start();
+  // Blocking call to the application constructor
+  app.Exec();
 
-  // Open window and start event loop and set inital state to 'on'
-  hmi::dispatch(on);
-
-  //
-  // Initalise the display events
-  //
-  EventsGva io(hmi::GetRendrer()->GetWindow(), hmi::GetRendrer()->GetTouch());
-
-  //
-  // Setup video sources (default size will be 640 x 480 unless specified)
-  // @todo hmi_display: Fix issue with stream blocking execution on RTP input
-  // @body The RTP stream blocks for a whole frame slowing down the HMI.
-  if (opt.videoEnabled == true) {
-    rtp_stream1 = new GvaVideoRtpYuv(ipaddr, port);
-    snprintf(tmp, strlen(tmp), "Resolution %dx%d", rtp_stream1->GetHeight(), rtp_stream1->GetWidth());
-    logGva::log(tmp, LOG_INFO);
-    rtp_buffer = reinterpret_cast<char *>(malloc(rtp_stream1->GetHeight() * rtp_stream1->GetWidth() * 4));
-    snprintf(tmp, strlen(tmp), "GVA Incoming RTP stream initalized %s:%d", ipaddr, port);
-    logGva::log(tmp, LOG_INFO);
-  }
-
-  //
-  // Start the render and event loop
-  //
-  hmi::GetRendrer()->init(640, 480, configuration.GetFullscreen(), Update, reinterpret_cast<void *>(&io));
-
-  //
-  // Clean up code goes here
-  //
-  free(rtp_stream1);
   logGva::log("Exiting hmi_display...\n", LOG_INFO);
 }

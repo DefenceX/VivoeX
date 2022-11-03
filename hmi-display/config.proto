@@ -1,3 +1,23 @@
+///
+/// MIT License
+///
+/// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+///
+/// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+/// associated documentation files (the 'Software'), to deal in the Software without restriction,
+/// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+/// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+/// subject to the following conditions:
+///
+/// The above copyright notice and this permission notice shall be included in all copies or substantial
+/// portions of the Software.
+/// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+/// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+/// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+/// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+/// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+///
+
 syntax = "proto2";
 
 package config;
@@ -31,58 +51,98 @@ enum LabelStyle {
 message ThemeDefault {
   optional Colour theme_background = 1 [default = COLOUR_GREEN];
   optional LabelStyle theme_label_style = 2 [default = LABEL_SQUARE];
-  optional Colour theme_label_background_active = 3 [default = COLOUR_DARK_GREEN];
-  optional Colour theme_label_background_inactive = 4 [default = COLOUR_GREY];
-  optional Colour theme_label_text_active = 5 [default = COLOUR_WHITE];
-  optional Colour theme_label_text_inactive = 6 [default = COLOUR_BLACK];
-  optional Colour theme_label_border_selected = 7 [default = COLOUR_YELLOW];
-  optional Colour theme_label_border_active = 8 [default = COLOUR_DARK_GREEN2];
-  optional Colour theme_label_border_inactive = 9 [default = COLOUR_DARK_GREY];
-  optional int32 theme_label_border_thickness = 10 [default = 2];
-  optional Colour theme_status_background = 11 [default = COLOUR_DARK_GREEN];
-  optional Colour theme_status_border = 12 [default = COLOUR_DARK_GREEN];
-  optional Colour theme_status_text = 13 [default = COLOUR_WHITE];
-  optional Colour theme_alert = 14 [default = COLOUR_AMBER];
-  optional Colour theme_critical = 15 [default = COLOUR_RED];
-  optional string theme_font = 16 [default = "DejaVu Sans Mono Book"];
+  // Background label colour
+  optional Colour theme_label_background_enabled_selected_changing = 3 [default = COLOUR_DARK_GREEN];
+  optional Colour theme_label_background_enabled_selected = 4 [default = COLOUR_DARK_GREEN];
+  optional Colour theme_label_background_enabled = 5 [default = COLOUR_DARK_GREEN];
+  optional Colour theme_label_background_disabled = 6 [default = COLOUR_GREY];
+  // Text Colour
+  optional Colour theme_label_text_enabled_selected_changing = 7 [default = COLOUR_WHITE];
+  optional Colour theme_label_text_enabled_selected = 8 [default = COLOUR_WHITE];
+  optional Colour theme_label_text_enabled = 9 [default = COLOUR_WHITE];
+  optional Colour theme_label_text_disabled = 10 [default = COLOUR_BLACK];
+  // Line Colour
+  optional Colour theme_label_border_enabled_selected_changing = 11 [default = COLOUR_YELLOW];
+  optional Colour theme_label_border_enabled_selected = 12 [default = COLOUR_YELLOW];
+  optional Colour theme_label_border_enabled = 13 [default = COLOUR_DARK_GREEN2];
+  optional Colour theme_label_border_disabled = 14 [default = COLOUR_DARK_GREY];
+
+  // General
+
+  // Line Thickness
+  optional int32 theme_label_border_thickness = 15 [default = 2];
+  optional int32 theme_table_border_thickness = 16 [default = 1];
+  optional Colour theme_status_background = 17 [default = COLOUR_DARK_GREEN];
+  optional Colour theme_status_border = 18 [default = COLOUR_DARK_GREEN];
+  optional Colour theme_status_text = 19 [default = COLOUR_WHITE];
+  optional Colour theme_alert = 20 [default = COLOUR_AMBER];
+  optional Colour theme_critical = 21 [default = COLOUR_RED];
+  optional string theme_font = 22 [default = "DejaVu Sans Mono Book"];
 }
 
 message ThemeHighContrast {
   optional Colour theme_background = 1 [default = COLOUR_BLACK];
   optional LabelStyle theme_label_style = 2 [default = LABEL_ROUNDED];
-  optional Colour theme_label_background_active = 3 [default = COLOUR_BLACK];
-  optional Colour theme_label_background_inactive = 4 [default = COLOUR_GREY];
-  optional Colour theme_label_text_active = 5 [default = COLOUR_WHITE];
-  optional Colour theme_label_text_inactive = 6 [default = COLOUR_BLACK];
-  optional Colour theme_label_border_selected = 7 [default = COLOUR_GREY];
-  optional Colour theme_label_border_active = 8 [default = COLOUR_WHITE];
-  optional Colour theme_label_border_inactive = 9 [default = COLOUR_DARK_GREY];
-  optional int32 theme_label_border_thickness = 10 [default = 1];
-  optional Colour theme_status_background = 11 [default = COLOUR_BLACK];
-  optional Colour theme_status_border = 12 [default = COLOUR_BLACK];
-  optional Colour theme_status_text = 13 [default = COLOUR_WHITE];
-  optional Colour theme_alert = 14 [default = COLOUR_AMBER];
-  optional Colour theme_critical = 15 [default = COLOUR_RED];
-  optional string theme_font = 16 [default = "Courier 10 Pitch"];
+  // Background label colour
+  optional Colour theme_label_background_enabled_selected_changing = 3 [default = COLOUR_BLACK];
+  optional Colour theme_label_background_enabled_selected = 4 [default = COLOUR_BLACK];
+  optional Colour theme_label_background_enabled = 5 [default = COLOUR_BLACK];
+  optional Colour theme_label_background_disabled = 6 [default = COLOUR_GREY];
+  // Text Colour
+  optional Colour theme_label_text_enabled_selected_changing = 7 [default = COLOUR_WHITE];
+  optional Colour theme_label_text_enabled_selected = 8 [default = COLOUR_WHITE];
+  optional Colour theme_label_text_enabled = 9 [default = COLOUR_WHITE];
+  optional Colour theme_label_text_disabled = 10 [default = COLOUR_BLACK];
+  // Line Colour
+  optional Colour theme_label_border_enabled_selected_changing = 11 [default = COLOUR_GREY];
+  optional Colour theme_label_border_enabled_selected = 12 [default = COLOUR_GREY];
+  optional Colour theme_label_border_enabled = 13 [default = COLOUR_WHITE];
+  optional Colour theme_label_border_disabled = 14 [default = COLOUR_DARK_GREY];
+
+  // General
+
+  // Line Thickness
+  optional int32 theme_label_border_thickness = 15 [default = 1];
+    optional int32 theme_table_border_thickness = 16 [default = 1];
+
+  optional Colour theme_status_background = 17 [default = COLOUR_BLACK];
+  optional Colour theme_status_border = 18 [default = COLOUR_BLACK];
+  optional Colour theme_status_text = 19 [default = COLOUR_WHITE];
+  optional Colour theme_alert = 20 [default = COLOUR_AMBER];
+  optional Colour theme_critical = 21 [default = COLOUR_RED];
+  optional string theme_font = 22 [default = "Courier 10 Pitch"];
 }
 
 message ThemeModernBlue {
   optional Colour theme_background = 1 [default = COLOUR_BLACK];
   optional LabelStyle theme_label_style = 2 [default = LABEL_ROUNDED];
-  optional Colour theme_label_background_active = 3 [default = COLOUR_BLACK];
-  optional Colour theme_label_background_inactive = 4 [default = COLOUR_GREY];
-  optional Colour theme_label_text_active = 5 [default = COLOUR_WHITE];
-  optional Colour theme_label_text_inactive = 6 [default = COLOUR_BLACK];
-  optional Colour theme_label_border_selected = 7 [default = COLOUR_GREY];
-  optional Colour theme_label_border_active = 8 [default = COLOUR_WHITE];
-  optional Colour theme_label_border_inactive = 9 [default = COLOUR_DARK_GREY];
-  optional int32 theme_label_border_thickness = 10 [default = 1];
-  optional Colour theme_status_background = 11 [default = COLOUR_BLACK];
-  optional Colour theme_status_border = 12 [default = COLOUR_BLACK];
-  optional Colour theme_status_text = 13 [default = COLOUR_WHITE];
-  optional Colour theme_alert = 14 [default = COLOUR_AMBER];
-  optional Colour theme_critical = 15 [default = COLOUR_RED];
-  optional string theme_font = 16 [default = "Courier 10 Pitch"];
+  // Background label colour
+  optional Colour theme_label_background_enabled_selected_changing= 3 [default = COLOUR_LIGHT_BLUE];
+  optional Colour theme_label_background_enabled_selected= 4 [default = COLOUR_DARK_BLUE];
+  optional Colour theme_label_background_enabled = 5 [default = COLOUR_BLACK];
+  optional Colour theme_label_background_disabled = 6 [default = COLOUR_GREY];
+  // Text Colour
+  optional Colour theme_label_text_enabled_selected_changing = 7 [default = COLOUR_WHITE];
+  optional Colour theme_label_text_enabled_selected = 8 [default = COLOUR_WHITE];
+  optional Colour theme_label_text_enabled = 9 [default = COLOUR_WHITE];
+  optional Colour theme_label_text_disabled = 10 [default = COLOUR_BLACK];
+  // Line Colour
+  optional Colour theme_label_border_enabled_selected_changing = 11 [default = COLOUR_DARK_BLUE];
+  optional Colour theme_label_border_enabled_selected = 12 [default = COLOUR_LIGHT_BLUE];
+  optional Colour theme_label_border_enabled = 13 [default = COLOUR_GREY];
+  optional Colour theme_label_border_disabled = 14 [default = COLOUR_DARK_GREY];
+
+  // General
+
+  // Line Thickness
+  optional int32 theme_label_border_thickness = 15 [default = 2];
+  optional int32 theme_table_border_thickness = 16 [default = 1];
+  optional Colour theme_status_background = 17 [default = COLOUR_BLACK];
+  optional Colour theme_status_border = 18 [default = COLOUR_BLACK];
+  optional Colour theme_status_text = 19 [default = COLOUR_WHITE];
+  optional Colour theme_alert = 20 [default = COLOUR_AMBER];
+  optional Colour theme_critical = 21 [default = COLOUR_RED];
+  optional string theme_font = 22 [default = "Courier 10 Pitch"];
 }
 
 message Gva {
@@ -119,7 +179,7 @@ message Gva {
   optional string odb_device = 14 [default = "/dev/ttyUSB1"];    
   
   optional ThemeDefault theme = 15;
-  //optional ThemeHighContrast theme = 15;
+  // optional ThemeModernBlue theme = 15;
   
   
   message BezelKeyset {

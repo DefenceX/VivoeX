@@ -147,10 +147,41 @@ typedef struct ArgStruct {
 
 class ScreenGva : public RendererGva {
  public:
+  ///
+  /// \brief Construct a new Screen Gva object
+  ///
+  /// \param screen
+  /// \param width
+  /// \param height
+  ///
   ScreenGva(ScreenType *screen, int width, int height);
+
+  ///
+  /// \brief Destroy the Screen Gva object
+  ///
+  ///
   ~ScreenGva();
+
+  ///
+  /// \brief Redraw the screen
+  ///
+  /// \return int
+  ///
   int Update();
+
+  ///
+  /// \brief Start the clock thread running to update the clock (pthread started)
+  ///
+  /// \param barData
+  ///
   void StartClock(StatusBarType *barData);
+
+  ///
+  /// \brief Get the Widget object
+  ///
+  /// \param widget
+  /// \return WidgetX*
+  ///
   WidgetX *GetWidget(WidgetEnum widget);
 
  private:
@@ -164,6 +195,7 @@ class ScreenGva : public RendererGva {
   pthread_t clock_thread_;
   nmeaINFO info_;
   nmeaPARSER parser_;
+  gva::ConfigData *config_;
 };
 }  // namespace gva
 #endif

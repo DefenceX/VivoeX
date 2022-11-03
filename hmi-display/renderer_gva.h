@@ -1,21 +1,26 @@
-//
-// MIT License
-//
-// Copyright (c) 2020 Ross Newman (ross@rossnewman.com)
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
-// permit persons to whom the Software is furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
-// Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
-// WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-// COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
+///
+/// MIT License
+///
+/// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+///
+/// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+/// associated documentation files (the 'Software'), to deal in the Software without restriction,
+/// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+/// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+/// subject to the following conditions:
+///
+/// The above copyright notice and this permission notice shall be included in all copies or substantial
+/// portions of the Software.
+/// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+/// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+/// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+/// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+/// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+///
+/// \brief
+///
+/// \file renderer_gva.h
+///
 
 #ifndef RENDERER_GVA_H
 #define RENDERER_GVA_H
@@ -32,11 +37,7 @@
 #define MAX_CELLS 10
 #define MAX_TEXT 80
 
-typedef enum {
-  KEYBOARD_LOWER = 0,
-  KEYBOARD_UPPER,
-  KEYBOARD_NUMBERS
-} KeyboardModeType;
+typedef enum { KEYBOARD_LOWER = 0, KEYBOARD_UPPER, KEYBOARD_NUMBERS } KeyboardModeType;
 
 typedef enum { ALIGN_LEFT = 0, ALIGN_CENTRE, ALIGN_RIGHT } cellAlignType;
 
@@ -75,10 +76,8 @@ class RenderBase {
  public:
   RenderBase(){};
   RenderBase(int x, int y) : m_x(x), m_y(y), m_width(0), m_height(0){};
-  RenderBase(int x, int y, int width)
-      : m_x(x), m_y(y), m_width(width), m_height(0){};
-  RenderBase(int x, int y, int width, int height)
-      : m_x(x), m_y(y), m_width(width), m_height(height){};
+  RenderBase(int x, int y, int width) : m_x(x), m_y(y), m_width(width), m_height(0){};
+  RenderBase(int x, int y, int width, int height) : m_x(x), m_y(y), m_width(width), m_height(height){};
   int GetX() { return m_x; };
   int GetY() { return m_y; };
   int GetWidth() { return m_width; };
@@ -118,22 +117,19 @@ class GvaTable : public RenderBase {
     row_[rows_++] = newrow;
     return rows_;
   };
-  void SetFontName(char *name) { strcpy(fontname_, name); };
+  void SetFontName(const char *name) { strcpy(fontname_, name); };
   void SetBorderThickness(int thickness) { border_ = thickness; };
   int rows_ = 0;
-  int border_ = 2;
+  int border_ = gva::ConfigData::GetInstance()->GetThemeTableBorderThickness();
   GvaRow row_[MAX_ROWS];
   char fontname_[100] = "Courier";
 };
 
 class Hotspot : public RenderBase {
  public:
-  Hotspot(int groupId, int x, int y)
-      : group_id_(groupId), binding_(0), RenderBase(x, y){};
+  Hotspot(int groupId, int x, int y) : group_id_(groupId), binding_(0), RenderBase(x, y){};
   Hotspot(int groupId, int binding, int x, int y, int width, int height)
-      : group_id_(groupId),
-        binding_(binding),
-        RenderBase(x, y, width, height){};
+      : group_id_(groupId), binding_(binding), RenderBase(x, y, width, height){};
   int GetGroupId() { return group_id_; };
   int GetBinding() { return binding_; };
 
@@ -148,13 +144,11 @@ class TouchGva {
     hotspots_.push_back(Hotspot(groupId, x, y));
     return GVA_SUCCESS;
   }
-  GvaStatusTypes Add(int groupId, int binding, int x, int y, int width,
-                     int height) {
+  GvaStatusTypes Add(int groupId, int binding, int x, int y, int width, int height) {
     hotspots_.push_back(Hotspot(groupId, binding, x, y, width, height));
     return GVA_SUCCESS;
   }
-  GvaStatusTypes AddAbsolute(int groupId, int binding, int x, int y, int xx,
-                             int yy) {
+  GvaStatusTypes AddAbsolute(int groupId, int binding, int x, int y, int xx, int yy) {
     hotspots_.push_back(Hotspot(groupId, binding, x, y, xx - x, yy - y));
     return GVA_SUCCESS;
   }
@@ -171,9 +165,8 @@ class TouchGva {
     y = MIN_HEIGHT - y;
 
     for (auto i = hotspots_.begin(); i != hotspots_.end(); ++i) {
-      if ((x > i->GetX()) && (x < (i->GetX() + i->GetWidth())) &&
-          (y > i->GetY()) && (y < (i->GetY() + i->GetHeight())) &&
-          (i->GetGroupId() == groupId)) {
+      if ((x > i->GetX()) && (x < (i->GetX() + i->GetWidth())) && (y > i->GetY()) &&
+          (y < (i->GetY() + i->GetHeight())) && (i->GetGroupId() == groupId)) {
         *binding = i->GetBinding();
         return true;
       }
@@ -190,8 +183,7 @@ class RendererGva : public RendererCairo {
  public:
   RendererGva(int width, int height);
   void DrawLabels(char *text, int fontSize, int x, int y);
-  void DrawFunctionLabels(int x, int active, int hide, int toggle, int toggleOn,
-                          char labels[6][40]);
+  void DrawFunctionLabels(int x, int active, int hide, int toggle, int toggleOn, char labels[6][40]);
   void DrawTopLabels(int y, int active, int hide);
   void DrawControlLabels(int y, int active, int hide);
   void DrawIcon(IconType icon, int x, int y, int width, int height);
@@ -199,8 +191,7 @@ class RendererGva : public RendererCairo {
   void DrawTable(GvaTable *table);
   void DrawMode();
   void DrawButton(char *keytext, int fontSize, int x, int y, int size);
-  void DrawButton(char *keytext, int fontSize, int x, int y, int height,
-                  int width, int align);
+  void DrawButton(char *keytext, int fontSize, int x, int y, int height, int width, int align);
   void DrawKeyboard(KeyboardModeType mode);
   TouchGva *GetTouch() { return &touch_; };
 
@@ -215,6 +206,9 @@ class RendererGva : public RendererCairo {
   char numKeys_[3][10] = {{'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'},
                           {'-', '_', '.', ',', ';', ':', '"', '-', '-', '-'},
                           {'!', '@', '#', '$', '%', '^', '&', ' ', '-', '-'}};
+
+ private:
+  gva::ConfigData *config_;
 };
 
 class FunctionKeySimple {

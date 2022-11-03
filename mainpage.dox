@@ -1,20 +1,47 @@
-/*! \mainpage Drawing Shapes
+/*! \mainpage User Manual
  *
- * This project helps user to draw shapes.
- * Currently two types of shapes can be drawn:
- * - \subpage drawingRectanglePage "How to draw rectangle?"
  *
- * - \subpage drawingCirclePage "How to draw circle?"
+ * \tableofcontents
+ *
+ * \section sec1 Developer SDK Guide
+ * This VIVOE (Vetronics Infrastructure for Video Over Ethernet) environment is currently tested on Ubuntu 22.04 LTS. 
+ * Please ensure you have the following packages installed prior to building the application:
+ * \subsection ssec11 Ubuntu 22.04
+ * 
+ * \code sudo apt install libcairo2-dev libxt-dev doxygen libxml2-dev ncurses-dev libxext-dev libswscale-dev \endcode
+ * 
+ * \subsection ssec12 CentOS 9
+ *
+ * \code sudo dnf install cairo-devel libxt-devel doxygen libxml2-devel ncurses-devel libxext-devel libswscale-devel \endcode
+ *
+ * \section sec2 Building
+ * This project has a couple of options that can be specified at compile time:
+ *
+ * \code cmake -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE=ON -DENABLE_OSMSCOUT=ON -DDDS=CYCLONE ..\endcode
+ *
+ *Default DDS stack is currently CycloneDDS (default if not specified) but can also be built with Opensplice by setting -DDDS=OSPL.
+ *
+ *To enable code coverage reports set ENABLE_COVERAGE. The gdb debugger is avaiable and configured for use with Microsoft Visual Code and the workspace files are part of the repo (recommended for developers).
+ *
+ *The BMS function can be configured with Open Street Maps but these need to be compiled and installed onto the system. Its recommeded that you run wit these switched off if you do not need this functionality. See below for more information on creating maps for your region / territory.
+ *
+ * \section sec3 Tooling
+ * 
+ * Some tools are available for testing the HMI.
+ * Tools fall into the command line section and GUI tools:
+ * - \subpage gui "GUI tools for testing"
+ *
+ * - \subpage cli "Command line tools"
  *
  */ 
 
-/*! \page drawingRectanglePage How to draw rectangle?
+/*! \page gui GUI tools for testing
  *
  * Lorem ipsum dolor sit amet
  *
  */
 
-/*! \page drawingCirclePage How to draw circle?
+/*! \page cli Command line tools?
  *
  * This page is about how to draw a circle.
  * Following sections describe circle:

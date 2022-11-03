@@ -8,7 +8,7 @@
             "name": "hmi-display (No Args)",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/hmi-display/hmi-display",
+            "program": "${workspaceFolder}/build/bin/hmi-display",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
@@ -29,7 +29,7 @@
             "name": "hmi-display (RTP)",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/hmi-display/hmi-display",
+            "program": "${workspaceFolder}/build/bin/hmi-display",
             "args": [
                 "-l"
             ],

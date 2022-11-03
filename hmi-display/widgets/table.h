@@ -54,6 +54,7 @@ typedef struct {
 #define MAX_ROWS 100
 class TableWidget {
  public:
+  TableWidget() { configuration_ = gva::ConfigData::GetInstance(); }
   ///
   /// \brief Add a row to the table
   ///
@@ -80,7 +81,7 @@ class TableWidget {
   ///
   void AddRow() {
     RowType *row = &rows_[row_count_];
-    row->background_colour = configuration.GetThemeLabelBackgroundActive();
+    row->background_colour = configuration_->GetThemeLabelBackgroundEnabledSelected();
     row->foreground_colour = Renderer::PackRgb(HMI_WHITE);
     row->outline_colour = Renderer::PackRgb(HMI_WHITE);
     row->highlight_colour = Renderer::PackRgb(HMI_YELLOW);
@@ -129,6 +130,9 @@ class TableWidget {
   int y_;
   int row_count_;
   RowType rows_[MAX_ROWS];
+
+ private:
+  gva::ConfigData *configuration_;
 };
 
 }  // namespace gva

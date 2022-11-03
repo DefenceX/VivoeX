@@ -101,7 +101,7 @@ ExternalProject_Add(
     GIT_TAG             "0.10.2"
     GIT_SHALLOW         5
     GIT_CONFIG          fetch.recurseSubmodules=true
-    CMAKE_ARGS          ""
+    CMAKE_ARGS          -DCMAKE_INSTALL_MESSAGE=LAZY
     PREFIX              ${CMAKE_BINARY_DIR}/external/cyclonedds/prefix
     TMP_DIR             ${CMAKE_BINARY_DIR}/external/cyclonedds/tmp
     STAMP_DIR           ${CMAKE_BINARY_DIR}/external/cyclonedds/stamp
@@ -124,7 +124,7 @@ ExternalProject_Add(
     GIT_TAG             "0.10.2"
     GIT_SHALLOW         5
     GIT_CONFIG          fetch.recurseSubmodules=true
-    CMAKE_ARGS          -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/external/install -DCMAKE_PREFIX_PATH=${CMAKE_BINARY_DIR}/external/install/usr/local/lib/cmake/CycloneDDS
+    CMAKE_ARGS          -DCMAKE_INSTALL_MESSAGE=LAZY -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/external/install -DCMAKE_PREFIX_PATH=${CMAKE_BINARY_DIR}/external/install/usr/local/lib/cmake/CycloneDDS
     PREFIX              ${CMAKE_BINARY_DIR}/external/cyclonedds-cxx/prefix
     TMP_DIR             ${CMAKE_BINARY_DIR}/external/cyclonedds-cxx/tmp
     STAMP_DIR           ${CMAKE_BINARY_DIR}/external/cyclonedds-cxx/stamp
@@ -133,14 +133,13 @@ ExternalProject_Add(
     INSTALL_DIR         ${CMAKE_BINARY_DIR}/external/install
     BINARY_DIR          ${CMAKE_BINARY_DIR}/external/cyclonedds-cxx/build
     SOURCE_SUBDIR       ""
-    INSTALL_COMMAND     make DESTDIR=${CMAKE_BINARY_DIR}/external/install install
+    INSTALL_COMMAND     make  DESTDIR=${CMAKE_BINARY_DIR}/external/install install
     TEST_COMMAND        ""
     UPDATE_DISCONNECTED 1
     BUILD_ALWAYS        0
 )
 
 add_dependencies(cyclonedds-cxx ${DDS_STACK})
-
 
 set(DDS_LIBRARY_DIRS"${CMAKE_BINARY_DIR}/external/cyclonedds/lib/")
 set(DDS_LIBRARIES "ddsc cycloneddsidl dds_security_auth cycloneddsidl dds_security_ac dds_security_crypto")
