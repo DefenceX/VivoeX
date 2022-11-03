@@ -236,7 +236,7 @@ int ScreenGva::Update() {
     // Refresh display
     //
     Draw();
-    printf("Drawing blckout\n");
+    printf("Drawing blackout\n");
     last_screen_ = *screen_;
     return GVA_SUCCESS;
   }
@@ -354,7 +354,7 @@ int ScreenGva::Update() {
     table.border_ = config_->GetThemeLabelBorderThickness();
 
     strcpy(tmp[0], screen_->message.brief.text);
-    uint32_t background = config_->GetThemeLabelBackgroundActive();
+    uint32_t background = config_->GetThemeBackground();
     newrow.addCell({tmp[0],
                     ALIGN_CENTRE,
                     {HMI_WHITE},

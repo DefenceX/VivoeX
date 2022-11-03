@@ -119,34 +119,60 @@ uint32_t ConfigData::GetThemeBackground() { return (uint32_t)current_config_->th
 
 uint16_t ConfigData::GetThemeLabelStyle() { return (uint32_t)current_config_->theme().theme_label_style(); }
 
-uint32_t ConfigData::GetThemeLabelBackgroundActive() {
-  return (uint32_t)current_config_->theme().theme_label_background_active();
+uint32_t ConfigData::GetThemeLabelBackgroundEnabledSelectedChanging() {
+  return (uint32_t)current_config_->theme().theme_label_background_enabled_selected_changing();
 }
 
-uint32_t ConfigData::GetThemeLabelBackgroundInactive() {
-  return (uint32_t)current_config_->theme().theme_label_background_inactive();
+uint32_t ConfigData::GetThemeLabelBackgroundEnabledSelected() {
+  return (uint32_t)current_config_->theme().theme_label_background_enabled_selected();
 }
 
-uint32_t ConfigData::GetThemeLabelTextActive() { return (uint32_t)current_config_->theme().theme_label_text_active(); }
-
-uint32_t ConfigData::GetThemeLabelTextInactive() {
-  return (uint32_t)current_config_->theme().theme_label_text_inactive();
+uint32_t ConfigData::GetThemeLabelBackgroundEnabled() {
+  return (uint32_t)current_config_->theme().theme_label_background_enabled();
 }
 
-uint32_t ConfigData::GetThemeLabelBorderSelected() {
-  return (uint32_t)current_config_->theme().theme_label_border_selected();
+uint32_t ConfigData::GetThemeLabelBackgroundDisabled() {
+  return (uint32_t)current_config_->theme().theme_label_background_disabled();
 }
 
-uint32_t ConfigData::GetThemeLabelBorderActive() {
-  return (uint32_t)current_config_->theme().theme_label_border_active();
+uint32_t ConfigData::GetThemeLabelTextEnabledSelectedChanging() {
+  return (uint32_t)current_config_->theme().theme_label_text_enabled_selected_changing();
 }
 
-uint32_t ConfigData::GetThemeLabelBorderInactive() {
-  return (uint32_t)current_config_->theme().theme_label_border_inactive();
+uint32_t ConfigData::GetThemeLabelTextEnabledSelected() {
+  return (uint32_t)current_config_->theme().theme_label_text_enabled_selected();
+}
+
+uint32_t ConfigData::GetThemeLabelTextEnabled() {
+  return (uint32_t)current_config_->theme().theme_label_text_enabled();
+}
+
+uint32_t ConfigData::GetThemeLabelTextDisabled() {
+  return (uint32_t)current_config_->theme().theme_label_text_disabled();
+}
+
+uint32_t ConfigData::GetThemeLabelBorderEnabledSelectedChanging() {
+  return (uint32_t)current_config_->theme().theme_label_border_enabled_selected_changing();
+}
+
+uint32_t ConfigData::GetThemeLabelBorderEnabledSelected() {
+  return (uint32_t)current_config_->theme().theme_label_border_enabled_selected();
+}
+
+uint32_t ConfigData::GetThemeLabelBorderEnabled() {
+  return (uint32_t)current_config_->theme().theme_label_border_enabled();
+}
+
+uint32_t ConfigData::GetThemeLabelBorderDisabled() {
+  return (uint32_t)current_config_->theme().theme_label_border_disabled();
 }
 
 uint32_t ConfigData::GetThemeLabelBorderThickness() {
   return (uint32_t)current_config_->theme().theme_label_border_thickness();
+}
+
+uint32_t ConfigData::GetThemeTableBorderThickness() {
+  return (uint32_t)current_config_->theme().theme_table_border_thickness();
 }
 
 uint32_t ConfigData::GetThemeStatusBackground() { return (uint32_t)current_config_->theme().theme_status_background(); }

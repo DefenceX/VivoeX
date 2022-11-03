@@ -95,8 +95,8 @@ void RendererGva::DrawFunctionLabels(int x, int active, int hide, int toggle, in
   int i = 0;
   int offset = DEFAULT_HEIGHT - 88;
 
-  SetColourForground(config_->GetThemeLabelBorderActive());
-  SetColourBackground(config_->GetThemeLabelBackgroundActive());
+  SetColourForground(config_->GetThemeLabelBorderEnabled());
+  SetColourBackground(config_->GetThemeLabelBackgroundEnabled());
   setLineType(CAIRO_LINE_JOIN_ROUND);
   SetLineThickness(config_->GetThemeLabelBorderThickness(), LINE_SOLID);
   SetTextFont((int)CAIRO_FONT_SLANT_NORMAL, (int)CAIRO_FONT_WEIGHT_NORMAL, config_->GetThemeFont());
@@ -106,10 +106,15 @@ void RendererGva::DrawFunctionLabels(int x, int active, int hide, int toggle, in
 
   for (i = 0; i < 6; i++) {
     SetLineThickness(config_->GetThemeLabelBorderThickness(), LINE_SOLID);
-    SetColourBackground(config_->GetThemeLabelBackgroundActive());
+    SetColourBackground(config_->GetThemeLabelBackgroundEnabledSelected());
     if ((1 << (5 - i) & hide)) {
-      (1 << (5 - i) & active) ? SetColourForground(config_->GetThemeLabelBorderSelected())
-                              : SetColourForground(config_->GetThemeLabelBorderActive());
+      if (1 << (5 - i) & active) {
+        SetColourForground(config_->GetThemeLabelBorderEnabledSelected());
+        SetColourBackground(config_->GetThemeLabelBackgroundEnabledSelected());
+      } else {
+        SetColourForground(config_->GetThemeLabelBorderEnabled());
+        SetColourBackground(config_->GetThemeLabelBackgroundEnabled());
+      }
       FunctionKeyToggle *key = new FunctionKeyToggle();
 
       key->Draw(this, x, offset - (i * 72), 100, 50, labels[i]);
@@ -126,15 +131,21 @@ void RendererGva::DrawTopLabels(int y, int active, int hide) {
   int width = (DEFAULT_WIDTH - offset * 2) / 8;
   int spacing = width * 0.1;
 
-  SetColourForground(config_->GetThemeLabelBorderActive());
-  SetColourBackground(config_->GetThemeLabelBackgroundActive());
+  SetColourForground(config_->GetThemeLabelBorderEnabled());
+  SetColourBackground(config_->GetThemeLabelBackgroundEnabled());
   setLineType(CAIRO_LINE_JOIN_ROUND);
   SetLineThickness(config_->GetThemeLabelBorderThickness(), LINE_SOLID);
 
   for (i = 0; i < 8; i++) {
     if (!(1 << (7 - i) & hide)) {
-      (1 << (7 - i) & active) ? SetColourForground(config_->GetThemeLabelBorderSelected())
-                              : SetColourForground(config_->GetThemeLabelBorderActive());
+      if (1 << (7 - i) & active) {
+        SetColourForground(config_->GetThemeLabelBorderEnabledSelected());
+        SetColourBackground(config_->GetThemeLabelBackgroundEnabledSelected());
+      } else {
+        SetColourForground(config_->GetThemeLabelBorderEnabled());
+        SetColourBackground(config_->GetThemeLabelBackgroundEnabled());
+      }
+
       DrawRectangle((i * width) + offset, y, (i * width) + width - spacing + offset, y + 10, true);
       touch_.AddAbsolute(TOP, (int)(KEY_SA + i), (i * width) + offset, y, (i * width) + width - spacing + offset,
                          y + 10);
@@ -149,8 +160,8 @@ void RendererGva::DrawControlLabels(int y, int active, int hide) {
 
   char labels[8][80] = {"Up", "Alarms", "Threats", "Ack", "", "", "Labels", "Enter"};
 
-  SetColourForground(config_->GetThemeLabelBorderActive());
-  SetColourBackground(config_->GetThemeLabelBackgroundActive());
+  SetColourForground(config_->GetThemeLabelBorderEnabled());
+  SetColourBackground(config_->GetThemeLabelBackgroundEnabled());
   setLineType(CAIRO_LINE_JOIN_ROUND);
   SetLineThickness(config_->GetThemeLabelBorderThickness(), LINE_SOLID);
   SetTextFont((int)CAIRO_FONT_SLANT_NORMAL, (int)CAIRO_FONT_WEIGHT_BOLD, config_->GetThemeFont());
@@ -158,17 +169,22 @@ void RendererGva::DrawControlLabels(int y, int active, int hide) {
   for (i = 0; i < 8; i++) {
     SetLineThickness(config_->GetThemeLabelBorderThickness(), LINE_SOLID);
     if ((1 << (7 - i) & hide)) {
-      SetColourBackground(config_->GetThemeLabelBackgroundInactive());
-      SetColourForground(config_->GetThemeLabelBorderInactive());
+      SetColourBackground(config_->GetThemeLabelBackgroundDisabled());
+      SetColourForground(config_->GetThemeLabelBorderEnabled());
     } else {
-      SetColourBackground(config_->GetThemeLabelBackgroundActive());
-      (1 << (7 - i) & active) ? SetColourForground(config_->GetThemeLabelBorderSelected())
-                              : SetColourForground(config_->GetThemeLabelBorderActive());
+      SetColourBackground(config_->GetThemeLabelBackgroundEnabled());
+      if (1 << (7 - i) & active) {
+        SetColourForground(config_->GetThemeLabelBorderEnabledSelected());
+        SetColourBackground(config_->GetThemeLabelBackgroundEnabledSelected());
+      } else {
+        SetColourForground(config_->GetThemeLabelBorderEnabled());
+        SetColourBackground(config_->GetThemeLabelBackgroundEnabled());
+      }
     }
     DrawRectangle((i * w) + offset, y, (i * w) + w - 5 + offset, y + 20, true);
 
-    (1 << (7 - i) & hide) ? DrawColor(config_->GetThemeLabelTextInactive())
-                          : DrawColor(config_->GetThemeLabelTextActive());
+    (1 << (7 - i) & hide) ? DrawColor(config_->GetThemeLabelTextEnabled())
+                          : DrawColor(config_->GetThemeLabelTextEnabledSelected());
     touch_.AddAbsolute(BOTTOM, (int)(KEY_F13 + i), (i * w) + offset, y, (i * w) + w - 5 + offset, y + 20);
     DrawText((i * w) + offset + 5, y + 6, labels[i], 12);
     if (i == 4) DrawIcon(ICON_UP_ARROW, (i * w) + offset + 34, y + 11, 15, 8);
@@ -417,8 +433,9 @@ void RendererGva::DrawTable(GvaTable *table) {
   int column = 0;
   int columns;
 
-  SetLineThickness(table->border_, LINE_SOLID);
+  SetLineThickness(config_->GetThemeTableBorderThickness(), LINE_SOLID);
   SetTextFont((int)CAIRO_FONT_SLANT_NORMAL, (int)CAIRO_FONT_WEIGHT_NORMAL, table->fontname_);
+  SetColourBackground(config_->GetThemeBackground());
 
   for (row = 0; row < table->rows_; row++) {
     int offset = table->GetX();

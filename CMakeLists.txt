@@ -23,7 +23,7 @@ configure_file(gva-tools/config.xml ${CMAKE_CURRENT_BINARY_DIR}/build/gva-tools/
 file(COPY images/FRONT_RIGHT.png 
 images/FRONT_CENTRE.png images/FRONT_LEFT.png images/RIGHT.png 
 images/REAR.png images/LEFT.png images/QUAD.png 
-     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME})
+     DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
 option(HMI_ONLY "only build HMI and Tools" OFF)
 

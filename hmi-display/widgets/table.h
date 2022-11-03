@@ -81,7 +81,7 @@ class TableWidget {
   ///
   void AddRow() {
     RowType *row = &rows_[row_count_];
-    row->background_colour = configuration_->GetThemeLabelBackgroundActive();
+    row->background_colour = configuration_->GetThemeLabelBackgroundEnabledSelected();
     row->foreground_colour = Renderer::PackRgb(HMI_WHITE);
     row->outline_colour = Renderer::PackRgb(HMI_WHITE);
     row->highlight_colour = Renderer::PackRgb(HMI_YELLOW);

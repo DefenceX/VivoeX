@@ -136,53 +136,88 @@ class ConfigData {
   uint16_t GetThemeLabelStyle();
 
   ///
+  /// \brief Get the Theme Label Background Enabled Selected Changing object
+  ///
+  /// \return uint32_t
+  ///
+  uint32_t GetThemeLabelBackgroundEnabledSelectedChanging();
+
+  ///
+  /// \brief Get the Theme Label Background Enabled Selected object
+  ///
+  /// \return uint32_t
+  ///
+  uint32_t GetThemeLabelBackgroundEnabledSelected();
+
+  ///
   /// \brief Get the Theme Label Background Active object
   ///
   /// \return uint32_t
   ///
-  uint32_t GetThemeLabelBackgroundActive();
+  uint32_t GetThemeLabelBackgroundEnabled();
 
   ///
-  /// \brief Get the Theme Label Background Inactive object
+  /// \brief Get the Theme Label Background Disabled object
   ///
   /// \return uint32_t
   ///
-  uint32_t GetThemeLabelBackgroundInactive();
+  uint32_t GetThemeLabelBackgroundDisabled();
 
   ///
-  /// \brief Get the Theme Label Text Active object
+  /// \brief Get the Theme Label Text Enabled Selected Changing object
   ///
   /// \return uint32_t
   ///
-  uint32_t GetThemeLabelTextActive();
+  uint32_t GetThemeLabelTextEnabledSelectedChanging();
 
   ///
-  /// \brief Get the Theme Label Text Inactive object
+  /// \brief Get the Theme Label Text Enabled Selected object
   ///
   /// \return uint32_t
   ///
-  uint32_t GetThemeLabelTextInactive();
+  uint32_t GetThemeLabelTextEnabledSelected();
 
   ///
-  /// \brief Get the Theme Label Border Selected object
+  /// \brief Get the Theme Label Text Enabled object
   ///
   /// \return uint32_t
   ///
-  uint32_t GetThemeLabelBorderSelected();
+  uint32_t GetThemeLabelTextEnabled();
 
   ///
-  /// \brief Get the Theme Label Border Active object
+  /// \brief Get the Theme Label Text Disabled object
   ///
   /// \return uint32_t
   ///
-  uint32_t GetThemeLabelBorderActive();
+  uint32_t GetThemeLabelTextDisabled();
 
   ///
-  /// \brief Get the Theme Label Border Inactive object
+  /// \brief Get the Theme Label Border Enabled Selected Changing object
   ///
   /// \return uint32_t
   ///
-  uint32_t GetThemeLabelBorderInactive();
+  uint32_t GetThemeLabelBorderEnabledSelectedChanging();
+
+  ///
+  /// \brief Get the Theme Label Border Enabled Selected  object
+  ///
+  /// \return uint32_t
+  ///
+  uint32_t GetThemeLabelBorderEnabledSelected();
+
+  ///
+  /// \brief Get the Theme Label Border Enabled object
+  ///
+  /// \return uint32_t
+  ///
+  uint32_t GetThemeLabelBorderEnabled();
+
+  ///
+  /// \brief Get the Theme Label Border Disabled object
+  ///
+  /// \return uint32_t
+  ///
+  uint32_t GetThemeLabelBorderDisabled();
 
   ///
   /// \brief Get the Theme Label Border Thickness object
@@ -190,6 +225,13 @@ class ConfigData {
   /// \return uint32_t
   ///
   uint32_t GetThemeLabelBorderThickness();
+
+  ///
+  /// \brief Get the Table Label Border Thickness object
+  ///
+  /// \return uint32_t
+  ///
+  uint32_t GetThemeTableBorderThickness();
 
   ///
   /// \brief Get the Theme Status Background object

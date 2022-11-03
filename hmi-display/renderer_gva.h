@@ -120,7 +120,7 @@ class GvaTable : public RenderBase {
   void SetFontName(const char *name) { strcpy(fontname_, name); };
   void SetBorderThickness(int thickness) { border_ = thickness; };
   int rows_ = 0;
-  int border_ = 2;
+  int border_ = gva::ConfigData::GetInstance()->GetThemeTableBorderThickness();
   GvaRow row_[MAX_ROWS];
   char fontname_[100] = "Courier";
 };
