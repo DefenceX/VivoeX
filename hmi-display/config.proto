@@ -178,8 +178,8 @@ message Gva {
   // ODB Options
   optional string odb_device = 14 [default = "/dev/ttyUSB1"];    
   
-  optional ThemeDefault theme = 15;
-  // optional ThemeModernBlue theme = 15;
+  // optional ThemeDefault theme = 15;
+  optional ThemeModernBlue theme = 15;
   
   
   message BezelKeyset {
