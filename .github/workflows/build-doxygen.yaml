@@ -32,3 +32,4 @@ jobs:
         with:
           name: doxygen-html
           path: html
+          retention-days: 60
