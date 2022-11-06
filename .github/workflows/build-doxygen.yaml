@@ -31,5 +31,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: doxygen-html
-          path: html
-          retention-days: 60
+          path: docs
+          retention-days: 30
