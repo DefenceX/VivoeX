@@ -214,7 +214,6 @@ endif (BUILD_TESTS)
 # Install binaries with external libs
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/gva.log "")
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/gva.log DESTINATION "/var/log" PERMISSIONS OWNER_WRITE OWNER_READ GROUP_WRITE GROUP_READ WORLD_READ WORLD_WRITE)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/vivoe-lite.conf DESTINATION "/etc/ld.so.conf.d")
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/external/vivoe-media-framework/build/libvivoe-media.so DESTINATION "/opt/gva/libs")
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/etc/ld.so.conf.d/vivoe-lite.conf DESTINATION "/etc/ld.so.conf.d") 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/etc/profile.d/vivoe-lite.sh DESTINATION "/etc/profile.d")
