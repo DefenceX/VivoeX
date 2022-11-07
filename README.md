@@ -20,7 +20,11 @@ Default DDS stack is currently [CycloneDDS](https://github.com/eclipse-cyclonedd
 
 To enable code coverage reports set ENABLE_COVERAGE. The gdb debugger is avaiable and configured for use with Microsoft Visual Code and the workspace files are part of the repo (recommended for developers).
 
-The BMS function can be configured with Open Street Maps but these need to be compiled and installed onto the system. Its recommeded that you run wit these switched off if you do not need this functionality. See below for more information on creating maps for your region / territory.
+The BMS function can be configured with Open Street Maps but these need to be compiled and installed onto the system. Its recommended that you run wit these switched off if you do not need this functionality. See below for more information on creating maps for your region / territory.
+
+# Documentation
+Documentation can be generated using doxygen after cloning or see latest documentation on [Github Pages](https://defencex.github.io/vivoe-lite/).
+
 # HMI
 The project includes an reference implementation of the GVA (Generic Vehicle Architecture) like Human Machine Interface (HMI). This is meant as a designed for testing different live video sources and working with streaming protocols and does not implement functionality defined in the GVA Land Data Model (LDM). Its primerially used to demonstrate various video streaming pipelines and control mechanisms for real time video processing. Its primary purpose is for research and development and experimentation with different HMI elements for human factors and sensor integration, test, monitoring and detection of system wide events.
 
@@ -37,11 +41,11 @@ Dont have deep pockets and need a cheep alternative then the ARM (Raspberry Pi C
 
 > NOTE: Not all labels are currently implemented, project in heavy development! See [DEVELOPER.md](docs/DEVELOPER.md) for issues and features.
 
-Video can be streamed to an optional video processing unit (GPU/TPU for AI/ML and hemeshperical video processing) before being recieved by the HMI processor for video overlays and personalisation for gunner/commaner and driver displays. Multicast vdeo streams should be recieved by all consumers in realtime (networking not shown). There may be one or more users and displays on any given manned vehicle.
+Video can be streamed to an optional video processing unit (GPU/TPU for AI/ML and hemispherical video processing) before being received by the HMI processor for video overlays and personalisation for gunner/commander and driver displays. Multicast vdeo streams should be received by all consumers in realtime (networking not shown). There may be one or more users and displays on any given manned vehicle.
 
 ![GVA Dataflow](images/GVA-DataFlow.PNG#left)
 
-Touch screen inputs and bezel key inputs are sent back to the HMI to update the overlays in the RTP stream. The display can be 'dumb' with HMI / Video processing being done on a seperate LRU. RTP streams being recieved by the display have the overlays already rendered in the video stream.
+Touch screen inputs and bezel key inputs are sent back to the HMI to update the overlays in the RTP stream. The display can be 'dumb' with HMI / Video processing being done on a separate LRU. RTP streams being received by the display have the overlays already rendered in the video stream.
 
 ### HMI Controls
 
@@ -186,6 +190,7 @@ NO WARRANTY EXPRESSED OR IMPLIED.**
 
 <img src="https://cdn-images-1.medium.com/max/1600/1*C87EjxGeMPrkTuVRVWVg4w.png" width="225"></img>
 # Links
+* http://defencex.com.au/ DefenceX Sponsored (Commercial Plugins for LDM)
 * http://landopensystems.mod.uk/ UK MoD LOSA
 * https://www.natogva.org/ NATO GVA
 * https://www.vetronics.org/
