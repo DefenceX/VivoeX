@@ -26,7 +26,7 @@ jobs:
         run: mkdir build && cd build && cmake .. -DDDS=CYCLONE .. && make -j ${nproc}
 
       - name: Package
-        run: pwd && ls && cd build && cpack -G DEB && PACKAGE_DEB=$(ls ./build/*.deb) && cpack -G RPM && PACKAGE_RPM=$(ls ./build/*.deb)
+        run: pwd && ls && cd build && cpack -G DEB && PACKAGE_DEB=$(ls *.deb) && cpack -G RPM && PACKAGE_RPM=$(ls *.deb)
 
       # - name: CTest
       #   run: xvfb-run --server-args="-screen 0 1024x768x24" ctest -T memcheck
