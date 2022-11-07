@@ -210,8 +210,33 @@ do_test(log)
 #do_test(hmi)
 endif (BUILD_TESTS)
 
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/vivoe-lite.conf "/opt/gva/libs\n")
+# Install binaries with external libs
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/gva.log "")
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/gva.log DESTINATION "/var/log" PERMISSIONS OWNER_WRITE OWNER_READ GROUP_WRITE GROUP_READ WORLD_READ WORLD_WRITE)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/vivoe-lite.conf DESTINATION "/etc/ld.so.conf.d")
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/external/vivoe-media-framework/build/libvivoe-media.so DESTINATION "/opt/gva/libs")
-install(FILES ${CMAKE_BINARY_DIR}/etc/ld.so.conf.d/libc.conf DESTINATION "/etc/ld.so.conf.d/libc.conf") 
-install(FILES ${CMAKE_BINARY_DIR}/etc/profile.d/vivoe-lite.sh DESTINATION "/etc/profile.d/vivoe-lite.sh")
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/etc/ld.so.conf.d/vivoe-lite.conf DESTINATION "/etc/ld.so.conf.d") 
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/etc/profile.d/vivoe-lite.sh DESTINATION "/etc/profile.d")
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/external/libnmea/build/src/libnmealib.so 
+              ${CMAKE_CURRENT_BINARY_DIR}/external/vivoe-media-framework/build/libvivoe-media.so
+              ${CMAKE_CURRENT_BINARY_DIR}/external/vivoe-media-framework/build/libvivoe-media.so.1
+        DESTINATION "/opt/gva/libs")
+
+# Images
+install(FILES ${CMAKE_SOURCE_DIR}/images/FRONT_CENTRE.png
+              ${CMAKE_SOURCE_DIR}/images/FRONT_LEFT.png 
+              ${CMAKE_SOURCE_DIR}/images/FRONT_RIGHT.png 
+              ${CMAKE_SOURCE_DIR}/images/LEFT.png 
+              ${CMAKE_SOURCE_DIR}/images/RIGHT.png 
+              ${CMAKE_SOURCE_DIR}/images/REAR.png  DESTINATION "/opt/gva/hmi")
+
+# Uninstall target
+if(NOT TARGET uninstall)
+  configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/scripts/cmake/uninstall.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
+    IMMEDIATE @ONLY)
+
+  add_custom_target(uninstall
+    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
+endif()

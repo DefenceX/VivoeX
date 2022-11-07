@@ -42,7 +42,7 @@ logGva::log (char *message, int type)
 #endif
   if (!m_errorfd)
     {
-      m_errorfd = fopen ("log.txt", "w");
+      m_errorfd = fopen ("/var/log/gva.log", "w");
     }
   fprintf (m_errorfd, "[%ld] *%s* %s\n", info.uptime, msgType, message);
   fflush(m_errorfd);

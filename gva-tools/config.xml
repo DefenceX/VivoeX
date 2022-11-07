@@ -2,7 +2,7 @@
 <gva>
   <tool>
     <Domain>5</Domain>
-    <LogFile>log.txt</LogFile>
+    <LogFile>/var/log/gva.log</LogFile>
     <Device>/dev/dio_A</Device>
   </tool>
   <board>

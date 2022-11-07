@@ -1,8 +1,8 @@
 project (vivoe-lite-packages)
 
 # Create systems integration files
-file(WRITE ${CMAKE_BINARY_DIR}/etc/ld.so.conf.d/libc.conf "/opt/gva/libs/") 
-file(WRITE ${CMAKE_BINARY_DIR}/etc/profile.d/vivoe-lite.sh "export PATH=$PATH:/opt/gva/hmi")
+file(WRITE ${CMAKE_BINARY_DIR}/etc/ld.so.conf.d/vivoe-lite.conf "/opt/gva/libs/\n") 
+file(WRITE ${CMAKE_BINARY_DIR}/etc/profile.d/vivoe-lite.sh "export PATH=$PATH:/opt/gva/hmi\n")
 
 #General
 set(VERSION "0.3.0")
@@ -19,6 +19,7 @@ set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Ross Newman")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
 set(CPACK_DEBIAN_PACKAGE_DEPENDS libcairo2 libxt libxml2 libxext libswscale libprotobuf libgeographic)
+set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "ldconfig")
 # package name for deb. If set, then instead of some-application-0.9.2-Linux.deb
 # you'll get some-application_0.9.2_amd64.deb (note the underscores too)
 set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
