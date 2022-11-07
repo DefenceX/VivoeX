@@ -1,5 +1,5 @@
 project(hmi-video)
-include_directories(${CMAKE_BINARY_DIR}/external/rtp-payloader/src)
-include_directories(${CMAKE_BINARY_DIR}/external/rtp-payloader/src)
+include_directories(${CMAKE_BINARY_DIR}/external/vivoe-media-framework/src)
+include_directories(${CMAKE_BINARY_DIR}/external/vivoe-media-framework/src)
 add_library(hmi-video gva_video.cc gva_video_rtp_yuv.cc)
-add_dependencies(hmi-video rtp_payloader)
+add_dependencies(hmi-video vivoe_media)

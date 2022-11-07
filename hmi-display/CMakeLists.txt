@@ -21,7 +21,7 @@ endif()
 
 include_directories(../video)
 include_directories(./video)
-include_directories(${CMAKE_BINARY_DIR}/external/rtp-payloader/src)
+include_directories(${CMAKE_BINARY_DIR}/external/vivoe-media-framework/src)
 include_directories(${CMAKE_BINARY_DIR}/external/libnmea/src/include)
 if (ENABLE_OSMSCOUT)
 	include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/src/libosmscout/include)
@@ -39,7 +39,7 @@ if (ENABLE_OSMSCOUT)
 endif()
 link_directories(${CMAKE_BINARY_DIR}/external/Fast-DDS/build/thirdparty/fastcdr/src/cpp)
 link_directories(${CMAKE_BINARY_DIR}/external/Fast-DDS/build/src/cpp)
-link_directories(${CMAKE_BINARY_DIR}/external/rtp-payloader/build)
+link_directories(${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build)
 link_directories(${CMAKE_BINARY_DIR}/external/libnmea/build/src)
 
 message ("Platform " ${CMAKE_SYSTEM_NAME} " : " ${CMAKE_SYSTEM} ${MSYS} ${MSYS2}) 
@@ -81,8 +81,8 @@ target_link_libraries (hmi-display Geographic ${OSMSCOUT_LIBS} ${Protobuf_LIBRAR
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std=c++11")
 
-link_directories(${CMAKE_BINARY_DIR}/external/rtp-payloader/build ${CMAKE_BINARY_DIR}/external/libnmea/build/src)
-target_link_libraries(hmi-display png pthread hmi-video rtp-payloader nmealib ${CAIRO_LIBRARIES} ${PANGO_LIBRARIES} ${SWSCALE_LIBRARIES} ${GTK3_LIBRARIES})
+link_directories(${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build ${CMAKE_BINARY_DIR}/external/libnmea/build/src)
+target_link_libraries(hmi-display png pthread hmi-video vivoe-media nmealib ${CAIRO_LIBRARIES} ${PANGO_LIBRARIES} ${SWSCALE_LIBRARIES} ${GTK3_LIBRARIES})
 target_include_directories(hmi-display PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/widgets   ${CMAKE_CURRENT_SOURCE_DIR}/common  ${CMAKE_BINARY_DIR}/hmi_display ${CAIRO_INCLUDE_DIRS} ${PANGO_INCLUDE_DIRS} ${SWSCALE_INCLUDE_DIRS} ${GTK3_INCLUDE_DIRS} common dds dds/location display)
 target_compile_options(hmi-display PUBLIC ${CAIRO_CFLAGS_OTHER} ${GTK3_CFLAGS_OTHER})
 

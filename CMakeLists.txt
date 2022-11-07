@@ -30,7 +30,6 @@ option(HMI_ONLY "only build HMI and Tools" OFF)
 if (HMI_ONLY)
 add_custom_target(libosmscout)
 add_custom_target(libnmea)
-add_custom_target(rtp_payloader)
 else (HMI_ONLY)
 
 
@@ -68,19 +67,20 @@ if (ENABLE_OSMSCOUT)
 endif()
 
 # ------------------------------------------------------------------------------
-# rtp-payloader
+# vivoe-media-framework
 # ------------------------------------------------------------------------------
 ExternalProject_Add(
-    rtp_payloader
-    GIT_REPOSITORY      https://github.com/ross-newman/rtp-payloader
+    vivoe_media
+    GIT_REPOSITORY      https://github.com/DefenceX/vivoe-media-framework
     GIT_SHALLOW         1
+	GIT_TAG             main
 	CMAKE_ARGS          -DCMAKE_INSTALL_PREFIX:PATH=/opt/gva/libs
-    PREFIX              ${CMAKE_BINARY_DIR}/external/rtp-payloader/prefix
-    TMP_DIR             ${CMAKE_BINARY_DIR}/external/rtp-payloader/tmp
-    STAMP_DIR           ${CMAKE_BINARY_DIR}/external/rtp-payloader/stamp
-    DOWNLOAD_DIR        ${CMAKE_BINARY_DIR}/external/rtp-payloader/download
-    SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/rtp-payloader/src
-    BINARY_DIR          ${CMAKE_BINARY_DIR}/external/rtp-payloader/build
+    PREFIX              ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/prefix
+    TMP_DIR             ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/tmp
+    STAMP_DIR           ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/stamp
+    DOWNLOAD_DIR        ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/download
+    SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/src
+    BINARY_DIR          ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build
     INSTALL_COMMAND     ""
     UPDATE_DISCONNECTED 1
     BUILD_ALWAYS        0
@@ -91,7 +91,7 @@ ExternalProject_Add(
 # ------------------------------------------------------------------------------
 ExternalProject_Add(
     libnmea
-    GIT_REPOSITORY      https://github.com/ross-newman/nmealib
+    GIT_REPOSITORY      https://github.com/DefenceX/nmealib
     GIT_SHALLOW         1
     CMAKE_ARGS          ""
     PREFIX              ${CMAKE_BINARY_DIR}/external/libnmea/prefix
@@ -153,7 +153,7 @@ if (ENABLE_OSMSCOUT)
 	include_directories(${PROJECT_SOURCE_DIR}/../libosmscout/libosmscout-map/include)
 	include_directories(${PROJECT_SOURCE_DIR}/../libosmscout/libosmscout-map-cairo/include)
 endif()
-include_directories(${CMAKE_BINARY_DIR}/external/rtp-payloader/src)
+include_directories(${CMAKE_BINARY_DIR}/external/vivoe-media-framework/src)
 include_directories(${CMAKE_BINARY_DIR}/external/libnmea/src/include)
 include_directories(SYSTEM ${CMAKE_BINARY_DIR}/include)
 
@@ -184,7 +184,7 @@ if (ENABLE_OSMSCOUT)
 	include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout-map-cairo/include)
         SET(OSMSCOUT_LIBS ${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout ${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout-map ${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout-map-cairo)
 endif()
-add_dependencies(business_logic libnmea hmi-video rtp_payloader ${EXTRA_LIBS})
+add_dependencies(business_logic libnmea hmi-video vivoe-media ${EXTRA_LIBS})
 pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
 pkg_check_modules(CAIRO REQUIRED cairo)
 pkg_check_modules(PANGO REQUIRED pango)
@@ -193,7 +193,7 @@ pkg_check_modules(SWSCALE REQUIRED libswscale)
 link_directories(${CMAKE_BINARY_DIR}/external/libnmea/build/src ${OSMSCOUT_LIBS})
 target_link_libraries(business_logic ${Protobuf_LIBRARIES} ${GTK3_LIBRARIES} ${CAIRO_LIBRARIES} ${PANGO_LIBRARIES} ${SWSCALE_LIBRARIES} X11 pthread Geographic nmealib osmscout osmscout_map osmscout_map_cairo)
 target_compile_definitions(business_logic PRIVATE VIRTUAL=virtual MAIN=unittest_main)
-target_include_directories(business_logic PUBLIC ${GTK3_INCLUDE_DIRS} ${CAIRO_INCLUDE_DIRS} ${PANGO_INCLUDE_DIRS} ${SWSCALE_INCLUDE_DIRS} nmealib rtp-payloader video hmi-display hmi-display/common )
+target_include_directories(business_logic PUBLIC ${GTK3_INCLUDE_DIRS} ${CAIRO_INCLUDE_DIRS} ${PANGO_INCLUDE_DIRS} ${SWSCALE_INCLUDE_DIRS} nmealib vivoe-media video hmi-display hmi-display/common )
 
 macro(do_test str)
     add_executable(test_${str} test/test_${str}.cc)
@@ -211,4 +211,4 @@ endif (BUILD_TESTS)
 
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/vivoe-lite.conf "/opt/gva/libs\n")
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/vivoe-lite.conf DESTINATION "/etc/ld.so.conf.d")
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/external/rtp-payloader/build/librtp-payloader.so DESTINATION "/opt/gva/libs")
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/external/vivoe-media-framework/build/libvivoe-media.so DESTINATION "/opt/gva/libs")
