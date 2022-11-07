@@ -23,7 +23,7 @@ jobs:
           sudo apt-get --no-install-recommends install catch rpm libgtk-3-dev valgrind libcairo2-dev libpango1.0-dev libxt-dev doxygen libxml2-dev ncurses-dev libxext-dev libswscale-dev libprotobuf-c-dev geographiclib-doc libgeographic-dev libasio-dev libtinyxml2-dev gradle libgeographic-dev libprotobuf-dev protobuf-compiler autoconf automake libtool curl make g++ unzip gawk flex bison
 
       - name: Configure
-        run: echo "15" | ./configure && make -j ${nproc}
+        run: cd $HOME/build && echo "15" | ./configure && make -j ${nproc}
 
       - name: Package
         run: cd $HOME/build && cpack -G RPM && PACKAGE=$(ls ./build/*.rpm)
