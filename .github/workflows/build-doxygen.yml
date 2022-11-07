@@ -1,6 +1,4 @@
 # Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
-
 name: "Build : Doxygen"
 
 on:
@@ -17,11 +15,6 @@ permissions:
   contents: read
   pages: write
   id-token: write
-
-# Allow one concurrent deployment
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
 
 jobs:
   # Single deploy job since we're just deploying
