@@ -5,6 +5,7 @@ add_dependencies(vivoe-lite hmi-display)
 
 include(scripts/cmake/dds.cmake)
 include(scripts/cmake/cpp.cmake)
+include(scripts/cmake/cpack.cmake)
 
 
 if (ENABLE_OSMSCOUT)
@@ -212,3 +213,5 @@ endif (BUILD_TESTS)
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/vivoe-lite.conf "/opt/gva/libs\n")
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/vivoe-lite.conf DESTINATION "/etc/ld.so.conf.d")
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/external/vivoe-media-framework/build/libvivoe-media.so DESTINATION "/opt/gva/libs")
+install(FILES ${CMAKE_BINARY_DIR}/etc/ld.so.conf.d/libc.conf DESTINATION "/etc/ld.so.conf.d/libc.conf") 
+install(FILES ${CMAKE_BINARY_DIR}/etc/profile.d/vivoe-lite.sh DESTINATION "/etc/profile.d/vivoe-lite.sh")

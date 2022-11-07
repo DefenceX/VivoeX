@@ -87,5 +87,4 @@ target_include_directories(hmi-display PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAK
 target_compile_options(hmi-display PUBLIC ${CAIRO_CFLAGS_OTHER} ${GTK3_CFLAGS_OTHER})
 
 install(TARGETS hmi-display DESTINATION /opt/gva/hmi)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/config.pb DESTINATION /opt/gva/hmi)
 

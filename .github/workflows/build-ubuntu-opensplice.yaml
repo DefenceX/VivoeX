@@ -25,8 +25,17 @@ jobs:
       - name: Configure
         run: echo "15" | ./configure && make -j ${nproc}
 
+      - name: Package
+        run: cpack -G RPM && PACKAGE=$(ls ./build/*.rpm)
+
       - name: CTest
         run: xvfb-run --server-args="-screen 0 1024x768x24" ctest -T memcheck
 
       - name: Post
         run: cd .. && bash <(curl -s https://codecov.io/bash)
+
+      - name: Archive packaged .rpm
+        uses: actions/upload-artifact@v3
+        with:
+          name: $PACKAGE
+          path: $PACKAGE
