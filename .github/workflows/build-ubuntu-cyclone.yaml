@@ -26,10 +26,10 @@ jobs:
         run: mkdir build && cd build && cmake .. -DDDS=CYCLONE .. && make -j ${nproc}
 
       - name: Package for Debian (.deb)
-        run: cd build && cpack -G DEB && export DEB_PACKAGE=$(ls build/*.deb)
+        run: cd build && cpack -G DEB && export DEB_PACKAGE=$(ls *.deb)
 
       - name: Package for CentOS (.rpm)
-        run: cd build && cpack -G RPM && export RPM_PACKAGE=$(ls build/*.rpm)
+        run: cd build && cpack -G RPM && export RPM_PACKAGE=$(ls *.rpm)
 
       # - name: CTest
       #   run: xvfb-run --server-args="-screen 0 1024x768x24" ctest -T memcheck
