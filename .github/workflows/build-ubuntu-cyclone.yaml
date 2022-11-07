@@ -41,10 +41,10 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: deb
-          path: $DEB_PACKAGE
+          path: ${{ env.DEB_PACKAGE }}
 
       - name: Archive packaged .rpm 
         uses: actions/upload-artifact@v3
         with:
           name: rpm
-          path: $RPM_PACKAGE
+          path: ${{ env.RPM_PACKAGE }}
