@@ -3,6 +3,7 @@ project(vivoe-lite)
 add_custom_target(vivoe-lite)
 add_dependencies(vivoe-lite hmi-display)
 
+include(scripts/cmake/version.cmake)
 include(scripts/cmake/dds.cmake)
 include(scripts/cmake/cpp.cmake)
 include(scripts/cmake/cpack.cmake)

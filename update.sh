@@ -13,3 +13,4 @@ sed -i "s/#define PATCH ${lines[2]}/#define PATCH ${patch}/g" ../hmi-display/gva
 echo "${lines[0]}" > ../version
 echo "${lines[1]}" >> ../version
 echo "${patch}" >> ../version
+echo "${tweak}" >> ../version
