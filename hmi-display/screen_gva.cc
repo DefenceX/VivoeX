@@ -224,8 +224,8 @@ int ScreenGva::Update() {
       break;
     case SURFACE_BLACKOUT:
       // Set background black
-      SetColourForground(HMI_BLUE);
-      SetColourBackground(HMI_RED);
+      SetColourForground(HMI_BLACK);
+      SetColourBackground(HMI_BLACK);
       DrawRectangle(0, 0, width_, height_, true);
       break;
   }
