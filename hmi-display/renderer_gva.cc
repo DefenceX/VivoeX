@@ -49,7 +49,12 @@ void FunctionKeySimple::Draw(RendererGva *r, uint32_t x, uint32_t y, uint32_t wi
   char delim[] = ".";
   char *ptr = NULL;
 
-  r->DrawRectangle(x, y, x + width, y + height, true);
+  if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::LABEL_ROUNDED) {
+    r->DrawRoundedRectangle(x, y, width, height, 6, true);
+  } else {
+    r->DrawRectangle(x, y, width, height, true);
+  }
+
   r->DrawColor(HMI_WHITE);
 
   if (!strncmp(text, "icon:", 5)) {
@@ -81,12 +86,21 @@ void FunctionKeySimple::Draw(RendererGva *r, uint32_t x, uint32_t y, uint32_t wi
 void FunctionKeyToggle::toggle(RendererGva *r, char *label1, char *label2) {
   r->SetColourForground(HMI_DARK_GREEN2);
   r->SetColourBackground(HMI_YELLOW);
-  r->DrawRectangle(GetX() + 5, GetY() + 5, GetX() + 45, GetY() + 25, true);
+  if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::LABEL_ROUNDED) {
+    r->DrawRoundedRectangle(GetX() + 5, GetY() + 5, 40, 20, 4, true);
+  } else {
+    r->DrawRectangle(GetX() + 5, GetY() + 5, 40, 20, true);
+  }
   r->DrawColor(HMI_BLACK);
   r->DrawText(GetX() + 12, GetY() + 9, label1, 14);
   r->SetColourBackground(HMI_GREY);
   r->SetColourForground(HMI_DARK_GREY);
-  r->DrawRectangle(GetX() + 50, GetY() + 5, GetX() + 95, GetY() + 25, true);
+
+  if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::LABEL_ROUNDED) {
+    r->DrawRoundedRectangle(GetX() + 50, GetY() + 5, 45, 20, 4, true);
+  } else {
+    r->DrawRectangle(GetX() + 50, GetY() + 5, 45, 20, true);
+  }
   r->DrawColor(HMI_BLACK);
   r->DrawText(GetX() + 56, GetY() + 9, label2, 14);
 }
@@ -147,7 +161,11 @@ void RendererGva::DrawTopLabels(uint32_t y, uint32_t active, uint32_t hide) {
         SetColourBackground(config_->GetThemeLabelBackgroundEnabled());
       }
 
-      DrawRectangle((i * width) + offset, y, (i * width) + width - spacing + offset, y + 10, true);
+      if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::LABEL_ROUNDED) {
+        DrawRoundedRectangle((i * width) + offset, y, width - 10, 10, 4, true);
+      } else {
+        DrawRectangle((i * width) + offset, y, width - 10, 10, true);
+      }
       touch_.AddAbsolute(TOP, (uint32_t)(KEY_SA + i), (i * width) + offset, y, (i * width) + width - spacing + offset,
                          y + 10);
     }
@@ -182,8 +200,12 @@ void RendererGva::DrawControlLabels(uint32_t y, uint32_t active, uint32_t hide) 
         SetColourBackground(config_->GetThemeLabelBackgroundEnabled());
       }
     }
-    DrawRectangle((i * w) + offset, y, (i * w) + w - 5 + offset, y + 20, true);
 
+    if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::LABEL_ROUNDED) {
+      DrawRoundedRectangle((i * w) + offset, y, w - 5, 20, 4, true);
+    } else {
+      DrawRectangle((i * w) + offset, y, w - 5, 20, true);
+    }
     (1 << (7 - i) & hide) ? DrawColor(config_->GetThemeLabelTextEnabled())
                           : DrawColor(config_->GetThemeLabelTextEnabledSelected());
     touch_.AddAbsolute(BOTTOM, (uint32_t)(KEY_F13 + i), (i * w) + offset, y, (i * w) + w - 5 + offset, y + 20);
@@ -320,7 +342,7 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
   Restore();
 }
 
-void RendererGva::DrawPPI(uint32_t x, uint32_t y, uint32_t degrees, uint32_t sightAzimuth) {
+void RendererGva::DrawPPI(uint8_t mode, uint32_t x, uint32_t y, uint32_t degrees, uint32_t sightAzimuth) {
   double_t radius = 50;
   uint32_t angle = 45;
   double_t d;
@@ -381,34 +403,37 @@ void RendererGva::DrawPPI(uint32_t x, uint32_t y, uint32_t degrees, uint32_t sig
     DrawPen(x + (radius - p) * cos(d), y - (radius - p) * sin(d), true);
   }
 
-  // Sight
-  SetLineThickness(2, LINE_SOLID);
-  SetColourBackground(HMI_WHITE);
-  SetColourForground(HMI_WHITE);
-  {
-    int64_t x2, y2;
+  // Mode zero has sight
+  if (mode == 0) {
+    // Sight
+    SetLineThickness(2, LINE_SOLID);
+    SetColourBackground(HMI_WHITE);
+    SetColourForground(HMI_WHITE);
+    {
+      int64_t x2, y2;
 
-    x2 = PLOT_CIRCLE_X(x, radius - 10, sightAzimuth);
-    y2 = PLOT_CIRCLE_Y(y, radius - 10, sightAzimuth);
-    MovePen(x, y);
-    DrawPen(x2, y2, true);
-    SetLineThickness(1, LINE_DASHED);
-    x2 = PLOT_CIRCLE_X(x, radius - 10, (sightAzimuth - (angle / 2)));
-    y2 = PLOT_CIRCLE_Y(y, radius - 10, (sightAzimuth - (angle / 2)));
-    MovePen(x, y);
-    DrawPen(x2, y2, true);
-    SetLineThickness(1, LINE_DASHED);
-    x2 = PLOT_CIRCLE_X(x, radius - 10, (sightAzimuth + (angle / 2)));
-    y2 = PLOT_CIRCLE_Y(y, radius - 10, (sightAzimuth + (angle / 2)));
-    MovePen(x, y);
-    DrawPen(x2, y2, true);
+      x2 = PLOT_CIRCLE_X(x, radius - 10, sightAzimuth);
+      y2 = PLOT_CIRCLE_Y(y, radius - 10, sightAzimuth);
+      MovePen(x, y);
+      DrawPen(x2, y2, true);
+      SetLineThickness(1, LINE_DASHED);
+      x2 = PLOT_CIRCLE_X(x, radius - 10, (sightAzimuth - (angle / 2)));
+      y2 = PLOT_CIRCLE_Y(y, radius - 10, (sightAzimuth - (angle / 2)));
+      MovePen(x, y);
+      DrawPen(x2, y2, true);
+      SetLineThickness(1, LINE_DASHED);
+      x2 = PLOT_CIRCLE_X(x, radius - 10, (sightAzimuth + (angle / 2)));
+      y2 = PLOT_CIRCLE_Y(y, radius - 10, (sightAzimuth + (angle / 2)));
+      MovePen(x, y);
+      DrawPen(x2, y2, true);
+    }
   }
 
   // Heading
   SetLineThickness(1, LINE_SOLID);
   SetColourBackground(HMI_CYAN);
   SetColourForground(HMI_CYAN);
-  DrawRectangle(x - 1, y + 8, x + 1, y + 35, true);
+  DrawRectangle(x - 1, y + 8, 1, 35, true);
 }
 
 void RendererGva::DrawMode() {
@@ -424,7 +449,7 @@ void RendererGva::DrawMode() {
   uint32_t w = GetTextWidth("Maintinance Mode", 12);
   uint32_t h = GetTextHeight("Maintinance Mode", 12);
 
-  DrawRectangle(DEFAULT_WIDTH / 2 - (w / 2) - 5, y, DEFAULT_WIDTH / 2 + (w / 2) + 10, y + (h) + 15, true);
+  DrawRectangle(DEFAULT_WIDTH / 2 - (w / 2) - 5, y, w + 10, (h) + 15, true);
   DrawText(DEFAULT_WIDTH / 2 - (w / 2), y + 8, "Maintinance Mode", 12);
 }
 
@@ -455,8 +480,7 @@ void RendererGva::DrawTable(GvaTable *table) {
       SetColourBackground(table->row_[row].cell_[column].background.red,
                           table->row_[row].cell_[column].background.green,
                           table->row_[row].cell_[column].background.blue);
-      DrawRectangle(offset, table->GetY() - (height * row), offset + tmp, table->GetY() - (height * row) + height,
-                    true);
+      DrawRectangle(offset, table->GetY() - (height * row), tmp, height, true);
 
       DrawColor(table->row_[row].cell_[column].textcolour.red, table->row_[row].cell_[column].textcolour.green,
                 table->row_[row].cell_[column].textcolour.blue);
@@ -529,7 +553,7 @@ void RendererGva::DrawKeyboard(KeyboardModeType mode) {
 
   //  DrawRoundedRectangle (110, yLocation, 530,
   //                 yLocation + padding + ((bSize + 5) * 4) + 1, 10, true);
-  DrawRectangle(110, yLocation, 530, yLocation + padding + ((bSize + 5) * 4) + 1, true);
+  DrawRectangle(110, yLocation, 420, padding + ((bSize + 5) * 4) + 1, true);
   SetColourBackground(HMI_DARK_GREY);
   SetLineThickness(1, LINE_SOLID);
   SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, (uint32_t)CAIRO_FONT_WEIGHT_BOLD, config_->GetThemeFont());

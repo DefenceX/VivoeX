@@ -50,9 +50,9 @@ enum LabelStyle {
 
 message ThemeDefault {
   optional Colour theme_background = 1 [default = COLOUR_GREEN];
-  optional LabelStyle theme_label_style = 2 [default = LABEL_SQUARE];
+  optional LabelStyle theme_label_style = 2 [default = LABEL_ROUNDED];
   // Background label colour
-  optional Colour theme_label_background_enabled_selected_changing = 3 [default = COLOUR_DARK_GREEN];
+  optional Colour theme_label_background_enabled_selected_changing = 3 [default = COLOUR_BLACK];
   optional Colour theme_label_background_enabled_selected = 4 [default = COLOUR_DARK_GREEN];
   optional Colour theme_label_background_enabled = 5 [default = COLOUR_DARK_GREEN];
   optional Colour theme_label_background_disabled = 6 [default = COLOUR_GREY];
@@ -70,7 +70,7 @@ message ThemeDefault {
   // General
 
   // Line Thickness
-  optional int32 theme_label_border_thickness = 15 [default = 2];
+  optional int32 theme_label_border_thickness = 15 [default = 1];
   optional int32 theme_table_border_thickness = 16 [default = 1];
   optional Colour theme_status_background = 17 [default = COLOUR_DARK_GREEN];
   optional Colour theme_status_border = 18 [default = COLOUR_DARK_GREEN];

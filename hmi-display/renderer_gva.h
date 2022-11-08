@@ -189,7 +189,7 @@ class RendererGva : public RendererCairo {
   void DrawTopLabels(uint32_t y, uint32_t active, uint32_t hide);
   void DrawControlLabels(uint32_t y, uint32_t active, uint32_t hide);
   void DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width, uint32_t height);
-  void DrawPPI(uint32_t x, uint32_t y, uint32_t degrees, uint32_t sightAzimuth);
+  void DrawPPI(uint8_t mode, uint32_t x, uint32_t y, uint32_t degrees, uint32_t sightAzimuth);
   void DrawTable(GvaTable *table);
   void DrawMode();
   void DrawButton(char *keytext, uint32_t fontSize, uint32_t x, uint32_t y, uint32_t size);

@@ -30,7 +30,8 @@ namespace gva {
 
 void Compass::Draw() {
   if (GetVisible()) {
-    screen_->DrawPPI(GetX(), GetY(), bearing_, bearingSight_);
+    uint8_t mode = 0;
+    screen_->DrawPPI(mode, GetX(), GetY(), bearing_, bearingSight_);
   }
 }
 
