@@ -22,8 +22,8 @@ add_subdirectory(hmi-display)
 add_subdirectory(gva-tools)
 configure_file(gva-tools/config.xml ${CMAKE_CURRENT_BINARY_DIR}/build/gva-tools/. COPYONLY)
 
-set(IMAGE_PATH ${CMAKE_SOURCE_DIR}/images/uk)
-#set(IMAGE_PATH ${CMAKE_SOURCE_DIR}/images/aus)
+#set(IMAGE_PATH ${CMAKE_SOURCE_DIR}/images/uk)
+set(IMAGE_PATH ${CMAKE_SOURCE_DIR}/images/au)
 file(COPY ${IMAGE_PATH}/FrontRight.png 
           ${IMAGE_PATH}/FrontCenter.png 
           ${IMAGE_PATH}/FrontLeft.png 

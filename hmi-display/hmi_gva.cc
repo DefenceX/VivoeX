@@ -230,8 +230,8 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
       SET_CANVAS_PNG(filename);
       break;
     case KEY_F12:
-      snprintf(filename, sizeof(filename), "%s/%s", path, "FrontCenter.png");
-      SET_CANVAS_PNG("LEFT.png");
+      snprintf(filename, sizeof(filename), "%s/%s", path, "Left.png");
+      SET_CANVAS_PNG(filename);
       break;
     case KEY_F1:
     case KEY_F3:
@@ -244,8 +244,6 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
       strcpy(screen_.message.detail.text, "Operation not implemented!");
       break;
   }
-  std::cout << "File path to images : " << filename << std::endl;
-
   return keypress;
 }
 
