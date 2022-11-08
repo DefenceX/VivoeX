@@ -129,6 +129,13 @@ class ConfigData {
   uint32_t GetThemeBackground();
 
   ///
+  /// \brief Get the Table Background object
+  ///
+  /// \return uint32_t
+  ///
+  uint32_t GetTableBackground();
+
+  ///
   /// \brief Get the Theme Label Style object
   ///
   /// \return uint16_t

@@ -117,6 +117,8 @@ void ConfigData::SetFullscreen(bool fullscreen) { current_config_->set_fullscree
 
 uint32_t ConfigData::GetThemeBackground() { return (uint32_t)current_config_->theme().theme_background(); }
 
+uint32_t ConfigData::GetTableBackground() { return (uint32_t)current_config_->theme().table_background(); }
+
 uint16_t ConfigData::GetThemeLabelStyle() { return (uint32_t)current_config_->theme().theme_label_style(); }
 
 uint32_t ConfigData::GetThemeLabelBackgroundEnabledSelectedChanging() {
