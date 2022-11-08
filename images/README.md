@@ -16,10 +16,10 @@
 ![Alarms Screen](screen/ScreenshotAlarms.png)<br>
 **Alarms Screen**
 
-![Keyboard example](ScreenshotAlarmsKeyboard.png)<br>
+![Keyboard example](screen/ScreenshotAlarmsKeyboard.png)<br>
 **Keyboard example with Alarms**
 
-![High Contrast](Screenshot-High-Contrast.png)<br>
+![High Contrast](screen/ScreenshotThemeModern.png)<br>
 **Theme high contrast (user defined)**
 
 ## Hardware
