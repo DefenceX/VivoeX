@@ -421,11 +421,11 @@ void RendererGva::DrawMode() {
 
   SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, (uint32_t)CAIRO_FONT_WEIGHT_NORMAL, config_->GetThemeFont());
 
-  uint32_t w = GetTextWidth("Mauint32_tinance Mode", 12);
-  uint32_t h = GetTextHeight("Mauint32_tinance Mode", 12);
+  uint32_t w = GetTextWidth("Maintinance Mode", 12);
+  uint32_t h = GetTextHeight("Maintinance Mode", 12);
 
   DrawRectangle(DEFAULT_WIDTH / 2 - (w / 2) - 5, y, DEFAULT_WIDTH / 2 + (w / 2) + 10, y + (h) + 15, true);
-  DrawText(DEFAULT_WIDTH / 2 - (w / 2), y + 8, "Mauint32_tinance Mode", 12);
+  DrawText(DEFAULT_WIDTH / 2 - (w / 2), y + 8, "Maintinance Mode", 12);
 }
 
 void RendererGva::DrawTable(GvaTable *table) {
