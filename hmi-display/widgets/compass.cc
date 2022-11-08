@@ -23,6 +23,7 @@
 ///
 
 #include "compass.h"
+
 #include "screen_gva.h"
 
 namespace gva {
