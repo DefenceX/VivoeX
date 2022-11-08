@@ -55,6 +55,7 @@ typedef struct {
 class TableWidget {
  public:
   TableWidget() { configuration_ = gva::ConfigData::GetInstance(); }
+
   ///
   /// \brief Add a row to the table
   ///
@@ -75,13 +76,14 @@ class TableWidget {
     row->highlighted = false;
     row_count_ += 1;
   }
+
   ///
   /// \brief Add a row to the table
   ///
   ///
   void AddRow() {
     RowType *row = &rows_[row_count_];
-    row->background_colour = configuration_->GetThemeLabelBackgroundEnabledSelected();
+    row->background_colour = configuration_->GetThemeBackground();
     row->foreground_colour = Renderer::PackRgb(HMI_WHITE);
     row->outline_colour = Renderer::PackRgb(HMI_WHITE);
     row->highlight_colour = Renderer::PackRgb(HMI_YELLOW);
@@ -90,6 +92,7 @@ class TableWidget {
     row->alignment = ALIGN_LEFT;
     row_count_ += 1;
   }
+
   ///
   /// \brief Add a row to the table
   ///
@@ -100,13 +103,41 @@ class TableWidget {
     AddRow();
     row->font_weight = font_weight;
   }
+
+  ///
+  /// \brief Set the highlighted row
+  ///
+  ///
   void CurrentRowHighlight() { rows_[row_count_ - 1].highlighted = true; };
+
+  ///
+  /// \brief Add a basic cell
+  ///
+  /// \param text
+  /// \param width
+  ///
   void AddCell(char *text, int width) { AddCell(text, width, ALIGN_LEFT); }
+
+  ///
+  /// \brief Add a new cell with background colour
+  ///
+  /// \param text
+  /// \param width
+  /// \param background_colour
+  ///
   void AddCell(char *text, int width, long background_colour) {
     CellType *cell = &rows_[row_count_ - 1].cells[rows_[row_count_ - 1].cell_count];
     AddCell(text, width, ALIGN_LEFT);
     cell->background_colour = background_colour;
   }
+
+  ///
+  /// \brief Add a new cell specifying alingment
+  ///
+  /// \param text
+  /// \param width
+  /// \param align
+  ///
   void AddCell(char *text, int width, cellAlignType align) {
     CellType *cell = &rows_[row_count_ - 1].cells[rows_[row_count_ - 1].cell_count];
     cell->background_colour = rows_[row_count_ - 1].background_colour;
@@ -118,6 +149,11 @@ class TableWidget {
     cell->alignment = align;
     rows_[row_count_ - 1].cell_count += 1;
   }
+
+  ///
+  /// \brief Reset the table
+  ///
+  ///
   void Reset() {
     visible_ = false;
     row_count_ = 0;
@@ -129,6 +165,7 @@ class TableWidget {
   int x_;
   int y_;
   int row_count_;
+  long background_colour_;
   RowType rows_[MAX_ROWS];
 
  private:

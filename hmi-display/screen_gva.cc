@@ -354,7 +354,7 @@ int ScreenGva::Update() {
     table.border_ = config_->GetThemeLabelBorderThickness();
 
     strcpy(tmp[0], screen_->message.brief.text);
-    uint32_t background = config_->GetThemeBackground();
+    uint32_t background = gva::ConfigData::GetInstance()->GetThemeBackground();
     newrow.addCell({tmp[0],
                     ALIGN_CENTRE,
                     {HMI_WHITE},

@@ -462,7 +462,7 @@ void RendererGva::DrawTable(GvaTable *table) {
 
   SetLineThickness(config_->GetThemeTableBorderThickness(), LINE_SOLID);
   SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, (uint32_t)CAIRO_FONT_WEIGHT_NORMAL, table->fontname_);
-  SetColourBackground(config_->GetThemeBackground());
+  SetColourBackground(gva::ConfigData::GetInstance()->GetThemeBackground());
 
   for (row = 0; row < table->rows_; row++) {
     uint32_t offset = table->GetX();

@@ -103,6 +103,7 @@ void HmiHelper::TableAlarms(TableWidget *table) {
   table->x_ = 110;
   table->y_ = 390;
   table->width_ = 420;
+  table->background_colour_ = gva::ConfigData::GetInstance()->GetThemeBackground();
 
   table->AddRow(WEIGHT_BOLD);
   table->AddCell("Time", 20);
