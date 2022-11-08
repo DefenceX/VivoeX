@@ -103,6 +103,7 @@ void HmiHelper::TableAlarms(TableWidget *table) {
   table->x_ = 110;
   table->y_ = 390;
   table->width_ = 420;
+  table->background_colour_ = gva::ConfigData::GetInstance()->GetThemeBackground();
 
   table->AddRow(WEIGHT_BOLD);
   table->AddCell("Time", 20);
@@ -151,8 +152,22 @@ void HmiHelper::TableAlarms(TableWidget *table) {
 
   table->AddRow(Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_ORANGE), Renderer::PackRgb(HMI_WHITE),
                 Renderer::PackRgb(HMI_YELLOW), WEIGHT_NORMAL);
-  table->AddCell("15/6 19:", 20);
+  table->AddCell("15/6 19:04", 20);
   table->AddCell("LRU xx fault", 50);
+  table->AddCell("C", 10);
+  table->AddCell("ACT", 20);
+
+  table->AddRow(Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_ORANGE), Renderer::PackRgb(HMI_WHITE),
+                Renderer::PackRgb(HMI_YELLOW), WEIGHT_NORMAL);
+  table->AddCell("15/6 19:10", 20);
+  table->AddCell("SAS Camera 1 (Day) over temperature", 50);
+  table->AddCell("A", 10);
+  table->AddCell("ACT", 20);
+
+  table->AddRow(Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_ORANGE), Renderer::PackRgb(HMI_WHITE),
+                Renderer::PackRgb(HMI_YELLOW), WEIGHT_NORMAL);
+  table->AddCell("15/6 19:10", 20);
+  table->AddCell("CBRN detected high CO2", 50);
   table->AddCell("C", 10);
   table->AddCell("ACT", 20);
 

@@ -117,6 +117,8 @@ void ConfigData::SetFullscreen(bool fullscreen) { current_config_->set_fullscree
 
 uint32_t ConfigData::GetThemeBackground() { return (uint32_t)current_config_->theme().theme_background(); }
 
+uint32_t ConfigData::GetTableBackground() { return (uint32_t)current_config_->theme().table_background(); }
+
 uint16_t ConfigData::GetThemeLabelStyle() { return (uint32_t)current_config_->theme().theme_label_style(); }
 
 uint32_t ConfigData::GetThemeLabelBackgroundEnabledSelectedChanging() {
@@ -188,4 +190,17 @@ uint32_t ConfigData::GetThemeCritical() { return (uint32_t)current_config_->them
 const char* ConfigData::GetThemeFont() {
   return reinterpret_cast<const char*>(current_config_->theme().theme_font().c_str());
 }
+
+const char* ConfigData::GetLogPath() {
+  return reinterpret_cast<const char*>(current_config_->file().log_path().c_str());
+}
+
+const char* ConfigData::GetLogFilename() {
+  return reinterpret_cast<const char*>(current_config_->file().log_filename().c_str());
+}
+
+const char* ConfigData::GetImagePath() {
+  return reinterpret_cast<const char*>(current_config_->file().images_path().c_str());
+}
+
 }  // namespace gva

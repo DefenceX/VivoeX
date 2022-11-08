@@ -148,8 +148,8 @@ class RendererCairo : public Renderer {
   void Rotate(double radians);
   int ClosePath(bool fill);
   void DrawCircle(int x, int y, int radius, bool fill);
-  void DrawRectangle(int x1, int y1, int x2, int y2, bool fill);
-  void DrawRoundedRectangle(int x1, int y1, int x2, int y2, int courner, bool fill);
+  void DrawRectangle(int x, int y, int width, int height, bool fill);
+  void DrawRoundedRectangle(int x, int y, int width, int height, int courner, bool fill);
   void DrawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, bool fill);
   int DrawColor(int r, int g, int b);
   int DrawColor(unsigned int rgb);

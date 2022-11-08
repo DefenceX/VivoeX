@@ -224,8 +224,8 @@ int ScreenGva::Update() {
       break;
     case SURFACE_BLACKOUT:
       // Set background black
-      SetColourForground(HMI_BLUE);
-      SetColourBackground(HMI_RED);
+      SetColourForground(HMI_BLACK);
+      SetColourBackground(HMI_BLACK);
       DrawRectangle(0, 0, width_, height_, true);
       break;
   }
@@ -306,7 +306,7 @@ int ScreenGva::Update() {
 
   // Setup and Draw the alarms
   if (screen_->table.visible_) {
-    GvaTable table(screen_->table.x_, screen_->table.y_, screen_->table.width_);
+    GvaTable table(screen_->table.x_, screen_->table.y_ + 33, screen_->table.width_);
     table.SetFontName(config_->GetThemeFont());
     table.border_ = 1;
     for (int row = 0; row < screen_->table.row_count_; row++) {
@@ -354,7 +354,7 @@ int ScreenGva::Update() {
     table.border_ = config_->GetThemeLabelBorderThickness();
 
     strcpy(tmp[0], screen_->message.brief.text);
-    uint32_t background = config_->GetThemeBackground();
+    uint32_t background = gva::ConfigData::GetInstance()->GetThemeBackground();
     newrow.addCell({tmp[0],
                     ALIGN_CENTRE,
                     {HMI_WHITE},

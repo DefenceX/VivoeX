@@ -28,7 +28,7 @@
 #include "renderer_gva.h"
 
 namespace gva {
-static unsigned int previous_key_;
+static uint32_t previous_key_;
 
 EventsGva::EventsGva(gtkType* window, TouchGva* touch) {
   window_ = window;
@@ -45,7 +45,7 @@ gboolean EventsGva::ButtonPressEventCb(GtkWidget* Widget, GdkEventButton* event,
 
   if (event->button == GDK_BUTTON_PRIMARY) {
     EventGvaType gvaEvent;
-    int binding = 0;
+    uint32_t binding = 0;
 
     touch_->Check(TOP, &binding, event->x, event->y);
     if (!binding) touch_->Check(BOTTOM, &binding, event->x, event->y);
@@ -363,7 +363,7 @@ gboolean EventsGva::KeyPressEventCb(GtkWidget* Widget, GdkEventKey* event) {
   return TRUE;
 }
 
-int EventsGva::NextGvaEvent(EventGvaType* event) {
+uint32_t EventsGva::NextGvaEvent(EventGvaType* event) {
   EventGvaType popEvent;
 
   popEvent.type == NO_EVENT;

@@ -457,17 +457,19 @@ void RendererCairo::DrawArcRaw(int x, int y, int radius, int angle1, int angle2)
   ;
 }
 
-void RendererCairo::DrawRectangle(int x1, int y1, int x2, int y2, bool fill) {
+void RendererCairo::DrawRectangle(int x, int y, int width, int height, bool fill) {
+  width += x;
+  height += y;
 #if INVERTED
-  y1 = render_.size.height - y1;
-  y2 = render_.size.height - y2;
+  y = render_.size.height - y;
+  height = render_.size.height - height;
 #endif
 
   Draw_commands_[draw_tail_].command = COMMAND_PEN_RECTANGLE;
-  Draw_commands_[draw_tail_].points[0].x = x1;
-  Draw_commands_[draw_tail_].points[0].y = y1;
-  Draw_commands_[draw_tail_].points[1].x = x2;
-  Draw_commands_[draw_tail_].points[1].y = y2;
+  Draw_commands_[draw_tail_].points[0].x = x;
+  Draw_commands_[draw_tail_].points[0].y = y;
+  Draw_commands_[draw_tail_].points[1].x = width;
+  Draw_commands_[draw_tail_].points[1].y = height;
   Draw_commands_[draw_tail_++].fill = fill ? 1 : 0;
 }
 

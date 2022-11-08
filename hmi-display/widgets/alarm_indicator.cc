@@ -30,10 +30,10 @@ namespace gva {
 
 void AlarmIndicator::Draw() {
   if (GetVisible()) {
-    GvaTable table(104, GetY(), 432);
+    GvaTable table(110, GetY() - 392, 420);
     table.SetFontName(gva::ConfigData::GetInstance()->GetThemeFont());
     GvaRow alarmrow;
-    GvaCellType cell = {text_, ALIGN_CENTRE, {HMI_WHITE}, {HMI_RED}, {HMI_WHITE}, WEIGHT_NORMAL};
+    GvaCellType cell = {text_, ALIGN_CENTRE, {HMI_DARK_GREY}, {HMI_RED}, {HMI_WHITE}, WEIGHT_NORMAL};
     table.border_ = 0;
     alarmrow.addCell(cell, 100);
     table.AddRow(alarmrow);
