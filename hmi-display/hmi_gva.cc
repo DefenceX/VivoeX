@@ -195,6 +195,9 @@ GvaKeyEnum Hmi::Key(GvaKeyEnum keypress) {
 }
 
 GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
+  const char *path = gva::ConfigData::GetInstance()->GetImagePath();
+  char filename[1000];
+
   screen_.function_left.active = 0;
   screen_.function_right.active = 0;
 
@@ -203,24 +206,31 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
 
   switch (keypress) {
     case KEY_F2:
-      SET_CANVAS_PNG("QUAD.png");
+      snprintf(filename, sizeof(filename), "%s/%s", path, "Quad.png");
+      SET_CANVAS_PNG(filename);
       break;
     case KEY_F4:
-      SET_CANVAS_PNG("FRONT_RIGHT.png");
+      snprintf(filename, sizeof(filename), "%s/%s", path, "FrontRight.png");
+      SET_CANVAS_PNG(filename);
       break;
     case KEY_F5:
-      SET_CANVAS_PNG("FRONT_CENTRE.png");
+      snprintf(filename, sizeof(filename), "%s/%s", path, "FrontCenter.png");
+      SET_CANVAS_PNG(filename);
       break;
     case KEY_F6:
-      SET_CANVAS_PNG("FRONT_LEFT.png");
+      snprintf(filename, sizeof(filename), "%s/%s", path, "FrontLeft.png");
+      SET_CANVAS_PNG(filename);
       break;
     case KEY_F10:
-      SET_CANVAS_PNG("RIGHT.png");
+      snprintf(filename, sizeof(filename), "%s/%s", path, "Right.png");
+      SET_CANVAS_PNG(filename);
       break;
     case KEY_F11:
-      SET_CANVAS_PNG("REAR.png");
+      snprintf(filename, sizeof(filename), "%s/%s", path, "Rear.png");
+      SET_CANVAS_PNG(filename);
       break;
     case KEY_F12:
+      snprintf(filename, sizeof(filename), "%s/%s", path, "FrontCenter.png");
       SET_CANVAS_PNG("LEFT.png");
       break;
     case KEY_F1:
@@ -234,6 +244,8 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
       strcpy(screen_.message.detail.text, "Operation not implemented!");
       break;
   }
+  std::cout << "File path to images : " << filename << std::endl;
+
   return keypress;
 }
 
@@ -533,7 +545,12 @@ struct StateSA : Hmi {
 
       if (screen_.labels != LABEL_MINIMAL) screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(true);
       screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(true);
-      if (!screen_.canvas.surface) SET_CANVAS_PNG("FRONT_CENTRE.png");
+      if (!screen_.canvas.surface) {
+        char filename[1000];
+        snprintf(filename, sizeof(filename), "%s/%s", gva::ConfigData::GetInstance()->GetImagePath(),
+                 "FrontCenter.png");
+        SET_CANVAS_PNG(filename);
+      }
       screen_.function_top->active = 0x1 << 7;
     }
   };
@@ -555,13 +572,15 @@ struct StateSA : Hmi {
 struct StateWPN : Hmi {
   void entry() override {
     if (!BIT(6, screen_.function_top->hidden)) {
+      char filename[1000];
       screen_ = manager_->GetScreen(WPN);
       lastState_ = WPN;
       Reset();
 
       if (screen_.labels != LABEL_MINIMAL) screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(true);
       screen_.canvas.visible = true;
-      SET_CANVAS_PNG("FRONT_CENTRE.png");
+      snprintf(filename, sizeof(filename), "%s/%s", gva::ConfigData::GetInstance()->GetImagePath(), "FrontCenter.png");
+      SET_CANVAS_PNG(filename);
       screen_.function_top->active = 0x1 << 6;
     }
   };
@@ -611,6 +630,7 @@ struct StateDEF : Hmi {
 struct StateSYS : Hmi {
   void entry() override {
     if (!BIT(4, screen_.function_top->hidden)) {
+      char filename[1000];
       screen_ = manager_->GetScreen(SYS);
       lastState_ = SYS;
       Reset();
@@ -618,7 +638,8 @@ struct StateSYS : Hmi {
       screen_.status_bar->visible = true;
       screen_.function_top->visible = true;
       screen_.canvas.visible = true;
-      SET_CANVAS_PNG("FRONT_CENTRE.png");
+      snprintf(filename, sizeof(filename), "%s/%s", gva::ConfigData::GetInstance()->GetImagePath(), "FrontCenter.png");
+      SET_CANVAS_PNG(filename);
 
       HmiHelper::TableSystem(&screen_.table);
 

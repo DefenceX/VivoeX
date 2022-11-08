@@ -145,6 +145,12 @@ message ThemeModernBlue {
   optional string theme_font = 22 [default = "Courier 10 Pitch"];
 }
 
+message File {
+  required string log_filename = 1 [default = "gva.log"];
+  required string log_path = 2 [default = "/var/log"];
+  required string images_path = 3 [default = "/opt/gva/hmi/images"];
+}
+
 message Gva {
   required string name = 1;
   optional int32 height = 3 [default = 480];
@@ -181,10 +187,13 @@ message Gva {
   optional ThemeDefault theme = 15;
   // optional ThemeModernBlue theme = 15;
   
+  optional File file = 16;
   
   message BezelKeyset {
     required int32 act = 1;
     required int32 hidden = 2;
   }
+  
+
 }
 

@@ -275,6 +275,27 @@ class ConfigData {
   ///
   const char* GetThemeFont();
 
+  ///
+  /// \brief Get the Log Path object
+  ///
+  /// \return const char*
+  ///
+  const char* GetLogPath();
+
+  ///
+  /// \brief Get the Log Filename object
+  ///
+  /// \return const char*
+  ///
+  const char* GetLogFilename();
+
+  ///
+  /// \brief Get the Image Path object
+  ///
+  /// \return const char*
+  ///
+  const char* GetImagePath();
+
  protected:
   ///
   /// \brief Construct a new Config Data object
