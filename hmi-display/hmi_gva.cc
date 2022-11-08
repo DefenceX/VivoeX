@@ -55,12 +55,14 @@ void Hmi::Reset() {
   screen_.canvas.visible = false;
   screen_.canvas.bufferType = SURFACE_NONE;
   screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(false);
-  screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetX(165);
+  screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetY(360 + 28);
+  screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetX(161);
   screen_render_->GetWidget(WIDGET_TYPE_KEYBOARD)
       ->SetVisible((screen_render_->GetWidget(WIDGET_TYPE_KEYBOARD)->GetVisible()) ? true : false);
   screen_.table.visible_ = false;
   screen_.control->active = 0x0;
   screen_.message.visible = false;
+  screen_.info.mode = MODE_OPERATIONAL;
   alarmson_ = false;
 }
 
@@ -76,6 +78,8 @@ void Hmi::Labels(LabelModeEnum labels) {
       screen_.status_bar->visible = true;
       screen_.status_bar->y = 446;
       screen_render_->GetWidget(WIDGET_TYPE_ALARM_INDICATOR)->SetVisible(true);
+      screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetY(360 + 28);
+      screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetX(161);
       screen_render_->GetWidget(WIDGET_TYPE_ALARM_INDICATOR)->SetY(423);
       break;
     case LABEL_STATUS_ONLY:
@@ -86,8 +90,9 @@ void Hmi::Labels(LabelModeEnum labels) {
       screen_.status_bar->visible = true;
       screen_.status_bar->y = 459;
       screen_render_->GetWidget(WIDGET_TYPE_ALARM_INDICATOR)->SetVisible(true);
-      screen_render_->GetWidget(WIDGET_TYPE_ALARM_INDICATOR)->SetY(438);
-      screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetX(165 - 90);
+      screen_render_->GetWidget(WIDGET_TYPE_ALARM_INDICATOR)->SetY(423);
+      screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetY(360 + 42);
+      screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetX(161 - 106);
       break;
     case LABEL_MINIMAL:
       screen_.function_left.visible = false;
@@ -97,7 +102,6 @@ void Hmi::Labels(LabelModeEnum labels) {
       screen_.status_bar->visible = false;
       screen_render_->GetWidget(WIDGET_TYPE_ALARM_INDICATOR)->SetVisible(false);
       screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(false);
-      screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetX(165);
       break;
   }
 };
@@ -201,6 +205,8 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
   screen_.function_left.active = 0;
   screen_.function_right.active = 0;
 
+  gva::Compass *compass = static_cast<gva::Compass *>(screen_render_->GetWidget(WIDGET_TYPE_COMPASS));
+
   KeySide(keypress);
   Key(keypress);
 
@@ -212,26 +218,32 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
     case KEY_F4:
       snprintf(filename, sizeof(filename), "%s/%s", path, "FrontRight.png");
       SET_CANVAS_PNG(filename);
+      compass->SetBearing(45);
       break;
     case KEY_F5:
       snprintf(filename, sizeof(filename), "%s/%s", path, "FrontCenter.png");
       SET_CANVAS_PNG(filename);
+      compass->SetBearing(0);
       break;
     case KEY_F6:
       snprintf(filename, sizeof(filename), "%s/%s", path, "FrontLeft.png");
       SET_CANVAS_PNG(filename);
+      compass->SetBearing(315);
       break;
     case KEY_F10:
       snprintf(filename, sizeof(filename), "%s/%s", path, "Right.png");
       SET_CANVAS_PNG(filename);
+      compass->SetBearing(90);
       break;
     case KEY_F11:
       snprintf(filename, sizeof(filename), "%s/%s", path, "Rear.png");
       SET_CANVAS_PNG(filename);
+      compass->SetBearing(180);
       break;
     case KEY_F12:
       snprintf(filename, sizeof(filename), "%s/%s", path, "Left.png");
       SET_CANVAS_PNG(filename);
+      compass->SetBearing(270);
       break;
     case KEY_F1:
     case KEY_F3:
@@ -334,7 +346,7 @@ GvaKeyEnum Hmi::KeySYS(GvaKeyEnum keypress) {
       break;
     case KEY_F11:
       // Blackout
-      screen_.info.mode = (screen_.info.mode == MODE_BLACKOUT) ? MODE_MAINTINENCE : MODE_BLACKOUT;
+      screen_.info.mode = (screen_.info.mode == MODE_BLACKOUT) ? MODE_OPERATIONAL : MODE_BLACKOUT;
       screen_.canvas.visible = true;
       if (screen_.info.mode == MODE_BLACKOUT)
         screen_.canvas.bufferType = SURFACE_BLACKOUT;
@@ -867,8 +879,8 @@ struct StateOn : Hmi {
 
     // Configure the widgets
     ((Compass *)screen_render_->GetWidget(WIDGET_TYPE_COMPASS))->bearingSight_ = 33;
-    screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetX(165);
-    screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetY(370);
+    screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetX(161);
+    screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetY(360 + 28);
     screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(true);
     screen_render_->GetWidget(WIDGET_TYPE_ALARM_INDICATOR)->SetVisible(true);
     screen_render_->GetWidget(WIDGET_TYPE_ALARM_INDICATOR)->SetY(422);

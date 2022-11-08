@@ -344,7 +344,7 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
 
 void RendererGva::DrawPPI(uint8_t mode, uint32_t x, uint32_t y, uint32_t degrees, uint32_t sightAzimuth) {
   double_t radius = 50;
-  uint32_t angle = 45;
+  double_t angle = 45;
   double_t d;
 
   DrawColor(HMI_WHITE);
@@ -438,7 +438,7 @@ void RendererGva::DrawPPI(uint8_t mode, uint32_t x, uint32_t y, uint32_t degrees
 
 void RendererGva::DrawMode() {
   uint32_t offset = DEFAULT_WIDTH * 0.4;
-  uint32_t y = DEFAULT_HEIGHT * 0.08;
+  uint32_t y = DEFAULT_HEIGHT * 0.12;
 
   SetColourForground(HMI_WHITE);
   SetColourBackground(HMI_DARK_BLUE);
@@ -449,7 +449,8 @@ void RendererGva::DrawMode() {
   uint32_t w = GetTextWidth("Maintinance Mode", 12);
   uint32_t h = GetTextHeight("Maintinance Mode", 12);
 
-  DrawRectangle(DEFAULT_WIDTH / 2 - (w / 2) - 5, y, w + 10, (h) + 15, true);
+  DrawRoundedRectangle(DEFAULT_WIDTH / 2 - (w / 2) - 5, y, w + 10, (h) + 15, 6, true);
+  // DrawRectangle(DEFAULT_WIDTH / 2 - (w / 2) - 5, y, w + 10, (h) + 15, true);
   DrawText(DEFAULT_WIDTH / 2 - (w / 2), y + 8, "Maintinance Mode", 12);
 }
 
@@ -528,7 +529,7 @@ void RendererGva::DrawButton(char *keyText, uint32_t fontSize, uint32_t x, uint3
 
 void RendererGva::DrawKeyboard(KeyboardModeType mode) {
   uint32_t i = 0;
-  uint32_t yLocation = 30;
+  uint32_t yLocation = 30 + 25;
   uint32_t bSize = 33;
   uint32_t padding = 5;
   uint32_t fontSize = 14;
@@ -536,8 +537,8 @@ void RendererGva::DrawKeyboard(KeyboardModeType mode) {
   char keyboard[3][10];
 
   SetColourForground(HMI_MEDIUM_GREY);
-  SetColourBackground(HMI_MEDIUM_GREY);
-  SetLineThickness(3, LINE_SOLID);
+  SetColourBackground(HMI_DARK_GREY);
+  SetLineThickness(1, LINE_SOLID);
 
   switch (mode) {
     case KEYBOARD_UPPER:
@@ -551,9 +552,8 @@ void RendererGva::DrawKeyboard(KeyboardModeType mode) {
       break;
   }
 
-  //  DrawRoundedRectangle (110, yLocation, 530,
-  //                 yLocation + padding + ((bSize + 5) * 4) + 1, 10, true);
-  DrawRectangle(110, yLocation, 420, padding + ((bSize + 5) * 4) + 1, true);
+  DrawRoundedRectangle(110, yLocation, 420, padding + ((bSize + 5) * 4) + 1, 6, true);
+  // DrawRectangle(110, yLocation, 420, padding + ((bSize + 5) * 4) + 1, true);
   SetColourBackground(HMI_DARK_GREY);
   SetLineThickness(1, LINE_SOLID);
   SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, (uint32_t)CAIRO_FONT_WEIGHT_BOLD, config_->GetThemeFont());

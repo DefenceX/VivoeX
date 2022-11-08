@@ -306,7 +306,7 @@ int ScreenGva::Update() {
 
   // Setup and Draw the alarms
   if (screen_->table.visible_) {
-    GvaTable table(screen_->table.x_, screen_->table.y_, screen_->table.width_);
+    GvaTable table(screen_->table.x_, screen_->table.y_ + 33, screen_->table.width_);
     table.SetFontName(config_->GetThemeFont());
     table.border_ = 1;
     for (int row = 0; row < screen_->table.row_count_; row++) {

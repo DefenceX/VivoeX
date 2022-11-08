@@ -1,20 +1,23 @@
 # Screenshots
 ## hmi-display
 
-![SYS Screen](Screenshot-Sys.png)<br>
-**SYS Screen**
+![SYS Screen](screen/ScreenshotSaFrontMin.png)<br>
+**SYS Screen (Minimised)**
+
+![SYS Screen](screen/ScreenshotSaFront.png)<br>
+**SYS Screen front camera (With Labels)**
+
+![SYS Screen](screen/ScreenshotSaFront.png)<br>
+**SYS Screen right camera (With Labels)**
 
 ![BMS Screen](Screenshot-OSMScout-Map.png)<br>
 **BMS Screen (offline maps © OpenStreetMap contributor rendered with OSMScout)**
 
-![Alarms Screen](Screenshot-Alarms.png)<br>
+![Alarms Screen](screen/ScreenshotAlarms.png)<br>
 **Alarms Screen**
 
-![Keyboard example](Screenshot-keyboard1.png)<br>
-**Keyboard example**
-
-![Keyboard example](Screenshot-keyboard2.png)<br>
-**Keyboard / Alarms example**
+![Keyboard example](ScreenshotAlarmsKeyboard.png)<br>
+**Keyboard example with Alarms**
 
 ![High Contrast](Screenshot-High-Contrast.png)<br>
 **Theme high contrast (user defined)**

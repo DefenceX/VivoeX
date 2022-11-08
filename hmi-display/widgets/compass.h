@@ -36,8 +36,9 @@ class Compass : public WidgetX {
  public:
   Compass(ScreenGva *screen) : WidgetX(screen, WIDGET_TYPE_COMPASS){};
   void Draw();
-  int bearing_;
-  int bearingSight_;
+  void SetBearing(int16_t bearing) { bearingSight_ = bearing; }
+  int16_t bearing_;
+  int16_t bearingSight_;
 };
 }  // namespace gva
 #endif
