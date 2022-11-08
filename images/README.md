@@ -25,10 +25,10 @@
 ## Hardware
 ### RD-104 HD
 
-![Leonardo Rugged Display](Display_RD104_01.jpg)<br>
+![Leonardo Rugged Display](Display_RD104_01.png)<br>
 **Leonardo rugged display with Core i7 CPU built in.**
 
-![Leonardo Rugged Display](Display_RD104_02.jpg)<br>
+![Leonardo Rugged Display](Display_RD104_02.png)<br>
 **GVA display with NMEA and Camera source**
 
 ## gva-tool
