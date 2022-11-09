@@ -48,13 +48,13 @@ using namespace GeographicLib;
 
 #define MAX_NMEA 1000
 
+namespace gva {
+
 float toDegrees(float lon) {
   int d = (int)lon / 100;
   float m = lon - d * 100;
   return d + m / (float)60;
 }
-
-namespace gva {
 
 ScreenGva::ScreenGva(ScreenType *screen, int width, int height) : RendererGva(width, height) {
   screen_ = screen;

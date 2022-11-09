@@ -49,6 +49,8 @@
 #define HMI_ORANGE 255, 165, 0
 #define HMI_NONE -1, -1, -1
 
+namespace gva {
+
 typedef struct {
   int red;
   int green;
@@ -119,4 +121,7 @@ class Renderer {
   friend class rendererSdl;
   friend class RendererCairo;
 };
+
+}  // namespace gva
+
 #endif

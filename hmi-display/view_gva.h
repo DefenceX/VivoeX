@@ -34,6 +34,7 @@
 #define MAX_LABEL 50
 
 namespace gva {
+
 struct ToggleInfo {
   bool visable;
   bool right_active;

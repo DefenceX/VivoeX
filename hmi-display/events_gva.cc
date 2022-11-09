@@ -28,6 +28,7 @@
 #include "renderer_gva.h"
 
 namespace gva {
+
 static uint32_t previous_key_;
 
 EventsGva::EventsGva(gtkType* window, TouchGva* touch) {
@@ -374,4 +375,5 @@ uint32_t EventsGva::NextGvaEvent(EventGvaType* event) {
   *event = popEvent;
   return GVA_SUCCESS;
 }
+
 }  // namespace gva

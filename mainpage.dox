@@ -1,8 +1,5 @@
 /*! \mainpage User Manual
  *
- *
- * \tableofcontents
- *
  * \section sec1 Developer SDK Guide
  * This VIVOE (Vetronics Infrastructure for Video Over Ethernet) environment is currently tested on Ubuntu 22.04 LTS. 
  * Please ensure you have the following packages installed prior to building the application:

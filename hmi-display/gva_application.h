@@ -40,6 +40,8 @@
 #include "renderer_map.h"
 #include "rtp_stream.h"
 
+namespace gva {
+
 class GvaApplication {
  public:
   /// \brief Application options
@@ -96,7 +98,10 @@ class GvaApplication {
 
   static Options options_;
   char *rtp_buffer_;
-  shared_ptr<EventsGva> io_;
+  std::shared_ptr<EventsGva> io_;
   EventsGva *io_test_;
 };
+
+}  // namespace gva
+
 #endif  // HMI_DISPLAY_GVA_APPLICATION_H_

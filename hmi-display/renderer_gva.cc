@@ -33,6 +33,8 @@
 #define degreesToRadians(angleDegrees) ((angleDegrees)*M_PI / 180.0)
 #define radiansToDegrees(angleRadians) ((angleRadians)*180.0 / M_PI)
 
+namespace gva {
+
 uint32_t GvaRow::addCell(GvaCellType newcell, uint32_t width) {
   widths_[cells_] = width;
   cell_[cells_++] = newcell;
@@ -116,8 +118,8 @@ void RendererGva::DrawFunctionLabels(uint32_t x, uint32_t active, uint32_t hide,
   SetLineThickness(config_->GetThemeLabelBorderThickness(), LINE_SOLID);
   SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, (uint32_t)CAIRO_FONT_WEIGHT_NORMAL, config_->GetThemeFont());
 
-  uint32_t firstKey = (x < DEFAULT_WIDTH / 2) ? KEY_F1 : KEY_F7;
-  uint32_t group = (x < DEFAULT_WIDTH / 2) ? LEFT : RIGHT;
+  uint32_t firstKey = (x < DEFAULT_WIDTH / 2) ? gva::KEY_F1 : gva::KEY_F7;
+  uint32_t group = (x < DEFAULT_WIDTH / 2) ? gva::LEFT : gva::RIGHT;
 
   for (i = 0; i < 6; i++) {
     SetLineThickness(config_->GetThemeLabelBorderThickness(), LINE_SOLID);
@@ -166,8 +168,8 @@ void RendererGva::DrawTopLabels(uint32_t y, uint32_t active, uint32_t hide) {
       } else {
         DrawRectangle((i * width) + offset, y, width - 10, 10, true);
       }
-      touch_.AddAbsolute(TOP, (uint32_t)(KEY_SA + i), (i * width) + offset, y, (i * width) + width - spacing + offset,
-                         y + 10);
+      touch_.AddAbsolute(gva::TOP, (uint32_t)(gva::KEY_SA + i), (i * width) + offset, y,
+                         (i * width) + width - spacing + offset, y + 10);
     }
   }
 }
@@ -208,7 +210,8 @@ void RendererGva::DrawControlLabels(uint32_t y, uint32_t active, uint32_t hide) 
     }
     (1 << (7 - i) & hide) ? DrawColor(config_->GetThemeLabelTextEnabled())
                           : DrawColor(config_->GetThemeLabelTextEnabledSelected());
-    touch_.AddAbsolute(BOTTOM, (uint32_t)(KEY_F13 + i), (i * w) + offset, y, (i * w) + w - 5 + offset, y + 20);
+    touch_.AddAbsolute(gva::BOTTOM, (uint32_t)(gva::KEY_F13 + i), (i * w) + offset, y, (i * w) + w - 5 + offset,
+                       y + 20);
     DrawText((i * w) + offset + 5, y + 6, labels[i], 12);
     if (i == 4) DrawIcon(ICON_UP_ARROW, (i * w) + offset + 34, y + 11, 15, 8);
     if (i == 5) DrawIcon(ICON_DOWN_ARROW, (i * w) + offset + 34, y + 10, 15, 8);
@@ -590,3 +593,4 @@ void RendererGva::DrawKeyboard(KeyboardModeType mode) {
   SetColourForground(HMI_WHITE);
   DrawButton("Mode", fontSize, 463, yLocation + 20, 50, 50, ALIGN_RIGHT);
 }
+}  // namespace gva

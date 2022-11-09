@@ -39,7 +39,7 @@
 #include "renderer_map.h"
 #include "rtp_stream.h"
 
-GvaApplication::Options options = {false, false, ""};
+gva::GvaApplication::Options options = {false, false, ""};
 
 ///
 /// \brief Parse the command line options
@@ -48,14 +48,14 @@ GvaApplication::Options options = {false, false, ""};
 /// \param argv Argument array
 /// \param opt HMI application options
 ///
-int32_t GetOpt(int argc, char *argv[], GvaApplication::Options *opt) {
+int32_t GetOpt(int argc, char *argv[], gva::GvaApplication::Options *opt) {
   uint32_t c = 0;
 
-  ConfigData *configuration = gva::ConfigData::GetInstance();
+  gva::ConfigData *configuration = gva::ConfigData::GetInstance();
 
   while ((c = getopt(argc, argv, "hvwclf::")) != -1) switch (c) {
       case 'v':
-        cout << "Version " << MAJOR << "." << MINOR << "." << PATCH << endl;
+        std::cout << "Version " << MAJOR << "." << MINOR << "." << PATCH << std::endl;
         return 0;
       case 'w':
         opt->windowEnabled = true;
@@ -71,19 +71,19 @@ int32_t GetOpt(int argc, char *argv[], GvaApplication::Options *opt) {
         configuration->SetFullscreen(true);
         break;
       case 'h':
-        cout << "  -c : XML config file" << endl;
-        cout << "  -h : help" << endl;
-        cout << "  -w : Show HMI window, for debug when no GVA display present" << endl;
-        cout << "  -v : Version" << endl;
-        cout << "  -l : Live video" << endl;
-        cout << "  -f : Fullscreen" << endl;
+        std::cout << "  -c : XML config file" << std::endl;
+        std::cout << "  -h : help" << std::endl;
+        std::cout << "  -w : Show HMI window, for debug when no GVA display present" << std::endl;
+        std::cout << "  -v : Version" << std::endl;
+        std::cout << "  -l : Live video" << std::endl;
+        std::cout << "  -f : Fullscreen" << std::endl;
         return 0;
       case '?':
-        if (optopt == 'c') cerr << "Option -" << optopt << " requires an argument.\n" << endl;
+        if (optopt == 'c') std::cerr << "Option -" << optopt << " requires an argument.\n" << std::endl;
         //        else if (isprint(optopt))
         //          cerr << "Unknown option `-" << c << "'" << endl;
         else
-          cerr << std::hex << "Unknown option character, -h for help'" << optopt << "'." << endl;
+          std::cerr << std::hex << "Unknown option character, -h for help'" << optopt << "'." << std::endl;
         return 1;
       default:
         abort();
@@ -99,16 +99,16 @@ int main(int argc, char *argv[]) {
   char ipaddr[] = "127.0.0.1";
   uint32_t port = 5004;
 
-  cout << "hmi_display (By defencex.com.au)..." << endl;
+  std::cout << "hmi_display (By defencex.com.au)..." << std::endl;
 
   int32_t ret = GetOpt(argc, argv, &options);
 
   if (ret >= 0) return ret;
 
-  GvaApplication app = GvaApplication(options, ipaddr, port);
+  gva::GvaApplication app = gva::GvaApplication(options, ipaddr, port);
 
   // Blocking call to the application constructor
   app.Exec();
 
-  logGva::log("Exiting hmi_display...\n", LOG_INFO);
+  gva::logGva::log("Exiting hmi_display...\n", gva::LOG_INFO);
 }

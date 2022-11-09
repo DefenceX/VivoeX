@@ -32,6 +32,7 @@
 #include "renderer_gva.h"
 
 namespace gva {
+
 enum EventEnumType { NO_EVENT = 0, KEY_EVENT, TOUCH_EVENT, DDS_EVENT, RESIZE_EVENT, REDRAW_EVENT };
 
 struct TouchType {
@@ -68,6 +69,7 @@ class EventsGva {
  private:
   gtkType *window_;
 };
+
 };  // namespace gva
 
 #endif

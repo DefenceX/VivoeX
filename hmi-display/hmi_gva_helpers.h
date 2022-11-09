@@ -26,7 +26,7 @@
 #define HMI_GVA_HELPER_H
 #include "screen_gva.h"
 
-using namespace gva;
+namespace gva {
 
 class HmiHelper {
  public:
@@ -34,5 +34,7 @@ class HmiHelper {
   static void TableSystem(TableWidget *table);
   static void TableAlarms(TableWidget *table);
 };
+
+}  // namespace gva
 
 #endif

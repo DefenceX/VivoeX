@@ -37,6 +37,8 @@
 #define MAX_CELLS 10
 #define MAX_TEXT 80
 
+namespace gva {
+
 typedef enum { KEYBOARD_LOWER = 0, KEYBOARD_UPPER, KEYBOARD_NUMBERS } KeyboardModeType;
 
 typedef enum { ALIGN_LEFT = 0, ALIGN_CENTRE, ALIGN_RIGHT } cellAlignType;
@@ -211,7 +213,7 @@ class RendererGva : public RendererCairo {
                           {'!', '@', '#', '$', '%', '^', '&', ' ', '-', '-'}};
 
  private:
-  gva::ConfigData *config_;
+  ConfigData *config_;
 };
 
 class FunctionKeySimple {
@@ -229,5 +231,7 @@ class FunctionKeyToggle : public FunctionKeySimple {
  public:
   void toggle(RendererGva *r, char *label1, char *label2);
 };
+
+}  // namespace gva
 
 #endif

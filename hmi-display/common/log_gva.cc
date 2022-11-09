@@ -1,55 +1,45 @@
-#include <sys/ioctl.h>
-#include <sys/sysinfo.h>
-#include <stdio.h>
-#include <string.h>
 #include "log_gva.h"
 
-using namespace std;
+#include <stdio.h>
+#include <string.h>
+#include <sys/ioctl.h>
+#include <sys/sysinfo.h>
 
-void
-logGva::log (string message, int type)
-{
-  log(message.c_str(), type);
-}
+namespace gva {
 
-void
-logGva::log (char *message, int type)
-{
+void logGva::log(std::string message, int type) { log(message.c_str(), type); }
+
+void logGva::log(char *message, int type) {
   struct sysinfo info;
   char msgType[4] = "???";
 
-  sysinfo (&info);
-  switch (type)
-    {
+  sysinfo(&info);
+  switch (type) {
     case LOG_DEBUG:
-      strcpy (msgType, "DBG");
+      strcpy(msgType, "DBG");
       break;
     case LOG_INFO:
-      strcpy (msgType, "INF");
+      strcpy(msgType, "INF");
       break;
     case LOG_WARNING:
-      strcpy (msgType, "WAR");
+      strcpy(msgType, "WAR");
       break;
     case LOG_ERROR:
-      strcpy (msgType, "ERR");
+      strcpy(msgType, "ERR");
       break;
-    }
+  }
 
 #if !DEBUG
-        /** Discard debug message if DEBUG not enabled */
-  if (type == LOG_DEBUG)
-    return;
+  /** Discard debug message if DEBUG not enabled */
+  if (type == LOG_DEBUG) return;
 #endif
-  if (!m_errorfd)
-    {
-      m_errorfd = fopen ("/var/log/gva.log", "w");
-    }
-  fprintf (m_errorfd, "[%ld] *%s* %s\n", info.uptime, msgType, message);
+  if (!m_errorfd) {
+    m_errorfd = fopen("/var/log/gva.log", "w");
+  }
+  fprintf(m_errorfd, "[%ld] *%s* %s\n", info.uptime, msgType, message);
   fflush(m_errorfd);
 }
 
-void
-logGva::finish ()
-{
-  fclose (m_errorfd);
-}
+void logGva::finish() { fclose(m_errorfd); }
+
+}  // namespace gva

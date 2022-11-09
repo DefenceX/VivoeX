@@ -35,6 +35,8 @@
 #include "events_gva.h"
 #define INVERTED 1
 
+namespace gva {
+
 static CallbackType callback_;
 static void *arg_;
 HandleType RendererCairo::render_;
@@ -693,3 +695,4 @@ gboolean RendererCairo::Callback(gpointer data) {
 void RendererCairo::CloseWindow(void) {
   if (render_.surface) cairo_surface_destroy(render_.surface);
 }
+}  // namespace gva

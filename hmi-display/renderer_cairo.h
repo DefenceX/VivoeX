@@ -35,6 +35,8 @@
 #include "gva.h"
 #include "renderer.h"
 
+namespace gva {
+
 typedef struct {
   GtkApplication *app;
   GtkWidget *win;
@@ -227,5 +229,7 @@ class RendererCairo : public Renderer {
   static void CloseWindow(void);
   gva::ConfigData *config_;
 };
+
+}  // namespace gva
 
 #endif

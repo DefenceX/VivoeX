@@ -26,6 +26,8 @@
 
 #include <memory>
 
+namespace gva {
+
 GvaApplication::GvaApplication(const Options options, char *ipaddr, const uint32_t port) {
   options_ = options;
   char tmp[256];
@@ -42,7 +44,7 @@ GvaApplication::GvaApplication(const Options options, char *ipaddr, const uint32
   //
   // Initialise the display events
   //
-  io_ = make_shared<EventsGva>(hmi::GetRendrer()->GetWindow(), hmi::GetRendrer()->GetTouch());
+  io_ = std::make_shared<EventsGva>(hmi::GetRendrer()->GetWindow(), hmi::GetRendrer()->GetTouch());
 
   //
   // Setup video sources (default size will be 640 x 480 unless specified)
@@ -338,3 +340,5 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
     } break;
   }
 }
+
+}  // namespace gva

@@ -24,5 +24,9 @@
 
 #include "renderer.h"
 
+namespace gva {
+
 int Renderer::height_ = DEFAULT_HEIGHT;
 int Renderer::width_ = DEFAULT_WIDTH;
+
+}  // namespace gva

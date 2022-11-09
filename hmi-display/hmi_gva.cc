@@ -30,11 +30,8 @@
 #include "widgets/alarm_indicator.h"
 #include "widgets/compass.h"
 
-using namespace gva;
-using namespace std;
-
 #define CANVAS \
-  { true, SURFACE_NONE, "", 0 }
+  { true, gva::SURFACE_NONE, "", 0 }
 //#define SCREEN { "Situational Awareness", "/dev/ttyUSB0", SA, canvas_, &top_,
 //&status_, SYS_FUNCTION_KEYS_LEFT, SYS_FUNCTION_KEYS_RIGHT, COMMON_KEYS,
 // COMPASS, keyboard_, alarms_ }
@@ -44,150 +41,151 @@ using namespace std;
     var = x;                 \
   }
 #define BIT(b, x) (x & 0x1 << b)
-#define SET_CANVAS_PNG(file)                \
-  strcpy(screen_.canvas.filename, file);    \
-  screen_.canvas.bufferType = SURFACE_FILE; \
+#define SET_CANVAS_PNG(file)                     \
+  strcpy(screen_.canvas.filename, file);         \
+  screen_.canvas.bufferType = gva::SURFACE_FILE; \
   screen_.canvas.buffer = 0;
 
 void Hmi::Reset() {
   screen_.status_bar->visible = true;
   Labels(screen_.labels);
   screen_.canvas.visible = false;
-  screen_.canvas.bufferType = SURFACE_NONE;
-  screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(false);
-  screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetY(360 + 28);
-  screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetX(161);
-  screen_render_->GetWidget(WIDGET_TYPE_KEYBOARD)
-      ->SetVisible((screen_render_->GetWidget(WIDGET_TYPE_KEYBOARD)->GetVisible()) ? true : false);
+  screen_.canvas.bufferType = gva::SURFACE_NONE;
+  screen_render_->GetWidget(gva::WIDGET_TYPE_COMPASS)->SetVisible(false);
+  screen_render_->GetWidget(gva::WIDGET_TYPE_COMPASS)->SetY(360 + 28);
+  screen_render_->GetWidget(gva::WIDGET_TYPE_COMPASS)->SetX(161);
+  screen_render_->GetWidget(gva::WIDGET_TYPE_KEYBOARD)
+      ->SetVisible((screen_render_->GetWidget(gva::WIDGET_TYPE_KEYBOARD)->GetVisible()) ? true : false);
   screen_.table.visible_ = false;
   screen_.control->active = 0x0;
   screen_.message.visible = false;
-  screen_.info.mode = MODE_OPERATIONAL;
+  screen_.info.mode = gva::MODE_OPERATIONAL;
   alarmson_ = false;
 }
 
-void Hmi::Labels(LabelModeEnum labels) {
+void Hmi::Labels(gva::LabelModeEnum labels) {
   switch (labels) {
-    case LABEL_ALL:
-      if ((screen_.currentFunction == SA) || (screen_.currentFunction == WPN) || (screen_.currentFunction == DRV))
-        screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(true);
+    case gva::LABEL_ALL:
+      if ((screen_.currentFunction == gva::SA) || (screen_.currentFunction == gva::WPN) ||
+          (screen_.currentFunction == gva::DRV))
+        screen_render_->GetWidget(gva::WIDGET_TYPE_COMPASS)->SetVisible(true);
       screen_.function_left.visible = true;
       screen_.function_right.visible = true;
       screen_.control->visible = true;
       screen_.function_top->visible = true;
       screen_.status_bar->visible = true;
       screen_.status_bar->y = 446;
-      screen_render_->GetWidget(WIDGET_TYPE_ALARM_INDICATOR)->SetVisible(true);
-      screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetY(360 + 28);
-      screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetX(161);
-      screen_render_->GetWidget(WIDGET_TYPE_ALARM_INDICATOR)->SetY(423);
+      screen_render_->GetWidget(gva::WIDGET_TYPE_ALARM_INDICATOR)->SetVisible(true);
+      screen_render_->GetWidget(gva::WIDGET_TYPE_COMPASS)->SetY(360 + 28);
+      screen_render_->GetWidget(gva::WIDGET_TYPE_COMPASS)->SetX(161);
+      screen_render_->GetWidget(gva::WIDGET_TYPE_ALARM_INDICATOR)->SetY(423);
       break;
-    case LABEL_STATUS_ONLY:
+    case gva::LABEL_STATUS_ONLY:
       screen_.function_left.visible = false;
       screen_.function_right.visible = false;
       screen_.control->visible = false;
       screen_.function_top->visible = false;
       screen_.status_bar->visible = true;
       screen_.status_bar->y = 459;
-      screen_render_->GetWidget(WIDGET_TYPE_ALARM_INDICATOR)->SetVisible(true);
-      screen_render_->GetWidget(WIDGET_TYPE_ALARM_INDICATOR)->SetY(423);
-      screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetY(360 + 42);
-      screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetX(161 - 106);
+      screen_render_->GetWidget(gva::WIDGET_TYPE_ALARM_INDICATOR)->SetVisible(true);
+      screen_render_->GetWidget(gva::WIDGET_TYPE_ALARM_INDICATOR)->SetY(423);
+      screen_render_->GetWidget(gva::WIDGET_TYPE_COMPASS)->SetY(360 + 42);
+      screen_render_->GetWidget(gva::WIDGET_TYPE_COMPASS)->SetX(161 - 106);
       break;
-    case LABEL_MINIMAL:
+    case gva::LABEL_MINIMAL:
       screen_.function_left.visible = false;
       screen_.function_right.visible = false;
       screen_.control->visible = false;
       screen_.function_top->visible = false;
       screen_.status_bar->visible = false;
-      screen_render_->GetWidget(WIDGET_TYPE_ALARM_INDICATOR)->SetVisible(false);
-      screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(false);
+      screen_render_->GetWidget(gva::WIDGET_TYPE_ALARM_INDICATOR)->SetVisible(false);
+      screen_render_->GetWidget(gva::WIDGET_TYPE_COMPASS)->SetVisible(false);
       break;
   }
 };
 
-void Hmi::KeySide(GvaKeyEnum key) {
+void Hmi::KeySide(gva::GvaKeyEnum key) {
   screen_.message.visible = false;
   switch (key) {
-    case KEY_F1:
+    case gva::KEY_F1:
       screen_.function_left.active = 1 << 5;
       break;
-    case KEY_F2:
+    case gva::KEY_F2:
       screen_.function_left.active = 1 << 4;
       break;
-    case KEY_F3:
+    case gva::KEY_F3:
       screen_.function_left.active = 1 << 3;
       break;
-    case KEY_F4:
+    case gva::KEY_F4:
       screen_.function_left.active = 1 << 2;
       break;
-    case KEY_F5:
+    case gva::KEY_F5:
       screen_.function_left.active = 1 << 1;
       break;
-    case KEY_F6:
+    case gva::KEY_F6:
       screen_.function_left.active = 1;
       break;
-    case KEY_F7:
+    case gva::KEY_F7:
       screen_.function_right.active = 1 << 5;
       break;
-    case KEY_F8:
+    case gva::KEY_F8:
       screen_.function_right.active = 1 << 4;
       break;
-    case KEY_F9:
+    case gva::KEY_F9:
       screen_.function_right.active = 1 << 3;
       break;
-    case KEY_F10:
+    case gva::KEY_F10:
       screen_.function_right.active = 1 << 2;
       break;
-    case KEY_F11:
+    case gva::KEY_F11:
       screen_.function_right.active = 1 << 1;
       break;
-    case KEY_F12:
+    case gva::KEY_F12:
       screen_.function_right.active = 1;
       break;
   }
 }
 
-GvaKeyEnum Hmi::Key(GvaKeyEnum keypress) {
+gva::GvaKeyEnum Hmi::Key(gva::GvaKeyEnum keypress) {
   screen_.function_left.active = 0;
   screen_.function_right.active = 0;
   screen_.control->active = 0;
   KeySide(keypress);
   switch (keypress) {
-    case KEY_F13:
+    case gva::KEY_F13:
       screen_.control->active = 1 << 7;
       break;
-    case KEY_F14:
-      if (screen_.currentFunction == ALARMSX) screen_.control->active = 1 << 6;
+    case gva::KEY_F14:
+      if (screen_.currentFunction == gva::ALARMSX) screen_.control->active = 1 << 6;
       break;
-    case KEY_F15:
+    case gva::KEY_F15:
       screen_.control->active = 1 << 5;
       break;
-    case KEY_F16:
+    case gva::KEY_F16:
       screen_.control->active = 1 << 4;
       break;
-    case KEY_F17:
+    case gva::KEY_F17:
       screen_.control->active = 1 << 3;
       break;
-    case KEY_F18:
+    case gva::KEY_F18:
       screen_.control->active = 1 << 2;
       break;
-    case KEY_F19:
+    case gva::KEY_F19:
       screen_.control->active = 1 << 1;
       switch (screen_.labels) {
-        case LABEL_ALL:
-          screen_.labels = LABEL_STATUS_ONLY;
+        case gva::LABEL_ALL:
+          screen_.labels = gva::LABEL_STATUS_ONLY;
           break;
-        case LABEL_STATUS_ONLY:
-          screen_.labels = LABEL_MINIMAL;
+        case gva::LABEL_STATUS_ONLY:
+          screen_.labels = gva::LABEL_MINIMAL;
           break;
-        case LABEL_MINIMAL:
-          screen_.labels = LABEL_ALL;
+        case gva::LABEL_MINIMAL:
+          screen_.labels = gva::LABEL_ALL;
           break;
       }
       Labels(screen_.labels);
       break;
-    case KEY_F20:
+    case gva::KEY_F20:
       screen_.control->active = 1;
       screen_.message.visible = false;
       break;
@@ -198,60 +196,60 @@ GvaKeyEnum Hmi::Key(GvaKeyEnum keypress) {
   return keypress;
 }
 
-GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
+gva::GvaKeyEnum Hmi::KeySA(gva::GvaKeyEnum keypress) {
   const char *path = gva::ConfigData::GetInstance()->GetImagePath();
   char filename[1000];
 
   screen_.function_left.active = 0;
   screen_.function_right.active = 0;
 
-  gva::Compass *compass = static_cast<gva::Compass *>(screen_render_->GetWidget(WIDGET_TYPE_COMPASS));
+  gva::Compass *compass = static_cast<gva::Compass *>(screen_render_->GetWidget(gva::WIDGET_TYPE_COMPASS));
 
   KeySide(keypress);
   Key(keypress);
 
   switch (keypress) {
-    case KEY_F2:
+    case gva::KEY_F2:
       snprintf(filename, sizeof(filename), "%s/%s", path, "Quad.png");
       SET_CANVAS_PNG(filename);
       break;
-    case KEY_F4:
+    case gva::KEY_F4:
       snprintf(filename, sizeof(filename), "%s/%s", path, "FrontRight.png");
       SET_CANVAS_PNG(filename);
       compass->SetBearing(45);
       break;
-    case KEY_F5:
+    case gva::KEY_F5:
       snprintf(filename, sizeof(filename), "%s/%s", path, "FrontCenter.png");
       SET_CANVAS_PNG(filename);
       compass->SetBearing(0);
       break;
-    case KEY_F6:
+    case gva::KEY_F6:
       snprintf(filename, sizeof(filename), "%s/%s", path, "FrontLeft.png");
       SET_CANVAS_PNG(filename);
       compass->SetBearing(315);
       break;
-    case KEY_F10:
+    case gva::KEY_F10:
       snprintf(filename, sizeof(filename), "%s/%s", path, "Right.png");
       SET_CANVAS_PNG(filename);
       compass->SetBearing(90);
       break;
-    case KEY_F11:
+    case gva::KEY_F11:
       snprintf(filename, sizeof(filename), "%s/%s", path, "Rear.png");
       SET_CANVAS_PNG(filename);
       compass->SetBearing(180);
       break;
-    case KEY_F12:
+    case gva::KEY_F12:
       snprintf(filename, sizeof(filename), "%s/%s", path, "Left.png");
       SET_CANVAS_PNG(filename);
       compass->SetBearing(270);
       break;
-    case KEY_F1:
-    case KEY_F3:
-    case KEY_F7:
-    case KEY_F8:
-    case KEY_F9:
+    case gva::KEY_F1:
+    case gva::KEY_F3:
+    case gva::KEY_F7:
+    case gva::KEY_F8:
+    case gva::KEY_F9:
       screen_.message.visible = true;
-      screen_.message.icon = ICON_INFO;
+      screen_.message.icon = gva::ICON_INFO;
       strcpy(screen_.message.brief.text, "Function key");
       strcpy(screen_.message.detail.text, "Operation not implemented!");
       break;
@@ -259,7 +257,7 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
   return keypress;
 }
 
-GvaKeyEnum Hmi::KeyWPN(GvaKeyEnum keypress) {
+gva::GvaKeyEnum Hmi::KeyWPN(gva::GvaKeyEnum keypress) {
   screen_.function_left.active = 0;
   screen_.function_right.active = 0;
 
@@ -267,20 +265,20 @@ GvaKeyEnum Hmi::KeyWPN(GvaKeyEnum keypress) {
   Key(keypress);
 
   switch (keypress) {
-    case KEY_F1:
-    case KEY_F2:
-    case KEY_F3:
-    case KEY_F4:
-    case KEY_F5:
-    case KEY_F6:
-    case KEY_F7:
-    case KEY_F8:
-    case KEY_F9:
-    case KEY_F10:
-    case KEY_F11:
-    case KEY_F12:
+    case gva::KEY_F1:
+    case gva::KEY_F2:
+    case gva::KEY_F3:
+    case gva::KEY_F4:
+    case gva::KEY_F5:
+    case gva::KEY_F6:
+    case gva::KEY_F7:
+    case gva::KEY_F8:
+    case gva::KEY_F9:
+    case gva::KEY_F10:
+    case gva::KEY_F11:
+    case gva::KEY_F12:
       screen_.message.visible = true;
-      screen_.message.icon = ICON_INFO;
+      screen_.message.icon = gva::ICON_INFO;
       strcpy(screen_.message.brief.text, "Function key");
       strcpy(screen_.message.detail.text, "Operation not implemented!");
       break;
@@ -288,7 +286,7 @@ GvaKeyEnum Hmi::KeyWPN(GvaKeyEnum keypress) {
   return keypress;
 }
 
-GvaKeyEnum Hmi::KeyDEF(GvaKeyEnum keypress) {
+gva::GvaKeyEnum Hmi::KeyDEF(gva::GvaKeyEnum keypress) {
   screen_.function_left.active = 0;
   screen_.function_right.active = 0;
 
@@ -296,20 +294,20 @@ GvaKeyEnum Hmi::KeyDEF(GvaKeyEnum keypress) {
   Key(keypress);
 
   switch (keypress) {
-    case KEY_F1:
-    case KEY_F2:
-    case KEY_F3:
-    case KEY_F4:
-    case KEY_F5:
-    case KEY_F6:
-    case KEY_F7:
-    case KEY_F8:
-    case KEY_F9:
-    case KEY_F10:
-    case KEY_F11:
-    case KEY_F12:
+    case gva::KEY_F1:
+    case gva::KEY_F2:
+    case gva::KEY_F3:
+    case gva::KEY_F4:
+    case gva::KEY_F5:
+    case gva::KEY_F6:
+    case gva::KEY_F7:
+    case gva::KEY_F8:
+    case gva::KEY_F9:
+    case gva::KEY_F10:
+    case gva::KEY_F11:
+    case gva::KEY_F12:
       screen_.message.visible = true;
-      screen_.message.icon = ICON_ERROR;
+      screen_.message.icon = gva::ICON_ERROR;
       strcpy(screen_.message.brief.text, "Function key");
       strcpy(screen_.message.detail.text, "Operation not implemented!");
       break;
@@ -317,7 +315,7 @@ GvaKeyEnum Hmi::KeyDEF(GvaKeyEnum keypress) {
   return keypress;
 }
 
-GvaKeyEnum Hmi::KeySYS(GvaKeyEnum keypress) {
+gva::GvaKeyEnum Hmi::KeySYS(gva::GvaKeyEnum keypress) {
   screen_.function_left.active = 0;
   screen_.function_right.active = 0;
 
@@ -325,44 +323,44 @@ GvaKeyEnum Hmi::KeySYS(GvaKeyEnum keypress) {
   Key(keypress);
 
   switch (keypress) {
-    case KEY_F1:
-      HmiHelper::TableSystem(&screen_.table);
+    case gva::KEY_F1:
+      gva::HmiHelper::TableSystem(&screen_.table);
       break;
-    case KEY_F5:
-      HmiHelper::TableLicences(&screen_.table);
+    case gva::KEY_F5:
+      gva::HmiHelper::TableLicences(&screen_.table);
       break;
-    case KEY_F2:
-    case KEY_F3:
-    case KEY_F4:
-    case KEY_F6:
-    case KEY_F7:
-    case KEY_F8:
-    case KEY_F9:
-    case KEY_F10:
+    case gva::KEY_F2:
+    case gva::KEY_F3:
+    case gva::KEY_F4:
+    case gva::KEY_F6:
+    case gva::KEY_F7:
+    case gva::KEY_F8:
+    case gva::KEY_F9:
+    case gva::KEY_F10:
       screen_.message.visible = true;
-      screen_.message.icon = ICON_INFO;
+      screen_.message.icon = gva::ICON_INFO;
       strcpy(screen_.message.brief.text, "Function key");
       strcpy(screen_.message.detail.text, "Operation not implemented!");
       break;
-    case KEY_F11:
+    case gva::KEY_F11:
       // Blackout
-      screen_.info.mode = (screen_.info.mode == MODE_BLACKOUT) ? MODE_OPERATIONAL : MODE_BLACKOUT;
+      screen_.info.mode = (screen_.info.mode == gva::MODE_BLACKOUT) ? gva::MODE_OPERATIONAL : gva::MODE_BLACKOUT;
       screen_.canvas.visible = true;
-      if (screen_.info.mode == MODE_BLACKOUT)
-        screen_.canvas.bufferType = SURFACE_BLACKOUT;
+      if (screen_.info.mode == gva::MODE_BLACKOUT)
+        screen_.canvas.bufferType = gva::SURFACE_BLACKOUT;
       else
-        screen_.canvas.bufferType = SURFACE_FILE;
+        screen_.canvas.bufferType = gva::SURFACE_FILE;
       break;
-    case KEY_F12:
+    case gva::KEY_F12:
       // Exit
-      if (RendererCairo::render_.surface) cairo_surface_destroy(RendererCairo::render_.surface);
-      g_application_quit(G_APPLICATION(RendererCairo::render_.win.app));
+      if (gva::RendererCairo::render_.surface) cairo_surface_destroy(gva::RendererCairo::render_.surface);
+      g_application_quit(G_APPLICATION(gva::RendererCairo::render_.win.app));
       break;
   }
   return keypress;
 }
 
-GvaKeyEnum Hmi::KeyDRV(GvaKeyEnum keypress) {
+gva::GvaKeyEnum Hmi::KeyDRV(gva::GvaKeyEnum keypress) {
   screen_.function_left.active = 0;
   screen_.function_right.active = 0;
 
@@ -370,20 +368,20 @@ GvaKeyEnum Hmi::KeyDRV(GvaKeyEnum keypress) {
   Key(keypress);
 
   switch (keypress) {
-    case KEY_F1:
-    case KEY_F2:
-    case KEY_F3:
-    case KEY_F4:
-    case KEY_F5:
-    case KEY_F6:
-    case KEY_F7:
-    case KEY_F8:
-    case KEY_F9:
-    case KEY_F10:
-    case KEY_F11:
-    case KEY_F12:
+    case gva::KEY_F1:
+    case gva::KEY_F2:
+    case gva::KEY_F3:
+    case gva::KEY_F4:
+    case gva::KEY_F5:
+    case gva::KEY_F6:
+    case gva::KEY_F7:
+    case gva::KEY_F8:
+    case gva::KEY_F9:
+    case gva::KEY_F10:
+    case gva::KEY_F11:
+    case gva::KEY_F12:
       screen_.message.visible = true;
-      screen_.message.icon = ICON_INFO;
+      screen_.message.icon = gva::ICON_INFO;
       strcpy(screen_.message.brief.text, "Function key");
       strcpy(screen_.message.detail.text, "Operation not implemented!");
       break;
@@ -391,7 +389,7 @@ GvaKeyEnum Hmi::KeyDRV(GvaKeyEnum keypress) {
   return keypress;
 }
 
-GvaKeyEnum Hmi::KeySTR(GvaKeyEnum keypress) {
+gva::GvaKeyEnum Hmi::KeySTR(gva::GvaKeyEnum keypress) {
   screen_.function_left.active = 0;
   screen_.function_right.active = 0;
 
@@ -399,20 +397,20 @@ GvaKeyEnum Hmi::KeySTR(GvaKeyEnum keypress) {
   Key(keypress);
 
   switch (keypress) {
-    case KEY_F1:
-    case KEY_F2:
-    case KEY_F3:
-    case KEY_F4:
-    case KEY_F5:
-    case KEY_F6:
-    case KEY_F7:
-    case KEY_F8:
-    case KEY_F9:
-    case KEY_F10:
-    case KEY_F11:
-    case KEY_F12:
+    case gva::KEY_F1:
+    case gva::KEY_F2:
+    case gva::KEY_F3:
+    case gva::KEY_F4:
+    case gva::KEY_F5:
+    case gva::KEY_F6:
+    case gva::KEY_F7:
+    case gva::KEY_F8:
+    case gva::KEY_F9:
+    case gva::KEY_F10:
+    case gva::KEY_F11:
+    case gva::KEY_F12:
       screen_.message.visible = true;
-      screen_.message.icon = ICON_INFO;
+      screen_.message.icon = gva::ICON_INFO;
       strcpy(screen_.message.brief.text, "Function key");
       strcpy(screen_.message.detail.text, "Operation not implemented!");
       break;
@@ -420,7 +418,7 @@ GvaKeyEnum Hmi::KeySTR(GvaKeyEnum keypress) {
   return keypress;
 }
 
-GvaKeyEnum Hmi::KeyCOM(GvaKeyEnum keypress) {
+gva::GvaKeyEnum Hmi::KeyCOM(gva::GvaKeyEnum keypress) {
   screen_.function_left.active = 0;
   screen_.function_right.active = 0;
   screen_.message.visible = false;
@@ -429,20 +427,20 @@ GvaKeyEnum Hmi::KeyCOM(GvaKeyEnum keypress) {
   Key(keypress);
 
   switch (keypress) {
-    case KEY_F1:
-    case KEY_F2:
-    case KEY_F3:
-    case KEY_F4:
-    case KEY_F5:
-    case KEY_F6:
-    case KEY_F7:
-    case KEY_F8:
-    case KEY_F9:
-    case KEY_F10:
-    case KEY_F11:
-    case KEY_F12:
+    case gva::KEY_F1:
+    case gva::KEY_F2:
+    case gva::KEY_F3:
+    case gva::KEY_F4:
+    case gva::KEY_F5:
+    case gva::KEY_F6:
+    case gva::KEY_F7:
+    case gva::KEY_F8:
+    case gva::KEY_F9:
+    case gva::KEY_F10:
+    case gva::KEY_F11:
+    case gva::KEY_F12:
       screen_.message.visible = true;
-      screen_.message.icon = ICON_INFO;
+      screen_.message.icon = gva::ICON_INFO;
       strcpy(screen_.message.brief.text, "Function key");
       strcpy(screen_.message.detail.text, "Operation not implemented!");
       break;
@@ -479,7 +477,7 @@ double conv(int zoom) {
   }
 }
 
-GvaKeyEnum Hmi::KeyBMS(GvaKeyEnum keypress) {
+gva::GvaKeyEnum Hmi::KeyBMS(gva::GvaKeyEnum keypress) {
   screen_.function_left.active = 0;
   screen_.function_right.active = 0;
 
@@ -489,36 +487,36 @@ GvaKeyEnum Hmi::KeyBMS(GvaKeyEnum keypress) {
   bool update = true;
   int zoom_level = configuration.GetZoom();
   switch (keypress) {
-    case KEY_F3:
+    case gva::KEY_F3:
       // Shift UP
       configuration.SetTestLat(configuration.GetTestLat() + conv(zoom_level));
       break;
-    case KEY_F4:
+    case gva::KEY_F4:
       // Shift DOWN
       configuration.SetTestLat(configuration.GetTestLat() - conv(zoom_level));
       break;
-    case KEY_F5:
+    case gva::KEY_F5:
       // Zoom +
       configuration.SetZoom(zoom_level * 2);
       break;
-    case KEY_F9:
+    case gva::KEY_F9:
       // Shift LEFT
       configuration.SetTestLon(configuration.GetTestLon() - conv(zoom_level));
       break;
-    case KEY_F10:
+    case gva::KEY_F10:
       // Shift RIGHT
       configuration.SetTestLon(configuration.GetTestLon() + conv(zoom_level));
       break;
-    case KEY_F11:
+    case gva::KEY_F11:
       // Zoom -
       configuration.SetZoom(zoom_level / 2);
       break;
-    case KEY_F1:
-    case KEY_F2:
-    case KEY_F6:
-    case KEY_F7:
-    case KEY_F8:
-    case KEY_F12:
+    case gva::KEY_F1:
+    case gva::KEY_F2:
+    case gva::KEY_F6:
+    case gva::KEY_F7:
+    case gva::KEY_F8:
+    case gva::KEY_F12:
       screen_.message.visible = true;
       screen_.message.icon = ICON_INFO;
       strcpy(screen_.message.brief.text, "Function key");
@@ -548,13 +546,13 @@ GvaKeyEnum Hmi::KeyBMS(GvaKeyEnum keypress) {
 struct StateSA : Hmi {
   void entry() override {
     if (!BIT(7, screen_.function_top->hidden)) {
-      screen_ = manager_->GetScreen(SA);
-      lastState_ = SA;
+      screen_ = manager_->GetScreen(gva::SA);
+      lastState_ = gva::SA;
       Reset();
       screen_.function_top->visible = true;
 
-      if (screen_.labels != LABEL_MINIMAL) screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(true);
-      screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(true);
+      if (screen_.labels != gva::LABEL_MINIMAL) screen_render_->GetWidget(gva::WIDGET_TYPE_COMPASS)->SetVisible(true);
+      screen_render_->GetWidget(gva::WIDGET_TYPE_COMPASS)->SetVisible(true);
       if (!screen_.canvas.surface) {
         char filename[1000];
         snprintf(filename, sizeof(filename), "%s/%s", gva::ConfigData::GetInstance()->GetImagePath(),
@@ -575,7 +573,7 @@ struct StateSA : Hmi {
   void react(EventKeyAlarms const &) override { transit<StateAlarms>(); };
   void react(EventKeyFunction const &e) {
     KeySA(e.key);
-    if (e.key == KEY_NEXT_LABEL) transit<StateWPN>();
+    if (e.key == gva::KEY_NEXT_LABEL) transit<StateWPN>();
   };
 };
 
@@ -583,11 +581,11 @@ struct StateWPN : Hmi {
   void entry() override {
     if (!BIT(6, screen_.function_top->hidden)) {
       char filename[1000];
-      screen_ = manager_->GetScreen(WPN);
-      lastState_ = WPN;
+      screen_ = manager_->GetScreen(gva::WPN);
+      lastState_ = gva::WPN;
       Reset();
 
-      if (screen_.labels != LABEL_MINIMAL) screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(true);
+      if (screen_.labels != gva::LABEL_MINIMAL) screen_render_->GetWidget(gva::WIDGET_TYPE_COMPASS)->SetVisible(true);
       screen_.canvas.visible = true;
       snprintf(filename, sizeof(filename), "%s/%s", gva::ConfigData::GetInstance()->GetImagePath(), "FrontCenter.png");
       SET_CANVAS_PNG(filename);
@@ -605,16 +603,16 @@ struct StateWPN : Hmi {
   void react(EventKeyAlarms const &) override { transit<StateAlarms>(); };
   void react(EventKeyFunction const &e) {
     KeyWPN(e.key);
-    if (e.key == KEY_PREV_LABEL) transit<StateSA>();
-    if (e.key == KEY_NEXT_LABEL) transit<StateDEF>();
+    if (e.key == gva::KEY_PREV_LABEL) transit<StateSA>();
+    if (e.key == gva::KEY_NEXT_LABEL) transit<StateDEF>();
   };
 };
 
 struct StateDEF : Hmi {
   void entry() override {
     if (!BIT(5, screen_.function_top->hidden)) {
-      screen_ = manager_->GetScreen(DEF);
-      lastState_ = DEF;
+      screen_ = manager_->GetScreen(gva::DEF);
+      lastState_ = gva::DEF;
       Reset();
 
       screen_.status_bar->visible = true;
@@ -632,8 +630,8 @@ struct StateDEF : Hmi {
   void react(EventKeyAlarms const &) override { transit<StateAlarms>(); };
   void react(EventKeyFunction const &e) {
     KeyDEF(e.key);
-    if (e.key == KEY_PREV_LABEL) transit<StateWPN>();
-    if (e.key == KEY_NEXT_LABEL) transit<StateSYS>();
+    if (e.key == gva::KEY_PREV_LABEL) transit<StateWPN>();
+    if (e.key == gva::KEY_NEXT_LABEL) transit<StateSYS>();
   };
 };
 
@@ -641,8 +639,8 @@ struct StateSYS : Hmi {
   void entry() override {
     if (!BIT(4, screen_.function_top->hidden)) {
       char filename[1000];
-      screen_ = manager_->GetScreen(SYS);
-      lastState_ = SYS;
+      screen_ = manager_->GetScreen(gva::SYS);
+      lastState_ = gva::SYS;
       Reset();
 
       screen_.status_bar->visible = true;
@@ -651,7 +649,7 @@ struct StateSYS : Hmi {
       snprintf(filename, sizeof(filename), "%s/%s", gva::ConfigData::GetInstance()->GetImagePath(), "FrontCenter.png");
       SET_CANVAS_PNG(filename);
 
-      HmiHelper::TableSystem(&screen_.table);
+      gva::HmiHelper::TableSystem(&screen_.table);
 
       screen_.function_top->active = 0x1 << 4;
     }
@@ -667,19 +665,19 @@ struct StateSYS : Hmi {
   void react(EventKeyAlarms const &) override { transit<StateAlarms>(); };
   void react(EventKeyFunction const &e) {
     KeySYS(e.key);
-    if (e.key == KEY_PREV_LABEL) transit<StateDEF>();
-    if (e.key == KEY_NEXT_LABEL) transit<StateDRV>();
+    if (e.key == gva::KEY_PREV_LABEL) transit<StateDEF>();
+    if (e.key == gva::KEY_NEXT_LABEL) transit<StateDRV>();
   };
 };
 
 struct StateDRV : Hmi {
   void entry() override {
     if (!BIT(3, screen_.function_top->hidden)) {
-      screen_ = manager_->GetScreen(DRV);
-      lastState_ = DRV;
+      screen_ = manager_->GetScreen(gva::DRV);
+      lastState_ = gva::DRV;
       Reset();
 
-      if (screen_.labels != LABEL_MINIMAL) screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(true);
+      if (screen_.labels != gva::LABEL_MINIMAL) screen_render_->GetWidget(gva::WIDGET_TYPE_COMPASS)->SetVisible(true);
       screen_.status_bar->visible = true;
       screen_.function_top->active = 0x1 << 3;
     }
@@ -695,16 +693,16 @@ struct StateDRV : Hmi {
   void react(EventKeyAlarms const &) override { transit<StateAlarms>(); };
   void react(EventKeyFunction const &e) {
     KeyDRV(e.key);
-    if (e.key == KEY_PREV_LABEL) transit<StateSYS>();
-    if (e.key == KEY_NEXT_LABEL) transit<StateSTR>();
+    if (e.key == gva::KEY_PREV_LABEL) transit<StateSYS>();
+    if (e.key == gva::KEY_NEXT_LABEL) transit<StateSTR>();
   };
 };
 
 struct StateSTR : Hmi {
   void entry() override {
     if (!BIT(2, screen_.function_top->hidden)) {
-      screen_ = manager_->GetScreen(STR);
-      lastState_ = STR;
+      screen_ = manager_->GetScreen(gva::STR);
+      lastState_ = gva::STR;
       Reset();
 
       screen_.function_top->active = 0x1 << 2;
@@ -721,16 +719,16 @@ struct StateSTR : Hmi {
   void react(EventKeyAlarms const &) override { transit<StateAlarms>(); };
   void react(EventKeyFunction const &e) {
     KeySTR(e.key);
-    if (e.key == KEY_PREV_LABEL) transit<StateDRV>();
-    if (e.key == KEY_NEXT_LABEL) transit<StateCOM>();
+    if (e.key == gva::KEY_PREV_LABEL) transit<StateDRV>();
+    if (e.key == gva::KEY_NEXT_LABEL) transit<StateCOM>();
   };
 };
 
 struct StateCOM : Hmi {
   void entry() override {
     if (!BIT(1, screen_.function_top->hidden)) {
-      screen_ = manager_->GetScreen(COM);
-      lastState_ = COM;
+      screen_ = manager_->GetScreen(gva::COM);
+      lastState_ = gva::COM;
       Reset();
 
       screen_.function_top->active = 0x1 << 1;
@@ -747,16 +745,16 @@ struct StateCOM : Hmi {
   void react(EventKeyAlarms const &) override { transit<StateAlarms>(); };
   void react(EventKeyFunction const &e) {
     KeyCOM(e.key);
-    if (e.key == KEY_PREV_LABEL) transit<StateSTR>();
-    if (e.key == KEY_NEXT_LABEL) transit<StateBMS>();
+    if (e.key == gva::KEY_PREV_LABEL) transit<StateSTR>();
+    if (e.key == gva::KEY_NEXT_LABEL) transit<StateBMS>();
   };
 };
 
 struct StateBMS : Hmi {
   void entry() override {
     if (!BIT(0, screen_.function_top->hidden)) {
-      screen_ = manager_->GetScreen(BMS);
-      lastState_ = BMS;
+      screen_ = manager_->GetScreen(gva::BMS);
+      lastState_ = gva::BMS;
       Reset();
 
       screen_.canvas.visible = true;
@@ -781,7 +779,7 @@ struct StateBMS : Hmi {
   void react(EventKeyAlarms const &) override { transit<StateAlarms>(); };
   void react(EventKeyFunction const &e) {
     KeyBMS(e.key);
-    if (e.key == KEY_PREV_LABEL) transit<StateCOM>();
+    if (e.key == gva::KEY_PREV_LABEL) transit<StateCOM>();
   };
 };
 
@@ -791,36 +789,36 @@ struct StateAlarms : Hmi {
       if (alarmson_) {
         alarmson_ = false;
         switch (lastState_) {
-          case SA:
+          case gva::SA:
             transit<StateSA>();
             return;
-          case WPN:
+          case gva::WPN:
             transit<StateWPN>();
             return;
-          case DEF:
+          case gva::DEF:
             transit<StateDEF>();
             return;
-          case SYS:
+          case gva::SYS:
             transit<StateSYS>();
             return;
-          case DRV:
+          case gva::DRV:
             transit<StateDRV>();
             return;
-          case STR:
+          case gva::STR:
             transit<StateSTR>();
             return;
-          case COM:
+          case gva::COM:
             transit<StateCOM>();
             return;
-          case BMS:
+          case gva::BMS:
             transit<StateBMS>();
             return;
         }
       }
       Reset();
       alarmson_ = true;
-      screen_ = manager_->GetScreen(ALARMSX);
-      HmiHelper::TableAlarms(&screen_.table);
+      screen_ = manager_->GetScreen(gva::ALARMSX);
+      gva::HmiHelper::TableAlarms(&screen_.table);
     }
   };
   void react(EventKeySA const &) override { transit<StateSA>(); };
@@ -840,7 +838,7 @@ struct StateOn : Hmi {
     /* 4:3 aspect ratio @ lowest resolution */
     view_ = {MIN_WIDTH, MIN_HEIGHT, 24};
 
-    if (!manager_) manager_ = new ViewGvaManager(&status_);
+    if (!manager_) manager_ = new gva::ViewGvaManager(&status_);
 
 #ifdef ENABLE_OSMSCOUT
     // Render a map for BMS
@@ -848,50 +846,51 @@ struct StateOn : Hmi {
                            MIN_HEIGHT);
 #endif
 
-    init(top_, FunctionSelectType, COMMON_FUNCTION_KEYS_TOP);
-    init(bottom_, CommonTaskKeysType, COMMON_KEYS);
-    init(status_, StatusBarType, COMMON_STATUS_BAR);
-    init(canvas_, CanvasType, CANVAS);
+    init(top_, gva::FunctionSelectType, COMMON_FUNCTION_KEYS_TOP);
+    init(bottom_, gva::CommonTaskKeysType, COMMON_KEYS);
+    init(status_, gva::StatusBarType, COMMON_STATUS_BAR);
+    init(canvas_, gva::CanvasType, CANVAS);
 
     // Setup the main screens
-    manager_->GetNewView(SA, &top_, &bottom_, (FunctionKeys)SA_FUNCTION_KEYS_LEFT,
-                         (FunctionKeys)SA_FUNCTION_KEYS_RIGHT);
-    manager_->GetNewView(WPN, &top_, &bottom_, (FunctionKeys)WPN_FUNCTION_KEYS_LEFT,
-                         (FunctionKeys)WPN_FUNCTION_KEYS_RIGHT);
-    manager_->GetNewView(DEF, &top_, &bottom_, (FunctionKeys)DEF_FUNCTION_KEYS_LEFT,
-                         (FunctionKeys)DEF_FUNCTION_KEYS_RIGHT);
-    manager_->GetNewView(SYS, &top_, &bottom_, (FunctionKeys)SYS_FUNCTION_KEYS_LEFT,
-                         (FunctionKeys)SYS_FUNCTION_KEYS_RIGHT);
-    manager_->GetNewView(DRV, &top_, &bottom_, (FunctionKeys)DRV_FUNCTION_KEYS_LEFT,
-                         (FunctionKeys)DRV_FUNCTION_KEYS_RIGHT);
-    manager_->GetNewView(STR, &top_, &bottom_, (FunctionKeys)STR_FUNCTION_KEYS_LEFT,
-                         (FunctionKeys)STR_FUNCTION_KEYS_RIGHT);
-    manager_->GetNewView(COM, &top_, &bottom_, (FunctionKeys)COM_FUNCTION_KEYS_LEFT,
-                         (FunctionKeys)COM_FUNCTION_KEYS_RIGHT);
-    manager_->GetNewView(BMS, &top_, &bottom_, (FunctionKeys)BMS_FUNCTION_KEYS_LEFT,
-                         (FunctionKeys)BMS_FUNCTION_KEYS_RIGHT);
-    manager_->GetNewView(ALARMSX, &top_, &bottom_, (FunctionKeys)ALARM_KEYS_LEFT, (FunctionKeys)ALARM_KEYS_RIGHT);
+    manager_->GetNewView(gva::SA, &top_, &bottom_, (gva::FunctionKeys)SA_FUNCTION_KEYS_LEFT,
+                         (gva::FunctionKeys)SA_FUNCTION_KEYS_RIGHT);
+    manager_->GetNewView(gva::WPN, &top_, &bottom_, (gva::FunctionKeys)WPN_FUNCTION_KEYS_LEFT,
+                         (gva::FunctionKeys)WPN_FUNCTION_KEYS_RIGHT);
+    manager_->GetNewView(gva::DEF, &top_, &bottom_, (gva::FunctionKeys)DEF_FUNCTION_KEYS_LEFT,
+                         (gva::FunctionKeys)DEF_FUNCTION_KEYS_RIGHT);
+    manager_->GetNewView(gva::SYS, &top_, &bottom_, (gva::FunctionKeys)SYS_FUNCTION_KEYS_LEFT,
+                         (gva::FunctionKeys)SYS_FUNCTION_KEYS_RIGHT);
+    manager_->GetNewView(gva::DRV, &top_, &bottom_, (gva::FunctionKeys)DRV_FUNCTION_KEYS_LEFT,
+                         (gva::FunctionKeys)DRV_FUNCTION_KEYS_RIGHT);
+    manager_->GetNewView(gva::STR, &top_, &bottom_, (gva::FunctionKeys)STR_FUNCTION_KEYS_LEFT,
+                         (gva::FunctionKeys)STR_FUNCTION_KEYS_RIGHT);
+    manager_->GetNewView(gva::COM, &top_, &bottom_, (gva::FunctionKeys)COM_FUNCTION_KEYS_LEFT,
+                         (gva::FunctionKeys)COM_FUNCTION_KEYS_RIGHT);
+    manager_->GetNewView(gva::BMS, &top_, &bottom_, (gva::FunctionKeys)BMS_FUNCTION_KEYS_LEFT,
+                         (gva::FunctionKeys)BMS_FUNCTION_KEYS_RIGHT);
+    manager_->GetNewView(gva::ALARMSX, &top_, &bottom_, (gva::FunctionKeys)ALARM_KEYS_LEFT,
+                         (gva::FunctionKeys)ALARM_KEYS_RIGHT);
 
-    screen_ = manager_->GetScreen(SYS);
+    screen_ = manager_->GetScreen(gva::SYS);
 
     // Create the screen render now
-    screen_render_ = new ScreenGva(&screen_, view_.width, view_.height);
+    screen_render_ = new gva::ScreenGva(&screen_, view_.width, view_.height);
 
     // Configure the widgets
-    ((Compass *)screen_render_->GetWidget(WIDGET_TYPE_COMPASS))->bearingSight_ = 33;
-    screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetX(161);
-    screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetY(360 + 28);
-    screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(true);
-    screen_render_->GetWidget(WIDGET_TYPE_ALARM_INDICATOR)->SetVisible(true);
-    screen_render_->GetWidget(WIDGET_TYPE_ALARM_INDICATOR)->SetY(422);
-    AlarmIndicator *ai = (AlarmIndicator *)screen_render_->GetWidget(WIDGET_TYPE_ALARM_INDICATOR);
+    ((gva::Compass *)screen_render_->GetWidget(gva::WIDGET_TYPE_COMPASS))->bearingSight_ = 33;
+    screen_render_->GetWidget(gva::WIDGET_TYPE_COMPASS)->SetX(161);
+    screen_render_->GetWidget(gva::WIDGET_TYPE_COMPASS)->SetY(360 + 28);
+    screen_render_->GetWidget(gva::WIDGET_TYPE_COMPASS)->SetVisible(true);
+    screen_render_->GetWidget(gva::WIDGET_TYPE_ALARM_INDICATOR)->SetVisible(true);
+    screen_render_->GetWidget(gva::WIDGET_TYPE_ALARM_INDICATOR)->SetY(422);
+    gva::AlarmIndicator *ai = (gva::AlarmIndicator *)screen_render_->GetWidget(gva::WIDGET_TYPE_ALARM_INDICATOR);
     strcpy(ai->text_, "Engine over tempreture");
 
     screen_.canvas = canvas_;
     screen_.canvas.visible = true;
     screen_.table = alarms_;
     screen_.table.visible_ = false;
-    screen_.labels = LABEL_ALL;
+    screen_.labels = gva::LABEL_ALL;
     SET_CANVAS_PNG("FRONT_CENTRE.png");
 
     transit<StateSYS>();
@@ -908,16 +907,16 @@ struct StateOff : Hmi {
   void react(EventKeyPowerOn const &) override { transit<StateOn>(); };
 };
 
-ViewGvaManager *Hmi::manager_;
-ResolutionType Hmi::view_;
-StatusBarType Hmi::status_;
-FunctionSelectType Hmi::top_;
-CommonTaskKeysType Hmi::bottom_;
-CanvasType Hmi::canvas_;
-TableWidget Hmi::alarms_;
-ScreenType Hmi::screen_;
-ScreenGva *Hmi::screen_render_;
-rendererMap *Hmi::map_;
+gva::ViewGvaManager *Hmi::manager_;
+gva::ResolutionType Hmi::view_;
+gva::StatusBarType Hmi::status_;
+gva::FunctionSelectType Hmi::top_;
+gva::CommonTaskKeysType Hmi::bottom_;
+gva::CanvasType Hmi::canvas_;
+gva::TableWidget Hmi::alarms_;
+gva::ScreenType Hmi::screen_;
+gva::ScreenGva *Hmi::screen_render_;
+gva::rendererMap *Hmi::map_;
 int Hmi::lastState_;
 bool Hmi::alarmson_ = false;
 

@@ -35,11 +35,11 @@
 #include <iostream>
 #include <string>
 
-using namespace std;
+namespace gva {
 
 class rendererMap {
  public:
-  rendererMap(string map, string style, int width, int height);
+  rendererMap(std::string map, std::string style, int width, int height);
   ~rendererMap();
   int Project(double zoom, double lon, double lat, cairo_surface_t **surface);
   int SetHeight(int height) { height_ = height_; };
@@ -48,8 +48,8 @@ class rendererMap {
  private:
   int width_;
   int height_;
-  string map_;
-  string style_;
+  std::string map_;
+  std::string style_;
 #ifdef ENABLE_OSMSCOUT
   osmscout::MapServiceRef mapService_;
   osmscout::StyleConfigRef styleConfig_;
@@ -65,4 +65,7 @@ class rendererMap {
   cairo_surface_t *surface_;
   cairo_t *cairo_;
 };
+
+}  // namespace gva
+
 #endif

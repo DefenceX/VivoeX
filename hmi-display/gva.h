@@ -37,6 +37,8 @@
 #define RENDER_HEIGHT 1024
 #define RENDER_WIDTH 1920
 
+namespace gva {
+
 enum GvaFunctionEnum {
   SA = 0,
   WPN,
@@ -103,5 +105,7 @@ enum GvaKeyEnum {
 };
 
 enum GvaStatusTypes { GVA_SUCCESS = 0, GVA_ERROR, GVA_NETWORK_ERROR, GVA_DDS_ERROR, GVA_XML_ERROR, GVA_RTP_ERROR };
+
+}  // namespace gva
 
 #endif  // HMI_DISPLAY_GVA_H_

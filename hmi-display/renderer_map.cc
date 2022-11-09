@@ -38,7 +38,9 @@
 
 #define DPI 96.0
 
-rendererMap::rendererMap(string map, string style, int width, int height)
+namespace gva {
+
+rendererMap::rendererMap(std::string map, std::string style, int width, int height)
     : width_(width), height_(height), map_(map), style_(style) {
 #ifdef ENABLE_OSMSCOUT
 
@@ -109,3 +111,5 @@ int rendererMap::Project(double zoom, double lon, double lat, cairo_surface_t **
   *surface = surface_;
   return GVA_SUCCESS;
 };
+
+}  // namespace gva

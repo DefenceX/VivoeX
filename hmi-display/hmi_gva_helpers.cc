@@ -24,6 +24,8 @@
 
 #include "hmi_gva.h"
 
+namespace gva {
+
 void HmiHelper::TableLicences(TableWidget *table) {
   table->Reset();
   table->visible_ = true;
@@ -174,3 +176,5 @@ void HmiHelper::TableAlarms(TableWidget *table) {
   table->AddRow();
   table->AddCell("Page 1 of 1", 100, ALIGN_RIGHT);
 }
+
+}  // namespace gva
