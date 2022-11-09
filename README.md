@@ -40,7 +40,7 @@ Dont have deep pockets and need a cheep alternative then the ARM (Raspberry Pi C
 <br>
 
 
-> NOTE: Not all labels are currently implemented, project in heavy development! See [DEVELOPER.md](docs/DEVELOPER.md) for issues and features.
+> NOTE: Not all labels are currently implemented, project in heavy development! See [DEVELOPER.md](info/DEVELOPER.md) for issues and features.
 
 Video can be streamed to an optional video processing unit (GPU/TPU for AI/ML and hemispherical video processing) before being received by the HMI processor for video overlays and personalisation for gunner/commander and driver displays. Multicast vdeo streams should be received by all consumers in realtime (networking not shown). There may be one or more users and displays on any given manned vehicle.
 
@@ -119,13 +119,13 @@ Tutorial [documentation for libosmscout](http://libosmscout.sourceforge.net/tuto
 See more example HMI [screenshots](images/README.md) in the images directory. 
 
 # Development
-See developer guidelines in [DEVELOPER.md](docs/DEVELOPER.md) which also contains the list of currently known issues.
+See developer guidelines in [DEVELOPER.md](info/DEVELOPER.md) which also contains the list of currently known issues.
 
 # Config
-See configuration setup in [CONFIG.md](docs/CONFIG.md)
+See configuration setup in [CONFIG.md](info/CONFIG.md)
 
 # AI and ML Pipelines
-See configuration setup in [PIPELINE.md](docs/PIPELINE.md)
+See configuration setup in [PIPELINE.md](info/PIPELINE.md)
 
 # Standards and Referances
 ## Land Open Systems Architecture (LOSA), Generic Vehicle Architecture (GVA)
