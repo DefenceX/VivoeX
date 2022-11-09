@@ -31,7 +31,7 @@ jobs:
       - name: Apt Install
         run: sudo apt-get --no-install-recommends install doxygen graphviz
       - name: Doxygen
-        run: doxygen
+        run:  MAJOR=$(sed -n '1p' < version) && MINOR=$(sed -n '2p' < version) && PATCH=$(sed -n '3p' < version) && SEM_VERSION=$MAJOR.$MINOR.$PATCH doxygen
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact
