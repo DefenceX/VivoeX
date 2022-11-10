@@ -22,25 +22,24 @@
 #include <iostream>
 #include <string>
 
-using namespace std;
-
-GvaVideoRtpYuv::GvaVideoRtpYuv(char* ip, int port, int height, int width) : GvaVideoSource(height, width) {
-  strcpy(ip_, ip);
-  port_ = port;
+GvaVideoRtpYuv::GvaVideoRtpYuv(std::string& ip, uint32_t port, uint32_t height, uint32_t width)
+    : GvaVideoSource(height, width), ip_(ip), port_(port) {
   frame_counter_ = 0;
-};
+}
 
-GvaVideoRtpYuv::GvaVideoRtpYuv(char* ip, int port) : GvaVideoSource(VIDEO_DEFAULT_HEIGHT, VIDEO_DEFAULT_WIDTH) {
-  strcpy(ip_, ip);
+GvaVideoRtpYuv::GvaVideoRtpYuv(std::string& ip, uint32_t port)
+    : GvaVideoSource(VIDEO_DEFAULT_HEIGHT, VIDEO_DEFAULT_WIDTH) {
+  ip_ = ip;
   port_ = port;
   stream_ = new RtpStream(VIDEO_DEFAULT_HEIGHT, VIDEO_DEFAULT_WIDTH);
-  stream_->RtpStreamIn(ip_, port_);
+  char* ipaddr = const_cast<char*>(ip_.c_str());
+  stream_->RtpStreamIn(ipaddr, port_);
   stream_->Open();
 }
 
 GvaVideoRtpYuv::~GvaVideoRtpYuv() { free(stream_); }
 
-int GvaVideoRtpYuv::GvaRecieveFrame(char* buffer, VideoFormat format) {
+const uint32_t GvaVideoRtpYuv::GvaReceiveFrame(char* buffer, VideoFormat format) {
   char* frame_buffer;
   stream_->Recieve((void**)&frame_buffer, 5);
   switch (format) {
@@ -57,3 +56,5 @@ int GvaVideoRtpYuv::GvaRecieveFrame(char* buffer, VideoFormat format) {
   frame_counter_++;
   return 0;
 }
+
+const uint32_t GvaVideoRtpYuv::GvaTransmitFrame(char* buffer, VideoFormat format) { return -1; };

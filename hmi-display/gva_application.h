@@ -57,7 +57,7 @@ class GvaApplication {
   /// \param ipaddr The stream IP address for raw RTP video
   /// \param port The port for the above RTP stream
   ///
-  GvaApplication(const Options options, char *ipaddr, const uint32_t port);
+  GvaApplication(const Options options, std::string &ipaddr, const uint32_t port);
 
   ///
   /// \brief Destroy the Gva Application object

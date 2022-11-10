@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
   uint32_t done = 0;
   uint32_t hndl;
   bool update;
-  char ipaddr[] = "127.0.0.1";
+  std::string ipaddr = "127.0.0.1";
   uint32_t port = 5004;
 
   std::cout << "hmi_display (By defencex.com.au)..." << std::endl;

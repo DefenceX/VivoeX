@@ -19,7 +19,7 @@
 
 #include "gva_video.h"
 
-GvaVideoSource::GvaVideoSource(int height, int width) {
+GvaVideoSource::GvaVideoSource(uint32_t height, uint32_t width) {
   height_ = height;
   width_ = width;
-};
+}
