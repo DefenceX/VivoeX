@@ -27,17 +27,17 @@
 #include <iostream>
 #include <string>
 
-#include "alarm_indicator.h"
-#include "compass.h"
-#include "events_gva.h"
-#include "gva.h"
-#include "gva_application.h"
-#include "gva_video_rtp_yuv.h"
-#include "hmi_gva.h"
-#include "keyboard.h"
-#include "log_gva.h"
-#include "renderer_map.h"
-#include "rtp_stream.h"
+#include "common/log_gva.h"
+#include "rtp_stream.h"  // NOLINT
+#include "src/events_gva.h"
+#include "src/gva.h"
+#include "src/gva_application.h"
+#include "src/hmi_gva.h"
+#include "src/renderer_map.h"
+#include "video/src/gva_video_rtp_yuv.h"
+#include "widgets/alarm_indicator.h"
+#include "widgets/compass.h"
+#include "widgets/keyboard.h"
 
 gva::GvaApplication::Options options = {false, false, ""};
 

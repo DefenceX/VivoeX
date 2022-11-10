@@ -22,8 +22,8 @@
 /// \file renderer_cairo.h
 ///
 
-#ifndef RENDERER_CAIRO_H
-#define RENDERER_CAIRO_H
+#ifndef HMI_DISPLAY_SRC_RENDERER_CAIRO_H_
+#define HMI_DISPLAY_SRC_RENDERER_CAIRO_H_
 
 #include <cairo.h>
 #include <gtk/gtk.h>
@@ -31,9 +31,9 @@
 
 #include <iostream>
 
-#include "config_reader.h"
-#include "gva.h"
-#include "renderer.h"
+#include "src/config_reader.h"
+#include "src/gva.h"
+#include "src/renderer.h"
 
 namespace gva {
 
@@ -138,7 +138,7 @@ class RendererCairo : public Renderer {
   void SetLineThickness(int thickness, LineType fill, LineCapEnd end);
   int MovePen(int x, int y);
   int DrawPen(int x, int y, bool close);
-  int DrawPen(int x, int y) { return DrawPen(x, y, false); };
+  int DrawPen(int x, int y) { return DrawPen(x, y, false); }
   int MovePenRaw(int x, int y);
   int DrawPenRaw(int x, int y);
   void DrawArcRaw(int x, int y, int radius, int angle1, int angle2);
@@ -184,12 +184,12 @@ class RendererCairo : public Renderer {
   int GetHeight() {
     gint h, w;
     gtk_widget_get_size_request(render_.win.draw, &w, &h);
-    return (int)w;
+    return static_cast<int>(w);
   }
   int GetWidth() {
     gint h, w;
     gtk_widget_get_size_request(render_.win.draw, &w, &h);
-    return (int)h;
+    return static_cast<int>(h);
   }
 
  private:
@@ -201,7 +201,7 @@ class RendererCairo : public Renderer {
   //
   // Helper Functions
   //
-  double intToFloat(int c) { return (double)1 / 255 * c; };
+  double intToFloat(int c) { return static_cast<double>(.1 / 255 * c); }
 
   //
   // Render List
@@ -232,4 +232,4 @@ class RendererCairo : public Renderer {
 
 }  // namespace gva
 
-#endif
+#endif  // HMI_DISPLAY_SRC_RENDERER_CAIRO_H_

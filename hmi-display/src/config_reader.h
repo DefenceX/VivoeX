@@ -22,10 +22,10 @@
 /// \file config_reader.h
 ///
 
-#ifndef CONFIG_READER_H
-#define CONFIG_READER_H
+#ifndef HMI_DISPLAY_SRC_CONFIG_READER_H_
+#define HMI_DISPLAY_SRC_CONFIG_READER_H_
 
-#include "config.pb.h"
+#include "config.pb.h"  // NOLINT
 
 namespace gva {
 
@@ -39,7 +39,7 @@ class ConfigData {
   ///
   /// \brief Singletons should not be cloneable.
   ///
-  ConfigData(ConfigData& other) = delete;
+  // ConfigData(ConfigData& other) = delete;
 
   ///
   /// \brief Singletons should not be assignable.
@@ -272,7 +272,7 @@ class ConfigData {
   /// \brief Get the Theme Critical object
   ///
   /// \return uint32_t
-  ///
+  /// HMI_GVA_H
   uint32_t GetThemeCritical();
 
   ///
@@ -316,4 +316,4 @@ class ConfigData {
 };
 
 }  // namespace gva
-#endif
+#endif  // HMI_DISPLAY_SRC_CONFIG_READER_H_

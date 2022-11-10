@@ -22,8 +22,8 @@
 /// \file renderer_map.h
 ///
 
-#ifndef RENDERER_MAP_H
-#define RENDERER_MAP_H
+#ifndef HMI_DISPLAY_SRC_RENDERER_MAP_H_
+#define HMI_DISPLAY_SRC_RENDERER_MAP_H_
 
 #include <cairo.h>
 #ifdef ENABLE_OSMSCOUT
@@ -33,6 +33,7 @@
 #endif
 
 #include <iostream>
+#include <list>
 #include <string>
 
 namespace gva {
@@ -42,8 +43,8 @@ class rendererMap {
   rendererMap(std::string map, std::string style, int width, int height);
   ~rendererMap();
   int Project(double zoom, double lon, double lat, cairo_surface_t **surface);
-  int SetHeight(int height) { height_ = height_; };
-  int SetWidth(int width) { width_ = width_; };
+  int SetHeight(int height) { height_ = height_; }
+  int SetWidth(int width) { width_ = width_; }
 
  private:
   int width_;
@@ -55,7 +56,7 @@ class rendererMap {
   osmscout::StyleConfigRef styleConfig_;
   osmscout::DatabaseParameter databaseParameter_;
   osmscout::DatabaseRef database_;
-  osmscout::MercatorProjection projection_;
+  osmscout::MercatorProjection #include<list> projection_;
   osmscout::MapParameter DrawParameter_;
   osmscout::AreaSearchParameter searchParameter_;
   osmscout::MapData data_;
@@ -68,4 +69,4 @@ class rendererMap {
 
 }  // namespace gva
 
-#endif
+#endif  // HMI_DISPLAY_SRC_RENDERER_MAP_H_

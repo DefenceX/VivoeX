@@ -22,23 +22,24 @@
 /// \file gva_application.cc
 ///
 
-#ifndef HMI_DISPLAY_GVA_APPLICATION_H_
-#define HMI_DISPLAY_GVA_APPLICATION_H_
+#ifndef HMI_DISPLAY_SRC_GVA_APPLICATION_H_
+#define HMI_DISPLAY_SRC_GVA_APPLICATION_H_
 #include <unistd.h>
 
 #include <iostream>
+#include <memory>
 #include <string>
 
-#include "alarm_indicator.h"
-#include "compass.h"
-#include "events_gva.h"
-#include "gva.h"
-#include "gva_video_rtp_yuv.h"
-#include "hmi_gva.h"
-#include "keyboard.h"
-#include "log_gva.h"
-#include "renderer_map.h"
-#include "rtp_stream.h"
+#include "common/log_gva.h"
+#include "rtp_stream.h"  // NOLINT
+#include "src/events_gva.h"
+#include "src/gva.h"
+#include "src/hmi_gva.h" #include < memory>
+#include "src/renderer_map.h"
+#include "video/src/gva_video_rtp_yuv.h"
+#include "widgets/alarm_indicator.h"
+#include "widgets/compass.h"
+#include "widgets/keyboard.h"
 
 namespace gva {
 
@@ -57,7 +58,7 @@ class GvaApplication {
   /// \param ipaddr The stream IP address for raw RTP video
   /// \param port The port for the above RTP stream
   ///
-  GvaApplication(const Options options, std::string &ipaddr, const uint32_t port);
+  GvaApplication(const Options options, const std::string &ipaddr, const uint32_t port);
 
   ///
   /// \brief Destroy the Gva Application object
@@ -92,7 +93,6 @@ class GvaApplication {
   ///
   /// \brief Dispatch key presses
   ///
-  /// \param The key being dispatched
   ///
   static void Dispatch(GvaKeyEnum key);
 
@@ -104,4 +104,4 @@ class GvaApplication {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_GVA_APPLICATION_H_
+#endif  // HMI_DISPLAY_SRC_GVA_APPLICATION_H_

@@ -8,6 +8,7 @@ include(scripts/cmake/dds.cmake)
 include(scripts/cmake/cpp.cmake)
 include(scripts/cmake/cpack.cmake)
 
+include_directories(${CMAKE_SOURCE_DIR}/hmi-display)
 
 if (ENABLE_OSMSCOUT)
     # lots of warnings and all warnings as errors
@@ -236,6 +237,16 @@ install(FILES  ${IMAGE_PATH}/FrontRight.png
                ${IMAGE_PATH}/Rear.png 
                ${IMAGE_PATH}/Left.png 
                ${IMAGE_PATH}/Quad.png   DESTINATION "/opt/gva/hmi/images")
+
+
+               aux_source_directory(${CMAKE_SOURCE_DIR}/src src)
+
+
+# include CMake module
+include(scripts/cmake/cpplint.cmake)
+
+# add all source code directories
+cpplint_add_subdirectory(hmi-display)
 
 # Uninstall target
 if(NOT TARGET uninstall)

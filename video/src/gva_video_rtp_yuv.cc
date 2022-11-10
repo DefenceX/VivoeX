@@ -17,17 +17,17 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#include "gva_video_rtp_yuv.h"
+#include "src/gva_video_rtp_yuv.h"
 
 #include <iostream>
 #include <string>
 
-GvaVideoRtpYuv::GvaVideoRtpYuv(std::string& ip, uint32_t port, uint32_t height, uint32_t width)
+GvaVideoRtpYuv::GvaVideoRtpYuv(const std::string& ip, uint32_t port, uint32_t height, uint32_t width)
     : GvaVideoSource(height, width), ip_(ip), port_(port) {
   frame_counter_ = 0;
 }
 
-GvaVideoRtpYuv::GvaVideoRtpYuv(std::string& ip, uint32_t port)
+GvaVideoRtpYuv::GvaVideoRtpYuv(const std::string& ip, uint32_t port)
     : GvaVideoSource(VIDEO_DEFAULT_HEIGHT, VIDEO_DEFAULT_WIDTH) {
   ip_ = ip;
   port_ = port;

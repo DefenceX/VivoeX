@@ -16,28 +16,10 @@
 // COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-#ifndef VIDEO_GVA_VIDEO_RTP_YUV_H_
-#define VIDEO_GVA_VIDEO_RTP_YUV_H_
-#include "gva_video.h"
-#include "rtp_stream.h"
 
-//
-// Buffers are assumed to be YUV
-//
-class GvaVideoRtpYuv : public GvaVideoSource {
- public:
-  GvaVideoRtpYuv(std::string &ip, uint32_t port, uint32_t height, uint32_t width);
-  GvaVideoRtpYuv(std::string &ip, uint32_t port);
-  ~GvaVideoRtpYuv();
+#include "src/gva_video.h"
 
-  // Implementation of pure virtual base class functions
-  const uint32_t GvaReceiveFrame(char *buffer, VideoFormat format) override;
-  const uint32_t GvaTransmitFrame(char *buffer, VideoFormat format);
-
- private:
-  std::string ip_;
-  uint32_t port_;
-  uint32_t frame_counter_;
-  RtpStream *stream_;
-};
-#endif  // VIDEO_GVA_VIDEO_RTP_YUV_H_
+GvaVideoSource::GvaVideoSource(uint32_t height, uint32_t width) {
+  height_ = height;
+  width_ = width;
+}

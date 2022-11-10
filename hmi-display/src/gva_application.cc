@@ -28,7 +28,7 @@
 
 namespace gva {
 
-gva::GvaApplication::GvaApplication(const Options options, std::string &ipaddr, const uint32_t port) {
+gva::GvaApplication::GvaApplication(const Options options, const std::string &ipaddr, const uint32_t port) {
   options_ = options;
   char tmp[256];
 

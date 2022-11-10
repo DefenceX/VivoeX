@@ -22,9 +22,11 @@
 /// \file renderer.h
 ///
 
-#ifndef RENDERER_H
-#define RENDERER_H
-#include "debug.h"
+#ifndef HMI_DISPLAY_SRC_RENDERER_H_
+#define HMI_DISPLAY_SRC_RENDERER_H_
+#include <stdint.h>
+
+#include "src/debug.h"
 
 #define MAX_HANDLES 10
 #define DEFAULT_WIDTH 640
@@ -52,68 +54,68 @@
 namespace gva {
 
 typedef struct {
-  int red;
-  int green;
-  int blue;
+  uint32_t red;
+  uint32_t green;
+  uint32_t blue;
 } ColourType;
 
 typedef struct {
-  int x;
-  int y;
+  uint32_t x;
+  uint32_t y;
 } PointType;
 
 typedef struct {
-  int width;
-  int height;
-  int depth;
+  uint32_t width;
+  uint32_t height;
+  uint32_t depth;
 } ResolutionType;
 
 struct RgbUnpackedType {
-  int r;
-  int g;
-  int b;
+  uint32_t r;
+  uint32_t g;
+  uint32_t b;
 };
 
 class RendererCairo;
 
 class Renderer {
  public:
-  Renderer(int width, int height) {
+  Renderer(uint32_t width, uint32_t height) {
     width_ = width;
     height_ = height;
-  };
-  int init(int width, int height);
-  virtual void SetPixel(int x, int y) = 0;
-  virtual void SetColour(int red, int green, int blue) = 0;
-  virtual void SetColourForground(int red, int green, int blue) = 0;
-  virtual void SetColourBackground(int red, int green, int blue) = 0;
-  static int GetWidth() { return width_; };
-  static int GetHeight() { return height_; };
-  static void SetWidth(int width) { width_ = width; };
-  static void SetHeight(int height) { height_ = height; };
-  virtual int DrawLine(int x1, int y1, int x2, int y2) = 0;
-  virtual void DrawCircle(int x, int y, int radius, bool fill) = 0;
-  virtual void DrawRectangle(int x1, int y1, int x2, int y2, bool fill) = 0;
-  virtual int DrawColor(int r, int g, int b) = 0;
-  virtual int TextureRGB(int x, int y, void *buffer, char *file) = 0;
-  static long PackRgb(int r, int g, int b) {
-    long packed = (r << 16) | (g << 8) | b;
+  }
+  uint32_t init(uint32_t width, uint32_t height);
+  virtual void SetPixel(uint32_t x, uint32_t y) = 0;
+  virtual void SetColour(uint32_t red, uint32_t green, uint32_t blue) = 0;
+  virtual void SetColourForground(uint32_t red, uint32_t green, uint32_t blue) = 0;
+  virtual void SetColourBackground(uint32_t red, uint32_t green, uint32_t blue) = 0;
+  static uint32_t GetWidth() { return width_; }
+  static uint32_t GetHeight() { return height_; }
+  static void SetWidth(uint32_t width) { width_ = width; }
+  static void SetHeight(uint32_t height) { height_ = height; }
+  virtual uint32_t DrawLine(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2) = 0;
+  virtual void DrawCircle(uint32_t x, uint32_t y, uint32_t radius, bool fill) = 0;
+  virtual void DrawRectangle(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, bool fill) = 0;
+  virtual uint32_t DrawColor(uint32_t r, uint32_t g, uint32_t b) = 0;
+  virtual uint32_t TextureRGB(uint32_t x, uint32_t y, void *buffer, char *file) = 0;
+  static uint64_t PackRgb(uint32_t r, uint32_t g, uint32_t b) {
+    uint64_t packed = (r << 16) | (g << 8) | b;
     return packed;
-  };
-  int UnpackRed(unsigned int rgb) { return (rgb & 0xff0000) >> 16; };
-  int UnpackGreen(unsigned int rgb) { return (rgb & 0xff00) >> 8; };
-  int UnpackBlue(unsigned int rgb) { return rgb & 0xff; };
-  RgbUnpackedType UnpackRgb(long rgb) {
+  }
+  uint32_t UnpackRed(uint32_t rgb) { return (rgb & 0xff0000) >> 16; }
+  uint32_t UnpackGreen(uint32_t rgb) { return (rgb & 0xff00) >> 8; }
+  uint32_t UnpackBlue(uint32_t rgb) { return rgb & 0xff; }
+  RgbUnpackedType UnpackRgb(uint64_t rgb) {
     RgbUnpackedType colour;
     colour.r = (rgb & 0x0000000000ff0000) >> 16;
     colour.g = (rgb & 0x000000000000ff00) >> 8;
     colour.b = (rgb & 0x00000000000000ff);
     return colour;
-  };
+  }
 
  protected:
-  static int height_;
-  static int width_;
+  static uint32_t height_;
+  static uint32_t width_;
 
  private:
   ColourType forground_colour_;
@@ -124,4 +126,4 @@ class Renderer {
 
 }  // namespace gva
 
-#endif
+#endif  // HMI_DISPLAY_SRC_RENDERER_H_

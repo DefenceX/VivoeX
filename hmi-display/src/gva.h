@@ -22,10 +22,10 @@
 /// \file gva.h
 ///
 
-#ifndef HMI_DISPLAY_GVA_H_
-#define HMI_DISPLAY_GVA_H_
-#include "debug.h"
-#include "log_gva.h"
+#ifndef HMI_DISPLAY_SRC_GVA_H_
+#define HMI_DISPLAY_SRC_GVA_H_
+#include "common/debug.h"
+#include "common/log_gva.h"
 
 #define MAJOR 0
 #define MINOR 3
@@ -108,4 +108,4 @@ enum GvaStatusTypes { GVA_SUCCESS = 0, GVA_ERROR, GVA_NETWORK_ERROR, GVA_DDS_ERR
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_GVA_H_
+#endif  // HMI_DISPLAY_SRC_GVA_H_

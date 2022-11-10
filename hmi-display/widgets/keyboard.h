@@ -9,8 +9,7 @@
 /// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
 /// subject to the following conditions:
 ///
-/// The above copyright notice and this permission notice shall be included in all copies or substantial
-/// portions of the Software.
+/// The above copyright noticecell->text
 /// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
 /// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
 /// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
@@ -21,10 +20,10 @@
 ///
 /// \file keyboard.h
 ///
-#ifndef KEYBOARD_H
-#define KEYBOARD_H
+#ifndef HMI_DISPLAY_WIDGETS_KEYBOARD_H_
+#define HMI_DISPLAY_WIDGETS_KEYBOARD_H_
 
-#include "widget.h"
+#include "widgets/widget.h"
 
 namespace gva {
 
@@ -34,10 +33,11 @@ namespace gva {
 ///
 class Keyboard : public WidgetX {
  public:
-  Keyboard(ScreenGva *screen);
+  explicit Keyboard(ScreenGva *screen);
   void Draw();
   KeyboardModeType mode_;
 };
 
 }  // namespace gva
-#endif
+
+#endif  // HMI_DISPLAY_WIDGETS_KEYBOARD_H_

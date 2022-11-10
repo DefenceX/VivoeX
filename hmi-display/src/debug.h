@@ -17,59 +17,27 @@
 /// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 /// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ///
-/// \brief Process events (touch and IO)
+/// \brief Some helpers for debugging
 ///
-/// \file events_gva.h
+/// \file debug.h
 ///
 
-#ifndef EVENTS_GVA_H
-#define EVENTS_GVA_H
-#include <gtk/gtk.h>
+#ifndef HMI_DISPLAY_SRC_DEBUG_H_
+#define HMI_DISPLAY_SRC_DEBUG_H_
 
-#include <vector>
+// Big Ben
+// #define DUMMY_LON -0.124240
+// #define DUMMY_LAT 51.500655
 
-#include "gva.h"
-#include "renderer_gva.h"
+// DSEI (Excel London)
+#define DUMMY_LON 0.029900
+#define DUMMY_LAT 51.508684
 
-namespace gva {
+#define DEFAULT_ZOOM 20000
+#define DEBUG_VIDEO_LIVE 0
+#define TRACE_POINT cout << "Function : " << __FUNCTION__ << ", Line : " << __LINE__ << "\n"
 
-enum EventEnumType { NO_EVENT = 0, KEY_EVENT, TOUCH_EVENT, DDS_EVENT, RESIZE_EVENT, REDRAW_EVENT };
+#include <stdio.h>
+void DumpHex(const void* data, size_t size);
 
-struct TouchType {
-  int x;
-  int y;
-};
-
-class EventGvaType {
- public:
-  EventGvaType() { type = NO_EVENT; };
-  EventGvaType(int x, int y) {
-    touch_.x = x;
-    touch_.y = y;
-    type = TOUCH_EVENT;
-  };
-  EventGvaType(GvaKeyEnum key) : key_(key) { type = KEY_EVENT; };
-  EventEnumType type;
-  GvaKeyEnum key_;
-  TouchType touch_;
-  ResolutionType resize_;
-};
-
-static std::vector<EventGvaType> eventqueue_;
-static TouchGva *touch_;
-
-class EventsGva {
- public:
-  EventsGva(gtkType *window, TouchGva *touch);
-  uint32_t NextGvaEvent(EventGvaType *event);  // Use for GTK/DDS/Touch events
-  static gboolean ButtonPressEventCb(GtkWidget *Widget, GdkEventButton *event, gpointer data);
-  static gboolean KeyPressEventCb(GtkWidget *Widget, GdkEventKey *event);
-  gtkType *GetWindow() { return window_; };
-
- private:
-  gtkType *window_;
-};
-
-};  // namespace gva
-
-#endif
+#endif  // HMI_DISPLAY_SRC_DEBUG_H_
