@@ -22,15 +22,17 @@
 /// \file screen_gva.h
 ///
 
-#ifndef SCREEN_GVA_H
-#define SCREEN_GVA_H
+#ifndef HMI_DISPLAY_SRC_SCREEN_GVA_H_
+#define HMI_DISPLAY_SRC_SCREEN_GVA_H_
+#include <cairo.h>
 #include <pthread.h>
 
-#include "cairo.h"
-#include "gva.h"
-#include "log_gva.h"
+#include <vector>
+
+#include "common/log_gva.h"
 #include "nmea/nmea.h"
-#include "renderer_gva.h"
+#include "src/gva.h"
+#include "src/renderer_gva.h"
 #include "widgets/table.h"
 #include "widgets/widget.h"
 
@@ -170,7 +172,7 @@ class ScreenGva : public RendererGva {
   int Update();
 
   ///
-  /// \brief Start the clock thread running to update the clock (pthread started)
+  /// \brief Start the clock threa #include <vector>d running to update the clock (pthread started)
   ///
   /// \param barData
   ///
@@ -197,5 +199,7 @@ class ScreenGva : public RendererGva {
   nmeaPARSER parser_;
   ConfigData *config_;
 };
+
 }  // namespace gva
-#endif
+
+#endif  // HMI_DISPLAY_SRC_SCREEN_GVA_H_

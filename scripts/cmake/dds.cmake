@@ -2,7 +2,7 @@ include(ExternalProject)
 include(FindPkgConfig)
 
 if (NOT DDS)
-    set(DDS "CYCLONE") # Default option for DDS if not specified
+    set(DDS "CYCLONE-CE") # Default option for DDS if not specified
 endif()
 
 message(STATUS "Setting DDS to ${DDS}")
@@ -87,7 +87,7 @@ endif()
 # ------------------------------------------------------------------------------
 # Cyclone-DDS
 # ------------------------------------------------------------------------------
-if ("${DDS}" STREQUAL "CYCLONE")
+if ("${DDS}" STREQUAL "CYCLONE-CE")
 set(DDS_STACK "CycloneDDS")
 
 if (HMI_ONLY)

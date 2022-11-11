@@ -17,24 +17,16 @@
 /// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 /// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ///
-/// \brief Table helpers
+/// \brief
 ///
-/// \file hmi_gva_helpers.h
+/// \file renderer.cc
 ///
 
-#ifndef HMI_GVA_HELPER_H
-#define HMI_GVA_HELPER_H
-#include "screen_gva.h"
+#include "renderer.h"
 
 namespace gva {
 
-class HmiHelper {
- public:
-  static void TableLicences(TableWidget *table);
-  static void TableSystem(TableWidget *table);
-  static void TableAlarms(TableWidget *table);
-};
+uint32_t Renderer::height_ = DEFAULT_HEIGHT;
+uint32_t Renderer::width_ = DEFAULT_WIDTH;
 
 }  // namespace gva
-
-#endif

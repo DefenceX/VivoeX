@@ -22,16 +22,16 @@
 /// \file hmi_gva.h
 ///
 
-#ifndef HMI_GVA_H
-#define HMI_GVA_H
+#ifndef HMI_DISPLAY_SRC_HMI_GVA_H_
+#define HMI_DISPLAY_SRC_HMI_GVA_H_
 #include <iostream>
 
-#include "config_reader.h"
-#include "hmi_gva_helpers.h"
-#include "renderer_map.h"
-#include "screen_gva.h"
-#include "tinyfsm.h"
-#include "view_gva.h"
+#include "src/config_reader.h"
+#include "src/hmi_gva_helpers.h"
+#include "src/renderer_map.h"
+#include "src/screen_gva.h"
+#include "src/tinyfsm.h"
+#include "src/view_gva.h"
 
 #define LABEL_NULL "Unused!"
 
@@ -147,9 +147,9 @@
     }                                                                        \
   }
 
-//#define BMS_FUNCTION_KEYS_LEFT   { true, 0b100000, 0b101111, 0b000000,
+// #define BMS_FUNCTION_KEYS_LEFT   { true, 0b100000, 0b101111, 0b000000,
 // 0b000000, { "Mission", LABEL_NULL, "Shift.up", "Shift.down", "Zoom +",
-//"Rotate.>>" } }
+// "Rotate.>>" } }
 #define BMS_FUNCTION_KEYS_LEFT                                                                \
   {                                                                                           \
     true, 0b100000, 0b101111, 0b000000, 0b000000, {                                           \
@@ -211,23 +211,23 @@ struct EventKeyFunction : tinyfsm::Event {
 // State Machine Base Class Declaration
 //
 struct Hmi : tinyfsm::Fsm<Hmi> {
-  virtual void react(EventKeyPowerOn const &){};
-  virtual void react(EventKeySA const &){};
-  virtual void react(EventKeyWPN const &){};
-  virtual void react(EventKeyDEF const &){};
-  virtual void react(EventKeySYS const &){};
-  virtual void react(EventKeyDRV const &){};
-  virtual void react(EventKeySTR const &){};
-  virtual void react(EventKeyCOM const &){};
-  virtual void react(EventKeyBMS const &){};
-  virtual void react(EventKeyAlarms const &){};
-  virtual void react(EventKeyFunction const &){};
+  virtual void react(EventKeyPowerOn const &) {}
+  virtual void react(EventKeySA const &) {}
+  virtual void react(EventKeyWPN const &) {}
+  virtual void react(EventKeyDEF const &) {}
+  virtual void react(EventKeySYS const &) {}
+  virtual void react(EventKeyDRV const &) {}
+  virtual void react(EventKeySTR const &) {}
+  virtual void react(EventKeyCOM const &) {}
+  virtual void react(EventKeyBMS const &) {}
+  virtual void react(EventKeyAlarms const &) {}
+  virtual void react(EventKeyFunction const &) {}
 
   // alternative: enforce handling of Toggle in all States (pure virtual)
   // virtual void react(EventToggle const &) = 0;
 
-  virtual void entry(void){}; /* entry actions in some States */
-  void exit(void){};          /* no exit actions */
+  virtual void entry(void) {}  // entry actions in some States
+  void exit(void) {}           // no exit actions
 
   // alternative: enforce entry actions in all States (pure virtual)
   // virtual void entry(void) = 0;
@@ -263,4 +263,4 @@ struct Hmi : tinyfsm::Fsm<Hmi> {
 };
 
 using hmi = Hmi;
-#endif
+#endif  // HMI_DISPLAY_SRC_HMI_GVA_H_

@@ -26,7 +26,7 @@
 
 #include <gtk/gtk.h>
 
-#include "gva.h"
+#include "src/gva.h"
 
 /* Surface to store current scribbles */
 static cairo_surface_t *surface = NULL;
@@ -43,14 +43,12 @@ static void clear_surface(void) {
 }
 
 /* Create a new surface of the appropriate size to store our scribbles */
-static gboolean configure_event_cb(GtkWidget *Widget, GdkEventConfigure *event,
-                                   gpointer data) {
+static gboolean configure_event_cb(GtkWidget *Widget, GdkEventConfigure *event, gpointer data) {
   if (surface) cairo_surface_destroy(surface);
 
-  surface = gdk_window_create_similar_surface(
-      gtk_widget_get_window(Widget), CAIRO_CONTENT_COLOR,
-      gtk_widget_get_allocated_width(Widget),
-      gtk_widget_get_allocated_height(Widget));
+  surface = gdk_window_create_similar_surface(gtk_widget_get_window(Widget), CAIRO_CONTENT_COLOR,
+                                              gtk_widget_get_allocated_width(Widget),
+                                              gtk_widget_get_allocated_height(Widget));
 
   /* Initialize the surface to white */
   clear_surface();
@@ -91,8 +89,7 @@ static void draw_brush(GtkWidget *Widget, gdouble x, gdouble y) {
  * The ::button-press signal handler receives a GdkEventButton
  * struct which contains this information.
  */
-static gboolean button_press_event_cb(GtkWidget *Widget, GdkEventButton *event,
-                                      gpointer data) {
+static gboolean button_press_event_cb(GtkWidget *Widget, GdkEventButton *event, gpointer data) {
   /* paranoia check, in case we haven't gotten a configure event */
   if (surface == NULL) return FALSE;
 
@@ -111,8 +108,7 @@ static gboolean button_press_event_cb(GtkWidget *Widget, GdkEventButton *event,
  * still held down. The ::motion-notify signal handler receives
  * a GdkEventMotion struct which contains this information.
  */
-static gboolean motion_notify_event_cb(GtkWidget *Widget, GdkEventMotion *event,
-                                       gpointer data) {
+static gboolean motion_notify_event_cb(GtkWidget *Widget, GdkEventMotion *event, gpointer data) {
   /* paranoia check, in case we haven't gotten a configure event */
   if (surface == NULL) return FALSE;
 
@@ -150,22 +146,18 @@ static void activate(GtkApplication *app, gpointer user_data) {
 
   /* Signals used to handle the backing surface */
   g_signal_connect(drawing_area, "draw", G_CALLBACK(draw_cb), NULL);
-  g_signal_connect(drawing_area, "configure-event",
-                   G_CALLBACK(configure_event_cb), NULL);
+  g_signal_connect(drawing_area, "configure-event", G_CALLBACK(configure_event_cb), NULL);
 
   /* Event signals */
-  g_signal_connect(drawing_area, "motion-notify-event",
-                   G_CALLBACK(motion_notify_event_cb), NULL);
-  g_signal_connect(drawing_area, "button-press-event",
-                   G_CALLBACK(button_press_event_cb), NULL);
+  g_signal_connect(drawing_area, "motion-notify-event", G_CALLBACK(motion_notify_event_cb), NULL);
+  g_signal_connect(drawing_area, "button-press-event", G_CALLBACK(button_press_event_cb), NULL);
 
   /* Ask to receive events the drawing area doesn't normally
    * subscribe to. In particular, we need to ask for the
    * button press and motion notify events that want to handle.
    */
-  gtk_widget_set_events(drawing_area, gtk_widget_get_events(drawing_area) |
-                                          GDK_BUTTON_PRESS_MASK |
-                                          GDK_POINTER_MOTION_MASK);
+  gtk_widget_set_events(drawing_area,
+                        gtk_widget_get_events(drawing_area) | GDK_BUTTON_PRESS_MASK | GDK_POINTER_MOTION_MASK);
 
   gtk_widget_show_all(window);
 }

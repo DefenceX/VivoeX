@@ -17,35 +17,59 @@
 /// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 /// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ///
-/// \brief A simple GVA logging module
+/// \brief Process events (touch and IO)
 ///
-/// \file log_gva.h
+/// \file events_gva.h
 ///
 
-#ifndef HMI_DISPLAY_COMMON_LOG_GVA_H_
-#define HMI_DISPLAY_COMMON_LOG_GVA_H_
+#ifndef HMI_DISPLAY_SRC_EVENTS_GVA_H_
+#define HMI_DISPLAY_SRC_EVENTS_GVA_H_
+#include <gtk/gtk.h>
 
-#define LOG_GVA_H
-#include <stdio.h>
+#include <vector>
 
-#include <iostream>
-#include <string>
+#include "src/gva.h"
+#include "src/renderer_gva.h"
 
 namespace gva {
 
-enum { LOG_DEBUG = 0, LOG_INFO, LOG_WARNING, LOG_ERROR };
+enum EventEnumType { NO_EVENT = 0, KEY_EVENT, TOUCH_EVENT, DDS_EVENT, RESIZE_EVENT, REDRAW_EVENT };
 
-static FILE* m_errorfd;
-
-class logGva {
- public:
-  static void log(std::string message, int type);
-  static void log(char* message, int type);
-  static void finish();
-
- private:
+struct TouchType {
+  int x;
+  int y;
 };
 
-}  // namespace gva
+class EventGvaType {
+ public:
+  EventGvaType() { type = NO_EVENT; }
+  EventGvaType(int x, int y) {
+    touch_.x = x;
+    touch_.y = y;
+    type = TOUCH_EVENT;
+  }
+  explicit EventGvaType(GvaKeyEnum key) : key_(key) { type = KEY_EVENT; }
+  EventEnumType type;
+  GvaKeyEnum key_;
+  TouchType touch_;
+  ResolutionType resize_;
+};
 
-#endif  // HMI_DISPLAY_COMMON_LOG_GVA_H_
+static std::vector<EventGvaType> eventqueue_;
+static TouchGva *touch_;
+
+class EventsGva {
+ public:
+  EventsGva(gtkType *window, TouchGva *touch);
+  uint32_t NextGvaEvent(EventGvaType *event);  // Use for GTK/DDS/Touch events
+  static gboolean ButtonPressEventCb(GtkWidget *Widget, GdkEventButton *event, gpointer data);
+  static gboolean KeyPressEventCb(GtkWidget *Widget, GdkEventKey *event);
+  gtkType *GetWindow() { return window_; }
+
+ private:
+  gtkType *window_;
+};
+
+};  // namespace gva
+
+#endif  // HMI_DISPLAY_SRC_EVENTS_GVA_H_

@@ -35,8 +35,8 @@
  * ---------------------------------------------------------------------
  */
 
-#ifndef TINYFSM_HPP_INCLUDED
-#define TINYFSM_HPP_INCLUDED
+#ifndef HMI_DISPLAY_SRC_TINYFSM_H_
+#define HMI_DISPLAY_SRC_TINYFSM_H_
 
 #ifndef TINYFSM_NOSTDLIB
 #include <type_traits>
@@ -52,7 +52,7 @@ namespace tinyfsm {
 
 struct Event {};
 
-// --------------------------------------------------------------------------
+// ---------------------------------SRC_-----------------------------------------
 
 #ifdef TINYFSM_NOSTDLIB
 // remove dependency on standard library (silent fail!).
@@ -117,7 +117,7 @@ class Fsm {
   static void set_initial_state();
 
   /// \brief Reset state machine
-  static void Reset(){};
+  static void Reset() {}
 
   /// \brief Enter state
   static void enter() { current_state_ptr->entry(); }
@@ -166,7 +166,7 @@ class Fsm {
     static_assert(is_same_fsm<F, S>::value, "transit to different state machine");
     current_state_ptr->exit();
     // NOTE: we get into deep trouble if the action_function sends a new event.
-    // TODO: implement a mechanism to check for reentrancy
+    // TODO(ross.newman@defencex.com.au): implement a mechanism to check for reentrancy
     action_function();
     current_state_ptr = &_state_instance<S>::value;
     current_state_ptr->entry();
@@ -201,9 +201,6 @@ template <>
 struct FsmList<> {
   /// \brief Set the inital state
   static void set_initial_state() {}
-  /// \brief Reset the state
-  static void Reset() {}
-  /// \brief Enter a state
   static void enter() {}
   /// \brief Dispatch FSM
   template <typename E>
@@ -286,20 +283,20 @@ struct StateList<S, SS...> {
 template <typename F>
 struct MooreMachine : tinyfsm::Fsm<F> {
   /// \brief entry actions in some states
-  virtual void entry(void){};
+  virtual void entry(void) {}
   /// \brief no exit actions
-  void exit(void){};
+  void exit(void) {}
 };
 
 template <typename F>
 struct MealyMachine : tinyfsm::Fsm<F> {
   // input actions are modeled in react():
   // - conditional dependent of event type or payload
-  // - transit<>(ActionFunction)
+  // - transit<>(ActionFunction)VIEW_GVA_H
   /// \brief no entry actions
-  void entry(void){};
+  void entry(void) {}
   /// \brief no exit actions
-  void exit(void){};
+  void exit(void) {}
 };
 
 }  // namespace tinyfsm
@@ -312,4 +309,4 @@ struct MealyMachine : tinyfsm::Fsm<F> {
   }                                                      \
   }
 
-#endif  // TINYFSM_HPP_INCLUDED
+#endif  // HMI_DISPLAY_SRC_TINYFSM_H_

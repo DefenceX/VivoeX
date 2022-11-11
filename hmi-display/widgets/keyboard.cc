@@ -24,7 +24,7 @@
 
 #include "keyboard.h"
 
-#include "screen_gva.h"
+#include "src/screen_gva.h"
 
 namespace gva {
 

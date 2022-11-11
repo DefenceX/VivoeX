@@ -19,8 +19,9 @@ if(ENABLE_COVERAGE)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
 endif()
 
-include_directories(../video)
-include_directories(./video)
+include_directories(${CMAKE_SOURCE_DIR})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+
 include_directories(${CMAKE_BINARY_DIR}/external/vivoe-media-framework/src)
 include_directories(${CMAKE_BINARY_DIR}/external/libnmea/src/include)
 if (ENABLE_OSMSCOUT)
@@ -53,22 +54,22 @@ else()
 endif()
 
 set(SOURCES main.cc 
-			gva_application.cc
-            renderer.cc 
-			renderer_cairo.cc 
-			renderer_gva.cc 
-			screen_gva.cc 
-			events_gva.cc .
+			src/gva_application.cc
+            src/renderer.cc 
+			src/renderer_cairo.cc 
+			src/renderer_gva.cc 
+			src/screen_gva.cc 
+			src/events_gva.cc .
 			widgets/keyboard.cc
 			widgets/compass.cc
 			widgets/alarm_indicator.cc
 			common/debug.cc 
 			common/log_gva.cc 
-			hmi_gva.cc 
-			hmi_gva_helpers.cc 
-			view_gva.cc 
-			renderer_map.cc 
-			config_reader.cc)
+			src/hmi_gva.cc 
+			src/hmi_gva_helpers.cc 
+			src/view_gva.cc 
+			src/renderer_map.cc 
+			src/config_reader.cc)
 
 add_executable(hmi-display ${PROTO_SRCS} ${SOURCES})
 if (ENABLE_OSMSCOUT)

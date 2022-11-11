@@ -21,32 +21,32 @@
 ///
 /// \file table.h
 ///
-#ifndef TABLE_H
-#define TABLE_H
+#ifndef HMI_DISPLAY_WIDGETS_TABLE_H_
+#define HMI_DISPLAY_WIDGETS_TABLE_H_
 
-#include "renderer.h"
-#include "widget.h"
+#include "src/renderer.h"
+#include "widgets/widget.h"
 
 namespace gva {
 
 typedef struct {
   int width;
   char text[256];
-  long background_colour;
-  long foreground_colour;
-  long outline_colour;
-  long highlight_colour;
+  uint64_t background_colour;
+  uint64_t foreground_colour;
+  uint64_t outline_colour;
+  uint64_t highlight_colour;
   cellAlignType alignment;
 } CellType;
 
 #define MAX_CELLS 20
 typedef struct {
-  int cell_count;
+  uint32_t cell_count;
   CellType cells[MAX_CELLS];
-  long background_colour;
-  long foreground_colour;
-  long outline_colour;
-  long highlight_colour;
+  uint64_t background_colour;
+  uint64_t foreground_colour;
+  uint64_t outline_colour;
+  uint64_t highlight_colour;
   WeightType font_weight;
   bool highlighted;
   cellAlignType alignment;
@@ -66,7 +66,7 @@ class TableWidget {
   /// \param highlight_colour Highlight colour
   /// \param font_weight Font weight
   ///
-  void AddRow(long forground_colour, long background_colour, long outline_colour, long highlight_colour,
+  void AddRow(uint64_t forground_colour, uint64_t background_colour, uint64_t outline_colour, uint64_t highlight_colour,
               WeightType font_weight) {
     RowType *row = &rows_[row_count_];
     row->background_colour = background_colour;
@@ -109,10 +109,10 @@ class TableWidget {
   /// \brief Set the highlighted row
   ///
   ///
-  void CurrentRowHighlight() { rows_[row_count_ - 1].highlighted = true; };
+  void CurrentRowHighlight() { rows_[row_count_ - 1].highlighted = true; }
 
   ///
-  /// \brief Add a basic cell
+  /// widgets \brief Add a basic cell
   ///
   /// \param text
   /// \param width
@@ -126,7 +126,7 @@ class TableWidget {
   /// \param width
   /// \param background_colour
   ///
-  void AddCell(char *text, int width, long background_colour) {
+  void AddCell(char *text, int width, uint64_t background_colour) {
     CellType *cell = &rows_[row_count_ - 1].cells[rows_[row_count_ - 1].cell_count];
     AddCell(text, width, ALIGN_LEFT);
     cell->background_colour = background_colour;
@@ -145,7 +145,7 @@ class TableWidget {
     cell->foreground_colour = rows_[row_count_ - 1].foreground_colour;
     cell->outline_colour = rows_[row_count_ - 1].outline_colour;
     cell->highlight_colour = rows_[row_count_ - 1].highlight_colour;
-    strcpy(cell->text, text);
+    strncpy(cell->text, text, sizeof(cell->text));
     cell->width = width;
     cell->alignment = align;
     rows_[row_count_ - 1].cell_count += 1;
@@ -166,7 +166,7 @@ class TableWidget {
   int x_;
   int y_;
   int row_count_;
-  long background_colour_;
+  uint64_t background_colour_;
   RowType rows_[MAX_ROWS];
 
  private:
@@ -174,4 +174,5 @@ class TableWidget {
 };
 
 }  // namespace gva
-#endif
+
+#endif  // HMI_DISPLAY_WIDGETS_TABLE_H_

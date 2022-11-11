@@ -22,16 +22,16 @@
 /// \file renderer_gva.h
 ///
 
-#ifndef RENDERER_GVA_H
-#define RENDERER_GVA_H
+#ifndef HMI_DISPLAY_SRC_RENDERER_GVA_H_
+#define HMI_DISPLAY_SRC_RENDERER_GVA_H_
 
 #include <string.h>
 
 #include <vector>
 
-#include "config_reader.h"
-#include "gva.h"
-#include "renderer_cairo.h"
+#include "src/config_reader.h"
+#include "src/gva.h"
+#include "src/renderer_cairo.h"
 
 #define MAX_ROWS 50
 #define MAX_CELLS 10
@@ -76,15 +76,15 @@ struct GvaColourType {
 
 class RenderBase {
  public:
-  RenderBase(){};
-  RenderBase(uint32_t x, uint32_t y) : m_x(x), m_y(y), m_width(0), m_height(0){};
-  RenderBase(uint32_t x, uint32_t y, uint32_t width) : m_x(x), m_y(y), m_width(width), m_height(0){};
+  RenderBase() {}
+  RenderBase(uint32_t x, uint32_t y) : m_x(x), m_y(y), m_width(0), m_height(0) {}
+  RenderBase(uint32_t x, uint32_t y, uint32_t width) : m_x(x), m_y(y), m_width(width), m_height(0) {}
   RenderBase(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
-      : m_x(x), m_y(y), m_width(width), m_height(height){};
-  uint32_t GetX() { return m_x; };
-  uint32_t GetY() { return m_y; };
-  uint32_t GetWidth() { return m_width; };
-  uint32_t GetHeight() { return m_height; };
+      : m_x(x), m_y(y), m_width(width), m_height(height) {}
+  uint32_t GetX() { return m_x; }
+  uint32_t GetY() { return m_y; }
+  uint32_t GetWidth() { return m_width; }
+  uint32_t GetHeight() { return m_height; }
 
  private:
   uint32_t m_x = 0;
@@ -105,8 +105,8 @@ typedef struct GvaCellType {
 
 class GvaRow : public RenderBase {
  public:
-  GvaRow(){};
-  GvaRow(uint32_t x, uint32_t y) : RenderBase(x, y){};
+  GvaRow() {}
+  GvaRow(uint32_t x, uint32_t y) : RenderBase(x, y) {}
   uint32_t addCell(GvaCellType newcell, uint32_t width);
   GvaCellType cell_[MAX_CELLS];
   uint32_t widths_[MAX_CELLS];
@@ -115,13 +115,13 @@ class GvaRow : public RenderBase {
 
 class GvaTable : public RenderBase {
  public:
-  GvaTable(uint32_t x, uint32_t y, uint32_t width) : RenderBase(x, y, width){};
+  GvaTable(uint32_t x, uint32_t y, uint32_t width) : RenderBase(x, y, width) {}
   uint32_t AddRow(GvaRow newrow) {
     row_[rows_++] = newrow;
     return rows_;
-  };
-  void SetFontName(const char *name) { strcpy(fontname_, name); };
-  void SetBorderThickness(uint32_t thickness) { border_ = thickness; };
+  }
+  void SetFontName(const char *name) { strncpy(fontname_, name, sizeof(fontname_)); }
+  void SetBorderThickness(uint32_t thickness) { border_ = thickness; }
   uint32_t rows_ = 0;
   uint32_t border_ = gva::ConfigData::GetInstance()->GetThemeTableBorderThickness();
   GvaRow row_[MAX_ROWS];
@@ -130,11 +130,11 @@ class GvaTable : public RenderBase {
 
 class Hotspot : public RenderBase {
  public:
-  Hotspot(uint32_t groupId, uint32_t x, uint32_t y) : group_id_(groupId), binding_(0), RenderBase(x, y){};
+  Hotspot(uint32_t groupId, uint32_t x, uint32_t y) : group_id_(groupId), binding_(0), RenderBase(x, y) {}
   Hotspot(uint32_t groupId, uint32_t binding, uint32_t x, uint32_t y, uint32_t width, uint32_t height)
-      : group_id_(groupId), binding_(binding), RenderBase(x, y, width, height){};
-  uint32_t GetGroupId() { return group_id_; };
-  uint32_t GetBinding() { return binding_; };
+      : group_id_(groupId), binding_(binding), RenderBase(x, y, width, height) {}
+  uint32_t GetGroupId() { return group_id_; }
+  uint32_t GetBinding() { return binding_; }
 
  private:
   uint32_t group_id_;  // Group hostpots together
@@ -158,12 +158,12 @@ class TouchGva {
   void SetResolution(uint32_t x, uint32_t y) {
     x_ = x;
     y_ = y;
-  };
-  void Reset() { hotspots_.clear(); };
+  }
+  void Reset() { hotspots_.clear(); }
   bool Check(uint32_t groupId, uint32_t *binding, uint32_t x, uint32_t y) {
     // Adjust for resized windows
-    x = x / (float)(Renderer::GetWidth() / (float)DEFAULT_WIDTH);
-    y = y / (float)(Renderer::GetHeight() / (float)DEFAULT_HEIGHT);
+    x = x / static_cast<float>(Renderer::GetWidth() / static_cast<float>(DEFAULT_WIDTH));
+    y = y / static_cast<float>(Renderer::GetHeight() / static_cast<float>(DEFAULT_HEIGHT));
     // Invert now adjusted for size
     y = MIN_HEIGHT - y;
 
@@ -185,20 +185,122 @@ class TouchGva {
 class RendererGva : public RendererCairo {
  public:
   RendererGva(uint32_t width, uint32_t height);
+
+  ///
+  /// \brief Draw all the labels on the screen
+  ///
+  /// \param text The text to go in the label
+  /// \param fontSize The font size
+  /// \param x X Position on the screen
+  /// \param y Y Position on the screen
+  ///
   void DrawLabels(char *text, uint32_t fontSize, uint32_t x, uint32_t y);
+
+  ///
+  /// \brief Draw six function labels
+  ///
+  /// \param x position of the labels, usefull for labels on left and right sides of the screen
+  /// \param active State of the label
+  /// \param hide Hide if true
+  /// \param toggle Toggle
+  /// \param toggleOn Toggle on
+  /// \param labels Array of labels to be rendered
+  ///
   void DrawFunctionLabels(uint32_t x, uint32_t active, uint32_t hide, uint32_t toggle, uint32_t toggleOn,
                           char labels[6][40]);
+
+  ///
+  /// \brief Draw the labels on the top of the screen
+  ///
+  /// \param y The y pixel position
+  /// \param active Active mask, each bit indicates active state
+  /// \param hide Hide mask, each bit indicates hidden state
+  ///
   void DrawTopLabels(uint32_t y, uint32_t active, uint32_t hide);
+
+  ///
+  /// \brief Draw the control labels on the bottom of the screen
+  ///
+  /// \param y The y pixel position
+  /// \param active Active mask, each bit indicates active state
+  /// \param hide Hide mask, each bit indicates hidden state
+  ///
   void DrawControlLabels(uint32_t y, uint32_t active, uint32_t hide);
+
+  ///
+  /// \brief Draw an icon
+  ///
+  /// \param icon The type of icon to be rendered
+  /// \param x X pixel position
+  /// \param y Y pixel position
+  /// \param width Width of the icon
+  /// \param height Height of the icon
+  ///
   void DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width, uint32_t height);
+
+  ///
+  /// \brief Draw the Plan Position Indicator
+  ///
+  /// \param mode The PPI mode, different styles
+  /// \param x X pixel position
+  /// \param y Y pixel position
+  /// \param degrees Compass heading
+  /// \param sightAzimuth Camera heading
+  ///
   void DrawPPI(uint8_t mode, uint32_t x, uint32_t y, uint32_t degrees, uint32_t sightAzimuth);
+
+  ///
+  /// \brief Draw a table
+  ///
+  /// \param table The table values
+  ///
   void DrawTable(GvaTable *table);
+
+  ///
+  /// \brief Draw the operational mode
+  ///
+  ///
   void DrawMode();
+
+  ///
+  /// \brief Draw keyboard buttons
+  ///
+  /// \param keytext The button text
+  /// \param fontSize The font size to be used
+  /// \param x X pixel position
+  /// \param y Y pixel position
+  /// \param size Size in pixels
+  ///
   void DrawButton(char *keytext, uint32_t fontSize, uint32_t x, uint32_t y, uint32_t size);
+
+  ///
+  /// \brief Draw keyboard buttons
+  ///
+  /// \param keytext The button text
+  /// \param fontSize The font size to be used
+  /// \param x X pixel position
+  /// \param y Y pixel position
+  /// \param size Size in pixels
+  /// \param height Height of button in pixels
+  /// \param width Width of button in pixels
+  /// \param align Alignment
+  ///
   void DrawButton(char *keytext, uint32_t fontSize, uint32_t x, uint32_t y, uint32_t height, uint32_t width,
                   uint32_t align);
+
+  ///
+  /// \brief Draw the onscreen keyboard
+  ///
+  /// \param mode
+  ///
   void DrawKeyboard(KeyboardModeType mode);
-  TouchGva *GetTouch() { return &touch_; };
+
+  ///
+  /// \brief Get the Touch object
+  ///
+  /// \return TouchGva*
+  ///
+  TouchGva *GetTouch() { return &touch_; }
 
  private:
   TouchGva touch_;
@@ -219,8 +321,8 @@ class RendererGva : public RendererCairo {
 class FunctionKeySimple {
  public:
   void Draw(RendererGva *r, uint32_t x, uint32_t y, uint32_t width, uint32_t height, char *text);
-  uint32_t GetX() { return x_; };
-  uint32_t GetY() { return y_; };
+  uint32_t GetX() { return x_; }
+  uint32_t GetY() { return y_; }
 
  private:
   uint32_t x_;
@@ -234,4 +336,4 @@ class FunctionKeyToggle : public FunctionKeySimple {
 
 }  // namespace gva
 
-#endif
+#endif  // HMI_DISPLAY_SRC_RENDERER_GVA_H_

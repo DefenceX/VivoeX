@@ -28,7 +28,7 @@
 
 namespace gva {
 
-GvaApplication::GvaApplication(const Options options, char *ipaddr, const uint32_t port) {
+gva::GvaApplication::GvaApplication(const Options options, const std::string &ipaddr, const uint32_t port) {
   options_ = options;
   char tmp[256];
 
@@ -127,7 +127,7 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
       hmi::GetScreen()->canvas.bufferType = SURFACE_CAIRO;
       hmi::GetScreen()->canvas.surface = cairo_image_surface_create(CAIRO_FORMAT_RGB24, DEFAULT_WIDTH, DEFAULT_HEIGHT);
       char *test = reinterpret_cast<char *>(cairo_image_surface_get_data(hmi::GetScreen()->canvas.surface));
-      rtp_stream1_->GvaRecieveFrame(test, RGBA_COLOUR);
+      rtp_stream1_->GvaReceiveFrame(test, RGBA_COLOUR);
       cairo_surface_mark_dirty(hmi::GetScreen()->canvas.surface);
 
       // @todo hmi_display: Add RTP HMI streaming output to display.

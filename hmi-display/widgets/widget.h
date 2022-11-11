@@ -22,11 +22,11 @@
 /// \file widget.h
 ///
 
-#ifndef WIDGET_H
-#define WIDGET_H
+#ifndef HMI_DISPLAY_WIDGETS_WIDGET_H_
+#define HMI_DISPLAY_WIDGETS_WIDGET_H_
 
-#include "renderer_gva.h"
-#include "widget.h"
+#include "src/renderer_gva.h"
+#include "widgets/widget.h"
 
 namespace gva {
 
@@ -115,4 +115,5 @@ class WidgetX {
 };
 
 }  // namespace gva
-#endif
+
+#endif  // HMI_DISPLAY_WIDGETS_WIDGET_H_

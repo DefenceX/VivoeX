@@ -22,14 +22,14 @@
 /// \file view_gva.h
 ///
 
-#ifndef VIEW_GVA_H
-#define VIEW_GVA_H
+#ifndef HMI_DISPLAY_SRC_VIEW_GVA_H_
+#define HMI_DISPLAY_SRC_VIEW_GVA_H_
 #include <functional>
 #include <string>
 
-#include "config_reader.h"
-#include "gva.h"
-#include "screen_gva.h"
+#include "src/config_reader.h"
+#include "src/gva.h"
+#include "src/screen_gva.h"
 
 #define MAX_LABEL 50
 
@@ -60,15 +60,15 @@ class ViewGva {
           FunctionKeysType right)
       : function_(function), function_top_(top), common_bottom_(bottom), function_left_(left), function_right_(right) {
     valid_ = true;
-  };
-  bool Valid() { return valid_; };
-  bool Release() { valid_ = false; };
-  void AddToggle(GvaKeyEnum key, bool rightActive, char *rightText, bool leftActive, char *leftText){};
-  FunctionSelectType *GetTop() { return function_top_; };
-  CommonTaskKeysType *GetBottom() { return common_bottom_; };
-  FunctionKeysType *GetLeft() { return &function_left_; };
-  FunctionKeysType *GetRight() { return &function_right_; };
-  GvaFunctionEnum GetFunction() { return function_; };
+  }
+  bool Valid() { return valid_; }
+  bool Release() { valid_ = false; }
+  void AddToggle(GvaKeyEnum key, bool rightActive, char *rightText, bool leftActive, char *leftText) {}
+  FunctionSelectType *GetTop() { return function_top_; }
+  CommonTaskKeysType *GetBottom() { return common_bottom_; }
+  FunctionKeysType *GetLeft() { return &function_left_; }
+  FunctionKeysType *GetRight() { return &function_right_; }
+  GvaFunctionEnum GetFunction() { return function_; }
 
  private:
   bool valid_ = false;
@@ -89,7 +89,7 @@ typedef ViewGva ViewGva;
 
 class ViewGvaManager {
  public:
-  ViewGvaManager(StatusBarType *StatusBar);
+  explicit ViewGvaManager(StatusBarType *StatusBar);
   ViewGva *GetNewView(GvaFunctionEnum function, FunctionSelectType *top, CommonTaskKeysType *bottom,
                       FunctionKeysType left, FunctionKeysType right);
   ScreenType GetScreen(GvaFunctionEnum function);
@@ -103,4 +103,4 @@ class ViewGvaManager {
 };
 }  // namespace gva
 
-#endif
+#endif  // HMI_DISPLAY_SRC_VIEW_GVA_H_

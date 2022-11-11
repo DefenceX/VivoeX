@@ -15,7 +15,8 @@
                 "/usr/include/pango-1.0",
                 "/usr/include/harfbuzz",
                 "/usr/include/gdk-pixbuf-2.0",
-                "/usr/include/atk-1.0"
+                "/usr/include/atk-1.0",
+                "${workspaceFolder}/hmi-display"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/g++",

@@ -21,10 +21,10 @@
 ///
 /// \file compass.h
 ///
-#ifndef COMPASS_H
-#define COMPASS_H
+#ifndef HMI_DISPLAY_WIDGETS_COMPASS_H_
+#define HMI_DISPLAY_WIDGETS_COMPASS_H_
 
-#include "widget.h"
+#include "widgets/widget.h"
 
 namespace gva {
 
@@ -34,11 +34,12 @@ namespace gva {
 ///
 class Compass : public WidgetX {
  public:
-  Compass(ScreenGva *screen) : WidgetX(screen, WIDGET_TYPE_COMPASS){};
+  explicit Compass(ScreenGva *screen) : WidgetX(screen, WIDGET_TYPE_COMPASS) {}
   void Draw();
   void SetBearing(int16_t bearing) { bearingSight_ = bearing; }
   int16_t bearing_;
   int16_t bearingSight_;
 };
 }  // namespace gva
-#endif
+
+#endif  // HMI_DISPLAY_WIDGETS_COMPASS_H_

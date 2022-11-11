@@ -16,28 +16,56 @@
 // COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-#ifndef GVA_VIDEO_RTP_YUV_H
-#define GVA_VIDEO_RTP_YUV_H
-#include "gva_video.h"
-#include "rtp_stream.h"
 
-//
-// Buffers are assumed to be YUV
-//
-class GvaVideoRtpYuv : public GvaVideoSource {
+#ifndef VIDEO_SRC_GVA_VIDEO_H_
+#define VIDEO_SRC_GVA_VIDEO_H_
+
+#include <cstdint>
+#include <string>
+
+#define VIDEO_DEFAULT_HEIGHT 480
+#define VIDEO_DEFAULT_WIDTH 640
+
+enum VideoFormat { RGBA_COLOUR = 0, RGB24_COLOUR, YUYV_COLOUR };
+
+class GvaVideoSource {
  public:
-  GvaVideoRtpYuv(char *ip, int port, int height, int width);
-  GvaVideoRtpYuv(char *ip, int port);
-  ~GvaVideoRtpYuv();
+  GvaVideoSource(uint32_t height, uint32_t width);
 
-  // Implementation of pure virtual base class functions
-  int GvaRecieveFrame(char *buffer, VideoFormat format);
-  int GvaTransmitFrame(char *buffer, VideoFormat format) { return -1; };
+  ///
+  /// \brief Receive one frame of video
+  ///
+  /// \param buffer
+  /// \param format
+  /// \return uint32_t
+  ///
+  virtual const uint32_t GvaReceiveFrame(char *buffer, VideoFormat format) = 0;
+
+  ///
+  /// \brief Transmit one frame of video
+  ///
+  /// \param buffer
+  /// \param format
+  /// \return uint32_t
+  ///
+  virtual const uint32_t GvaTransmitFrame(char *buffer, VideoFormat format) = 0;
+
+  ///
+  /// \brief Get the Width object
+  ///
+  /// \return const uint32_t
+  ///
+  const uint32_t GetWidth() { return width_; }
+
+  ///
+  /// \brief Get the Height object
+  ///
+  /// \return const uint32_t
+  ///
+  const uint32_t GetHeight() { return height_; }
 
  private:
-  char ip_[50];
-  int port_;
-  int frame_counter_;
-  RtpStream *stream_;
+  uint32_t height_;
+  uint32_t width_;
 };
-#endif
+#endif  // VIDEO_SRC_GVA_VIDEO_H_

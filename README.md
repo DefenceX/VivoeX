@@ -14,10 +14,10 @@ sudo apt install libcairo2-dev libxt-dev doxygen libxml2-dev ncurses-dev libxext
 # Build
 This project has a couple of options that can be specified at compile time:
 ```
-cmake -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE=ON -DENABLE_OSMSCOUT=ON -DDDS=CYCLONE ..
+cmake -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE=ON -DENABLE_OSMSCOUT=ON -DDDS=CYCLONE-CE ..
 ```
 
-Default DDS stack is currently [CycloneDDS](https://github.com/eclipse-cyclonedds/cyclonedds) (default if not specified) but can also be built with [Opensplice](https://github.com/ADLINK-IST/opensplice) by setting -DDDS=OSPL. 
+Default DDS stack is currently [CycloneDDS](https://github.com/eclipse-cyclonedds/cyclonedds) (default if not specified) but can also be built with [Opensplice](https://github.com/ADLINK-IST/opensplice) by setting -DDDS=OSPL-CE. 
 
 To enable code coverage reports set ENABLE_COVERAGE. The gdb debugger is avaiable and configured for use with Microsoft Visual Code and the workspace files are part of the repo (recommended for developers).
 

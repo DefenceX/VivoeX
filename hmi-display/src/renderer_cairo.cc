@@ -41,7 +41,7 @@ static CallbackType callback_;
 static void *arg_;
 HandleType RendererCairo::render_;
 
-RendererCairo::RendererCairo(int width, int height) : Renderer(width, height) {
+RendererCairo::RendererCairo(uint32_t width, uint32_t height) : Renderer(width, height) {
   scale_ = 1.0;
   forground_colour_ = {255, 255, 255};
   background_colour_ = {0, 0, 0};
@@ -61,7 +61,7 @@ RendererCairo::~RendererCairo() {
 }
 
 void RendererCairo::Draw() {
-  int count = 0;
+  uint32_t count = 0;
   cairo_surface_t *surface;
   double dashed[] = {1.0};
 
@@ -268,7 +268,7 @@ void RendererCairo::Draw() {
         cairo_restore(cr);
         break;
       default:
-        printf("[GVA] Unrecognised paint command!!!\n");
+        printf("[GVA] Unrecognised pauint32_t command!!!\n");
         break;
     }
   }
@@ -277,7 +277,7 @@ void RendererCairo::Draw() {
   cairo_paint(cr);
 }
 
-int RendererCairo::init(int width, int height, bool fullscreen, CallbackType cb, void *arg) {
+uint32_t RendererCairo::init(uint32_t width, uint32_t height, bool fullscreen, CallbackType cb, void *arg) {
   render_.size.width = width;
   render_.size.height = height;
 
@@ -300,58 +300,60 @@ int RendererCairo::init(int width, int height, bool fullscreen, CallbackType cb,
 
   render_.fullscreen = render_.fullscreen ? fullscreen : fullscreen;
 
-  int status = g_application_run(G_APPLICATION(render_.win.app), 0, 0);
+  uint32_t status = g_application_run(G_APPLICATION(render_.win.app), 0, 0);
   g_object_unref(render_.win.app);
 
   return 0;
 }
 
-void RendererCairo::SetPixel(int x, int y) {}
+void RendererCairo::SetPixel(uint32_t x, uint32_t y) {}
 
-void RendererCairo::SetColour(int red, int green, int blue) {
+void RendererCairo::SetColour(uint8_t red, uint8_t green, uint8_t blue) {
   SetColourForground(red, green, blue);
   SetColourBackground(red, green, blue);
 }
 
-void RendererCairo::SetColour(unsigned int rgb) { SetColour((rgb & 0xff0000) >> 16, (rgb & 0xff00) >> 8, rgb & 0xff); }
+void RendererCairo::SetColour(uint32_t rgb) { SetColour((rgb & 0xff0000) >> 16, (rgb & 0xff00) >> 8, rgb & 0xff); }
 
-void RendererCairo::SetColourForground(int red, int green, int blue) {
+void RendererCairo::SetColourForground(uint8_t red, uint8_t green, uint8_t blue) {
   Draw_commands_[draw_tail_].command = COMMAND_COLOUR_FG;
   Draw_commands_[draw_tail_].arg1 = red;
   Draw_commands_[draw_tail_].arg2 = green;
   Draw_commands_[draw_tail_++].arg3 = blue;
 }
 
-void RendererCairo::SetColourForground(unsigned int rgb) {
+void RendererCairo::SetColourForground(uint32_t rgb) {
   SetColourForground((rgb & 0xff0000) >> 16, (rgb & 0xff00) >> 8, rgb & 0xff);
 }
 
-void RendererCairo::SetColourBackground(int red, int green, int blue) {
+void RendererCairo::SetColourBackground(uint8_t red, uint8_t green, uint8_t blue) {
   Draw_commands_[draw_tail_].command = COMMAND_COLOUR_BG;
   Draw_commands_[draw_tail_].arg1 = red;
   Draw_commands_[draw_tail_].arg2 = green;
   Draw_commands_[draw_tail_++].arg3 = blue;
 }
 
-void RendererCairo::SetColourBackground(unsigned int rgb) {
+void RendererCairo::SetColourBackground(uint32_t rgb) {
   SetColourBackground((rgb & 0xff0000) >> 16, (rgb & 0xff00) >> 8, rgb & 0xff);
 }
 
-void RendererCairo::setLineType(int type) {
+void RendererCairo::setLineType(uint32_t type) {
   Draw_commands_[draw_tail_].command = COMMAND_LINE_JOIN;
   Draw_commands_[draw_tail_++].arg1 = type;
 }
 
-void RendererCairo::SetLineThickness(int thickness, LineType fill, LineCapEnd end) {
+void RendererCairo::SetLineThickness(uint32_t thickness, LineType fill, LineCapEnd end) {
   Draw_commands_[draw_tail_].command = COMMAND_PEN_THICKNESS;
   Draw_commands_[draw_tail_].arg1 = thickness;
   Draw_commands_[draw_tail_].arg2 = fill;
   Draw_commands_[draw_tail_++].arg3 = end;
 }
 
-void RendererCairo::SetLineThickness(int thickness, LineType fill) { SetLineThickness(thickness, fill, LINE_CAP_BUTT); }
+void RendererCairo::SetLineThickness(uint32_t thickness, LineType fill) {
+  SetLineThickness(thickness, fill, LINE_CAP_BUTT);
+}
 
-int RendererCairo::MovePen(int x, int y) {
+uint32_t RendererCairo::MovePen(int32_t x, int32_t y) {
 #if INVERTED
   y = render_.size.height - y;
 #endif
@@ -363,7 +365,7 @@ int RendererCairo::MovePen(int x, int y) {
   return 0;
 }
 
-int RendererCairo::MovePenRaw(int x, int y) {
+uint32_t RendererCairo::MovePenRaw(int32_t x, int32_t y) {
   Draw_commands_[draw_tail_].command = COMMAND_PEN_MOVE;
   Draw_commands_[draw_tail_].points[0].x = x;
   Draw_commands_[draw_tail_].points[0].y = y;
@@ -371,7 +373,7 @@ int RendererCairo::MovePenRaw(int x, int y) {
   return 0;
 }
 
-int RendererCairo::DrawPen(int x, int y, bool close) {
+uint32_t RendererCairo::DrawPen(uint32_t x, uint32_t y, bool close) {
 #if INVERTED
   y = render_.size.height - y;
 #endif
@@ -383,7 +385,7 @@ int RendererCairo::DrawPen(int x, int y, bool close) {
   return 0;
 }
 
-int RendererCairo::DrawPenRaw(int x, int y) {
+uint32_t RendererCairo::DrawPenRaw(int32_t x, int32_t y) {
   //  y = render_.size.height - y;
   //  x = render_.size.width - x;
   Draw_commands_[draw_tail_].command = COMMAND_PEN_DRAW;
@@ -403,7 +405,7 @@ void RendererCairo::Scale(double x, double y) {
   Draw_commands_[draw_tail_++].height = y;
 }
 
-void RendererCairo::Translate(int x, int y) {
+void RendererCairo::Translate(uint32_t x, uint32_t y) {
 #if INVERTED
   y = render_.size.height - y;
 #endif
@@ -417,13 +419,13 @@ void RendererCairo::Rotate(double radians) {
   Draw_commands_[draw_tail_++].width = radians;
 }
 
-int RendererCairo::ClosePath(bool fill) {
+uint32_t RendererCairo::ClosePath(bool fill) {
   Draw_commands_[draw_tail_].command = COMMAND_CLOSE_PATH;
   Draw_commands_[draw_tail_++].arg1 = fill ? 1 : 0;
   return 0;
 }
 
-int RendererCairo::DrawLine(int x1, int y1, int x2, int y2) {
+uint32_t RendererCairo::DrawLine(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2) {
 #if INVERTED
   y1 = render_.size.height - y1;
   y2 = render_.size.height - y2;
@@ -435,7 +437,7 @@ int RendererCairo::DrawLine(int x1, int y1, int x2, int y2) {
   return 0;
 }
 
-void RendererCairo::DrawCircle(int x, int y, int radius, bool fill) {
+void RendererCairo::DrawCircle(uint32_t x, uint32_t y, uint32_t radius, bool fill) {
 #if INVERTED
   y = render_.size.height - y;
 #endif
@@ -449,7 +451,7 @@ void RendererCairo::DrawCircle(int x, int y, int radius, bool fill) {
   Draw_commands_[draw_tail_++].fill = fill ? 1 : 0;
 }
 
-void RendererCairo::DrawArcRaw(int x, int y, int radius, int angle1, int angle2) {
+void RendererCairo::DrawArcRaw(uint32_t x, uint32_t y, uint32_t radius, uint32_t angle1, uint32_t angle2) {
   Draw_commands_[draw_tail_].command = COMMAND_ARC;
   Draw_commands_[draw_tail_].points[0].x = x;
   Draw_commands_[draw_tail_].points[0].y = y;
@@ -459,7 +461,7 @@ void RendererCairo::DrawArcRaw(int x, int y, int radius, int angle1, int angle2)
   ;
 }
 
-void RendererCairo::DrawRectangle(int x, int y, int width, int height, bool fill) {
+void RendererCairo::DrawRectangle(uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool fill) {
   width += x;
   height += y;
 #if INVERTED
@@ -475,7 +477,8 @@ void RendererCairo::DrawRectangle(int x, int y, int width, int height, bool fill
   Draw_commands_[draw_tail_++].fill = fill ? 1 : 0;
 }
 
-void RendererCairo::DrawRoundedRectangle(int x, int y, int width, int height, int courner, bool fill) {
+void RendererCairo::DrawRoundedRectangle(uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t courner,
+                                         bool fill) {
 #if INVERTED
   y = render_.size.height - y;
 #endif
@@ -489,7 +492,8 @@ void RendererCairo::DrawRoundedRectangle(int x, int y, int width, int height, in
   Draw_commands_[draw_tail_++].fill = fill ? 1 : 0;
 }
 
-void RendererCairo::DrawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, bool fill) {
+void RendererCairo::DrawTriangle(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint32_t x3, uint32_t y3,
+                                 bool fill) {
 #if INVERTED
   y1 = render_.size.height - y1;
   y2 = render_.size.height - y2;
@@ -506,7 +510,7 @@ void RendererCairo::DrawTriangle(int x1, int y1, int x2, int y2, int x3, int y3,
   Draw_commands_[draw_tail_++].fill = fill ? 1 : 0;
 }
 
-int RendererCairo::DrawColor(int r, int g, int b) {
+uint32_t RendererCairo::DrawColor(uint8_t r, uint8_t g, uint8_t b) {
   Draw_commands_[draw_tail_].command = COMMAND_PEN_COLOUR;
   Draw_commands_[draw_tail_].colour.red = r;
   Draw_commands_[draw_tail_].colour.green = g;
@@ -514,16 +518,16 @@ int RendererCairo::DrawColor(int r, int g, int b) {
   return 0;
 }
 
-int RendererCairo::DrawColor(unsigned int rgb) { DrawColor((rgb & 0xff0000) >> 16, (rgb & 0xff00) >> 8, rgb & 0xff); }
+uint32_t RendererCairo::DrawColor(uint32_t rgb) { DrawColor((rgb & 0xff0000) >> 16, (rgb & 0xff00) >> 8, rgb & 0xff); }
 
-void RendererCairo::SetTextFont(int slope, int weight, const char *fontName) {
+void RendererCairo::SetTextFont(uint32_t slope, uint32_t weight, const char *fontName) {
   Draw_commands_[draw_tail_].command = COMMAND_TEXT_FONT;
   Draw_commands_[draw_tail_].arg1 = slope;
   Draw_commands_[draw_tail_].arg2 = weight;
   strcpy(Draw_commands_[draw_tail_++].text, fontName);
 }
 
-int RendererCairo::GetTextWidth(char *str, int fontSize) {
+uint32_t RendererCairo::GetTextWidth(char *str, uint32_t fontSize) {
   cairo_t *cr = render_.cr;
   cairo_text_extents_t extents;
 
@@ -533,7 +537,7 @@ int RendererCairo::GetTextWidth(char *str, int fontSize) {
   return extents.x_advance;
 }
 
-int RendererCairo::GetTextHeight(char *str, int fontSize) {
+uint32_t RendererCairo::GetTextHeight(char *str, uint32_t fontSize) {
   cairo_t *cr = render_.cr;
   cairo_text_extents_t extents;
 
@@ -542,7 +546,7 @@ int RendererCairo::GetTextHeight(char *str, int fontSize) {
   return extents.height;
 }
 
-void RendererCairo::DrawText(int x, int y, char *text, int size) {
+void RendererCairo::DrawText(uint32_t x, uint32_t y, char *text, uint32_t size) {
 #if INVERTED
   y = render_.size.height - y;
 #endif
@@ -554,7 +558,7 @@ void RendererCairo::DrawText(int x, int y, char *text, int size) {
   strcpy(Draw_commands_[draw_tail_++].text, text);
 }
 
-void RendererCairo::DrawLabel(int x, int y, char *text, int size) {
+void RendererCairo::DrawLabel(uint32_t x, uint32_t y, char *text, uint32_t size) {
   y = render_.size.height - y;
 
   Draw_commands_[draw_tail_].command = COMMAND_TEXT;
@@ -564,11 +568,11 @@ void RendererCairo::DrawLabel(int x, int y, char *text, int size) {
   strcpy(Draw_commands_[draw_tail_++].text, text);
 }
 
-void RendererCairo::DrawTextCentre(int x, char *text, int size) { DrawText(x, 200, text, size); }
+void RendererCairo::DrawTextCentre(uint32_t x, char *text, uint32_t size) { DrawText(x, 200, text, size); }
 
-int RendererCairo::TextureRGB(int x, int y, void *buffer, char *file) {
+uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, void *buffer, char *file) {
   bool found_in_cache = false;
-  int i = 0;
+  uint32_t i = 0;
 
   strcpy(image_list_[image_tail_].name, file);
 
@@ -599,10 +603,10 @@ int RendererCairo::TextureRGB(int x, int y, void *buffer, char *file) {
   return 0;
 }
 
-int RendererCairo::TextureRGB(int x, int y, void *buffer) {
+uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, void *buffer) {
   image_list_[image_tail_].image =
-      cairo_image_surface_create_for_data((unsigned char *)buffer, CAIRO_FORMAT_RGB24, width_, height_,
-                                          cairo_format_stride_for_width(CAIRO_FORMAT_RGB24, width_));
+      cairo_image_surface_create_for_data(reinterpret_cast<unsigned char *>(buffer), CAIRO_FORMAT_RGB24, width_,
+                                          height_, cairo_format_stride_for_width(CAIRO_FORMAT_RGB24, width_));
 
   Draw_commands_[draw_tail_].command = COMMAND_IMAGE_TEXTURE;
   Draw_commands_[draw_tail_].points[0].x = x;
@@ -611,7 +615,7 @@ int RendererCairo::TextureRGB(int x, int y, void *buffer) {
   return 0;
 }
 
-int RendererCairo::TextureRGB(int x, int y, cairo_surface_t *surface) {
+uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, cairo_surface_t *surface) {
   image_list_[image_tail_].image = surface;
 
   Draw_commands_[draw_tail_].command = COMMAND_IMAGE_TEXTURE_PERSIST;

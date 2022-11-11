@@ -24,7 +24,7 @@
 #ifndef HMI_DISPLAY_WIDGETS_ALARM_INDICATOR_H_
 #define HMI_DISPLAY_WIDGETS_ALARM_INDICATOR_H_
 
-#include "widget.h"
+#include "widgets/widget.h"
 
 namespace gva {
 

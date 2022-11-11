@@ -1,5 +1,5 @@
 project(hmi-video)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_BINARY_DIR}/external/vivoe-media-framework/src)
-include_directories(${CMAKE_BINARY_DIR}/external/vivoe-media-framework/src)
-add_library(hmi-video gva_video.cc gva_video_rtp_yuv.cc)
+add_library(hmi-video src/gva_video.cc src/gva_video_rtp_yuv.cc)
 add_dependencies(hmi-video vivoe_media)
