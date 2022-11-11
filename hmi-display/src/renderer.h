@@ -86,9 +86,9 @@ class Renderer {
   }
   uint32_t init(uint32_t width, uint32_t height);
   virtual void SetPixel(uint32_t x, uint32_t y) = 0;
-  virtual void SetColour(uint32_t red, uint32_t green, uint32_t blue) = 0;
-  virtual void SetColourForground(uint32_t red, uint32_t green, uint32_t blue) = 0;
-  virtual void SetColourBackground(uint32_t red, uint32_t green, uint32_t blue) = 0;
+  virtual void SetColour(uint8_t red, uint8_t green, uint8_t blue) = 0;
+  virtual void SetColourForground(uint8_t red, uint8_t green, uint8_t blue) = 0;
+  virtual void SetColourBackground(uint8_t red, uint8_t green, uint8_t blue) = 0;
   static uint32_t GetWidth() { return width_; }
   static uint32_t GetHeight() { return height_; }
   static void SetWidth(uint32_t width) { width_ = width; }
@@ -96,9 +96,9 @@ class Renderer {
   virtual uint32_t DrawLine(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2) = 0;
   virtual void DrawCircle(uint32_t x, uint32_t y, uint32_t radius, bool fill) = 0;
   virtual void DrawRectangle(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, bool fill) = 0;
-  virtual uint32_t DrawColor(uint32_t r, uint32_t g, uint32_t b) = 0;
+  virtual uint32_t DrawColor(uint8_t r, uint8_t g, uint8_t b) = 0;
   virtual uint32_t TextureRGB(uint32_t x, uint32_t y, void *buffer, char *file) = 0;
-  static uint64_t PackRgb(uint32_t r, uint32_t g, uint32_t b) {
+  static uint64_t PackRgb(uint8_t r, uint8_t g, uint8_t b) {
     uint64_t packed = (r << 16) | (g << 8) | b;
     return packed;
   }

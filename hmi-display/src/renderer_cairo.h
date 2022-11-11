@@ -41,15 +41,15 @@ typedef struct {
   GtkApplication *app;
   GtkWidget *win;
   GtkWidget *draw;
-  int height;
-  int width;
+  uint32_t height;
+  uint32_t width;
 } gtkType;
 
 #define MAX_COMMANDS 1000
 #define MAX_IMAGES 100
 
 typedef struct {
-  int handle;
+  uint32_t handle;
   bool inUse;
   bool fullscreen;
   ResolutionType size;
@@ -94,10 +94,10 @@ struct command_type {
   double angle1;
   double angle2;
   ColourType colour;
-  int arg1;
-  int arg2;
-  int arg3;
-  int arg4;
+  int32_t arg1;
+  int32_t arg2;
+  int32_t arg3;
+  int32_t arg4;
   char text[80];
   bool fill;
 };
@@ -122,48 +122,48 @@ typedef void (*CallbackType)(void *io, gpointer data);
 class RendererCairo : public Renderer {
  public:
   static HandleType render_;
-  RendererCairo(int width, int height);
+  RendererCairo(uint32_t width, uint32_t height);
   ~RendererCairo();
-  int init(int width, int height, bool fullscreen, CallbackType cb, void *arg);
+  uint32_t init(uint32_t width, uint32_t height, bool fullscreen, CallbackType cb, void *arg);
   // Pure Virtual functions
-  void SetPixel(int x, int y);
-  void SetColour(int red, int green, int blue);
-  void SetColour(unsigned int rgb);
-  void SetColourForground(int red, int green, int blue);
-  void SetColourForground(unsigned int rgb);
-  void SetColourBackground(int red, int green, int blue);
-  void SetColourBackground(unsigned int rgb);
-  void setLineType(int type);
-  void SetLineThickness(int thickness, LineType fill);
-  void SetLineThickness(int thickness, LineType fill, LineCapEnd end);
-  int MovePen(int x, int y);
-  int DrawPen(int x, int y, bool close);
-  int DrawPen(int x, int y) { return DrawPen(x, y, false); }
-  int MovePenRaw(int x, int y);
-  int DrawPenRaw(int x, int y);
-  void DrawArcRaw(int x, int y, int radius, int angle1, int angle2);
-  int DrawLine(int x1, int y1, int x2, int y2);
+  void SetPixel(uint32_t x, uint32_t y);
+  void SetColour(uint8_t red, uint8_t green, uint8_t blue);
+  void SetColour(uint32_t rgb);
+  void SetColourForground(uint8_t red, uint8_t green, uint8_t blue);
+  void SetColourForground(uint32_t rgb);
+  void SetColourBackground(uint8_t red, uint8_t green, uint8_t blue);
+  void SetColourBackground(uint32_t rgb);
+  void setLineType(uint32_t type);
+  void SetLineThickness(uint32_t thickness, LineType fill);
+  void SetLineThickness(uint32_t thickness, LineType fill, LineCapEnd end);
+  uint32_t MovePen(uint32_t x, uint32_t y);
+  uint32_t DrawPen(uint32_t x, uint32_t y, bool close);
+  uint32_t DrawPen(uint32_t x, uint32_t y) { return DrawPen(x, y, false); }
+  uint32_t MovePenRaw(uint32_t x, uint32_t y);
+  uint32_t DrawPenRaw(uint32_t x, uint32_t y);
+  void DrawArcRaw(uint32_t x, uint32_t y, uint32_t radius, uint32_t angle1, uint32_t angle2);
+  uint32_t DrawLine(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2);
   void Save();
   void Restore();
   void Scale(double x, double y);
-  void Translate(int x, int y);
+  void Translate(uint32_t x, uint32_t y);
   void Rotate(double radians);
-  int ClosePath(bool fill);
-  void DrawCircle(int x, int y, int radius, bool fill);
-  void DrawRectangle(int x, int y, int width, int height, bool fill);
-  void DrawRoundedRectangle(int x, int y, int width, int height, int courner, bool fill);
-  void DrawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, bool fill);
-  int DrawColor(int r, int g, int b);
-  int DrawColor(unsigned int rgb);
-  void SetTextFont(int slope, int weight, const char *fontName);
-  int GetTextWidth(char *str, int fontSize);
-  int GetTextHeight(char *str, int fontSize);
-  void DrawText(int x, int y, char *text, int size);
-  void DrawLabel(int x, int y, char *text, int size);
-  void DrawTextCentre(int x, char *text, int size);
-  int TextureRGB(int x, int y, void *buffer, char *file);
-  int TextureRGB(int x, int y, void *buffer);
-  int TextureRGB(int x, int y, cairo_surface_t *surface);
+  uint32_t ClosePath(bool fill);
+  void DrawCircle(uint32_t x, uint32_t y, uint32_t radius, bool fill);
+  void DrawRectangle(uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool fill);
+  void DrawRoundedRectangle(uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t courner, bool fill);
+  void DrawTriangle(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint32_t x3, uint32_t y3, bool fill);
+  uint32_t DrawColor(uint8_t r, uint8_t g, uint8_t b);
+  uint32_t DrawColor(uint32_t rgb);
+  void SetTextFont(uint32_t slope, uint32_t weight, const char *fontName);
+  uint32_t GetTextWidth(char *str, uint32_t fontSize);
+  uint32_t GetTextHeight(char *str, uint32_t fontSize);
+  void DrawText(uint32_t x, uint32_t y, char *text, uint32_t size);
+  void DrawLabel(uint32_t x, uint32_t y, char *text, uint32_t size);
+  void DrawTextCentre(uint32_t x, char *text, uint32_t size);
+  uint32_t TextureRGB(uint32_t x, uint32_t y, void *buffer, char *file);
+  uint32_t TextureRGB(uint32_t x, uint32_t y, void *buffer);
+  uint32_t TextureRGB(uint32_t x, uint32_t y, cairo_surface_t *surface);
 
   // Cairo specific functions
   void Draw();
@@ -173,53 +173,53 @@ class RendererCairo : public Renderer {
   }
   gtkType *GetWindow() { return &render_.win; }
 
-  void SetHeight(int height) {
+  void SetHeight(uint32_t height) {
     height_ = height;
     gtk_widget_set_size_request(render_.win.draw, (gint)width_, (gint)height_);
   }
-  void SetWidth(int width) {
+  void SetWidth(uint32_t width) {
     width_ = width;
     gtk_widget_set_size_request(render_.win.draw, (gint)width_, (gint)height_);
   }
-  int GetHeight() {
+  uint32_t GetHeight() {
     gint h, w;
     gtk_widget_get_size_request(render_.win.draw, &w, &h);
     return static_cast<int>(w);
   }
-  int GetWidth() {
+  uint32_t GetWidth() {
     gint h, w;
     gtk_widget_get_size_request(render_.win.draw, &w, &h);
     return static_cast<int>(h);
   }
 
  private:
-  unsigned char *texture_;
-  int current_handle_;
+  char *texture_;
+  int32_t current_handle_;
   double scale_;
   gtkType root_;
 
   //
   // Helper Functions
   //
-  double intToFloat(int c) { return static_cast<double>(.1 / 255 * c); }
+  double intToFloat(uint32_t c) { return static_cast<double>(.1 / 255 * c); }
 
   //
   // Render List
   //
   command_type Draw_commands_[MAX_COMMANDS];
-  int draw_tail_ = 0;
+  uint32_t draw_tail_ = 0;
 
   //
   // Image List
   //
   image_type image_list_[MAX_IMAGES];
-  int image_tail_ = 0;
+  uint32_t image_tail_ = 0;
 
   //
   // Image Cache
   //
   image_type cache_image_list_[MAX_IMAGES];
-  int cache_image_tail_ = 0;
+  uint32_t cache_image_tail_ = 0;
 
  private:
   static gboolean DrawCb(GtkWidget *Widget, cairo_t *cr, gpointer data);

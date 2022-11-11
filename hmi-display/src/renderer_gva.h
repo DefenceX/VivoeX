@@ -185,19 +185,121 @@ class TouchGva {
 class RendererGva : public RendererCairo {
  public:
   RendererGva(uint32_t width, uint32_t height);
+
+  ///
+  /// \brief Draw all the labels on the screen
+  ///
+  /// \param text The text to go in the label
+  /// \param fontSize The font size
+  /// \param x X Position on the screen
+  /// \param y Y Position on the screen
+  ///
   void DrawLabels(char *text, uint32_t fontSize, uint32_t x, uint32_t y);
+
+  ///
+  /// \brief Draw six function labels
+  ///
+  /// \param x position of the labels, usefull for labels on left and right sides of the screen
+  /// \param active State of the label
+  /// \param hide Hide if true
+  /// \param toggle Toggle
+  /// \param toggleOn Toggle on
+  /// \param labels Array of labels to be rendered
+  ///
   void DrawFunctionLabels(uint32_t x, uint32_t active, uint32_t hide, uint32_t toggle, uint32_t toggleOn,
                           char labels[6][40]);
+
+  ///
+  /// \brief Draw the labels on the top of the screen
+  ///
+  /// \param y The y pixel position
+  /// \param active Active mask, each bit indicates active state
+  /// \param hide Hide mask, each bit indicates hidden state
+  ///
   void DrawTopLabels(uint32_t y, uint32_t active, uint32_t hide);
+
+  ///
+  /// \brief Draw the control labels on the bottom of the screen
+  ///
+  /// \param y The y pixel position
+  /// \param active Active mask, each bit indicates active state
+  /// \param hide Hide mask, each bit indicates hidden state
+  ///
   void DrawControlLabels(uint32_t y, uint32_t active, uint32_t hide);
+
+  ///
+  /// \brief Draw an icon
+  ///
+  /// \param icon The type of icon to be rendered
+  /// \param x X pixel position
+  /// \param y Y pixel position
+  /// \param width Width of the icon
+  /// \param height Height of the icon
+  ///
   void DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width, uint32_t height);
+
+  ///
+  /// \brief Draw the Plan Position Indicator
+  ///
+  /// \param mode The PPI mode, different styles
+  /// \param x X pixel position
+  /// \param y Y pixel position
+  /// \param degrees Compass heading
+  /// \param sightAzimuth Camera heading
+  ///
   void DrawPPI(uint8_t mode, uint32_t x, uint32_t y, uint32_t degrees, uint32_t sightAzimuth);
+
+  ///
+  /// \brief Draw a table
+  ///
+  /// \param table The table values
+  ///
   void DrawTable(GvaTable *table);
+
+  ///
+  /// \brief Draw the operational mode
+  ///
+  ///
   void DrawMode();
+
+  ///
+  /// \brief Draw keyboard buttons
+  ///
+  /// \param keytext The button text
+  /// \param fontSize The font size to be used
+  /// \param x X pixel position
+  /// \param y Y pixel position
+  /// \param size Size in pixels
+  ///
   void DrawButton(char *keytext, uint32_t fontSize, uint32_t x, uint32_t y, uint32_t size);
+
+  ///
+  /// \brief Draw keyboard buttons
+  ///
+  /// \param keytext The button text
+  /// \param fontSize The font size to be used
+  /// \param x X pixel position
+  /// \param y Y pixel position
+  /// \param size Size in pixels
+  /// \param height Height of button in pixels
+  /// \param width Width of button in pixels
+  /// \param align Alignment
+  ///
   void DrawButton(char *keytext, uint32_t fontSize, uint32_t x, uint32_t y, uint32_t height, uint32_t width,
                   uint32_t align);
+
+  ///
+  /// \brief Draw the onscreen keyboard
+  ///
+  /// \param mode
+  ///
   void DrawKeyboard(KeyboardModeType mode);
+
+  ///
+  /// \brief Get the Touch object
+  ///
+  /// \return TouchGva*
+  ///
   TouchGva *GetTouch() { return &touch_; }
 
  private:

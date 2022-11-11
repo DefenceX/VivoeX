@@ -907,18 +907,18 @@ struct StateOff : Hmi {
   void react(EventKeyPowerOn const &) override { transit<StateOn>(); };
 };
 
-gva::ViewGvaManager *manager_;
-gva::ResolutionType view_;
-gva::StatusBarType status_;
-gva::FunctionSelectType top_;
-gva::CommonTaskKeysType bottom_;
-gva::CanvasType canvas_;
-gva::TableWidget alarms_;
-gva::ScreenType screen_;
-gva::ScreenGva *screen_render_;
-gva::rendererMap *map_;
-int lastState_;
-bool alarmson_ = false;
+gva::ViewGvaManager *Hmi::manager_;
+gva::ResolutionType Hmi::view_;
+gva::StatusBarType Hmi::status_;
+gva::FunctionSelectType Hmi::top_;
+gva::CommonTaskKeysType Hmi::bottom_;
+gva::CanvasType Hmi::canvas_;
+gva::TableWidget Hmi::alarms_;
+gva::ScreenType Hmi::screen_;
+gva::ScreenGva *Hmi::screen_render_;
+gva::rendererMap *Hmi::map_;
+int Hmi::lastState_;
+bool Hmi::alarmson_ = false;
 
 // ----------------------------------------------------------------------------
 // Initial state definition
