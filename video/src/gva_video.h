@@ -17,8 +17,8 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#ifndef VIDEO_GVA_VIDEO_H_
-#define VIDEO_GVA_VIDEO_H_
+#ifndef VIDEO_SRC_GVA_VIDEO_H_
+#define VIDEO_SRC_GVA_VIDEO_H_
 
 #include <cstdint>
 #include <string>
@@ -68,4 +68,4 @@ class GvaVideoSource {
   uint32_t height_;
   uint32_t width_;
 };
-#endif  // VIDEO_GVA_VIDEO_H_
+#endif  // VIDEO_SRC_GVA_VIDEO_H_

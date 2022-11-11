@@ -220,7 +220,7 @@ void RendererGva::DrawControlLabels(uint32_t y, uint32_t active, uint32_t hide) 
 
 void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
   double sx, sy;
-  uint32_t arrow[8][2] = {{-5, -10}, {-4, -10}, {-4, 0}, {-8, 0}, {0, +10}, {8, 0}, {+4, 0}, {+4, -10}};
+  int32_t arrow[8][2] = {{-5, -10}, {-4, -10}, {-4, 0}, {-8, 0}, {0, +10}, {8, 0}, {+4, 0}, {+4, -10}};
 
   DrawColor(HMI_WHITE);
   SetColourBackground(HMI_WHITE);
@@ -239,7 +239,7 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
     case ICON_UP_ARROW:
       Scale(sx, sy);
       MovePenRaw(arrow[0][0], arrow[0][1]);
-      for (uint32_t i = 1; i < 8; i++) {
+      for (uint16_t i = 1; i < 8; i++) {
         DrawPenRaw(arrow[i][0], arrow[i][1]);
       }
       ClosePath(true);
@@ -249,7 +249,7 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
     case ICON_UP_ARROW_OUTLINE:
       Scale(sx, sy);
       MovePenRaw(arrow[0][0], arrow[0][1]);
-      for (uint32_t i = 1; i < 8; i++) {
+      for (uint16_t i = 1; i < 8; i++) {
         DrawPenRaw(arrow[i][0], arrow[i][1]);
       }
       ClosePath(false);
@@ -260,7 +260,7 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       Rotate(M_PI * 1.5);
       Scale(sx, sy);
       MovePenRaw(arrow[0][0], arrow[0][1]);
-      for (uint32_t i = 1; i < 8; i++) {
+      for (uint16_t i = 1; i < 8; i++) {
         DrawPenRaw(arrow[i][0], arrow[i][1]);
       }
       ClosePath(true);
@@ -271,7 +271,7 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       Rotate(M_PI * 1.5);
       Scale(sx, sy);
       MovePenRaw(arrow[0][0], arrow[0][1]);
-      for (uint32_t i = 1; i < 8; i++) {
+      for (uint16_t i = 1; i < 8; i++) {
         DrawPenRaw(arrow[i][0], arrow[i][1]);
       }
       ClosePath(false);

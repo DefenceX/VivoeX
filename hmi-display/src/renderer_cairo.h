@@ -136,11 +136,11 @@ class RendererCairo : public Renderer {
   void setLineType(uint32_t type);
   void SetLineThickness(uint32_t thickness, LineType fill);
   void SetLineThickness(uint32_t thickness, LineType fill, LineCapEnd end);
-  uint32_t MovePen(uint32_t x, uint32_t y);
+  uint32_t MovePen(int32_t x, int32_t y);
   uint32_t DrawPen(uint32_t x, uint32_t y, bool close);
   uint32_t DrawPen(uint32_t x, uint32_t y) { return DrawPen(x, y, false); }
-  uint32_t MovePenRaw(uint32_t x, uint32_t y);
-  uint32_t DrawPenRaw(uint32_t x, uint32_t y);
+  uint32_t MovePenRaw(int32_t x, int32_t y);
+  uint32_t DrawPenRaw(int32_t x, int32_t y);
   void DrawArcRaw(uint32_t x, uint32_t y, uint32_t radius, uint32_t angle1, uint32_t angle2);
   uint32_t DrawLine(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2);
   void Save();
@@ -201,7 +201,8 @@ class RendererCairo : public Renderer {
   //
   // Helper Functions
   //
-  double intToFloat(uint32_t c) { return static_cast<double>(.1 / 255 * c); }
+  // double intToFloat(int c) { return (double)1 / 255 * c; }
+  double intToFloat(int c) { return static_cast<double>(1) / 255 * c; }
 
   //
   // Render List

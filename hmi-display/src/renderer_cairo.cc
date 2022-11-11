@@ -353,7 +353,7 @@ void RendererCairo::SetLineThickness(uint32_t thickness, LineType fill) {
   SetLineThickness(thickness, fill, LINE_CAP_BUTT);
 }
 
-uint32_t RendererCairo::MovePen(uint32_t x, uint32_t y) {
+uint32_t RendererCairo::MovePen(int32_t x, int32_t y) {
 #if INVERTED
   y = render_.size.height - y;
 #endif
@@ -365,7 +365,7 @@ uint32_t RendererCairo::MovePen(uint32_t x, uint32_t y) {
   return 0;
 }
 
-uint32_t RendererCairo::MovePenRaw(uint32_t x, uint32_t y) {
+uint32_t RendererCairo::MovePenRaw(int32_t x, int32_t y) {
   Draw_commands_[draw_tail_].command = COMMAND_PEN_MOVE;
   Draw_commands_[draw_tail_].points[0].x = x;
   Draw_commands_[draw_tail_].points[0].y = y;
@@ -385,7 +385,7 @@ uint32_t RendererCairo::DrawPen(uint32_t x, uint32_t y, bool close) {
   return 0;
 }
 
-uint32_t RendererCairo::DrawPenRaw(uint32_t x, uint32_t y) {
+uint32_t RendererCairo::DrawPenRaw(int32_t x, int32_t y) {
   //  y = render_.size.height - y;
   //  x = render_.size.width - x;
   Draw_commands_[draw_tail_].command = COMMAND_PEN_DRAW;

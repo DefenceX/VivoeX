@@ -16,11 +16,12 @@
 // COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-#ifndef VIDEO_GVA_VIDEO_RTP_YUV_H_
-#define VIDEO_GVA_VIDEO_RTP_YUV_H_
-#include "gva_video.h"
-#include "rtp_stream.h"
+#ifndef VIDEO_SRC_GVA_VIDEO_RTP_YUV_H_
+#define VIDEO_SRC_GVA_VIDEO_RTP_YUV_H_
+#include <string>
 
+#include "gva_video.h"   // NOLINT
+#include "rtp_stream.h"  // NOLINT
 //
 // Buffers are assumed to be YUV
 //
@@ -40,4 +41,5 @@ class GvaVideoRtpYuv : public GvaVideoSource {
   uint32_t frame_counter_;
   RtpStream *stream_;
 };
-#endif  // VIDEO_GVA_VIDEO_RTP_YUV_H_
+
+#endif  // VIDEO_SRC_GVA_VIDEO_RTP_YUV_H_

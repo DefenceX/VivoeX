@@ -247,6 +247,7 @@ include(scripts/cmake/cpplint.cmake)
 
 # add all source code directories
 cpplint_add_subdirectory(hmi-display)
+cpplint_add_subdirectory(video)
 
 # Uninstall target
 if(NOT TARGET uninstall)
