@@ -218,15 +218,19 @@ do_test(log)
 #do_test(hmi)
 endif (BUILD_TESTS)
 
+# Install DDS
+file(GLOB DDS_LIBS ${CMAKE_BINARY_DIR}/external/cyclonedds/build/lib/*)
+
 # Install binaries with external libs
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/gva.log "")
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/gva.log DESTINATION "/var/log" PERMISSIONS OWNER_WRITE OWNER_READ GROUP_WRITE GROUP_READ WORLD_READ WORLD_WRITE)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/external/vivoe-media-framework/build/libvivoe-media.so DESTINATION "/opt/gva/libs")
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/etc/ld.so.conf.d/vivoe-lite.conf DESTINATION "/etc/ld.so.conf.d") 
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/etc/profile.d/vivoe-lite.sh DESTINATION "/etc/profile.d")
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/external/libnmea/build/src/libnmealib.so 
-              ${CMAKE_CURRENT_BINARY_DIR}/external/vivoe-media-framework/build/libvivoe-media.so
-              ${CMAKE_CURRENT_BINARY_DIR}/external/vivoe-media-framework/build/libvivoe-media.so.1
+file(WRITE ${CMAKE_BINARY_DIR}/gva.log "")
+install(FILES ${CMAKE_BINARY_DIR}/gva.log DESTINATION "/var/log" PERMISSIONS OWNER_WRITE OWNER_READ GROUP_WRITE GROUP_READ WORLD_READ WORLD_WRITE)
+install(FILES ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build/libvivoe-media.so DESTINATION "/opt/gva/libs")
+install(FILES ${CMAKE_BINARY_DIR}/etc/ld.so.conf.d/vivoe-lite.conf DESTINATION "/etc/ld.so.conf.d") 
+install(FILES ${CMAKE_BINARY_DIR}/etc/profile.d/vivoe-lite.sh DESTINATION "/etc/profile.d")
+install(FILES ${CMAKE_BINARY_DIR}/external/libnmea/build/src/libnmealib.so 
+              ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build/libvivoe-media.so
+              ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build/libvivoe-media.so.1
+              ${DDS_LIBS}
         DESTINATION "/opt/gva/libs")
 
 # Images
