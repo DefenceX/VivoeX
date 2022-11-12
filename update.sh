@@ -14,5 +14,3 @@ echo "${lines[0]}" > ../version
 echo "${lines[1]}" >> ../version
 echo "${patch}" >> ../version
 echo "${tweak}" >> ../version
-# Get the badge
-wget https://img.shields.io/badge/version-${after}-red.svg -O ./build/version.svg
