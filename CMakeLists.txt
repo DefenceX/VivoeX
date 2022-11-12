@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 2.8…3.16)
 project(vivoe-lite)
 add_custom_target(vivoe-lite)
 add_dependencies(vivoe-lite hmi-display)
