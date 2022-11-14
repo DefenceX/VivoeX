@@ -120,6 +120,7 @@ ExternalProject_Add(
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/cmake/CycloneDDS)
 # Search for CentOS
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/cmake/CycloneDDS)
+set(CycloneDDS_DIR ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/cmake/CycloneDDS)
 
 ExternalProject_Add(
     cyclonedds-cxx
