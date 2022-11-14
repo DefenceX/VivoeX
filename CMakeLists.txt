@@ -131,7 +131,6 @@ ExternalProject_Add(
 endif (HMI_ONLY)
 
 option(BUILD_TESTS "Build the tests" OFF)
-message(STATUS "Using Protocol Buffers xxxxxxxxxxxxxxxxxxxx111xxyyyx...")
 
 if (BUILD_TESTS)
 # ------------------------------------------------------------------------------
@@ -210,8 +209,6 @@ do_test(events)
 do_test(log)
 #do_test(hmi)
 endif (BUILD_TESTS)
-
-message(STATUS "Using Protocol Buffers xxxxxxxxxxxxxxxxxxxx111...")
 
 # Install DDS
 file(GLOB DDS_LIBS ${CMAKE_BINARY_DIR}/external/cyclonedds/build/lib/*)
