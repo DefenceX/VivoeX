@@ -23,16 +23,9 @@ add_subdirectory(hmi-display)
 add_subdirectory(gva-tools)
 configure_file(gva-tools/config.xml ${CMAKE_CURRENT_BINARY_DIR}/build/gva-tools/. COPYONLY)
 
+## Here you can set the default 'dummy' camer feed images
 #set(IMAGE_PATH ${CMAKE_SOURCE_DIR}/images/uk)
 set(IMAGE_PATH ${CMAKE_SOURCE_DIR}/images/au)
-file(COPY ${IMAGE_PATH}/FrontRight.png 
-          ${IMAGE_PATH}/FrontCenter.png 
-          ${IMAGE_PATH}/FrontLeft.png 
-          ${IMAGE_PATH}/Right.png 
-          ${IMAGE_PATH}/Rear.png 
-          ${IMAGE_PATH}/Left.png 
-          ${IMAGE_PATH}/Quad.png 
-     DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
 option(HMI_ONLY "only build HMI and Tools" OFF)
 

@@ -20,7 +20,10 @@ jobs:
 
       - name: Apt Install
         run: |
-          sudo apt-get --no-install-recommends install catch rpm libgtk-3-dev valgrind libcairo2-dev libpango1.0-dev libxt-dev doxygen libxml2-dev ncurses-dev libxext-dev libswscale-dev libprotobuf-c-dev geographiclib-doc libgeographic-dev libasio-dev libtinyxml2-dev gradle libgeographic-dev libprotobuf-dev protobuf-compiler autoconf automake libtool curl make g++ unzip gawk flex bison
+          sudo apt-get --no-install-recommends install catch rpm python3 libgtk-3-dev valgrind libcairo2-dev \
+          libpango1.0-dev libxt-dev doxygen libxml2-dev ncurses-dev libxext-dev libswscale-dev libprotobuf-c-dev \
+          geographiclib-doc libgeographic-dev libasio-dev libtinyxml2-dev gradle libgeographic-dev libprotobuf-dev \
+          protobuf-compiler autoconf automake libtool curl make g++ unzip gawk flex bison
 
       - name: Configure
         run: mkdir build && cd build && cmake -DDDS=OSPL-CE && make -j ${nproc}
