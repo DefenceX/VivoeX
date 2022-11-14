@@ -34,3 +34,12 @@ jobs:
       - name: CMake and Build
         run: mkdir build && cd build && cmake .. -DDDS=CYCLONE-CE .. && make -j $(nproc)
 
+      - name: Package for CentOS (.rpm)
+        run: cd build && cpack -G RPM && echo "RPM_PACKAGE=$(ls *.rpm)" >> $GITHUB_ENV 
+
+      - name: Archive packaged .deb
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.DEB_PACKAGE }}
+          path: build/${{ env.DEB_PACKAGE }}
+          retention-days: 30
