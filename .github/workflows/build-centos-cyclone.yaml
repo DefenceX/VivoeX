@@ -34,12 +34,12 @@ jobs:
       - name: CMake and Build
         run: PATH=$PATH:${HOME}/.local/bin && mkdir build && cd build && cmake .. -DDDS=CYCLONE-CE .. && make -j $(nproc)
 
-      - name: Package for CentOS (.rpm)
-        run: cd build && VERBOSE=1 cpack -G RPM && echo "RPM_PACKAGE=$(ls *.rpm)" >> $GITHUB_ENV 
+      # - name: Package for CentOS (.rpm)
+      #   run: cd build && VERBOSE=1 cpack -G RPM && echo "RPM_PACKAGE=$(ls *.rpm)" >> $GITHUB_ENV 
 
-      - name: Archive packaged .rpm 
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ env.RPM_PACKAGE }}
-          path: build/${{ env.RPM_PACKAGE }}
-          retention-days: 30
+      # - name: Archive packaged .rpm 
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: ${{ env.RPM_PACKAGE }}
+      #     path: build/${{ env.RPM_PACKAGE }}
+      #     retention-days: 30
