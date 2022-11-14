@@ -28,7 +28,7 @@ jobs:
 
       - name: Dnf Install
         run: |
-          dnf install git cmake gcc-c++ python2-pip cairo-devel libXt-devel doxygen libxml2-devel ncurses-devel libXext-devel ffmpeg-libs protobuf-devel protobuf-compiler GeographicLib-devel gtk3-devel -y && \
+          dnf install git cmake gcc-c++ python2-pip cairo-devel libXt-devel doxygen libxml2-devel ncurses-devel libXext-devel ffmpeg-devel protobuf-devel protobuf-compiler GeographicLib-devel gtk3-devel -y && \
           pip2 install cpplint
 
       - name: CMake and Build
