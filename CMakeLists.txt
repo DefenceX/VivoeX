@@ -197,7 +197,9 @@ if(EXISTS /etc/lsb_release)
     pkg_check_modules(SWSCALE REQUIRED libswscale)
 else()
     message(STATUS "Detected CentOS as the distro...")
-    pkg_check_modules(SWSCALE REQUIRED libswscale)
+    find_package(FFmpeg COMPONENTS SWSCALE REQUIRED) #add here the list of ffmpeg components required
+    set(SWSCALE_INCLUDE_DIRS ${FFMPEG_INCLUDE_DIRS})
+    set(SWSCALE_LIBRARIES ${FFMPEG_LIBRARIES})
 endif()
 
 link_directories(${CMAKE_BINARY_DIR}/external/libnmea/build/src ${OSMSCOUT_LIBS})
