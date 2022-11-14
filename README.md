@@ -1,3 +1,4 @@
+[![Action cyclone](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-centos-cyclone.yaml/badge.svg)](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-centos-cyclone.yaml)
 [![Action cyclone](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-ubuntu-cyclone.yaml/badge.svg)](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-ubuntu-cyclone.yaml)
 [![Action opensplice](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-ubuntu-opensplice.yaml/badge.svg)](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-ubuntu-opensplice.yaml)
 [![Action doxygen](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-doxygen.yaml/badge.svg)](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-doxygen.yaml)
