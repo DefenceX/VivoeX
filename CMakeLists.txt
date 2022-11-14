@@ -190,19 +190,7 @@ add_dependencies(business_logic libnmea hmi-video vivoe-media ${EXTRA_LIBS})
 pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
 pkg_check_modules(CAIRO REQUIRED cairo)
 pkg_check_modules(PANGO REQUIRED pango)
-
-message(STATUS "Using Protocol Buffers xxxxxxxxxxxxxxxxxxxx...")
-
-
-if(EXISTS /etc/lsb_release)
-    message(STATUS "Detected Ubuntu as the distro...")
-    pkg_check_modules(SWSCALE REQUIRED libswscale)
-else()
-    message(STATUS "Detected CentOS as the distro...")
-    find_package(FFmpeg COMPONENTS SWSCALE REQUIRED) #add here the list of ffmpeg components required
-    set(SWSCALE_INCLUDE_DIRS ${FFMPEG_INCLUDE_DIRS})
-    set(SWSCALE_LIBRARIES ${FFMPEG_LIBRARIES})
-endif()
+pkg_check_modules(SWSCALE REQUIRED libswscale)
 
 link_directories(${CMAKE_BINARY_DIR}/external/libnmea/build/src ${OSMSCOUT_LIBS})
 target_link_libraries(business_logic ${Protobuf_LIBRARIES} ${GTK3_LIBRARIES} ${CAIRO_LIBRARIES} ${PANGO_LIBRARIES} ${SWSCALE_LIBRARIES} X11 pthread Geographic nmealib osmscout osmscout_map osmscout_map_cairo)
