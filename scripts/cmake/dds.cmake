@@ -116,8 +116,10 @@ ExternalProject_Add(
     BUILD_ALWAYS        0
 )
 
+# Search for Ubuntu
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/cmake/CycloneDDS)
-set(CycloneDDS_DIR ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/cmake/CycloneDDS)
+# Search for CentOS
+list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/cmake/CycloneDDS)
 
 ExternalProject_Add(
     cyclonedds-cxx
