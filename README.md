@@ -6,11 +6,21 @@
 [![codecov](https://codecov.io/gh/ross-newman/vivoe-lite/branch/master/graph/badge.svg)](https://codecov.io/gh/ross-newman/vivoe-lite)
 ![Version](https://defencex.github.io/vivoe-lite/version.svg)
 [![ZenHub](https://dxssrr2j0sq4w.cloudfront.net/3.2.0/img/external/zenhub-badge.png)](https://app.zenhub.com/workspaces/vivoe-lite-63683e4ded511f5aebcb4638)
-# Dependancies
-This VIVOE (Vetronics Infrastructure for Video Over Ethernet) environment is currently tested on Ubuntu 18.04 LTS. Please ensure you have the following packages installed prior to building the application:
+# Dependencies
+This VIVOE (Vetronics Infrastructure for Video Over Ethernet) environment is currently tested on Ubuntu 22.04 LTS. Please ensure you have the following packages installed prior to building the application:
 ```
-sudo apt install libcairo2-dev libxt-dev doxygen cpplint python-is-python3 libxml2-dev ncurses-dev libxext-dev libswscale-dev libprotobuf-dev protobuf-compiler libgeographic-dev cmake g++ libgtk-3-dev --no-install-recommends
+apt install libcairo2-dev libxt-dev doxygen cpplint python-is-python3 libxml2-dev ncurses-dev libxext-dev libswscale-dev libprotobuf-dev protobuf-compiler libgeographic-dev cmake g++ libgtk-3-dev --no-install-recommends
 ```
+We also want to support CentOS try, some extra setup:
+```
+dnf install epel-release -y
+dnf config-manager --set-enabled powertools -y
+dnf localinstall --nogpgcheck https://download1.rpmfusion.org/free/el/rpmfusion-free-release-8.noarch.rpm -y
+dnf update -y
+dnf install cmake gcc-c++ cairo-devel libXt-devel doxygen libxml2-devel ncurses-devel libXext-devel ffmpeg-libs protobuf-devel protobuf-compiler GeographicLib-devel gtk3-devel -y
+
+```
+
 # Build
 This project has a couple of options that can be specified at compile time:
 ```
