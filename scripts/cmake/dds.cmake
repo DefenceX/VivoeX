@@ -160,20 +160,20 @@ endif()
 
 ExternalProject_Add(
     ${DDS_STACK}
-    GIT_REPOSITORY      https://github.com/ADLINK-IST/opensplice
-    GIT_TAG             "OSPL_V6_9_210323OSS_RELEASE"
+    GIT_REPOSITORY      https://github.com/DefenceX/opensplice
     GIT_SHALLOW         5
     GIT_CONFIG          fetch.recurseSubmodules=true
-    CONFIGURE_COMMAND   "echo \"15\" | ${CMAKE_BINARY_DIR}/external/opensplice/build/configure"
+    CONFIGURE_COMMAND   bash -c "cd ${CMAKE_BINARY_DIR}/external/opensplice/src && printf 15 | source ./configure"
     PREFIX              ${CMAKE_BINARY_DIR}/external/opensplice/prefix
     TMP_DIR             ${CMAKE_BINARY_DIR}/external/opensplice/tmp
     STAMP_DIR           ${CMAKE_BINARY_DIR}/external/opensplice/stamp
     DOWNLOAD_DIR        ${CMAKE_BINARY_DIR}/external/opensplice/download
     SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/opensplice/src
-    BINARY_DIR          ${CMAKE_BINARY_DIR}/external/opensplice/build
     INSTALL_DIR         ${CMAKE_BINARY_DIR}/external/opensplice/install
     SOURCE_SUBDIR       ""
-    INSTALL_COMMAND     cd ${CMAKE_BINARY_DIR}/external/opensplice/build; sudo make install
+    BUILD_IN_SOURCE     TRUE
+    BUILD_COMMAND       cd ${CMAKE_BINARY_DIR}/external/opensplice/src && make -j $(nproc)
+    INSTALL_COMMAND     cd ${CMAKE_BINARY_DIR}/external/opensplice/src && make DESTDIR=${CMAKE_BINARY_DIR}/external/install install
     TEST_COMMAND        ""
     UPDATE_DISCONNECTED 1
     BUILD_ALWAYS        0

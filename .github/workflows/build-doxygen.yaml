@@ -29,13 +29,14 @@ jobs:
       - name: Apt Update
         run: sudo apt-get update
       - name: Apt Install
-        run: sudo apt-get --no-install-recommends install doxygen graphviz
+        run: sudo apt-get --no-install-recommends install doxygen graphviz wget
       - name: Doxygen
-        run:  MAJOR=$(sed -n '1p' < version) && \
-              MINOR=$(sed -n '2p' < version) && \
-              PATCH=$(sed -n '3p' < version) && \
-              SEM_VERSION=$MAJOR.$MINOR.$PATCH doxygen \
-              wget https://img.shields.io/badge/version-${after}-red.svg -O ./docs/version.svg
+        run:  |
+          MAJOR=$(sed -n '1p' < version) && \
+          MINOR=$(sed -n '2p' < version) && \
+          PATCH=$(sed -n '3p' < version) && \
+          SEM_VERSION=$MAJOR.$MINOR.$PATCH doxygen \
+          wget https://img.shields.io/badge/version-${after}-red.svg -O ./docs/version.svg
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact

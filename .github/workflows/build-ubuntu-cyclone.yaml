@@ -26,7 +26,7 @@ jobs:
             protobuf-compiler autoconf automake libtool curl make g++ unzip
 
       - name: CMake and Build
-        run: mkdir build && cd build && cmake .. -DDDS=CYCLONE-CE .. && VERBOSE=1 make
+        run: mkdir build && cd build && cmake .. -DDDS=CYCLONE-CE .. && make -j $(nproc)
 
       - name: Package for Debian (.deb)
         run: cd build && cpack -G DEB && echo "DEB_PACKAGE=$(ls *.deb)" >> $GITHUB_ENV 
