@@ -4,6 +4,8 @@ name: "Build : Doxygen"
 on:
   push:
     branches: main
+  # pull_request:
+  #   branches: main
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -27,7 +29,7 @@ jobs:
       - name: Apt Update
         run: sudo apt-get update
       - name: Apt Install
-        run: sudo apt-get --no-install-recommends install doxygen graphviz
+        run: sudo apt-get --no-install-recommends install doxygen graphviz wget
       - name: Doxygen
         run:  |
           MAJOR=$(sed -n '1p' < version) && \
