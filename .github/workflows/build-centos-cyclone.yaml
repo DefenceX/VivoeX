@@ -1,0 +1,29 @@
+name: "Build Ubuntu : Cyclone"
+
+on:
+  push:
+    branches: main
+  pull_request:
+    branches: main
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  build-ubuntu-cyclone:
+    runs-on: ubuntu-22.04
+    container: centos:8
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Apt Update
+        run: sudo apt-get update
+
+      - name: Apt Install
+        run: |
+          dnf update
+
+      # - name: CMake and Build
+      #   run: mkdir build && cd build && cmake .. -DDDS=CYCLONE-CE .. && make -j $(nproc)
+

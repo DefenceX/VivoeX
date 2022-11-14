@@ -244,10 +244,12 @@ install(FILES
         /usr/lib/x86_64-linux-gnu/libprotobuf.so.23.0.4
         /usr/lib/x86_64-linux-gnu/libprotobuf.so.23
         /usr/lib/x86_64-linux-gnu/libprotobuf.so
-        /usr/lib/x86_64-linux-gnu/libstdc++.so.6
-        /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30
-        /usr/lib/x86_64-linux-gnu/libc.so.6
-        /usr/lib/x86_64-linux-gnu/libc.so
+        # /usr/lib/x86_64-linux-gnu/libstdc++.so.6
+        # /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30
+        # /usr/lib/x86_64-linux-gnu/libc.so.6
+        # /usr/lib/x86_64-linux-gnu/libc.so
+        # /usr/lib/x86_64-linux-gnu/libdl.so.2
+        # /usr/lib/x86_64-linux-gnu/libpthread.so.0
         DESTINATION "/opt/gva/libs")
 
 # include CMake module
