@@ -31,9 +31,6 @@ jobs:
       - name: Package for Debian (.deb)
         run: cd build && cpack -G DEB && echo "DEB_PACKAGE=$(ls *.deb)" >> $GITHUB_ENV 
 
-      - name: Package for CentOS (.rpm)
-        run: cd build && cpack -G RPM && echo "RPM_PACKAGE=$(ls *.rpm)" >> $GITHUB_ENV 
-
       # - name: CTest
       #   run: xvfb-run --server-args="-screen 0 1024x768x24" ctest -T memcheck
 
@@ -45,11 +42,4 @@ jobs:
         with:
           name: ${{ env.DEB_PACKAGE }}
           path: build/${{ env.DEB_PACKAGE }}
-          retention-days: 30
-
-      - name: Archive packaged .rpm 
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ env.RPM_PACKAGE }}
-          path: build/${{ env.RPM_PACKAGE }}
           retention-days: 30
