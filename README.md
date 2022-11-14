@@ -7,6 +7,12 @@
 [![codecov](https://codecov.io/gh/ross-newman/vivoe-lite/branch/master/graph/badge.svg)](https://codecov.io/gh/ross-newman/vivoe-lite)
 ![Version](https://defencex.github.io/vivoe-lite/version.svg)
 [![ZenHub](https://dxssrr2j0sq4w.cloudfront.net/3.2.0/img/external/zenhub-badge.png)](https://app.zenhub.com/workspaces/vivoe-lite-63683e4ded511f5aebcb4638)
+# vivoe-lite
+
+![GVA HMI](images/screen/ScreenshotSaFront.png)
+
+**A Generic Vehicle Architecture HMI (Human Machine Interface)**
+
 # Dependencies
 This VIVOE (Vetronics Infrastructure for Video Over Ethernet) environment is currently tested on Ubuntu 22.04 LTS. Please ensure you have the following packages installed prior to building the application:
 ```
