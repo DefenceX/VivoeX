@@ -192,7 +192,7 @@ pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
 pkg_check_modules(CAIRO REQUIRED cairo)
 pkg_check_modules(PANGO REQUIRED pango)
 
-if (if(EXISTS /etc/lsb_release)
+if(EXISTS /etc/lsb_release)
     message(STATUS "Detected Ubuntu as the distro...")
     pkg_check_modules(SWSCALE REQUIRED libswscale)
 else()
