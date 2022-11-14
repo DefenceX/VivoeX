@@ -234,8 +234,7 @@ install(FILES  ${IMAGE_PATH}/FrontRight.png
                ${IMAGE_PATH}/Left.png 
                ${IMAGE_PATH}/Quad.png DESTINATION "/opt/gva/hmi/images")
 
-
-               aux_source_directory(${CMAKE_SOURCE_DIR}/src src)
+aux_source_directory(${CMAKE_SOURCE_DIR}/src src)
 
 # include CMake module
 include(scripts/cmake/cpplint.cmake)
