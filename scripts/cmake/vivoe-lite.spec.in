@@ -7,7 +7,7 @@ License:        GPL
 Group:          Development/Tools/Other
 Vendor:         @CPACK_PACKAGE_VENDOR@
 Prefix:         @CPACK_PACKAGING_INSTALL_PREFIX@
-Requires:       libstdc++ >=-8.5, glibc-devel, cairo-devel, libXt-devel, libxml2-devel, libXext-devel, ffmpeg-libs, protobuf, protobuf-devel, protobuf-compiler, GeographicLib-devel, gtk3-devel
+Requires:       libstdc++-devel >=-8.5, glibc-devel, cairo-devel, libXt-devel, libxml2-devel, libXext-devel, ffmpeg-libs, protobuf, protobuf-devel, protobuf-compiler, GeographicLib-devel, gtk3-devel
  
 %define _rpmdir @CMAKE_CURRENT_BINARY_DIR@/_CPack_Packages/Linux/RPM
 %define _rpmfilename @CPACK_PACKAGE_FILE_NAME@.rpm
