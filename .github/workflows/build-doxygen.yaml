@@ -35,8 +35,9 @@ jobs:
           MAJOR=$(sed -n '1p' < version) && \
           MINOR=$(sed -n '2p' < version) && \
           PATCH=$(sed -n '3p' < version) && \
-          SEM_VERSION=$MAJOR.$MINOR.$PATCH doxygen && \
-          wget https://img.shields.io/badge/version-${after}-red.svg -O ./docs/version.svg
+          SEM_VERSION=$MAJOR.$MINOR.$PATCH && \
+          doxygen && \
+          wget https://img.shields.io/badge/version-${SEM_VERSION}-red.svg -O ./docs/version.svg
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact
