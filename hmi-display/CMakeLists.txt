@@ -78,7 +78,7 @@ if (ENABLE_OSMSCOUT)
 else()
 	add_dependencies(hmi-display hmi-video ${DDS_STACK})
 endif()
-target_link_libraries (hmi-display Geographic ${OSMSCOUT_LIBS} ${Protobuf_LIBRARIES})
+target_link_libraries (hmi-display Geographic ${OSMSCOUT_LIBS} ${Protobuf_LIBRARIES} stdc++fs)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std=c++11")
 
