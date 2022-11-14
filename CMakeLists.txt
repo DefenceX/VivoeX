@@ -34,7 +34,6 @@ add_custom_target(libosmscout)
 add_custom_target(libnmea)
 else (HMI_ONLY)
 
-
 if (ENABLE_OSMSCOUT)
 	if (${CMAKE_SYSTEM_NAME} MATCHES "MSYS")
 		message("libosmscout not currently supported under MSYS2...")
@@ -132,6 +131,7 @@ ExternalProject_Add(
 endif (HMI_ONLY)
 
 option(BUILD_TESTS "Build the tests" OFF)
+message(STATUS "Using Protocol Buffers xxxxxxxxxxxxxxxxxxxx111xxyyyx...")
 
 if (BUILD_TESTS)
 # ------------------------------------------------------------------------------
@@ -167,11 +167,10 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 if (MSYS)
 else()
-find_package(Protobuf REQUIRED)
-message(STATUS "Using Protocol Buffers ${Protobuf_VERSION}...")
-include_directories(${Protobuf_INCLUDE_DIRS})
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
-protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PROJECT_SOURCE_DIR}/hmi-display/config.proto)
+    find_package(Protobuf REQUIRED)
+    include_directories(${Protobuf_INCLUDE_DIRS})
+    include_directories(${CMAKE_CURRENT_BINARY_DIR})
+    protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PROJECT_SOURCE_DIR}/hmi-display/config.proto)
 endif()
 
 add_library(business_logic STATIC ${PROTO_SRCS} hmi-display/events_gva.cc hmi-display/hmi_gva.cc hmi-display/hmi_gva_helpers.cc hmi-display/screen_gva.cc hmi-display/renderer_gva.cc hmi-display/renderer.cc hmi-display/renderer_cairo.cc hmi-display/common/log_gva.cc hmi-display/view_gva.cc hmi-display/renderer_map.cc hmi-display/config_reader.cc )
@@ -191,6 +190,9 @@ add_dependencies(business_logic libnmea hmi-video vivoe-media ${EXTRA_LIBS})
 pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
 pkg_check_modules(CAIRO REQUIRED cairo)
 pkg_check_modules(PANGO REQUIRED pango)
+
+message(STATUS "Using Protocol Buffers xxxxxxxxxxxxxxxxxxxx...")
+
 
 if(EXISTS /etc/lsb_release)
     message(STATUS "Detected Ubuntu as the distro...")
@@ -220,6 +222,8 @@ do_test(events)
 do_test(log)
 #do_test(hmi)
 endif (BUILD_TESTS)
+
+message(STATUS "Using Protocol Buffers xxxxxxxxxxxxxxxxxxxx111...")
 
 # Install DDS
 file(GLOB DDS_LIBS ${CMAKE_BINARY_DIR}/external/cyclonedds/build/lib/*)
