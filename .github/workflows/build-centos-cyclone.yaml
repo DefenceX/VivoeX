@@ -11,16 +11,13 @@ permissions:
   pull-requests: read
 
 jobs:
-  build-ubuntu-cyclone:
+  build-centos-cyclone:
     runs-on: ubuntu-22.04
     container: centos:8
 
     steps:
       - uses: actions/checkout@v3
-      - name: Apt Update
-        run: sudo apt-get update
-
-      - name: Apt Install
+      - name: Dnf Update
         run: |
           dnf update
 
