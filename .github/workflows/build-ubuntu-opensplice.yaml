@@ -24,7 +24,7 @@ jobs:
           libpango1.0-dev libxt-dev doxygen libxml2-dev ncurses-dev libxext-dev libswscale-dev libprotobuf-c-dev \
           geographiclib-doc libgeographic-dev libgeographic-dev libprotobuf-dev sqlite3 libleveldb-dev \
           protobuf-compiler autoconf automake libtool curl make g++ unzip gawk flex bison && \
-          sudo apt remove default-jdk
+          sudo apt remove  *jdk* -y
 
       - name: Configure
         run: |
