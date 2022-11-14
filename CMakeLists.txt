@@ -103,6 +103,7 @@ ExternalProject_Add(
     GIT_REPOSITORY      https://github.com/DefenceX/nmealib
     GIT_SHALLOW         1
     CMAKE_ARGS          ""
+    GIT_TAG             main
     PREFIX              ${CMAKE_BINARY_DIR}/external/libnmea/prefix
     TMP_DIR             ${CMAKE_BINARY_DIR}/external/libnmea/tmp
     STAMP_DIR           ${CMAKE_BINARY_DIR}/external/libnmea/stamp
