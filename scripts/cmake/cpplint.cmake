@@ -60,7 +60,7 @@ set(CPPLINT_PROJECT_ROOT ${PROJECT_SOURCE_DIR} CACHE STRING "Project ROOT direct
 
 
 # find cpplint.py script
-set(CPPLINT ${CMAKE_CURRENT_SOURCE_DIR}/scripts/linter/cpplint.py)
+set(CPPLINT ${CMAKE_SOURCE_DIR}/scripts/linter/cpplint.py)
 
 
 
