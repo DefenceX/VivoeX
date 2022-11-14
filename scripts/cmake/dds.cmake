@@ -120,7 +120,7 @@ ExternalProject_Add(
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/cmake/CycloneDDS)
 # Search for CentOS
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/cmake/CycloneDDS)
-set(CycloneDDS_DIR ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/cmake/CycloneDDS)
+set(CycloneDDS_DIR ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/cmake/CycloneDDS)
 
 ExternalProject_Add(
     cyclonedds-cxx
@@ -128,7 +128,7 @@ ExternalProject_Add(
     GIT_TAG             "0.10.2"
     GIT_SHALLOW         5
     GIT_CONFIG          fetch.recurseSubmodules=true
-    CMAKE_ARGS          -DCycloneDDS_DIR=${CMAKE_BINARY_DIR}/external/install/usr/local/lib/cmake/CycloneDDS -DCMAKE_INSTALL_MESSAGE=LAZY -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/external/install -DCMAKE_PREFIX_PATH=${CMAKE_BINARY_DIR}/external/install/usr/local/lib/cmake/CycloneDDS
+    CMAKE_ARGS          -DCycloneDDS_DIR=${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/cmake/CycloneDDS -DCMAKE_INSTALL_MESSAGE=LAZY -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/external/install -DCMAKE_PREFIX_PATH=${CMAKE_BINARY_DIR}/external/install/usr/local/lib/cmake/CycloneDDS
     PREFIX              ${CMAKE_BINARY_DIR}/external/cyclonedds-cxx/prefix
     TMP_DIR             ${CMAKE_BINARY_DIR}/external/cyclonedds-cxx/tmp
     STAMP_DIR           ${CMAKE_BINARY_DIR}/external/cyclonedds-cxx/stamp
