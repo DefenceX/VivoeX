@@ -45,8 +45,10 @@ jobs:
           retention-days: 30
 
   notify_error:
-      needs: [build-centos-cyclone]
-      if: ${{ always() && !cancelled() && (needs.job1.result != 'success') }}
+    needs: [build-centos-cyclone]
+    if: ${{ always() && !cancelled() && (needs.job1.result != 'success') }}
+    
+    steps:
       run: 
         - name: Archive logs 
           uses: actions/upload-artifact@v3
