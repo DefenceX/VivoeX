@@ -76,9 +76,6 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: ${{needs.build-ubuntu-cyclone.outputs.package_name}} 
-      
-      - name: Uncompress package
-        run: ls -hal && echo "${{needs.build-ubuntu-cyclone.outputs.package_name}} " && unzip ${{needs.build-ubuntu-cyclone.outputs.package_name}}.zip
 
       - name: Install package
         run: apt-get install ./*.rpm -y
