@@ -138,7 +138,7 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
 
   hmi::GetRendrer()->Update();
   switch (event.type) {
-    case KEY_EVENT: {
+    case KEY_UP_EVENT: {
       Compass *compass = static_cast<Compass *>(hmi::GetRendrer()->GetWidget(WIDGET_TYPE_COMPASS));
       Keyboard *keyboard = static_cast<Keyboard *>(hmi::GetRendrer()->GetWidget(WIDGET_TYPE_KEYBOARD));
       switch (event.key_) {

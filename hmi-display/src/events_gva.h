@@ -33,7 +33,7 @@
 
 namespace gva {
 
-enum EventEnumType { NO_EVENT = 0, KEY_EVENT, TOUCH_EVENT, DDS_EVENT, RESIZE_EVENT, REDRAW_EVENT };
+enum EventEnumType { NO_EVENT = 0, KEY_DOWN_EVENT, KEY_UP_EVENT, TOUCH_EVENT, DDS_EVENT, RESIZE_EVENT, REDRAW_EVENT };
 
 struct TouchType {
   int x;
@@ -48,7 +48,7 @@ class EventGvaType {
     touch_.y = y;
     type = TOUCH_EVENT;
   }
-  explicit EventGvaType(GvaKeyEnum key) : key_(key) { type = KEY_EVENT; }
+  explicit EventGvaType(GvaKeyEnum key) : key_(key) { type = KEY_UP_EVENT; }
   EventEnumType type;
   GvaKeyEnum key_;
   TouchType touch_;
@@ -77,7 +77,7 @@ class EventsGva {
   uint32_t NextGvaEvent(EventGvaType *event);  // Use for GTK/DDS/Touch events
 
   ///
-  /// \brief
+  /// \brief A button press event or touch label event, key pressed
   ///
   /// \param Widget
   /// \param event
@@ -85,6 +85,16 @@ class EventsGva {
   /// \return gboolean
   ///
   static gboolean ButtonPressEventCb(GtkWidget *Widget, GdkEventButton *event, gpointer data);
+
+  ///
+  /// \brief  A button press event or touch label event, key released
+  ///
+  /// \param Widget
+  /// \param event
+  /// \param data
+  /// \return gboolean
+  ///
+  static gboolean ButtonReleaseEventCb(GtkWidget *Widget, GdkEventButton *event, gpointer data);
 
   ///
   /// \brief Handle button press events by either Drawing a rectangle or clearing the surface, depending on which button

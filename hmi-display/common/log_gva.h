@@ -39,8 +39,26 @@ static FILE* m_errorfd;
 
 class logGva {
  public:
-  static void log(std::string message, int type);
-  static void log(char* message, int type);
+  ///
+  /// \brief Log a message with its severity
+  ///
+  /// \param message Message description
+  /// \param type Severity
+  ///
+  static void log(const std::string message, uint16_t type);
+
+  ///
+  /// \brief Log a message with its severity
+  ///
+  /// \param message Message description
+  /// \param type Severity
+  ///
+  static void log(const char* message, uint16_t type);
+
+  ///
+  /// \brief Finalise the log
+  ///
+  ///
   static void finish();
 
  private:
