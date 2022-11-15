@@ -57,3 +57,21 @@ jobs:
             build/external/cyclonedds-cxx/build/CMakeFiles/CMakeOutput.log
             build/CMakeFiles/CMakeOutput.log
           retention-days: 30
+
+  install-ubuntu-cyclone:
+    runs-on: ubuntu-22.04
+    container: centos:8
+    needs: [build-ubuntu-cyclone]
+    if: ${{ always() && !cancelled() && (needs.build-centos-cyclone.result == 'success') }}
+    
+    steps:
+      - name: Download .deb to install
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ env.DEB_PACKAGE }}
+      
+      - name: Uncompress package
+        run: ls -hal && echo "${{ env.DEB_PACKAGE }}." && unzip ${{ env.DEB_PACKAGE }}.zip
+
+      - name: Install package
+        run: apt-get install ${{ env.DEB_PACKAGE }}.rpm -y

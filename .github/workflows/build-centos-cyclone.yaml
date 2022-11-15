@@ -71,7 +71,7 @@ jobs:
           name: ${{ env.RPM_PACKAGE }}
       
       - name: Uncompress package
-        run: ll && echo "${{ env.RPM_PACKAGE }}." && unzip ${{ env.RPM_PACKAGE }}.zip
+        run: ls -hal && echo "${{ env.RPM_PACKAGE }}." && unzip ${{ env.RPM_PACKAGE }}.zip
 
       - name: Install package
         run: dnf install ${{ env.RPM_PACKAGE }}.rpm -y
