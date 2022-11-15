@@ -46,6 +46,8 @@
   screen_.canvas.bufferType = gva::SURFACE_FILE; \
   screen_.canvas.buffer = 0;
 
+namespace gva {
+
 void Hmi::Reset() {
   screen_.status_bar->visible = true;
   Labels(screen_.labels);
@@ -924,3 +926,4 @@ bool Hmi::alarmson_ = false;
 // Initial state definition
 //
 FSM_INITIAL_STATE(Hmi, StateOff)
+}  // namespace gva

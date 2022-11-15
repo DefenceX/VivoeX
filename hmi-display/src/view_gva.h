@@ -101,6 +101,7 @@ class ViewGvaManager {
   int idLast_;
   int id_ = 0;
 };
+
 }  // namespace gva
 
 #endif  // HMI_DISPLAY_SRC_VIEW_GVA_H_

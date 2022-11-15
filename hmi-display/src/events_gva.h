@@ -60,10 +60,47 @@ static TouchGva *touch_;
 
 class EventsGva {
  public:
+  ///
+  /// \brief Construct a new Events Gva object
+  ///
+  /// \param window The GTK3 window
+  /// \param touch Touch event register
+  ///
   EventsGva(gtkType *window, TouchGva *touch);
+
+  ///
+  /// \brief Get the next GVA event
+  ///
+  /// \param event The event type
+  /// \return uint32_t gva::GVA_SUCCESS if an event was available
+  ///
   uint32_t NextGvaEvent(EventGvaType *event);  // Use for GTK/DDS/Touch events
+
+  ///
+  /// \brief
+  ///
+  /// \param Widget
+  /// \param event
+  /// \param data
+  /// \return gboolean
+  ///
   static gboolean ButtonPressEventCb(GtkWidget *Widget, GdkEventButton *event, gpointer data);
+
+  ///
+  /// \brief Handle button press events by either Drawing a rectangle or clearing the surface, depending on which button
+  /// was pressed. The ::button-press signal handler receives a GdkEventButton struct which contains this information.
+  ///
+  /// \param Widget
+  /// \param event
+  /// \return gboolean
+  ///
   static gboolean KeyPressEventCb(GtkWidget *Widget, GdkEventKey *event);
+
+  ///
+  /// \brief Get the Window object
+  ///
+  /// \return gtkType*
+  ///
   gtkType *GetWindow() { return window_; }
 
  private:
