@@ -62,7 +62,7 @@ jobs:
     runs-on: ubuntu-22.04
     container: centos:8
     needs: [build-centos-cyclone]
-    if: ${{ always() && !cancelled() && (needs.build-centos-cyclone.result == 'success') }}
+    if: ${{ !cancelled() && (needs.build-centos-cyclone.result == 'success') }}
     
     steps:
       - name: Download .rpm to install

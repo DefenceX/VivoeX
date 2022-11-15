@@ -60,9 +60,8 @@ jobs:
 
   install-ubuntu-cyclone:
     runs-on: ubuntu-22.04
-    container: centos:8
     needs: [build-ubuntu-cyclone]
-    if: ${{ always() && !cancelled() && (needs.build-centos-cyclone.result == 'success') }}
+    if: ${{ !cancelled() && (needs.build-ubuntu-cyclone.result == 'success') }}
     
     steps:
       - name: Download .deb to install
