@@ -43,3 +43,17 @@ jobs:
           name: ${{ env.DEB_PACKAGE }}
           path: build/${{ env.DEB_PACKAGE }}
           retention-days: 30
+
+      - name: Archive logs 
+        if: ${{ always() && !cancelled() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: error-logs
+          path: |
+            build/_CPack_Packages/Linux/RPM/PreinstallOutput.log \
+            build/compile_commands.json \
+            build/external/libnmea/build/CMakeFiles/CMakeOutput.log \
+            build/external/cyclonedds/build/CMakeFiles/CMakeOutput.log \
+            build/external/cyclonedds-cxx/build/CMakeFiles/CMakeOutput.log \
+            build/CMakeFiles/CMakeOutput.log
+          retention-days: 30
