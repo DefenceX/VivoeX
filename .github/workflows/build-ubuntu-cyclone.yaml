@@ -81,4 +81,4 @@ jobs:
         run: ls -hal && sudo apt-get install ./*.deb -y
 
       - name: Run binary
-        run: /opt.gva.hmi/hmi-display -h
+        run: /opt/gva/hmi/hmi-display -h
