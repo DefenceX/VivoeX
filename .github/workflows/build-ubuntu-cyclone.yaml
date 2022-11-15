@@ -79,3 +79,6 @@ jobs:
 
       - name: Install package
         run: ls -hal && apt-get install ./*.deb -y
+
+      - name: Run binary
+        run: /opt.gva.hmi/hmi-display -h
