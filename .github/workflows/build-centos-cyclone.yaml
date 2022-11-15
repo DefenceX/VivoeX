@@ -48,14 +48,14 @@ jobs:
         if: ${{ always() && !cancelled() }}
         uses: actions/upload-artifact@v3
         with:
-          name: error-logs
+          name: build-logs
           path: |
-            build/_CPack_Packages/Linux/RPM/PreinstallOutput.log \
-            build/compile_commands.json \
-            build/external/libnmea/build/CMakeFiles/CMakeOutput.log \
-            build/external/cyclonedds/build/CMakeFiles/CMakeOutput.log \
-            build/external/cyclonedds-cxx/build/CMakeFiles/CMakeOutput.log \
+            build/compile_commands.json
+            build/external/libnmea/build/CMakeFiles/CMakeOutput.log
+            build/external/cyclonedds/build/CMakeFiles/CMakeOutput.log
+            build/external/cyclonedds-cxx/build/CMakeFiles/CMakeOutput.log
             build/CMakeFiles/CMakeOutput.log
+            build/_CPack_Packages/Linux/RPM/PreinstallOutput.log
           retention-days: 30
 
   install-centos-cyclone:
@@ -65,12 +65,16 @@ jobs:
     if: ${{ always() && !cancelled() && (needs.build-centos-cyclone.result == 'success') }}
     
     steps:
-      - name: Download .deb to install
+      - name: Download .rpm to install
         uses: actions/download-artifact@v3
         with:
           name: ${{ env.RPM_PACKAGE }}
       
+      - name: Uncompress package
+        run: ll && echo "${{ env.RPM_PACKAGE }}." && unzip ${{ env.RPM_PACKAGE }}.zip
 
+      - name: Install package
+        run: dnf install ${{ env.RPM_PACKAGE }}.rpm -y
 
 
 
