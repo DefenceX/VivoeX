@@ -223,7 +223,7 @@ install(FILES ${CMAKE_BINARY_DIR}/external/libnmea/build/src/libnmealib.so
               ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build/libvivoe-media.so
               ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build/libvivoe-media.so.1
               ${DDS_LIBS}
-        DESTINATION "/opt/gva/libs")
+        DESTINATION "/opt/gva/libs" PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE GROUP_WRITE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_WRITE WORLD_EXECUTE)
 
 # Images
 install(FILES  ${IMAGE_PATH}/FrontRight.png 
