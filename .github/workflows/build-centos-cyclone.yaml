@@ -44,11 +44,6 @@ jobs:
           path: build/${{ env.RPM_PACKAGE }}
           retention-days: 30
 
-  notify_error:
-    needs: [build-centos-cyclone]
-    if: ${{ always() && !cancelled() && (needs.build-centos-cyclone.result != 'success') }}
-    
-    steps:
       - name: Archive logs 
         uses: actions/upload-artifact@v3
         with:
@@ -61,6 +56,18 @@ jobs:
             build/external/cyclonedds-cxx/build/CMakeFiles/CMakeOutput.log \
             build/CMakeFiles/CMakeOutput.log
           retention-days: 30
+
+  notify_success:
+    runs-on: ubuntu-22.04
+    container: centos:8
+    needs: [build-centos-cyclone]
+    if: ${{ always() && !cancelled() && (needs.build-centos-cyclone.result == 'success') }}
+    
+    steps:
+      - name: Download .deb to install
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ env.RPM_PACKAGE }}
       
 
 
