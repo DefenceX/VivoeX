@@ -15,6 +15,9 @@ jobs:
     runs-on: ubuntu-22.04
     container: centos:8
 
+    # Map a step output to a job output
+    outputs:
+      package_name: ${{ steps.package.outputs.RPM_PACKAGE }}
     steps:
       - uses: actions/checkout@v3
       - name: Dnf Update
@@ -35,7 +38,8 @@ jobs:
         run: PATH=$PATH:${HOME}/.local/bin && mkdir build && cd build && cmake .. -DDDS=CYCLONE-CE .. && make -j $(nproc)
 
       - name: Package for CentOS (.rpm)
-        run: PATH=$PATH:${HOME}/.local/bin && cd build && cpack -V -G RPM && echo "RPM_PACKAGE=$(ls *.rpm)" >> $GITHUB_ENV 
+        id : package
+        run: PATH=$PATH:${HOME}/.local/bin && cd build && cpack -V -G RPM && echo "RPM_PACKAGE=$(ls *.rpm)" >> $GITHUB_ENV && echo "RPM_PACKAGE=$(ls *.rpm)" >> $GITHUB_OUTPUT
 
       - name: Archive packaged .rpm 
         uses: actions/upload-artifact@v3
@@ -65,16 +69,19 @@ jobs:
     if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
     
     steps:
+      - name: Read package name
+        run: echo ${{needs.build-centos-cyclone.outputs.package_name}} 
+
       - name: Download .rpm to install
         uses: actions/download-artifact@v3
         with:
-          name: ${{ env.RPM_PACKAGE }}
+          name: ${{needs.build-centos-cyclone.outputs.package_name}} 
       
       - name: Uncompress package
-        run: ls -hal && echo "${{ env.RPM_PACKAGE }}." && unzip ${{ env.RPM_PACKAGE }}.zip
+        run: ls -hal && echo "${{needs.build-centos-cyclone.outputs.package_name}}" && unzip ${{needs.build-centos-cyclone.outputs.package_name}}.zip
 
       - name: Install package
-        run: dnf install ${{ env.RPM_PACKAGE }}.rpm -y
+        run: dnf install ./*.rpm -y
 
 
 

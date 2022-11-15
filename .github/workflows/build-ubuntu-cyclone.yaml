@@ -13,6 +13,10 @@ permissions:
 jobs:
   build-ubuntu-cyclone:
     runs-on: ubuntu-22.04
+
+    # Map a step output to a job output
+    outputs:
+      package_name: ${{ steps.package.outputs.DEB_PACKAGE }}
     steps:
       - uses: actions/checkout@v3
       - name: Apt Update
@@ -29,9 +33,10 @@ jobs:
         run: mkdir build && cd build && cmake .. -DDDS=CYCLONE-CE .. && make -j $(nproc)
 
       - name: Package for Debian (.deb)
-        run: cd build && cpack -V -G DEB && echo "DEB_PACKAGE=$(ls *.deb)" >> $GITHUB_ENV 
+        id : package
+        run: cd build && cpack -V -G DEB && echo "DEB_PACKAGE=$(ls *.deb)" >> $GITHUB_ENV && echo "DEB_PACKAGE=$(ls *.deb)" >> $GITHUB_OUTPUT
 
-      # - name: CTest
+      # - name: CTestDEB_PACKAGE
       #   run: xvfb-run --server-args="-screen 0 1024x768x24" ctest -T memcheck
 
       - name: Post
@@ -64,13 +69,16 @@ jobs:
     if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
     
     steps:
+      - name: Read package name
+        run: echo ${{needs.build-ubuntu-cyclone.outputs.package_name}} 
+
       - name: Download .deb to install
         uses: actions/download-artifact@v3
         with:
-          name: ${{ env.DEB_PACKAGE }}
+          name: ${{needs.build-ubuntu-cyclone.outputs.package_name}} 
       
       - name: Uncompress package
-        run: ls -hal && echo "${{ env.DEB_PACKAGE }}." && unzip ${{ env.DEB_PACKAGE }}.zip
+        run: ls -hal && echo "${{needs.build-ubuntu-cyclone.outputs.package_name}} " && unzip ${{needs.build-ubuntu-cyclone.outputs.package_name}}.zip
 
       - name: Install package
-        run: apt-get install ${{ env.DEB_PACKAGE }}.rpm -y
+        run: apt-get install ./*.rpm -y
