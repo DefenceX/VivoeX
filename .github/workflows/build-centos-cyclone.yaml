@@ -45,6 +45,7 @@ jobs:
           retention-days: 30
 
       - name: Archive logs 
+        if: ${{ always() && !cancelled() }}
         uses: actions/upload-artifact@v3
         with:
           name: error-logs
@@ -57,7 +58,7 @@ jobs:
             build/CMakeFiles/CMakeOutput.log
           retention-days: 30
 
-  notify_success:
+  install-centos-cyclone:
     runs-on: ubuntu-22.04
     container: centos:8
     needs: [build-centos-cyclone]
