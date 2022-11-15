@@ -27,6 +27,7 @@
 
 #include <string.h>
 
+#include <memory>
 #include <vector>
 
 #include "src/config_reader.h"

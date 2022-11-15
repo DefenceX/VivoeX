@@ -25,6 +25,9 @@
 #ifndef HMI_DISPLAY_SRC_CONFIG_READER_H_
 #define HMI_DISPLAY_SRC_CONFIG_READER_H_
 
+#include <memory>
+#include <string>
+
 #include "config.pb.h"  // NOLINT
 
 namespace gva {
@@ -39,7 +42,7 @@ class ConfigData {
   ///
   /// \brief Singletons should not be cloneable.
   ///
-  // ConfigData(ConfigData& other) = delete;
+  ConfigData(const ConfigData& other) = delete;
 
   ///
   /// \brief Singletons should not be assignable.
@@ -63,6 +66,12 @@ class ConfigData {
   /// \return ConfigData*
   ///
   static ConfigData* GetInstance();
+
+  ///
+  /// \brief Get the Config Filename object
+  ///
+  ///
+  std::string GetConfigFilename();
 
   ///
   /// \brief Get the Zoom object
@@ -309,10 +318,12 @@ class ConfigData {
   ///
   ///
   ConfigData();
+
   static ConfigData* config_;
 
  private:
-  config::Gva* current_config_ = nullptr;
+  std::unique_ptr<config::Gva> current_config_;
+  std::string config_file_ = "config.pb";
 };
 
 }  // namespace gva

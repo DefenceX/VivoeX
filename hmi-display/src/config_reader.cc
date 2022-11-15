@@ -31,10 +31,8 @@
 
 #include "log_gva.h"
 
-// #define CONFIG_FILE "/opt/gva/hmi/config.pb"
-#define CONFIG_FILE "config.pb"
-
 namespace gva {
+
 ConfigData* ConfigData::config_ = nullptr;
 
 ConfigData::ConfigData() {
@@ -42,16 +40,18 @@ ConfigData::ConfigData() {
   // Verify that the version of the library that we linked against is
   // compatible with the version of the headers we compiled against.
   GOOGLE_PROTOBUF_VERIFY_VERSION;
-  snprintf(tmp, sizeof(tmp), "Created new config reader %s/%s", std::filesystem::current_path().c_str(), CONFIG_FILE);
+
+  snprintf(tmp, sizeof(tmp), "Created new config reader %s/%s", std::filesystem::current_path().c_str(),
+           config_file_.c_str());
 
   logGva::log(tmp, LOG_INFO);
-  current_config_ = new config::Gva();
+  current_config_ = std::make_unique<config::Gva>();
   {
     // Read the existing configuration file.
-    std::fstream input(CONFIG_FILE, std::fstream::in | std::fstream::binary);
+    std::fstream input(config_file_, std::fstream::in | std::fstream::binary);
     if (!input) {
       snprintf(tmp, sizeof(tmp), "File not found. Creating a new file %s/%s", std::filesystem::current_path().c_str(),
-               CONFIG_FILE);
+               config_file_.c_str());
       logGva::log(tmp, LOG_INFO);
       current_config_->set_name("Test HMI configuration.");
       // Doesn't write defaults unless they have been set once
@@ -64,7 +64,7 @@ ConfigData::ConfigData() {
   }
   {
     // Write the new config back to disk.
-    std::fstream output(CONFIG_FILE, std::fstream::out | std::fstream::trunc | std::fstream::binary);
+    std::fstream output(config_file_, std::fstream::out | std::fstream::trunc | std::fstream::binary);
     if (!current_config_->SerializeToOstream(&output)) {
       logGva::log("Failed to write config file.", LOG_INFO);
       return;
@@ -81,14 +81,19 @@ ConfigData* ConfigData::GetInstance() {
   //  This is a safer way to create an instance. instance = new Singleton is
   //  dangerous in case two instance threads wants to access at the same time
   if (config_ == nullptr) {
+    std::cout << "Got here 4 " << config_ << "\n";
+
     config_ = new ConfigData();
+    std::cout << "Got here 5 " << config_ << "\n";
   }
   return config_;
 }
 
+std::string ConfigData::GetConfigFilename() { return current_config_->file().config_filename(); }
+
 void ConfigData::WriteData() {
   // Write the config back to disk.
-  std::fstream output(CONFIG_FILE, std::fstream::out | std::fstream::trunc | std::fstream::binary);
+  std::fstream output(config_file_, std::fstream::out | std::fstream::trunc | std::fstream::binary);
   if (!current_config_->SerializeToOstream(&output)) {
     logGva::log("Failed to update config file.", LOG_INFO);
     return;

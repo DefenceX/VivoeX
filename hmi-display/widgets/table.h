@@ -24,6 +24,8 @@
 #ifndef HMI_DISPLAY_WIDGETS_TABLE_H_
 #define HMI_DISPLAY_WIDGETS_TABLE_H_
 
+#include <memory>
+
 #include "src/renderer.h"
 #include "widgets/widget.h"
 
@@ -170,7 +172,7 @@ class TableWidget {
   RowType rows_[MAX_ROWS];
 
  private:
-  gva::ConfigData *configuration_;
+  ConfigData *configuration_ = nullptr;
 };
 
 }  // namespace gva

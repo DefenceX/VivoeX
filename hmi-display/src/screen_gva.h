@@ -27,6 +27,7 @@
 #include <cairo.h>
 #include <pthread.h>
 
+#include <memory>
 #include <vector>
 
 #include "common/log_gva.h"

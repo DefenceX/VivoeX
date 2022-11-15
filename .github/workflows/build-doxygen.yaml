@@ -31,12 +31,11 @@ jobs:
       - name: Apt Install
         run: sudo apt-get --no-install-recommends install doxygen graphviz wget
       - name: Doxygen
-        run:  |
-          MAJOR=$(sed -n '1p' < version) && \
-          MINOR=$(sed -n '2p' < version) && \
-          PATCH=$(sed -n '3p' < version) && \
-          SEM_VERSION=$MAJOR.$MINOR.$PATCH && \
-          doxygen && \
+        run: |
+          export MAJOR=$(sed -n '1p' < version) && \
+          export MINOR=$(sed -n '2p' < version) && \
+          export PATCH=$(sed -n '3p' < version) && \
+          SEM_VERSION=$MAJOR.$MINOR.$PATCH doxygen && \
           wget https://img.shields.io/badge/version-${SEM_VERSION}-blue.svg -O ./docs/version.svg
       - name: Setup Pages
         uses: actions/configure-pages@v2
@@ -44,7 +43,7 @@ jobs:
         uses: actions/upload-pages-artifact@v1
         with:
           # Upload the docs
-          path: 'docs'
+          path: "docs"
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1

@@ -30,6 +30,7 @@
 #include <stdio.h>
 
 #include <iostream>
+#include <memory>
 
 #include "src/config_reader.h"
 #include "src/gva.h"
@@ -228,7 +229,7 @@ class RendererCairo : public Renderer {
   static void Activate(GtkApplication *app, gpointer user_data);
   static gboolean Callback(gpointer user_data);
   static void CloseWindow(void);
-  gva::ConfigData *config_;
+  ConfigData *config_;
 };
 
 }  // namespace gva

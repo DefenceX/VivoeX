@@ -153,9 +153,10 @@ message ThemeModernBlue {
 }
 
 message File {
-  required string log_filename = 1 [default = "gva.log"];
-  required string log_path = 2 [default = "/var/log"];
-  required string images_path = 3 [default = "/opt/gva/hmi/images"];
+  required string config_filename = 1 [default = "config.pb"];
+  required string log_filename = 2 [default = "gva.log"];
+  required string log_path = 3 [default = "/var/log"];
+  required string images_path = 4 [default = "/opt/gva/hmi/images"];
 }
 
 message Gva {
