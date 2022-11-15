@@ -61,7 +61,7 @@ jobs:
   install-ubuntu-cyclone:
     runs-on: ubuntu-22.04
     needs: [build-ubuntu-cyclone]
-    if: ${{ !cancelled() && (needs.build-ubuntu-cyclone.result == 'success') }}
+    if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
     
     steps:
       - name: Download .deb to install
