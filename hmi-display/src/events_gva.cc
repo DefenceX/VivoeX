@@ -92,52 +92,56 @@ gboolean EventsGva::ButtonReleaseEventCb(GtkWidget* Widget, GdkEventButton* even
 }
 
 gboolean EventsGva::KeyPressEventCb(GtkWidget* Widget, GdkEventKey* event) {
+  return CreateKeyEvent(Widget, event, gva::EventEnumType::KEY_DOWN_EVENT);
+}
+
+gboolean EventsGva::KeyReleaseEventCb(GtkWidget* Widget, GdkEventKey* event) {
+  return CreateKeyEvent(Widget, event, gva::EventEnumType::KEY_UP_EVENT);
+}
+
+gboolean EventsGva::CreateKeyEvent(GtkWidget* Widget, GdkEventKey* event, EventEnumType type) {
   GdkModifierType modifiers;
   EventGvaType gvaEvent;
+  gvaEvent.type = type;
 
   modifiers = gtk_accelerator_get_default_mod_mask();
-  printf("[GVA] Key event 0x%x (prev 0x%x)\n", event->keyval, previous_key_);
+  std::string state = (EventEnumType::KEY_DOWN_EVENT == type) ? "(Pressed) " : "(Released) ";
+  logGva::log("[GVA] Key press event " + state + std::to_string(event->keyval) + " (prev " +
+                  std::to_string(previous_key_) + ")",
+              LOG_INFO);
   switch (previous_key_) {
     case 0xffe3:  // Top keys
       switch (event->keyval) {
         case 0xffbe:
           /* 1 maps to SA */
-          gvaEvent.type = KEY_UP_EVENT;
           gvaEvent.key_ = KEY_SA;
           break;
         case 0xffbf:
           /* 2 maps to WPN */
-          gvaEvent.type = KEY_UP_EVENT;
           gvaEvent.key_ = KEY_WPN;
           break;
         case 0xffc0:
           /* 3 maps to DEF */
-          gvaEvent.type = KEY_UP_EVENT;
           gvaEvent.key_ = KEY_DEF;
           break;
         case 0xffc1:
           /* 4 maps to SYS */
-          gvaEvent.type = KEY_UP_EVENT;
           gvaEvent.key_ = KEY_SYS;
           break;
         case 0xffc2:
           /* 5 maps to DRV */
-          gvaEvent.type = KEY_UP_EVENT;
           gvaEvent.key_ = KEY_DRV;
           break;
         case 0xffc3:
           /* 6 maps to STR */
-          gvaEvent.type = KEY_UP_EVENT;
           gvaEvent.key_ = KEY_STR;
           break;
         case 0xffc4:
           /* 7 maps to COM */
-          gvaEvent.type = KEY_UP_EVENT;
           gvaEvent.key_ = KEY_COM;
           break;
         case 0xffc5:
           /* 8 maps to BMS */
-          gvaEvent.type = KEY_UP_EVENT;
           gvaEvent.key_ = KEY_BMS;
           break;
         default:
@@ -153,42 +157,34 @@ gboolean EventsGva::KeyPressEventCb(GtkWidget* Widget, GdkEventKey* event) {
         case 97:
         case 0xffbe:
           /* a maps to F13 */
-          gvaEvent.type = KEY_UP_EVENT;
           gvaEvent.key_ = KEY_F13;
           break;
         case 0xffbf:
           /* a maps to F14 (ALARMS) */
-          gvaEvent.type = KEY_UP_EVENT;
           gvaEvent.key_ = KEY_F14;
           break;
         case 0xffc0:
           /* Enter maps to F15 */
-          gvaEvent.type = KEY_UP_EVENT;
           gvaEvent.key_ = KEY_F15;
           break;
         case 0xffc1:
           /* Enter maps to F16 */
-          gvaEvent.type = KEY_UP_EVENT;
           gvaEvent.key_ = KEY_F16;
           break;
         case 0xffc2:
           /* Enter maps to F17 */
-          gvaEvent.type = KEY_UP_EVENT;
           gvaEvent.key_ = KEY_F17;
           break;
         case 0xffc3:
           /* Enter maps to F18 */
-          gvaEvent.type = KEY_UP_EVENT;
           gvaEvent.key_ = KEY_F18;
           break;
         case 0xffc4:
           /* Enter maps to F19 */
-          gvaEvent.type = KEY_UP_EVENT;
           gvaEvent.key_ = KEY_F19;
           break;
         case 0xffc5:
           /* Enter maps to F20 */
-          gvaEvent.type = KEY_UP_EVENT;
           gvaEvent.key_ = KEY_F20;
           break;
       }
@@ -205,179 +201,147 @@ gboolean EventsGva::KeyPressEventCb(GtkWidget* Widget, GdkEventKey* event) {
   switch (event->keyval) {
     case 65307:
       /* exit on ESC key press */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_ESC;
       break;
     case 49:
       /* 1 maps to SA */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_SA;
       break;
     case 50:
       /* 2 maps to WPN */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_WPN;
       break;
     case 51:
       /* 3 maps to DEF */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_DEF;
       break;
     case 52:
       /* 4 maps to SYS */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_SYS;
       break;
     case 53:
       /* 5 maps to DRV */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_DRV;
       break;
     case 54:
       /* 6 maps to STR */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_STR;
       break;
     case 55:
       /* 7 maps to COM */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_COM;
       break;
     case 56:
       /* 8 maps to BMS */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_BMS;
       break;
     case 0xffbe:
       /* F1 */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_F1;
       break;
     case 0xffbf:
       /* F2 */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_F2;
       break;
     case 0xffc0:
       /* F3 */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_F3;
       break;
     case 0xffc1:
       /* F4 */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_F4;
       break;
     case 0xffc2:
       /* F5 */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_F5;
       break;
     case 0xffc3:
       /* F6 */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_F6;
       break;
     case 0xffc4:
       /* F7 */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_F7;
       break;
     case 0xffc5:
       /* F8 */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_F8;
       break;
     case 0xffc6:
       /* F9 */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_F9;
       break;
     case 0xffc7:
       /* F10 */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_F10;
       break;
     case 0xffc8:
       /* F11 */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_F11;
       break;
     case 0xffc9:
       /* F12 */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_F12;
       break;
       //      case 65:
     case 70:
     case 102:
       /* f toggle fullscreen TODO: Does not work */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_FULLSCREEN;
       break;
     case 0x62:
       /* b toggle blackout F11 */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_F11;
       break;
     case 75:
     case 107:
       /* k toggle keyboard */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_KEYBOARD;
       break;
     case 65509:
       /* caps_lock keyboard */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_F17;
       break;
     case 65407:
       /* num_lock keyboard */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_F18;
       break;
     case 76:
     case 108:
       /* l or L show / hide labels */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_F19;
       break;
     case 43:
       /* + keyboard */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_PLUS;
       break;
     case 95:
       /* - show / hide labels */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_MINUS;
       break;
     case 62:
-      /* > keyboard */
-      gvaEvent.type = KEY_UP_EVENT;
-      gvaEvent.key_ = KEY_GREATER;
+      /* > keyboard */ gvaEvent.type = KEY_UP_EVENT;
+
       break;
     case 60:
       /* < show / hide labels */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_LESS;
       break;
     case 0x41:
     case 0x61:
       /* [a|A] Move to previous label */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_F14;
       break;
     case 0x50:
+      gvaEvent.type = KEY_UP_EVENT;
+
     case 0x70:
       /* [p|P] Move to previous label */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_PREV_LABEL;
       break;
     case 0x4e:
     case 0x6e:
       /* [n|N] Move to next label */
-      gvaEvent.type = KEY_UP_EVENT;
       gvaEvent.key_ = KEY_NEXT_LABEL;
       break;
 

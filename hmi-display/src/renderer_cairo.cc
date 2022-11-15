@@ -672,6 +672,8 @@ void RendererCairo::Activate(GtkApplication *app, gpointer user_data) {
   g_signal_connect(render_.win.draw, "button-press-event", G_CALLBACK(gva::EventsGva::ButtonPressEventCb), NULL);
   g_signal_connect(render_.win.draw, "button-release-event", G_CALLBACK(gva::EventsGva::ButtonReleaseEventCb), NULL);
   g_signal_connect(render_.win.win, "key-press-event", G_CALLBACK(gva::EventsGva::KeyPressEventCb), NULL);
+  g_signal_connect(render_.win.win, "key-release-event", G_CALLBACK(gva::EventsGva::KeyReleaseEventCb), NULL);
+
   //  g_signal_connect (render_.win.win, "key-release-event",
   //                    G_CALLBACK (EventsGva::KeyPressEventCb), NULL);
 

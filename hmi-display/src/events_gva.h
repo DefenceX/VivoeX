@@ -107,6 +107,16 @@ class EventsGva {
   static gboolean KeyPressEventCb(GtkWidget *Widget, GdkEventKey *event);
 
   ///
+  /// \brief Handle button press events by either Drawing a rectangle or clearing the surface, depending on which button
+  /// was pressed. The ::button-press signal handler receives a GdkEventButton struct which contains this information.
+  ///
+  /// \param Widget
+  /// \param event
+  /// \return gboolean
+  ///
+  static gboolean KeyReleaseEventCb(GtkWidget *Widget, GdkEventKey *event);
+
+  ///
   /// \brief Get the Window object
   ///
   /// \return gtkType*
@@ -114,6 +124,7 @@ class EventsGva {
   gtkType *GetWindow() { return window_; }
 
  private:
+  static gboolean CreateKeyEvent(GtkWidget *Widget, GdkEventKey *event, EventEnumType type);
   gtkType *window_;
 };
 
