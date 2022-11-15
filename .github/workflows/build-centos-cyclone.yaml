@@ -35,7 +35,7 @@ jobs:
         run: PATH=$PATH:${HOME}/.local/bin && mkdir build && cd build && cmake .. -DDDS=CYCLONE-CE .. && make -j $(nproc)
 
       - name: Package for CentOS (.rpm)
-        run: cd build && VERBOSE=1 cpack -V -G RPM && echo "RPM_PACKAGE=$(ls *.rpm)" >> $GITHUB_ENV 
+        run: PATH=$PATH:${HOME}/.local/bin && cd build && cpack -V -G RPM && echo "RPM_PACKAGE=$(ls *.rpm)" >> $GITHUB_ENV 
 
       - name: Archive packaged .rpm 
         uses: actions/upload-artifact@v3
