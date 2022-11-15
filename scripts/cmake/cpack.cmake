@@ -35,7 +35,7 @@ list(APPEND CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST "/etc/ld.so.conf.d")
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Ross Newman")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
-set(CPACK_DEBIAN_PACKAGE_DEPENDS "libcairo2, libxt6, libxml2, libxext6, libswscale5, libprotobuf-lite23, libgeographic19")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "libcairo2, libxt6, libxml2, libxext6, libswscale5, libprotobuf23, libgeographic19")
 set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "ldconfig")
 # package name for deb. If set, then instead of some-application-0.9.2-Linux.deb
 # you'll get some-application_0.9.2_amd64.deb (note the underscores too)
