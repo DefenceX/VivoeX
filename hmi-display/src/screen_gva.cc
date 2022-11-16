@@ -199,7 +199,7 @@ void ScreenGva::StartClock(StatusBarType *barData) {
   logGva::log("Internal clock thread started", LOG_INFO);
 }
 
-int ScreenGva::Update() {
+GvaStatusTypes ScreenGva::Update() {
   char *texture = 0;
 
   // Reset the Drawing context, must be Reset before reDrawing the screen
@@ -238,7 +238,7 @@ int ScreenGva::Update() {
     Draw();
     printf("Drawing blackout\n");
     last_screen_ = *screen_;
-    return GVA_SUCCESS;
+    return GvaStatusTypes::kGvaSuccess;
   }
 
   // Draw label

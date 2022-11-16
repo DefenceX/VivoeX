@@ -168,9 +168,9 @@ class ScreenGva : public RendererGva {
   ///
   /// \brief Redraw the screen
   ///
-  /// \return int
+  /// \return GvaStatusTypes Status
   ///
-  int Update();
+  GvaStatusTypes Update();
 
   ///
   /// \brief Start the clock threa #include <vector>d running to update the clock (pthread started)

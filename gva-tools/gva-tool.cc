@@ -45,6 +45,7 @@
 #include <unistd.h>
 
 #include "gva-display.h"
+#include "src/gva.h"
 
 // Default device name if not supplied on the command line
 #define DEFAULT_GPS_DEVICE_NAME "/dev/ttyUSB0"
@@ -63,42 +64,6 @@ typedef struct nmessages {
   int lines;
   char line[100][100];
 } nmessage;
-
-typedef enum {
-  KEY_SA = 0,
-  KEY_WPN,
-  KEY_DEF,
-  KEY_SYS,
-  KEY_DRV,
-  KEY_STR,
-  KEY_COM,
-  KEY_BMS,
-  KEY_F1,
-  KEY_F2,
-  KEY_F3,
-  KEY_F4,
-  KEY_F5,
-  KEY_F6,
-  KEY_F7,
-  KEY_F8,
-  KEY_F9,
-  KEY_F10,
-  KEY_F11,
-  KEY_F12,
-  KEY_F13,
-  KEY_F14,
-  KEY_F15,
-  KEY_F16,
-  KEY_F17,
-  KEY_F18,
-  KEY_F19,
-  KEY_F20,
-  KEY_POWER,
-  KEY_BRIGHTNESS_UP,
-  KEY_BRIGHTNESS_DOWN,
-  KEY_BLACKOUT,
-  MAX_KEYS
-} GvaKeyEnum;
 
 typedef struct gvaInputType {
   char name[10];

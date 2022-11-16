@@ -118,8 +118,8 @@ void RendererGva::DrawFunctionLabels(uint32_t x, uint32_t active, uint32_t hide,
   SetLineThickness(config_->GetThemeLabelBorderThickness(), LINE_SOLID);
   SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, (uint32_t)CAIRO_FONT_WEIGHT_NORMAL, config_->GetThemeFont());
 
-  uint32_t firstKey = (x < DEFAULT_WIDTH / 2) ? gva::KEY_F1 : gva::KEY_F7;
-  uint32_t group = (x < DEFAULT_WIDTH / 2) ? gva::LEFT : gva::RIGHT;
+  uint32_t firstKey = (x < DEFAULT_WIDTH / 2) ? 1 : 7;
+  GvaFunctionGroupEnum group = (x < DEFAULT_WIDTH / 2) ? GvaFunctionGroupEnum::kLeft : GvaFunctionGroupEnum::kRight;
 
   for (i = 0; i < 6; i++) {
     SetLineThickness(config_->GetThemeLabelBorderThickness(), LINE_SOLID);
@@ -141,6 +141,104 @@ void RendererGva::DrawFunctionLabels(uint32_t x, uint32_t active, uint32_t hide,
     }
   }
 }
+uint32_t RendererGva::KeyToInt(GvaKeyEnum key) {
+  switch (key) {
+    case GvaKeyEnum::kKeyNone:  // Drop through to default
+    default:
+      return 0;
+    case GvaKeyEnum::KKeySituationalAwareness:
+      return 1;
+    case GvaKeyEnum::kKeyWeapon:
+      return 2;
+    case GvaKeyEnum::kKeyDefensiveSystems:
+      return 3;
+    case GvaKeyEnum::kKeySystems:
+      return 4;
+    case GvaKeyEnum::kKeyDriver:
+      return 5;
+    case GvaKeyEnum::kKeySpecialToRole:
+      return 6;
+    case GvaKeyEnum::kKeyCommunications:
+      return 7;
+    case GvaKeyEnum::kKeyBattlefieldManagementSystem:
+      return 8;
+    case GvaKeyEnum::kKeyF1:
+      return 1;
+    case GvaKeyEnum::kKeyF2:
+      return 2;
+    case GvaKeyEnum::kKeyF3:
+      return 3;
+    case GvaKeyEnum::kKeyF4:
+      return 4;
+    case GvaKeyEnum::kKeyF5:
+      return 5;
+    case GvaKeyEnum::kKeyF6:
+      return 6;
+    case GvaKeyEnum::kKeyF7:
+      return 7;
+    case GvaKeyEnum::kKeyF8:
+      return 8;
+    case GvaKeyEnum::kKeyF9:
+      return 9;
+    case GvaKeyEnum::kKeyF10:
+      return 10;
+    case GvaKeyEnum::kKeyF11:
+      return 11;
+    case GvaKeyEnum::kKeyF12:
+      return 12;
+    case GvaKeyEnum::kKeyF13:
+      return 13;
+    case GvaKeyEnum::kKeyF14:
+      return 14;
+    case GvaKeyEnum::kKeyF15:
+      return 15;
+    case GvaKeyEnum::kKeyF16:
+      return 16;
+    case GvaKeyEnum::kKeyF17:
+      return 17;
+    case GvaKeyEnum::kKeyF18:
+      return 18;
+    case GvaKeyEnum::kKeyF19:
+      return 19;
+    case GvaKeyEnum::kKeyF20:
+      return 20;
+    case GvaKeyEnum::kKeyF21:  // Special future use
+      return 21;
+    case GvaKeyEnum::kKeyF22:  // Special future use
+      return 22;
+    case GvaKeyEnum::kKeyBlackout:
+      return 30;
+    case GvaKeyEnum::kKeyPower:
+      return 31;
+    case GvaKeyEnum::KKeyBrightnessUp:
+      return 32;
+    case GvaKeyEnum::kKeyBrightnessDown:
+      return 33;
+    // These are fake keys that only exist in the software (emulated world)
+    case GvaKeyEnum::kKeyEscape:
+      return 34;
+    case GvaKeyEnum::kKeyFullscreen:
+      return 35;
+    case GvaKeyEnum::kKeyPlus:
+      return 36;
+    case GvaKeyEnum::kKeyMinus:
+      return 36;
+    case GvaKeyEnum::kKeyUpArrow:
+      return 38;
+    case GvaKeyEnum::kKeyDownArrow:
+      return 39;
+    case GvaKeyEnum::kKeyRightArrow:
+      return 40;
+    case GvaKeyEnum::kKeyLeftArrow:
+      return 41;
+    case GvaKeyEnum::kKeyKeyboard:
+      return 42;
+    case GvaKeyEnum::kKeyPreviousLabel:
+      return 43;
+    case GvaKeyEnum::kKeyNextLabel:
+      return 44;
+  }
+}  // namespace gva
 
 void RendererGva::DrawTopLabels(uint32_t y, uint32_t active, uint32_t hide) {
   uint32_t i = 0;
@@ -168,8 +266,8 @@ void RendererGva::DrawTopLabels(uint32_t y, uint32_t active, uint32_t hide) {
       } else {
         DrawRectangle((i * width) + offset, y, width - 10, 10, true);
       }
-      touch_.AddAbsolute(gva::TOP, (uint32_t)(gva::KEY_SA + i), (i * width) + offset, y,
-                         (i * width) + width - spacing + offset, y + 10);
+      touch_.AddAbsolute(GvaFunctionGroupEnum::kTop, (uint32_t)(KeyToInt(GvaKeyEnum::KKeySituationalAwareness) + i),
+                         (i * width) + offset, y, (i * width) + width - spacing + offset, y + 10);
     }
   }
 }
@@ -210,8 +308,8 @@ void RendererGva::DrawControlLabels(uint32_t y, uint32_t active, uint32_t hide) 
     }
     (1 << (7 - i) & hide) ? DrawColor(config_->GetThemeLabelTextEnabled())
                           : DrawColor(config_->GetThemeLabelTextEnabledSelected());
-    touch_.AddAbsolute(gva::BOTTOM, (uint32_t)(gva::KEY_F13 + i), (i * w) + offset, y, (i * w) + w - 5 + offset,
-                       y + 20);
+    touch_.AddAbsolute(GvaFunctionGroupEnum::kBottom, (uint32_t)(KeyToInt(GvaKeyEnum::kKeyF13) + i), (i * w) + offset,
+                       y, (i * w) + w - 5 + offset, y + 20);
     DrawText((i * w) + offset + 5, y + 6, labels[i], 12);
     if (i == 4) DrawIcon(ICON_UP_ARROW, (i * w) + offset + 34, y + 11, 15, 8);
     if (i == 5) DrawIcon(ICON_DOWN_ARROW, (i * w) + offset + 34, y + 10, 15, 8);

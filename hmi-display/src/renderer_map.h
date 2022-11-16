@@ -26,15 +26,18 @@
 #define HMI_DISPLAY_SRC_RENDERER_MAP_H_
 
 #include <cairo.h>
+
+#include <iostream>
+#include <list>
+#include <string>
+
+#include "src/gva.h"
+
 #ifdef ENABLE_OSMSCOUT
 #include <osmscout/Database.h>
 #include <osmscout/MapPainterCairo.h>
 #include <osmscout/MapService.h>
 #endif
-
-#include <iostream>
-#include <list>
-#include <string>
 
 namespace gva {
 
@@ -42,7 +45,7 @@ class rendererMap {
  public:
   rendererMap(std::string map, std::string style, int width, int height);
   ~rendererMap();
-  int Project(double zoom, double lon, double lat, cairo_surface_t **surface);
+  GvaStatusTypes Project(double zoom, double lon, double lat, cairo_surface_t **surface);
   int SetHeight(int height) { height_ = height_; }
   int SetWidth(int width) { width_ = width_; }
 

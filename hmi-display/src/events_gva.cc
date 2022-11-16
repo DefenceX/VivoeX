@@ -48,12 +48,12 @@ gboolean EventsGva::ButtonPressEventCb(GtkWidget* Widget, GdkEventButton* event,
     EventGvaType gvaEvent;
     uint32_t binding = 0;
 
-    touch_->Check(TOP, &binding, event->x, event->y);
-    if (!binding) touch_->Check(BOTTOM, &binding, event->x, event->y);
-    if (!binding) touch_->Check(RIGHT, &binding, event->x, event->y);
-    if (!binding) touch_->Check(LEFT, &binding, event->x, event->y);
+    touch_->Check(GvaFunctionGroupEnum::kTop, &binding, event->x, event->y);
+    if (!binding) touch_->Check(GvaFunctionGroupEnum::kBottom, &binding, event->x, event->y);
+    if (!binding) touch_->Check(GvaFunctionGroupEnum::kRight, &binding, event->x, event->y);
+    if (!binding) touch_->Check(GvaFunctionGroupEnum::kLeft, &binding, event->x, event->y);
     if (binding) {
-      gvaEvent.type = KEY_EVENT;
+      gvaEvent.type = kKeyEvent;
       gvaEvent.key_ = (GvaKeyEnum)binding;
       eventqueue_.push_back(gvaEvent);
     }
@@ -76,43 +76,43 @@ gboolean EventsGva::KeyPressEventCb(GtkWidget* Widget, GdkEventKey* event) {
       switch (event->keyval) {
         case 0xffbe:
           /* 1 maps to SA */
-          gvaEvent.type = KEY_EVENT;
-          gvaEvent.key_ = KEY_SA;
+          gvaEvent.type = kKeyEvent;
+          gvaEvent.key_ = GvaKeyEnum::KKeySituationalAwareness;
           break;
         case 0xffbf:
           /* 2 maps to WPN */
-          gvaEvent.type = KEY_EVENT;
-          gvaEvent.key_ = KEY_WPN;
+          gvaEvent.type = kKeyEvent;
+          gvaEvent.key_ = GvaKeyEnum::kKeyWeapon;
           break;
         case 0xffc0:
           /* 3 maps to DEF */
-          gvaEvent.type = KEY_EVENT;
-          gvaEvent.key_ = KEY_DEF;
+          gvaEvent.type = kKeyEvent;
+          gvaEvent.key_ = GvaKeyEnum::kKeyDefensiveSystems;
           break;
         case 0xffc1:
           /* 4 maps to SYS */
-          gvaEvent.type = KEY_EVENT;
-          gvaEvent.key_ = KEY_SYS;
+          gvaEvent.type = kKeyEvent;
+          gvaEvent.key_ = GvaKeyEnum::kKeySystems;
           break;
         case 0xffc2:
           /* 5 maps to DRV */
-          gvaEvent.type = KEY_EVENT;
-          gvaEvent.key_ = KEY_DRV;
+          gvaEvent.type = kKeyEvent;
+          gvaEvent.key_ = GvaKeyEnum::kKeyDriver;
           break;
         case 0xffc3:
           /* 6 maps to STR */
-          gvaEvent.type = KEY_EVENT;
-          gvaEvent.key_ = KEY_STR;
+          gvaEvent.type = kKeyEvent;
+          gvaEvent.key_ = GvaKeyEnum::kKeySpecialToRole;
           break;
         case 0xffc4:
           /* 7 maps to COM */
-          gvaEvent.type = KEY_EVENT;
-          gvaEvent.key_ = KEY_COM;
+          gvaEvent.type = kKeyEvent;
+          gvaEvent.key_ = GvaKeyEnum::kKeyCommunications;
           break;
         case 0xffc5:
           /* 8 maps to BMS */
-          gvaEvent.type = KEY_EVENT;
-          gvaEvent.key_ = KEY_BMS;
+          gvaEvent.type = kKeyEvent;
+          gvaEvent.key_ = GvaKeyEnum::kKeyBattlefieldManagementSystem;
           break;
         default:
           break;
@@ -127,43 +127,43 @@ gboolean EventsGva::KeyPressEventCb(GtkWidget* Widget, GdkEventKey* event) {
         case 97:
         case 0xffbe:
           /* a maps to F13 */
-          gvaEvent.type = KEY_EVENT;
-          gvaEvent.key_ = KEY_F13;
+          gvaEvent.type = kKeyEvent;
+          gvaEvent.key_ = GvaKeyEnum::kKeyF13;
           break;
         case 0xffbf:
           /* a maps to F14 (ALARMS) */
-          gvaEvent.type = KEY_EVENT;
-          gvaEvent.key_ = KEY_F14;
+          gvaEvent.type = kKeyEvent;
+          gvaEvent.key_ = GvaKeyEnum::kKeyF14;
           break;
         case 0xffc0:
           /* Enter maps to F15 */
-          gvaEvent.type = KEY_EVENT;
-          gvaEvent.key_ = KEY_F15;
+          gvaEvent.type = kKeyEvent;
+          gvaEvent.key_ = GvaKeyEnum::kKeyF15;
           break;
         case 0xffc1:
           /* Enter maps to F16 */
-          gvaEvent.type = KEY_EVENT;
-          gvaEvent.key_ = KEY_F16;
+          gvaEvent.type = kKeyEvent;
+          gvaEvent.key_ = GvaKeyEnum::kKeyF16;
           break;
         case 0xffc2:
           /* Enter maps to F17 */
-          gvaEvent.type = KEY_EVENT;
-          gvaEvent.key_ = KEY_F17;
+          gvaEvent.type = kKeyEvent;
+          gvaEvent.key_ = GvaKeyEnum::kKeyF17;
           break;
         case 0xffc3:
           /* Enter maps to F18 */
-          gvaEvent.type = KEY_EVENT;
-          gvaEvent.key_ = KEY_F18;
+          gvaEvent.type = kKeyEvent;
+          gvaEvent.key_ = GvaKeyEnum::kKeyF18;
           break;
         case 0xffc4:
           /* Enter maps to F19 */
-          gvaEvent.type = KEY_EVENT;
-          gvaEvent.key_ = KEY_F19;
+          gvaEvent.type = kKeyEvent;
+          gvaEvent.key_ = GvaKeyEnum::kKeyF19;
           break;
         case 0xffc5:
           /* Enter maps to F20 */
-          gvaEvent.type = KEY_EVENT;
-          gvaEvent.key_ = KEY_F20;
+          gvaEvent.type = kKeyEvent;
+          gvaEvent.key_ = GvaKeyEnum::kKeyF20;
           break;
       }
       printf("[GVA] Bottom event 0x%x\n", event->keyval);
@@ -179,180 +179,180 @@ gboolean EventsGva::KeyPressEventCb(GtkWidget* Widget, GdkEventKey* event) {
   switch (event->keyval) {
     case 65307:
       /* exit on ESC key press */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_ESC;
+      gvaEvent.type = EventEnumType::kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeyEscape;
       break;
     case 49:
       /* 1 maps to SA */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_SA;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::KKeySituationalAwareness;
       break;
     case 50:
       /* 2 maps to WPN */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_WPN;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeyWeapon;
       break;
     case 51:
       /* 3 maps to DEF */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_DEF;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeyDefensiveSystems;
       break;
     case 52:
       /* 4 maps to SYS */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_SYS;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeySystems;
       break;
     case 53:
       /* 5 maps to DRV */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_DRV;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeyDriver;
       break;
     case 54:
       /* 6 maps to STR */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_STR;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeySpecialToRole;
       break;
     case 55:
       /* 7 maps to COM */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_COM;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeyCommunications;
       break;
     case 56:
       /* 8 maps to BMS */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_BMS;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeyBattlefieldManagementSystem;
       break;
     case 0xffbe:
       /* F1 */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_F1;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeyF1;
       break;
     case 0xffbf:
       /* F2 */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_F2;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeyF2;
       break;
     case 0xffc0:
       /* F3 */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_F3;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeyF3;
       break;
     case 0xffc1:
       /* F4 */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_F4;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeyF4;
       break;
     case 0xffc2:
       /* F5 */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_F5;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeyF5;
       break;
     case 0xffc3:
       /* F6 */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_F6;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeyF6;
       break;
     case 0xffc4:
       /* F7 */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_F7;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeyF7;
       break;
     case 0xffc5:
       /* F8 */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_F8;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeyF8;
       break;
     case 0xffc6:
       /* F9 */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_F9;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeyF9;
       break;
     case 0xffc7:
       /* F10 */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_F10;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeyF10;
       break;
     case 0xffc8:
       /* F11 */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_F11;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeyF11;
       break;
     case 0xffc9:
       /* F12 */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_F12;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeyF12;
       break;
       //      case 65:
     case 70:
     case 102:
       /* f toggle fullscreen TODO: Does not work */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_FULLSCREEN;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeyFullscreen;
       break;
     case 0x62:
       /* b toggle blackout F11 */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_F11;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeyF11;
       break;
     case 75:
     case 107:
       /* k toggle keyboard */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_KEYBOARD;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeyKeyboard;
       break;
     case 65509:
       /* caps_lock keyboard */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_F17;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeyF17;
       break;
     case 65407:
       /* num_lock keyboard */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_F18;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeyF18;
       break;
     case 76:
     case 108:
       /* l or L show / hide labels */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_F19;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeyF19;
       break;
     case 43:
       /* + keyboard */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_PLUS;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeyPlus;
       break;
     case 95:
       /* - show / hide labels */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_MINUS;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeyMinus;
       break;
     case 62:
       /* > keyboard */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_GREATER;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeyRightArrow;
       break;
     case 60:
       /* < show / hide labels */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_LESS;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeyLeftArrow;
       break;
     case 0x41:
     case 0x61:
       /* [a|A] Move to previous label */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_F14;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeyF14;
       break;
     case 0x50:
     case 0x70:
       /* [p|P] Move to previous label */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_PREV_LABEL;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeyPreviousLabel;
       break;
     case 0x4e:
     case 0x6e:
       /* [n|N] Move to next label */
-      gvaEvent.type = KEY_EVENT;
-      gvaEvent.key_ = KEY_NEXT_LABEL;
+      gvaEvent.type = kKeyEvent;
+      gvaEvent.key_ = GvaKeyEnum::kKeyNextLabel;
       break;
 
     default:
@@ -364,7 +364,7 @@ gboolean EventsGva::KeyPressEventCb(GtkWidget* Widget, GdkEventKey* event) {
   return TRUE;
 }
 
-uint32_t EventsGva::NextGvaEvent(EventGvaType* event) {
+GvaStatusTypes EventsGva::NextGvaEvent(EventGvaType* event) {
   EventGvaType popEvent;
 
   popEvent.type == NO_EVENT;
@@ -373,7 +373,7 @@ uint32_t EventsGva::NextGvaEvent(EventGvaType* event) {
     eventqueue_.pop_back();
   }
   *event = popEvent;
-  return GVA_SUCCESS;
+  return GvaStatusTypes::kGvaSuccess;
 }
 
 }  // namespace gva

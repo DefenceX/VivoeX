@@ -24,6 +24,7 @@
 
 #ifndef HMI_DISPLAY_SRC_GVA_H_
 #define HMI_DISPLAY_SRC_GVA_H_
+
 #include "common/debug.h"
 #include "common/log_gva.h"
 
@@ -39,72 +40,93 @@
 
 namespace gva {
 
-enum GvaFunctionEnum {
-  SA = 0,
-  WPN,
-  DEF,
-  SYS,
-  DRV,
-  STR,
-  COM,
-  BMS,
-  ALARMSX,
+///
+/// \brief This is where you define all your screens, these are just the defaults
+///
+///
+enum class GvaFunctionEnum {
+  kSituationalAwareness = 0,
+  kWeapon,
+  kDefensiveSystems,
+  kSystems,
+  kDriver,
+  KSpecialToRole,
+  kCommunications,
+  kBattlefieldManagementSystem,
+  kAlarmsX
 };
 
-enum GvaAlarmType { ALARM_WARNING, ALARM_CRITICAL, ALARM_ALERT };
+///
+/// \brief These are the alarm types
+///
+///
+enum class GvaAlarmType { kAlarmWarnings, kAlarmCaution, kAlarmAdvisory };
 
-enum GvaFunctionGroupEnum { TOP, BOTTOM, LEFT, RIGHT, ALARM_TABLE, KEYBOARD };
+///
+/// \brief These are the functional groups
+///
+///
+enum class GvaFunctionGroupEnum { kTop, kBottom, kLeft, kRight, kAlarmTable, kKeyboard };
 
-enum GvaKeyEnum {
-  /* These are physical GVA keys around the display */
-  KEY_NONE = 0,
-  KEY_SA,
-  KEY_WPN,
-  KEY_DEF,
-  KEY_SYS,
-  KEY_DRV,
-  KEY_STR,
-  KEY_COM,
-  KEY_BMS,
-  KEY_F1,
-  KEY_F2,
-  KEY_F3,
-  KEY_F4,
-  KEY_F5,
-  KEY_F6,
-  KEY_F7,
-  KEY_F8,
-  KEY_F9,
-  KEY_F10,
-  KEY_F11,
-  KEY_F12,
-  KEY_F13,
-  KEY_F14,
-  KEY_F15,
-  KEY_F16,
-  KEY_F17,
-  KEY_F18,
-  KEY_F19,
-  KEY_F20,
-  KEY_F21,
-  KEY_F22,
-  KEY_BLACKOUT,
-  KEY_POWER,
-  KEY_BRIGHTNESS_UP,
-  KEY_BRIGHTNESS_DOWN,
-  /* These are fake keys that only exist in the software (emulated world) */
-  KEY_ESC,
-  KEY_FULLSCREEN,
-  KEY_PLUS,
-  KEY_MINUS,
-  KEY_GREATER,
-  KEY_LESS,
-  KEY_KEYBOARD,
-  KEY_PREV_LABEL,
-  KEY_NEXT_LABEL
+///
+/// \brief These are physical GVA keys around the display
+///
+///
+enum class GvaKeyEnum {
+  kKeyNone = 0,
+  KKeySituationalAwareness,
+  kKeyWeapon,
+  kKeyDefensiveSystems,
+  kKeySystems,
+  kKeyDriver,
+  kKeySpecialToRole,
+  kKeyCommunications,
+  kKeyBattlefieldManagementSystem,
+  kKeyF1,
+  kKeyF2,
+  kKeyF3,
+  kKeyF4,
+  kKeyF5,
+  kKeyF6,
+  kKeyF7,
+  kKeyF8,
+  kKeyF9,
+  kKeyF10,
+  kKeyF11,
+  kKeyF12,
+  kKeyF13,
+  kKeyF14,
+  kKeyF15,
+  kKeyF16,
+  kKeyF17,
+  kKeyF18,
+  kKeyF19,
+  kKeyF20,
+  kKeyF21,  // Special future use
+  kKeyF22,  // Special future use
+  kKeyBlackout,
+  kKeyPower,
+  KKeyBrightnessUp,
+  kKeyBrightnessDown,
+  // These are fake keys that only exist in the software (emulated world)
+  kKeyEscape,
+  kKeyFullscreen,
+  kKeyPlus,
+  kKeyMinus,
+  kKeyUpArrow,
+  kKeyDownArrow,
+  kKeyRightArrow,
+  kKeyLeftArrow,
+  kKeyKeyboard,
+  kKeyPreviousLabel,
+  kKeyNextLabel
 };
 
-enum GvaStatusTypes { GVA_SUCCESS = 0, GVA_ERROR, GVA_NETWORK_ERROR, GVA_DDS_ERROR, GVA_XML_ERROR, GVA_RTP_ERROR };
+///
+/// \brief HMI erro types, can be extended if needed
+///
+///
+enum class GvaStatusTypes { kGvaSuccess = 0, kGvaError, kGvaNetworkError, kGvaDdsError, kGvaXmlError, kGvaRtpError };
 
 }  // namespace gva
 

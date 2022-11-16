@@ -176,6 +176,8 @@
     }                                                                     \
   }
 
+namespace gva {
+
 //
 // forward declarations
 //
@@ -242,7 +244,7 @@ struct Hmi : tinyfsm::Fsm<Hmi> {
   static gva::ScreenType screen_;
   static gva::ScreenGva *screen_render_;
   static gva::rendererMap *map_;
-  static int lastState_;
+  static GvaFunctionEnum lastState_;
   static bool alarmson_;
 
  public:
@@ -263,4 +265,7 @@ struct Hmi : tinyfsm::Fsm<Hmi> {
 };
 
 using hmi = Hmi;
+
+}  // namespace gva
+
 #endif  // HMI_DISPLAY_SRC_HMI_GVA_H_

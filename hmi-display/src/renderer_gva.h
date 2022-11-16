@@ -131,37 +131,39 @@ class GvaTable : public RenderBase {
 
 class Hotspot : public RenderBase {
  public:
-  Hotspot(uint32_t groupId, uint32_t x, uint32_t y) : group_id_(groupId), binding_(0), RenderBase(x, y) {}
-  Hotspot(uint32_t groupId, uint32_t binding, uint32_t x, uint32_t y, uint32_t width, uint32_t height)
+  Hotspot(GvaFunctionGroupEnum groupId, uint32_t x, uint32_t y) : group_id_(groupId), binding_(0), RenderBase(x, y) {}
+  Hotspot(GvaFunctionGroupEnum groupId, uint32_t binding, uint32_t x, uint32_t y, uint32_t width, uint32_t height)
       : group_id_(groupId), binding_(binding), RenderBase(x, y, width, height) {}
-  uint32_t GetGroupId() { return group_id_; }
+  GvaFunctionGroupEnum GetGroupId() { return group_id_; }
   uint32_t GetBinding() { return binding_; }
 
  private:
-  uint32_t group_id_;  // Group hostpots together
-  uint32_t binding_;   // Bind a value or a key to this Hotspot
+  GvaFunctionGroupEnum group_id_;  // Group hostpots together
+  uint32_t binding_;               // Bind a value or a key to this Hotspot
 };
 
 class TouchGva {
  public:
-  GvaStatusTypes Add(uint32_t groupId, uint32_t x, uint32_t y) {
+  GvaStatusTypes Add(GvaFunctionGroupEnum groupId, uint32_t x, uint32_t y) {
     hotspots_.push_back(Hotspot(groupId, x, y));
-    return GVA_SUCCESS;
+    return GvaStatusTypes::kGvaSuccess;
   }
-  GvaStatusTypes Add(uint32_t groupId, uint32_t binding, uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
+  GvaStatusTypes Add(GvaFunctionGroupEnum groupId, uint32_t binding, uint32_t x, uint32_t y, uint32_t width,
+                     uint32_t height) {
     hotspots_.push_back(Hotspot(groupId, binding, x, y, width, height));
-    return GVA_SUCCESS;
+    return GvaStatusTypes::kGvaSuccess;
   }
-  GvaStatusTypes AddAbsolute(uint32_t groupId, uint32_t binding, uint32_t x, uint32_t y, uint32_t xx, uint32_t yy) {
+  GvaStatusTypes AddAbsolute(GvaFunctionGroupEnum groupId, uint32_t binding, uint32_t x, uint32_t y, uint32_t xx,
+                             uint32_t yy) {
     hotspots_.push_back(Hotspot(groupId, binding, x, y, xx - x, yy - y));
-    return GVA_SUCCESS;
+    return GvaStatusTypes::kGvaSuccess;
   }
   void SetResolution(uint32_t x, uint32_t y) {
     x_ = x;
     y_ = y;
   }
   void Reset() { hotspots_.clear(); }
-  bool Check(uint32_t groupId, uint32_t *binding, uint32_t x, uint32_t y) {
+  bool Check(GvaFunctionGroupEnum groupId, uint32_t *binding, uint32_t x, uint32_t y) {
     // Adjust for resized windows
     x = x / static_cast<float>(Renderer::GetWidth() / static_cast<float>(DEFAULT_WIDTH));
     y = y / static_cast<float>(Renderer::GetHeight() / static_cast<float>(DEFAULT_HEIGHT));
@@ -316,6 +318,7 @@ class RendererGva : public RendererCairo {
                           {'!', '@', '#', '$', '%', '^', '&', ' ', '-', '-'}};
 
  private:
+  uint32_t KeyToInt(GvaKeyEnum key);
   ConfigData *config_;
 };
 
