@@ -42,13 +42,13 @@ struct TouchType {
 
 class EventGvaType {
  public:
-  EventGvaType() { type = NO_EVENT; }
+  EventGvaType() { type = EventEnumType::kNoEvent; }
   EventGvaType(int x, int y) {
     touch_.x = x;
     touch_.y = y;
     type = kTouchEvent;
   }
-  explicit EventGvaType(GvaKeyEnum key) : key_(key) { type = KEY_UP_EVENT; }
+  explicit EventGvaType(GvaKeyEnum key) : key_(key) { type = EventEnumType::kNoEvent; }
   EventEnumType type;
   GvaKeyEnum key_;
   TouchType touch_;
@@ -108,7 +108,7 @@ class EventsGva {
   gtkType *GetWindow() { return window_; }
 
  private:
-  static gboolean CreateKeyEvent(GtkWidget *Widget, GdkEventKey *event, EventEnumType type);
+  static gboolean CreateKeyEvent(GtkWidget *Widget, GdkEventKey *event, GvaKeyEnum type);
   gtkType *window_;
 };
 

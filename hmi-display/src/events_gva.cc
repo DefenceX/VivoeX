@@ -71,12 +71,12 @@ gboolean EventsGva::ButtonReleaseEventCb(GtkWidget* Widget, GdkEventButton* even
     EventGvaType gvaEvent;
     uint32_t binding = 0;
 
-    touch_->Check(TOP, &binding, event->x, event->y);
-    if (!binding) touch_->Check(BOTTOM, &binding, event->x, event->y);
-    if (!binding) touch_->Check(RIGHT, &binding, event->x, event->y);
-    if (!binding) touch_->Check(LEFT, &binding, event->x, event->y);
+    touch_->Check(GvaFunctionGroupEnum::kTop, &binding, event->x, event->y);
+    if (!binding) touch_->Check(GvaFunctionGroupEnum::kBottom, &binding, event->x, event->y);
+    if (!binding) touch_->Check(GvaFunctionGroupEnum::kRight, &binding, event->x, event->y);
+    if (!binding) touch_->Check(GvaFunctionGroupEnum::kLeft, &binding, event->x, event->y);
     if (binding) {
-      gvaEvent.type = KEY_UP_EVENT;
+      gvaEvent.type = EventEnumType::kKeyEvent;
       gvaEvent.key_ = (GvaKeyEnum)binding;
       eventqueue_.push_back(gvaEvent);
     }
@@ -92,20 +92,20 @@ gboolean EventsGva::ButtonReleaseEventCb(GtkWidget* Widget, GdkEventButton* even
 }
 
 gboolean EventsGva::KeyPressEventCb(GtkWidget* Widget, GdkEventKey* event) {
-  return CreateKeyEvent(Widget, event, gva::EventEnumType::KEY_DOWN_EVENT);
+  return CreateKeyEvent(Widget, event, GvaKeyEnum::kKeyDownArrow);
 }
 
 gboolean EventsGva::KeyReleaseEventCb(GtkWidget* Widget, GdkEventKey* event) {
-  return CreateKeyEvent(Widget, event, gva::EventEnumType::KEY_UP_EVENT);
+  return CreateKeyEvent(Widget, event, GvaKeyEnum::kKeyUpArrow);
 }
 
-gboolean EventsGva::CreateKeyEvent(GtkWidget* Widget, GdkEventKey* event, EventEnumType type) {
+gboolean EventsGva::CreateKeyEvent(GtkWidget* Widget, GdkEventKey* event, GvaKeyEnum type) {
   GdkModifierType modifiers;
   EventGvaType gvaEvent;
-  gvaEvent.type = type;
+  gvaEvent.key_ = type;
 
   modifiers = gtk_accelerator_get_default_mod_mask();
-  std::string state = (EventEnumType::KEY_DOWN_EVENT == type) ? "(Pressed) " : "(Released) ";
+  std::string state = (GvaKeyEnum::kKeyDownArrow == type) ? "(Pressed) " : "(Released) ";
   logGva::log("[GVA] Key press event " + state + std::to_string(event->keyval) + " (prev " +
                   std::to_string(previous_key_) + ")",
               LOG_INFO);
@@ -157,7 +157,7 @@ gboolean EventsGva::CreateKeyEvent(GtkWidget* Widget, GdkEventKey* event, EventE
       }
       printf("[GVA] Top event 0x%x\n", event->keyval);
       previous_key_ = event->keyval;
-      if (gvaEvent.type != NO_EVENT) eventqueue_.push_back(gvaEvent);
+      if (gvaEvent.type != EventEnumType::kNoEvent) eventqueue_.push_back(gvaEvent);
       return TRUE;
       break;
     case 0xffe9:  // Bottom keys
@@ -206,7 +206,7 @@ gboolean EventsGva::CreateKeyEvent(GtkWidget* Widget, GdkEventKey* event, EventE
       }
       printf("[GVA] Bottom event 0x%x\n", event->keyval);
       previous_key_ = event->keyval;
-      if (gvaEvent.type != NO_EVENT) eventqueue_.push_back(gvaEvent);
+      if (gvaEvent.type != EventEnumType::kNoEvent) eventqueue_.push_back(gvaEvent);
       return TRUE;
   }
   //    g_print ("send_event=%d, state=%u, keyval=%u, length=%d, string='%s',
@@ -381,9 +381,6 @@ gboolean EventsGva::CreateKeyEvent(GtkWidget* Widget, GdkEventKey* event, EventE
       gvaEvent.key_ = GvaKeyEnum::kKeyF14;
       break;
     case 0x50:
-      gvaEvent.type = EventEnumType::kKeyEvent;
-      gvaEvent.type = GvaKeyEnum::kKeyUpArrow;
-
     case 0x70:
       /* [p|P] Move to previous label */
       gvaEvent.type = EventEnumType::kKeyEvent;
