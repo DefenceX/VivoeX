@@ -245,6 +245,7 @@ void winPopup(nmessage message, int opt) {
       }
       break;
     case MESSAGE_WARNING:
+      KEY_BMS
       strcpy(header, "Warning:");
       gvaLog(message.line[0], LOG_WARNING);
       break;

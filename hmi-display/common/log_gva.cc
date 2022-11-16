@@ -7,9 +7,9 @@
 
 namespace gva {
 
-void logGva::log(std::string message, int type) { log(message.c_str(), type); }
+void logGva::log(const std::string message, const uint16_t type) { log(message.c_str(), type); }
 
-void logGva::log(char *message, int type) {
+void logGva::log(const char *message, const uint16_t type) {
   struct sysinfo info;
   char msgType[4] = "???";
 

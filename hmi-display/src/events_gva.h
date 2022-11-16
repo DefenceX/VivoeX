@@ -33,7 +33,7 @@
 
 namespace gva {
 
-enum EventEnumType { NO_EVENT = 0, kKeyEvent, kTouchEvent, kDdsEvent, kResixeEvent, kRedrawEvent };
+enum EventEnumType { kNoEvent = 0, kKeyEvent, kTouchEvent, kDdsEvent, kResixeEvent, kRedrawEvent };
 
 struct TouchType {
   int x;
@@ -48,7 +48,7 @@ class EventGvaType {
     touch_.y = y;
     type = kTouchEvent;
   }
-  explicit EventGvaType(GvaKeyEnum key) : key_(key) { type = kKeyEvent; }
+  explicit EventGvaType(GvaKeyEnum key) : key_(key) { type = KEY_UP_EVENT; }
   EventEnumType type;
   GvaKeyEnum key_;
   TouchType touch_;
@@ -60,13 +60,55 @@ static TouchGva *touch_;
 
 class EventsGva {
  public:
+  ///
+  /// \brief Construct a new Events Gva object
+  ///
+  /// \param window The GTK3 window
+  /// \param touch Touch event register
+  ///
   EventsGva(gtkType *window, TouchGva *touch);
   GvaStatusTypes NextGvaEvent(EventGvaType *event);  // Use for GTK/DDS/Touch events
   static gboolean ButtonPressEventCb(GtkWidget *Widget, GdkEventButton *event, gpointer data);
+
+  ///
+  /// \brief  A button press event or touch label event, key released
+  ///
+  /// \param Widget
+  /// \param event
+  /// \param data
+  /// \return gboolean
+  ///
+  static gboolean ButtonReleaseEventCb(GtkWidget *Widget, GdkEventButton *event, gpointer data);
+
+  ///
+  /// \brief Handle button press events by either Drawing a rectangle or clearing the surface, depending on which button
+  /// was pressed. The ::button-press signal handler receives a GdkEventButton struct which contains this information.
+  ///
+  /// \param Widget
+  /// \param event
+  /// \return gboolean
+  ///
   static gboolean KeyPressEventCb(GtkWidget *Widget, GdkEventKey *event);
+
+  ///
+  /// \brief Handle button press events by either Drawing a rectangle or clearing the surface, depending on which button
+  /// was pressed. The ::button-press signal handler receives a GdkEventButton struct which contains this information.
+  ///
+  /// \param Widget
+  /// \param event
+  /// \return gboolean
+  ///
+  static gboolean KeyReleaseEventCb(GtkWidget *Widget, GdkEventKey *event);
+
+  ///
+  /// \brief Get the Window object
+  ///
+  /// \return gtkType*
+  ///
   gtkType *GetWindow() { return window_; }
 
  private:
+  static gboolean CreateKeyEvent(GtkWidget *Widget, GdkEventKey *event, EventEnumType type);
   gtkType *window_;
 };
 

@@ -211,7 +211,7 @@ do_test(log)
 endif (BUILD_TESTS)
 
 # Install DDS
-file(GLOB DDS_LIBS ${CMAKE_BINARY_DIR}/external/cyclonedds/build/lib/*)
+file(GLOB DDS_LIBS ${CMAKE_BINARY_DIR}/external/cyclonedds/build/lib/*.so*)
 
 # Install binaries with external libs
 file(WRITE ${CMAKE_BINARY_DIR}/gva.log "")

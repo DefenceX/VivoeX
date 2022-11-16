@@ -26,6 +26,8 @@
 #define VIDEO_DEFAULT_HEIGHT 480
 #define VIDEO_DEFAULT_WIDTH 640
 
+namespace gva {
+
 enum VideoFormat { RGBA_COLOUR = 0, RGB24_COLOUR, YUYV_COLOUR };
 
 class GvaVideoSource {
@@ -68,4 +70,7 @@ class GvaVideoSource {
   uint32_t height_;
   uint32_t width_;
 };
+
+}  // namespace gva
+
 #endif  // VIDEO_SRC_GVA_VIDEO_H_

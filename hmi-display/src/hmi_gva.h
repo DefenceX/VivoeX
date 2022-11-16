@@ -44,10 +44,10 @@
   { true, 0b0010000, 0b10110000, "Up", "Alarms", "Threats", "Ack", "↑", "↓", "Labels", "Enter" }
 #define COMMON_FUNCTION_KEYS_TOP \
   { true, 0b01000000, 0b0000100 }
-#define COMMON_STATUS_BAR                                                                                    \
-  {                                                                                                          \
-    true, DEFAULT_HEIGHT - 11, 0, {gva::LOCATION_FORMAT_MGRS, 51.500655, -0.124240}, "12:30:00, 03/06/2019", \
-        "LON/LAT", "Lat:51.500655 Lon:-0.124240    [1,3]", "W:0", "A:5", "C:1", "O:2"                        \
+#define COMMON_STATUS_BAR                                                                                          \
+  {                                                                                                                \
+    true, DEFAULT_HEIGHT - 11, 0, {LOCATION_FORMAT_MGRS, 51.500655, -0.124240}, "12:30:00, 03/06/2019", "LON/LAT", \
+        "Lat:51.500655 Lon:-0.124240    [1,3]", "W:0", "A:5", "C:1", "O:2"                                         \
   }
 #define COMPASS \
   { true, 165, 370, 0, 55 }
@@ -206,7 +206,7 @@ struct EventKeyCOM : tinyfsm::Event {};
 struct EventKeyBMS : tinyfsm::Event {};
 struct EventKeyAlarms : tinyfsm::Event {};
 struct EventKeyFunction : tinyfsm::Event {
-  gva::GvaKeyEnum key;
+  GvaKeyEnum key;
 };
 
 //
@@ -248,20 +248,20 @@ struct Hmi : tinyfsm::Fsm<Hmi> {
   static bool alarmson_;
 
  public:
-  static void KeySide(gva::GvaKeyEnum key);
-  static gva::GvaKeyEnum Key(gva::GvaKeyEnum key);
-  static gva::GvaKeyEnum KeySA(gva::GvaKeyEnum key);
-  static gva::GvaKeyEnum KeyWPN(gva::GvaKeyEnum key);
-  static gva::GvaKeyEnum KeyDEF(gva::GvaKeyEnum key);
-  static gva::GvaKeyEnum KeySYS(gva::GvaKeyEnum key);
-  static gva::GvaKeyEnum KeyDRV(gva::GvaKeyEnum key);
-  static gva::GvaKeyEnum KeySTR(gva::GvaKeyEnum key);
-  static gva::GvaKeyEnum KeyCOM(gva::GvaKeyEnum key);
-  static gva::GvaKeyEnum KeyBMS(gva::GvaKeyEnum key);
+  static void KeySide(GvaKeyEnum key);
+  static GvaKeyEnum Key(GvaKeyEnum key);
+  static GvaKeyEnum KeySA(GvaKeyEnum key);
+  static GvaKeyEnum KeyWPN(GvaKeyEnum key);
+  static GvaKeyEnum KeyDEF(GvaKeyEnum key);
+  static GvaKeyEnum KeySYS(GvaKeyEnum key);
+  static GvaKeyEnum KeyDRV(GvaKeyEnum key);
+  static GvaKeyEnum KeySTR(GvaKeyEnum key);
+  static GvaKeyEnum KeyCOM(GvaKeyEnum key);
+  static GvaKeyEnum KeyBMS(GvaKeyEnum key);
   static void Reset();
-  static gva::ScreenGva *GetRendrer() { return screen_render_; }
-  static gva::ScreenType *GetScreen() { return &screen_; }
-  static void Labels(gva::LabelModeEnum labels);
+  static ScreenGva *GetRendrer() { return screen_render_; }
+  static ScreenType *GetScreen() { return &screen_; }
+  static void Labels(LabelModeEnum labels);
 };
 
 using hmi = Hmi;

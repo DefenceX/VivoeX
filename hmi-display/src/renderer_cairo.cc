@@ -670,7 +670,10 @@ void RendererCairo::Activate(GtkApplication *app, gpointer user_data) {
   //
   g_signal_connect(render_.win.win, "destroy", G_CALLBACK(CloseWindow), NULL);
   g_signal_connect(render_.win.draw, "button-press-event", G_CALLBACK(gva::EventsGva::ButtonPressEventCb), NULL);
+  g_signal_connect(render_.win.draw, "button-release-event", G_CALLBACK(gva::EventsGva::ButtonReleaseEventCb), NULL);
   g_signal_connect(render_.win.win, "key-press-event", G_CALLBACK(gva::EventsGva::KeyPressEventCb), NULL);
+  g_signal_connect(render_.win.win, "key-release-event", G_CALLBACK(gva::EventsGva::KeyReleaseEventCb), NULL);
+
   //  g_signal_connect (render_.win.win, "key-release-event",
   //                    G_CALLBACK (EventsGva::KeyPressEventCb), NULL);
 
@@ -678,8 +681,8 @@ void RendererCairo::Activate(GtkApplication *app, gpointer user_data) {
   // subscribe to. In particular, we need to ask for the
   // button press and motion notify events that want to handle.
   //
-  gtk_widget_set_events(render_.win.draw,
-                        gtk_widget_get_events(render_.win.draw) | GDK_BUTTON_PRESS_MASK | GDK_POINTER_MOTION_MASK);
+  gtk_widget_set_events(render_.win.draw, gtk_widget_get_events(render_.win.draw) | GDK_BUTTON_PRESS_MASK |
+                                              GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK);
 
   //
   // Signals used to handle the backing surface

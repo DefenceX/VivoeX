@@ -22,6 +22,9 @@
 
 #include "gva_video.h"   // NOLINT
 #include "rtp_stream.h"  // NOLINT
+
+namespace gva {
+
 //
 // Buffers are assumed to be YUV
 //
@@ -41,5 +44,7 @@ class GvaVideoRtpYuv : public GvaVideoSource {
   uint32_t frame_counter_;
   RtpStream *stream_;
 };
+
+}  // namespace gva
 
 #endif  // VIDEO_SRC_GVA_VIDEO_RTP_YUV_H_
