@@ -24,21 +24,73 @@
 
 #ifndef HMI_DISPLAY_SRC_GVA_H_
 #define HMI_DISPLAY_SRC_GVA_H_
-
-#include "common/debug.h"
-#include "common/log_gva.h"
+#include <array>
 
 #define MAJOR 0
 #define MINOR 3
 #define PATCH 138
 
 #define MIN_HEIGHT 480
+
+enum SurfaceType { SURFACE_NONE = 0, SURFACE_FILE, SURFACE_BUFFER_RGB24, SURFACE_CAIRO, SURFACE_BLACKOUT };
+
 #define MIN_WIDTH 640
 
 #define RENDER_HEIGHT 1024
 #define RENDER_WIDTH 1920
 
 namespace gva {
+
+enum class LocationEnum { kLocationFormatLongLat = 0, kLocationFormatMgrs };
+
+enum class ScreenMode { kModeMaintinance = 0, kModeOperational, kModeBlackout };
+
+enum class LabelModeEnum { kLabelAll, kLabelStatusOnly, kLabelMinimal };
+
+enum LabelStates { kLabelHidden, kLabelDisabled, kLabelEnabled, kLabelEnabledSelected, kLabelEnabledSelectedChannel };
+
+typedef struct FunctionSelect {
+  bool visible;
+  LabelStates state;
+} FunctionSelectType;
+
+class FunctionKeys {
+ public:
+  bool visible;
+  LabelStates state;
+  uint32_t toggleActive;
+  uint32_t toggleOn;
+  char labels[6][40];
+};
+
+class CommonTaskKeys {
+ public:
+  class Labels {
+   public:
+    LabelStates state;
+    char text[40];
+  };
+  bool visible;
+  std::array<CommonTaskKeys::Labels, 8> labels;
+};
+
+class LocationType {
+ public:
+  LocationEnum locationFormat;
+  float lat;
+  float lon;
+};
+
+class StatusBar {
+ public:
+  bool visible;
+  uint32_t x;
+  uint32_t y;
+  LocationType location;
+  char labels[7][80];
+} StatusBarType;
+
+enum SurfaceType { SURFACE_NONE = 0, SURFACE_FILE, SURFACE_BUFFER_RGB24, SURFACE_CAIRO, SURFACE_BLACKOUT };
 
 ///
 /// \brief This is where you define all your screens, these are just the defaults

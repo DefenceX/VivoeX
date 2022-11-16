@@ -33,7 +33,15 @@
 
 namespace gva {
 
-enum EventEnumType { kNoEvent = 0, kKeyEvent, kTouchEvent, kDdsEvent, kResixeEvent, kRedrawEvent };
+enum EventEnumType {
+  kNoEvent = 0,
+  kKeyEventPressed,
+  kKeyEventReleased,
+  kTouchEvent,
+  kDdsEvent,
+  kResixeEvent,
+  kRedrawEvent
+};
 
 struct TouchType {
   int x;
@@ -42,14 +50,14 @@ struct TouchType {
 
 class EventGvaType {
  public:
-  EventGvaType() { type = EventEnumType::kNoEvent; }
+  EventGvaType() { type_ = EventEnumType::kNoEvent; }
   EventGvaType(int x, int y) {
     touch_.x = x;
     touch_.y = y;
-    type = kTouchEvent;
+    type_ = kTouchEvent;
   }
-  explicit EventGvaType(GvaKeyEnum key) : key_(key) { type = EventEnumType::kNoEvent; }
-  EventEnumType type;
+  explicit EventGvaType(GvaKeyEnum key) : key_(key) { type_ = EventEnumType::kNoEvent; }
+  EventEnumType type_;
   GvaKeyEnum key_;
   TouchType touch_;
   ResolutionType resize_;
@@ -108,7 +116,7 @@ class EventsGva {
   gtkType *GetWindow() { return window_; }
 
  private:
-  static gboolean CreateKeyEvent(GtkWidget *Widget, GdkEventKey *event, GvaKeyEnum type);
+  static gboolean CreateKeyEvent(GtkWidget *Widget, GdkEventKey *event, EventEnumType type);
   gtkType *window_;
 };
 

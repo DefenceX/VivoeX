@@ -26,6 +26,8 @@
 
 #include <memory>
 
+#include "src/widgets/widget.h"
+
 namespace gva {
 
 gva::GvaApplication::GvaApplication(const Options options, const std::string &ipaddr, const uint32_t port) {
@@ -137,8 +139,8 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
   }
 
   hmi::GetRendrer()->Update();
-  switch (event.type) {
-    case kKeyEvent: {
+  switch (event.type_) {
+    case kKeyEventReleased: {
       Compass *compass = static_cast<Compass *>(hmi::GetRendrer()->GetWidget(WIDGET_TYPE_COMPASS));
       Keyboard *keyboard = static_cast<Keyboard *>(hmi::GetRendrer()->GetWidget(WIDGET_TYPE_KEYBOARD));
       switch (event.key_) {
@@ -246,14 +248,17 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
         case GvaKeyEnum::kKeyF17:
           // F17 Control Arrow Up
           {
-            keyboard->mode_ = (keyboard->mode_ == KEYBOARD_UPPER) ? KEYBOARD_LOWER : KEYBOARD_UPPER;
+            keyboard->mode_ = (keyboard->mode_ == KeyboardModeType::KEYBOARD_UPPER) ? KeyboardModeType::KEYBOARD_LOWER
+                                                                                    : KeyboardModeType::KEYBOARD_UPPER;
             Dispatch(GvaKeyEnum::kKeyF17);
           }
           break;
         case GvaKeyEnum::kKeyF18:
           // F18 Control Arrow Down
           {
-            keyboard->mode_ = (keyboard->mode_ == KEYBOARD_NUMBERS) ? KEYBOARD_UPPER : KEYBOARD_NUMBERS;
+            keyboard->mode_ = (keyboard->mode_ == KeyboardModeType::KEYBOARD_NUMBERS)
+                                  ? KeyboardModeType::KEYBOARD_UPPER
+                                  : KeyboardModeType::KEYBOARD_NUMBERS;
             Dispatch(event.key_);
           }
           break;

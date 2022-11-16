@@ -26,8 +26,6 @@
 #define HMI_DISPLAY_COMMON_LOG_GVA_H_
 
 #define LOG_GVA_H
-#include <stdio.h>
-
 #include <iostream>
 #include <string>
 

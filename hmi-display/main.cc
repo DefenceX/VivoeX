@@ -24,6 +24,8 @@
 
 #include <unistd.h>
 
+#include <cstddef>
+#include <cstdint>
 #include <iostream>
 #include <string>
 
@@ -34,10 +36,10 @@
 #include "src/gva_application.h"
 #include "src/hmi_gva.h"
 #include "src/renderer_map.h"
+#include "src/widgets/alarm_indicator.h"
+#include "src/widgets/compass.h"
+#include "src/widgets/keyboard.h"
 #include "video/src/gva_video_rtp_yuv.h"
-#include "widgets/alarm_indicator.h"
-#include "widgets/compass.h"
-#include "widgets/keyboard.h"
 
 gva::GvaApplication::Options options = {false, false, ""};
 

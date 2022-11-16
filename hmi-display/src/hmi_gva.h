@@ -27,6 +27,7 @@
 #include <iostream>
 
 #include "src/config_reader.h"
+#include "src/gva.h"
 #include "src/hmi_gva_helpers.h"
 #include "src/renderer_map.h"
 #include "src/screen_gva.h"
@@ -40,14 +41,21 @@
 //
 
 //                              Visible    Active    Hidden
-#define COMMON_KEYS \
-  { true, 0b0010000, 0b10110000, "Up", "Alarms", "Threats", "Ack", "↑", "↓", "Labels", "Enter" }
+#define COMMON_KEYS                                                                                                   \
+  {                                                                                                                   \
+    true, {LabelStates::kLabelEnabled, "Up"}, {LabelStates::kLabelEnabled, "Alarms"},                                 \
+        {LabelStates::kLabelEnabled, "Threats"}, {LabelStates::kLabelEnabled, "Ack"},                                 \
+        {LabelStates::kLabelEnabled, "↑"}, {LabelStates::kLabelEnabled, "↓"}, {LabelStates::kLabelEnabled, "Labels"}, \
+    {                                                                                                                 \
+      LabelStates::kLabelEnabled, "Enter"                                                                             \
+    }                                                                                                                 \
+  }
 #define COMMON_FUNCTION_KEYS_TOP \
   { true, 0b01000000, 0b0000100 }
-#define COMMON_STATUS_BAR                                                                                          \
-  {                                                                                                                \
-    true, DEFAULT_HEIGHT - 11, 0, {LOCATION_FORMAT_MGRS, 51.500655, -0.124240}, "12:30:00, 03/06/2019", "LON/LAT", \
-        "Lat:51.500655 Lon:-0.124240    [1,3]", "W:0", "A:5", "C:1", "O:2"                                         \
+#define COMMON_STATUS_BAR                                                                                            \
+  {                                                                                                                  \
+    true, DEFAULT_HEIGHT - 11, 0, {LocationEnum::kLocationFormatMgrs, 51.500655, -0.124240}, "12:30:00, 03/06/2019", \
+        "LON/LAT", "Lat:51.500655 Lon:-0.124240    [1,3]", "W:0", "A:5", "C:1", "O:2"                                \
   }
 #define COMPASS \
   { true, 165, 370, 0, 55 }
@@ -236,12 +244,12 @@ struct Hmi : tinyfsm::Fsm<Hmi> {
  protected:
   static gva::ViewGvaManager *manager_;
   static gva::ResolutionType view_;
-  static gva::StatusBarType status_;
+  static gva::StatusBar status_;
   static gva::FunctionSelectType top_;
-  static gva::CommonTaskKeysType bottom_;
-  static gva::CanvasType canvas_;
+  static gva::CommonTaskKeys bottom_;
+  static gva::Canvas canvas_;
   static gva::TableWidget alarms_;
-  static gva::ScreenType screen_;
+  static gva::Screen screen_;
   static gva::ScreenGva *screen_render_;
   static gva::rendererMap *map_;
   static GvaFunctionEnum lastState_;
@@ -260,7 +268,7 @@ struct Hmi : tinyfsm::Fsm<Hmi> {
   static GvaKeyEnum KeyBMS(GvaKeyEnum key);
   static void Reset();
   static ScreenGva *GetRendrer() { return screen_render_; }
-  static ScreenType *GetScreen() { return &screen_; }
+  static Screen *GetScreen() { return &screen_; }
   static void Labels(LabelModeEnum labels);
 };
 

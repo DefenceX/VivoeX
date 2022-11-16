@@ -62,13 +62,13 @@ void Hmi::Reset() {
   screen_.table.visible_ = false;
   screen_.control->active = 0x0;
   screen_.message.visible = false;
-  screen_.info.mode = gva::MODE_OPERATIONAL;
+  screen_.info.mode = gva::kModeOperational;
   alarmson_ = false;
 }
 
 void Hmi::Labels(gva::LabelModeEnum labels) {
   switch (labels) {
-    case gva::LABEL_ALL:
+    case LabelModeEnum::kLabelAll:
       if ((screen_.currentFunction == GvaFunctionEnum::kSituationalAwareness) ||
           (screen_.currentFunction == GvaFunctionEnum::kWeapon) ||
           (screen_.currentFunction == GvaFunctionEnum::kDriver))
@@ -84,7 +84,7 @@ void Hmi::Labels(gva::LabelModeEnum labels) {
       screen_render_->GetWidget(gva::WIDGET_TYPE_COMPASS)->SetX(161);
       screen_render_->GetWidget(gva::WIDGET_TYPE_ALARM_INDICATOR)->SetY(423);
       break;
-    case gva::LABEL_STATUS_ONLY:
+    case LabelModeEnum::kLabelStatusOnly:
       screen_.function_left.visible = false;
       screen_.function_right.visible = false;
       screen_.control->visible = false;
@@ -96,7 +96,7 @@ void Hmi::Labels(gva::LabelModeEnum labels) {
       screen_render_->GetWidget(gva::WIDGET_TYPE_COMPASS)->SetY(360 + 42);
       screen_render_->GetWidget(gva::WIDGET_TYPE_COMPASS)->SetX(161 - 106);
       break;
-    case gva::LABEL_MINIMAL:
+    case LabelModeEnum::kLabelMinimal:
       screen_.function_left.visible = false;
       screen_.function_right.visible = false;
       screen_.control->visible = false;
@@ -176,14 +176,14 @@ gva::GvaKeyEnum Hmi::Key(gva::GvaKeyEnum keypress) {
     case GvaKeyEnum::kKeyF19:
       screen_.control->active = 1 << 1;
       switch (screen_.labels) {
-        case gva::LABEL_ALL:
-          screen_.labels = gva::LABEL_STATUS_ONLY;
+        case LabelModeEnum::kLabelAll:
+          screen_.labels = LabelModeEnum::kLabelStatusOnly;
           break;
-        case gva::LABEL_STATUS_ONLY:
-          screen_.labels = gva::LABEL_MINIMAL;
+        case LabelModeEnum::kLabelStatusOnly:
+          screen_.labels = LabelModeEnum::kLabelMinimal;
           break;
-        case gva::LABEL_MINIMAL:
-          screen_.labels = gva::LABEL_ALL;
+        case LabelModeEnum::kLabelMinimal:
+          screen_.labels = LabelModeEnum::kLabelAll;
           break;
       }
       Labels(screen_.labels);
@@ -261,8 +261,7 @@ gva::GvaKeyEnum Hmi::KeySA(gva::GvaKeyEnum keypress) {
 }
 
 gva::GvaKeyEnum Hmi::KeyWPN(gva::GvaKeyEnum keypress) {
-  screen_.function_left.active = 0;
-  screen_.function_right.active = 0;
+  screen_.function_right.state = LabelStates::kLabelEnabled;
 
   KeySide(keypress);
   Key(keypress);
@@ -290,8 +289,7 @@ gva::GvaKeyEnum Hmi::KeyWPN(gva::GvaKeyEnum keypress) {
 }
 
 gva::GvaKeyEnum Hmi::KeyDEF(gva::GvaKeyEnum keypress) {
-  screen_.function_left.active = 0;
-  screen_.function_right.active = 0;
+  screen_.function_right.state = LabelStates::kLabelEnabled;
 
   KeySide(keypress);
   Key(keypress);
@@ -320,7 +318,7 @@ gva::GvaKeyEnum Hmi::KeyDEF(gva::GvaKeyEnum keypress) {
 
 gva::GvaKeyEnum Hmi::KeySYS(gva::GvaKeyEnum keypress) {
   screen_.function_left.active = 0;
-  screen_.function_right.active = 0;
+  screen_.function_right.state = LabelStates::kLabelEnabled;
 
   KeySide(keypress);
   Key(keypress);
@@ -347,9 +345,9 @@ gva::GvaKeyEnum Hmi::KeySYS(gva::GvaKeyEnum keypress) {
       break;
     case GvaKeyEnum::kKeyF11:
       // Blackout
-      screen_.info.mode = (screen_.info.mode == gva::MODE_BLACKOUT) ? gva::MODE_OPERATIONAL : gva::MODE_BLACKOUT;
+      screen_.info.mode = (screen_.info.mode == gva::kModeBlackout) ? gva::kModeOperational : gva::kModeBlackout;
       screen_.canvas.visible = true;
-      if (screen_.info.mode == gva::MODE_BLACKOUT)
+      if (screen_.info.mode == gva::kModeBlackout)
         screen_.canvas.bufferType = gva::SURFACE_BLACKOUT;
       else
         screen_.canvas.bufferType = gva::SURFACE_FILE;
@@ -364,8 +362,7 @@ gva::GvaKeyEnum Hmi::KeySYS(gva::GvaKeyEnum keypress) {
 }
 
 gva::GvaKeyEnum Hmi::KeyDRV(gva::GvaKeyEnum keypress) {
-  screen_.function_left.active = 0;
-  screen_.function_right.active = 0;
+  screen_.function_right.state = LabelStates::kLabelEnabled;
 
   KeySide(keypress);
   Key(keypress);
@@ -393,8 +390,7 @@ gva::GvaKeyEnum Hmi::KeyDRV(gva::GvaKeyEnum keypress) {
 }
 
 gva::GvaKeyEnum Hmi::KeySTR(gva::GvaKeyEnum keypress) {
-  screen_.function_left.active = 0;
-  screen_.function_right.active = 0;
+  screen_.function_right.state = LabelStates::kLabelEnabled;
 
   KeySide(keypress);
   Key(keypress);
@@ -422,8 +418,7 @@ gva::GvaKeyEnum Hmi::KeySTR(gva::GvaKeyEnum keypress) {
 }
 
 gva::GvaKeyEnum Hmi::KeyCOM(gva::GvaKeyEnum keypress) {
-  screen_.function_left.active = 0;
-  screen_.function_right.active = 0;
+  screen_.function_right.state = LabelStates::kLabelEnabled;
   screen_.message.visible = false;
 
   KeySide(keypress);
@@ -481,9 +476,7 @@ double conv(int zoom) {
 }
 
 gva::GvaKeyEnum Hmi::KeyBMS(gva::GvaKeyEnum keypress) {
-  screen_.function_left.active = 0;
-  screen_.function_right.active = 0;
-
+  screen_.function_right.state = LabelStates::kLabelEnabled;
   KeySide(keypress);
   Key(keypress);
 #ifdef ENABLE_OSMSCOUT
@@ -552,9 +545,10 @@ struct StateSA : Hmi {
       screen_ = manager_->GetScreen(GvaFunctionEnum::kSituationalAwareness);
       lastState_ = GvaFunctionEnum::kSituationalAwareness;
       Reset();
-      screen_.function_top->visible = true;
+      screen_.function_top->state = LabelStates::kLabelEnabled;
 
-      if (screen_.labels != gva::LABEL_MINIMAL) screen_render_->GetWidget(gva::WIDGET_TYPE_COMPASS)->SetVisible(true);
+      if (screen_.labels != LabelModeEnum::kLabelMinimal)
+        screen_render_->GetWidget(gva::WIDGET_TYPE_COMPASS)->SetVisible(true);
       screen_render_->GetWidget(gva::WIDGET_TYPE_COMPASS)->SetVisible(true);
       if (!screen_.canvas.surface) {
         char filename[1000];
@@ -588,7 +582,8 @@ struct StateWPN : Hmi {
       lastState_ = GvaFunctionEnum::kWeapon;
       Reset();
 
-      if (screen_.labels != gva::LABEL_MINIMAL) screen_render_->GetWidget(gva::WIDGET_TYPE_COMPASS)->SetVisible(true);
+      if (screen_.labels != LabelModeEnum::kLabelMinimal)
+        screen_render_->GetWidget(gva::WIDGET_TYPE_COMPASS)->SetVisible(true);
       screen_.canvas.visible = true;
       snprintf(filename, sizeof(filename), "%s/%s", gva::ConfigData::GetInstance()->GetImagePath(), "FrontCenter.png");
       SET_CANVAS_PNG(filename);
@@ -646,8 +641,10 @@ struct StateSYS : Hmi {
       lastState_ = GvaFunctionEnum::kSystems;
       Reset();
 
-      screen_.status_bar->visible = true;
-      screen_.function_top->visible = true;
+      screen_.status_bar->state = LabelStates::kLabelEnabled;
+      ;
+      screen_.function_top->state = LabelStates::kLabelEnabled;
+      ;
       screen_.canvas.visible = true;
       snprintf(filename, sizeof(filename), "%s/%s", gva::ConfigData::GetInstance()->GetImagePath(), "FrontCenter.png");
       SET_CANVAS_PNG(filename);
@@ -681,7 +678,8 @@ struct StateDRV : Hmi {
       lastState_ = GvaFunctionEnum::kDriver;
       Reset();
 
-      if (screen_.labels != gva::LABEL_MINIMAL) screen_render_->GetWidget(gva::WIDGET_TYPE_COMPASS)->SetVisible(true);
+      if (screen_.labels != LabelModeEnum::kLabelMinimal)
+        screen_render_->GetWidget(gva::WIDGET_TYPE_COMPASS)->SetVisible(true);
       screen_.status_bar->visible = true;
       screen_.function_top->active = 0x1 << 3;
     }
@@ -851,9 +849,9 @@ struct StateOn : Hmi {
 #endif
 
     init(top_, gva::FunctionSelectType, COMMON_FUNCTION_KEYS_TOP);
-    init(bottom_, gva::CommonTaskKeysType, COMMON_KEYS);
+    init(bottom_, gva::CommonTaskKeys, COMMON_KEYS);
     init(status_, gva::StatusBarType, COMMON_STATUS_BAR);
-    init(canvas_, gva::CanvasType, CANVAS);
+    init(canvas_, gva::Canvas, CANVAS);
 
     // Setup the main screens
     manager_->GetNewView(GvaFunctionEnum::kSituationalAwareness, &top_, &bottom_,
@@ -894,7 +892,7 @@ struct StateOn : Hmi {
     screen_.canvas.visible = true;
     screen_.table = alarms_;
     screen_.table.visible_ = false;
-    screen_.labels = gva::LABEL_ALL;
+    screen_.labels = LabelModeEnum::kLabelAll;
     SET_CANVAS_PNG("FRONT_CENTRE.png");
 
     transit<StateSYS>();
@@ -915,10 +913,10 @@ gva::ViewGvaManager *Hmi::manager_;
 gva::ResolutionType Hmi::view_;
 gva::StatusBarType Hmi::status_;
 gva::FunctionSelectType Hmi::top_;
-gva::CommonTaskKeysType Hmi::bottom_;
-gva::CanvasType Hmi::canvas_;
+gva::CommonTaskKeys Hmi::bottom_;
+gva::Canvas Hmi::canvas_;
 gva::TableWidget Hmi::alarms_;
-gva::ScreenType Hmi::screen_;
+gva::Screen Hmi::screen_;
 gva::ScreenGva *Hmi::screen_render_;
 gva::rendererMap *Hmi::map_;
 GvaFunctionEnum Hmi::lastState_;

@@ -520,10 +520,10 @@ uint32_t RendererCairo::DrawColor(uint8_t r, uint8_t g, uint8_t b) {
 
 uint32_t RendererCairo::DrawColor(uint32_t rgb) { DrawColor((rgb & 0xff0000) >> 16, (rgb & 0xff00) >> 8, rgb & 0xff); }
 
-void RendererCairo::SetTextFont(uint32_t slope, uint32_t weight, const char *fontName) {
+void RendererCairo::SetTextFont(uint32_t slope, WeightType weight, const char *fontName) {
   Draw_commands_[draw_tail_].command = COMMAND_TEXT_FONT;
   Draw_commands_[draw_tail_].arg1 = slope;
-  Draw_commands_[draw_tail_].arg2 = weight;
+  Draw_commands_[draw_tail_].arg2 = int(weight);
   strcpy(Draw_commands_[draw_tail_++].text, fontName);
 }
 

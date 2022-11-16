@@ -84,7 +84,8 @@ class Renderer {
     width_ = width;
     height_ = height;
   }
-  uint32_t init(uint32_t width, uint32_t height);
+  virtual ~Renderer();
+  virtual uint32_t init(uint32_t width, uint32_t height);
   virtual void SetPixel(uint32_t x, uint32_t y) = 0;
   virtual void SetColour(uint8_t red, uint8_t green, uint8_t blue) = 0;
   virtual void SetColourForground(uint8_t red, uint8_t green, uint8_t blue) = 0;

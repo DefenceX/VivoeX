@@ -20,7 +20,6 @@
 #ifndef VIDEO_SRC_GVA_VIDEO_H_
 #define VIDEO_SRC_GVA_VIDEO_H_
 
-#include <cstdint>
 #include <string>
 
 #define VIDEO_DEFAULT_HEIGHT 480

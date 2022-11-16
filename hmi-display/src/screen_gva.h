@@ -38,115 +38,76 @@
 #include "widgets/widget.h"
 
 namespace gva {
-class ScreenGva;
 
-enum LocationEnum { LOCATION_FORMAT_LONG_LAT = 0, LOCATION_FORMAT_MGRS };
-
-enum ScreenMode { MODE_MAINTINENCE = 0, MODE_OPERATIONAL, MODE_BLACKOUT };
-
-enum LabelModeEnum { LABEL_ALL, LABEL_STATUS_ONLY, LABEL_MINIMAL };
-
-typedef struct FunctionSelect {
-  bool visible;
-  int active;
-  int hidden;
-} FunctionSelectType;
-
-typedef struct FunctionKeys {
-  bool visible;
-  int active;
-  int hidden;
-  int toggleActive;
-  int toggleOn;
-  char labels[6][40];
-} FunctionKeysType;
-
-typedef struct CommonTaskKeys {
-  bool visible;
-  int active;
-  int hidden;
-  char labels[8][40];
-} CommonTaskKeysType;
-
-typedef struct {
-  LocationEnum locationFormat;
-  float lat;
-  float lon;
-} LocationType;
-
-typedef struct StatusBar {
-  bool visible;
-  int x;
-  int y;
-  LocationType location;
-  char labels[7][80];
-} StatusBarType;
-
-enum SurfaceType { SURFACE_NONE = 0, SURFACE_FILE, SURFACE_BUFFER_RGB24, SURFACE_CAIRO, SURFACE_BLACKOUT };
-
-typedef struct Canvas {
+class Canvas {
+ public:
   bool visible;
   SurfaceType bufferType;
   char filename[256];
   char *buffer;
   cairo_surface_t *surface;
-} CanvasType;
+};
 
-typedef struct Label {
+class Label {
+ public:
   bool visible;
   char text[256];
-  int x;
-  int y;
-  int fontSize;
-} LabelType;
+  uint32_t x;
+  uint32_t y;
+  uint32_t fontSize;
+};
 
-typedef struct Message {
+class Message {
+ public:
   bool visible;
-  int width;
+  uint32_t width;
   IconType icon;
   struct {
     char text[256];
-    int fontSize;
+    uint32_t fontSize;
   } brief;
   struct {
     char text[4096];
-    int fontSize;
+    uint32_t fontSize;
   } detail;
-} MessaGetYpe;
+};
 
-typedef struct Screen {
+class Screen {
+ public:
   struct {
+   public:
     char name[100];
     ScreenMode mode;
     char gpsDevice[100];
   } info;
   GvaFunctionEnum currentFunction;
-  CanvasType canvas;
+  Canvas canvas;
   FunctionSelectType *function_top;
-  CommonTaskKeysType *control;
-  StatusBarType *status_bar;
-  FunctionKeysType function_left;
-  FunctionKeysType function_right;
+  CommonTaskKeys *control;
+  StatusBar *status_bar;
+  FunctionKeys function_left;
+  FunctionKeys function_right;
   TableWidget table;
-  LabelType label;
-  MessaGetYpe message;
+  Label label;
+  Message message;
   LabelModeEnum labels;
-} ScreenType;
+};
 
 //
 // These are used by the clock thread to update the time and refresh the screen
 //
-typedef struct ArgStruct {
+class args {
+ public:
   char *clockString;
   char *locationFormat;
   char *locationString;
   ScreenGva *screen;
-  int *gps;
+  uint32_t *gps;
   nmeaINFO *info;
   nmeaPARSER *parser;
   bool active;
   LocationType *location;
-} args;
+};
 
 class ScreenGva : public RendererGva {
  public:
@@ -157,7 +118,7 @@ class ScreenGva : public RendererGva {
   /// \param width
   /// \param height
   ///
-  ScreenGva(ScreenType *screen, int width, int height);
+  ScreenGva(Screen *screen, uint32_t width, uint32_t height);
 
   ///
   /// \brief Destroy the Screen Gva object
@@ -177,7 +138,7 @@ class ScreenGva : public RendererGva {
   ///
   /// \param barData
   ///
-  void StartClock(StatusBarType *barData);
+  void StartClock(StatusBar *barData);
 
   ///
   /// \brief Get the Widget object
@@ -189,12 +150,12 @@ class ScreenGva : public RendererGva {
 
  private:
   char *PosDegrees(float lon, float lat);
-  ScreenType *screen_;
+  Screen *screen_;
   std::vector<WidgetX *> widget_list_;
   args *args_;
-  int gps_;
-  int hndl_;
-  ScreenType last_screen_;
+  uint32_t gps_;
+  uint32_t hndl_;
+  Screen last_screen_;
   pthread_t clock_thread_;
   nmeaINFO info_;
   nmeaPARSER parser_;

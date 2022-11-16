@@ -51,12 +51,12 @@ using namespace GeographicLib;
 namespace gva {
 
 float toDegrees(float lon) {
-  int d = (int)lon / 100;
+  uint32_t d = (uint32_t)lon / 100;
   float m = lon - d * 100;
   return d + m / (float)60;
 }
 
-ScreenGva::ScreenGva(ScreenType *screen, int width, int height) : RendererGva(width, height) {
+ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : RendererGva(width, height) {
   screen_ = screen;
 
   char tmp[100];
@@ -121,7 +121,7 @@ void *ClockUpdate(void *arg) {
   char tmp[MAX_NMEA] = {0};
 
   while (a->active) {
-    int i, ii = 0;
+    uint32_t i, ii = 0;
     t = time(NULL);
     tm = localtime(&t);
     sprintf(a->clockString, "%02d/%02d/%02d %02d:%02d:%02d", tm->tm_mday, tm->tm_mon + 1, tm->tm_year + 1900,
@@ -137,7 +137,7 @@ void *ClockUpdate(void *arg) {
         ii = read(*a->gps, &c, 1);
         if (ii == 1) {
           buffer[i] = c;
-          //             printf("0x%02x ", c);
+          //             pruint32_tf("0x%02x ", c);
         }
         if (i == MAX_NMEA) break;
       }
@@ -148,19 +148,19 @@ void *ClockUpdate(void *arg) {
       sprintf(tmp, "%s\r\n", buffer);
       a->info->lon = a->location->lon;
       a->info->lat = a->location->lat;
-      nmea_parse(a->parser, tmp, (int)strlen(tmp), a->info);
+      nmea_parse(a->parser, tmp, (uint32_t)strlen(tmp), a->info);
       a->info->lat = toDegrees(a->info->lat);
       a->info->lon = toDegrees(a->info->lon);
     }
 
     if (a->info->lon && a->info->lat) {
       switch (a->location->locationFormat) {
-        case LOCATION_FORMAT_LONG_LAT:
+        case LocationEnum::kLocationFormatLongLat:
           break;
           sprintf(a->locationFormat, "LONLAT");
           sprintf(a->locationString, "Lat:%05.06f Lon:%05.06f [%d,%d]", a->info->lat, a->info->lon, a->info->sig,
                   a->info->fix);
-        case LOCATION_FORMAT_MGRS: {
+        case LocationEnum::kLocationFormatMgrs: {
           int zone;
           bool northp;
           double x, y;
@@ -176,7 +176,7 @@ void *ClockUpdate(void *arg) {
   }
 }
 
-void ScreenGva::StartClock(StatusBarType *barData) {
+void ScreenGva::StartClock(StatusBar *barData) {
   pthread_t clock_thread_;
   args_ = (args *)malloc(sizeof(args));
   args_->active = true;
@@ -196,7 +196,7 @@ void ScreenGva::StartClock(StatusBarType *barData) {
     logGva::log("Error creating thread", LOG_ERROR);
     return;
   }
-  logGva::log("Internal clock thread started", LOG_INFO);
+  logGva::log("uint32_ternal clock thread started", LOG_INFO);
 }
 
 GvaStatusTypes ScreenGva::Update() {
@@ -231,12 +231,12 @@ GvaStatusTypes ScreenGva::Update() {
   }
 
   // If BLACKOUT then nothing to render
-  if (screen_->info.mode == MODE_BLACKOUT) {
+  if (screen_->info.mode == ScreenMode::kModeBlackout) {
     //
     // Refresh display
     //
     Draw();
-    printf("Drawing blackout\n");
+    logGva::log("Blackout Requested", LOG_INFO);
     last_screen_ = *screen_;
     return GvaStatusTypes::kGvaSuccess;
   }
@@ -247,26 +247,24 @@ GvaStatusTypes ScreenGva::Update() {
   }
 
   // Draw the LEFT bezel labels
-  if (screen_->function_left.visible) {
-    DrawFunctionLabels(1, screen_->function_left.active, screen_->function_left.hidden,
-                       screen_->function_left.toggleActive, screen_->function_left.toggleOn,
-                       screen_->function_left.labels);
+  if (screen_->function_left.state != LabelStates::kLabelDisabled) {
+    DrawFunctionLabels(1, screen_->function_left.state, screen_->function_left.toggleActive,
+                       screen_->function_left.toggleOn, screen_->function_left.labels);
   }
 
   // Draw the RIGHT bezel labels
-  if (screen_->function_right.visible) {
-    DrawFunctionLabels(DEFAULT_WIDTH - 100 - 1, screen_->function_right.active, screen_->function_right.hidden,
-                       screen_->function_right.toggleActive, screen_->function_right.toggleOn,
-                       screen_->function_right.labels);
+  if (screen_->function_right.state != LabelStates::kLabelDisabled) {
+    DrawFunctionLabels(DEFAULT_WIDTH - 100 - 1, screen_->function_right.state, screen_->function_right.toggleActive,
+                       screen_->function_right.toggleOn, screen_->function_right.labels);
   }
 
   // Draw the TOP bezel labels
-  if (screen_->function_top->visible) {
-    DrawTopLabels(DEFAULT_HEIGHT - 11, screen_->function_top->active, screen_->function_top->hidden);
+  if (screen_->function_top->state != LabelStates::kLabelDisabled) {
+    DrawTopLabels(DEFAULT_HEIGHT - 11, screen_->function_top->state);
   }
 
-  // Draw the maintinance mode indicator
-  if (screen_->info.mode == MODE_MAINTINENCE) {
+  // Draw the mauint32_tinance mode indicator
+  if (screen_->info.mode == ScreenMode::kModeMaintinance) {
     DrawMode();
   }
 
@@ -275,9 +273,9 @@ GvaStatusTypes ScreenGva::Update() {
 
   // Setup and Draw the status bar, one row table
   if (screen_->status_bar->visible) {
-    int i = 0;
+    uint32_t i = 0;
     // Setup and Draw the status bar, one row table
-    int widths[7] = {23, 8, 37, 8, 8, 8, 8};
+    uint32_t widths[7] = {23, 8, 37, 8, 8, 8, 8};
     GvaTable table(1, screen_->status_bar->y, 640);
     table.SetFontName(config_->GetThemeFont());
     GvaRow newrow;
@@ -292,9 +290,9 @@ GvaStatusTypes ScreenGva::Update() {
                           UnpackBlue(config_->GetThemeStatusText())};
 
     for (i = 0; i < 7; i++) {
-      cellAlignType align = ALIGN_LEFT;
-      if (i == 1) align = ALIGN_CENTRE;
-      GvaCellType cell = {screen_->status_bar->labels[i], align, border, background, text, WEIGHT_BOLD};
+      CellAlignType align = CellAlignType::ALIGN_LEFT;
+      if (i == 1) align = CellAlignType::ALIGN_CENTRE;
+      GvaCell cell = {screen_->status_bar->labels[i], align, border, background, text, WeightType::WEIGHT_BOLD};
       newrow.addCell(cell, widths[i]);
     }
     table.AddRow(newrow);
@@ -309,10 +307,10 @@ GvaStatusTypes ScreenGva::Update() {
     GvaTable table(screen_->table.x_, screen_->table.y_ + 33, screen_->table.width_);
     table.SetFontName(config_->GetThemeFont());
     table.border_ = 1;
-    for (int row = 0; row < screen_->table.row_count_; row++) {
+    for (uint32_t row = 0; row < screen_->table.row_count_; row++) {
       GvaRow newrow;
       RgbUnpackedType f, b, o;
-      for (int cell = 0; cell < screen_->table.rows_[row].cell_count; cell++) {
+      for (uint32_t cell = 0; cell < screen_->table.rows_[row].cell_count; cell++) {
         f = UnpackRgb(screen_->table.rows_[row].cells[cell].foreground_colour);
         b = UnpackRgb(screen_->table.rows_[row].cells[cell].background_colour);
 
@@ -340,7 +338,7 @@ GvaStatusTypes ScreenGva::Update() {
   widget_list_[0]->Draw();
 
   if (screen_->control->visible) {
-    DrawControlLabels(0, screen_->control->active, screen_->control->hidden);
+    DrawControlLabels(0, screen_->control->visible);
   }
 
   // Generic message box
@@ -356,21 +354,21 @@ GvaStatusTypes ScreenGva::Update() {
     strcpy(tmp[0], screen_->message.brief.text);
     uint32_t background = gva::ConfigData::GetInstance()->GetThemeBackground();
     newrow.addCell({tmp[0],
-                    ALIGN_CENTRE,
+                    CellAlignType::ALIGN_CENTRE,
                     {HMI_WHITE},
                     {background << 16 && 0xff, background << 8 && 0xff, background && 0xff},
                     {HMI_WHITE},
-                    WEIGHT_BOLD},
+                    WeightType::WEIGHT_BOLD},
                    100);
     table.AddRow(newrow);
 
     strcpy(tmp[1], screen_->message.detail.text);
     newrow1.addCell({tmp[1],
-                     ALIGN_CENTRE,
+                     CellAlignType::ALIGN_CENTRE,
                      {HMI_WHITE},
                      {background << 16 && 0xff, background << 8 && 0xff, background && 0xff},
                      {HMI_WHITE},
-                     WEIGHT_NORMAL},
+                     WeightType::WEIGHT_NORMAL},
                     100);
     table.AddRow(newrow1);
     DrawTable(&table);
@@ -386,8 +384,8 @@ GvaStatusTypes ScreenGva::Update() {
 }
 
 WidgetX *ScreenGva::GetWidget(WidgetEnum widget) {
-  for (int i = 0; i < widget_list_.size(); ++i) {
-    // Try and match widget enum and return pointer to it
+  for (uint32_t i = 0; i < widget_list_.size(); ++i) {
+    // Try and match widget enum and return pouint32_ter to it
     if (widget_list_[i]->GetType() == widget) {
       return widget_list_[i];
     }

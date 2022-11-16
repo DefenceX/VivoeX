@@ -56,8 +56,8 @@ class labelAction {
 
 class ViewGva {
  public:
-  ViewGva(GvaFunctionEnum function, FunctionSelectType *top, CommonTaskKeysType *bottom, FunctionKeysType left,
-          FunctionKeysType right)
+  ViewGva(GvaFunctionEnum function, FunctionSelectType *top, CommonTaskKeys *bottom, FunctionKeys left,
+          FunctionKeys right)
       : function_(function), function_top_(top), common_bottom_(bottom), function_left_(left), function_right_(right) {
     valid_ = true;
   }
@@ -65,9 +65,9 @@ class ViewGva {
   bool Release() { valid_ = false; }
   void AddToggle(GvaKeyEnum key, bool rightActive, char *rightText, bool leftActive, char *leftText) {}
   FunctionSelectType *GetTop() { return function_top_; }
-  CommonTaskKeysType *GetBottom() { return common_bottom_; }
-  FunctionKeysType *GetLeft() { return &function_left_; }
-  FunctionKeysType *GetRight() { return &function_right_; }
+  CommonTaskKeys *GetBottom() { return common_bottom_; }
+  FunctionKeys *GetLeft() { return &function_left_; }
+  FunctionKeys *GetRight() { return &function_right_; }
   GvaFunctionEnum GetFunction() { return function_; }
 
  private:
@@ -76,12 +76,12 @@ class ViewGva {
   // Screen top
   FunctionSelectType *function_top_;
   // Screen bottom
-  CommonTaskKeysType *common_bottom_;
+  CommonTaskKeys *common_bottom_;
   // Screen left
-  FunctionKeysType function_left_;
+  FunctionKeys function_left_;
   labelAction *function_left_action_[6] = {0};
   // Screen right
-  FunctionKeysType function_right_;
+  FunctionKeys function_right_;
   labelAction *function_right_action_[6] = {0};
 };
 
@@ -89,15 +89,15 @@ typedef ViewGva ViewGva;
 
 class ViewGvaManager {
  public:
-  explicit ViewGvaManager(StatusBarType *StatusBar);
-  ViewGva *GetNewView(GvaFunctionEnum function, FunctionSelectType *top, CommonTaskKeysType *bottom,
-                      FunctionKeysType left, FunctionKeysType right);
-  ScreenType GetScreen(GvaFunctionEnum function);
+  explicit ViewGvaManager(StatusBar *StatusBar);
+  ViewGva *GetNewView(GvaFunctionEnum function, FunctionSelectType *top, CommonTaskKeys *bottom, FunctionKeys left,
+                      FunctionKeys right);
+  Screen GetScreen(GvaFunctionEnum function);
   ViewGva *GetView(GvaFunctionEnum function);
 
  private:
   ViewGva *view_[20];
-  StatusBarType *status_bar_;
+  StatusBar *status_bar_;
   int idLast_;
   int id_ = 0;
 };

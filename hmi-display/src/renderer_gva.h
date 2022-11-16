@@ -33,47 +33,13 @@
 #include "src/config_reader.h"
 #include "src/gva.h"
 #include "src/renderer_cairo.h"
+#include "src/widgets/widget.h"
 
 #define MAX_ROWS 50
 #define MAX_CELLS 10
 #define MAX_TEXT 80
 
 namespace gva {
-
-typedef enum { KEYBOARD_LOWER = 0, KEYBOARD_UPPER, KEYBOARD_NUMBERS } KeyboardModeType;
-
-typedef enum { ALIGN_LEFT = 0, ALIGN_CENTRE, ALIGN_RIGHT } cellAlignType;
-
-typedef enum { WEIGHT_NORMAL = 0, WEIGHT_BOLD, WEIGHT_ITALIC } WeightType;
-
-typedef enum {
-  ICON_NONE = 0,
-  ICON_UP_ARROW,
-  ICON_DOWN_ARROW,
-  ICON_LEFT_ARROW,
-  ICON_RIGHT_ARROW,
-  ICON_UP_ARROW_OUTLINE,
-  ICON_DOWN_ARROW_OUTLINE,
-  ICON_LEFT_ARROW_OUTLINE,
-  ICON_RIGHT_ARROW_OUTLINE,
-  ICON_PLUS,
-  ICON_MINUS,
-  ICON_ENTER,
-  ICON_ROTATE_LEFT,
-  ICON_ROTATE_RIGHT,
-  ICON_POWER_OFF,
-  ICON_LOCATION,
-  ICON_WARNING,
-  ICON_ERROR,
-  ICON_INFO,
-  ICON_CENTRE
-} IconType;
-
-struct GvaColourType {
-  uint32_t red;
-  uint32_t green;
-  uint32_t blue;
-};
 
 class RenderBase {
  public:
@@ -94,22 +60,22 @@ class RenderBase {
   uint32_t m_height = 0;
 };
 
-typedef struct GvaCellType {
+class GvaCell {
  public:
   char *text;
-  cellAlignType align;
+  CellAlignType align;
   GvaColourType foreground;
   GvaColourType background;
   GvaColourType textcolour;
   WeightType weight;
-} GvaCell;
+};
 
 class GvaRow : public RenderBase {
  public:
   GvaRow() {}
   GvaRow(uint32_t x, uint32_t y) : RenderBase(x, y) {}
-  uint32_t addCell(GvaCellType newcell, uint32_t width);
-  GvaCellType cell_[MAX_CELLS];
+  uint32_t addCell(GvaCell newcell, uint32_t width);
+  GvaCell cell_[MAX_CELLS];
   uint32_t widths_[MAX_CELLS];
   uint32_t cells_ = 0;
 };
@@ -188,6 +154,7 @@ class TouchGva {
 class RendererGva : public RendererCairo {
  public:
   RendererGva(uint32_t width, uint32_t height);
+  virtual ~RendererGva();
 
   ///
   /// \brief Draw all the labels on the screen
@@ -200,35 +167,29 @@ class RendererGva : public RendererCairo {
   void DrawLabels(char *text, uint32_t fontSize, uint32_t x, uint32_t y);
 
   ///
-  /// \brief Draw six function labels
-  ///
   /// \param x position of the labels, usefull for labels on left and right sides of the screen
-  /// \param active State of the label
-  /// \param hide Hide if true
+  /// \param state State of the label
   /// \param toggle Toggle
   /// \param toggleOn Toggle on
   /// \param labels Array of labels to be rendered
   ///
-  void DrawFunctionLabels(uint32_t x, uint32_t active, uint32_t hide, uint32_t toggle, uint32_t toggleOn,
-                          char labels[6][40]);
+  void DrawFunctionLabels(uint32_t x, LabelStates state, uint32_t toggle, uint32_t toggleOn, char labels[6][40]);
 
   ///
   /// \brief Draw the labels on the top of the screen
   ///
   /// \param y The y pixel position
-  /// \param active Active mask, each bit indicates active state
-  /// \param hide Hide mask, each bit indicates hidden state
+  /// \param state State of the label
   ///
-  void DrawTopLabels(uint32_t y, uint32_t active, uint32_t hide);
+  void DrawTopLabels(uint32_t y, LabelStates state);
 
   ///
   /// \brief Draw the control labels on the bottom of the screen
   ///
   /// \param y The y pixel position
-  /// \param active Active mask, each bit indicates active state
-  /// \param hide Hide mask, each bit indicates hidden state
+  /// \param state State of the label
   ///
-  void DrawControlLabels(uint32_t y, uint32_t active, uint32_t hide);
+  void DrawControlLabels(const uint32_t y, const std::array<CommonTaskKeys::Labels, 8> &labels);
 
   ///
   /// \brief Draw an icon
@@ -289,7 +250,7 @@ class RendererGva : public RendererCairo {
   /// \param align Alignment
   ///
   void DrawButton(char *keytext, uint32_t fontSize, uint32_t x, uint32_t y, uint32_t height, uint32_t width,
-                  uint32_t align);
+                  CellAlignType align);
 
   ///
   /// \brief Draw the onscreen keyboard

@@ -202,6 +202,8 @@
         "concepts": "cpp",
         "numbers": "cpp",
         "semaphore": "cpp",
-        "stop_token": "cpp"
+        "stop_token": "cpp",
+        "*.inc": "cpp",
+        "filesystem": "cpp"
     }
 }

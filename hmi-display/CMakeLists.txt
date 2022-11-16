@@ -6,7 +6,7 @@ pkg_check_modules(CAIRO REQUIRED cairo)
 pkg_check_modules(PANGO REQUIRED pango)
 pkg_check_modules(SWSCALE REQUIRED libswscale)
 
-add_subdirectory(widgets)
+add_subdirectory(src/widgets)
 add_subdirectory(common)
 #add_subdirectory(dds)
 #add_subdirectory(display)
@@ -60,9 +60,9 @@ set(SOURCES main.cc
 			src/renderer_gva.cc 
 			src/screen_gva.cc 
 			src/events_gva.cc .
-			widgets/keyboard.cc
-			widgets/compass.cc
-			widgets/alarm_indicator.cc
+			src/widgets/keyboard.cc
+			src/widgets/compass.cc
+			src/widgets/alarm_indicator.cc
 			common/debug.cc 
 			common/log_gva.cc 
 			src/hmi_gva.cc 
