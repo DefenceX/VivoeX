@@ -122,13 +122,24 @@ list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR}/external/install/usr/local/lib
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/cmake/CycloneDDS)
 set(CycloneDDS_DIR ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/cmake/CycloneDDS)
 
+execute_process(COMMAND arch OUTPUT_VARIABLE AARCH ERROR_VARIABLE ERROR OUTPUT_STRIP_TRAILING_WHITESPACE)
+if (${AARCH} STREQUAL "x86_64")
+  set(CYCLONE_INSTALL_PATH /external/install/usr/local/lib64/cmake/CycloneDDS) # Intel
+elseif(${AARCH} STREQUAL "aarch64")
+  set(CYCLONE_INSTALL_PATH /external/install/usr/local/lib/aarch64-linux-gnu/cmake/CycloneDDS) # ARM (Raspberry Pi)
+else()
+  message(FATAL_ERROR "Unrecognised or unsupported processor architecture ${AARCH}!!! ${ERROR}")
+endif()
+
+message (STATUS "Detected Cyclone installed at ${CYCLONE_INSTALL_PATH}")
+
 ExternalProject_Add(
     cyclonedds-cxx
     GIT_REPOSITORY      https://github.com/eclipse-cyclonedds/cyclonedds-cxx
     GIT_TAG             "0.10.2"
     GIT_SHALLOW         5
     GIT_CONFIG          fetch.recurseSubmodules=true
-    CMAKE_ARGS          -DCycloneDDS_DIR=${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/cmake/CycloneDDS -DCMAKE_INSTALL_MESSAGE=LAZY -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/external/install -DCMAKE_PREFIX_PATH=${CMAKE_BINARY_DIR}/external/install/usr/local/lib/cmake/CycloneDDS
+    CMAKE_ARGS          -DCycloneDDS_DIR=${CMAKE_BINARY_DIR}${CYCLONE_INSTALL_PATH} -DCMAKE_INSTALL_MESSAGE=LAZY -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/external/install -DCMAKE_PREFIX_PATH=${CMAKE_BINARY_DIR}/external/install/usr/local/lib/cmake/CycloneDDS
     PREFIX              ${CMAKE_BINARY_DIR}/external/cyclonedds-cxx/prefix
     TMP_DIR             ${CMAKE_BINARY_DIR}/external/cyclonedds-cxx/tmp
     STAMP_DIR           ${CMAKE_BINARY_DIR}/external/cyclonedds-cxx/stamp

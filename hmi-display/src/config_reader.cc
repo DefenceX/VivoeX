@@ -81,10 +81,7 @@ ConfigData* ConfigData::GetInstance() {
   //  This is a safer way to create an instance. instance = new Singleton is
   //  dangerous in case two instance threads wants to access at the same time
   if (config_ == nullptr) {
-    std::cout << "Got here 4 " << config_ << "\n";
-
     config_ = new ConfigData();
-    std::cout << "Got here 5 " << config_ << "\n";
   }
   return config_;
 }
