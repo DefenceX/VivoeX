@@ -93,9 +93,9 @@ class TableWidget {
     row->foreground_colour = Renderer::PackRgb(HMI_WHITE);
     row->outline_colour = Renderer::PackRgb(HMI_WHITE);
     row->highlight_colour = Renderer::PackRgb(HMI_YELLOW);
-    row->font_weight = WeightType::WEIGHT_NORMAL;
+    row->font_weight = WeightType::kWeightNormal;
     row->highlighted = false;
-    row->alignment = CellAlignType::ALIGN_LEFT;
+    row->alignment = CellAlignType::kAlignLeft;
     row_count_ += 1;
   }
 
@@ -122,7 +122,7 @@ class TableWidget {
   /// \param text
   /// \param width
   ///
-  void AddCell(char *text, int width) { AddCell(text, width, CellAlignType::ALIGN_LEFT); }
+  void AddCell(char *text, int width) { AddCell(text, width, CellAlignType::kAlignLeft); }
 
   ///
   /// \brief Add a new cell with background colour
@@ -133,7 +133,7 @@ class TableWidget {
   ///
   void AddCell(char *text, int width, uint64_t background_colour) {
     CellType *cell = &rows_[row_count_ - 1].cells[rows_[row_count_ - 1].cell_count];
-    AddCell(text, width, CellAlignType::ALIGN_LEFT);
+    AddCell(text, width, CellAlignType::kAlignLeft);
     cell->background_colour = background_colour;
   }
 

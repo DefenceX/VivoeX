@@ -527,26 +527,26 @@ void RendererCairo::SetTextFont(uint32_t slope, WeightType weight, const char *f
   strcpy(Draw_commands_[draw_tail_++].text, fontName);
 }
 
-uint32_t RendererCairo::GetTextWidth(char *str, uint32_t fontSize) {
+uint32_t RendererCairo::GetTextWidth(const std::string str, uint32_t fontSize) {
   cairo_t *cr = render_.cr;
   cairo_text_extents_t extents;
 
   cairo_select_font_face(cr, config_->GetThemeFont(), CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
   cairo_set_font_size(cr, fontSize);
-  cairo_text_extents(cr, str, &extents);
+  cairo_text_extents(cr, str.c_str(), &extents);
   return extents.x_advance;
 }
 
-uint32_t RendererCairo::GetTextHeight(char *str, uint32_t fontSize) {
+uint32_t RendererCairo::GetTextHeight(const std::string str, uint32_t fontSize) {
   cairo_t *cr = render_.cr;
   cairo_text_extents_t extents;
 
   cairo_set_font_size(cr, fontSize);
-  cairo_text_extents(cr, str, &extents);
+  cairo_text_extents(cr, str.c_str(), &extents);
   return extents.height;
 }
 
-void RendererCairo::DrawText(uint32_t x, uint32_t y, char *text, uint32_t size) {
+void RendererCairo::DrawText(uint32_t x, uint32_t y, const std::string text, uint32_t size) {
 #if INVERTED
   y = render_.size.height - y;
 #endif
@@ -555,29 +555,29 @@ void RendererCairo::DrawText(uint32_t x, uint32_t y, char *text, uint32_t size) 
   Draw_commands_[draw_tail_].points[0].x = x;
   Draw_commands_[draw_tail_].points[0].y = y;
   Draw_commands_[draw_tail_].arg1 = size;
-  strcpy(Draw_commands_[draw_tail_++].text, text);
+  strcpy(Draw_commands_[draw_tail_++].text, text.c_str());
 }
 
-void RendererCairo::DrawLabel(uint32_t x, uint32_t y, char *text, uint32_t size) {
+void RendererCairo::DrawLabel(uint32_t x, uint32_t y, const std::string text, uint32_t size) {
   y = render_.size.height - y;
 
   Draw_commands_[draw_tail_].command = COMMAND_TEXT;
   Draw_commands_[draw_tail_].points[0].x = x;
   Draw_commands_[draw_tail_].points[0].y = y;
   Draw_commands_[draw_tail_].arg1 = size;
-  strcpy(Draw_commands_[draw_tail_++].text, text);
+  strncpy(Draw_commands_[draw_tail_++].text, text.c_str(), sizeof(Draw_commands_[draw_tail_++].text));
 }
 
-void RendererCairo::DrawTextCentre(uint32_t x, char *text, uint32_t size) { DrawText(x, 200, text, size); }
+void RendererCairo::DrawTextCentre(uint32_t x, const std::string text, uint32_t size) { DrawText(x, 200, text, size); }
 
-uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, void *buffer, char *file) {
+uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, void *buffer, std::string file) {
   bool found_in_cache = false;
   uint32_t i = 0;
 
-  strcpy(image_list_[image_tail_].name, file);
+  strcpy(image_list_[image_tail_].name, file.c_str());
 
   for (i; i < cache_image_tail_; i++) {
-    if (strcmp(file, cache_image_list_[i].name) == 0) {
+    if (strcmp(file.c_str(), cache_image_list_[i].name) == 0) {
       // Found in cache
       found_in_cache = true;
       break;
@@ -590,8 +590,8 @@ uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, void *buffer, char *f
     image_list_[image_tail_].from_cache = true;
   } else {
     // Add to cache
-    cache_image_list_[cache_image_tail_].image = cairo_image_surface_create_from_png(file);
-    strcpy(cache_image_list_[cache_image_tail_].name, file);
+    cache_image_list_[cache_image_tail_].image = cairo_image_surface_create_from_png(file.c_str());
+    strcpy(cache_image_list_[cache_image_tail_].name, file.c_str());
     image_list_[image_tail_].from_cache = true;
     image_list_[image_tail_].image = cache_image_list_[cache_image_tail_++].image;
   }

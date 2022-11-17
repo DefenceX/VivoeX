@@ -30,7 +30,7 @@ namespace gva {
 
 void AlarmIndicator::Draw() {
   if (GetVisible()) {
-    screen_->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::WEIGHT_NORMAL,
+    screen_->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightNormal,
                          gva::ConfigData::GetInstance()->GetThemeFont());
     screen_->SetColourBackground(HMI_RED);
     screen_->SetColourForground(HMI_WHITE);

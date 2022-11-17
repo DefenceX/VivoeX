@@ -24,7 +24,9 @@
 
 #ifndef HMI_DISPLAY_SRC_GVA_H_
 #define HMI_DISPLAY_SRC_GVA_H_
+
 #include <array>
+#include <string>
 
 #define MAJOR 0
 #define MINOR 3
@@ -49,18 +51,30 @@ enum class LabelModeEnum { kLabelAll, kLabelStatusOnly, kLabelMinimal };
 
 enum LabelStates { kLabelHidden, kLabelDisabled, kLabelEnabled, kLabelEnabledSelected, kLabelEnabledSelectedChannel };
 
-typedef struct FunctionSelect {
+class FunctionSelect {
+ public:
   bool visible;
-  LabelStates state;
-} FunctionSelectType;
+
+  class Labels {
+   public:
+    LabelStates state;
+  };
+  std::array<Labels, 6> labels;
+};
 
 class FunctionKeys {
  public:
   bool visible;
-  LabelStates state;
-  uint32_t toggleActive;
-  uint32_t toggleOn;
-  char labels[6][40];
+  class Labels {
+   public:
+    LabelStates state;
+    bool toggleActive;
+    bool toggleOn;
+    std::string text;
+    std::string toggleText1;
+    std::string toggleText2;
+  };
+  std::array<Labels, 6> labels;
 };
 
 class CommonTaskKeys {
@@ -68,7 +82,7 @@ class CommonTaskKeys {
   class Labels {
    public:
     LabelStates state;
-    char text[40];
+    std::string text;
   };
   bool visible;
   std::array<CommonTaskKeys::Labels, 8> labels;
@@ -87,8 +101,13 @@ class StatusBar {
   uint32_t x;
   uint32_t y;
   LocationType location;
-  char labels[7][80];
-} StatusBarType;
+  class Labels {
+   public:
+    LabelStates state;
+    std::string text;
+  };
+  std::array<Labels, 6> labels;
+};
 
 enum SurfaceType { SURFACE_NONE = 0, SURFACE_FILE, SURFACE_BUFFER_RGB24, SURFACE_CAIRO, SURFACE_BLACKOUT };
 

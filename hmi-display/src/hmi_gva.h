@@ -245,7 +245,7 @@ struct Hmi : tinyfsm::Fsm<Hmi> {
   static gva::ViewGvaManager *manager_;
   static gva::ResolutionType view_;
   static gva::StatusBar status_;
-  static gva::FunctionSelectType top_;
+  static gva::FunctionSelect top_;
   static gva::CommonTaskKeys bottom_;
   static gva::Canvas canvas_;
   static gva::TableWidget alarms_;

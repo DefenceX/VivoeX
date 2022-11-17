@@ -28,6 +28,7 @@
 #include <pthread.h>
 
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "common/log_gva.h"
@@ -82,7 +83,7 @@ class Screen {
   } info;
   GvaFunctionEnum currentFunction;
   Canvas canvas;
-  FunctionSelectType *function_top;
+  FunctionSelect *function_top;
   CommonTaskKeys *control;
   StatusBar *status_bar;
   FunctionKeys function_left;
@@ -98,9 +99,9 @@ class Screen {
 //
 class args {
  public:
-  char *clockString;
-  char *locationFormat;
-  char *locationString;
+  std::string clockString;
+  std::string locationFormat;
+  std::string locationString;
   ScreenGva *screen;
   uint32_t *gps;
   nmeaINFO *info;

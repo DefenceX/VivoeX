@@ -56,15 +56,14 @@ class labelAction {
 
 class ViewGva {
  public:
-  ViewGva(GvaFunctionEnum function, FunctionSelectType *top, CommonTaskKeys *bottom, FunctionKeys left,
-          FunctionKeys right)
+  ViewGva(GvaFunctionEnum function, FunctionSelect *top, CommonTaskKeys *bottom, FunctionKeys left, FunctionKeys right)
       : function_(function), function_top_(top), common_bottom_(bottom), function_left_(left), function_right_(right) {
     valid_ = true;
   }
   bool Valid() { return valid_; }
   bool Release() { valid_ = false; }
   void AddToggle(GvaKeyEnum key, bool rightActive, char *rightText, bool leftActive, char *leftText) {}
-  FunctionSelectType *GetTop() { return function_top_; }
+  FunctionSelect *GetTop() { return function_top_; }
   CommonTaskKeys *GetBottom() { return common_bottom_; }
   FunctionKeys *GetLeft() { return &function_left_; }
   FunctionKeys *GetRight() { return &function_right_; }
@@ -74,7 +73,7 @@ class ViewGva {
   bool valid_ = false;
   GvaFunctionEnum function_;
   // Screen top
-  FunctionSelectType *function_top_;
+  FunctionSelect *function_top_;
   // Screen bottom
   CommonTaskKeys *common_bottom_;
   // Screen left
@@ -90,7 +89,7 @@ typedef ViewGva ViewGva;
 class ViewGvaManager {
  public:
   explicit ViewGvaManager(StatusBar *StatusBar);
-  ViewGva *GetNewView(GvaFunctionEnum function, FunctionSelectType *top, CommonTaskKeys *bottom, FunctionKeys left,
+  ViewGva *GetNewView(GvaFunctionEnum function, FunctionSelect *top, CommonTaskKeys *bottom, FunctionKeys left,
                       FunctionKeys right);
   Screen GetScreen(GvaFunctionEnum function);
   ViewGva *GetView(GvaFunctionEnum function);

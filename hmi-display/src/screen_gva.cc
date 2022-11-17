@@ -34,7 +34,9 @@
 #include <GeographicLib/LambertConformalConic.hpp>
 #include <GeographicLib/MGRS.hpp>
 #include <GeographicLib/UTMUPS.hpp>
+#include <iomanip>
 #include <iostream>
+#include <sstream>
 #include <string>
 
 #include "debug.h"
@@ -124,8 +126,10 @@ void *ClockUpdate(void *arg) {
     uint32_t i, ii = 0;
     t = time(NULL);
     tm = localtime(&t);
-    sprintf(a->clockString, "%02d/%02d/%02d %02d:%02d:%02d", tm->tm_mday, tm->tm_mon + 1, tm->tm_year + 1900,
-            tm->tm_hour, tm->tm_min, tm->tm_sec);
+    char clock[1000];
+    sprintf(clock, "%02d/%02d/%02d %02d:%02d:%02d", tm->tm_mday, tm->tm_mon + 1, tm->tm_year + 1900, tm->tm_hour,
+            tm->tm_min, tm->tm_sec);
+    a->clockString = clock;
     if (*a->gps > 0) {
       i = 0;
       tcflush(*a->gps, TCIOFLUSH);
@@ -156,10 +160,14 @@ void *ClockUpdate(void *arg) {
     if (a->info->lon && a->info->lat) {
       switch (a->location->locationFormat) {
         case LocationEnum::kLocationFormatLongLat:
+          a->locationFormat = "LONLAT";
+          {
+            std::stringstream stream;
+            stream << std::fixed << std::setprecision(2) << "Lat:" << a->info->lat << " Lon:" << a->info->lon << " ["
+                   << a->info->sig << "]" << a->info->fix;
+            a->locationString = stream.str();
+          }
           break;
-          sprintf(a->locationFormat, "LONLAT");
-          sprintf(a->locationString, "Lat:%05.06f Lon:%05.06f [%d,%d]", a->info->lat, a->info->lon, a->info->sig,
-                  a->info->fix);
         case LocationEnum::kLocationFormatMgrs: {
           int zone;
           bool northp;
@@ -167,8 +175,8 @@ void *ClockUpdate(void *arg) {
           UTMUPS::Forward(a->info->lat, a->info->lon, zone, northp, x, y);
           string mgrs;
           MGRS::Forward(zone, northp, x, y, a->info->lat, 5, mgrs);
-          sprintf(a->locationFormat, "MGRS");
-          sprintf(a->locationString, "%s", mgrs.c_str());
+          a->locationFormat, "MGRS";
+          a->locationString = mgrs;
         } break;
       }
     }
@@ -180,9 +188,9 @@ void ScreenGva::StartClock(StatusBar *barData) {
   pthread_t clock_thread_;
   args_ = (args *)malloc(sizeof(args));
   args_->active = true;
-  args_->clockString = barData->labels[0];
-  args_->locationFormat = barData->labels[1];
-  args_->locationString = barData->labels[2];
+  args_->clockString = barData->labels[0].text;
+  args_->locationFormat = barData->labels[1].text;
+  args_->locationString = barData->labels[2].text;
   args_->parser = &parser_;
   args_->info = &info_;
   args_->gps = &gps_;
@@ -247,23 +255,21 @@ GvaStatusTypes ScreenGva::Update() {
   }
 
   // Draw the LEFT bezel labels
-  if (screen_->function_left.state != LabelStates::kLabelDisabled) {
-    DrawFunctionLabels(1, screen_->function_left.state, screen_->function_left.toggleActive,
-                       screen_->function_left.toggleOn, screen_->function_left.labels);
+  if (screen_->function_left.visible) {
+    DrawFunctionLabels(1, screen_->function_left.labels);
   }
 
   // Draw the RIGHT bezel labels
-  if (screen_->function_right.state != LabelStates::kLabelDisabled) {
-    DrawFunctionLabels(DEFAULT_WIDTH - 100 - 1, screen_->function_right.state, screen_->function_right.toggleActive,
-                       screen_->function_right.toggleOn, screen_->function_right.labels);
+  if (screen_->function_right.visible) {
+    DrawFunctionLabels(DEFAULT_WIDTH - 100 - 1, screen_->function_right.labels);
   }
 
   // Draw the TOP bezel labels
-  if (screen_->function_top->state != LabelStates::kLabelDisabled) {
-    DrawTopLabels(DEFAULT_HEIGHT - 11, screen_->function_top->state);
+  if (screen_->function_top->visible) {
+    DrawTopLabels(DEFAULT_HEIGHT - 11, screen_->function_top->labels);
   }
 
-  // Draw the mauint32_tinance mode indicator
+  // Draw the maintenance mode indicator
   if (screen_->info.mode == ScreenMode::kModeMaintinance) {
     DrawMode();
   }
@@ -290,9 +296,9 @@ GvaStatusTypes ScreenGva::Update() {
                           UnpackBlue(config_->GetThemeStatusText())};
 
     for (i = 0; i < 7; i++) {
-      CellAlignType align = CellAlignType::ALIGN_LEFT;
-      if (i == 1) align = CellAlignType::ALIGN_CENTRE;
-      GvaCell cell = {screen_->status_bar->labels[i], align, border, background, text, WeightType::WEIGHT_BOLD};
+      CellAlignType align = CellAlignType::kAlignLeft;
+      if (i == 1) align = CellAlignType::kAlignCentre;
+      GvaCell cell = {screen_->status_bar->labels[i].text, align, border, background, text, WeightType::kWeightBold};
       newrow.addCell(cell, widths[i]);
     }
     table.AddRow(newrow);
@@ -338,7 +344,7 @@ GvaStatusTypes ScreenGva::Update() {
   widget_list_[0]->Draw();
 
   if (screen_->control->visible) {
-    DrawControlLabels(0, screen_->control->visible);
+    DrawControlLabels(0, screen_->control->labels);
   }
 
   // Generic message box
@@ -354,21 +360,21 @@ GvaStatusTypes ScreenGva::Update() {
     strcpy(tmp[0], screen_->message.brief.text);
     uint32_t background = gva::ConfigData::GetInstance()->GetThemeBackground();
     newrow.addCell({tmp[0],
-                    CellAlignType::ALIGN_CENTRE,
+                    CellAlignType::kAlignCentre,
                     {HMI_WHITE},
                     {background << 16 && 0xff, background << 8 && 0xff, background && 0xff},
                     {HMI_WHITE},
-                    WeightType::WEIGHT_BOLD},
+                    WeightType::kWeightBold},
                    100);
     table.AddRow(newrow);
 
     strcpy(tmp[1], screen_->message.detail.text);
     newrow1.addCell({tmp[1],
-                     CellAlignType::ALIGN_CENTRE,
+                     CellAlignType::kAlignCentre,
                      {HMI_WHITE},
                      {background << 16 && 0xff, background << 8 && 0xff, background && 0xff},
                      {HMI_WHITE},
-                     WeightType::WEIGHT_NORMAL},
+                     WeightType::kWeightNormal},
                     100);
     table.AddRow(newrow1);
     DrawTable(&table);

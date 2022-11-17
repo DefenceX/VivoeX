@@ -27,11 +27,11 @@
 
 namespace gva {
 
-enum class KeyboardModeType { KEYBOARD_LOWER = 0, KEYBOARD_UPPER, KEYBOARD_NUMBERS };
+enum class KeyboardModeType { kKeyboardLower = 0, kKeyboardUpper, kKeyboardNumbers };
 
-enum class CellAlignType { ALIGN_LEFT = 0, ALIGN_CENTRE, ALIGN_RIGHT };
+enum class CellAlignType { kAlignLeft = 0, kAlignCentre, kAlignRight };
 
-enum class WeightType { WEIGHT_NORMAL = 0, WEIGHT_BOLD, WEIGHT_ITALIC };
+enum class WeightType { kWeightNormal = 0, kWeightBold, kWeightItalic };
 
 typedef enum {
   ICON_NONE = 0,

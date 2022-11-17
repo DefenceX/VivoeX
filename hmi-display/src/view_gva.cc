@@ -29,7 +29,7 @@
 namespace gva {
 ViewGvaManager::ViewGvaManager(StatusBarType *status_bar) : status_bar_(status_bar) { idLast_ = 0; }
 
-ViewGva *ViewGvaManager::GetNewView(GvaFunctionEnum function, FunctionSelectType *top, CommonTaskKeys *bottom,
+ViewGva *ViewGvaManager::GetNewView(GvaFunctionEnum function, FunctionSelect *top, CommonTaskKeys *bottom,
                                     FunctionKeysType left, FunctionKeysType right) {
   view_[idLast_] = new ViewGva(function, top, bottom, left, right);
   return view_[idLast_++];

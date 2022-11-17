@@ -20,8 +20,6 @@ execute_process(COMMAND ../update.sh)
 # add_subdirectory(dds)
 add_subdirectory(video)
 add_subdirectory(hmi-display)
-add_subdirectory(gva-tools)
-configure_file(gva-tools/config.xml ${CMAKE_CURRENT_BINARY_DIR}/build/gva-tools/. COPYONLY)
 
 ## Here you can set the default 'dummy' camer feed images
 #set(IMAGE_PATH ${CMAKE_SOURCE_DIR}/images/uk)

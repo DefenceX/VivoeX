@@ -30,7 +30,7 @@ namespace gva {
 
 Keyboard::Keyboard(ScreenGva *screen) : WidgetX(screen, WIDGET_TYPE_KEYBOARD) {
   // Initalise keyboard widget, hidden on creation
-  mode_ = KeyboardModeType::KEYBOARD_UPPER;
+  mode_ = KeyboardModeType::kKeyboardUpper;
   SetVisible(false);
 }
 

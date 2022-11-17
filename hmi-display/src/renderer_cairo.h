@@ -31,6 +31,7 @@
 
 #include <iostream>
 #include <memory>
+#include <string>
 
 #include "src/config_reader.h"
 #include "src/gva.h"
@@ -158,12 +159,12 @@ class RendererCairo : public Renderer {
   uint32_t DrawColor(uint8_t r, uint8_t g, uint8_t b);
   uint32_t DrawColor(uint32_t rgb);
   void SetTextFont(uint32_t slope, WeightType weight, const char *fontName);
-  uint32_t GetTextWidth(const char *str, uint32_t fontSize);
-  uint32_t GetTextHeight(const char *str, uint32_t fontSize);
-  void DrawText(uint32_t x, uint32_t y, const char *text, uint32_t size);
-  void DrawLabel(uint32_t x, uint32_t y, const char *text, uint32_t size);
-  void DrawTextCentre(uint32_t x, const char *text, uint32_t size);
-  uint32_t TextureRGB(uint32_t x, uint32_t y, void *buffer, char *file);
+  uint32_t GetTextWidth(const std::string str, uint32_t fontSize);
+  uint32_t GetTextHeight(const std::string str, uint32_t fontSize);
+  void DrawText(uint32_t x, uint32_t y, const std::string text, uint32_t size);
+  void DrawLabel(uint32_t x, uint32_t y, const std::string text, uint32_t size);
+  void DrawTextCentre(uint32_t x, const std::string text, uint32_t size);
+  uint32_t TextureRGB(uint32_t x, uint32_t y, void *buffer, std::string file);
   uint32_t TextureRGB(uint32_t x, uint32_t y, void *buffer);
   uint32_t TextureRGB(uint32_t x, uint32_t y, cairo_surface_t *surface);
 

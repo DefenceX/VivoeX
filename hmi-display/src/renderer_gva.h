@@ -28,6 +28,7 @@
 #include <string.h>
 
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "src/config_reader.h"
@@ -62,7 +63,7 @@ class RenderBase {
 
 class GvaCell {
  public:
-  char *text;
+  std::string text;
   CellAlignType align;
   GvaColourType foreground;
   GvaColourType background;
@@ -173,7 +174,7 @@ class RendererGva : public RendererCairo {
   /// \param toggleOn Toggle on
   /// \param labels Array of labels to be rendered
   ///
-  void DrawFunctionLabels(uint32_t x, LabelStates state, uint32_t toggle, uint32_t toggleOn, char labels[6][40]);
+  void DrawFunctionLabels(uint32_t x, const std::array<FunctionKeys::Labels, 6> &labels);
 
   ///
   /// \brief Draw the labels on the top of the screen
@@ -181,7 +182,7 @@ class RendererGva : public RendererCairo {
   /// \param y The y pixel position
   /// \param state State of the label
   ///
-  void DrawTopLabels(uint32_t y, LabelStates state);
+  void DrawTopLabels(uint32_t y, const std::array<FunctionSelect::Labels, 6> &labels);
 
   ///
   /// \brief Draw the control labels on the bottom of the screen
@@ -275,7 +276,7 @@ class RendererGva : public RendererCairo {
                             {'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', '-'},
                             {'z', 'x', 'c', 'v', 'b', 'n', 'm', ' ', '-', '-'}};
   char numKeys_[3][10] = {{'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'},
-                          {'-', '_', '.', ',', ';', ':', '"', '-', '-', '-'},
+                          {'-', '_', '.', ',', ';', ':', '"', '- #include <string> ', '-', '-'},
                           {'!', '@', '#', '$', '%', '^', '&', ' ', '-', '-'}};
 
  private:
@@ -285,7 +286,7 @@ class RendererGva : public RendererCairo {
 
 class FunctionKeySimple {
  public:
-  void Draw(RendererGva *r, uint32_t x, uint32_t y, uint32_t width, uint32_t height, char *text);
+  void Draw(RendererGva *r, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::string text);
   uint32_t GetX() { return x_; }
   uint32_t GetY() { return y_; }
 
@@ -296,7 +297,7 @@ class FunctionKeySimple {
 
 class FunctionKeyToggle : public FunctionKeySimple {
  public:
-  void toggle(RendererGva *r, char *label1, char *label2);
+  void Toggle(RendererGva *r, const std::string &label1, const std::string &label2);
 };
 
 }  // namespace gva

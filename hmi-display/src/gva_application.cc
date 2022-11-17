@@ -248,17 +248,17 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
         case GvaKeyEnum::kKeyF17:
           // F17 Control Arrow Up
           {
-            keyboard->mode_ = (keyboard->mode_ == KeyboardModeType::KEYBOARD_UPPER) ? KeyboardModeType::KEYBOARD_LOWER
-                                                                                    : KeyboardModeType::KEYBOARD_UPPER;
+            keyboard->mode_ = (keyboard->mode_ == KeyboardModeType::kKeyboardUpper) ? KeyboardModeType::kKeyboardLower
+                                                                                    : KeyboardModeType::kKeyboardUpper;
             Dispatch(GvaKeyEnum::kKeyF17);
           }
           break;
         case GvaKeyEnum::kKeyF18:
           // F18 Control Arrow Down
           {
-            keyboard->mode_ = (keyboard->mode_ == KeyboardModeType::KEYBOARD_NUMBERS)
-                                  ? KeyboardModeType::KEYBOARD_UPPER
-                                  : KeyboardModeType::KEYBOARD_NUMBERS;
+            keyboard->mode_ = (keyboard->mode_ == KeyboardModeType::kKeyboardNumbers)
+                                  ? KeyboardModeType::kKeyboardUpper
+                                  : KeyboardModeType::kKeyboardNumbers;
             Dispatch(event.key_);
           }
           break;
