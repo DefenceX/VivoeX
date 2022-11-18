@@ -241,7 +241,7 @@ uint32_t RendererGva::KeyToInt(GvaKeyEnum key) {
   }
 }  // namespace gva
 
-void RendererGva::DrawTopLabels(uint32_t y, const std::array<FunctionSelect::Labels, 6> &labels) {
+void RendererGva::DrawTopLabels(uint32_t y, const std::array<FunctionSelect::Labels, 8> &labels) {
   uint32_t i = 0;
   uint32_t offset = DEFAULT_WIDTH * 0.02;
   uint32_t width = (DEFAULT_WIDTH - offset * 2) / 8;

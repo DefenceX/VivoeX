@@ -34,7 +34,7 @@
 
 #define MIN_HEIGHT 480
 
-enum SurfaceType { SURFACE_NONE = 0, SURFACE_FILE, SURFACE_BUFFER_RGB24, SURFACE_CAIRO, SURFACE_BLACKOUT };
+enum class SurfaceType { SURFACE_NONE = 0, SURFACE_FILE, SURFACE_BUFFER_RGB24, SURFACE_CAIRO, SURFACE_BLACKOUT };
 
 #define MIN_WIDTH 640
 
@@ -51,22 +51,23 @@ enum class LabelModeEnum { kLabelAll, kLabelStatusOnly, kLabelMinimal };
 
 enum LabelStates { kLabelHidden, kLabelDisabled, kLabelEnabled, kLabelEnabledSelected, kLabelEnabledSelectedChannel };
 
-class FunctionSelect {
- public:
+struct FunctionSelect {
   bool visible;
 
-  class Labels {
+  struct Labels {
    public:
     LabelStates state;
   };
-  std::array<Labels, 6> labels;
+  std::array<Labels, 8> labels;
 };
 
-class FunctionKeys {
- public:
+///
+/// \brief These are at the top of the screen
+///
+///
+struct FunctionKeys {
   bool visible;
-  class Labels {
-   public:
+  struct Labels {
     LabelStates state;
     bool toggleActive;
     bool toggleOn;
@@ -77,39 +78,38 @@ class FunctionKeys {
   std::array<Labels, 6> labels;
 };
 
-class CommonTaskKeys {
- public:
-  class Labels {
-   public:
+///
+/// \brief These are at the bottom of the screen
+///
+///
+struct CommonTaskKeys {
+  bool visible;
+  struct Labels {
     LabelStates state;
     std::string text;
   };
-  bool visible;
   std::array<CommonTaskKeys::Labels, 8> labels;
 };
 
-class LocationType {
- public:
+struct LocationType {
   LocationEnum locationFormat;
   float lat;
   float lon;
 };
 
-class StatusBar {
- public:
+struct StatusBar {
   bool visible;
   uint32_t x;
   uint32_t y;
   LocationType location;
-  class Labels {
-   public:
+  struct Labels {
     LabelStates state;
     std::string text;
   };
   std::array<Labels, 6> labels;
 };
 
-enum SurfaceType { SURFACE_NONE = 0, SURFACE_FILE, SURFACE_BUFFER_RGB24, SURFACE_CAIRO, SURFACE_BLACKOUT };
+enum class SurfaceType { kSurfaceNone = 0, kSurfaceFile, kSurfaceBufferRgb24, kSurfaceCairo, kSurfaceBlackout };
 
 ///
 /// \brief This is where you define all your screens, these are just the defaults

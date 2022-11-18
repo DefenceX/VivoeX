@@ -89,7 +89,7 @@ typedef ViewGva ViewGva;
 class ViewGvaManager {
  public:
   explicit ViewGvaManager(StatusBar *StatusBar);
-  ViewGva *GetNewView(GvaFunctionEnum function, FunctionSelect *top, CommonTaskKeys *bottom, FunctionKeys left,
+  ViewGva *AddNewView(GvaFunctionEnum function, FunctionSelect *top, CommonTaskKeys *bottom, FunctionKeys left,
                       FunctionKeys right);
   Screen GetScreen(GvaFunctionEnum function);
   ViewGva *GetView(GvaFunctionEnum function);

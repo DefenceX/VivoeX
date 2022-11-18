@@ -126,7 +126,7 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
   if (options_.videoEnabled) {
     // Get the live video frame if Driver (DRV)
     if (hmi::GetScreen()->currentFunction == GvaFunctionEnum::kDriver) {
-      hmi::GetScreen()->canvas.bufferType = SURFACE_CAIRO;
+      hmi::GetScreen()->canvas.bufferType = SurfaceType::kSurfaceCairo;
       hmi::GetScreen()->canvas.surface = cairo_image_surface_create(CAIRO_FORMAT_RGB24, DEFAULT_WIDTH, DEFAULT_HEIGHT);
       char *test = reinterpret_cast<char *>(cairo_image_surface_get_data(hmi::GetScreen()->canvas.surface));
       rtp_stream1_->GvaReceiveFrame(test, RGBA_COLOUR);

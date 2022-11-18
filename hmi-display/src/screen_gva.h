@@ -40,47 +40,44 @@
 
 namespace gva {
 
-class Canvas {
- public:
+struct Canvas {
   bool visible;
   SurfaceType bufferType;
-  char filename[256];
+  std::string filename;
   char *buffer;
   cairo_surface_t *surface;
 };
 
-class Label {
- public:
+struct Label {
   bool visible;
-  char text[256];
+  std::string text;
   uint32_t x;
   uint32_t y;
   uint32_t fontSize;
 };
 
-class Message {
- public:
+struct Message {
   bool visible;
   uint32_t width;
   IconType icon;
   struct {
-    char text[256];
+    std::string text;
     uint32_t fontSize;
   } brief;
   struct {
-    char text[4096];
+    std::string text;
     uint32_t fontSize;
   } detail;
 };
 
-class Screen {
- public:
+struct Screen {
   struct {
    public:
-    char name[100];
+    std::string name;
     ScreenMode mode;
-    char gpsDevice[100];
+    std::string gpsDevice;
   } info;
+
   GvaFunctionEnum currentFunction;
   Canvas canvas;
   FunctionSelect *function_top;
@@ -97,8 +94,7 @@ class Screen {
 //
 // These are used by the clock thread to update the time and refresh the screen
 //
-class args {
- public:
+struct args {
   std::string clockString;
   std::string locationFormat;
   std::string locationString;

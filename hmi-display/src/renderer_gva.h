@@ -182,7 +182,7 @@ class RendererGva : public RendererCairo {
   /// \param y The y pixel position
   /// \param state State of the label
   ///
-  void DrawTopLabels(uint32_t y, const std::array<FunctionSelect::Labels, 6> &labels);
+  void DrawTopLabels(uint32_t y, const std::array<FunctionSelect::Labels, 8> &labels);
 
   ///
   /// \brief Draw the control labels on the bottom of the screen

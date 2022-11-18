@@ -74,7 +74,7 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
   nmea_parser_init(&parser_);
 
   // Open File Descriptor
-  gps_ = open(screen->info.gpsDevice, O_RDWR | O_NONBLOCK | O_NDELAY);
+  gps_ = open(screen->info.gpsDevice.c_str(), O_RDWR | O_NONBLOCK | O_NDELAY);
   if (gps_ > 0) {
     sprintf(tmp, "GPS Opened %s", screen->info.gpsDevice);
     logGva::log(tmp, LOG_INFO);
@@ -216,21 +216,21 @@ GvaStatusTypes ScreenGva::Update() {
 
   // Draw the background canvas first
   switch (screen_->canvas.bufferType) {
-    case SURFACE_CAIRO:
+    case SurfaceType::kSurfaceCairo:
       TextureRGB(0, 0, screen_->canvas.surface);
       break;
-    case SURFACE_FILE:
+    case SurfaceType::kSurfaceFile:
       TextureRGB(0, 0, screen_->canvas.buffer);
       TextureRGB(0, 0, texture, screen_->canvas.filename);
       break;
     default:
-    case SURFACE_NONE:
+    case SurfaceType::kSurfaceNone:
       // Set background green
       SetColourForground(config_->GetThemeBackground());
       SetColourBackground(config_->GetThemeBackground());
       DrawRectangle(0, 0, width_, height_, true);
       break;
-    case SURFACE_BLACKOUT:
+    case SurfaceType::kSurfaceBlackout:
       // Set background black
       SetColourForground(HMI_BLACK);
       SetColourBackground(HMI_BLACK);
@@ -349,7 +349,6 @@ GvaStatusTypes ScreenGva::Update() {
 
   // Generic message box
   if (screen_->message.visible) {
-    char tmp[2][MAX_TEXT];
     GvaTable table(320 - 150, 260, 300);
     table.SetFontName(config_->GetThemeFont());
     GvaRow newrow;
@@ -357,9 +356,8 @@ GvaStatusTypes ScreenGva::Update() {
 
     table.border_ = config_->GetThemeLabelBorderThickness();
 
-    strcpy(tmp[0], screen_->message.brief.text);
     uint32_t background = gva::ConfigData::GetInstance()->GetThemeBackground();
-    newrow.addCell({tmp[0],
+    newrow.addCell({screen_->message.brief.text,
                     CellAlignType::kAlignCentre,
                     {HMI_WHITE},
                     {background << 16 && 0xff, background << 8 && 0xff, background && 0xff},
@@ -368,8 +366,7 @@ GvaStatusTypes ScreenGva::Update() {
                    100);
     table.AddRow(newrow);
 
-    strcpy(tmp[1], screen_->message.detail.text);
-    newrow1.addCell({tmp[1],
+    newrow1.addCell({screen_->message.detail.text,
                      CellAlignType::kAlignCentre,
                      {HMI_WHITE},
                      {background << 16 && 0xff, background << 8 && 0xff, background && 0xff},

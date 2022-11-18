@@ -27,10 +27,10 @@
 #include "screen_gva.h"
 
 namespace gva {
-ViewGvaManager::ViewGvaManager(StatusBarType *status_bar) : status_bar_(status_bar) { idLast_ = 0; }
+ViewGvaManager::ViewGvaManager(StatusBar *status_bar) : status_bar_(status_bar) { idLast_ = 0; }
 
-ViewGva *ViewGvaManager::GetNewView(GvaFunctionEnum function, FunctionSelect *top, CommonTaskKeys *bottom,
-                                    FunctionKeysType left, FunctionKeysType right) {
+ViewGva *ViewGvaManager::AddNewView(GvaFunctionEnum function, FunctionSelect *top, CommonTaskKeys *bottom,
+                                    FunctionKeys left, FunctionKeys right) {
   view_[idLast_] = new ViewGva(function, top, bottom, left, right);
   return view_[idLast_++];
 }

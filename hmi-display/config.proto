@@ -175,17 +175,23 @@ message Gva {
   optional int32 zoom = 9 [default = 20000];
   optional string device = 10;
     
-// Big Ben    ENABLE_OSMSCOUT
-//    optional double test_lon = 11 [default = -0.124240];
-//    optional double test_lat = 12 [default = 51.500655];
+  // Big Ben    ENABLE_OSMSCOUT
+  // optional double test_lon = 11 [default = -0.124240];
+  // optional double test_lat = 12 [default = 51.500655];
 
-// London Excel (DSEI)
-//  optional double test_lon = 11 [default = 0.029900];
-//  optional double test_lat = 12 [default = 51.508684];
+  // London Excel (DSEI)
+  // optional double test_lon = 11 [default = 0.029900];
+  // optional double test_lat = 12 [default = 51.508684];
 
-// Redbank, QLD
-  optional double test_lon = 11 [default = -27.581882];
-  optional double test_lat = 12 [default = 152.875558];
+  // Redbank, QLD
+  // optional double test_lon = 11 [default = -27.581882];
+  // optional double test_lat = 12 [default = 152.875558];
+
+  // Puckapunyal, QLD
+  optional double test_lon = 11 [default = -36.9551];
+  optional double test_lat = 12 [default = 144.89585];
+
+
 
   optional string gps_device = 13 [default = "/dev/ttyUSB0"];
 
