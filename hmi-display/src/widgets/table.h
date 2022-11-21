@@ -45,8 +45,8 @@ class TableWidget {
   ///
   class CellType {
    public:
-    CellType() = default;
-    ~CellType() = default;
+    CellType() {}
+    ~CellType() {}
     CellType(const std::string text, const uint32_t width, const uint32_t background_colour,
              const uint32_t foreground_colour, const uint32_t outline_colour, const uint32_t highlight_colour,
              const CellAlignType alignment);

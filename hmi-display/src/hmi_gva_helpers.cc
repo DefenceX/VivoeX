@@ -22,6 +22,8 @@
 /// \file hmi_gva_helpers.cc
 ///
 
+#include <sstream>
+
 #include "hmi_gva.h"
 
 namespace gva {
@@ -68,20 +70,29 @@ void HmiHelper::TableLicences(TableWidget *table) {
 void HmiHelper::TableSystem(TableWidget *table) {
   table->Reset();
   table->visible_ = true;
+  printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
 
   table->x_ = 110;
   table->y_ = 390;
   table->width_ = 420;
+  printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
 
   table->AddRow(WeightType::kWeightBold);
+  printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
   table->AddCell("Fuction", 80);
+  printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
   table->AddCell("Status", 20);
 
   table->AddRow();
-  char tmp[100];
-  snprintf(tmp, sizeof(tmp), "HMI Version %d.%d.%d", MAJOR, MINOR, PATCH);
-  table->AddCell(tmp, 80);
+  printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
+
+  std::stringstream stream;
+  stream << "HMI Version " << MAJOR << "." << MINOR << "." << PATCH;
+  printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
+  table->AddCell(stream.str(), 80);
+  printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
   table->AddCell("Ok", 20);
+  printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
 
   table->AddRow();
   table->AddCell("GPS Source, /dev/ttyUSB0", 80);
@@ -98,6 +109,7 @@ void HmiHelper::TableSystem(TableWidget *table) {
   table->AddRow();
   table->AddCell("Timesource GPS Lock", 80);
   table->AddCell("Off", 20, Renderer::PackRgb(HMI_ORANGE));
+  printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
 }
 
 void HmiHelper::TableAlarms(TableWidget *table) {

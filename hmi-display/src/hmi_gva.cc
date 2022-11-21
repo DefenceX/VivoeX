@@ -666,9 +666,11 @@ struct StateSYS : Hmi {
       filename.append("/FrontCenter.png");
       SET_CANVAS_PNG(filename.c_str());
 
+      printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
       HmiHelper::TableSystem(&screen_.table);
 
       screen_.function_top->labels[3].state = LabelStates::kLabelEnabledSelected;
+      printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
     }
   };
 
@@ -899,14 +901,11 @@ struct StateOn : Hmi {
     manager_->AddNewView(GvaFunctionEnum::kAlarmsX, &top_, &bottom_,
                          gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden(),
                          gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden());
-    printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
 
     screen_ = manager_->GetScreen(GvaFunctionEnum::kSystems);
-    printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
 
     // Create the screen render now
     screen_render_ = new ScreenGva(&screen_, view_.width, view_.height);
-    printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
 
     // Configure the widgets
     ((Compass *)screen_render_->GetWidget(WIDGET_TYPE_COMPASS))->bearingSight_ = 33;
@@ -915,11 +914,9 @@ struct StateOn : Hmi {
     screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(true);
     screen_render_->GetWidget(WIDGET_TYPE_ALARM_INDICATOR)->SetVisible(true);
     screen_render_->GetWidget(WIDGET_TYPE_ALARM_INDICATOR)->SetY(422);
-    printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
 
     AlarmIndicator *ai = (AlarmIndicator *)screen_render_->GetWidget(WIDGET_TYPE_ALARM_INDICATOR);
     strcpy(ai->text_, "Engine over temperature");
-    printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
 
     screen_.canvas = canvas_;
     screen_.canvas.visible = true;

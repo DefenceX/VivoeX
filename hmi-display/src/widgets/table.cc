@@ -85,9 +85,8 @@ void TableWidget::AddCell(std::string text, uint32_t width, uint32_t background_
 
 void TableWidget::AddCell(std::string text, uint32_t width, CellAlignType align, uint32_t background_colour) {
   auto row = rows_.end();
-  // CellType cell(text, width, row->background_colour_, row->foreground_colour_, row->outline_colour_,
-  //               row->highlight_colour_, align);
-  CellType cell(text, width, 1, 2, 3, 4, align);
+  CellType cell(text, width, row->GetBackgroundColour(), row->GetForegroundColour(), row->GetOutlineColour(),
+                row->GetHighlightColour(), align);
   row->cells_.push_back(cell);
 }
 

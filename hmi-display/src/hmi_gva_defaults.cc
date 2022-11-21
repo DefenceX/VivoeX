@@ -57,6 +57,7 @@ static FunctionSelect DefaultSettings::GetDefaultFunctionSelect() {
   function_select.labels[5].state = LabelStates::kLabelEnabled;
   function_select.labels[6].state = LabelStates::kLabelDisabled;
   function_select.labels[7].state = LabelStates::kLabelEnabled;
+  return function_select;
 }
 
 static StatusBar DefaultSettings::GetDefaultStatusBar() {
@@ -74,6 +75,7 @@ static StatusBar DefaultSettings::GetDefaultStatusBar() {
   status_bar.labels[4].text = "A:5";
   status_bar.labels[5].text = "C:1";
   status_bar.labels[6].text = "O:2";
+  return status_bar;
 }
 
 static Canvas DefaultSettings::GetDefaultCanvas() {
@@ -83,6 +85,7 @@ static Canvas DefaultSettings::GetDefaultCanvas() {
   canvas.filename = "";
   canvas.buffer = nullptr;
   canvas.surface = nullptr;
+  return canvas;
 }
 
 static FunctionKeys DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden() {
@@ -106,6 +109,7 @@ static FunctionKeys DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden() {
   keys.labels[5].state = LabelStates::kLabelHidden;
   keys.labels[5].text = "Unused";
   keys.labels[5].toggleActive = false;
+  return keys;
 }
 
 static FunctionKeys DefaultSettings::GetDefaultFunctionKeysSituationalAwarenessLeft() {
@@ -129,6 +133,7 @@ static FunctionKeys DefaultSettings::GetDefaultFunctionKeysSituationalAwarenessL
   keys.labels[5].state = LabelStates::kLabelEnabled;
   keys.labels[5].text = "Front left";
   keys.labels[5].toggleActive = false;
+  return keys;
 }
 
 static FunctionKeys DefaultSettings::GetDefaultFunctionKeysSituationalAwarenessRight() {
@@ -152,6 +157,7 @@ static FunctionKeys DefaultSettings::GetDefaultFunctionKeysSituationalAwarenessR
   keys.labels[5].state = LabelStates::kLabelEnabled;
   keys.labels[5].text = "Left";
   keys.labels[5].toggleActive = false;
+  return keys;
 }
 
 static FunctionKeys DefaultSettings::GetDefaultFunctionKeysWeaponsLeft() {
@@ -175,6 +181,7 @@ static FunctionKeys DefaultSettings::GetDefaultFunctionKeysWeaponsLeft() {
   keys.labels[5].state = LabelStates::kLabelHidden;
   keys.labels[5].text = "Unused";
   keys.labels[5].toggleActive = false;
+  return keys;
 }
 
 static FunctionKeys DefaultSettings::GetDefaultFunctionKeysWeaponsRight() {
@@ -198,4 +205,5 @@ static FunctionKeys DefaultSettings::GetDefaultFunctionKeysWeaponsRight() {
   keys.labels[5].state = LabelStates::kLabelHidden;
   keys.labels[5].text = "Unused";
   keys.labels[5].toggleActive = false;
+  return keys;
 }
