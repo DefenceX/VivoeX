@@ -66,7 +66,7 @@ void GvaApplication::Exec() {
   //
   // Start the render and event loop
   //
-  hmi::GetRendrer()->init(640, 480, gva::ConfigData::GetInstance()->GetFullscreen(), Update,
+  hmi::GetRendrer()->Init(640, 480, gva::ConfigData::GetInstance()->GetFullscreen(), Update,
                           reinterpret_cast<void *>(io_.get()));
   // Free the config reader (writes data back to disk)
   gva::ConfigData::GetInstance()->WriteData();

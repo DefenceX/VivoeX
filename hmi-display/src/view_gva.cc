@@ -35,9 +35,9 @@ ViewGva *ViewGvaManager::AddNewView(GvaFunctionEnum function, FunctionSelect *to
   return view_[idLast_++];
 }
 
-ScreenType ViewGvaManager::GetScreen(GvaFunctionEnum function) {
+Screen ViewGvaManager::GetScreen(GvaFunctionEnum function) {
   int i = 0;
-  ScreenType screen = {0};
+  Screen screen = {0};
   for (i = 0; i < idLast_; i++) {
     if (view_[i]->GetFunction() == function) {
       screen.status_bar = status_bar_;
@@ -53,7 +53,7 @@ ScreenType ViewGvaManager::GetScreen(GvaFunctionEnum function) {
 
 ViewGva *ViewGvaManager::GetView(GvaFunctionEnum function) {
   int i = 0;
-  ScreenType screen = {0};
+  Screen screen = {0};
   for (i = 0; i < idLast_; i++) {
     if (view_[i]->GetFunction() == function) {
       return view_[i];

@@ -277,7 +277,7 @@ void RendererCairo::Draw() {
   cairo_paint(cr);
 }
 
-uint32_t RendererCairo::init(uint32_t width, uint32_t height, bool fullscreen, CallbackType cb, void *arg) {
+uint32_t RendererCairo::Init(uint32_t width, uint32_t height, bool fullscreen, CallbackType cb, void *arg) {
   render_.size.width = width;
   render_.size.height = height;
 
@@ -309,21 +309,21 @@ uint32_t RendererCairo::init(uint32_t width, uint32_t height, bool fullscreen, C
 void RendererCairo::SetPixel(uint32_t x, uint32_t y) {}
 
 void RendererCairo::SetColour(uint8_t red, uint8_t green, uint8_t blue) {
-  SetColourForground(red, green, blue);
+  SetColourForeground(red, green, blue);
   SetColourBackground(red, green, blue);
 }
 
 void RendererCairo::SetColour(uint32_t rgb) { SetColour((rgb & 0xff0000) >> 16, (rgb & 0xff00) >> 8, rgb & 0xff); }
 
-void RendererCairo::SetColourForground(uint8_t red, uint8_t green, uint8_t blue) {
+void RendererCairo::SetColourForeground(uint8_t red, uint8_t green, uint8_t blue) {
   Draw_commands_[draw_tail_].command = COMMAND_COLOUR_FG;
   Draw_commands_[draw_tail_].arg1 = red;
   Draw_commands_[draw_tail_].arg2 = green;
   Draw_commands_[draw_tail_++].arg3 = blue;
 }
 
-void RendererCairo::SetColourForground(uint32_t rgb) {
-  SetColourForground((rgb & 0xff0000) >> 16, (rgb & 0xff00) >> 8, rgb & 0xff);
+void RendererCairo::SetColourForeground(uint32_t rgb) {
+  SetColourForeground((rgb & 0xff0000) >> 16, (rgb & 0xff00) >> 8, rgb & 0xff);
 }
 
 void RendererCairo::SetColourBackground(uint8_t red, uint8_t green, uint8_t blue) {

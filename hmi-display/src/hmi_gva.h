@@ -184,14 +184,16 @@ struct Hmi : tinyfsm::Fsm<Hmi> {
   // alternative: enforce entry actions in all States (pure virtual)
   // virtual void entry(void) = 0;
  protected:
-  static gva::StatusBar status_;
-  static gva::FunctionSelect top_;
-  static gva::CommonTaskKeys bottom_;
-  static gva::Canvas canvas_;
-  static gva::TableWidget alarms_;
-  static gva::Screen screen_;
-  static gva::ScreenGva *screen_render_;
-  static gva::rendererMap *map_;
+  static ViewGvaManager *manager_;
+  static ResolutionType view_;
+  static StatusBar status_;
+  static FunctionSelect top_;
+  static CommonTaskKeys bottom_;
+  static Canvas canvas_;
+  static TableWidget alarms_;
+  static Screen screen_;
+  static ScreenGva *screen_render_;
+  static rendererMap *map_;
   static GvaFunctionEnum lastState_;
   static bool alarmson_;
 

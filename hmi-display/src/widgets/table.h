@@ -25,154 +25,152 @@
 #define HMI_DISPLAY_SRC_WIDGETS_TABLE_H_
 
 #include <memory>
+#include <string>
+#include <vector>
 
 #include "src/renderer_gva.h"
 #include "src/widgets/widget.h"
 
 namespace gva {
 
-class CellType {
- public:
-  int width;
-  char text[256];
-  uint64_t background_colour;
-  uint64_t foreground_colour;
-  uint64_t outline_colour;
-  uint64_t highlight_colour;
-  CellAlignType alignment;
-};
-
-#define MAX_CELLS 20
-class RowType {
- public:
-  uint32_t cell_count;
-  CellType cells[MAX_CELLS];
-  uint64_t background_colour;
-  uint64_t foreground_colour;
-  HMI_DISPLAY_SRC_RENDERER_GVA_H_
-  uint64_t outline_colour;
-  uint64_t highlight_colour;
-  WeightType font_weight;
-  bool highlighted;
-  CellAlignType alignment;
-};
-
-#define MAX_ROWS 100
+///
+/// \brief A widget respresenting a table of elements
+///
+///
 class TableWidget {
  public:
+  class CellType {
+   public:
+    CellType(const uint32_t width, const std::string &text, const uint32_t background_colour,
+             const uint32_t foreground_colour, const uint32_t outline_colour, const uint32_t highlight_colour,
+             const CellAlignType alignment);
+    CellType &operator=(const CellType &a) {
+      width_ = a.width_;
+      text_ = a.text_;
+      background_colour_ = a.background_colour_;
+      foreground_colour_ = a.foreground_colour_;
+      outline_colour_ = a.outline_colour_;
+      highlight_colour_ = a.highlight_colour_;
+      alignment_ = a.alignment_;
+    }
+    uint32_t width_;
+    std::string text_;
+    uint32_t background_colour_;
+    uint32_t foreground_colour_;
+    uint32_t outline_colour_;
+    uint32_t highlight_colour_;
+    CellAlignType alignment_;
+  };
+
+  class RowType {
+   public:
+    RowType(const uint32_t background_colour, const uint32_t foreground_colour, const uint32_t outline_colour,
+            const uint32_t highlight_colour, const WeightType font_weight, const bool highlighted,
+            const CellAlignType alignment);
+    RowType &operator=(const RowType &a) {
+      background_colour_ = a.background_colour_;
+      foreground_colour_ = a.foreground_colour_;
+      outline_colour_ = a.outline_colour_;
+      highlight_colour_ = a.highlight_colour_;
+      font_weight_ = a.font_weight_;
+      highlighted_ = a.highlighted_;
+      alignment_ = a.alignment_;
+      return *this;
+    }
+    uint32_t cell_count_;
+    std::vector<CellType> cells_;
+    uint32_t background_colour_;
+    uint32_t foreground_colour_;
+    uint32_t outline_colour_;
+    uint32_t highlight_colour_;
+    WeightType font_weight_;
+    bool highlighted_;
+    CellAlignType alignment_;
+  };
+
   TableWidget() { configuration_ = gva::ConfigData::GetInstance(); }
 
   ///
   /// \brief Add a row to the table
   ///
-  /// \param forground_colour Forground colour
+  /// \param forground_colour Foreground colour
   /// \param background_colour Background colour
   /// \param outline_colour Outline colour
   /// \param highlight_colour Highlight colour
-  /// \param font_weight Font weight
+  /// \param font_weight The font weight
   ///
-  void AddRow(uint64_t forground_colour, uint64_t background_colour, uint64_t outline_colour, uint64_t highlight_colour,
-              WeightType font_weight) {
-    RowType *row = &rows_[row_count_];
-    row->background_colour = background_colour;
-    row->foreground_colour = forground_colour;
-    row->outline_colour = outline_colour;
-    row->highlight_colour = highlight_colour;
-    row->font_weight = font_weight;
-    row->highlighted = false;
-    row_count_ += 1;
-  }
+  void AddRow(uint32_t forground_colour, uint32_t background_colour, uint32_t outline_colour, uint32_t highlight_colour,
+              WeightType font_weight);
 
   ///
   /// \brief Add a row to the table
   ///
   ///
-  void AddRow() {
-    RowType *row = &rows_[row_count_];
-    row->background_colour = ConfigData::GetInstance()->GetTableBackground();
-    row->foreground_colour = Renderer::PackRgb(HMI_WHITE);
-    row->outline_colour = Renderer::PackRgb(HMI_WHITE);
-    row->highlight_colour = Renderer::PackRgb(HMI_YELLOW);
-    row->font_weight = WeightType::kWeightNormal;
-    row->highlighted = false;
-    row->alignment = CellAlignType::kAlignLeft;
-    row_count_ += 1;
-  }
+  void AddRow();
 
   ///
   /// \brief Add a row to the table
   ///
-  /// \param font_weight
+  /// \param font_weight The font weight
   ///
-  void AddRow(WeightType font_weight) {
-    RowType *row = &rows_[row_count_];
-    AddRow();
-    row->font_weight = font_weight;
-  }
+  void AddRow(WeightType font_weight);
 
   ///
   /// \brief Set the highlighted row
   ///
   ///
-  void CurrentRowHighlight() { rows_[row_count_ - 1].highlighted = true; }
+  void CurrentRowHighlight();
 
   ///
   /// widgets \brief Add a basic cell
   ///
-  /// \param text
-  /// \param width
+  /// \param text The text to be contained in the cell
+  /// \param width The width of the cell in pixels
   ///
-  void AddCell(char *text, int width) { AddCell(text, width, CellAlignType::kAlignLeft); }
+  void AddCell(std::string text, uint32_t width);
 
   ///
   /// \brief Add a new cell with background colour
   ///
-  /// \param text
-  /// \param width
-  /// \param background_colour
+  /// \param text The text to be contained in the cell
+  /// \param width The width of the cell in pixels
+  /// \param background_colour Cell background colour
   ///
-  void AddCell(char *text, int width, uint64_t background_colour) {
-    CellType *cell = &rows_[row_count_ - 1].cells[rows_[row_count_ - 1].cell_count];
-    AddCell(text, width, CellAlignType::kAlignLeft);
-    cell->background_colour = background_colour;
-  }
+  void AddCell(std::string text, uint32_t width, uint32_t background_colour);
 
   ///
-  /// \brief Add a new cell specifying alingment
+  /// \brief Add a new cell specifying alignment
   ///
-  /// \param text
-  /// \param width
-  /// \param align
+  /// \param text The text to be contained in the cell
+  /// \param width The width of the cell in pixels
+  /// \param align Alignment CellAlignType::
   ///
-  void AddCell(char *text, int width, CellAlignType align) {
-    CellType *cell = &rows_[row_count_ - 1].cells[rows_[row_count_ - 1].cell_count];
-    cell->background_colour = rows_[row_count_ - 1].background_colour;
-    cell->foreground_colour = rows_[row_count_ - 1].foreground_colour;
-    cell->outline_colour = rows_[row_count_ - 1].outline_colour;
-    cell->highlight_colour = rows_[row_count_ - 1].highlight_colour;
-    strncpy(cell->text, text, sizeof(cell->text));
-    cell->width = width;
-    cell->alignment = align;
-    rows_[row_count_ - 1].cell_count += 1;
-  }
+  void AddCell(std::string text, uint32_t width, CellAlignType align);
+
+  ///
+  /// \brief Add a new cell specifying alignment
+  ///
+  /// \param text The text to be contained in the cell
+  /// \param width The width of the cell in pixels
+  /// \param align Alignment CellAlignType::
+  /// \param background_colour Cell background colour
+  ///
+  void AddCell(std::string text, uint32_t width, CellAlignType align, uint32_t background_colour);
 
   ///
   /// \brief Reset the table
   ///
   ///
-  void Reset() {
-    visible_ = false;
-    row_count_ = 0;
-    memset(&rows_, 0, sizeof(rows_));
-  }
+  void Reset();
+
   bool visible_;
-  int height_;
-  int width_;
-  int x_;
-  int y_;
-  int row_count_;
-  uint64_t background_colour_;
-  RowType rows_[MAX_ROWS];
+  uint32_t height_;
+  uint32_t width_;
+  uint32_t x_;
+  uint32_t y_;
+  uint32_t row_count_;
+  uint32_t background_colour_;
+  std::vector<RowType> rows_;
 
  private:
   ConfigData *configuration_ = nullptr;

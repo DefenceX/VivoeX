@@ -21,8 +21,8 @@
 ///
 /// \file hmi_gva_defaults.h
 ///
-#ifndef HMI_DISPLAY_SRC_HMI_GVA_DEFAULT_H_
-#define HMI_DISPLAY_SRC_HMI_GVA_DEFAULT_H_
+#ifndef HMI_DISPLAY_SRC_HMI_GVA_DEFAULTS_H_
+#define HMI_DISPLAY_SRC_HMI_GVA_DEFAULTS_H_
 
 #include "src/gva.h"
 #include "src/screen_gva.h"
@@ -92,6 +92,29 @@ class DefaultSettings {
     canvas.filename = "";
     canvas.buffer = nullptr;
     canvas.surface = nullptr;
+  }
+
+  static FunctionKeys GetDefaultFunctionKeysDefaultAllHidden() {
+    FunctionKeys keys;
+    keys.visible = true;
+    keys.labels[0].state = LabelStates::kLabelHidden;
+    keys.labels[0].text = "Unused";
+    keys.labels[0].toggleActive = false;
+    keys.labels[1].state = LabelStates::kLabelHidden;
+    keys.labels[1].text = "Unused";
+    keys.labels[1].toggleActive = false;
+    keys.labels[2].state = LabelStates::kLabelHidden;
+    keys.labels[2].text = "Unused";
+    keys.labels[2].toggleActive = false;
+    keys.labels[3].state = LabelStates::kLabelHidden;
+    keys.labels[3].text = "Unused";
+    keys.labels[3].toggleActive = false;
+    keys.labels[4].state = LabelStates::kLabelHidden;
+    keys.labels[4].text = "Unused";
+    keys.labels[4].toggleActive = false;
+    keys.labels[5].state = LabelStates::kLabelHidden;
+    keys.labels[5].text = "Unused";
+    keys.labels[5].toggleActive = false;
   }
 
   static FunctionKeys GetDefaultFunctionKeysSituationalAwarenessLeft() {
@@ -190,4 +213,4 @@ class DefaultSettings {
 };
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_HMI_GVA_DEFAULT_H_
+#endif  // HMI_DISPLAY_SRC_HMI_GVA_DEFAULTS_H_

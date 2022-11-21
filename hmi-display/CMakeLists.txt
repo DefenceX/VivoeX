@@ -61,6 +61,7 @@ set(SOURCES main.cc
 			src/screen_gva.cc 
 			src/events_gva.cc .
 			src/widgets/keyboard.cc
+			src/widgets/table.cc
 			src/widgets/compass.cc
 			src/widgets/alarm_indicator.cc
 			common/debug.cc 

@@ -226,13 +226,13 @@ GvaStatusTypes ScreenGva::Update() {
     default:
     case SurfaceType::kSurfaceNone:
       // Set background green
-      SetColourForground(config_->GetThemeBackground());
+      SetColourForeground(config_->GetThemeBackground());
       SetColourBackground(config_->GetThemeBackground());
       DrawRectangle(0, 0, width_, height_, true);
       break;
     case SurfaceType::kSurfaceBlackout:
       // Set background black
-      SetColourForground(HMI_BLACK);
+      SetColourForeground(HMI_BLACK);
       SetColourBackground(HMI_BLACK);
       DrawRectangle(0, 0, width_, height_, true);
       break;
@@ -316,23 +316,23 @@ GvaStatusTypes ScreenGva::Update() {
     for (uint32_t row = 0; row < screen_->table.row_count_; row++) {
       GvaRow newrow;
       RgbUnpackedType f, b, o;
-      for (uint32_t cell = 0; cell < screen_->table.rows_[row].cell_count; cell++) {
-        f = UnpackRgb(screen_->table.rows_[row].cells[cell].foreground_colour);
-        b = UnpackRgb(screen_->table.rows_[row].cells[cell].background_colour);
+      for (uint32_t cell = 0; cell < screen_->table.rows_[row].cell_count_; cell++) {
+        f = UnpackRgb(screen_->table.rows_[row].cells_[cell].foreground_colour_);
+        b = UnpackRgb(screen_->table.rows_[row].cells_[cell].background_colour_);
 
         // Choose colour for cell border
-        if (screen_->table.rows_[row].highlighted == false) {
-          o = UnpackRgb(screen_->table.rows_[row].cells[cell].outline_colour);
+        if (screen_->table.rows_[row].highlighted_ == false) {
+          o = UnpackRgb(screen_->table.rows_[row].cells_[cell].outline_colour_);
         } else {
-          o = UnpackRgb(screen_->table.rows_[row].cells[cell].highlight_colour);
+          o = UnpackRgb(screen_->table.rows_[row].cells_[cell].highlight_colour_);
         }
 
-        newrow.addCell({screen_->table.rows_[row].cells[cell].text, screen_->table.rows_[row].cells[cell].alignment,
+        newrow.addCell({screen_->table.rows_[row].cells_[cell].text_, screen_->table.rows_[row].cells_[cell].alignment_,
                         o.r, o.g, o.b,  // Outline
                         b.r, b.g, b.b,  // Background
                         f.r, f.g, f.b,  // Foreground
-                        screen_->table.rows_[row].font_weight},
-                       screen_->table.rows_[row].cells[cell].width);
+                        screen_->table.rows_[row].font_weight_},
+                       screen_->table.rows_[row].cells_[cell].width_);
       }
       table.AddRow(newrow);
     }

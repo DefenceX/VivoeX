@@ -126,15 +126,15 @@ class RendererCairo : public Renderer {
  public:
   static HandleType render_;
   RendererCairo(uint32_t width, uint32_t height);
-  virtual ~RendererCairo();
-  uint32_t init(uint32_t width, uint32_t height, bool fullscreen, CallbackType cb, void *arg);
+  ~RendererCairo() override;
+  uint32_t Init(uint32_t width, uint32_t height, bool fullscreen, CallbackType cb, void *arg);
   // Pure Virtual functions
-  void SetPixel(uint32_t x, uint32_t y);
-  void SetColour(uint8_t red, uint8_t green, uint8_t blue);
+  void SetPixel(uint32_t x, uint32_t y) override;
+  void SetColour(uint8_t red, uint8_t green, uint8_t blue) override;
   void SetColour(uint32_t rgb);
-  void SetColourForground(uint8_t red, uint8_t green, uint8_t blue);
-  void SetColourForground(uint32_t rgb);
-  void SetColourBackground(uint8_t red, uint8_t green, uint8_t blue);
+  void SetColourForeground(uint8_t red, uint8_t green, uint8_t blue) override;
+  void SetColourForeground(uint32_t rgb);
+  void SetColourBackground(uint8_t red, uint8_t green, uint8_t blue) override;
   void SetColourBackground(uint32_t rgb);
   void setLineType(uint32_t type);
   void SetLineThickness(uint32_t thickness, LineType fill);
@@ -145,18 +145,18 @@ class RendererCairo : public Renderer {
   uint32_t MovePenRaw(int32_t x, int32_t y);
   uint32_t DrawPenRaw(int32_t x, int32_t y);
   void DrawArcRaw(uint32_t x, uint32_t y, uint32_t radius, uint32_t angle1, uint32_t angle2);
-  uint32_t DrawLine(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2);
+  uint32_t DrawLine(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2) override;
   void Save();
   void Restore();
   void Scale(double x, double y);
   void Translate(uint32_t x, uint32_t y);
   void Rotate(double radians);
   uint32_t ClosePath(bool fill);
-  void DrawCircle(uint32_t x, uint32_t y, uint32_t radius, bool fill);
-  void DrawRectangle(uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool fill);
+  void DrawCircle(uint32_t x, uint32_t y, uint32_t radius, bool fill) override;
+  void DrawRectangle(uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool fill) override;
   void DrawRoundedRectangle(uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t courner, bool fill);
   void DrawTriangle(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint32_t x3, uint32_t y3, bool fill);
-  uint32_t DrawColor(uint8_t r, uint8_t g, uint8_t b);
+  uint32_t DrawColor(uint8_t r, uint8_t g, uint8_t b) override;
   uint32_t DrawColor(uint32_t rgb);
   void SetTextFont(uint32_t slope, WeightType weight, const char *fontName);
   uint32_t GetTextWidth(const std::string str, uint32_t fontSize);
@@ -164,7 +164,7 @@ class RendererCairo : public Renderer {
   void DrawText(uint32_t x, uint32_t y, const std::string text, uint32_t size);
   void DrawLabel(uint32_t x, uint32_t y, const std::string text, uint32_t size);
   void DrawTextCentre(uint32_t x, const std::string text, uint32_t size);
-  uint32_t TextureRGB(uint32_t x, uint32_t y, void *buffer, std::string file);
+  uint32_t TextureRGB(uint32_t x, uint32_t y, void *buffer, std::string file) override;
   uint32_t TextureRGB(uint32_t x, uint32_t y, void *buffer);
   uint32_t TextureRGB(uint32_t x, uint32_t y, cairo_surface_t *surface);
 

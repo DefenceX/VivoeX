@@ -869,27 +869,34 @@ struct StateOn : Hmi {
     bottom_ = DefaultSettings::GetDefaultCommonTaskKeys();
     status_ = DefaultSettings::GetDefaultStatusBar();
     canvas_ = DefaultSettings::GetDefaultCanvas();
-    CommonTaskKeys test = DefaultSettings::GetDefaultFunctionKeysSituationalAwarenessLeft();
     // Setup the main screens
     manager_->AddNewView(GvaFunctionEnum::kSituationalAwareness, &top_, &bottom_,
                          DefaultSettings::GetDefaultFunctionKeysSituationalAwarenessLeft(),
                          gva::DefaultSettings::GetDefaultFunctionKeysSituationalAwarenessRight());
-    manager_->AddNewView(GvaFunctionEnum::kWeapon, &top_, &bottom_, gva::DefaultSettings::GetDefaultFunctionKeysWeaponsLeft(),
-                         gva::DefaultSettings::GetDefaultFunctionKeysWeaponsRight();
-    manager_->AddNewView(GvaFunctionEnum::kDefensiveSystems, &top_, &bottom_,gva::DefaultSettings::GetDefaultFunctionKeysWeaponsLeft(),
-                         gva::DefaultSettings::GetDefaultFunctionKeysWeaponsRight();
-    manager_->AddNewView(GvaFunctionEnum::kSystems, &top_, &bottom_, gva::DefaultSettings::GetDefaultFunctionKeysWeaponsLeft(),
-                         gva::DefaultSettings::GetDefaultFunctionKeysWeaponsRight();
-    manager_->AddNewView(GvaFunctionEnum::kDriver, &top_, &bottom_, gva::DefaultSettings::GetDefaultFunctionKeysWeaponsLeft(),
-                         gva::DefaultSettings::GetDefaultFunctionKeysWeaponsRight();
-    manager_->AddNewView(GvaFunctionEnum::KSpecialToRole, &top_, &bottom_, gva::DefaultSettings::GetDefaultFunctionKeysWeaponsLeft(),
-                         gva::DefaultSettings::GetDefaultFunctionKeysWeaponsRight();
-    manager_->AddNewView(GvaFunctionEnum::kCommunications, &top_, &bottom_, gva::DefaultSettings::GetDefaultFunctionKeysWeaponsLeft(),
-                         gva::DefaultSettings::GetDefaultFunctionKeysWeaponsRight();
-    manager_->AddNewView(GvaFunctionEnum::kBattlefieldManagementSystem, &top_, &bottom_,gva::DefaultSettings::GetDefaultFunctionKeysWeaponsLeft(),
-                         gva::DefaultSettings::GetDefaultFunctionKeysWeaponsRight();
-    manager_->AddNewView(GvaFunctionEnum::kAlarmsX, &top_, &bottom_, gva::DefaultSettings::GetDefaultFunctionKeysWeaponsLeft(),
-                         gva::DefaultSettings::GetDefaultFunctionKeysWeaponsRight();
+    manager_->AddNewView(GvaFunctionEnum::kWeapon, &top_, &bottom_,
+                         gva::DefaultSettings::GetDefaultFunctionKeysWeaponsLeft(),
+                         gva::DefaultSettings::GetDefaultFunctionKeysWeaponsRight());
+    manager_->AddNewView(GvaFunctionEnum::kDefensiveSystems, &top_, &bottom_,
+                         gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden(),
+                         gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden());
+    manager_->AddNewView(GvaFunctionEnum::kSystems, &top_, &bottom_,
+                         gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden(),
+                         gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden());
+    manager_->AddNewView(GvaFunctionEnum::kDriver, &top_, &bottom_,
+                         gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden(),
+                         gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden());
+    manager_->AddNewView(GvaFunctionEnum::KSpecialToRole, &top_, &bottom_,
+                         gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden(),
+                         gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden());
+    manager_->AddNewView(GvaFunctionEnum::kCommunications, &top_, &bottom_,
+                         gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden(),
+                         gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden());
+    manager_->AddNewView(GvaFunctionEnum::kBattlefieldManagementSystem, &top_, &bottom_,
+                         gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden(),
+                         gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden());
+    manager_->AddNewView(GvaFunctionEnum::kAlarmsX, &top_, &bottom_,
+                         gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden(),
+                         gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden());
 
     screen_ = manager_->GetScreen(GvaFunctionEnum::kSystems);
 

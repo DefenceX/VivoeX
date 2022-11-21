@@ -29,4 +29,9 @@ namespace gva {
 uint32_t Renderer::height_ = DEFAULT_HEIGHT;
 uint32_t Renderer::width_ = DEFAULT_WIDTH;
 
+Renderer::Renderer(uint32_t width, uint32_t height) {
+  width_ = width;
+  height_ = height;
+}
+
 }  // namespace gva

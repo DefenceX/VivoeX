@@ -88,7 +88,7 @@ void FunctionKeySimple::Draw(RendererGva *r, uint32_t x, uint32_t y, uint32_t wi
 }
 
 void FunctionKeyToggle::Toggle(RendererGva *r, const std::string &label1, const std::string &label2) {
-  r->SetColourForground(HMI_DARK_GREEN2);
+  r->SetColourForeground(HMI_DARK_GREEN2);
   r->SetColourBackground(HMI_YELLOW);
   if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::LABEL_ROUNDED) {
     r->DrawRoundedRectangle(GetX() + 5, GetY() + 5, 40, 20, 4, true);
@@ -98,7 +98,7 @@ void FunctionKeyToggle::Toggle(RendererGva *r, const std::string &label1, const 
   r->DrawColor(HMI_BLACK);
   r->DrawText(GetX() + 12, GetY() + 9, label1, 14);
   r->SetColourBackground(HMI_GREY);
-  r->SetColourForground(HMI_DARK_GREY);
+  r->SetColourForeground(HMI_DARK_GREY);
 
   if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::LABEL_ROUNDED) {
     r->DrawRoundedRectangle(GetX() + 50, GetY() + 5, 45, 20, 4, true);
@@ -113,7 +113,7 @@ void RendererGva::DrawFunctionLabels(uint32_t x, const std::array<FunctionKeys::
   uint32_t i = 0;
   uint32_t offset = DEFAULT_HEIGHT - 88;
 
-  SetColourForground(config_->GetThemeLabelBorderEnabled());
+  SetColourForeground(config_->GetThemeLabelBorderEnabled());
   SetColourBackground(config_->GetThemeLabelBackgroundEnabled());
   setLineType(CAIRO_LINE_JOIN_ROUND);
   SetLineThickness(config_->GetThemeLabelBorderThickness(), LINE_SOLID);
@@ -127,10 +127,10 @@ void RendererGva::DrawFunctionLabels(uint32_t x, const std::array<FunctionKeys::
     SetColourBackground(config_->GetThemeLabelBackgroundEnabledSelected());
     if ((1 << (5 - i) & (labels[i].state != LabelStates::kLabelDisabled))) {
       if (1 << (5 - i) & (labels[i].state == LabelStates::kLabelEnabledSelected)) {
-        SetColourForground(config_->GetThemeLabelBorderEnabledSelected());
+        SetColourForeground(config_->GetThemeLabelBorderEnabledSelected());
         SetColourBackground(config_->GetThemeLabelBackgroundEnabledSelected());
       } else {
-        SetColourForground(config_->GetThemeLabelBorderEnabled());
+        SetColourForeground(config_->GetThemeLabelBorderEnabled());
         SetColourBackground(config_->GetThemeLabelBackgroundEnabled());
       }
       FunctionKeyToggle *key = new FunctionKeyToggle();
@@ -247,7 +247,7 @@ void RendererGva::DrawTopLabels(uint32_t y, const std::array<FunctionSelect::Lab
   uint32_t width = (DEFAULT_WIDTH - offset * 2) / 8;
   uint32_t spacing = width * 0.1;
 
-  SetColourForground(config_->GetThemeLabelBorderEnabled());
+  SetColourForeground(config_->GetThemeLabelBorderEnabled());
   SetColourBackground(config_->GetThemeLabelBackgroundEnabled());
   setLineType(CAIRO_LINE_JOIN_ROUND);
   SetLineThickness(config_->GetThemeLabelBorderThickness(), LINE_SOLID);
@@ -255,10 +255,10 @@ void RendererGva::DrawTopLabels(uint32_t y, const std::array<FunctionSelect::Lab
   for (i = 0; i < 8; i++) {
     if (!(1 << (7 - i) & (labels[i].state != LabelStates::kLabelDisabled))) {
       if (1 << (7 - i) & (labels[i].state == LabelStates::kLabelEnabledSelected)) {
-        SetColourForground(config_->GetThemeLabelBorderEnabledSelected());
+        SetColourForeground(config_->GetThemeLabelBorderEnabledSelected());
         SetColourBackground(config_->GetThemeLabelBackgroundEnabledSelected());
       } else {
-        SetColourForground(config_->GetThemeLabelBorderEnabled());
+        SetColourForeground(config_->GetThemeLabelBorderEnabled());
         SetColourBackground(config_->GetThemeLabelBackgroundEnabled());
       }
 
@@ -278,7 +278,7 @@ void RendererGva::DrawControlLabels(const uint32_t y, const std::array<CommonTas
   uint32_t offset = 20;
   uint32_t w = 75;
 
-  SetColourForground(config_->GetThemeLabelBorderEnabled());
+  SetColourForeground(config_->GetThemeLabelBorderEnabled());
   SetColourBackground(config_->GetThemeLabelBackgroundEnabled());
   setLineType(CAIRO_LINE_JOIN_ROUND);
   SetLineThickness(config_->GetThemeLabelBorderThickness(), LINE_SOLID);
@@ -288,14 +288,14 @@ void RendererGva::DrawControlLabels(const uint32_t y, const std::array<CommonTas
     SetLineThickness(config_->GetThemeLabelBorderThickness(), LINE_SOLID);
     if ((1 << (7 - i) & (labels[i].state != LabelStates::kLabelDisabled))) {
       SetColourBackground(config_->GetThemeLabelBackgroundDisabled());
-      SetColourForground(config_->GetThemeLabelBorderEnabled());
+      SetColourForeground(config_->GetThemeLabelBorderEnabled());
     } else {
       SetColourBackground(config_->GetThemeLabelBackgroundEnabled());
       if (1 << (7 - i) & (labels[i].state != LabelStates::kLabelEnabled)) {
-        SetColourForground(config_->GetThemeLabelBorderEnabledSelected());
+        SetColourForeground(config_->GetThemeLabelBorderEnabledSelected());
         SetColourBackground(config_->GetThemeLabelBackgroundEnabledSelected());
       } else {
-        SetColourForground(config_->GetThemeLabelBorderEnabled());
+        SetColourForeground(config_->GetThemeLabelBorderEnabled());
         SetColourBackground(config_->GetThemeLabelBackgroundEnabled());
       }
     }
@@ -322,7 +322,7 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
 
   DrawColor(HMI_WHITE);
   SetColourBackground(HMI_WHITE);
-  SetColourForground(HMI_WHITE);
+  SetColourForeground(HMI_WHITE);
   SetLineThickness(1, LINE_SOLID);
 
   sx = (width / (double)13);
@@ -458,14 +458,14 @@ void RendererGva::DrawPPI(uint8_t mode, uint32_t x, uint32_t y, uint32_t degrees
 
   // Compass
   SetColourBackground(HMI_BLACK);
-  SetColourForground(HMI_WHITE);
+  SetColourForeground(HMI_WHITE);
   SetLineThickness(1, LINE_SOLID);
   DrawCircle(x, y, radius, true);  // Compass
   DrawCircle(x, y, 8, true);       // Compass
 
   // Vehicle outline
   Save();
-  SetColourForground(HMI_WHITE);
+  SetColourForeground(HMI_WHITE);
   SetColourBackground(HMI_WHITE);
   SetLineThickness(2, LINE_SOLID);
   MovePen(x - 15, y - 20);
@@ -509,7 +509,7 @@ void RendererGva::DrawPPI(uint8_t mode, uint32_t x, uint32_t y, uint32_t degrees
     // Sight
     SetLineThickness(2, LINE_SOLID);
     SetColourBackground(HMI_WHITE);
-    SetColourForground(HMI_WHITE);
+    SetColourForeground(HMI_WHITE);
     {
       int64_t x2, y2;
 
@@ -533,7 +533,7 @@ void RendererGva::DrawPPI(uint8_t mode, uint32_t x, uint32_t y, uint32_t degrees
   // Heading
   SetLineThickness(1, LINE_SOLID);
   SetColourBackground(HMI_CYAN);
-  SetColourForground(HMI_CYAN);
+  SetColourForeground(HMI_CYAN);
   DrawRectangle(x - 1, y + 8, 1, 35, true);
 }
 
@@ -541,7 +541,7 @@ void RendererGva::DrawMode() {
   uint32_t offset = DEFAULT_WIDTH * 0.4;
   uint32_t y = DEFAULT_HEIGHT * 0.12;
 
-  SetColourForground(HMI_WHITE);
+  SetColourForeground(HMI_WHITE);
   SetColourBackground(HMI_DARK_BLUE);
   SetLineThickness(1, LINE_SOLID);
 
@@ -574,8 +574,9 @@ void RendererGva::DrawTable(GvaTable *table) {
 
       SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, table->row_[row].cell_[column].weight, table->fontname_);
 
-      SetColourForground(table->row_[row].cell_[column].foreground.red, table->row_[row].cell_[column].foreground.green,
-                         table->row_[row].cell_[column].foreground.blue);
+      SetColourForeground(table->row_[row].cell_[column].foreground.red,
+                          table->row_[row].cell_[column].foreground.green,
+                          table->row_[row].cell_[column].foreground.blue);
       SetColourBackground(table->row_[row].cell_[column].background.red,
                           table->row_[row].cell_[column].background.green,
                           table->row_[row].cell_[column].background.blue);
@@ -613,9 +614,9 @@ void RendererGva::DrawButton(char *keyText, uint32_t fontSize, uint32_t x, uint3
                              CellAlignType align) {
   uint32_t textX = 6;
 
-  SetColourForground(HMI_GREY);
+  SetColourForeground(HMI_GREY);
   DrawRoundedRectangle(x, y, width, height, 6, true);
-  SetColourForground(HMI_WHITE);
+  SetColourForeground(HMI_WHITE);
   SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightBold, config_->GetThemeFont());
   uint32_t textHeight = GetTextHeight("qh", fontSize);
   uint32_t textWidth = GetTextWidth(keyText, fontSize);
@@ -634,7 +635,7 @@ void RendererGva::DrawKeyboard(KeyboardModeType mode) {
   char keyText[5];
   char keyboard[3][10];
 
-  SetColourForground(HMI_MEDIUM_GREY);
+  SetColourForeground(HMI_MEDIUM_GREY);
   SetColourBackground(HMI_DARK_GREY);
   SetLineThickness(1, LINE_SOLID);
 
@@ -657,7 +658,7 @@ void RendererGva::DrawKeyboard(KeyboardModeType mode) {
   SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightBold, config_->GetThemeFont());
 
   // Draw keys
-  SetColourForground(HMI_WHITE);
+  SetColourForeground(HMI_WHITE);
   DrawColor(HMI_WHITE);
   for (i = 0; i < 10; i++) {
     sprintf(keyText, "%c", keyboard[0][i]);
@@ -674,7 +675,7 @@ void RendererGva::DrawKeyboard(KeyboardModeType mode) {
   DrawIcon(ICON_LEFT_ARROW, 426 + bSize / 2, yLocation + padding + (bSize + 5) + bSize / 2, 8, 10);
   SetColourBackground(HMI_DARK_GREY);
   SetLineThickness(1, LINE_SOLID);
-  SetColourForground(HMI_WHITE);
+  SetColourForeground(HMI_WHITE);
 
   //
   // Space Bar and Mode
@@ -685,7 +686,7 @@ void RendererGva::DrawKeyboard(KeyboardModeType mode) {
   DrawIcon(ICON_UP_ARROW, 426 + bSize / 2, yLocation + 5 + bSize / 2 + 2, 12, 11);
   SetColourBackground(HMI_DARK_GREY);
   SetLineThickness(1, LINE_SOLID);
-  SetColourForground(HMI_WHITE);
+  SetColourForeground(HMI_WHITE);
   DrawButton("Mode", fontSize, 463, yLocation + 20, 50, 50, CellAlignType::kAlignRight);
 }
 }  // namespace gva
