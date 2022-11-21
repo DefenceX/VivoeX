@@ -45,12 +45,11 @@ class TableWidget {
   ///
   class CellType {
    public:
-    CellType() {}
-    ~CellType() {}
+    CellType() = default;
+    ~CellType() = default;
     CellType(const std::string text, const uint32_t width, const uint32_t background_colour,
              const uint32_t foreground_colour, const uint32_t outline_colour, const uint32_t highlight_colour,
              const CellAlignType alignment);
-    // CellType(const CellType &a) = default;
 
     CellType(const CellType &a)
         : width_(a.width_),
@@ -76,58 +75,58 @@ class TableWidget {
     ///
     /// \return const uint32_t
     ///
-    uint32_t GetWidth() { return width_; }
+    uint32_t GetWidth() const;
 
     ///
     /// \brief Get the Text object
     ///
     /// \return const std::string
     ///
-    std::string GetText() { return text_; }
+    std::string GetText() const;
 
     ///
     /// \brief Get the Foreground Colour object
     ///
     /// \return const uint32_t
     ///
-    uint32_t GetForegroundColour() { return foreground_colour_; }
+    uint32_t GetForegroundColour() const;
 
     ///
     /// \brief Get the Background Colour object
     ///
     /// \return const uint32_t
     ///
-    uint32_t GetBackgroundColour() { return foreground_colour_; }
+    uint32_t GetBackgroundColour() const;
 
     ///
     /// \brief Get the Outline Colour object
     ///
     /// \return const uint32_t
     ///
-    uint32_t GetOutlineColour() { return foreground_colour_; }
+    uint32_t GetOutlineColour() const;
 
     ///
     /// \brief Get the Highlight Colour object
     ///
     /// \return const uint32_t
     ///
-    uint32_t GetHighlightColour() { return foreground_colour_; }
+    uint32_t GetHighlightColour() const;
 
     ///
     /// \brief Get the Cell Alignment object
     ///
     /// \return const CellAlignType
     ///
-    CellAlignType GetCellAlignment() { return alignment_; }
+    CellAlignType GetCellAlignment() const;
 
    private:
-    uint32_t width_;
-    std::string text_;
-    uint32_t background_colour_;
-    uint32_t foreground_colour_;
-    uint32_t outline_colour_;
-    uint32_t highlight_colour_;
-    CellAlignType alignment_;
+    uint32_t width_ = 0;
+    std::string text_ = "";
+    uint32_t background_colour_ = 0;
+    uint32_t foreground_colour_ = 0;
+    uint32_t outline_colour_ = 0;
+    uint32_t highlight_colour_ = 0;
+    CellAlignType alignment_ = CellAlignType::kAlignLeft;
   };
 
   ///
@@ -166,35 +165,35 @@ class TableWidget {
     ///
     /// \return uint32_t
     ///
-    uint32_t GetForegroundColour() { return foreground_colour_; }
+    uint32_t GetForegroundColour() const;
 
     ///
     /// \brief Get the Background Colour object
     ///
     /// \return uint32_t
     ///
-    uint32_t GetBackgroundColour() { return foreground_colour_; }
+    uint32_t GetBackgroundColour() const;
 
     ///
     /// \brief Get the Outline Colour object
     ///
     /// \return uint32_t
     ///
-    uint32_t GetOutlineColour() { return foreground_colour_; }
+    uint32_t GetOutlineColour() const;
 
     ///
     /// \brief Get the Highlight Colour object
     ///
     /// \return uint32_t
     ///
-    uint32_t GetHighlightColour() { return foreground_colour_; }
+    uint32_t GetHighlightColour() const;
 
     ///
     /// \brief Get the Font Weight object
     ///
     /// \return WeightType
     ///
-    WeightType GetFontWeight() { return font_weight_; }
+    WeightType GetFontWeight() const;
 
     ///
     /// \brief Get the Highlighted object
@@ -202,30 +201,30 @@ class TableWidget {
     /// \return true
     /// \return false
     ///
-    const bool GetHighlighted() { return highlighted_; }
+    bool GetHighlighted() const;
 
     ///
     /// \brief Set the Highlighted object
     ///
     /// \param value
     ///
-    void SetHighlighted(bool value) { highlighted_ = value; }
+    void SetHighlighted(bool value);
 
     ///
     /// \brief Get the Cell Alignment object
     ///
     /// \return CellAlignType
     ///
-    CellAlignType GetCellAlignment() { return alignment_; }
+    CellAlignType GetCellAlignment() const;
 
    private:
-    uint32_t background_colour_;
-    uint32_t foreground_colour_;
-    uint32_t outline_colour_;
-    uint32_t highlight_colour_;
-    WeightType font_weight_;
-    bool highlighted_;
-    CellAlignType alignment_;
+    uint32_t background_colour_ = 0;
+    uint32_t foreground_colour_ = 0;
+    uint32_t outline_colour_ = 0;
+    uint32_t highlight_colour_ = 0;
+    WeightType font_weight_ = WeightType::kWeightNormal;
+    bool highlighted_ = false;
+    CellAlignType alignment_ = CellAlignType::kAlignLeft;
   };
 
   ///

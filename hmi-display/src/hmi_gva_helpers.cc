@@ -70,12 +70,10 @@ void HmiHelper::TableLicences(TableWidget *table) {
 void HmiHelper::TableSystem(TableWidget *table) {
   table->Reset();
   table->visible_ = true;
-  printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
 
   table->x_ = 110;
   table->y_ = 390;
   table->width_ = 420;
-  printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
 
   table->AddRow(WeightType::kWeightBold);
   printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);

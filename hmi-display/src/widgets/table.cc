@@ -24,7 +24,11 @@
 
 #include "table.h"
 
+#include "log_gva.h"
+
 namespace gva {
+
+// Class CellType
 
 TableWidget::CellType::CellType(const std::string text, const uint32_t width, const uint32_t background_colour,
                                 const uint32_t foreground_colour, const uint32_t outline_colour,
@@ -39,6 +43,22 @@ TableWidget::CellType::CellType(const std::string text, const uint32_t width, co
   return;
 }
 
+uint32_t TableWidget::CellType::GetWidth() const { return width_; }
+
+std::string TableWidget::CellType::GetText() const { return text_; }
+
+uint32_t TableWidget::CellType::GetForegroundColour() const { return foreground_colour_; }
+
+uint32_t TableWidget::CellType::GetBackgroundColour() const { return foreground_colour_; }
+
+uint32_t TableWidget::CellType::GetOutlineColour() const { return foreground_colour_; }
+
+uint32_t TableWidget::CellType::GetHighlightColour() const { return foreground_colour_; }
+
+CellAlignType TableWidget::CellType::GetCellAlignment() const { return alignment_; }
+
+// Class RowType
+
 TableWidget::RowType::RowType(const uint32_t background_colour, const uint32_t foreground_colour,
                               const uint32_t outline_colour, const uint32_t highlight_colour,
                               const WeightType font_weight, const bool highlighted, const CellAlignType alignment)
@@ -49,6 +69,24 @@ TableWidget::RowType::RowType(const uint32_t background_colour, const uint32_t f
       font_weight_(font_weight),
       highlighted_(highlighted),
       alignment_(alignment) {}
+
+uint32_t TableWidget::RowType::GetForegroundColour() const { return foreground_colour_; }
+
+uint32_t TableWidget::RowType::GetBackgroundColour() const { return foreground_colour_; }
+
+uint32_t TableWidget::RowType::GetOutlineColour() const { return foreground_colour_; }
+
+uint32_t TableWidget::RowType::GetHighlightColour() const { return foreground_colour_; }
+
+WeightType TableWidget::RowType::GetFontWeight() const { return font_weight_; }
+
+bool TableWidget::RowType::GetHighlighted() const { return highlighted_; }
+
+void TableWidget::RowType::SetHighlighted(bool value) { highlighted_ = value; }
+
+CellAlignType TableWidget::RowType::GetCellAlignment() const { return alignment_; }
+
+// Class TableWidget
 
 TableWidget::TableWidget() { configuration_ = gva::ConfigData::GetInstance(); }
 
@@ -84,10 +122,14 @@ void TableWidget::AddCell(std::string text, uint32_t width, uint32_t background_
 }
 
 void TableWidget::AddCell(std::string text, uint32_t width, CellAlignType align, uint32_t background_colour) {
-  auto row = rows_.end();
-  CellType cell(text, width, row->GetBackgroundColour(), row->GetForegroundColour(), row->GetOutlineColour(),
-                row->GetHighlightColour(), align);
-  row->cells_.push_back(cell);
+  auto row = rows_.back();
+  if (rows_.size()) {
+    CellType cell(text, width, row.GetBackgroundColour(), row.GetForegroundColour(), row.GetOutlineColour(),
+                  row.GetHighlightColour(), align);
+    row.cells_.push_back(cell);
+  } else {
+    logGva::log("[GVA] No rows could be found when adding new cell.", LOG_ERROR);
+  }
 }
 
 void TableWidget::Reset() {
