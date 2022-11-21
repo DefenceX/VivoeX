@@ -855,6 +855,8 @@ struct StateAlarms : Hmi {
 struct StateOn : Hmi {
   void entry() override {
     /* 4:3 aspect ratio @ lowest resolution */
+    printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
+
     view_ = {MIN_WIDTH, MIN_HEIGHT, 24};
 
     if (!manager_) manager_ = new ViewGvaManager(&status_);
@@ -864,11 +866,11 @@ struct StateOn : Hmi {
     map_ = new rendererMap("/opt/osmscout/maps/australia-latest/", "/opt/osmscout/stylesheets/standard.oss", MIN_WIDTH,
                            MIN_HEIGHT);
 #endif
-
     top_ = DefaultSettings::GetDefaultFunctionSelect();
     bottom_ = DefaultSettings::GetDefaultCommonTaskKeys();
     status_ = DefaultSettings::GetDefaultStatusBar();
     canvas_ = DefaultSettings::GetDefaultCanvas();
+
     // Setup the main screens
     manager_->AddNewView(GvaFunctionEnum::kSituationalAwareness, &top_, &bottom_,
                          DefaultSettings::GetDefaultFunctionKeysSituationalAwarenessLeft(),
@@ -897,11 +899,14 @@ struct StateOn : Hmi {
     manager_->AddNewView(GvaFunctionEnum::kAlarmsX, &top_, &bottom_,
                          gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden(),
                          gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden());
+    printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
 
     screen_ = manager_->GetScreen(GvaFunctionEnum::kSystems);
+    printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
 
     // Create the screen render now
     screen_render_ = new ScreenGva(&screen_, view_.width, view_.height);
+    printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
 
     // Configure the widgets
     ((Compass *)screen_render_->GetWidget(WIDGET_TYPE_COMPASS))->bearingSight_ = 33;
@@ -910,8 +915,11 @@ struct StateOn : Hmi {
     screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(true);
     screen_render_->GetWidget(WIDGET_TYPE_ALARM_INDICATOR)->SetVisible(true);
     screen_render_->GetWidget(WIDGET_TYPE_ALARM_INDICATOR)->SetY(422);
+    printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
+
     AlarmIndicator *ai = (AlarmIndicator *)screen_render_->GetWidget(WIDGET_TYPE_ALARM_INDICATOR);
     strcpy(ai->text_, "Engine over temperature");
+    printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
 
     screen_.canvas = canvas_;
     screen_.canvas.visible = true;
@@ -928,8 +936,8 @@ struct StateOn : Hmi {
 
 struct StateOff : Hmi {
   void entry() override {
-    free(screen_render_);
-    free(manager_);
+    if (screen_render_) free(screen_render_);
+    if (manager_) free(manager_);
     screen_render_ = 0;
     manager_ = 0;
   };

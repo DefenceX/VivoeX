@@ -26,6 +26,7 @@
 #define HMI_DISPLAY_SRC_VIEW_GVA_H_
 #include <functional>
 #include <string>
+#include <vector>
 
 #include "src/config_reader.h"
 #include "src/gva.h"
@@ -89,13 +90,13 @@ typedef ViewGva ViewGva;
 class ViewGvaManager {
  public:
   explicit ViewGvaManager(StatusBar *StatusBar);
-  ViewGva *AddNewView(GvaFunctionEnum function, FunctionSelect *top, CommonTaskKeys *bottom, FunctionKeys left,
-                      FunctionKeys right);
+  void AddNewView(GvaFunctionEnum function, FunctionSelect *top, CommonTaskKeys *bottom, FunctionKeys left,
+                  FunctionKeys right);
   Screen GetScreen(GvaFunctionEnum function);
   ViewGva *GetView(GvaFunctionEnum function);
 
  private:
-  ViewGva *view_[20];
+  std::vector<ViewGva> views_;
   StatusBar *status_bar_;
   int idLast_;
   int id_ = 0;

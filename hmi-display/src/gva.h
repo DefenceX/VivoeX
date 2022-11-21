@@ -55,7 +55,6 @@ struct FunctionSelect {
   bool visible;
 
   struct Labels {
-   public:
     LabelStates state;
   };
   std::array<Labels, 8> labels;
@@ -106,7 +105,7 @@ struct StatusBar {
     LabelStates state;
     std::string text;
   };
-  std::array<Labels, 6> labels;
+  std::array<Labels, 7> labels;
 };
 
 enum class SurfaceType { kSurfaceNone = 0, kSurfaceFile, kSurfaceBufferRgb24, kSurfaceCairo, kSurfaceBlackout };

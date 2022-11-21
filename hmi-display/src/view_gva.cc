@@ -29,22 +29,23 @@
 namespace gva {
 ViewGvaManager::ViewGvaManager(StatusBar *status_bar) : status_bar_(status_bar) { idLast_ = 0; }
 
-ViewGva *ViewGvaManager::AddNewView(GvaFunctionEnum function, FunctionSelect *top, CommonTaskKeys *bottom,
-                                    FunctionKeys left, FunctionKeys right) {
-  view_[idLast_] = new ViewGva(function, top, bottom, left, right);
-  return view_[idLast_++];
+void ViewGvaManager::AddNewView(GvaFunctionEnum function, FunctionSelect *top, CommonTaskKeys *bottom,
+                                FunctionKeys left, FunctionKeys right) {
+  ViewGva view(function, top, bottom, left, right);
+  views_.push_back(view);
+  return;
 }
 
 Screen ViewGvaManager::GetScreen(GvaFunctionEnum function) {
   int i = 0;
-  Screen screen = {0};
-  for (i = 0; i < idLast_; i++) {
-    if (view_[i]->GetFunction() == function) {
+  Screen screen;
+  for (auto view : views_) {
+    if (view.GetFunction() == function) {
       screen.status_bar = status_bar_;
-      screen.function_top = view_[i]->GetTop();
-      screen.control = view_[i]->GetBottom();
-      screen.function_left = *view_[i]->GetLeft();
-      screen.function_right = *view_[i]->GetRight();
+      screen.function_top = view.GetTop();
+      screen.control = view.GetBottom();
+      screen.function_left = *view.GetLeft();
+      screen.function_right = *view.GetRight();
       screen.currentFunction = function;
       return screen;
     }
@@ -54,11 +55,10 @@ Screen ViewGvaManager::GetScreen(GvaFunctionEnum function) {
 ViewGva *ViewGvaManager::GetView(GvaFunctionEnum function) {
   int i = 0;
   Screen screen = {0};
-  for (i = 0; i < idLast_; i++) {
-    if (view_[i]->GetFunction() == function) {
-      return view_[i];
+  for (auto view : views_) {
+    if (view.GetFunction() == function) {
+      return &view;
     }
   }
 }
-
 };  // namespace gva

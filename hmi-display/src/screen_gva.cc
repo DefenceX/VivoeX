@@ -104,9 +104,8 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
 }
 
 ScreenGva::~ScreenGva() {
-  args_->active = false;
+  args_.active = false;
   pthread_join(clock_thread_, 0);
-  free(args_);
   nmea_parser_destroy(&parser_);
   close(gps_);
   if (gps_) logGva::log("GPS closed", LOG_INFO);
@@ -186,21 +185,20 @@ void *ClockUpdate(void *arg) {
 
 void ScreenGva::StartClock(StatusBar *barData) {
   pthread_t clock_thread_;
-  args_ = (args *)malloc(sizeof(args));
-  args_->active = true;
-  args_->clockString = barData->labels[0].text;
-  args_->locationFormat = barData->labels[1].text;
-  args_->locationString = barData->labels[2].text;
-  args_->parser = &parser_;
-  args_->info = &info_;
-  args_->gps = &gps_;
-  args_->screen = this;
-  args_->location = &barData->location;
-  args_->info->lon = DUMMY_LON;
-  args_->info->lat = DUMMY_LAT;
+  args_.active = true;
+  args_.clockString = barData->labels[0].text;
+  args_.locationFormat = barData->labels[1].text;
+  args_.locationString = barData->labels[2].text;
+  args_.parser = &parser_;
+  args_.info = &info_;
+  args_.gps = &gps_;
+  args_.screen = this;
+  args_.location = &barData->location;
+  args_.info->lon = DUMMY_LON;
+  args_.info->lat = DUMMY_LAT;
 
   /* Launch clock thread */
-  if (pthread_create(&clock_thread_, NULL, ClockUpdate, (void *)args_)) {
+  if (pthread_create(&clock_thread_, NULL, ClockUpdate, (void *)&args_)) {
     logGva::log("Error creating thread", LOG_ERROR);
     return;
   }

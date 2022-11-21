@@ -52,6 +52,7 @@ class TableWidget {
       outline_colour_ = a.outline_colour_;
       highlight_colour_ = a.highlight_colour_;
       alignment_ = a.alignment_;
+      return *this;
     }
     uint32_t width_;
     std::string text_;

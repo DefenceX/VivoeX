@@ -34,7 +34,7 @@ class DefaultSettings {
   DefaultSettings() = default;
 
   static CommonTaskKeys GetDefaultCommonTaskKeys() {
-    CommonTaskKeys common_task_keys;
+    CommonTaskKeys common_task_keys = {};
     common_task_keys.visible = true;
     common_task_keys.labels[0].state = LabelStates::kLabelEnabledSelected;
     common_task_keys.labels[0].text = "Up";
@@ -56,7 +56,7 @@ class DefaultSettings {
   }
 
   static FunctionSelect GetDefaultFunctionSelect() {
-    FunctionSelect function_select;
+    FunctionSelect function_select = {};
     function_select.visible = true;
     function_select.labels[0].state = LabelStates::kLabelEnabledSelected;
     function_select.labels[1].state = LabelStates::kLabelEnabled;
@@ -66,10 +66,12 @@ class DefaultSettings {
     function_select.labels[5].state = LabelStates::kLabelEnabled;
     function_select.labels[6].state = LabelStates::kLabelDisabled;
     function_select.labels[7].state = LabelStates::kLabelEnabled;
+    printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
+    return function_select;
   }
 
   static StatusBar GetDefaultStatusBar() {
-    StatusBar status_bar;
+    StatusBar status_bar = {};
     status_bar.visible = true;
     status_bar.x = DEFAULT_HEIGHT - 11;
     status_bar.y = 0;
@@ -83,6 +85,7 @@ class DefaultSettings {
     status_bar.labels[4].text = "A:5";
     status_bar.labels[5].text = "C:1";
     status_bar.labels[6].text = "O:2";
+    return status_bar;
   }
 
   static Canvas GetDefaultCanvas() {
@@ -92,6 +95,7 @@ class DefaultSettings {
     canvas.filename = "";
     canvas.buffer = nullptr;
     canvas.surface = nullptr;
+    return canvas;
   }
 
   static FunctionKeys GetDefaultFunctionKeysDefaultAllHidden() {
@@ -115,6 +119,7 @@ class DefaultSettings {
     keys.labels[5].state = LabelStates::kLabelHidden;
     keys.labels[5].text = "Unused";
     keys.labels[5].toggleActive = false;
+    return keys;
   }
 
   static FunctionKeys GetDefaultFunctionKeysSituationalAwarenessLeft() {
@@ -138,6 +143,7 @@ class DefaultSettings {
     keys.labels[5].state = LabelStates::kLabelEnabled;
     keys.labels[5].text = "Front left";
     keys.labels[5].toggleActive = false;
+    return keys;
   }
 
   static FunctionKeys GetDefaultFunctionKeysSituationalAwarenessRight() {
@@ -161,6 +167,7 @@ class DefaultSettings {
     keys.labels[5].state = LabelStates::kLabelEnabled;
     keys.labels[5].text = "Left";
     keys.labels[5].toggleActive = false;
+    return keys;
   }
 
   static FunctionKeys GetDefaultFunctionKeysWeaponsLeft() {
@@ -184,6 +191,7 @@ class DefaultSettings {
     keys.labels[5].state = LabelStates::kLabelHidden;
     keys.labels[5].text = "Unused";
     keys.labels[5].toggleActive = false;
+    return keys;
   }
 
   static FunctionKeys GetDefaultFunctionKeysWeaponsRight() {
@@ -207,6 +215,7 @@ class DefaultSettings {
     keys.labels[5].state = LabelStates::kLabelHidden;
     keys.labels[5].text = "Unused";
     keys.labels[5].toggleActive = false;
+    return keys;
   }
 
  private:

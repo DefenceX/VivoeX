@@ -149,7 +149,7 @@ class ScreenGva : public RendererGva {
   char *PosDegrees(float lon, float lat);
   Screen *screen_;
   std::vector<WidgetX *> widget_list_;
-  args *args_;
+  args args_;
   uint32_t gps_;
   uint32_t hndl_;
   Screen last_screen_;
