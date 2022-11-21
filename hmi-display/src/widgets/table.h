@@ -34,16 +34,32 @@
 namespace gva {
 
 ///
-/// \brief A widget respresenting a table of elements
+/// \brief A widget representing a table of elements
 ///
 ///
 class TableWidget {
  public:
+  ///
+  /// \brief This is the class describing a TableWidget cell
+  ///
+  ///
   class CellType {
    public:
-    CellType(const uint32_t width, const std::string &text, const uint32_t background_colour,
+    CellType() = default;
+    ~CellType() = default;
+    CellType(const std::string text, const uint32_t width, const uint32_t background_colour,
              const uint32_t foreground_colour, const uint32_t outline_colour, const uint32_t highlight_colour,
              const CellAlignType alignment);
+    // CellType(const CellType &a) = default;
+
+    CellType(const CellType &a)
+        : width_(a.width_),
+          text_(a.text_),
+          background_colour_(a.background_colour_),
+          foreground_colour_(a.foreground_colour_),
+          outline_colour_(a.outline_colour_),
+          highlight_colour_(a.highlight_colour_),
+          alignment_(a.alignment_) {}
     CellType &operator=(const CellType &a) {
       width_ = a.width_;
       text_ = a.text_;
@@ -54,6 +70,57 @@ class TableWidget {
       alignment_ = a.alignment_;
       return *this;
     }
+
+    ///
+    /// \brief Get the Width object
+    ///
+    /// \return const uint32_t
+    ///
+    uint32_t GetWidth() { return width_; }
+
+    ///
+    /// \brief Get the Text object
+    ///
+    /// \return const std::string
+    ///
+    std::string GetText() { return text_; }
+
+    ///
+    /// \brief Get the Foreground Colour object
+    ///
+    /// \return const uint32_t
+    ///
+    uint32_t GetForegroundColour() { return foreground_colour_; }
+
+    ///
+    /// \brief Get the Background Colour object
+    ///
+    /// \return const uint32_t
+    ///
+    uint32_t GetBackgroundColour() { return foreground_colour_; }
+
+    ///
+    /// \brief Get the Outline Colour object
+    ///
+    /// \return const uint32_t
+    ///
+    uint32_t GetOutlineColour() { return foreground_colour_; }
+
+    ///
+    /// \brief Get the Highlight Colour object
+    ///
+    /// \return const uint32_t
+    ///
+    uint32_t GetHighlightColour() { return foreground_colour_; }
+
+    ///
+    /// \brief Get the Cell Alignment object
+    ///
+    /// \return const CellAlignType
+    ///
+    CellAlignType GetCellAlignment() { return alignment_; }
+
+   private:
     uint32_t width_;
     std::string text_;
     uint32_t background_colour_;
@@ -63,11 +130,25 @@ class TableWidget {
     CellAlignType alignment_;
   };
 
+  ///
+  /// \brief This is the class describing a TableWidget row
+  ///
+  ///
   class RowType {
    public:
+    RowType() = default;
+    ~RowType() = default;
     RowType(const uint32_t background_colour, const uint32_t foreground_colour, const uint32_t outline_colour,
             const uint32_t highlight_colour, const WeightType font_weight, const bool highlighted,
             const CellAlignType alignment);
+    RowType(const RowType &a)
+        : background_colour_(a.background_colour_),
+          foreground_colour_(a.foreground_colour_),
+          outline_colour_(a.outline_colour_),
+          highlight_colour_(a.highlight_colour_),
+          font_weight_(a.font_weight_),
+          highlighted_(a.highlighted_),
+          alignment_(a.alignment_) {}
     RowType &operator=(const RowType &a) {
       background_colour_ = a.background_colour_;
       foreground_colour_ = a.foreground_colour_;
@@ -78,8 +159,66 @@ class TableWidget {
       alignment_ = a.alignment_;
       return *this;
     }
-    uint32_t cell_count_;
     std::vector<CellType> cells_;
+
+    ///
+    /// \brief Get the Foreground Colour object
+    ///
+    /// \return uint32_t
+    ///
+    uint32_t GetForegroundColour() { return foreground_colour_; }
+
+    ///
+    /// \brief Get the Background Colour object
+    ///
+    /// \return uint32_t
+    ///
+    uint32_t GetBackgroundColour() { return foreground_colour_; }
+
+    ///
+    /// \brief Get the Outline Colour object
+    ///
+    /// \return uint32_t
+    ///
+    uint32_t GetOutlineColour() { return foreground_colour_; }
+
+    ///
+    /// \brief Get the Highlight Colour object
+    ///
+    /// \return uint32_t
+    ///
+    uint32_t GetHighlightColour() { return foreground_colour_; }
+
+    ///
+    /// \brief Get the Font Weight object
+    ///
+    /// \return WeightType
+    ///
+    WeightType GetFontWeight() { return font_weight_; }
+
+    ///
+    /// \brief Get the Highlighted object
+    ///
+    /// \return true
+    /// \return false
+    ///
+    const bool GetHighlighted() { return highlighted_; }
+
+    ///
+    /// \brief Set the Highlighted object
+    ///
+    /// \param value
+    ///
+    void SetHighlighted(bool value) { highlighted_ = value; }
+
+    ///
+    /// \brief Get the Cell Alignment object
+    ///
+    /// \return CellAlignType
+    ///
+    CellAlignType GetCellAlignment() { return alignment_; }
+
+   private:
     uint32_t background_colour_;
     uint32_t foreground_colour_;
     uint32_t outline_colour_;
@@ -89,7 +228,11 @@ class TableWidget {
     CellAlignType alignment_;
   };
 
-  TableWidget() { configuration_ = gva::ConfigData::GetInstance(); }
+  ///
+  /// \brief Construct a new Table Widget object
+  ///
+  ///
+  TableWidget();
 
   ///
   /// \brief Add a row to the table

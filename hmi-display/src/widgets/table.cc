@@ -26,15 +26,18 @@
 
 namespace gva {
 
-TableWidget::CellType::CellType(const uint32_t width, const std::string &text, const uint32_t background_colour,
+TableWidget::CellType::CellType(const std::string text, const uint32_t width, const uint32_t background_colour,
                                 const uint32_t foreground_colour, const uint32_t outline_colour,
                                 const uint32_t highlight_colour, const CellAlignType alignment)
     : width_(width),
+      text_(text),
       background_colour_(background_colour),
       foreground_colour_(foreground_colour),
       outline_colour_(outline_colour),
       highlight_colour_(highlight_colour),
-      alignment_(alignment) {}
+      alignment_(alignment) {
+  return;
+}
 
 TableWidget::RowType::RowType(const uint32_t background_colour, const uint32_t foreground_colour,
                               const uint32_t outline_colour, const uint32_t highlight_colour,
@@ -46,6 +49,8 @@ TableWidget::RowType::RowType(const uint32_t background_colour, const uint32_t f
       font_weight_(font_weight),
       highlighted_(highlighted),
       alignment_(alignment) {}
+
+TableWidget::TableWidget() { configuration_ = gva::ConfigData::GetInstance(); }
 
 void TableWidget::AddRow(uint32_t forground_colour, uint32_t background_colour, uint32_t outline_colour,
                          uint32_t highlight_colour, WeightType font_weight) {
@@ -66,7 +71,7 @@ void TableWidget::AddRow(WeightType font_weight) {
          Renderer::PackRgb(HMI_YELLOW), font_weight);
 }
 
-void TableWidget::CurrentRowHighlight() { rows_[row_count_ - 1].highlighted_ = true; }
+void TableWidget::CurrentRowHighlight() { rows_[row_count_ - 1].SetHighlighted(true); }
 
 void TableWidget::AddCell(std::string text, uint32_t width) { AddCell(text, width, CellAlignType::kAlignLeft); }
 
@@ -80,8 +85,9 @@ void TableWidget::AddCell(std::string text, uint32_t width, uint32_t background_
 
 void TableWidget::AddCell(std::string text, uint32_t width, CellAlignType align, uint32_t background_colour) {
   auto row = rows_.end();
-  CellType cell(width, text, row->background_colour_, row->foreground_colour_, row->outline_colour_,
-                row->highlight_colour_, align);
+  // CellType cell(text, width, row->background_colour_, row->foreground_colour_, row->outline_colour_,
+  //               row->highlight_colour_, align);
+  CellType cell(text, width, 1, 2, 3, 4, align);
   row->cells_.push_back(cell);
 }
 

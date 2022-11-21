@@ -311,26 +311,27 @@ GvaStatusTypes ScreenGva::Update() {
     GvaTable table(screen_->table.x_, screen_->table.y_ + 33, screen_->table.width_);
     table.SetFontName(config_->GetThemeFont());
     table.border_ = 1;
-    for (uint32_t row = 0; row < screen_->table.row_count_; row++) {
+    for (auto row : screen_->table.rows_) {
       GvaRow newrow;
       RgbUnpackedType f, b, o;
-      for (uint32_t cell = 0; cell < screen_->table.rows_[row].cell_count_; cell++) {
-        f = UnpackRgb(screen_->table.rows_[row].cells_[cell].foreground_colour_);
-        b = UnpackRgb(screen_->table.rows_[row].cells_[cell].background_colour_);
+      // for (uint32_t cell = 0; cell < screen_->table.rows_[row].cell_count_; cell++) {
+
+      for (auto cell : row.cells_) {
+        f = UnpackRgb(cell.GetForegroundColour());
+        b = UnpackRgb(cell.GetBackgroundColour());
 
         // Choose colour for cell border
-        if (screen_->table.rows_[row].highlighted_ == false) {
-          o = UnpackRgb(screen_->table.rows_[row].cells_[cell].outline_colour_);
+        if (row.GetHighlighted() == false) {
+          o = UnpackRgb(cell.GetOutlineColour());
         } else {
-          o = UnpackRgb(screen_->table.rows_[row].cells_[cell].highlight_colour_);
+          o = UnpackRgb(cell.GetHighlightColour());
         }
 
-        newrow.addCell({screen_->table.rows_[row].cells_[cell].text_, screen_->table.rows_[row].cells_[cell].alignment_,
-                        o.r, o.g, o.b,  // Outline
-                        b.r, b.g, b.b,  // Background
-                        f.r, f.g, f.b,  // Foreground
-                        screen_->table.rows_[row].font_weight_},
-                       screen_->table.rows_[row].cells_[cell].width_);
+        newrow.addCell({cell.GetText(), cell.GetCellAlignment(), o.r, o.g, o.b,  // Outline
+                        b.r, b.g, b.b,                                           // Background
+                        f.r, f.g, f.b,                                           // Foreground
+                        row.GetFontWeight()},
+                       cell.GetWidth());
       }
       table.AddRow(newrow);
     }
