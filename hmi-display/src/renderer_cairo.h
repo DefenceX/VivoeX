@@ -126,7 +126,7 @@ class RendererCairo : public Renderer {
  public:
   static HandleType render_;
   RendererCairo(uint32_t width, uint32_t height);
-  ~RendererCairo() override;
+  ~RendererCairo();
   uint32_t Init(uint32_t width, uint32_t height, bool fullscreen, CallbackType cb, void *arg);
   // Pure Virtual functions
   void SetPixel(uint32_t x, uint32_t y) override;

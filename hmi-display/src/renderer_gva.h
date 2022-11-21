@@ -44,7 +44,7 @@ namespace gva {
 
 class RenderBase {
  public:
-  RenderBase() {}
+  RenderBase() = default;
   RenderBase(uint32_t x, uint32_t y) : m_x(x), m_y(y), m_width(0), m_height(0) {}
   RenderBase(uint32_t x, uint32_t y, uint32_t width) : m_x(x), m_y(y), m_width(width), m_height(0) {}
   RenderBase(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
@@ -73,7 +73,7 @@ class GvaCell {
 
 class GvaRow : public RenderBase {
  public:
-  GvaRow() {}
+  GvaRow() = default;
   GvaRow(uint32_t x, uint32_t y) : RenderBase(x, y) {}
   uint32_t addCell(GvaCell newcell, uint32_t width);
   GvaCell cell_[MAX_CELLS];
@@ -155,7 +155,7 @@ class TouchGva {
 class RendererGva : public RendererCairo {
  public:
   RendererGva(uint32_t width, uint32_t height);
-  virtual ~RendererGva();
+  ~RendererGva() = default;
 
   ///
   /// \brief Draw all the labels on the screen

@@ -83,7 +83,7 @@ class RendererCairo;
 class Renderer {
  public:
   Renderer(uint32_t width, uint32_t height);
-  virtual ~Renderer();
+  ~Renderer() = default;
   virtual void SetPixel(uint32_t x, uint32_t y) = 0;
   virtual void SetColour(uint8_t red, uint8_t green, uint8_t blue) = 0;
   virtual void SetColourForeground(uint8_t red, uint8_t green, uint8_t blue) = 0;
