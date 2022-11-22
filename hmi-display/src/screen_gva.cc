@@ -45,9 +45,6 @@
 #include "widgets/compass.h"
 #include "widgets/keyboard.h"
 
-using namespace std;
-using namespace GeographicLib;
-
 #define MAX_NMEA 1000
 
 namespace gva {
@@ -170,9 +167,9 @@ void *ClockUpdate(void *arg) {
           int zone;
           bool northp;
           double x, y;
-          UTMUPS::Forward(a->info->lat, a->info->lon, zone, northp, x, y);
-          string mgrs;
-          MGRS::Forward(zone, northp, x, y, a->info->lat, 5, mgrs);
+          GeographicLib::UTMUPS::Forward(a->info->lat, a->info->lon, zone, northp, x, y);
+          std::string mgrs;
+          GeographicLib::MGRS::Forward(zone, northp, x, y, a->info->lat, 5, mgrs);
           a->locationFormat, "MGRS";
           a->locationString = mgrs;
         } break;
