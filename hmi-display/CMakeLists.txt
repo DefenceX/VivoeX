@@ -67,6 +67,7 @@ set(SOURCES main.cc
 			common/debug.cc 
 			common/log_gva.cc 
 			src/hmi_gva.cc 
+			src/hmi_gva_defaults.cc 
 			src/hmi_gva_helpers.cc 
 			src/view_gva.cc 
 			src/renderer_map.cc 

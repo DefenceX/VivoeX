@@ -76,21 +76,14 @@ void HmiHelper::TableSystem(TableWidget *table) {
   table->width_ = 420;
 
   table->AddRow(WeightType::kWeightBold);
-  printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
   table->AddCell("Fuction", 80);
-  printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
   table->AddCell("Status", 20);
 
   table->AddRow();
-  printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
-
   std::stringstream stream;
   stream << "HMI Version " << MAJOR << "." << MINOR << "." << PATCH;
-  printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
   table->AddCell(stream.str(), 80);
-  printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
   table->AddCell("Ok", 20);
-  printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
 
   table->AddRow();
   table->AddCell("GPS Source, /dev/ttyUSB0", 80);

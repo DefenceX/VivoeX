@@ -874,31 +874,40 @@ struct StateOn : Hmi {
     canvas_ = DefaultSettings::GetDefaultCanvas();
 
     // Setup the main screens
+    // SituationalAwareness (SA)
     manager_->AddNewView(GvaFunctionEnum::kSituationalAwareness, &top_, &bottom_,
                          DefaultSettings::GetDefaultFunctionKeysSituationalAwarenessLeft(),
                          gva::DefaultSettings::GetDefaultFunctionKeysSituationalAwarenessRight());
+    // Weapons (WPN)
     manager_->AddNewView(GvaFunctionEnum::kWeapon, &top_, &bottom_,
                          gva::DefaultSettings::GetDefaultFunctionKeysWeaponsLeft(),
                          gva::DefaultSettings::GetDefaultFunctionKeysWeaponsRight());
+    // Defensive Systems (DEF)
     manager_->AddNewView(GvaFunctionEnum::kDefensiveSystems, &top_, &bottom_,
-                         gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden(),
+                         gva::DefaultSettings::GetDefaultFunctionKeysDefensiveSystemsLeft(),
                          gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden());
+    // Systems, no labels on right so defaults used
     manager_->AddNewView(GvaFunctionEnum::kSystems, &top_, &bottom_,
-                         gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden(),
+                         gva::DefaultSettings::GetDefaultFunctionKeySystemsLeft(),
                          gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden());
+    // Driver (DRV), no labels on right so defaults used
     manager_->AddNewView(GvaFunctionEnum::kDriver, &top_, &bottom_,
-                         gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden(),
+                         gva::DefaultSettings::GetDefaultFunctionKeyDriverLeft(),
                          gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden());
+    // Special To Role (STR), not used so all defaults
     manager_->AddNewView(GvaFunctionEnum::KSpecialToRole, &top_, &bottom_,
                          gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden(),
                          gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden());
+    // Communications (COM), no labels on right so defaults used
     manager_->AddNewView(GvaFunctionEnum::kCommunications, &top_, &bottom_,
-                         gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden(),
+                         gva::DefaultSettings::GetDefaultFunctionKeyCommunicationsLeft(),
                          gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden());
-    manager_->AddNewView(GvaFunctionEnum::kBattlefieldManagementSystem, &top_, &bottom_,
-                         gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden(),
-                         gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden());
+    // Battlefield Management System (BMS)
     manager_->AddNewView(GvaFunctionEnum::kAlarmsX, &top_, &bottom_,
+                         gva::DefaultSettings::GetDefaultFunctionKeyBattlefieldManagementSystemLeft(),
+                         gva::DefaultSettings::GetDefaultFunctionKeyBattlefieldManagementSystemRight());
+    // Alarms
+    manager_->AddNewView(GvaFunctionEnum::kBattlefieldManagementSystem, &top_, &bottom_,
                          gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden(),
                          gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden());
 

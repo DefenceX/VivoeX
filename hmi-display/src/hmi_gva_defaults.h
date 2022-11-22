@@ -33,190 +33,131 @@ class DefaultSettings {
  public:
   DefaultSettings() = default;
 
-  static CommonTaskKeys GetDefaultCommonTaskKeys() {
-    CommonTaskKeys common_task_keys = {};
-    common_task_keys.visible = true;
-    common_task_keys.labels[0].state = LabelStates::kLabelEnabledSelected;
-    common_task_keys.labels[0].text = "Up";
-    common_task_keys.labels[1].state = LabelStates::kLabelEnabledSelected;
-    common_task_keys.labels[1].text = "Alarms";
-    common_task_keys.labels[2].state = LabelStates::kLabelEnabledSelected;
-    common_task_keys.labels[2].text = "Threats";
-    common_task_keys.labels[3].state = LabelStates::kLabelEnabledSelected;
-    common_task_keys.labels[3].text = "Ack";
-    common_task_keys.labels[4].state = LabelStates::kLabelEnabledSelected;
-    common_task_keys.labels[4].text = "↑";
-    common_task_keys.labels[5].state = LabelStates::kLabelEnabledSelected;
-    common_task_keys.labels[5].text = "↓";
-    common_task_keys.labels[6].state = LabelStates::kLabelEnabledSelected;
-    common_task_keys.labels[6].text = "Labels";
-    common_task_keys.labels[7].state = LabelStates::kLabelEnabledSelected;
-    common_task_keys.labels[7].text = "Enter";
-    return common_task_keys;
-  }
+  ///
+  /// \brief Get the Default Common Task Keys object
+  ///
+  /// \return CommonTaskKeys
+  ///
+  static CommonTaskKeys GetDefaultCommonTaskKeys();
 
-  static FunctionSelect GetDefaultFunctionSelect() {
-    FunctionSelect function_select = {};
-    function_select.visible = true;
-    function_select.labels[0].state = LabelStates::kLabelEnabledSelected;
-    function_select.labels[1].state = LabelStates::kLabelEnabled;
-    function_select.labels[2].state = LabelStates::kLabelEnabled;
-    function_select.labels[3].state = LabelStates::kLabelEnabled;
-    function_select.labels[4].state = LabelStates::kLabelEnabled;
-    function_select.labels[5].state = LabelStates::kLabelEnabled;
-    function_select.labels[6].state = LabelStates::kLabelDisabled;
-    function_select.labels[7].state = LabelStates::kLabelEnabled;
-    printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
-    return function_select;
-  }
+  ///
+  /// \brief Get the Default Function Select object
+  ///
+  /// \return FunctionSelect
+  ///
+  static FunctionSelect GetDefaultFunctionSelect();
 
-  static StatusBar GetDefaultStatusBar() {
-    StatusBar status_bar = {};
-    status_bar.visible = true;
-    status_bar.x = DEFAULT_HEIGHT - 11;
-    status_bar.y = 0;
-    status_bar.location.locationFormat = LocationEnum::kLocationFormatMgrs;
-    status_bar.location.lon = gva::ConfigData::GetInstance()->GetTestLon();
-    status_bar.location.lat = gva::ConfigData::GetInstance()->GetTestLat();
-    status_bar.labels[0].text = "00:00:00, 01/01/1973";
-    status_bar.labels[1].text = "LON/LAT";
-    status_bar.labels[2].text = "Lat:0.000000 Lon:-0.000000    [1,3]";
-    status_bar.labels[3].text = "W:0";
-    status_bar.labels[4].text = "A:5";
-    status_bar.labels[5].text = "C:1";
-    status_bar.labels[6].text = "O:2";
-    return status_bar;
-  }
+  ///
+  /// \brief Get the Default Status Bar object
+  ///
+  /// \return StatusBar
+  ///
+  static StatusBar GetDefaultStatusBar();
 
-  static Canvas GetDefaultCanvas() {
-    Canvas canvas;
-    canvas.visible = true;
-    canvas.bufferType = SurfaceType::kSurfaceNone;
-    canvas.filename = "";
-    canvas.buffer = nullptr;
-    canvas.surface = nullptr;
-    return canvas;
-  }
+  ///
+  /// \brief Get the Default Canvas object
+  ///
+  /// \return Canvas
+  ///
+  static Canvas GetDefaultCanvas();
 
-  static FunctionKeys GetDefaultFunctionKeysDefaultAllHidden() {
-    FunctionKeys keys;
-    keys.visible = true;
-    keys.labels[0].state = LabelStates::kLabelHidden;
-    keys.labels[0].text = "Unused";
-    keys.labels[0].toggleActive = false;
-    keys.labels[1].state = LabelStates::kLabelHidden;
-    keys.labels[1].text = "Unused";
-    keys.labels[1].toggleActive = false;
-    keys.labels[2].state = LabelStates::kLabelHidden;
-    keys.labels[2].text = "Unused";
-    keys.labels[2].toggleActive = false;
-    keys.labels[3].state = LabelStates::kLabelHidden;
-    keys.labels[3].text = "Unused";
-    keys.labels[3].toggleActive = false;
-    keys.labels[4].state = LabelStates::kLabelHidden;
-    keys.labels[4].text = "Unused";
-    keys.labels[4].toggleActive = false;
-    keys.labels[5].state = LabelStates::kLabelHidden;
-    keys.labels[5].text = "Unused";
-    keys.labels[5].toggleActive = false;
-    return keys;
-  }
+  ///
+  /// \brief Get the Default Function Keys Default All Hidden object
+  ///
+  /// \return FunctionKeys
+  ///
+  static FunctionKeys GetDefaultFunctionKeysDefaultAllHidden();
 
-  static FunctionKeys GetDefaultFunctionKeysSituationalAwarenessLeft() {
-    FunctionKeys keys;
-    keys.visible = true;
-    keys.labels[0].state = LabelStates::kLabelEnabledSelected;
-    keys.labels[0].text = "Wpn Sight";
-    keys.labels[0].toggleActive = false;
-    keys.labels[1].state = LabelStates::kLabelEnabled;
-    keys.labels[1].text = "Quad";
-    keys.labels[1].toggleActive = false;
-    keys.labels[2].state = LabelStates::kLabelHidden;
-    keys.labels[2].text = "Unused";
-    keys.labels[2].toggleActive = false;
-    keys.labels[3].state = LabelStates::kLabelEnabled;
-    keys.labels[3].text = "Front right";
-    keys.labels[3].toggleActive = false;
-    keys.labels[4].state = LabelStates::kLabelEnabled;
-    keys.labels[4].text = "Front";
-    keys.labels[4].toggleActive = false;
-    keys.labels[5].state = LabelStates::kLabelEnabled;
-    keys.labels[5].text = "Front left";
-    keys.labels[5].toggleActive = false;
-    return keys;
-  }
+  ///
+  /// \brief Get the Default Function Keys Situational Awareness Left object
+  ///
+  /// \return FunctionKeys
+  ///
+  static FunctionKeys GetDefaultFunctionKeysSituationalAwarenessLeft();
 
-  static FunctionKeys GetDefaultFunctionKeysSituationalAwarenessRight() {
-    FunctionKeys keys;
-    keys.visible = true;
-    keys.labels[0].state = LabelStates::kLabelHidden;
-    keys.labels[0].text = "Unused";
-    keys.labels[0].toggleActive = false;
-    keys.labels[1].state = LabelStates::kLabelHidden;
-    keys.labels[1].text = "Unused";
-    keys.labels[1].toggleActive = false;
-    keys.labels[2].state = LabelStates::kLabelHidden;
-    keys.labels[2].text = "Unused";
-    keys.labels[2].toggleActive = false;
-    keys.labels[3].state = LabelStates::kLabelEnabled;
-    keys.labels[3].text = "Right";
-    keys.labels[3].toggleActive = false;
-    keys.labels[4].state = LabelStates::kLabelEnabled;
-    keys.labels[4].text = "Rear";
-    keys.labels[4].toggleActive = false;
-    keys.labels[5].state = LabelStates::kLabelEnabled;
-    keys.labels[5].text = "Left";
-    keys.labels[5].toggleActive = false;
-    return keys;
-  }
+  ///
+  /// \brief Get the Default Function Keys Situational Awareness Right object
+  ///
+  /// \return FunctionKeys
+  ///
+  static FunctionKeys GetDefaultFunctionKeysSituationalAwarenessRight();
 
-  static FunctionKeys GetDefaultFunctionKeysWeaponsLeft() {
-    FunctionKeys keys;
-    keys.visible = true;
-    keys.labels[0].state = LabelStates::kLabelEnabledSelected;
-    keys.labels[0].text = "Wpn Sight";
-    keys.labels[0].toggleActive = false;
-    keys.labels[1].state = LabelStates::kLabelEnabled;
-    keys.labels[1].text = "IR Sight";
-    keys.labels[1].toggleActive = false;
-    keys.labels[2].state = LabelStates::kLabelHidden;
-    keys.labels[2].text = "Unused";
-    keys.labels[2].toggleActive = false;
-    keys.labels[3].state = LabelStates::kLabelHidden;
-    keys.labels[3].text = "Unused";
-    keys.labels[3].toggleActive = false;
-    keys.labels[4].state = LabelStates::kLabelHidden;
-    keys.labels[4].text = "Unused";
-    keys.labels[4].toggleActive = false;
-    keys.labels[5].state = LabelStates::kLabelHidden;
-    keys.labels[5].text = "Unused";
-    keys.labels[5].toggleActive = false;
-    return keys;
-  }
+  ///
+  /// \brief Get the Default Function Keys Weapons Left object
+  ///
+  /// \return FunctionKeys
+  ///
+  static FunctionKeys GetDefaultFunctionKeysWeaponsLeft();
 
-  static FunctionKeys GetDefaultFunctionKeysWeaponsRight() {
-    FunctionKeys keys;
-    keys.visible = true;
-    keys.labels[0].state = LabelStates::kLabelHidden;
-    keys.labels[0].text = "Unused";
-    keys.labels[0].toggleActive = false;
-    keys.labels[1].state = LabelStates::kLabelHidden;
-    keys.labels[1].text = "Unused";
-    keys.labels[1].toggleActive = false;
-    keys.labels[2].state = LabelStates::kLabelHidden;
-    keys.labels[2].text = "Unused";
-    keys.labels[2].toggleActive = false;
-    keys.labels[3].state = LabelStates::kLabelHidden;
-    keys.labels[3].text = "Unused";
-    keys.labels[3].toggleActive = false;
-    keys.labels[4].state = LabelStates::kLabelHidden;
-    keys.labels[4].text = "Unused";
-    keys.labels[4].toggleActive = false;
-    keys.labels[5].state = LabelStates::kLabelHidden;
-    keys.labels[5].text = "Unused";
-    keys.labels[5].toggleActive = false;
-    return keys;
-  }
+  ///
+  /// \brief Get the Default Function Keys Weapons Right object
+  ///
+  /// \return FunctionKeys
+  ///
+  static FunctionKeys GetDefaultFunctionKeysWeaponsRight();
+
+  ///
+  /// \brief Get the Default Function Keys Defensive Systems Left object
+  ///
+  /// \return FunctionKeys
+  ///
+  static FunctionKeys GetDefaultFunctionKeysDefensiveSystemsLeft();
+
+  ///
+  /// \brief Get the Default Function Key Systems Right object
+  ///
+  /// \return FunctionKeys
+  ///
+  static FunctionKeys GetDefaultFunctionKeySystemsRight();
+
+  ///
+  /// \brief Get the Default Function Key Systems Left object
+  ///
+  /// \return FunctionKeys
+  ///
+  static FunctionKeys GetDefaultFunctionKeySystemsLeft();
+
+  ///
+  /// \brief Get the Default Function Key Driver Left object
+  ///
+  /// \return FunctionKeys
+  ///
+  static FunctionKeys GetDefaultFunctionKeyDriverLeft();
+
+  ///
+  /// \brief Get the Default Function Key Communications Left object
+  ///
+  /// \return FunctionKeys
+  ///
+  static FunctionKeys GetDefaultFunctionKeyCommunicationsLeft();
+
+  ///
+  /// \brief Get the Default Function Key Battlefield Management System Left object
+  ///
+  /// \return FunctionKeys
+  ///
+  static FunctionKeys GetDefaultFunctionKeyBattlefieldManagementSystemLeft();
+
+  ///
+  /// \brief Get the Default Function Key Battlefield Management System Right object
+  ///
+  /// \return FunctionKeys
+  ///
+  static FunctionKeys GetDefaultFunctionKeyBattlefieldManagementSystemRight();
+
+  ///
+  /// \brief Get the Default Function Key Alarms Left object
+  ///
+  /// \return FunctionKeys
+  ///
+  static FunctionKeys GetDefaultFunctionKeyAlarmsLeft();
+
+  ///
+  /// \brief Get the Default Function Key Alarms Right object
+  ///
+  /// \return FunctionKeys
+  ///
+  static FunctionKeys GetDefaultFunctionKeyAlarmsRight();
 
  private:
 };
