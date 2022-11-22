@@ -109,6 +109,7 @@ void FunctionKeyToggle::Toggle(const std::string &label1, const std::string &lab
   renderer_.DrawText(GetX() + 56, GetY() + 9, label2, 14);
 }
 
+// On the left and right of the screen
 void RendererGva::DrawFunctionLabels(uint32_t x, const std::array<FunctionKeys::Labels, 6> &labels) {
   uint32_t i = 0;
   uint32_t offset = DEFAULT_HEIGHT - 88;
@@ -125,8 +126,9 @@ void RendererGva::DrawFunctionLabels(uint32_t x, const std::array<FunctionKeys::
       SetStateLabel(label.state, config_);
 
       key->Draw(this, x, offset - (i * 72), 100, 50, label.text, GetStateTextColour(label.state, config_));
-      touch_.Add(group, (uint32_t)(firstKey + i), x, offset - (i * 72), 100, 50);
-
+      if (label.state != LabelStates::kLabelDisabled) {
+        touch_.Add(group, (uint32_t)(firstKey + i), x, offset - (i * 72), 100, 50);
+      }
       if (label.toggleActive) key->Toggle(label.toggleText1, label.toggleText2);
     }
     i++;
