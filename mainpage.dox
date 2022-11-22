@@ -1,5 +1,5 @@
 /*! \mainpage User Manual
- *
+ * This documentation was created from git hash <a href="https://github.com/DefenceX/vivoe-lite">#$(GIT_HASH)</a>
  * \section sec1 Developer SDK Guide
  * This VIVOE (Vetronics Infrastructure for Video Over Ethernet) environment is currently tested on Ubuntu 22.04 LTS. 
  * Please ensure you have the following packages installed prior to building the application:
@@ -53,7 +53,15 @@
  * $ /opt/gva/hmi-display
  * \endcode
  
- * \section sec4 Tooling
+ * \section sec4 Documentation
+ * You can create this documentation on your own system using doxygen. 
+ * It is recommended that you run the cmake target to handle the macro replacements for version information as shown below (in the build directory)
+ * \code
+ * $ cmake ..
+ * $ make doxygen
+ * \endcode
+ * 
+ * \section sec5 Tooling
  * 
  * Some tools are available for testing the HMI.
  * Tools fall into the command line section and GUI tools:

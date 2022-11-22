@@ -17,7 +17,8 @@
 /// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 /// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ///
-/// \brief
+/// \brief This is the Generic Vehicle Architecture (GVA) Plan Position Indicator (PPI) widget. It comes in several
+/// different styles.
 ///
 /// \file compass.h
 ///

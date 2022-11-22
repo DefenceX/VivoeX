@@ -35,6 +35,8 @@ jobs:
           export MAJOR=$(sed -n '1p' < version) && \
           export MINOR=$(sed -n '2p' < version) && \
           export PATCH=$(sed -n '3p' < version) && \
+          export GIT_HASH=$(git rev-parse --short HEAD) %% \
+          echo "Current version ${SEM_VERSION} with #${GIT_HASH}" && \
           SEM_VERSION=$MAJOR.$MINOR.$PATCH doxygen && \
           wget https://img.shields.io/badge/version-${SEM_VERSION}-blue.svg -O ./docs/version.svg
       - name: Setup Pages

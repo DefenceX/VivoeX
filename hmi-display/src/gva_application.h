@@ -17,9 +17,9 @@
 /// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 /// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ///
-/// \brief GVA application class
+/// \brief GVA application class to handle the GTK application startup and shutdown.
 ///
-/// \file gva_application.cc
+/// \file gva_application.h
 ///
 
 #ifndef HMI_DISPLAY_SRC_GVA_APPLICATION_H_
