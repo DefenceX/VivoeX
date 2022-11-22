@@ -166,7 +166,7 @@ class RendererGva : public RendererCairo {
   void DrawLabels(char *text, uint32_t fontSize, uint32_t x, uint32_t y);
 
   ///
-  /// \param x position of the labels, usefull for labels on left and right sides of the screen
+  /// \param x position of the labels, useful for labels on left and right sides of the screen
   /// \param state State of the label
   /// \param toggle Toggle
   /// \param toggleOn Toggle on
@@ -278,6 +278,7 @@ class RendererGva : public RendererCairo {
                           {'!', '@', '#', '$', '%', '^', '&', ' ', '-', '-'}};
 
  private:
+  void SetState(LabelStates state, ConfigData *config);
   uint32_t KeyToInt(GvaKeyEnum key);
   ConfigData *config_;
 };
