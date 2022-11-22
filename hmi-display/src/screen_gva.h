@@ -98,7 +98,7 @@ struct args {
   std::string locationFormat;
   std::string locationString;
   ScreenGva *screen;
-  uint32_t *gps;
+  int *gps;
   nmeaINFO *info;
   nmeaPARSER *parser;
   bool active;
@@ -149,7 +149,7 @@ class ScreenGva : public RendererGva {
   Screen *screen_;
   std::vector<WidgetX *> widget_list_;
   args args_;
-  uint32_t gps_;
+  int gps_;
   uint32_t hndl_;
   Screen last_screen_;
   pthread_t clock_thread_;

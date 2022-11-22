@@ -75,12 +75,11 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
 
   // Open File Descriptor
   gps_ = open(screen->info.gpsDevice.c_str(), O_RDWR | O_NONBLOCK | O_NDELAY);
+
   if (gps_ > 0) {
-    sprintf(tmp, "GPS Opened %s", screen->info.gpsDevice);
-    logGva::log(tmp, LOG_INFO);
+    logGva::log("GPS Opened " + screen->info.gpsDevice, LOG_INFO);
   } else {
-    sprintf(tmp, "GPS Error Opening device %s", screen->info.gpsDevice);
-    logGva::log(tmp, LOG_ERROR);
+    logGva::log("GPS Error Opening device " + screen->info.gpsDevice, LOG_ERROR);
   }
   tcgetattr(gps_, &settings);
 

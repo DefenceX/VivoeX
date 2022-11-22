@@ -31,9 +31,9 @@ namespace gva {
 Screen DefaultSettings::GetDefaultScreen() {
   Screen screen;
   screen.canvas.visible = true;
-  // screen.info.gpsDevice = ConfigData::GetInstance()->;
+  screen.info.gpsDevice = ConfigData::GetInstance()->GetGpsDevice();
   screen.info.mode = ScreenMode::kModeOperational;
-  screen.info.name = "Generic Vehicle HMI";
+  screen.info.name = "Commanders Display";
   return screen;
 }
 

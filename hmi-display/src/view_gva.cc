@@ -36,18 +36,16 @@ void ViewGvaManager::AddNewView(GvaFunctionEnum function, FunctionSelect *top, C
   return;
 }
 
-Screen ViewGvaManager::GetScreen(GvaFunctionEnum function) {
+void ViewGvaManager::SetScreen(Screen *screen, GvaFunctionEnum function) {
   int i = 0;
-  Screen screen;
   for (auto view : views_) {
     if (view.GetFunction() == function) {
-      screen.status_bar = status_bar_;
-      screen.function_top = view.GetTop();
-      screen.control = view.GetBottom();
-      screen.function_left = *view.GetLeft();
-      screen.function_right = *view.GetRight();
-      screen.currentFunction = function;
-      return screen;
+      screen->status_bar = status_bar_;
+      screen->function_top = view.GetTop();
+      screen->control = view.GetBottom();
+      screen->function_left = *view.GetLeft();
+      screen->function_right = *view.GetRight();
+      screen->currentFunction = function;
     }
   }
 }

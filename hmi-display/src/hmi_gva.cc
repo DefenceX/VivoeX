@@ -559,7 +559,7 @@ GvaKeyEnum Hmi::KeyBMS(GvaKeyEnum keypress) {
 struct StateSA : Hmi {
   void entry() override {
     if (screen_.function_top->labels[0].state != LabelStates::kLabelHidden) {
-      screen_ = manager_->GetScreen(GvaFunctionEnum::kSituationalAwareness);
+      manager_->SetScreen(&screen_, GvaFunctionEnum::kSituationalAwareness);
       lastState_ = GvaFunctionEnum::kSituationalAwareness;
       Reset();
       screen_.function_top->labels[0].state = LabelStates::kLabelEnabledSelected;
@@ -595,7 +595,7 @@ struct StateWPN : Hmi {
   void entry() override {
     if (screen_.function_top->labels[1].state != LabelStates::kLabelHidden) {
       std::string filename;
-      screen_ = manager_->GetScreen(GvaFunctionEnum::kWeapon);
+      manager_->SetScreen(&screen_, GvaFunctionEnum::kWeapon);
       lastState_ = GvaFunctionEnum::kWeapon;
       Reset();
 
@@ -627,7 +627,7 @@ struct StateWPN : Hmi {
 struct StateDEF : Hmi {
   void entry() override {
     if (screen_.function_top->labels[3].state != LabelStates::kLabelHidden) {
-      screen_ = manager_->GetScreen(GvaFunctionEnum::kDefensiveSystems);
+      manager_->SetScreen(&screen_, GvaFunctionEnum::kDefensiveSystems);
       lastState_ = GvaFunctionEnum::kDefensiveSystems;
       Reset();
 
@@ -655,7 +655,7 @@ struct StateSYS : Hmi {
   void entry() override {
     if (screen_.function_top->labels[3].state != LabelStates::kLabelHidden) {
       std::string filename;
-      screen_ = manager_->GetScreen(GvaFunctionEnum::kSystems);
+      manager_->SetScreen(&screen_, GvaFunctionEnum::kSystems);
       lastState_ = GvaFunctionEnum::kSystems;
       Reset();
 
@@ -691,7 +691,7 @@ struct StateSYS : Hmi {
 struct StateDRV : Hmi {
   void entry() override {
     if (screen_.function_top->labels[4].state != LabelStates::kLabelHidden) {
-      screen_ = manager_->GetScreen(GvaFunctionEnum::kDriver);
+      manager_->SetScreen(&screen_, GvaFunctionEnum::kDriver);
       lastState_ = GvaFunctionEnum::kDriver;
       Reset();
 
@@ -720,7 +720,7 @@ struct StateDRV : Hmi {
 struct StateSTR : Hmi {
   void entry() override {
     if (screen_.function_top->labels[5].state != LabelStates::kLabelHidden) {
-      screen_ = manager_->GetScreen(GvaFunctionEnum::KSpecialToRole);
+      manager_->SetScreen(&screen_, GvaFunctionEnum::KSpecialToRole);
       lastState_ = GvaFunctionEnum::KSpecialToRole;
       Reset();
 
@@ -746,7 +746,7 @@ struct StateSTR : Hmi {
 struct StateCOM : Hmi {
   void entry() override {
     if (screen_.function_top->labels[6].state != LabelStates::kLabelHidden) {
-      screen_ = manager_->GetScreen(GvaFunctionEnum::kCommunications);
+      manager_->SetScreen(&screen_, GvaFunctionEnum::kCommunications);
       lastState_ = GvaFunctionEnum::kCommunications;
       Reset();
 
@@ -772,7 +772,7 @@ struct StateCOM : Hmi {
 struct StateBMS : Hmi {
   void entry() override {
     if (screen_.function_top->labels[7].state != LabelStates::kLabelHidden) {
-      screen_ = manager_->GetScreen(GvaFunctionEnum::kBattlefieldManagementSystem);
+      manager_->SetScreen(&screen_, GvaFunctionEnum::kBattlefieldManagementSystem);
       lastState_ = GvaFunctionEnum::kBattlefieldManagementSystem;
       Reset();
 
@@ -836,7 +836,7 @@ struct StateAlarms : Hmi {
       }
       Reset();
       alarmson_ = true;
-      screen_ = manager_->GetScreen(GvaFunctionEnum::kAlarmsX);
+      manager_->SetScreen(&screen_, GvaFunctionEnum::kAlarmsX);
       HmiHelper::TableAlarms(&screen_.table);
     }
   };
@@ -908,7 +908,7 @@ struct StateOn : Hmi {
                          gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden(),
                          gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden());
 
-    screen_ = manager_->GetScreen(GvaFunctionEnum::kSystems);
+    manager_->SetScreen(&screen_, GvaFunctionEnum::kSystems);
 
     // Create the screen render now
     screen_render_ = new ScreenGva(&screen_, view_.width, view_.height);

@@ -92,7 +92,7 @@ class ViewGvaManager {
   explicit ViewGvaManager(StatusBar *StatusBar);
   void AddNewView(GvaFunctionEnum function, FunctionSelect *top, CommonTaskKeys *bottom, FunctionKeys left,
                   FunctionKeys right);
-  Screen GetScreen(GvaFunctionEnum function);
+  void SetScreen(Screen *screen, GvaFunctionEnum function);
   ViewGva *GetView(GvaFunctionEnum function);
 
  private:
