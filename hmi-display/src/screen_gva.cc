@@ -375,7 +375,7 @@ GvaStatusTypes ScreenGva::Update() {
   }
 
   //
-  // Refersh display
+  // Refresh display
   //
   Draw();
   last_screen_ = *screen_;

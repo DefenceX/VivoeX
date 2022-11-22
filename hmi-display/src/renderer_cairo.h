@@ -40,18 +40,18 @@
 
 namespace gva {
 
-typedef struct {
+struct gtkType {
   GtkApplication *app;
   GtkWidget *win;
   GtkWidget *draw;
   uint32_t height;
   uint32_t width;
-} gtkType;
+};
 
 #define MAX_COMMANDS 1000
 #define MAX_IMAGES 100
 
-typedef struct {
+struct HandleType {
   uint32_t handle;
   bool inUse;
   bool fullscreen;
@@ -59,33 +59,33 @@ typedef struct {
   gtkType win;
   cairo_surface_t *surface;
   cairo_t *cr;
-} HandleType;
+};
 
 enum Draw_type {
-  COMMAND_CIRCLE = 0,
-  COMMAND_ARC,
-  COMMAND_COLOUR_BG,
-  COMMAND_COLOUR_FG,
-  COMMAND_IMAGE_TEXTURE,
-  COMMAND_IMAGE_TEXTURE_PERSIST,
-  COMMAND_LINE_JOIN,
-  COMMAND_PEN_COLOUR,
-  COMMAND_PEN_CURVE,
-  COMMAND_PEN_LINE,
-  COMMAND_PEN_DRAW,
-  COMMAND_PEN_MOVE,
-  COMMAND_PEN_RECTANGLE,
-  COMMAND_PEN_ROUNDED_RECTANGLE,
-  COMMAND_PEN_THICKNESS,
-  COMMAND_PEN_TRIANGLE,
-  COMMAND_SAVE,
-  COMMAND_RESTORE,
-  COMMAND_SCALE,
-  COMMAND_TRANSLATE,
-  COMMAND_ROTATE,
-  COMMAND_CLOSE_PATH,
-  COMMAND_TEXT_FONT,
-  COMMAND_TEXT
+  kCommandCircle = 0,
+  kCommandArc,
+  kCommandColourBackground,
+  kCommandColourForeground,
+  kCommandImageTexture,
+  kCommandImageTexturePersist,
+  kCommandLineJoin,
+  kCommandPenColour,
+  kCommandPenCurve,
+  kCommandPenLine,
+  kCommandPenDraw,
+  kCOmmandPenMove,
+  kCommandPenRectangle,
+  kCommandPenRoundedRectangle,
+  kCommandPenThickness,
+  kCommandPenTriangle,
+  kCommandSave,
+  kCommandRestore,
+  kCommandScale,
+  kCommandTranslate,
+  kCommandRotate,
+  kCommandClosePath,
+  kCommandTextFont,
+  kCommandText
 };
 
 struct command_type {
@@ -112,10 +112,10 @@ struct image_type {
 };
 
 typedef enum {
-  LINE_SOLID,
-  LINE_DASHED,
-  LINE_DASHED_MEDIUM,
-  LINE_DASHED_LARGE,
+  kLineSolid,
+  kLineDashed,
+  kLineDashedMedium,
+  kLineDashedLarge,
 } LineType;
 
 typedef enum { LINE_CAP_BUTT, LINE_CAP_ROUND, LINE_CAP_SQUARE } LineCapEnd;
