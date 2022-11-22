@@ -281,7 +281,6 @@ class RendererGva : public RendererCairo {
   void SetStateLabel(LabelStates state, ConfigData *config);
   void SetStateText(LabelStates state, ConfigData *config);
   uint32_t GetStateTextColour(LabelStates state, ConfigData *config) const;
-  uint32_t KeyToInt(GvaKeyEnum key);
   ConfigData *config_;
 };
 
@@ -299,7 +298,11 @@ class FunctionKeySimple {
 
 class FunctionKeyToggle : public FunctionKeySimple {
  public:
-  void Toggle(RendererGva *r, const std::string &label1, const std::string &label2);
+  explicit FunctionKeyToggle(RendererGva &renderer) : renderer_(renderer) {}
+  void Toggle(const std::string &label1, const std::string &label2);
+
+ private:
+  RendererGva &renderer_;
 };
 
 }  // namespace gva

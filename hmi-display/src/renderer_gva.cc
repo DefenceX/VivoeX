@@ -87,26 +87,26 @@ void FunctionKeySimple::Draw(RendererGva *r, uint32_t x, uint32_t y, uint32_t wi
   y_ = y;
 }
 
-void FunctionKeyToggle::Toggle(RendererGva *r, const std::string &label1, const std::string &label2) {
-  r->SetColourForeground(HMI_DARK_GREEN2);
-  r->SetColourBackground(HMI_YELLOW);
+void FunctionKeyToggle::Toggle(const std::string &label1, const std::string &label2) {
+  renderer_.SetColourForeground(HMI_DARK_GREEN2);
+  renderer_.SetColourBackground(HMI_YELLOW);
   if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::LABEL_ROUNDED) {
-    r->DrawRoundedRectangle(GetX() + 5, GetY() + 5, 40, 20, 4, true);
+    renderer_.DrawRoundedRectangle(GetX() + 5, GetY() + 5, 40, 20, 4, true);
   } else {
-    r->DrawRectangle(GetX() + 5, GetY() + 5, 40, 20, true);
+    renderer_.DrawRectangle(GetX() + 5, GetY() + 5, 40, 20, true);
   }
-  r->DrawColor(HMI_BLACK);
-  r->DrawText(GetX() + 12, GetY() + 9, label1, 14);
-  r->SetColourBackground(HMI_GREY);
-  r->SetColourForeground(HMI_DARK_GREY);
+  renderer_.DrawColor(HMI_BLACK);
+  renderer_.DrawText(GetX() + 12, GetY() + 9, label1, 14);
+  renderer_.SetColourBackground(HMI_GREY);
+  renderer_.SetColourForeground(HMI_DARK_GREY);
 
   if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::LABEL_ROUNDED) {
-    r->DrawRoundedRectangle(GetX() + 50, GetY() + 5, 45, 20, 4, true);
+    renderer_.DrawRoundedRectangle(GetX() + 50, GetY() + 5, 45, 20, 4, true);
   } else {
-    r->DrawRectangle(GetX() + 50, GetY() + 5, 45, 20, true);
+    renderer_.DrawRectangle(GetX() + 50, GetY() + 5, 45, 20, true);
   }
-  r->DrawColor(HMI_BLACK);
-  r->DrawText(GetX() + 56, GetY() + 9, label2, 14);
+  renderer_.DrawColor(HMI_BLACK);
+  renderer_.DrawText(GetX() + 56, GetY() + 9, label2, 14);
 }
 
 void RendererGva::DrawFunctionLabels(uint32_t x, const std::array<FunctionKeys::Labels, 6> &labels) {
@@ -116,119 +116,20 @@ void RendererGva::DrawFunctionLabels(uint32_t x, const std::array<FunctionKeys::
   setLineType(CAIRO_LINE_JOIN_ROUND);
   SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightNormal, config_->GetThemeFont());
 
-  uint32_t firstKey = (x < DEFAULT_WIDTH / 2) ? 0 : 6;
+  uint32_t firstKey = (x < DEFAULT_WIDTH / 2) ? int(GvaKeyEnum::kKeyF1) : int(GvaKeyEnum::kKeyF7);
   GvaFunctionGroupEnum group = (x < DEFAULT_WIDTH / 2) ? GvaFunctionGroupEnum::kLeft : GvaFunctionGroupEnum::kRight;
 
   for (auto label : labels) {
     if (label.state != LabelStates::kLabelHidden) {
-      FunctionKeyToggle *key = new FunctionKeyToggle();
+      FunctionKeyToggle *key = new FunctionKeyToggle(*this);
       SetStateLabel(label.state, config_);
 
       key->Draw(this, x, offset - (i * 72), 100, 50, label.text, GetStateTextColour(label.state, config_));
       touch_.Add(group, (uint32_t)(firstKey + i), x, offset - (i * 72), 100, 50);
 
-      if (label.toggleActive) key->Toggle(this, label.toggleText1, label.toggleText2);
+      if (label.toggleActive) key->Toggle(label.toggleText1, label.toggleText2);
     }
     i++;
-  }
-}
-
-uint32_t RendererGva::KeyToInt(GvaKeyEnum key) {
-  switch (key) {
-    case GvaKeyEnum::kKeyNone:  // Drop through to default
-    default:
-      return 0;
-    case GvaKeyEnum::KKeySituationalAwareness:
-      return 1;
-    case GvaKeyEnum::kKeyWeapon:
-      return 2;
-    case GvaKeyEnum::kKeyDefensiveSystems:
-      return 3;
-    case GvaKeyEnum::kKeySystems:
-      return 4;
-    case GvaKeyEnum::kKeyDriver:
-      return 5;
-    case GvaKeyEnum::kKeySpecialToRole:
-      return 6;
-    case GvaKeyEnum::kKeyCommunications:
-      return 7;
-    case GvaKeyEnum::kKeyBattlefieldManagementSystem:
-      return 8;
-    case GvaKeyEnum::kKeyF1:
-      return 1;
-    case GvaKeyEnum::kKeyF2:
-      return 2;
-    case GvaKeyEnum::kKeyF3:
-      return 3;
-    case GvaKeyEnum::kKeyF4:
-      return 4;
-    case GvaKeyEnum::kKeyF5:
-      return 5;
-    case GvaKeyEnum::kKeyF6:
-      return 6;
-    case GvaKeyEnum::kKeyF7:
-      return 7;
-    case GvaKeyEnum::kKeyF8:
-      return 8;
-    case GvaKeyEnum::kKeyF9:
-      return 9;
-    case GvaKeyEnum::kKeyF10:
-      return 10;
-    case GvaKeyEnum::kKeyF11:
-      return 11;
-    case GvaKeyEnum::kKeyF12:
-      return 12;
-    case GvaKeyEnum::kKeyF13:
-      return 13;
-    case GvaKeyEnum::kKeyF14:
-      return 14;
-    case GvaKeyEnum::kKeyF15:
-      return 15;
-    case GvaKeyEnum::kKeyF16:
-      return 16;
-    case GvaKeyEnum::kKeyF17:
-      return 17;
-    case GvaKeyEnum::kKeyF18:
-      return 18;
-    case GvaKeyEnum::kKeyF19:
-      return 19;
-    case GvaKeyEnum::kKeyF20:
-      return 20;
-    case GvaKeyEnum::kKeyF21:  // Special future use
-      return 21;
-    case GvaKeyEnum::kKeyF22:  // Special future use
-      return 22;
-    case GvaKeyEnum::kKeyBlackout:
-      return 30;
-    case GvaKeyEnum::kKeyPower:
-      return 31;
-    case GvaKeyEnum::KKeyBrightnessUp:
-      return 32;
-    case GvaKeyEnum::kKeyBrightnessDown:
-      return 33;
-    // These are fake keys that only exist in the software (emulated world)
-    case GvaKeyEnum::kKeyEscape:
-      return 34;
-    case GvaKeyEnum::kKeyFullscreen:
-      return 35;
-    case GvaKeyEnum::kKeyPlus:
-      return 36;
-    case GvaKeyEnum::kKeyMinus:
-      return 36;
-    case GvaKeyEnum::kKeyUpArrow:
-      return 38;
-    case GvaKeyEnum::kKeyDownArrow:
-      return 39;
-    case GvaKeyEnum::kKeyRightArrow:
-      return 40;
-    case GvaKeyEnum::kKeyLeftArrow:
-      return 41;
-    case GvaKeyEnum::kKeyKeyboard:
-      return 42;
-    case GvaKeyEnum::kKeyPreviousLabel:
-      return 43;
-    case GvaKeyEnum::kKeyNextLabel:
-      return 44;
   }
 }
 
@@ -253,7 +154,7 @@ void RendererGva::DrawTopLabels(uint32_t y, const std::array<FunctionSelect::Lab
       } else {
         DrawRectangle((i * width) + offset, y, width - 10, 10, true);
       }
-      touch_.AddAbsolute(GvaFunctionGroupEnum::kTop, (uint32_t)(KeyToInt(GvaKeyEnum::KKeySituationalAwareness) + i),
+      touch_.AddAbsolute(GvaFunctionGroupEnum::kTop, int(GvaKeyEnum::KKeySituationalAwareness) + i,
                          (i * width) + offset, y, (i * width) + width - spacing + offset, y + 10);
     }
     i++;
@@ -284,8 +185,8 @@ void RendererGva::DrawControlLabels(const uint32_t y, const std::array<CommonTas
       }
       SetStateText(label.state, config_);
 
-      touch_.AddAbsolute(GvaFunctionGroupEnum::kBottom, (uint32_t)(KeyToInt(GvaKeyEnum::kKeyF13) + i), (i * w) + offset,
-                         y, (i * w) + w - 5 + offset, y + 20);
+      touch_.AddAbsolute(GvaFunctionGroupEnum::kBottom, int(GvaKeyEnum::kKeyF13) + i, (i * w) + offset, y,
+                         (i * w) + w - 5 + offset, y + 20);
       DrawText((i * w) + offset + 5, y + 6, label.text.c_str(), 12);
       if (i == 4) DrawIcon(ICON_UP_ARROW, (i * w) + offset + 34, y + 11, 15, 8);
       if (i == 5) DrawIcon(ICON_DOWN_ARROW, (i * w) + offset + 34, y + 10, 15, 8);
