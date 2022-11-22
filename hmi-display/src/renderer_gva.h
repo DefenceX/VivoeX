@@ -278,14 +278,17 @@ class RendererGva : public RendererCairo {
                           {'!', '@', '#', '$', '%', '^', '&', ' ', '-', '-'}};
 
  private:
-  void SetState(LabelStates state, ConfigData *config);
+  void SetStateLabel(LabelStates state, ConfigData *config);
+  void SetStateText(LabelStates state, ConfigData *config);
+  uint32_t GetStateTextColour(LabelStates state, ConfigData *config) const;
   uint32_t KeyToInt(GvaKeyEnum key);
   ConfigData *config_;
 };
 
 class FunctionKeySimple {
  public:
-  void Draw(RendererGva *r, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::string text);
+  void Draw(RendererGva *r, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::string text,
+            uint32_t text_colour);
   uint32_t GetX() { return x_; }
   uint32_t GetY() { return y_; }
 

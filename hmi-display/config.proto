@@ -40,8 +40,8 @@ enum Colour {
   COLOUR_BLACK = 0x000000;
   COLOUR_YELLOW = 0xFFFF00;
   COLOUR_ORANGE = 0xFFA500;
-  COLOUR_MODERN_BLUE_LIGHT = 0x14405B;
-  COLOUR_MODERN_BLUE_DARK = 0x007EC2;
+  COLOUR_MODERN_BLUE_LIGHT = 0x007EC2;
+  COLOUR_MODERN_BLUE_DARK = 0x14405B;
 }
 
 // Label style
@@ -143,17 +143,17 @@ message ThemeModernBlue {
   optional Colour theme_label_background_enabled_selected_changing= 4 [default = COLOUR_MODERN_BLUE_LIGHT];
   optional Colour theme_label_background_enabled_selected= 5 [default = COLOUR_MODERN_BLUE_DARK];
   optional Colour theme_label_background_enabled = 6 [default = COLOUR_BLACK];
-  optional Colour theme_label_background_disabled = 7 [default = COLOUR_GREY];
+  optional Colour theme_label_background_disabled = 7 [default = COLOUR_BLACK];
   // Text Colour
   optional Colour theme_label_text_enabled_selected_changing = 8 [default = COLOUR_WHITE];
   optional Colour theme_label_text_enabled_selected = 9 [default = COLOUR_WHITE];
   optional Colour theme_label_text_enabled = 10 [default = COLOUR_WHITE];
-  optional Colour theme_label_text_disabled = 11 [default = COLOUR_BLACK];
+  optional Colour theme_label_text_disabled = 11 [default = COLOUR_GREY];
   // Line Colour
   optional Colour theme_label_border_enabled_selected_changing = 12 [default = COLOUR_MODERN_BLUE_DARK];
   optional Colour theme_label_border_enabled_selected = 13 [default = COLOUR_MODERN_BLUE_LIGHT];
   optional Colour theme_label_border_enabled = 14 [default = COLOUR_GREY];
-  optional Colour theme_label_border_disabled = 15 [default = COLOUR_DARK_GREY];
+  optional Colour theme_label_border_disabled = 15 [default = COLOUR_GREY];
   // Line Style
   optional LineStyle theme_label_line_enabled_selected_changing = 16 [default = LABEL_SOLID];
   optional LineStyle theme_label_line_enabled_selected = 17 [default = LABEL_SOLID];
@@ -163,7 +163,7 @@ message ThemeModernBlue {
   // General
 
   // Line Thickness
-  optional int32 theme_label_border_thickness = 20 [default = 1];
+  optional int32 theme_label_border_thickness = 20 [default = 2];
   optional int32 theme_table_border_thickness = 21 [default = 1];
   optional Colour theme_status_background = 22 [default = COLOUR_BLACK];
   optional Colour theme_status_border = 23 [default = COLOUR_BLACK];
@@ -219,8 +219,8 @@ message Gva {
   // ODB Options
   optional string odb_device = 14 [default = "/dev/ttyUSB1"];    
   
-  optional ThemeDefault theme = 15;
-  // optional ThemeModernBlue theme = 15;
+  // optional ThemeDefault theme = 15;
+  optional ThemeModernBlue theme = 15;
   
   optional File file = 16;
   

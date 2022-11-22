@@ -64,6 +64,8 @@ void RendererCairo::Draw() {
   uint32_t count = 0;
   cairo_surface_t *surface;
   double dashed[] = {1.0};
+  double dashed_medium[] = {4.0};
+  double dashed_large[] = {8.0};
 
   cairo_t *cr = render_.cr;
 
@@ -209,6 +211,12 @@ void RendererCairo::Draw() {
         switch (currentCmd->arg2) {
           case kLineDashed:
             cairo_set_dash(cr, dashed, 1, 0);
+            break;
+          case kLineDashedMedium:
+            cairo_set_dash(cr, dashed_medium, 1, 0);
+            break;
+          case kLineDashedLarge:
+            cairo_set_dash(cr, dashed_large, 1, 0);
             break;
           case kLineSolid:
           default:

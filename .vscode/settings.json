@@ -205,5 +205,8 @@
         "stop_token": "cpp",
         "*.inc": "cpp",
         "filesystem": "cpp"
-    }
+    },
+    "cSpell.words": [
+        "defencex"
+    ]
 }

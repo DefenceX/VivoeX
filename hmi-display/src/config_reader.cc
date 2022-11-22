@@ -216,9 +216,9 @@ LineType ConfigDataTheme::GetThemeLabelLineDisabled() const {
     case 0:
       return LineType::kLineSolid;
     case 1:
-      return LineType::kLineDotted;
+      return LineType::kLineDashedLarge;
     case 2:
-      return LineType::kLineDashed;
+      return LineType::kLineDotted;
   };
 }
 
