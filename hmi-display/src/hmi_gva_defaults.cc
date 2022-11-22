@@ -40,21 +40,21 @@ Screen DefaultSettings::GetDefaultScreen() {
 CommonTaskKeys DefaultSettings::GetDefaultCommonTaskKeys() {
   CommonTaskKeys common_task_keys;
   common_task_keys.visible = true;
-  common_task_keys.labels[0].state = LabelStates::kLabelEnabledSelected;
+  common_task_keys.labels[0].state = LabelStates::kLabelEnabled;
   common_task_keys.labels[0].text = "Up";
-  common_task_keys.labels[1].state = LabelStates::kLabelEnabledSelected;
+  common_task_keys.labels[1].state = LabelStates::kLabelEnabled;
   common_task_keys.labels[1].text = "Alarms";
-  common_task_keys.labels[2].state = LabelStates::kLabelEnabledSelected;
+  common_task_keys.labels[2].state = LabelStates::kLabelEnabled;
   common_task_keys.labels[2].text = "Threats";
-  common_task_keys.labels[3].state = LabelStates::kLabelEnabledSelected;
+  common_task_keys.labels[3].state = LabelStates::kLabelDisabled;
   common_task_keys.labels[3].text = "Ack";
-  common_task_keys.labels[4].state = LabelStates::kLabelEnabledSelected;
-  common_task_keys.labels[4].text = "↑";
-  common_task_keys.labels[5].state = LabelStates::kLabelEnabledSelected;
-  common_task_keys.labels[5].text = "↓";
-  common_task_keys.labels[6].state = LabelStates::kLabelEnabledSelected;
+  common_task_keys.labels[4].state = LabelStates::kLabelDisabled;
+  common_task_keys.labels[4].text = "";
+  common_task_keys.labels[5].state = LabelStates::kLabelDisabled;
+  common_task_keys.labels[5].text = "";
+  common_task_keys.labels[6].state = LabelStates::kLabelDisabled;
   common_task_keys.labels[6].text = "Labels";
-  common_task_keys.labels[7].state = LabelStates::kLabelEnabledSelected;
+  common_task_keys.labels[7].state = LabelStates::kLabelEnabled;
   common_task_keys.labels[7].text = "Enter";
   return common_task_keys;
 }
@@ -129,7 +129,7 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeysSituationalAwarenessLeft() {
   FunctionKeys keys;
   keys.visible = true;
   keys.labels[0].state = LabelStates::kLabelEnabledSelected;
-  keys.labels[0].text = "Wpn Sight";
+  keys.labels[0].text = "Remote.Wpn Sight";
   keys.labels[0].toggleActive = false;
   keys.labels[1].state = LabelStates::kLabelEnabled;
   keys.labels[1].text = "Quad";
@@ -226,10 +226,14 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeysDefensiveSystemsLeft() {
   keys.visible = true;
   keys.labels[0].state = LabelStates::kLabelDisabled;
   keys.labels[0].text = "ECM";
-  keys.labels[0].toggleActive = false;
+  keys.labels[0].toggleActive = true;
+  keys.labels[0].toggleText1 = "On";
+  keys.labels[0].toggleText2 = "Off";
   keys.labels[1].state = LabelStates::kLabelDisabled;
   keys.labels[1].text = "Spike";
-  keys.labels[1].toggleActive = false;
+  keys.labels[1].toggleActive = true;
+  keys.labels[1].toggleText1 = "On";
+  keys.labels[1].toggleText2 = "Off";
   keys.labels[2].state = LabelStates::kLabelHidden;
   keys.labels[2].text = "Unused";
   keys.labels[2].toggleActive = false;
@@ -248,30 +252,6 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeysDefensiveSystemsLeft() {
 FunctionKeys DefaultSettings::GetDefaultFunctionKeySystemsRight() {
   FunctionKeys keys;
   keys.visible = true;
-  keys.labels[0].state = LabelStates::kLabelEnabledSelected;
-  keys.labels[0].text = "Overview";
-  keys.labels[0].toggleActive = false;
-  keys.labels[1].state = LabelStates::kLabelEnabled;
-  keys.labels[1].text = "Automotive";
-  keys.labels[1].toggleActive = false;
-  keys.labels[2].state = LabelStates::kLabelEnabled;
-  keys.labels[2].text = "HUMS";
-  keys.labels[2].toggleActive = false;
-  keys.labels[3].state = LabelStates::kLabelEnabled;
-  keys.labels[3].text = "System";
-  keys.labels[3].toggleActive = false;
-  keys.labels[4].state = LabelStates::kLabelEnabled;
-  keys.labels[4].text = "Licences";
-  keys.labels[4].toggleActive = false;
-  keys.labels[5].state = LabelStates::kLabelEnabled;
-  keys.labels[5].text = "BIT";
-  keys.labels[5].toggleActive = false;
-  return keys;
-}
-
-FunctionKeys DefaultSettings::GetDefaultFunctionKeySystemsLeft() {
-  FunctionKeys keys;
-  keys.visible = true;
   keys.labels[0].text = "Commander.Health";
   keys.labels[0].toggleActive = false;
   keys.labels[1].state = LabelStates::kLabelEnabled;
@@ -288,6 +268,30 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeySystemsLeft() {
   keys.labels[4].toggleActive = false;
   keys.labels[5].state = LabelStates::kLabelEnabled;
   keys.labels[5].text = "icon:exit";
+  keys.labels[5].toggleActive = false;
+  return keys;
+}
+
+FunctionKeys DefaultSettings::GetDefaultFunctionKeySystemsLeft() {
+  FunctionKeys keys;
+  keys.visible = true;
+  keys.labels[0].state = LabelStates::kLabelEnabledSelected;
+  keys.labels[0].text = "Overview";
+  keys.labels[0].toggleActive = false;
+  keys.labels[1].state = LabelStates::kLabelEnabled;
+  keys.labels[1].text = "Automotive";
+  keys.labels[1].toggleActive = false;
+  keys.labels[2].state = LabelStates::kLabelEnabled;
+  keys.labels[2].text = "HUMS";
+  keys.labels[2].toggleActive = false;
+  keys.labels[2].state = LabelStates::kLabelEnabled;
+  keys.labels[3].text = "System";
+  keys.labels[3].toggleActive = false;
+  keys.labels[4].state = LabelStates::kLabelEnabled;
+  keys.labels[4].text = "Licences";
+  keys.labels[4].toggleActive = false;
+  keys.labels[5].state = LabelStates::kLabelEnabled;
+  keys.labels[5].text = "BIT";
   keys.labels[5].toggleActive = false;
   return keys;
 }
@@ -375,7 +379,7 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeyBattlefieldManagementSystemRi
 #if (ENABLE_OSMSCOUT)
   LabelStates state = LabelStates::kLabelEnabled;
 #else
-  LabelStates state = LabelStates::kLabelDisabled;
+  LabelStates state = LabelStates::kLabelHidden;
 #endif
   keys.labels[0].state = state;
   keys.labels[0].text = "Unused";

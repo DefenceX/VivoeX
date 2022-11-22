@@ -122,24 +122,41 @@ void RendererGva::DrawFunctionLabels(uint32_t x, const std::array<FunctionKeys::
   uint32_t firstKey = (x < DEFAULT_WIDTH / 2) ? 1 : 7;
   GvaFunctionGroupEnum group = (x < DEFAULT_WIDTH / 2) ? GvaFunctionGroupEnum::kLeft : GvaFunctionGroupEnum::kRight;
 
-  for (i = 0; i < 6; i++) {
+  for (auto label : labels) {
     SetLineThickness(config_->GetThemeLabelBorderThickness(), kLineSolid);
     SetColourBackground(config_->GetThemeLabelBackgroundEnabledSelected());
-    if ((1 << (5 - i) & (labels[i].state != LabelStates::kLabelDisabled))) {
-      if (1 << (5 - i) & (labels[i].state == LabelStates::kLabelEnabledSelected)) {
-        SetColourForeground(config_->GetThemeLabelBorderEnabledSelected());
-        SetColourBackground(config_->GetThemeLabelBackgroundEnabledSelected());
-      } else {
+    switch (label.state) {
+      default:
+      case LabelStates::kLabelHidden:
+        // Nothing to do let just return
+        break;
+      case LabelStates::kLabelDisabled:
+        SetColour(config_->GetThemeLabelTextDisabled());
+        SetColourForeground(config_->GetThemeLabelBorderDisabled());
+        SetColourBackground(config_->GetThemeLabelBackgroundDisabled());
+        break;
+      case LabelStates::kLabelEnabled:
         SetColourForeground(config_->GetThemeLabelBorderEnabled());
         SetColourBackground(config_->GetThemeLabelBackgroundEnabled());
-      }
+        break;
+      case LabelStates::kLabelEnabledSelected:
+        SetColourForeground(config_->GetThemeLabelBorderEnabledSelected());
+        SetColourBackground(config_->GetThemeLabelBackgroundEnabledSelected());
+        break;
+      case LabelStates::kLabelEnabledSelectedChanging:
+        SetColourForeground(config_->GetThemeLabelBorderEnabledSelectedChanging());
+        SetColourBackground(config_->GetThemeLabelBackgroundEnabledSelectedChanging());
+        break;
+    }
+    if (label.state != LabelStates::kLabelHidden) {
       FunctionKeyToggle *key = new FunctionKeyToggle();
 
-      key->Draw(this, x, offset - (i * 72), 100, 50, labels[i].text);
+      key->Draw(this, x, offset - (i * 72), 100, 50, label.text);
       touch_.Add(group, (uint32_t)(firstKey + i), x, offset - (i * 72), 100, 50);
 
-      if (labels[i].toggleActive) key->Toggle(this, labels[i].toggleText1, labels[i].toggleText2);
+      if (label.toggleActive) key->Toggle(this, label.toggleText1, label.toggleText2);
     }
+    i++;
   }
 }
 uint32_t RendererGva::KeyToInt(GvaKeyEnum key) {
@@ -252,9 +269,9 @@ void RendererGva::DrawTopLabels(uint32_t y, const std::array<FunctionSelect::Lab
   setLineType(CAIRO_LINE_JOIN_ROUND);
   SetLineThickness(config_->GetThemeLabelBorderThickness(), kLineSolid);
 
-  for (i = 0; i < 8; i++) {
-    if (!(1 << (7 - i) & (labels[i].state != LabelStates::kLabelDisabled))) {
-      if (1 << (7 - i) & (labels[i].state == LabelStates::kLabelEnabledSelected)) {
+  for (auto label : labels) {
+    if (label.state != LabelStates::kLabelDisabled) {
+      if (label.state == LabelStates::kLabelEnabledSelected) {
         SetColourForeground(config_->GetThemeLabelBorderEnabledSelected());
         SetColourBackground(config_->GetThemeLabelBackgroundEnabledSelected());
       } else {
@@ -270,6 +287,7 @@ void RendererGva::DrawTopLabels(uint32_t y, const std::array<FunctionSelect::Lab
       touch_.AddAbsolute(GvaFunctionGroupEnum::kTop, (uint32_t)(KeyToInt(GvaKeyEnum::KKeySituationalAwareness) + i),
                          (i * width) + offset, y, (i * width) + width - spacing + offset, y + 10);
     }
+    i++;
   }
 }
 

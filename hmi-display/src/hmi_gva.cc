@@ -886,7 +886,7 @@ struct StateOn : Hmi {
     // Systems, no labels on right so defaults used
     manager_->AddNewView(GvaFunctionEnum::kSystems, &top_, &bottom_,
                          gva::DefaultSettings::GetDefaultFunctionKeySystemsLeft(),
-                         gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden());
+                         gva::DefaultSettings::GetDefaultFunctionKeySystemsRight());
     // Driver (DRV), no labels on right so defaults used
     manager_->AddNewView(GvaFunctionEnum::kDriver, &top_, &bottom_,
                          gva::DefaultSettings::GetDefaultFunctionKeyDriverLeft(),

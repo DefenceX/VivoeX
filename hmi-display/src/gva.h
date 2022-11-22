@@ -49,7 +49,7 @@ enum class ScreenMode { kModeMaintinance = 0, kModeOperational, kModeBlackout };
 
 enum class LabelModeEnum { kLabelAll, kLabelStatusOnly, kLabelMinimal };
 
-enum LabelStates { kLabelHidden, kLabelDisabled, kLabelEnabled, kLabelEnabledSelected, kLabelEnabledSelectedChannel };
+enum LabelStates { kLabelHidden, kLabelDisabled, kLabelEnabled, kLabelEnabledSelected, kLabelEnabledSelectedChanging };
 
 struct FunctionSelect {
   bool visible;
