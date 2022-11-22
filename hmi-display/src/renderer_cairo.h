@@ -158,7 +158,7 @@ class RendererCairo : public Renderer {
   void DrawTriangle(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint32_t x3, uint32_t y3, bool fill);
   uint32_t DrawColor(uint8_t r, uint8_t g, uint8_t b) override;
   uint32_t DrawColor(uint32_t rgb);
-  void SetTextFont(uint32_t slope, WeightType weight, const char *fontName);
+  void SetTextFont(uint32_t slope, WeightType weight, std::string fontName);
   uint32_t GetTextWidth(const std::string str, uint32_t fontSize);
   uint32_t GetTextHeight(const std::string str, uint32_t fontSize);
   void DrawText(uint32_t x, uint32_t y, const std::string text, uint32_t size);

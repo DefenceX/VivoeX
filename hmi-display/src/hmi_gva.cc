@@ -197,7 +197,7 @@ GvaKeyEnum Hmi::Key(GvaKeyEnum keypress) {
 }
 
 GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
-  const char *path = ConfigData::GetInstance()->GetImagePath();
+  const std::string path = ConfigData::GetInstance()->GetImagePath();
   std::string filename;
 
   screen_.function_left.visible = true;
@@ -666,11 +666,9 @@ struct StateSYS : Hmi {
       filename.append("/FrontCenter.png");
       SET_CANVAS_PNG(filename.c_str());
 
-      printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
       HmiHelper::TableSystem(&screen_.table);
 
       screen_.function_top->labels[3].state = LabelStates::kLabelEnabledSelected;
-      printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
     }
   };
 
@@ -857,8 +855,6 @@ struct StateAlarms : Hmi {
 struct StateOn : Hmi {
   void entry() override {
     /* 4:3 aspect ratio @ lowest resolution */
-    printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
-
     view_ = {MIN_WIDTH, MIN_HEIGHT, 24};
 
     if (!manager_) manager_ = new ViewGvaManager(&status_);
@@ -872,6 +868,7 @@ struct StateOn : Hmi {
     bottom_ = DefaultSettings::GetDefaultCommonTaskKeys();
     status_ = DefaultSettings::GetDefaultStatusBar();
     canvas_ = DefaultSettings::GetDefaultCanvas();
+    screen_ = DefaultSettings::GetDefaultScreen();
 
     // Setup the main screens
     // SituationalAwareness (SA)

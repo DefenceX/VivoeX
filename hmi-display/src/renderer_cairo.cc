@@ -248,7 +248,7 @@ void RendererCairo::Draw() {
         cairo_set_source_surface(cr, image_list_[currentCmd->arg1].image, currentCmd->points[0].x,
                                  currentCmd->points[0].y);
         cairo_paint(cr);
-        // Only free the imageis it wasnt from cache. i.e. video
+        // Only free the image if it wasn't from cache. i.e. video
         if (!image_list_[currentCmd->arg1].from_cache) cairo_surface_destroy(image_list_[currentCmd->arg1].image);
         break;
       case COMMAND_IMAGE_TEXTURE_PERSIST:
@@ -520,18 +520,18 @@ uint32_t RendererCairo::DrawColor(uint8_t r, uint8_t g, uint8_t b) {
 
 uint32_t RendererCairo::DrawColor(uint32_t rgb) { DrawColor((rgb & 0xff0000) >> 16, (rgb & 0xff00) >> 8, rgb & 0xff); }
 
-void RendererCairo::SetTextFont(uint32_t slope, WeightType weight, const char *fontName) {
+void RendererCairo::SetTextFont(uint32_t slope, WeightType weight, const std::string fontName) {
   Draw_commands_[draw_tail_].command = COMMAND_TEXT_FONT;
   Draw_commands_[draw_tail_].arg1 = slope;
   Draw_commands_[draw_tail_].arg2 = int(weight);
-  strcpy(Draw_commands_[draw_tail_++].text, fontName);
+  strcpy(Draw_commands_[draw_tail_++].text, fontName.c_str());
 }
 
 uint32_t RendererCairo::GetTextWidth(const std::string str, uint32_t fontSize) {
   cairo_t *cr = render_.cr;
   cairo_text_extents_t extents;
 
-  cairo_select_font_face(cr, config_->GetThemeFont(), CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
+  cairo_select_font_face(cr, config_->GetThemeFont().c_str(), CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
   cairo_set_font_size(cr, fontSize);
   cairo_text_extents(cr, str.c_str(), &extents);
   return extents.x_advance;

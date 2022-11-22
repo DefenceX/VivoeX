@@ -28,6 +28,15 @@
 
 namespace gva {
 
+Screen DefaultSettings::GetDefaultScreen() {
+  Screen screen;
+  screen.canvas.visible = true;
+  // screen.info.gpsDevice = ConfigData::GetInstance()->;
+  screen.info.mode = ScreenMode::kModeOperational;
+  screen.info.name = "Generic Vehicle HMI";
+  return screen;
+}
+
 CommonTaskKeys DefaultSettings::GetDefaultCommonTaskKeys() {
   CommonTaskKeys common_task_keys;
   common_task_keys.visible = true;

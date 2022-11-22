@@ -25,8 +25,6 @@
 #ifndef HMI_DISPLAY_SRC_RENDERER_GVA_H_
 #define HMI_DISPLAY_SRC_RENDERER_GVA_H_
 
-#include <string.h>
-
 #include <memory>
 #include <string>
 #include <vector>
@@ -88,12 +86,12 @@ class GvaTable : public RenderBase {
     row_[rows_++] = newrow;
     return rows_;
   }
-  void SetFontName(const char *name) { strncpy(fontname_, name, sizeof(fontname_)); }
+  void SetFontName(std::string name) { fontname_ = name; }
   void SetBorderThickness(uint32_t thickness) { border_ = thickness; }
   uint32_t rows_ = 0;
   uint32_t border_ = gva::ConfigData::GetInstance()->GetThemeTableBorderThickness();
   GvaRow row_[MAX_ROWS];
-  char fontname_[100] = "Courier";
+  std::string fontname_ = "Courier";
 };
 
 class Hotspot : public RenderBase {

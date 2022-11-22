@@ -72,7 +72,6 @@ struct Message {
 
 struct Screen {
   struct {
-   public:
     std::string name;
     ScreenMode mode;
     std::string gpsDevice;

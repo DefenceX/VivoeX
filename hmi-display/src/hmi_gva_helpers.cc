@@ -100,7 +100,6 @@ void HmiHelper::TableSystem(TableWidget *table) {
   table->AddRow();
   table->AddCell("Timesource GPS Lock", 80);
   table->AddCell("Off", 20, Renderer::PackRgb(HMI_ORANGE));
-  printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
 }
 
 void HmiHelper::TableAlarms(TableWidget *table) {

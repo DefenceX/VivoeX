@@ -34,6 +34,13 @@ class DefaultSettings {
   DefaultSettings() = default;
 
   ///
+  /// \brief Get the Default Screen object
+  ///
+  /// \return Screen
+  ///
+  static Screen GetDefaultScreen();
+
+  ///
   /// \brief Get the Default Common Task Keys object
   ///
   /// \return CommonTaskKeys
