@@ -111,13 +111,6 @@ struct image_type {
   bool from_cache;
 };
 
-typedef enum {
-  kLineSolid,
-  kLineDashed,
-  kLineDashedMedium,
-  kLineDashedLarge,
-} LineType;
-
 typedef enum { LINE_CAP_BUTT, LINE_CAP_ROUND, LINE_CAP_SQUARE } LineCapEnd;
 
 typedef void (*CallbackType)(void *io, gpointer data);

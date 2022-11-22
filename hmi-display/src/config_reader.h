@@ -29,6 +29,7 @@
 #include <string>
 
 #include "config.pb.h"  // NOLINT
+#include "src/gva.h"
 
 namespace gva {
 
@@ -166,6 +167,34 @@ class ConfigDataTheme : public ConfigDataBase {
   /// \return uint32_t
   ///
   uint32_t GetThemeLabelBorderDisabled() const;
+
+  ///
+  /// \brief Get the Theme Label Line Enabled Selected Changing object
+  ///
+  /// \return LineType
+  ///
+  LineType GetThemeLabelLineEnabledSelectedChanging() const;
+
+  ///
+  /// \brief Get the Theme Label Line Enabled Selected object
+  ///
+  /// \return LineType
+  ///
+  LineType GetThemeLabelLineEnabledSelected() const;
+
+  ///
+  /// \brief Get the Theme Label Line Enabled object
+  ///
+  /// \return LineType
+  ///
+  LineType GetThemeLabelLineEnabled() const;
+
+  ///
+  /// \brief Get the Theme Label Line Disabled object
+  ///
+  /// \return LineType
+  ///
+  LineType GetThemeLabelLineDisabled() const;
 
   ///
   /// \brief Get the Theme Label Border Thickness object

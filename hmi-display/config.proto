@@ -44,10 +44,17 @@ enum Colour {
   COLOUR_MODERN_BLUE_DARK = 0x007EC2;
 }
 
-// Lable style
+// Label style
 enum LabelStyle {
   LABEL_SQUARE = 0;
   LABEL_ROUNDED = 1;
+}
+
+// Line style
+enum LineStyle {
+  LABEL_SOLID = 0;
+  LABEL_DASHED = 1;
+  LABEL_DOTTED = 2;
 }
 
 message ThemeDefault {
@@ -70,18 +77,23 @@ message ThemeDefault {
   optional Colour theme_label_border_enabled_selected = 13 [default = COLOUR_YELLOW];
   optional Colour theme_label_border_enabled = 14 [default = COLOUR_DARK_GREEN2];
   optional Colour theme_label_border_disabled = 15 [default = COLOUR_DARK_GREY];
+  // Line Style
+  optional LineStyle theme_label_line_enabled_selected_changing = 16 [default = LABEL_SOLID];
+  optional LineStyle theme_label_line_enabled_selected = 17 [default = LABEL_SOLID];
+  optional LineStyle theme_label_line_enabled = 18 [default = LABEL_SOLID];
+  optional LineStyle theme_label_line_disabled = 19 [default = LABEL_DASHED];
 
   // General
 
   // Line Thickness
-  optional int32 theme_label_border_thickness = 16 [default = 1];
-  optional int32 theme_table_border_thickness = 17 [default = 1];
-  optional Colour theme_status_background = 18 [default = COLOUR_DARK_GREEN];
-  optional Colour theme_status_border = 19 [default = COLOUR_DARK_GREEN];
-  optional Colour theme_status_text = 20 [default = COLOUR_WHITE];
-  optional Colour theme_alert = 21 [default = COLOUR_AMBER];
-  optional Colour theme_critical = 22 [default = COLOUR_RED];
-  optional string theme_font = 23 [default = "DejaVu Sans Mono Book"];
+  optional int32 theme_label_border_thickness = 20 [default = 1];
+  optional int32 theme_table_border_thickness = 21 [default = 1];
+  optional Colour theme_status_background = 22 [default = COLOUR_DARK_GREEN];
+  optional Colour theme_status_border = 23 [default = COLOUR_DARK_GREEN];
+  optional Colour theme_status_text = 24 [default = COLOUR_WHITE];
+  optional Colour theme_alert = 25 [default = COLOUR_AMBER];
+  optional Colour theme_critical = 26 [default = COLOUR_RED];
+  optional string theme_font = 27 [default = "DejaVu Sans Mono Book"];
 }
 
 message ThemeHighContrast {
@@ -104,19 +116,23 @@ message ThemeHighContrast {
   optional Colour theme_label_border_enabled_selected = 13 [default = COLOUR_GREY];
   optional Colour theme_label_border_enabled = 14 [default = COLOUR_WHITE];
   optional Colour theme_label_border_disabled = 15 [default = COLOUR_DARK_GREY];
+  // Line Style
+  optional LineStyle theme_label_line_enabled_selected_changing = 16 [default = LABEL_SOLID];
+  optional LineStyle theme_label_line_enabled_selected = 17 [default = LABEL_SOLID];
+  optional LineStyle theme_label_line_enabled = 18 [default = LABEL_SOLID];
+  optional LineStyle theme_label_line_disabled = 19 [default = LABEL_DASHED];
 
   // General
 
   // Line Thickness
-  optional int32 theme_label_border_thickness = 16 [default = 1];
-    optional int32 theme_table_border_thickness = 17 [default = 1];
-
-  optional Colour theme_status_background = 18 [default = COLOUR_BLACK];
-  optional Colour theme_status_border = 19 [default = COLOUR_BLACK];
-  optional Colour theme_status_text = 20 [default = COLOUR_WHITE];
-  optional Colour theme_alert = 21 [default = COLOUR_AMBER];
-  optional Colour theme_critical = 22 [default = COLOUR_RED];
-  optional string theme_font = 23 [default = "Courier 10 Pitch"];
+  optional int32 theme_label_border_thickness = 20 [default = 1];
+  optional int32 theme_table_border_thickness = 21 [default = 1];
+  optional Colour theme_status_background = 22 [default = COLOUR_BLACK];
+  optional Colour theme_status_border = 23 [default = COLOUR_BLACK];
+  optional Colour theme_status_text = 24 [default = COLOUR_WHITE];
+  optional Colour theme_alert = 25 [default = COLOUR_AMBER];
+  optional Colour theme_critical = 26 [default = COLOUR_RED];
+  optional string theme_font = 27 [default = "Courier 10 Pitch"];
 }
 
 message ThemeModernBlue {
@@ -138,18 +154,23 @@ message ThemeModernBlue {
   optional Colour theme_label_border_enabled_selected = 13 [default = COLOUR_MODERN_BLUE_LIGHT];
   optional Colour theme_label_border_enabled = 14 [default = COLOUR_GREY];
   optional Colour theme_label_border_disabled = 15 [default = COLOUR_DARK_GREY];
+  // Line Style
+  optional LineStyle theme_label_line_enabled_selected_changing = 16 [default = LABEL_SOLID];
+  optional LineStyle theme_label_line_enabled_selected = 17 [default = LABEL_SOLID];
+  optional LineStyle theme_label_line_enabled = 18 [default = LABEL_SOLID];
+  optional LineStyle theme_label_line_disabled = 19 [default = LABEL_DASHED];
 
   // General
 
   // Line Thickness
-  optional int32 theme_label_border_thickness = 16 [default = 1];
-  optional int32 theme_table_border_thickness = 17 [default = 1];
-  optional Colour theme_status_background = 18 [default = COLOUR_BLACK];
-  optional Colour theme_status_border = 19 [default = COLOUR_BLACK];
-  optional Colour theme_status_text = 20 [default = COLOUR_WHITE];
-  optional Colour theme_alert = 21 [default = COLOUR_AMBER];
-  optional Colour theme_critical = 22 [default = COLOUR_RED];
-  optional string theme_font = 23 [default = "Courier 10 Pitch"];
+  optional int32 theme_label_border_thickness = 20 [default = 1];
+  optional int32 theme_table_border_thickness = 21 [default = 1];
+  optional Colour theme_status_background = 22 [default = COLOUR_BLACK];
+  optional Colour theme_status_border = 23 [default = COLOUR_BLACK];
+  optional Colour theme_status_text = 24 [default = COLOUR_WHITE];
+  optional Colour theme_alert = 25 [default = COLOUR_AMBER];
+  optional Colour theme_critical = 26 [default = COLOUR_RED];
+  optional string theme_font = 27 [default = "Courier 10 Pitch"];
 }
 
 message File {

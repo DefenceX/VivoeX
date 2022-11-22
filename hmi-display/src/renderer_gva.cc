@@ -302,14 +302,14 @@ void RendererGva::DrawControlLabels(const uint32_t y, const std::array<CommonTas
   SetLineThickness(config_->GetThemeLabelBorderThickness(), kLineSolid);
   SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightNormal, config_->GetThemeFont());
 
-  for (i = 0; i < 8; i++) {
+  for (auto label : labels) {
     SetLineThickness(config_->GetThemeLabelBorderThickness(), kLineSolid);
-    if ((1 << (7 - i) & (labels[i].state != LabelStates::kLabelDisabled))) {
+    if (label.state != LabelStates::kLabelDisabled) {
       SetColourBackground(config_->GetThemeLabelBackgroundDisabled());
       SetColourForeground(config_->GetThemeLabelBorderEnabled());
     } else {
       SetColourBackground(config_->GetThemeLabelBackgroundEnabled());
-      if (1 << (7 - i) & (labels[i].state != LabelStates::kLabelEnabled)) {
+      if (label.state != LabelStates::kLabelEnabled) {
         SetColourForeground(config_->GetThemeLabelBorderEnabledSelected());
         SetColourBackground(config_->GetThemeLabelBackgroundEnabledSelected());
       } else {
@@ -328,9 +328,11 @@ void RendererGva::DrawControlLabels(const uint32_t y, const std::array<CommonTas
         : DrawColor(config_->GetThemeLabelTextEnabledSelected());
     touch_.AddAbsolute(GvaFunctionGroupEnum::kBottom, (uint32_t)(KeyToInt(GvaKeyEnum::kKeyF13) + i), (i * w) + offset,
                        y, (i * w) + w - 5 + offset, y + 20);
-    DrawText((i * w) + offset + 5, y + 6, labels[i].text.c_str(), 12);
+    DrawText((i * w) + offset + 5, y + 6, label.text.c_str(), 12);
     if (i == 4) DrawIcon(ICON_UP_ARROW, (i * w) + offset + 34, y + 11, 15, 8);
     if (i == 5) DrawIcon(ICON_DOWN_ARROW, (i * w) + offset + 34, y + 10, 15, 8);
+
+    i++;
   }
 }
 

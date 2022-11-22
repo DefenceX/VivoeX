@@ -51,6 +51,14 @@ enum class LabelModeEnum { kLabelAll, kLabelStatusOnly, kLabelMinimal };
 
 enum LabelStates { kLabelHidden, kLabelDisabled, kLabelEnabled, kLabelEnabledSelected, kLabelEnabledSelectedChanging };
 
+typedef enum {
+  kLineSolid,
+  kLineDotted,
+  kLineDashed,
+  kLineDashedMedium,
+  kLineDashedLarge,
+} LineType;
+
 struct FunctionSelect {
   bool visible;
 

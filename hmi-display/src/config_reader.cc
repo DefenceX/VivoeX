@@ -30,6 +30,7 @@
 #include <string>
 
 #include "log_gva.h"
+#include "renderer_cairo.h"
 
 namespace gva {
 
@@ -171,6 +172,54 @@ uint32_t ConfigDataTheme::GetThemeLabelBorderEnabled() const {
 
 uint32_t ConfigDataTheme::GetThemeLabelBorderDisabled() const {
   return (uint32_t)current_config_->theme().theme_label_border_disabled();
+}
+
+LineType ConfigDataTheme::GetThemeLabelLineEnabledSelectedChanging() const {
+  switch (current_config_->theme().theme_label_line_enabled_selected_changing()) {
+    default:
+    case 0:
+      return LineType::kLineSolid;
+    case 1:
+      return LineType::kLineDotted;
+    case 2:
+      return LineType::kLineDashed;
+  };
+}
+
+LineType ConfigDataTheme::GetThemeLabelLineEnabledSelected() const {
+  switch (current_config_->theme().theme_label_line_enabled_selected()) {
+    default:
+    case 0:
+      return LineType::kLineSolid;
+    case 1:
+      return LineType::kLineDotted;
+    case 2:
+      return LineType::kLineDashed;
+  };
+}
+
+LineType ConfigDataTheme::GetThemeLabelLineEnabled() const {
+  switch (current_config_->theme().theme_label_line_enabled()) {
+    default:
+    case 0:
+      return LineType::kLineSolid;
+    case 1:
+      return LineType::kLineDotted;
+    case 2:
+      return LineType::kLineDashed;
+  };
+}
+
+LineType ConfigDataTheme::GetThemeLabelLineDisabled() const {
+  switch (current_config_->theme().theme_label_line_disabled()) {
+    default:
+    case 0:
+      return LineType::kLineSolid;
+    case 1:
+      return LineType::kLineDotted;
+    case 2:
+      return LineType::kLineDashed;
+  };
 }
 
 uint32_t ConfigDataTheme::GetThemeLabelBorderThickness() const {
