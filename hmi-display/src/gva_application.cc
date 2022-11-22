@@ -304,7 +304,7 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
       }
       if (update) hmi::GetRendrer()->Update();
     } break;
-    case kResixeEvent: {
+    case kResizeEvent: {
       printf("[GVA] WindowResize: %d x %d\n", event.resize_.width, event.resize_.height);
       if (event.resize_.width != hmi::GetRendrer()->GetWidth() ||
           event.resize_.height != hmi::GetRendrer()->GetHeight()) {

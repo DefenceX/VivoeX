@@ -31,23 +31,13 @@
 #include "widgets/alarm_indicator.h"
 #include "widgets/compass.h"
 
-#define CANVAS \
-  { true, kSurfaceNone, "", 0 }
-//#define SCREEN { "Situational Awareness", "/dev/ttyUSB0", SA, canvas_, &top_,
-//&status_, SYS_FUNCTION_KEYS_LEFT, SYS_FUNCTION_KEYS_RIGHT, COMMON_KEYS,
-// COMPASS, keyboard_, alarms_ }
-#define init(var, typ, data) \
-  {                          \
-    typ x = data;            \
-    var = x;                 \
-  }
-
-#define SET_CANVAS_PNG(file)                             \
-  screen_.canvas.filename = file;                        \
-  screen_.canvas.bufferType = SurfaceType::kSurfaceFile; \
-  screen_.canvas.buffer = 0;
-
 namespace gva {
+
+void SetCanvasPng(std::string file) {
+  Hmi::GetScreen()->canvas.filename = file.c_str();
+  Hmi::GetScreen()->canvas.bufferType = SurfaceType::kSurfaceFile;
+  Hmi::GetScreen()->canvas.buffer = 0;
+}
 
 void Hmi::Reset() {
   screen_.status_bar->visible = true;
@@ -212,42 +202,42 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
     case GvaKeyEnum::kKeyF2:
       filename = path;
       filename.append("/Quad.png");
-      SET_CANVAS_PNG(filename.c_str());
+      SetCanvasPng(filename);
       break;
     case GvaKeyEnum::kKeyF4:
       filename = path;
       filename.append("/FrontRight.png");
-      SET_CANVAS_PNG(filename.c_str());
+      SetCanvasPng(filename.c_str());
       compass->SetBearing(45);
       break;
     case GvaKeyEnum::kKeyF5:
       filename = path;
       filename.append("/FrontCenter.png");
-      SET_CANVAS_PNG(filename.c_str());
+      SetCanvasPng(filename.c_str());
       compass->SetBearing(0);
       break;
     case GvaKeyEnum::kKeyF6:
       filename = path;
       filename.append("/FrontLeft.png");
-      SET_CANVAS_PNG(filename.c_str());
+      SetCanvasPng(filename.c_str());
       compass->SetBearing(315);
       break;
     case GvaKeyEnum::kKeyF10:
       filename = path;
       filename.append("/Right.png");
-      SET_CANVAS_PNG(filename.c_str());
+      SetCanvasPng(filename.c_str());
       compass->SetBearing(90);
       break;
     case GvaKeyEnum::kKeyF11:
       filename = path;
       filename.append("/Rear.png");
-      SET_CANVAS_PNG(filename.c_str());
+      SetCanvasPng(filename.c_str());
       compass->SetBearing(180);
       break;
     case GvaKeyEnum::kKeyF12:
       filename = path;
       filename.append("/Left.png");
-      SET_CANVAS_PNG(filename.c_str());
+      SetCanvasPng(filename.c_str());
       compass->SetBearing(270);
       break;
     case GvaKeyEnum::kKeyF1:
@@ -571,7 +561,7 @@ struct StateSA : Hmi {
         std::string filename;
         filename = ConfigData::GetInstance()->GetImagePath();
         filename.append("/FrontCenter.png");
-        SET_CANVAS_PNG(filename.c_str());
+        SetCanvasPng(filename.c_str());
       }
       screen_.function_top->labels[1].state = LabelStates::kLabelEnabledSelected;
     }
@@ -604,7 +594,7 @@ struct StateWPN : Hmi {
       screen_.canvas.visible = true;
       filename = ConfigData::GetInstance()->GetImagePath();
       filename.append("/FrontCenter.png");
-      SET_CANVAS_PNG(filename.c_str());
+      SetCanvasPng(filename.c_str());
       screen_.function_top->labels[2].state = LabelStates::kLabelEnabledSelected;
     }
   };
@@ -664,7 +654,7 @@ struct StateSYS : Hmi {
       screen_.canvas.visible = true;
       filename = ConfigData::GetInstance()->GetImagePath();
       filename.append("/FrontCenter.png");
-      SET_CANVAS_PNG(filename.c_str());
+      SetCanvasPng(filename.c_str());
 
       HmiHelper::TableSystem(&screen_.table);
 
@@ -931,7 +921,7 @@ struct StateOn : Hmi {
     screen_.labels = LabelModeEnum::kLabelAll;
     std::string filename = ConfigData::GetInstance()->GetImagePath();
     filename.append("/FRONT_CENTRE.png");
-    SET_CANVAS_PNG(filename.c_str());
+    SetCanvasPng(filename.c_str());
 
     transit<StateSYS>();
   };

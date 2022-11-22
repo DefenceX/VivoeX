@@ -39,7 +39,7 @@ enum EventEnumType {
   kKeyEventReleased,
   kTouchEvent,
   kDdsEvent,
-  kResixeEvent,
+  kResizeEvent,
   kRedrawEvent
 };
 
