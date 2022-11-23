@@ -25,6 +25,7 @@
 #ifndef HMI_DISPLAY_SRC_HMI_GVA_H_
 #define HMI_DISPLAY_SRC_HMI_GVA_H_
 #include <iostream>
+#include <string>
 
 #include "src/config_reader.h"
 #include "src/gva.h"
@@ -118,6 +119,7 @@ struct Hmi : tinyfsm::Fsm<Hmi> {
   static GvaKeyEnum KeyCOM(GvaKeyEnum key);
   static GvaKeyEnum KeyBMS(GvaKeyEnum key);
   static void Reset();
+  static void SetCanvasPng(std::string file);
   static ScreenGva *GetRendrer() { return screen_render_; }
   static Screen *GetScreen() { return &screen_; }
   static void Labels(LabelModeEnum labels);

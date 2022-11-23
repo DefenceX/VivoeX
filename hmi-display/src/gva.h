@@ -49,23 +49,41 @@ enum class ScreenMode { kModeMaintinance = 0, kModeOperational, kModeBlackout };
 
 enum class LabelModeEnum { kLabelAll, kLabelStatusOnly, kLabelMinimal };
 
-enum LabelStates { kLabelHidden, kLabelDisabled, kLabelEnabled, kLabelEnabledSelected, kLabelEnabledSelectedChanging };
+enum class LabelStates {
+  kLabelHidden,
+  kLabelDisabled,
+  kLabelEnabled,
+  kLabelEnabledSelected,
+  kLabelEnabledSelectedChanging
+};
 
-typedef enum {
+enum class LineType {
   kLineSolid,
   kLineDotted,
   kLineDashed,
   kLineDashedMedium,
   kLineDashedLarge,
-} LineType;
+};
 
-struct FunctionSelect {
+class FunctionSelect {
+ public:
   bool visible;
 
   struct Labels {
     LabelStates state;
   };
   std::array<Labels, 8> labels;
+
+  ///
+  /// \brief Reset the label from 'enabled selected' to 'enabled'
+  ///
+  ///
+  void Reset() {
+    visible = true;
+    for (auto& label : labels) {
+      if (label.state == LabelStates::kLabelEnabledSelected) label.state = LabelStates::kLabelEnabled;
+    }
+  }
 };
 
 ///
@@ -83,6 +101,17 @@ struct FunctionKeys {
     std::string toggleText2;
   };
   std::array<Labels, 6> labels;
+
+  ///
+  /// \brief Reset the label from 'enabled selected' to 'enabled'
+  ///
+  ///
+  void Reset() {
+    visible = true;
+    for (auto& label : labels) {
+      if (label.state == LabelStates::kLabelEnabledSelected) label.state = LabelStates::kLabelEnabled;
+    }
+  }
 };
 
 ///

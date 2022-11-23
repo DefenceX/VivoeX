@@ -145,7 +145,7 @@ void RendererGva::DrawTopLabels(uint32_t y, const std::array<FunctionSelect::Lab
   SetColourForeground(config_->GetThemeLabelBorderEnabled());
   SetColourBackground(config_->GetThemeLabelBackgroundEnabled());
   setLineType(CAIRO_LINE_JOIN_ROUND);
-  SetLineThickness(config_->GetThemeLabelBorderThickness(), kLineSolid);
+  SetLineThickness(config_->GetThemeLabelBorderThickness(), LineType::kLineSolid);
 
   for (auto label : labels) {
     if (label.state != LabelStates::kLabelDisabled) {
@@ -172,11 +172,11 @@ void RendererGva::DrawControlLabels(const uint32_t y, const std::array<CommonTas
   SetColourForeground(config_->GetThemeLabelBorderEnabled());
   SetColourBackground(config_->GetThemeLabelBackgroundEnabled());
   setLineType(CAIRO_LINE_JOIN_ROUND);
-  SetLineThickness(config_->GetThemeLabelBorderThickness(), kLineSolid);
+  SetLineThickness(config_->GetThemeLabelBorderThickness(), LineType::kLineSolid);
   SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightNormal, config_->GetThemeFont());
 
   for (auto label : labels) {
-    SetLineThickness(config_->GetThemeLabelBorderThickness(), kLineSolid);
+    SetLineThickness(config_->GetThemeLabelBorderThickness(), LineType::kLineSolid);
     if (label.state != LabelStates::kLabelDisabled) {
       SetStateLabel(label.state, config_);
 
@@ -205,7 +205,7 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
   DrawColor(HMI_WHITE);
   SetColourBackground(HMI_WHITE);
   SetColourForeground(HMI_WHITE);
-  SetLineThickness(1, kLineSolid);
+  SetLineThickness(1, LineType::kLineSolid);
 
   sx = (width / (double)13);
   sy = (height / (double)15);
@@ -257,7 +257,7 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       ClosePath(false);
       break;
     case ICON_POWER_OFF:
-      SetLineThickness(2, kLineSolid, LINE_CAP_ROUND);
+      SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
       Scale(sx, sy);
       DrawArcRaw(0, 0, 8, 290, 250);
       MovePenRaw(0, -4);
@@ -265,7 +265,7 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       ClosePath(false);
       break;
     case ICON_ROTATE_LEFT:
-      SetLineThickness(2, kLineSolid, LINE_CAP_ROUND);
+      SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
       Scale(sx, sy);
       DrawArcRaw(0, 0, 8, 315, 225);
       MovePenRaw(5, -6);
@@ -275,7 +275,7 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       ClosePath(false);
       break;
     case ICON_ROTATE_RIGHT:
-      SetLineThickness(2, kLineSolid, LINE_CAP_ROUND);
+      SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
       Scale(sx, sy);
       DrawArcRaw(0, 0, 8, 315, 225);
       MovePenRaw(-5, -6);
@@ -285,7 +285,7 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       ClosePath(false);
       break;
     case ICON_PLUS:
-      SetLineThickness(2, kLineSolid, LINE_CAP_ROUND);
+      SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
       Scale(sx, sy);
       MovePenRaw(-10, 0);
       DrawPenRaw(10, 0);
@@ -294,7 +294,7 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       ClosePath(false);
       break;
     case ICON_MINUS:
-      SetLineThickness(2, kLineSolid, LINE_CAP_ROUND);
+      SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
       Scale(sx, sy);
       MovePenRaw(-10, 0);
       DrawPenRaw(10, 0);
@@ -303,7 +303,7 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
     case ICON_INFO:
     case ICON_ERROR:
     case ICON_WARNING:
-      SetLineThickness(2, kLineSolid);
+      SetLineThickness(2, LineType::kLineSolid);
       if (icon == ICON_INFO) SetColourBackground(HMI_GREEN);
       if (icon == ICON_ERROR) SetColourBackground(HMI_RED);
       if (icon == ICON_WARNING) SetColourBackground(HMI_ORANGE);
@@ -341,7 +341,7 @@ void RendererGva::DrawPPI(uint8_t mode, uint32_t x, uint32_t y, uint32_t degrees
   // Compass
   SetColourBackground(HMI_BLACK);
   SetColourForeground(HMI_WHITE);
-  SetLineThickness(1, kLineSolid);
+  SetLineThickness(1, LineType::kLineSolid);
   DrawCircle(x, y, radius, true);  // Compass
   DrawCircle(x, y, 8, true);       // Compass
 
@@ -349,7 +349,7 @@ void RendererGva::DrawPPI(uint8_t mode, uint32_t x, uint32_t y, uint32_t degrees
   Save();
   SetColourForeground(HMI_WHITE);
   SetColourBackground(HMI_WHITE);
-  SetLineThickness(2, kLineSolid);
+  SetLineThickness(2, LineType::kLineSolid);
   MovePen(x - 15, y - 20);
   DrawPen(x + 15, y - 20, false);
   DrawPen(x + 15, y + 20, false);
@@ -373,7 +373,7 @@ void RendererGva::DrawPPI(uint8_t mode, uint32_t x, uint32_t y, uint32_t degrees
   DrawText(x - 3 + (radius - pos) * cos(d + (M_PI + M_PI / 2)), y - 2 - (radius - pos) * sin(d + (M_PI + M_PI / 2)),
            "W", 10);
 
-  SetLineThickness(1, kLineSolid);
+  SetLineThickness(1, LineType::kLineSolid);
   float step = (M_PI * 2) / 32;
   int64_t p = 20;
   int64_t c = 0;
@@ -389,7 +389,7 @@ void RendererGva::DrawPPI(uint8_t mode, uint32_t x, uint32_t y, uint32_t degrees
   // Mode zero has sight
   if (mode == 0) {
     // Sight
-    SetLineThickness(2, kLineSolid);
+    SetLineThickness(2, LineType::kLineSolid);
     SetColourBackground(HMI_WHITE);
     SetColourForeground(HMI_WHITE);
     {
@@ -399,12 +399,12 @@ void RendererGva::DrawPPI(uint8_t mode, uint32_t x, uint32_t y, uint32_t degrees
       y2 = PLOT_CIRCLE_Y(y, radius - 10, sightAzimuth);
       MovePen(x, y);
       DrawPen(x2, y2, true);
-      SetLineThickness(1, kLineDashed);
+      SetLineThickness(1, LineType::kLineDashed);
       x2 = PLOT_CIRCLE_X(x, radius - 10, (sightAzimuth - (angle / 2)));
       y2 = PLOT_CIRCLE_Y(y, radius - 10, (sightAzimuth - (angle / 2)));
       MovePen(x, y);
       DrawPen(x2, y2, true);
-      SetLineThickness(1, kLineDashed);
+      SetLineThickness(1, LineType::kLineDashed);
       x2 = PLOT_CIRCLE_X(x, radius - 10, (sightAzimuth + (angle / 2)));
       y2 = PLOT_CIRCLE_Y(y, radius - 10, (sightAzimuth + (angle / 2)));
       MovePen(x, y);
@@ -413,7 +413,7 @@ void RendererGva::DrawPPI(uint8_t mode, uint32_t x, uint32_t y, uint32_t degrees
   }
 
   // Heading
-  SetLineThickness(1, kLineSolid);
+  SetLineThickness(1, LineType::kLineSolid);
   SetColourBackground(HMI_CYAN);
   SetColourForeground(HMI_CYAN);
   DrawRectangle(x - 1, y + 8, 1, 35, true);
@@ -425,7 +425,7 @@ void RendererGva::DrawMode() {
 
   SetColourForeground(HMI_WHITE);
   SetColourBackground(HMI_DARK_BLUE);
-  SetLineThickness(1, kLineSolid);
+  SetLineThickness(1, LineType::kLineSolid);
 
   SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightNormal, config_->GetThemeFont());
 
@@ -443,7 +443,7 @@ void RendererGva::DrawTable(GvaTable *table) {
   uint32_t column = 0;
   uint32_t columns;
 
-  SetLineThickness(config_->GetThemeTableBorderThickness(), kLineSolid);
+  SetLineThickness(config_->GetThemeTableBorderThickness(), LineType::kLineSolid);
   SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightBold, table->fontname_);
   SetColourBackground(gva::ConfigData::GetInstance()->GetThemeBackground());
 
@@ -519,7 +519,7 @@ void RendererGva::DrawKeyboard(KeyboardModeType mode) {
 
   SetColourForeground(HMI_MEDIUM_GREY);
   SetColourBackground(HMI_DARK_GREY);
-  SetLineThickness(1, kLineSolid);
+  SetLineThickness(1, LineType::kLineSolid);
 
   switch (mode) {
     case KeyboardModeType::kKeyboardUpper:
@@ -536,7 +536,7 @@ void RendererGva::DrawKeyboard(KeyboardModeType mode) {
   DrawRoundedRectangle(110, yLocation, 420, padding + ((bSize + 5) * 4) + 1, 6, true);
   // DrawRectangle(110, yLocation, 420, padding + ((bSize + 5) * 4) + 1, true);
   SetColourBackground(HMI_DARK_GREY);
-  SetLineThickness(1, kLineSolid);
+  SetLineThickness(1, LineType::kLineSolid);
   SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightBold, config_->GetThemeFont());
 
   // Draw keys
@@ -556,7 +556,7 @@ void RendererGva::DrawKeyboard(KeyboardModeType mode) {
   }
   DrawIcon(ICON_LEFT_ARROW, 426 + bSize / 2, yLocation + padding + (bSize + 5) + bSize / 2, 8, 10);
   SetColourBackground(HMI_DARK_GREY);
-  SetLineThickness(1, kLineSolid);
+  SetLineThickness(1, LineType::kLineSolid);
   SetColourForeground(HMI_WHITE);
 
   //
@@ -567,7 +567,7 @@ void RendererGva::DrawKeyboard(KeyboardModeType mode) {
   DrawButton("", fontSize, 426, yLocation + 5, bSize, bSize, CellAlignType::kAlignRight);
   DrawIcon(ICON_UP_ARROW, 426 + bSize / 2, yLocation + 5 + bSize / 2 + 2, 12, 11);
   SetColourBackground(HMI_DARK_GREY);
-  SetLineThickness(1, kLineSolid);
+  SetLineThickness(1, LineType::kLineSolid);
   SetColourForeground(HMI_WHITE);
   DrawButton("Mode", fontSize, 463, yLocation + 20, 50, 50, CellAlignType::kAlignRight);
 }

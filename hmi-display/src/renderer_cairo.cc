@@ -209,16 +209,16 @@ void RendererCairo::Draw() {
           cairo_set_line_cap(cr, cap);
         }
         switch (currentCmd->arg2) {
-          case kLineDashed:
+          case int(LineType::kLineDashed):
             cairo_set_dash(cr, dashed, 1, 0);
             break;
-          case kLineDashedMedium:
+          case int(LineType::kLineDashedMedium):
             cairo_set_dash(cr, dashed_medium, 1, 0);
             break;
-          case kLineDashedLarge:
+          case int(LineType::kLineDashedLarge):
             cairo_set_dash(cr, dashed_large, 1, 0);
             break;
-          case kLineSolid:
+          case int(LineType::kLineSolid):
           default:
             cairo_set_dash(cr, 0, 0, 0);
             break;
@@ -353,7 +353,7 @@ void RendererCairo::setLineType(uint32_t type) {
 void RendererCairo::SetLineThickness(uint32_t thickness, LineType fill, LineCapEnd end) {
   Draw_commands_[draw_tail_].command = kCommandPenThickness;
   Draw_commands_[draw_tail_].arg1 = thickness;
-  Draw_commands_[draw_tail_].arg2 = fill;
+  Draw_commands_[draw_tail_].arg2 = int(fill);
   Draw_commands_[draw_tail_++].arg3 = end;
 }
 
