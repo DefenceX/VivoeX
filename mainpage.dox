@@ -1,13 +1,51 @@
 /*! \mainpage User Manual
+ * \par Table of Contents
+ *
+ * - \ref users_guide
+ *    - @ref intro
+ *    - @ref execute
+ * - \ref sdk_guide
+ *    - \ref os
+ *        - \ref ubuntu
+ *        - \ref centos
+ *    - \ref build
+ *    - \ref install
+ * - \ref docs
+ * - \ref tools
+ *
  * This documentation was created from git hash <a href="https://github.com/DefenceX/vivoe-lite">#$(GIT_HASH)</a>
- * \section sec1 Developer SDK Guide
+ *
+ * \section users_guide User Guide
+ * \subsection intro Introduction
+ * \image html images/screen/ScreenshotSaFront.png  "Example Generic Vehicle Architecture HMI (Front Camera)" width=600px
+ * \subsection execute Running
+ * Once installed the executable should be part of your PATH and can be ran from anywhere (/etc/profile.d/vivoe-lite.sh), if you have issues you can run with the full path:
+ * \code
+ * $ /opt/gva/hmi-display
+ * \endcode
+ * For help you can list the options using:
+ * \code
+ * $ /opt/gva/hmi-display -h
+ * hmi_display (By defencex.com.au)...
+ *  -c : XML config fileexecute
+ *  -h : help
+ *  -w : Show HMI window, for debug when no GVA display present
+ *  -v : Version
+ *  -l : Live video
+ *  -f : Fullscreen
+ * \endcode
+ *
+ * For instructions in installing vivoe-lite binary packages please refer to the Developer SDK section. 
+ *
+ * \section sdk_guide Developer SDK Guide
  * This VIVOE (Vetronics Infrastructure for Video Over Ethernet) environment is currently tested on Ubuntu 22.04 LTS. 
  * Please ensure you have the following packages installed prior to building the application:
- * \subsection ssec11 Ubuntu 22.04
+ * \subsection os OS Specific setup
+ * \subsubsection ubuntu Ubuntu 22.04
  * 
  * \code $ sudo apt install libcairo2-dev libxt-dev doxygen libxml2-dev ncurses-dev libxext-dev libswscale-dev \endcode
  * 
- * \subsection ssec12 CentOS 8
+ * \subsubsection centos CentOS 8
  * 
  * On CentOS there are a few additional repos required for the software to build these are epel-release and powertools, below are the settings to set these prior to installing the dependencies
  * \code 
@@ -21,7 +59,7 @@
  * $ dnf install cmake gcc-c++ cairo-devel libXt-devel doxygen libxml2-devel ncurses-devel libXext-devel ffmpeg-libs protobuf-devel protobuf-compiler GeographicLib-devel gtk3-devel -y
  * \endcode
  *
- * \section sec2 Building
+ * \subsection build Building
  * This project has a couple of options that can be specified at compile time:
  *
  * \code $ cmake -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE=ON -DENABLE_OSMSCOUT=ON -DDDS=CYCLONE-CE ..\endcode
@@ -32,7 +70,7 @@
  *
  *The BMS function can be configured with Open Street Maps but these need to be compiled and installed onto the system. Its recommeded that you run wit these switched off if you do not need this functionality. See below for more information on creating maps for your region / territory.
  *
- * \section sec3 Execution
+ * \subsection install Installing
  * Once the code is built the required files should be installed. There are two method for getting the files to their install locations. Firstly with cmake run:
  * \code
  * $ sudo make install
@@ -48,12 +86,10 @@
  * $ cpack -G RPM
  * $ dnf install vivoe-lite-cyclone-ce-<version>>.x86_64.rpm  -y
  * \endcode
- * Once installed the executable should be part of your PATH and can be ran from anywhere (/etc/profile.d/vivoe-lite.sh), if you have issues you can run with the full path:
- * \code
- * $ /opt/gva/hmi-display
- * \endcode
- 
- * \section sec4 Documentation
+ *
+
+
+ * \section docs Documentation
  * You can create this documentation on your own system using doxygen. 
  * It is recommended that you run the cmake target to handle the macro replacements for version information as shown below (in the build directory)
  * \code
@@ -61,7 +97,7 @@
  * $ make doxygen
  * \endcode
  * 
- * \section sec5 Tooling
+ * \section tools Tooling
  * 
  * Some tools are available for testing the HMI.
  * Tools fall into the command line section and GUI tools:
