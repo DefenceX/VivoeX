@@ -17,19 +17,111 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ///
-/// \brief HMI Manager is the state machine that drives all the screens as defines within the system
+/// \brief HMI Manager is the state machine that drives all the screens as defines within the system, below is a diagram
+/// of a simple example of a system with one screen per functional area.
 ///
 /// \file hmi_gva.cc
 ///
 /// \startuml
+/// skinparam monochrome true
 ///
-/// [*] --> State1
-/// State1 --> [*]
-/// State1 : this is a string
-/// State1 : this is another string
+/// [*] --> PowerOn
+/// PowerOn : This is the inital state when the system starts
+/// PowerOn --> Systems
 ///
-/// State1 -> State2
-/// State2 --> [*]
+/// SituationalAwareness --> Weapons
+/// SituationalAwareness --> Systems
+/// SituationalAwareness --> DefensiveSystems
+/// SituationalAwareness --> Driver
+/// SituationalAwareness --> SpecialToRole
+/// SituationalAwareness --> Communications
+/// SituationalAwareness --> BattlefieldManagementSystem
+/// SituationalAwareness --> Alarms
+/// SituationalAwareness --> PowerOff
+///
+/// Systems --> SituationalAwareness
+/// Systems --> Weapons
+/// Systems --> DefensiveSystems
+/// Systems --> Driver
+/// Systems --> SpecialToRole
+/// Systems --> Communications
+/// Systems --> BattlefieldManagementSystem
+/// Systems --> Alarms
+/// Systems --> PowerOff
+///
+/// Weapons --> SituationalAwareness
+/// Weapons --> Systems
+/// Weapons --> DefensiveSystems
+/// Weapons --> Driver
+/// Weapons --> SpecialToRole
+/// Weapons --> Communications
+/// Weapons --> BattlefieldManagementSystem
+/// Weapons --> Alarms
+/// Weapons --> PowerOff
+///
+/// DefensiveSystems --> SituationalAwareness
+/// DefensiveSystems --> Systems
+/// DefensiveSystems --> Weapons
+/// DefensiveSystems --> Driver
+/// DefensiveSystems --> SpecialToRole
+/// DefensiveSystems --> Communications
+/// DefensiveSystems --> BattlefieldManagementSystem
+/// DefensiveSystems --> Alarms
+/// DefensiveSystems --> PowerOff
+///
+/// Driver --> SituationalAwareness
+/// Driver --> Systems
+/// Driver --> Weapons
+/// Driver --> DefensiveSystems
+/// Driver --> SpecialToRole
+/// Driver --> Communications
+/// Driver --> BattlefieldManagementSystem
+/// Driver --> Alarms
+/// Driver --> PowerOff
+///
+/// SpecialToRole --> SituationalAwareness
+/// SpecialToRole --> Systems
+/// SpecialToRole --> Weapons
+/// SpecialToRole --> DefensiveSystems
+/// SpecialToRole --> Driver
+/// SpecialToRole --> Communications
+/// SpecialToRole --> BattlefieldManagementSystem
+/// SpecialToRole --> Alarms
+/// SpecialToRole --> PowerOff
+///
+/// Communications --> SituationalAwareness
+/// Communications --> Systems
+/// Communications --> Weapons
+/// Communications --> DefensiveSystems
+/// Communications --> Driver
+/// Communications --> SpecialToRole
+/// Communications --> BattlefieldManagementSystem
+/// Communications --> Alarms
+/// Communications --> PowerOff
+///
+/// BattlefieldManagementSystem --> SituationalAwareness
+/// BattlefieldManagementSystem --> Systems
+/// BattlefieldManagementSystem --> Weapons
+/// BattlefieldManagementSystem --> DefensiveSystems
+/// BattlefieldManagementSystem --> Driver
+/// BattlefieldManagementSystem --> Communications
+/// BattlefieldManagementSystem --> BattlefieldManagementSystem
+/// BattlefieldManagementSystem --> Communications
+/// BattlefieldManagementSystem --> Alarms
+/// BattlefieldManagementSystem --> PowerOff
+/// BattlefieldManagementSystem : This is the BMS systems interface
+///
+/// Alarms -> SituationalAwareness
+/// Alarms --> Weapons
+/// Alarms --> DefensiveSystems
+/// Alarms --> Driver
+/// Alarms --> Communications
+/// Alarms --> BattlefieldManagementSystem
+/// Alarms --> Communications
+/// Alarms --> BattlefieldManagementSystem
+/// Alarms : You can jump to alarms from any screen to action caution, warnings and alerts
+///
+/// PowerOff --> [*]
 ///
 /// \enduml
 

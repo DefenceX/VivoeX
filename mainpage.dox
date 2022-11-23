@@ -19,6 +19,8 @@
  * \subsection intro Introduction
  * \image html images/screen/ScreenshotSaFront.png  "Example Generic Vehicle Architecture HMI (Front Camera)" width=600px
  * \subsection execute Running
+ * You can build vivoe-lite from source (See section on \ref build) or install from the pre build binaries on our website <a href="https://defencex.com.au/downloads.php">here</a>. 
+ *
  * Once installed the executable should be part of your PATH and can be ran from anywhere (/etc/profile.d/vivoe-lite.sh), if you have issues you can run with the full path:
  * \code
  * $ /opt/gva/hmi-display
@@ -43,7 +45,9 @@
  * \subsection os OS Specific setup
  * \subsubsection ubuntu Ubuntu 22.04
  * 
- * \code $ sudo apt install libcairo2-dev libxt-dev doxygen libxml2-dev ncurses-dev libxext-dev libswscale-dev \endcode
+ * \code $ sudo apt install libcairo2-dev libxt-dev libxml2-dev ncurses-dev libxext-dev libswscale-dev \endcode
+ * And install these additional packages to build the documentation:
+ * \code $ sudo apt install doxygen plantuml \endcode
  * 
  * \subsubsection centos CentOS 8
  * 
@@ -56,8 +60,11 @@
  * \endcode
  * Once the repos are updated install the following packages.
  * \code
- * $ dnf install cmake gcc-c++ cairo-devel libXt-devel doxygen libxml2-devel ncurses-devel libXext-devel ffmpeg-libs protobuf-devel protobuf-compiler GeographicLib-devel gtk3-devel -y
+ * $ dnf install cmake gcc-c++ cairo-devel libXt-devel libxml2-devel ncurses-devel libXext-devel ffmpeg-libs protobuf-devel protobuf-compiler GeographicLib-devel gtk3-devel -y
  * \endcode
+ *
+ * And install these additional packages to build the documentation:
+ * \code $ sudo dnf install doxygen plantuml \endcode
  *
  * \subsection build Building
  * This project has a couple of options that can be specified at compile time:

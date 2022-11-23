@@ -29,7 +29,7 @@ jobs:
       - name: Apt Update
         run: sudo apt-get update
       - name: Apt Install
-        run: sudo apt-get --no-install-recommends install doxygen graphviz wget
+        run: sudo apt-get --no-install-recommends install doxygen graphviz wget plantuml
       - name: Doxygen
         run: |
           export MAJOR=$(sed -n '1p' < version) && \
