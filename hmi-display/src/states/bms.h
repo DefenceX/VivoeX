@@ -17,21 +17,39 @@
 /// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 /// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ///
-/// \brief Shut down state definition
+/// \brief
 ///
-/// \file off.cc
+/// \file bms.h
 ///
-#include "off.h"
+#ifndef HMI_DISPLAY_SRC_STATES_BMS_H_
+#define HMI_DISPLAY_SRC_STATES_BMS_H_
+
+#include <iostream>
+
+#include "src/gva.h"
+#include "src/hmi_gva.h"
+#include "src/states/base_hmi.h"
+#include "src/view_gva.h"
+#include "src/widgets/alarm_indicator.h"
+#include "src/widgets/compass.h"
 
 namespace gva {
 
-void StateOff::entry() {
-  if (screen_render_) free(screen_render_);
-  if (manager_) free(manager_);
-  screen_render_ = 0;
-  manager_ = 0;
+struct StateBMS : Hmi {
+  void entry() override;
+  void react(EventKeyPowerOn const &) override;
+  void react(EventKeySA const &) override;
+  void react(EventKeyWPN const &) override;
+  void react(EventKeyDEF const &) override;
+  void react(EventKeySYS const &) override;
+  void react(EventKeyDRV const &) override;
+  void react(EventKeySTR const &) override;
+  void react(EventKeyCOM const &) override;
+  void react(EventKeyAlarms const &) override;
+  void react(EventKeyFunction const &e) override;
 };
-
-void StateOff::react(EventKeyPowerOn const &) { transit<StateOn>(); };
+using hmi = Hmi;
 
 }  // namespace gva
+
+#endif  // HMI_DISPLAY_SRC_STATES_BMS_H_

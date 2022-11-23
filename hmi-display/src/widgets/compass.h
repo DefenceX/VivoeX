@@ -38,11 +38,13 @@ namespace gva {
 class Compass : public WidgetX {
  public:
   explicit Compass(ScreenGva *screen) : WidgetX(screen, WIDGET_TYPE_COMPASS) {}
+  ~Compass() = default;
   void Draw();
   void SetBearing(int16_t bearing) { bearingSight_ = bearing; }
   int16_t bearing_;
   int16_t bearingSight_;
 };
+
 }  // namespace gva
 
 #endif  // HMI_DISPLAY_SRC_WIDGETS_COMPASS_H_

@@ -22,6 +22,10 @@
 /// \file drv.cc
 ///
 
+#include "drv.h"
+
+namespace gva {
+
 GvaKeyEnum Hmi::KeyDRV(GvaKeyEnum keypress) {
   screen_.function_right.visible = true;
 
@@ -52,31 +56,41 @@ GvaKeyEnum Hmi::KeyDRV(GvaKeyEnum keypress) {
   return keypress;
 }
 
-struct StateDRV : Hmi {
-  void entry() override {
-    if (screen_.function_top->labels[4].state != LabelStates::kLabelHidden) {
-      manager_->SetScreen(&screen_, GvaFunctionEnum::kDriver);
-      lastState_ = GvaFunctionEnum::kDriver;
-      Reset();
+void StateDRV::entry() {
+  if (screen_.function_top->labels[4].state != LabelStates::kLabelHidden) {
+    manager_->SetScreen(&screen_, GvaFunctionEnum::kDriver);
+    lastState_ = GvaFunctionEnum::kDriver;
+    Reset();
 
-      if (screen_.labels != LabelModeEnum::kLabelMinimal)
-        screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(true);
-      screen_.status_bar->visible = true;
-      screen_.function_top->labels[4].state = LabelStates::kLabelEnabledSelected;
-    }
-  };
-  void react(EventKeyPowerOn const &) override { transit<StateOff>(); };
-  void react(EventKeySA const &) override { transit<StateSA>(); };
-  void react(EventKeyWPN const &) override { transit<StateWPN>(); };
-  void react(EventKeyDEF const &) override { transit<StateDEF>(); };
-  void react(EventKeySYS const &) override { transit<StateSYS>(); };
-  void react(EventKeySTR const &) override { transit<StateSTR>(); };
-  void react(EventKeyCOM const &) override { transit<StateCOM>(); };
-  void react(EventKeyBMS const &) override { transit<StateBMS>(); };
-  void react(EventKeyAlarms const &) override { transit<StateAlarms>(); };
-  void react(EventKeyFunction const &e) {
-    KeyDRV(e.key);
-    if (e.key == GvaKeyEnum::kKeyPreviousLabel) transit<StateSYS>();
-    if (e.key == GvaKeyEnum::kKeyNextLabel) transit<StateSTR>();
-  };
+    if (screen_.labels != LabelModeEnum::kLabelMinimal)
+      screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(true);
+    screen_.status_bar->visible = true;
+    screen_.function_top->labels[4].state = LabelStates::kLabelEnabledSelected;
+  }
 };
+
+void StateDRV::react(EventKeyPowerOn const &) { transit<StateOff>(); };
+
+void StateDRV::react(EventKeySA const &) { transit<StateSA>(); };
+
+void StateDRV::react(EventKeyWPN const &) { transit<StateWPN>(); };
+
+void StateDRV::react(EventKeyDEF const &) { transit<StateDEF>(); };
+
+void StateDRV::react(EventKeySYS const &) { transit<StateSYS>(); };
+
+void StateDRV::react(EventKeySTR const &) { transit<StateSTR>(); };
+
+void StateDRV::react(EventKeyCOM const &) { transit<StateCOM>(); };
+
+void StateDRV::react(EventKeyBMS const &) { transit<StateBMS>(); };
+
+void StateDRV::react(EventKeyAlarms const &) { transit<StateAlarms>(); };
+
+void StateDRV::react(EventKeyFunction const &e) {
+  KeyDRV(e.key);
+  if (e.key == GvaKeyEnum::kKeyPreviousLabel) transit<StateSYS>();
+  if (e.key == GvaKeyEnum::kKeyNextLabel) transit<StateSTR>();
+};
+
+}  // namespace gva

@@ -71,7 +71,19 @@ set(SOURCES main.cc
 			src/hmi_gva_helpers.cc 
 			src/view_gva.cc 
 			src/renderer_map.cc 
-			src/config_reader.cc)
+			src/config_reader.cc
+			src/states/on.cc
+			src/states/off.cc
+			src/states/sa.cc
+			src/states/wpn.cc
+			src/states/sys.cc
+			src/states/def.cc
+			src/states/drv.cc
+			src/states/com.cc
+			src/states/str.cc
+			src/states/bms.cc
+			src/states/alarms.cc
+			)
 
 add_executable(hmi-display ${PROTO_SRCS} ${SOURCES})
 if (ENABLE_OSMSCOUT)

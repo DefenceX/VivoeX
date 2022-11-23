@@ -22,6 +22,10 @@
 /// \file bms.cc
 ///
 
+#include "bms.h"
+
+namespace gva {
+
 double conv(int zoom) {
   switch (zoom) {
     case 1620000:
@@ -115,35 +119,45 @@ GvaKeyEnum Hmi::KeyBMS(GvaKeyEnum keypress) {
   return keypress;
 }
 
-struct StateBMS : Hmi {
-  void entry() override {
-    if (screen_.function_top->labels[7].state != LabelStates::kLabelHidden) {
-      manager_->SetScreen(&screen_, GvaFunctionEnum::kBattlefieldManagementSystem);
-      lastState_ = GvaFunctionEnum::kBattlefieldManagementSystem;
-      Reset();
+void StateBMS::entry() {
+  if (screen_.function_top->labels[7].state != LabelStates::kLabelHidden) {
+    manager_->SetScreen(&screen_, GvaFunctionEnum::kBattlefieldManagementSystem);
+    lastState_ = GvaFunctionEnum::kBattlefieldManagementSystem;
+    Reset();
 
-      screen_.canvas.visible = true;
+    screen_.canvas.visible = true;
 #ifdef ENABLE_OSMSCOUT
-      map_->SetWidth((double)screen_render_->GetWidth() / DEFAULT_WIDTH);
-      map_->SetHeight((double)screen_render_->GetHeight() / DEFAULT_HEIGHT);
-      map_->Project(configuration.GetZoom(), configuration.GetTestLon(), configuration.GetTestLat(),
-                    &screen_.canvas.surface);
-      screen_.canvas.bufferType = SURFACE_CAIRO;
+    map_->SetWidth((double)screen_render_->GetWidth() / DEFAULT_WIDTH);
+    map_->SetHeight((double)screen_render_->GetHeight() / DEFAULT_HEIGHT);
+    map_->Project(configuration.GetZoom(), configuration.GetTestLon(), configuration.GetTestLat(),
+                  &screen_.canvas.surface);
+    screen_.canvas.bufferType = SURFACE_CAIRO;
 #endif
-      screen_.function_top->labels[7].state = LabelStates::kLabelEnabledSelected;
-    }
-  };
-  void react(EventKeyPowerOn const &) override { transit<StateOff>(); };
-  void react(EventKeySA const &) override { transit<StateSA>(); };
-  void react(EventKeyWPN const &) override { transit<StateWPN>(); };
-  void react(EventKeyDEF const &) override { transit<StateDEF>(); };
-  void react(EventKeySYS const &) override { transit<StateSYS>(); };
-  void react(EventKeyDRV const &) override { transit<StateDRV>(); };
-  void react(EventKeySTR const &) override { transit<StateSTR>(); };
-  void react(EventKeyCOM const &) override { transit<StateCOM>(); };
-  void react(EventKeyAlarms const &) override { transit<StateAlarms>(); };
-  void react(EventKeyFunction const &e) {
-    KeyBMS(e.key);
-    if (e.key == GvaKeyEnum::kKeyPreviousLabel) transit<StateCOM>();
-  };
+    screen_.function_top->labels[7].state = LabelStates::kLabelEnabledSelected;
+  }
 };
+
+void StateBMS::react(EventKeyPowerOn const &) { transit<StateOff>(); };
+
+void StateBMS::react(EventKeySA const &) { transit<StateSA>(); };
+
+void StateBMS::react(EventKeyWPN const &) { transit<StateWPN>(); };
+
+void StateBMS::react(EventKeyDEF const &) { transit<StateDEF>(); };
+
+void StateBMS::react(EventKeySYS const &) { transit<StateSYS>(); };
+
+void StateBMS::react(EventKeyDRV const &) { transit<StateDRV>(); };
+
+void StateBMS::react(EventKeySTR const &) { transit<StateSTR>(); };
+
+void StateBMS::react(EventKeyCOM const &) { transit<StateCOM>(); };
+
+void StateBMS::react(EventKeyAlarms const &) { transit<StateAlarms>(); };
+
+void StateBMS::react(EventKeyFunction const &e) {
+  KeyBMS(e.key);
+  if (e.key == GvaKeyEnum::kKeyPreviousLabel) transit<StateCOM>();
+};
+
+}  // namespace gva

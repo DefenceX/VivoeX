@@ -48,7 +48,7 @@
 /// \param argv Argument array
 /// \param opt HMI application options
 ///
-int32_t GetOpt(int argc, char *argv[], gva::GvaApplication::Options *opt) {
+int32_t GetOpt(int argc, char *argv[], GvaApplication::Options *opt) {
   uint32_t c = 0;
 
   gva::ConfigData *configuration = gva::ConfigData::GetInstance();
@@ -98,11 +98,11 @@ int main(int argc, char *argv[]) {
 
   std::cout << "hmi_display (By defencex.com.au)..." << std::endl;
 
-  gva::GvaApplication::Options options = {false, false, ""};
+  GvaApplication::Options options = {false, false, ""};
 
   if (int32_t ret = GetOpt(argc, argv, &options); ret >= 0) return ret;
 
-  auto app = gva::GvaApplication(options, ipaddr, port);
+  auto app = GvaApplication(options, ipaddr, port);
 
   // Blocking call to the application constructor
   app.Exec();

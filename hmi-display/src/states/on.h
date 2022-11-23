@@ -17,21 +17,28 @@
 /// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 /// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ///
-/// \brief Shut down state definition
+/// \brief
 ///
-/// \file off.cc
+/// \file on.h
 ///
-#include "off.h"
+#ifndef HMI_DISPLAY_SRC_STATES_ON_H_
+#define HMI_DISPLAY_SRC_STATES_ON_H_
+
+#include <iostream>
+
+#include "src/gva.h"
+#include "src/hmi_gva.h"
+#include "src/states/base_hmi.h"
+#include "src/view_gva.h"
+#include "src/widgets/alarm_indicator.h"
+#include "src/widgets/compass.h"
 
 namespace gva {
 
-void StateOff::entry() {
-  if (screen_render_) free(screen_render_);
-  if (manager_) free(manager_);
-  screen_render_ = 0;
-  manager_ = 0;
+struct StateOn : Hmi {
+  void entry() override;
 };
 
-void StateOff::react(EventKeyPowerOn const &) { transit<StateOn>(); };
-
 }  // namespace gva
+
+#endif  // HMI_DISPLAY_SRC_STATES_ON_H_

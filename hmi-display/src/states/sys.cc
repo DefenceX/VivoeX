@@ -22,6 +22,10 @@
 /// \file sys.cc
 ///
 
+#include "bms.h"
+
+namespace gva {
+
 GvaKeyEnum Hmi::KeySYS(GvaKeyEnum keypress) {
   screen_.function_left.visible = true;
   screen_.function_right.visible = true;
@@ -70,39 +74,48 @@ GvaKeyEnum Hmi::KeySYS(GvaKeyEnum keypress) {
   return keypress;
 }
 
-struct StateSYS : Hmi {
-  void entry() override {
-    if (screen_.function_top->labels[3].state != LabelStates::kLabelHidden) {
-      std::string filename;
-      manager_->SetScreen(&screen_, GvaFunctionEnum::kSystems);
-      lastState_ = GvaFunctionEnum::kSystems;
-      Reset();
+void StateSYS::entry() {
+  if (screen_.function_top->labels[3].state != LabelStates::kLabelHidden) {
+    std::string filename;
+    manager_->SetScreen(&screen_, GvaFunctionEnum::kSystems);
+    lastState_ = GvaFunctionEnum::kSystems;
+    Reset();
 
-      screen_.status_bar->labels[3].state = LabelStates::kLabelEnabledSelected;
-      screen_.function_top->labels[3].state = LabelStates::kLabelEnabledSelected;
-      screen_.canvas.visible = true;
-      filename = ConfigData::GetInstance()->GetImagePath();
-      filename.append("/FrontCenter.png");
-      SetCanvasPng(filename.c_str());
+    screen_.status_bar->labels[3].state = LabelStates::kLabelEnabledSelected;
+    screen_.function_top->labels[3].state = LabelStates::kLabelEnabledSelected;
+    screen_.canvas.visible = true;
+    filename = ConfigData::GetInstance()->GetImagePath();
+    filename.append("/FrontCenter.png");
+    SetCanvasPng(filename.c_str());
 
-      HmiHelper::TableSystem(&screen_.table);
+    HmiHelper::TableSystem(&screen_.table);
 
-      screen_.function_top->labels[3].state = LabelStates::kLabelEnabledSelected;
-    }
-  };
-
-  void react(EventKeyPowerOn const &) override { transit<StateOff>(); };
-  void react(EventKeySA const &) override { transit<StateSA>(); };
-  void react(EventKeyWPN const &) override { transit<StateWPN>(); };
-  void react(EventKeyDEF const &) override { transit<StateDEF>(); };
-  void react(EventKeyDRV const &) override { transit<StateDRV>(); };
-  void react(EventKeySTR const &) override { transit<StateSTR>(); };
-  void react(EventKeyCOM const &) override { transit<StateCOM>(); };
-  void react(EventKeyBMS const &) override { transit<StateBMS>(); };
-  void react(EventKeyAlarms const &) override { transit<StateAlarms>(); };
-  void react(EventKeyFunction const &e) {
-    KeySYS(e.key);
-    if (e.key == GvaKeyEnum::kKeyPreviousLabel) transit<StateDEF>();
-    if (e.key == GvaKeyEnum::kKeyNextLabel) transit<StateDRV>();
-  };
+    screen_.function_top->labels[3].state = LabelStates::kLabelEnabledSelected;
+  }
 };
+
+void StateSYS::react(EventKeyPowerOn const &) { transit<StateOff>(); };
+
+void StateSYS::react(EventKeySA const &) { transit<StateSA>(); };
+
+void StateSYS::react(EventKeyWPN const &) { transit<StateWPN>(); };
+
+void StateSYS::react(EventKeyDEF const &) { transit<StateDEF>(); };
+
+void StateSYS::react(EventKeyDRV const &) { transit<StateDRV>(); };
+
+void StateSYS::react(EventKeySTR const &) { transit<StateSTR>(); };
+
+void StateSYS::react(EventKeyCOM const &) { transit<StateCOM>(); };
+
+void StateSYS::react(EventKeyBMS const &) { transit<StateBMS>(); };
+
+void StateSYS::react(EventKeyAlarms const &) { transit<StateAlarms>(); };
+
+void StateSYS::react(EventKeyFunction const &e) {
+  KeySYS(e.key);
+  if (e.key == GvaKeyEnum::kKeyPreviousLabel) transit<StateDEF>();
+  if (e.key == GvaKeyEnum::kKeyNextLabel) transit<StateDRV>();
+};
+
+}  // namespace gva

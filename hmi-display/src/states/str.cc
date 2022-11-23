@@ -22,6 +22,10 @@
 /// \file str.cc
 ///
 
+#include "str.h"
+
+namespace gva {
+
 GvaKeyEnum Hmi::KeySTR(GvaKeyEnum keypress) {
   screen_.function_right.visible = true;
 
@@ -52,28 +56,38 @@ GvaKeyEnum Hmi::KeySTR(GvaKeyEnum keypress) {
   return keypress;
 }
 
-struct StateSTR : Hmi {
-  void entry() override {
-    if (screen_.function_top->labels[5].state != LabelStates::kLabelHidden) {
-      manager_->SetScreen(&screen_, GvaFunctionEnum::KSpecialToRole);
-      lastState_ = GvaFunctionEnum::KSpecialToRole;
-      Reset();
+void StateSTR::entry() {
+  if (screen_.function_top->labels[5].state != LabelStates::kLabelHidden) {
+    manager_->SetScreen(&screen_, GvaFunctionEnum::KSpecialToRole);
+    lastState_ = GvaFunctionEnum::KSpecialToRole;
+    Reset();
 
-      screen_.function_top->labels[5].state = LabelStates::kLabelEnabledSelected;
-    }
-  };
-  void react(EventKeyPowerOn const &) override { transit<StateOff>(); };
-  void react(EventKeySA const &) override { transit<StateSA>(); };
-  void react(EventKeyWPN const &) override { transit<StateWPN>(); };
-  void react(EventKeyDEF const &) override { transit<StateDEF>(); };
-  void react(EventKeySYS const &) override { transit<StateSYS>(); };
-  void react(EventKeyDRV const &) override { transit<StateDRV>(); };
-  void react(EventKeyCOM const &) override { transit<StateCOM>(); };
-  void react(EventKeyBMS const &) override { transit<StateBMS>(); };
-  void react(EventKeyAlarms const &) override { transit<StateAlarms>(); };
-  void react(EventKeyFunction const &e) {
-    KeySTR(e.key);
-    if (e.key == GvaKeyEnum::kKeyPreviousLabel) transit<StateDRV>();
-    if (e.key == GvaKeyEnum::kKeyNextLabel) transit<StateCOM>();
-  };
+    screen_.function_top->labels[5].state = LabelStates::kLabelEnabledSelected;
+  }
 };
+
+void StateSTR::react(EventKeyPowerOn const &) { transit<StateOff>(); };
+
+void StateSTR::react(EventKeySA const &) { transit<StateSA>(); };
+
+void StateSTR::react(EventKeyWPN const &) { transit<StateWPN>(); };
+
+void StateSTR::react(EventKeyDEF const &) { transit<StateDEF>(); };
+
+void StateSTR::react(EventKeySYS const &) { transit<StateSYS>(); };
+
+void StateSTR::react(EventKeyDRV const &) { transit<StateDRV>(); };
+
+void StateSTR::react(EventKeyCOM const &) { transit<StateCOM>(); };
+
+void StateSTR::react(EventKeyBMS const &) { transit<StateBMS>(); };
+
+void StateSTR::react(EventKeyAlarms const &) { transit<StateAlarms>(); };
+
+void StateSTR::react(EventKeyFunction const &e) {
+  KeySTR(e.key);
+  if (e.key == GvaKeyEnum::kKeyPreviousLabel) transit<StateDRV>();
+  if (e.key == GvaKeyEnum::kKeyNextLabel) transit<StateCOM>();
+};
+
+}  // namespace gva

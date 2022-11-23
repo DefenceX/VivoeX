@@ -125,16 +125,12 @@
 ///
 /// \enduml
 
-/// @startuml{myimage.png} "Image Caption" width=5cm
-///  Alice -> Bob : Hello
-///  @enduml
-
 #include "hmi_gva.h"
 
 #include <iostream>
 
-#include "gva.h"
-#include "view_gva.h"
+#include "src/gva.h"
+#include "src/view_gva.h"
 #include "widgets/alarm_indicator.h"
 #include "widgets/compass.h"
 
@@ -303,7 +299,7 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
   screen_.function_left.visible = true;
   screen_.function_right.visible = true;
 
-  Compass *compass = static_cast<Compass *>(screen_render_->GetWidget(WIDGET_TYPE_COMPASS));
+  gva::Compass *compass = static_cast<Compass *>(screen_render_->GetWidget(WIDGET_TYPE_COMPASS));
 
   KeySide(keypress);
   Key(keypress);
@@ -363,36 +359,6 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
   }
   return keypress;
 }
-
-//
-// These are all of the states in this model
-//
-struct StateOn;
-struct StateOff;
-struct StateAlarms;
-struct StateSA;
-struct StateWPN;
-struct StateDRV;
-struct StateSYS;
-struct StateDEF;
-struct StateCOM;
-struct StateBMS;
-
-//
-// Below are all the implementations of all teh states including all state transitions.
-//
-#include "src/states/alarms.cc"
-#include "src/states/bms.cc"
-#include "src/states/com.cc"
-#include "src/states/def.cc"
-#include "src/states/drv.cc"
-#include "src/states/off.cc"
-#include "src/states/on.cc"
-#include "src/states/sa.cc"
-#include "src/states/str.cc"
-#include "src/states/sys.cc"
-#include "src/states/wpn.cc"
-// New states can be added here
 
 ViewGvaManager *Hmi::manager_;
 ResolutionType Hmi::view_;

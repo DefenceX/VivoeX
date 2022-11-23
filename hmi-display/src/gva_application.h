@@ -34,14 +34,12 @@
 #include "rtp_stream.h"  // NOLINT
 #include "src/events_gva.h"
 #include "src/gva.h"
-#include "src/hmi_gva.h" #include < memory>
+#include "src/hmi_gva.h"
 #include "src/renderer_map.h"
 #include "video/src/gva_video_rtp_yuv.h"
 #include "widgets/alarm_indicator.h"
 #include "widgets/compass.h"
 #include "widgets/keyboard.h"
-
-namespace gva {
 
 class GvaApplication {
  public:
@@ -80,7 +78,7 @@ class GvaApplication {
   ///
   static void Update(void *arg, gpointer user_data);
 
-  static GvaVideoRtpYuv *rtp_stream1_;
+  static gva::GvaVideoRtpYuv *rtp_stream1_;
 
  private:
   ///
@@ -88,20 +86,18 @@ class GvaApplication {
   ///
   /// \param render
   ///
-  static void Fullscreen(HandleType *render);
+  static void Fullscreen(gva::HandleType *render);
 
   ///
   /// \brief Dispatch key presses
   ///
   ///
-  static void Dispatch(GvaKeyEnum key);
+  static void Dispatch(gva::GvaKeyEnum key);
 
   static Options options_;
   char *rtp_buffer_;
-  std::shared_ptr<EventsGva> io_;
-  EventsGva *io_test_;
+  std::shared_ptr<gva::EventsGva> io_;
+  gva::EventsGva *io_test_;
 };
-
-}  // namespace gva
 
 #endif  // HMI_DISPLAY_SRC_GVA_APPLICATION_H_

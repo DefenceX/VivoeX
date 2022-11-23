@@ -22,6 +22,10 @@
 /// \file wpn.cc
 ///
 
+#include "wpn.h"
+
+namespace gva {
+
 GvaKeyEnum Hmi::KeyWPN(GvaKeyEnum keypress) {
   screen_.function_right.visible = true;
 
@@ -52,35 +56,45 @@ GvaKeyEnum Hmi::KeyWPN(GvaKeyEnum keypress) {
   return keypress;
 }
 
-struct StateWPN : Hmi {
-  void entry() override {
-    if (screen_.function_top->labels[1].state != LabelStates::kLabelHidden) {
-      std::string filename;
-      manager_->SetScreen(&screen_, GvaFunctionEnum::kWeapon);
-      lastState_ = GvaFunctionEnum::kWeapon;
-      Reset();
+void StateWPN::entry() {
+  if (screen_.function_top->labels[1].state != LabelStates::kLabelHidden) {
+    std::string filename;
+    manager_->SetScreen(&screen_, GvaFunctionEnum::kWeapon);
+    lastState_ = GvaFunctionEnum::kWeapon;
+    Reset();
 
-      if (screen_.labels != LabelModeEnum::kLabelMinimal)
-        screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(true);
-      screen_.canvas.visible = true;
-      filename = ConfigData::GetInstance()->GetImagePath();
-      filename.append("/FrontCenter.png");
-      SetCanvasPng(filename.c_str());
-      screen_.function_top->labels[1].state = LabelStates::kLabelEnabledSelected;
-    }
-  };
-  void react(EventKeyPowerOn const &) override { transit<StateOff>(); };
-  void react(EventKeySA const &) override { transit<StateSA>(); };
-  void react(EventKeyDEF const &) override { transit<StateDEF>(); };
-  void react(EventKeySYS const &) override { transit<StateSYS>(); };
-  void react(EventKeyDRV const &) override { transit<StateDRV>(); };
-  void react(EventKeySTR const &) override { transit<StateSTR>(); };
-  void react(EventKeyCOM const &) override { transit<StateCOM>(); };
-  void react(EventKeyBMS const &) override { transit<StateBMS>(); };
-  void react(EventKeyAlarms const &) override { transit<StateAlarms>(); };
-  void react(EventKeyFunction const &e) {
-    KeyWPN(e.key);
-    if (e.key == GvaKeyEnum::kKeyPreviousLabel) transit<StateSA>();
-    if (e.key == GvaKeyEnum::kKeyNextLabel) transit<StateDEF>();
-  };
+    if (screen_.labels != LabelModeEnum::kLabelMinimal)
+      screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(true);
+    screen_.canvas.visible = true;
+    filename = ConfigData::GetInstance()->GetImagePath();
+    filename.append("/FrontCenter.png");
+    SetCanvasPng(filename.c_str());
+    screen_.function_top->labels[1].state = LabelStates::kLabelEnabledSelected;
+  }
 };
+
+void StateWPN::react(EventKeyPowerOn const &) { transit<StateOff>(); };
+
+void StateWPN::react(EventKeySA const &) { transit<StateSA>(); };
+
+void StateWPN::react(EventKeyDEF const &) { transit<StateDEF>(); };
+
+void StateWPN::react(EventKeySYS const &) { transit<StateSYS>(); };
+
+void StateWPN::react(EventKeyDRV const &) { transit<StateDRV>(); };
+
+void StateWPN::react(EventKeySTR const &) { transit<StateSTR>(); };
+
+void StateWPN::react(EventKeyCOM const &) { transit<StateCOM>(); };
+
+void StateWPN::react(EventKeyBMS const &) { transit<StateBMS>(); };
+
+void StateWPN::react(EventKeyAlarms const &) { transit<StateAlarms>(); };
+
+void StateWPN::react(EventKeyFunction const &e) {
+  KeyWPN(e.key);
+  if (e.key == GvaKeyEnum::kKeyPreviousLabel) transit<StateSA>();
+  if (e.key == GvaKeyEnum::kKeyNextLabel) transit<StateDEF>();
+};
+
+}  // namespace gva
