@@ -33,9 +33,8 @@ void StateSA::entry() {
     Reset();
     screen_.function_top->labels[0].state = LabelStates::kLabelEnabledSelected;
 
-    if (screen_.labels != LabelModeEnum::kLabelMinimal)
-      screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(true);
-    screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(true);
+    if (screen_.labels != LabelModeEnum::kLabelMinimal) screen_render_->GetWidget(KWidgetTypeCompass)->SetVisible(true);
+    screen_render_->GetWidget(KWidgetTypeCompass)->SetVisible(true);
     if (!screen_.canvas.surface) {
       std::string filename;
       filename = ConfigData::GetInstance()->GetImagePath();

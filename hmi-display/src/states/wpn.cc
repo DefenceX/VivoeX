@@ -63,8 +63,7 @@ void StateWPN::entry() {
     lastState_ = GvaFunctionEnum::kWeapon;
     Reset();
 
-    if (screen_.labels != LabelModeEnum::kLabelMinimal)
-      screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(true);
+    if (screen_.labels != LabelModeEnum::kLabelMinimal) screen_render_->GetWidget(KWidgetTypeCompass)->SetVisible(true);
     screen_.canvas.visible = true;
     filename = ConfigData::GetInstance()->GetImagePath();
     filename.append("/FrontCenter.png");

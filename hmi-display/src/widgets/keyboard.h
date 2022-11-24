@@ -33,7 +33,7 @@ namespace gva {
 ///
 class Keyboard : public WidgetX {
  public:
-  explicit Keyboard(ScreenGva *screen);
+  explicit Keyboard(HandleType handle&) : WidgetX(handle, KWidgetTypeCompass) {}
   void Draw();
   KeyboardModeType mode_;
 };

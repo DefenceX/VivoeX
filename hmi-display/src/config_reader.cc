@@ -29,8 +29,8 @@
 #include <iostream>
 #include <string>
 
-#include "log_gva.h"
-#include "renderer_cairo.h"
+#include "common/log_gva.h"
+#include "src/renderer_cairo.h"
 
 namespace gva {
 

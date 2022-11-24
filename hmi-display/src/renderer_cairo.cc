@@ -68,9 +68,9 @@ void RendererCairo::Draw() {
   double dashed_large[] = {8.0};
 
   cairo_t *cr = render_.cr;
-
   /* Push the render to prevent flicker, flush when done */
   cairo_push_group(cr);
+  printf("File %s:%d, %s() items=%d\n", __FILE__, __LINE__, __FUNCTION__, draw_tail_);
   for (count = 0; count < draw_tail_; count++) {
     command_type *currentCmd = &Draw_commands_[count];
     switch (currentCmd->command) {
@@ -283,6 +283,9 @@ void RendererCairo::Draw() {
   // Pop the group and flush to display on the screen
   cairo_pop_group_to_source(cr);
   cairo_paint(cr);
+}
+uint32_t RendererCairo::Init(uint32_t width, uint32_t height) {
+  render_.surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
 }
 
 uint32_t RendererCairo::Init(uint32_t width, uint32_t height, bool fullscreen, CallbackType cb, void *arg) {
@@ -651,15 +654,12 @@ gboolean RendererCairo::ConfigureEventCb(GtkWidget *Widget, GdkEventConfigure *e
   render_.surface = gdk_window_create_similar_surface(gtk_widget_get_window(Widget), CAIRO_CONTENT_COLOR,
                                                       gtk_widget_get_allocated_width(Widget),
                                                       gtk_widget_get_allocated_height(Widget));
-
   render_.cr = cairo_create(render_.surface);
-
   cairo_scale(render_.cr, (double)gtk_widget_get_allocated_width(Widget) / DEFAULT_WIDTH,
               (double)gtk_widget_get_allocated_height(Widget) / DEFAULT_HEIGHT);
   Renderer::SetWidth(gtk_widget_get_allocated_width(Widget));
   Renderer::SetHeight(gtk_widget_get_allocated_height(Widget));
   gtk_widget_queue_draw(Widget);
-
   // We've handled the configure event, no need for further processing.
   return TRUE;
 }

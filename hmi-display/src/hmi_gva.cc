@@ -150,11 +150,11 @@ void Hmi::Reset() {
   Labels(screen_.labels);
   screen_.canvas.visible = false;
   screen_.canvas.bufferType = SurfaceType::kSurfaceNone;
-  screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(false);
-  screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetY(360 + 28);
-  screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetX(161);
-  screen_render_->GetWidget(WIDGET_TYPE_KEYBOARD)
-      ->SetVisible((screen_render_->GetWidget(WIDGET_TYPE_KEYBOARD)->GetVisible()) ? true : false);
+  screen_render_->GetWidget(KWidgetTypeCompass)->SetVisible(false);
+  screen_render_->GetWidget(KWidgetTypeCompass)->SetY(360 + 28);
+  screen_render_->GetWidget(KWidgetTypeCompass)->SetX(161);
+  screen_render_->GetWidget(KWidgetTypeKeyboard)
+      ->SetVisible((screen_render_->GetWidget(KWidgetTypeKeyboard)->GetVisible()) ? true : false);
   screen_.table.visible_ = false;
   screen_.control->visible = true;
   screen_.message.visible = false;
@@ -168,17 +168,17 @@ void Hmi::Labels(LabelModeEnum labels) {
       if ((screen_.currentFunction == GvaFunctionEnum::kSituationalAwareness) ||
           (screen_.currentFunction == GvaFunctionEnum::kWeapon) ||
           (screen_.currentFunction == GvaFunctionEnum::kDriver))
-        screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(true);
+        screen_render_->GetWidget(KWidgetTypeCompass)->SetVisible(true);
       screen_.function_left.visible = true;
       screen_.function_right.visible = true;
       screen_.control->visible = true;
       screen_.function_top->visible = true;
       screen_.status_bar->visible = true;
       screen_.status_bar->y = 446;
-      screen_render_->GetWidget(WIDGET_TYPE_ALARM_INDICATOR)->SetVisible(true);
-      screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetY(360 + 28);
-      screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetX(161);
-      screen_render_->GetWidget(WIDGET_TYPE_ALARM_INDICATOR)->SetY(423);
+      screen_render_->GetWidget(KWidgetTypeAlarmIndicator)->SetVisible(true);
+      screen_render_->GetWidget(KWidgetTypeCompass)->SetY(360 + 28);
+      screen_render_->GetWidget(KWidgetTypeCompass)->SetX(161);
+      screen_render_->GetWidget(KWidgetTypeAlarmIndicator)->SetY(423);
       break;
     case LabelModeEnum::kLabelStatusOnly:
       screen_.function_left.visible = false;
@@ -187,10 +187,10 @@ void Hmi::Labels(LabelModeEnum labels) {
       screen_.function_top->visible = false;
       screen_.status_bar->visible = true;
       screen_.status_bar->y = 459;
-      screen_render_->GetWidget(WIDGET_TYPE_ALARM_INDICATOR)->SetVisible(true);
-      screen_render_->GetWidget(WIDGET_TYPE_ALARM_INDICATOR)->SetY(423);
-      screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetY(360 + 42);
-      screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetX(161 - 106);
+      screen_render_->GetWidget(KWidgetTypeAlarmIndicator)->SetVisible(true);
+      screen_render_->GetWidget(KWidgetTypeAlarmIndicator)->SetY(423);
+      screen_render_->GetWidget(KWidgetTypeCompass)->SetY(360 + 42);
+      screen_render_->GetWidget(KWidgetTypeCompass)->SetX(161 - 106);
       break;
     case LabelModeEnum::kLabelMinimal:
       screen_.function_left.visible = false;
@@ -198,8 +198,8 @@ void Hmi::Labels(LabelModeEnum labels) {
       screen_.control->visible = false;
       screen_.function_top->visible = false;
       screen_.status_bar->visible = false;
-      screen_render_->GetWidget(WIDGET_TYPE_ALARM_INDICATOR)->SetVisible(false);
-      screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(false);
+      screen_render_->GetWidget(KWidgetTypeAlarmIndicator)->SetVisible(false);
+      screen_render_->GetWidget(KWidgetTypeCompass)->SetVisible(false);
       break;
   }
 };
@@ -299,7 +299,7 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
   screen_.function_left.visible = true;
   screen_.function_right.visible = true;
 
-  gva::Compass *compass = static_cast<Compass *>(screen_render_->GetWidget(WIDGET_TYPE_COMPASS));
+  gva::Compass *compass = static_cast<Compass *>(screen_render_->GetWidget(KWidgetTypeCompass));
 
   KeySide(keypress);
   Key(keypress);

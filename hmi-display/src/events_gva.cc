@@ -24,9 +24,9 @@
 
 #include "events_gva.h"
 
-#include "gva.h"
-#include "log_gva.h"
-#include "renderer_gva.h"
+#include "common/log_gva.h"
+#include "src/gva.h"
+#include "src/renderer_gva.h"
 
 namespace gva {
 

@@ -37,7 +37,7 @@ namespace gva {
 ///
 class AlarmIndicator : public WidgetX {
  public:
-  explicit AlarmIndicator(ScreenGva *screen) : WidgetX(screen, WIDGET_TYPE_ALARM_INDICATOR) {}
+  explicit AlarmIndicator(HandleType handle&) : WidgetX(handle, KWidgetTypeAlarmIndicator) {}
   void Draw();
   char text_[256];
   GvaAlarmType type_;

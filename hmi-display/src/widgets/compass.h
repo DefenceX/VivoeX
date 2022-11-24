@@ -37,7 +37,7 @@ namespace gva {
 ///
 class Compass : public WidgetX {
  public:
-  explicit Compass(ScreenGva *screen) : WidgetX(screen, WIDGET_TYPE_COMPASS) {}
+  explicit Compass(HandleType handle&) : WidgetX(handle, KWidgetTypeCompass) {}
   ~Compass() = default;
   void Draw();
   void SetBearing(int16_t bearing) { bearingSight_ = bearing; }

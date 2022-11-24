@@ -36,57 +36,10 @@
 #include "src/config_reader.h"
 #include "src/gva.h"
 #include "src/renderer.h"
-#include "src/widgets/widget.h"
+#include "src/renderer_cairo_types.h"
+#include "src/widgets/widget_types.h"
 
 namespace gva {
-
-struct gtkType {
-  GtkApplication *app;
-  GtkWidget *win;
-  GtkWidget *draw;
-  uint32_t height;
-  uint32_t width;
-};
-
-#define MAX_COMMANDS 1000
-#define MAX_IMAGES 100
-
-struct HandleType {
-  uint32_t handle;
-  bool inUse;
-  bool fullscreen;
-  ResolutionType size;
-  gtkType win;
-  cairo_surface_t *surface;
-  cairo_t *cr;
-};
-
-enum Draw_type {
-  kCommandCircle = 0,
-  kCommandArc,
-  kCommandColourBackground,
-  kCommandColourForeground,
-  kCommandImageTexture,
-  kCommandImageTexturePersist,
-  kCommandLineJoin,
-  kCommandPenColour,
-  kCommandPenCurve,
-  kCommandPenLine,
-  kCommandPenDraw,
-  kCOmmandPenMove,
-  kCommandPenRectangle,
-  kCommandPenRoundedRectangle,
-  kCommandPenThickness,
-  kCommandPenTriangle,
-  kCommandSave,
-  kCommandRestore,
-  kCommandScale,
-  kCommandTranslate,
-  kCommandRotate,
-  kCommandClosePath,
-  kCommandTextFont,
-  kCommandText
-};
 
 struct command_type {
   Draw_type command;
@@ -120,6 +73,7 @@ class RendererCairo : public Renderer {
   static HandleType render_;
   RendererCairo(uint32_t width, uint32_t height);
   ~RendererCairo();
+  uint32_t Init(uint32_t width, uint32_t height);
   uint32_t Init(uint32_t width, uint32_t height, bool fullscreen, CallbackType cb, void *arg);
   // Pure Virtual functions
   void SetPixel(uint32_t x, uint32_t y) override;
@@ -218,7 +172,6 @@ class RendererCairo : public Renderer {
   image_type cache_image_list_[MAX_IMAGES];
   uint32_t cache_image_tail_ = 0;
 
- private:
   static gboolean DrawCb(GtkWidget *Widget, cairo_t *cr, gpointer data);
   static gboolean ConfigureEventCb(GtkWidget *Widget, GdkEventConfigure *event, gpointer data);
   static void Activate(GtkApplication *app, gpointer user_data);

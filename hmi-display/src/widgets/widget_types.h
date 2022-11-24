@@ -17,22 +17,56 @@
 /// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 /// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ///
-/// \brief The vehicle compass widget
+/// \brief The datatypes used by all widgets
 ///
-/// \file compass.cc
+/// \file widget_types.h
 ///
 
-#include "compass.h"
-
-#include "src/screen_gva.h"
+#ifndef HMI_DISPLAY_SRC_WIDGETS_WIDGET_TYPES__H_
+#define HMI_DISPLAY_SRC_WIDGETS_WIDGET_TYPES__H_
 
 namespace gva {
 
-void Compass::Draw() {
-  if (GetVisible()) {
-    uint8_t mode = 0;
-    PlanPositionIndicator ppi() screen_->DrawPPI(mode, GetX(), GetY(), bearing_, bearingSight_);
-  }
-}
+enum class KeyboardModeType { kKeyboardLower = 0, kKeyboardUpper, kKeyboardNumbers };
+
+enum class CellAlignType { kAlignLeft = 0, kAlignCentre, kAlignRight };
+
+enum class WeightType { kWeightNormal = 0, kWeightBold, kWeightItalic };
+
+//
+// Widgets
+//
+enum WidgetEnum { KWidgetTypeCompass = 0, KWidgetTypeKeyboard = 1, KWidgetTypeAlarmIndicator = 2 };
+
+typedef enum {
+  ICON_NONE = 0,
+  ICON_UP_ARROW,
+  ICON_DOWN_ARROW,
+  ICON_LEFT_ARROW,
+  ICON_RIGHT_ARROW,
+  ICON_UP_ARROW_OUTLINE,
+  ICON_DOWN_ARROW_OUTLINE,
+  ICON_LEFT_ARROW_OUTLINE,
+  ICON_RIGHT_ARROW_OUTLINE,
+  ICON_PLUS,
+  ICON_MINUS,
+  ICON_ENTER,
+  ICON_ROTATE_LEFT,
+  ICON_ROTATE_RIGHT,
+  ICON_POWER_OFF,
+  ICON_LOCATION,
+  ICON_WARNING,
+  ICON_ERROR,
+  ICON_INFO,
+  ICON_CENTRE
+} IconType;
+
+struct GvaColourType {
+  int red;
+  int green;
+  int blue;
+};
 
 }  // namespace gva
+
+#endif  // HMI_DISPLAY_SRC_WIDGETS_WIDGET_TYPES_H_

@@ -94,9 +94,9 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
   //
   // Setup the required widgets
   //
-  widget_list_.push_back(new Compass(this));
-  widget_list_.push_back(new Keyboard(this));
-  widget_list_.push_back(new AlarmIndicator(this));
+  widget_list_.push_back(new Compass(render_));
+  widget_list_.push_back(new Keyboard(render_));
+  widget_list_.push_back(new AlarmIndicator(render_));
 }
 
 ScreenGva::~ScreenGva() {

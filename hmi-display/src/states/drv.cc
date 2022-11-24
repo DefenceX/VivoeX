@@ -62,8 +62,7 @@ void StateDRV::entry() {
     lastState_ = GvaFunctionEnum::kDriver;
     Reset();
 
-    if (screen_.labels != LabelModeEnum::kLabelMinimal)
-      screen_render_->GetWidget(WIDGET_TYPE_COMPASS)->SetVisible(true);
+    if (screen_.labels != LabelModeEnum::kLabelMinimal) screen_render_->GetWidget(KWidgetTypeCompass)->SetVisible(true);
     screen_.status_bar->visible = true;
     screen_.function_top->labels[4].state = LabelStates::kLabelEnabledSelected;
   }

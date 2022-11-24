@@ -8,6 +8,7 @@ pkg_check_modules(SWSCALE REQUIRED libswscale)
 
 add_subdirectory(src/widgets)
 add_subdirectory(common)
+add_subdirectory(test)
 #add_subdirectory(dds)
 #add_subdirectory(display)
 

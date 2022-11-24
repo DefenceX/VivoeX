@@ -25,61 +25,25 @@
 #ifndef HMI_DISPLAY_SRC_WIDGETS_WIDGET_H_
 #define HMI_DISPLAY_SRC_WIDGETS_WIDGET_H_
 
+#include "src/renderer_cairo_types.h"
+#include "src/widgets/widget_types.h"
+
 namespace gva {
 
-enum class KeyboardModeType { kKeyboardLower = 0, kKeyboardUpper, kKeyboardNumbers };
-
-enum class CellAlignType { kAlignLeft = 0, kAlignCentre, kAlignRight };
-
-enum class WeightType { kWeightNormal = 0, kWeightBold, kWeightItalic };
-
-typedef enum {
-  ICON_NONE = 0,
-  ICON_UP_ARROW,
-  ICON_DOWN_ARROW,
-  ICON_LEFT_ARROW,
-  ICON_RIGHT_ARROW,
-  ICON_UP_ARROW_OUTLINE,
-  ICON_DOWN_ARROW_OUTLINE,
-  ICON_LEFT_ARROW_OUTLINE,
-  ICON_RIGHT_ARROW_OUTLINE,
-  ICON_PLUS,
-  ICON_MINUS,
-  ICON_ENTER,
-  ICON_ROTATE_LEFT,
-  ICON_ROTATE_RIGHT,
-  ICON_POWER_OFF,
-  ICON_LOCATION,
-  ICON_WARNING,
-  ICON_ERROR,
-  ICON_INFO,
-  ICON_CENTRE
-} IconType;
-
-struct GvaColourType {
-  int red;
-  int green;
-  int blue;
-};
-
 class ScreenGva;
-//
-// Widgets
-//
-enum WidgetEnum { WIDGET_TYPE_COMPASS = 0, WIDGET_TYPE_KEYBOARD = 1, WIDGET_TYPE_ALARM_INDICATOR = 2 };
+class HandleType;
 
 class WidgetX {
  public:
+  virtual ~WidgetX() = 0;
   ///
   /// \brief Construct a new Widget X object
   ///
-  /// \param screen The screen being rendered
+  /// \param renderer The underlying renderer, should be cairo
   /// \param widget_type The type of widget
   ///
-  WidgetX(ScreenGva *screen, WidgetEnum widget_type) {
-    screen_ = screen;
-    widget_type_ = widget_type;
-  }
+  WidgetX(const HandleType& handle, WidgetEnum widget_typex) : handle_(handle) { widget_type_ = widget_typex; }
+
   ///
   /// \brief Set the Visible object
   ///
@@ -136,10 +100,8 @@ class WidgetX {
   ///
   WidgetEnum GetType() { return widget_type_; }
 
- protected:
-  ScreenGva *screen_;
-
  private:
+  const HandleType& handle_;
   WidgetEnum widget_type_;
   bool visible_ = true;
   int x_ = 0;

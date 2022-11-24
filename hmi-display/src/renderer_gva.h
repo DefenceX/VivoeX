@@ -32,7 +32,7 @@
 #include "src/config_reader.h"
 #include "src/gva.h"
 #include "src/renderer_cairo.h"
-#include "src/widgets/widget.h"
+#include "src/widgets/widget_types.h"
 
 #define MAX_ROWS 50
 #define MAX_CELLS 10
@@ -174,11 +174,11 @@ class RendererGva : public RendererCairo {
   ///
   void DrawFunctionLabels(uint32_t x, const std::array<FunctionKeys::Labels, 6> &labels);
 
+  /// Init
+  ///  \brief Draw the labels on the top of the screen
   ///
-  /// \brief Draw the labels on the top of the screen
-  ///
-  /// \param y The y pixel position
-  /// \param state State of the label
+  ///  \param y The y pixel position
+  ///  \param state State of the label
   ///
   void DrawTopLabels(uint32_t y, const std::array<FunctionSelect::Labels, 8> &labels);
 
@@ -200,17 +200,6 @@ class RendererGva : public RendererCairo {
   /// \param height Height of the icon
   ///
   void DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width, uint32_t height);
-
-  ///
-  /// \brief Draw the Plan Position Indicator
-  ///
-  /// \param mode The PPI mode, different styles
-  /// \param x X pixel position
-  /// \param y Y pixel position
-  /// \param degrees Compass heading
-  /// \param sightAzimuth Camera heading
-  ///
-  void DrawPPI(uint8_t mode, uint32_t x, uint32_t y, uint32_t degrees, uint32_t sightAzimuth);
 
   ///
   /// \brief Draw a table
@@ -274,7 +263,7 @@ class RendererGva : public RendererCairo {
                             {'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', '-'},
                             {'z', 'x', 'c', 'v', 'b', 'n', 'm', ' ', '-', '-'}};
   char numKeys_[3][10] = {{'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'},
-                          {'-', '_', '.', ',', ';', ':', '"', '- #include <string> ', '-', '-'},
+                          {'-', '_', '.', ',', ';', ':', '"', '-', '-', '-'},
                           {'!', '@', '#', '$', '%', '^', '&', ' ', '-', '-'}};
 
  private:
@@ -286,20 +275,40 @@ class RendererGva : public RendererCairo {
 
 class FunctionKeySimple {
  public:
-  void Draw(RendererGva *r, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::string text,
-            uint32_t text_colour);
+  explicit FunctionKeySimple(RendererGva &renderer) : renderer_(renderer) {}
+  void Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::string text, uint32_t text_colour);
   uint32_t GetX() { return x_; }
   uint32_t GetY() { return y_; }
 
  private:
   uint32_t x_;
   uint32_t y_;
+  RendererGva &renderer_;
 };
 
 class FunctionKeyToggle : public FunctionKeySimple {
  public:
-  explicit FunctionKeyToggle(RendererGva &renderer) : renderer_(renderer) {}
+  explicit FunctionKeyToggle(RendererGva &renderer) : FunctionKeySimple(renderer), renderer_(renderer) {}
   void Toggle(const std::string &label1, const std::string &label2);
+
+ private:
+  RendererGva &renderer_;
+};
+
+class PlanPositionIndicator : public FunctionKeySimple {
+ public:
+  explicit PlanPositionIndicator(RendererGva &renderer) : FunctionKeySimple(renderer), renderer_(renderer) {}
+
+  ///
+  /// \brief Draw the Plan Position Indicator
+  ///
+  /// \param mode The PPI mode, different styles
+  /// \param x X pixel position
+  /// \param y Y pixel position
+  /// \param degrees Compass heading
+  /// \param sightAzimuth Camera heading
+  ///
+  void DrawPPI(uint8_t mode, uint32_t x, uint32_t y, uint32_t degrees, uint32_t sightAzimuth);
 
  private:
   RendererGva &renderer_;

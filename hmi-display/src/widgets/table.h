@@ -29,7 +29,7 @@
 #include <vector>
 
 #include "src/renderer_gva.h"
-#include "src/widgets/widget.h"
+#include "src/widgets/widget_types.h"
 
 namespace gva {
 

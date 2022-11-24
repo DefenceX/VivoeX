@@ -90,6 +90,7 @@ struct Screen {
   LabelModeEnum labels;
 };
 
+class ScreenGva;
 //
 // These are used by the clock thread to update the time and refresh the screen
 //

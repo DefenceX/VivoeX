@@ -47,39 +47,40 @@ RendererGva::RendererGva(uint32_t width, uint32_t height) : RendererCairo(height
   touch_.SetResolution(width, height);
 }
 
-void FunctionKeySimple::Draw(RendererGva *r, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::string text,
+void FunctionKeySimple::Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::string text,
                              uint32_t text_colour) {
   char copy[256];
   char delim[] = ".";
   char *ptr = NULL;
 
   if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::LABEL_ROUNDED) {
-    r->DrawRoundedRectangle(x, y, width, height, 6, true);
+    renderer_.DrawRoundedRectangle(x, y, width, height, 6, true);
   } else {
-    r->DrawRectangle(x, y, width, height, true);
+    renderer_.DrawRectangle(x, y, width, height, true);
   }
 
-  r->DrawColor(text_colour);
+  renderer_.DrawColor(text_colour);
 
   if (text.substr(0, 4) == "icon:") {
-    if (text.substr(5, 20) == "exit") r->DrawIcon(ICON_POWER_OFF, x + width / 2, y + height / 2, 20, 20);
-    if (text.substr(5, 20) == "uparrow") r->DrawIcon(ICON_UP_ARROW, x + width / 2, y + height / 2, 20, 20);
-    if (text.substr(5, 20) == "downarrow") r->DrawIcon(ICON_DOWN_ARROW, x + width / 2, y + height / 2, 20, 20);
-    if (text.substr(5, 20) == "rightarrow") r->DrawIcon(ICON_RIGHT_ARROW, x + width / 2, y + height / 2, 20, 20);
-    if (text.substr(5, 20) == "leftarrow") r->DrawIcon(ICON_LEFT_ARROW, x + width / 2, y + height / 2, 20, 20);
-    if (text.substr(5, 20) == "rotateleft") r->DrawIcon(ICON_ROTATE_LEFT, x + width / 2, y + height / 2, 20, 20);
-    if (text.substr(5, 20) == "rotateright") r->DrawIcon(ICON_ROTATE_RIGHT, x + width / 2, y + height / 2, 20, 20);
-    if (text.substr(5, 20) == "plus") r->DrawIcon(ICON_PLUS, x + width / 2, y + height / 2, 20, 20);
-    if (text.substr(5, 20) == "minus") r->DrawIcon(ICON_MINUS, x + width / 2, y + height / 2, 20, 20);
+    if (text.substr(5, 20) == "exit") renderer_.DrawIcon(ICON_POWER_OFF, x + width / 2, y + height / 2, 20, 20);
+    if (text.substr(5, 20) == "uparrow") renderer_.DrawIcon(ICON_UP_ARROW, x + width / 2, y + height / 2, 20, 20);
+    if (text.substr(5, 20) == "downarrow") renderer_.DrawIcon(ICON_DOWN_ARROW, x + width / 2, y + height / 2, 20, 20);
+    if (text.substr(5, 20) == "rightarrow") renderer_.DrawIcon(ICON_RIGHT_ARROW, x + width / 2, y + height / 2, 20, 20);
+    if (text.substr(5, 20) == "leftarrow") renderer_.DrawIcon(ICON_LEFT_ARROW, x + width / 2, y + height / 2, 20, 20);
+    if (text.substr(5, 20) == "rotateleft") renderer_.DrawIcon(ICON_ROTATE_LEFT, x + width / 2, y + height / 2, 20, 20);
+    if (text.substr(5, 20) == "rotateright")
+      renderer_.DrawIcon(ICON_ROTATE_RIGHT, x + width / 2, y + height / 2, 20, 20);
+    if (text.substr(5, 20) == "plus") renderer_.DrawIcon(ICON_PLUS, x + width / 2, y + height / 2, 20, 20);
+    if (text.substr(5, 20) == "minus") renderer_.DrawIcon(ICON_MINUS, x + width / 2, y + height / 2, 20, 20);
   } else {
     strncpy(copy, text.c_str(), 40);
     ptr = strtok(copy, delim);
     if (ptr != NULL) {
-      r->DrawText(x + 4, y + 30, ptr, 14);
+      renderer_.DrawText(x + 4, y + 30, ptr, 14);
       ptr = strtok(NULL, delim);
-      if (ptr != NULL) r->DrawText(x + 4, y + 10, ptr, 14);
+      if (ptr != NULL) renderer_.DrawText(x + 4, y + 10, ptr, 14);
     } else {
-      r->DrawText(x + 4, y + 30, text, 14);
+      renderer_.DrawText(x + 4, y + 30, text, 14);
     }
   }
 
@@ -125,7 +126,7 @@ void RendererGva::DrawFunctionLabels(uint32_t x, const std::array<FunctionKeys::
       FunctionKeyToggle *key = new FunctionKeyToggle(*this);
       SetStateLabel(label.state, config_);
 
-      key->Draw(this, x, offset - (i * 72), 100, 50, label.text, GetStateTextColour(label.state, config_));
+      key->Draw(x, offset - (i * 72), 100, 50, label.text, GetStateTextColour(label.state, config_));
       if (label.state != LabelStates::kLabelDisabled) {
         touch_.Add(group, (uint32_t)(firstKey + i), x, offset - (i * 72), 100, 50);
       }
@@ -325,12 +326,12 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
   Restore();
 }
 
-void RendererGva::DrawPPI(uint8_t mode, uint32_t x, uint32_t y, uint32_t degrees, uint32_t sightAzimuth) {
+void PlanPositionIndicator::DrawPPI(uint8_t mode, uint32_t x, uint32_t y, uint32_t degrees, uint32_t sightAzimuth) {
   double_t radius = 50;
   double_t angle = 45;
   double_t d;
 
-  DrawColor(HMI_WHITE);
+  renderer_.DrawColor(HMI_WHITE);
   /* Degrees north */
   degrees += 270;
   degrees = (degrees >= 360) ? degrees - 360 : degrees;
@@ -339,41 +340,43 @@ void RendererGva::DrawPPI(uint8_t mode, uint32_t x, uint32_t y, uint32_t degrees
   d = degrees;
 
   // Compass
-  SetColourBackground(HMI_BLACK);
-  SetColourForeground(HMI_WHITE);
-  SetLineThickness(1, LineType::kLineSolid);
-  DrawCircle(x, y, radius, true);  // Compass
-  DrawCircle(x, y, 8, true);       // Compass
+  renderer_.SetColourBackground(HMI_BLACK);
+  renderer_.SetColourForeground(HMI_WHITE);
+  renderer_.SetLineThickness(1, LineType::kLineSolid);
+  renderer_.DrawCircle(x, y, radius, true);  // Compass
+  renderer_.DrawCircle(x, y, 8, true);       // Compass
 
   // Vehicle outline
-  Save();
-  SetColourForeground(HMI_WHITE);
-  SetColourBackground(HMI_WHITE);
-  SetLineThickness(2, LineType::kLineSolid);
-  MovePen(x - 15, y - 20);
-  DrawPen(x + 15, y - 20, false);
-  DrawPen(x + 15, y + 20, false);
-  DrawPen(x + 5, y + 20, false);
-  DrawPen(x + 5, y + 15, false);
-  DrawPen(x - 5, y + 15, false);
-  DrawPen(x - 5, y + 20, false);
-  DrawPen(x - 15, y + 20, false);
-  DrawPen(x - 15, y - 20, true);
+  renderer_.Save();
+  renderer_.SetColourForeground(HMI_WHITE);
+  renderer_.SetColourBackground(HMI_WHITE);
+  renderer_.SetLineThickness(2, LineType::kLineSolid);
+  renderer_.MovePen(x - 15, y - 20);
+  renderer_.DrawPen(x + 15, y - 20, false);
+  renderer_.DrawPen(x + 15, y + 20, false);
+  renderer_.DrawPen(x + 5, y + 20, false);
+  renderer_.DrawPen(x + 5, y + 15, false);
+  renderer_.DrawPen(x - 5, y + 15, false);
+  renderer_.DrawPen(x - 5, y + 20, false);
+  renderer_.DrawPen(x - 15, y + 20, false);
+  renderer_.DrawPen(x - 15, y - 20, true);
   // ClosePath(true);
-  Restore();
+  renderer_.Restore();
 
   // Compass Markings
-  SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightBold, "Courier");
+  renderer_.SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightBold, "Courier");
   d = degreesToRadians(d);
   double_t pos = 6;
 
-  DrawText(x - 3 + (radius - pos) * cos(d + (M_PI * 2)), y - 2 - (radius - pos) * sin(d + (M_PI * 2)), "N", 10);
-  DrawText(x - 3 + (radius - pos) * cos(d + (M_PI)), y - 2 - (radius - pos) * sin(d + (M_PI)), "S", 10);
-  DrawText(x - 3 + (radius - pos) * cos(d + (M_PI / 2)), y - 2 - (radius - pos) * sin(d + (M_PI / 2)), "E", 10);
-  DrawText(x - 3 + (radius - pos) * cos(d + (M_PI + M_PI / 2)), y - 2 - (radius - pos) * sin(d + (M_PI + M_PI / 2)),
-           "W", 10);
+  renderer_.DrawText(x - 3 + (radius - pos) * cos(d + (M_PI * 2)), y - 2 - (radius - pos) * sin(d + (M_PI * 2)), "N",
+                     10);
+  renderer_.DrawText(x - 3 + (radius - pos) * cos(d + (M_PI)), y - 2 - (radius - pos) * sin(d + (M_PI)), "S", 10);
+  renderer_.DrawText(x - 3 + (radius - pos) * cos(d + (M_PI / 2)), y - 2 - (radius - pos) * sin(d + (M_PI / 2)), "E",
+                     10);
+  renderer_.DrawText(x - 3 + (radius - pos) * cos(d + (M_PI + M_PI / 2)),
+                     y - 2 - (radius - pos) * sin(d + (M_PI + M_PI / 2)), "W", 10);
 
-  SetLineThickness(1, LineType::kLineSolid);
+  renderer_.SetLineThickness(1, LineType::kLineSolid);
   float step = (M_PI * 2) / 32;
   int64_t p = 20;
   int64_t c = 0;
@@ -382,41 +385,41 @@ void RendererGva::DrawPPI(uint8_t mode, uint32_t x, uint32_t y, uint32_t degrees
   for (d = degreesToRadians(degrees); d <= degreesToRadians(degrees) + (M_PI * 2); d += step) {
     p = c % 4 ? 14 : 10;
     c++;
-    MovePen(x + (radius - 21) * cos(d), y - (radius - 21) * sin(d));
-    DrawPen(x + (radius - p) * cos(d), y - (radius - p) * sin(d), true);
+    renderer_.MovePen(x + (radius - 21) * cos(d), y - (radius - 21) * sin(d));
+    renderer_.DrawPen(x + (radius - p) * cos(d), y - (radius - p) * sin(d), true);
   }
 
   // Mode zero has sight
   if (mode == 0) {
     // Sight
-    SetLineThickness(2, LineType::kLineSolid);
-    SetColourBackground(HMI_WHITE);
-    SetColourForeground(HMI_WHITE);
+    renderer_.SetLineThickness(2, LineType::kLineSolid);
+    renderer_.SetColourBackground(HMI_WHITE);
+    renderer_.SetColourForeground(HMI_WHITE);
     {
       int64_t x2, y2;
 
       x2 = PLOT_CIRCLE_X(x, radius - 10, sightAzimuth);
       y2 = PLOT_CIRCLE_Y(y, radius - 10, sightAzimuth);
-      MovePen(x, y);
-      DrawPen(x2, y2, true);
-      SetLineThickness(1, LineType::kLineDashed);
+      renderer_.MovePen(x, y);
+      renderer_.DrawPen(x2, y2, true);
+      renderer_.SetLineThickness(1, LineType::kLineDashed);
       x2 = PLOT_CIRCLE_X(x, radius - 10, (sightAzimuth - (angle / 2)));
       y2 = PLOT_CIRCLE_Y(y, radius - 10, (sightAzimuth - (angle / 2)));
-      MovePen(x, y);
-      DrawPen(x2, y2, true);
-      SetLineThickness(1, LineType::kLineDashed);
+      renderer_.MovePen(x, y);
+      renderer_.DrawPen(x2, y2, true);
+      renderer_.SetLineThickness(1, LineType::kLineDashed);
       x2 = PLOT_CIRCLE_X(x, radius - 10, (sightAzimuth + (angle / 2)));
       y2 = PLOT_CIRCLE_Y(y, radius - 10, (sightAzimuth + (angle / 2)));
-      MovePen(x, y);
-      DrawPen(x2, y2, true);
+      renderer_.MovePen(x, y);
+      renderer_.DrawPen(x2, y2, true);
     }
   }
 
   // Heading
-  SetLineThickness(1, LineType::kLineSolid);
-  SetColourBackground(HMI_CYAN);
-  SetColourForeground(HMI_CYAN);
-  DrawRectangle(x - 1, y + 8, 1, 35, true);
+  renderer_.SetLineThickness(1, LineType::kLineSolid);
+  renderer_.SetColourBackground(HMI_CYAN);
+  renderer_.SetColourForeground(HMI_CYAN);
+  renderer_.DrawRectangle(x - 1, y + 8, 1, 35, true);
 }
 
 void RendererGva::DrawMode() {

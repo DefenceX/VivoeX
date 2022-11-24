@@ -119,8 +119,6 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
   static uint32_t count = 0;
   gva::HandleType *render = static_cast<gva::HandleType *>(user_data);
 
-  io->NextGvaEvent(&event);
-
   if (options_.videoEnabled) {
     // Get the live video frame if Driver (DRV)
     if (gva::hmi::GetScreen()->currentFunction == gva::GvaFunctionEnum::kDriver) {
@@ -138,11 +136,13 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
   }
 
   gva::hmi::GetRendrer()->Update();
+
+  io->NextGvaEvent(&event);
   switch (event.type_) {
     case gva::kKeyEventReleased: {
-      gva::Compass *compass = static_cast<gva::Compass *>(gva::hmi::GetRendrer()->GetWidget(gva::WIDGET_TYPE_COMPASS));
+      gva::Compass *compass = static_cast<gva::Compass *>(gva::hmi::GetRendrer()->GetWidget(gva::KWidgetTypeCompass));
       gva::Keyboard *keyboard =
-          static_cast<gva::Keyboard *>(gva::hmi::GetRendrer()->GetWidget(gva::WIDGET_TYPE_KEYBOARD));
+          static_cast<gva::Keyboard *>(gva::hmi::GetRendrer()->GetWidget(gva::KWidgetTypeKeyboard));
       switch (event.key_) {
         case gva::GvaKeyEnum::kKeyEscape:
           // exit on ESC key press

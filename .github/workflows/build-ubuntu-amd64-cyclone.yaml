@@ -1,4 +1,4 @@
-name: "Build Ubuntu : Cyclone"
+name: "Build Ubuntu Intel : Cyclone"
 
 on:
   push:
@@ -33,7 +33,7 @@ jobs:
         run: mkdir build && cd build && cmake .. -DDDS=CYCLONE-CE .. && make -j $(nproc)
 
       - name: Package for Debian (.deb)
-        id : package
+        id: package
         run: cd build && cpack -V -G DEB && echo "DEB_PACKAGE=$(ls *.deb)" >> $GITHUB_ENV && echo "DEB_PACKAGE=$(ls *.deb)" >> $GITHUB_OUTPUT
 
       # - name: CTestDEB_PACKAGE
@@ -49,7 +49,7 @@ jobs:
           path: build/${{ env.DEB_PACKAGE }}
           retention-days: 30
 
-      - name: Archive logs 
+      - name: Archive logs
         if: ${{ always() && !cancelled() }}
         uses: actions/upload-artifact@v3
         with:
@@ -67,15 +67,15 @@ jobs:
     runs-on: ubuntu-22.04
     needs: [build-ubuntu-cyclone]
     if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
-    
+
     steps:
       - name: Read package name
-        run: echo ${{needs.build-ubuntu-cyclone.outputs.package_name}} 
+        run: echo ${{needs.build-ubuntu-cyclone.outputs.package_name}}
 
       - name: Download .deb to install
         uses: actions/download-artifact@v3
         with:
-          name: ${{needs.build-ubuntu-cyclone.outputs.package_name}} 
+          name: ${{needs.build-ubuntu-cyclone.outputs.package_name}}
 
       - name: Install package
         run: ls -hal && sudo apt-get install ./*.deb -y
