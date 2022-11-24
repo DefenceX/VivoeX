@@ -1,4 +1,4 @@
-name: "Build Ubuntu : Opensplice"
+name: "Build Ubuntu Intel : Opensplice"
 
 on:
   push:

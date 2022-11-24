@@ -1,4 +1,4 @@
-name: "Build CentOS : Cyclone"
+name: "Build CentOS Intel : Cyclone"
 
 on:
   push:
@@ -38,17 +38,17 @@ jobs:
         run: PATH=$PATH:${HOME}/.local/bin && mkdir build && cd build && cmake .. -DDDS=CYCLONE-CE .. && make -j $(nproc)
 
       - name: Package for CentOS (.rpm)
-        id : package
+        id: package
         run: PATH=$PATH:${HOME}/.local/bin && cd build && cpack -V -G RPM && echo "RPM_PACKAGE=$(ls *.rpm)" >> $GITHUB_ENV && echo "RPM_PACKAGE=$(ls *.rpm)" >> $GITHUB_OUTPUT
 
-      - name: Archive packaged .rpm 
+      - name: Archive packaged .rpm
         uses: actions/upload-artifact@v3
         with:
           name: ${{ env.RPM_PACKAGE }}
           path: build/${{ env.RPM_PACKAGE }}
           retention-days: 30
 
-      - name: Archive logs 
+      - name: Archive logs
         if: ${{ always() && !cancelled() }}
         uses: actions/upload-artifact@v3
         with:
@@ -67,7 +67,7 @@ jobs:
     container: centos:8
     needs: [build-centos-cyclone]
     if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
-    
+
     steps:
       - name: Setup repos
         run: |
@@ -79,17 +79,15 @@ jobs:
           dnf config-manager --set-enabled powertools -y
 
       - name: Read package name
-        run: echo ${{needs.build-centos-cyclone.outputs.package_name}} 
+        run: echo ${{needs.build-centos-cyclone.outputs.package_name}}
 
       - name: Download .rpm to install
         uses: actions/download-artifact@v3
         with:
-          name: ${{needs.build-centos-cyclone.outputs.package_name}} 
-      
+          name: ${{needs.build-centos-cyclone.outputs.package_name}}
+
       - name: Install package
         run: dnf install ./*.rpm -y
 
       - name: Run binary
         run: /opt/gva/hmi/hmi-display -h
-
-
