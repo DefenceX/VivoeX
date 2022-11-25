@@ -95,7 +95,11 @@ class WidgetPlanPositionIndicator : public WidgetX {
   ///
   void SetMode(ModeEnum mode) { mode_ = mode; }
 
+  void SetX(int x) override { x_ = x * 2; }
+  void SetY(int y) override { y_ = y - (100); }
+
  private:
+  const double scale_ = 0.5;
   int16_t bearing_ = 0;
   int16_t bearing_sight_ = 0;
   ModeEnum mode_ = ModeEnum::kPpiClassicTankWithSight;

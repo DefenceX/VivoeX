@@ -311,7 +311,7 @@ class TableWidget {
   uint32_t width_;
   uint32_t x_;
   uint32_t y_;
-  uint32_t row_count_;
+  uint32_t current_row_ = 3;
   uint32_t background_colour_;
   std::vector<RowType> rows_;
 

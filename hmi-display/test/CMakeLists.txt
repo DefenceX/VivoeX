@@ -16,6 +16,7 @@ set(SOURCE_FILES test.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/compass.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/keyboard.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/alarm_indicator.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/gva_functions_common.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../common/log_gva.cc
     ${PROTO_SRCS}
 )

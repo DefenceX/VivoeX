@@ -113,7 +113,10 @@ void RendererCairo::Draw() {
         break;
       case kCommandPenDraw:
         cairo_line_to(cr, currentCmd->points[0].x, currentCmd->points[0].y);
-        if (currentCmd->arg1 > 0) cairo_stroke(cr);
+        if (currentCmd->arg1 > 0) {
+          cairo_close_path(cr);
+          cairo_stroke(cr);
+        }
         break;
       case kCommandPenLine:
         cairo_move_to(cr, currentCmd->points[0].x, currentCmd->points[0].y);
@@ -240,13 +243,12 @@ void RendererCairo::Draw() {
         cairo_rotate(cr, currentCmd->width);
         break;
       case kCommandClosePath:
-        //        cairo_close_path(cr);
         if (currentCmd->arg1 > 0) {
           cairo_set_source_rgb(cr, intToFloat(background_colour_.red), intToFloat(background_colour_.green),
                                intToFloat(background_colour_.blue));
           cairo_fill(cr);
         }
-        cairo_stroke(cr);
+        cairo_close_path(cr);
         break;
       case kCommandLineJoin:
         cairo_set_line_join(cr, (cairo_line_join_t)currentCmd->arg1);
@@ -266,6 +268,12 @@ void RendererCairo::Draw() {
       case kCommandTextFont:
         cairo_select_font_face(cr, currentCmd->text, (cairo_font_slant_t)currentCmd->arg1,
                                (cairo_font_weight_t)currentCmd->arg2);
+        break;
+      case kCommandPush:
+        cairo_push_group(cr);
+        break;
+      case kCommandPop:
+        cairo_pop_group(cr);
         break;
       case kCommandText:
         cairo_save(cr);
@@ -541,6 +549,10 @@ void RendererCairo::SetTextFont(uint32_t slope, WeightType weight, const std::st
   Draw_commands_[draw_tail_].arg2 = int(weight);
   strcpy(Draw_commands_[draw_tail_++].text, fontName.c_str());
 }
+
+void RendererCairo::Push() { Draw_commands_[draw_tail_].command = kCommandPush; }
+
+void RendererCairo::Pop() { Draw_commands_[draw_tail_].command = kCommandPop; }
 
 uint32_t RendererCairo::GetTextWidth(const std::string str, uint32_t fontSize) {
   cairo_t *cr = render_.cr;

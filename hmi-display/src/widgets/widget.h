@@ -68,7 +68,7 @@ class WidgetX {
   ///
   /// \param x
   ///
-  void SetX(int x);
+  virtual void SetX(int x);
 
   ///
   /// \brief Get the Y dimension
@@ -82,7 +82,7 @@ class WidgetX {
   ///
   /// \param y
   ///
-  void SetY(int y);
+  virtual void SetY(int y);
 
   ///
   /// \brief Get the Y dimension
@@ -111,12 +111,14 @@ class WidgetX {
   ///
   RendererGva* GetRenderer() const;
 
+ protected:
+  int x_ = 0;
+  int y_ = 0;
+
  private:
   const RendererGva& renderer_;
   WidgetEnum widget_type_;
   bool visible_ = true;
-  int x_ = 0;
-  int y_ = 0;
 };
 
 }  // namespace gva

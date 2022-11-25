@@ -153,6 +153,7 @@ class TouchGva {
 
 class RendererGva : public RendererCairo {
  public:
+  RendererGva() = delete;
   RendererGva(uint32_t width, uint32_t height);
   ~RendererGva() = default;
 
@@ -255,7 +256,7 @@ class RendererGva : public RendererCairo {
   void SetStateLabel(LabelStates state, ConfigData *config);
   void SetStateText(LabelStates state, ConfigData *config);
   uint32_t GetStateTextColour(LabelStates state, ConfigData *config) const;
-  ConfigData *config_;
+  ConfigData *config_ = nullptr;
 };
 
 class WidgetBase {

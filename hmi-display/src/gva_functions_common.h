@@ -31,11 +31,6 @@
 
 namespace gva {
 
-#define PLOT_CIRCLE_X(x, radius, degree) x + (radius)*cos(((M_PI * 2) / 360) * degree)
-#define PLOT_CIRCLE_Y(y, radius, degree) y - (radius)*sin(((M_PI * 2) / 360) * degree)
-#define degreesToRadians(angleDegrees) ((angleDegrees)*M_PI / 180.0)
-#define radiansToDegrees(angleRadians) ((angleRadians)*180.0 / M_PI)
-
 ///
 /// \brief
 ///

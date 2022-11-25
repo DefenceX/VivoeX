@@ -77,6 +77,8 @@ enum Draw_type {
   kCommandRotate,
   kCommandClosePath,
   kCommandTextFont,
+  kCommandPush,
+  kCommandPop,
   kCommandText
 };
 

@@ -39,13 +39,13 @@ class WidgetKeyboard : public WidgetX {
   ///
   /// \param renderer
   ///
-  WidgetKeyboard(const RendererGva& renderer);
+  explicit WidgetKeyboard(const RendererGva& renderer);
 
   ///
   /// \brief Destroy the Widget Keyboard object
   ///
   ///
-  ~WidgetKeyboard() = default;
+  ~WidgetKeyboard() final = default;
 
   ///
   /// \brief Draw the current widget
@@ -75,7 +75,7 @@ class WidgetKeyboard : public WidgetX {
   KeyboardModeType GetMode() const;
 
  private:
-  KeyboardModeType mode_ = KeyboardModeType::kKeyboardLower;
+  KeyboardModeType mode_ = KeyboardModeType::kKeyboardUpper;
   const std::vector<std::vector<char>> upperKeys_ = {{'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'},
                                                      {'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', '-'},
                                                      {'Z', 'X', 'C', 'V', 'B', 'N', 'M', ' ', '-', '-'}};

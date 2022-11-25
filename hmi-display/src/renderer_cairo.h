@@ -106,6 +106,8 @@ class RendererCairo : public Renderer {
   uint32_t DrawColor(uint8_t r, uint8_t g, uint8_t b) override;
   uint32_t DrawColor(uint32_t rgb);
   void SetTextFont(uint32_t slope, WeightType weight, std::string fontName);
+  void Push();
+  void Pop();
   uint32_t GetTextWidth(const std::string str, uint32_t fontSize);
   uint32_t GetTextHeight(const std::string str, uint32_t fontSize);
   void DrawText(uint32_t x, uint32_t y, const std::string text, uint32_t size);

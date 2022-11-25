@@ -28,7 +28,9 @@
 
 namespace gva {
 
-WidgetKeyboard::WidgetKeyboard(const RendererGva& renderer) : WidgetX(renderer, KWidgetTypeKeyboard) {}
+WidgetKeyboard::WidgetKeyboard(const RendererGva& renderer) : WidgetX(renderer, KWidgetTypeKeyboard) {
+  SetVisible(false);
+}
 
 void WidgetKeyboard::Draw() { DrawKeyboard(mode_); }
 
@@ -50,10 +52,10 @@ void WidgetKeyboard::DrawKeyboard(const KeyboardModeType mode) {
       keyboard = upperKeys_;
       break;
     case KeyboardModeType::kKeyboardLower:
-      keyboard = upperKeys_;
+      keyboard = lowerKeys_;
       break;
     case KeyboardModeType::kKeyboardNumbers:
-      keyboard = upperKeys_;
+      keyboard = numKeys_;
       break;
   }
 

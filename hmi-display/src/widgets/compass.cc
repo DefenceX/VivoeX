@@ -45,9 +45,12 @@ void WidgetPlanPositionIndicator::Draw() {
 
 void WidgetPlanPositionIndicator::DrawPPI(ModeEnum mode, uint32_t x, uint32_t y, uint32_t degrees,
                                           uint32_t sightAzimuth) {
-  double_t radius = 50;
+  double_t radius = 100;
   double_t angle = 45;
   double_t d;
+
+  GetRenderer()->Save();
+  GetRenderer()->Scale(scale_, scale_);
 
   GetRenderer()->DrawColor(HMI_WHITE);
   /* Degrees north */
@@ -69,41 +72,46 @@ void WidgetPlanPositionIndicator::DrawPPI(ModeEnum mode, uint32_t x, uint32_t y,
   GetRenderer()->SetColourForeground(HMI_WHITE);
   GetRenderer()->SetColourBackground(HMI_WHITE);
   GetRenderer()->SetLineThickness(2, LineType::kLineSolid);
-  GetRenderer()->MovePen(x - 15, y - 20);
-  GetRenderer()->DrawPen(x + 15, y - 20, false);
-  GetRenderer()->DrawPen(x + 15, y + 20, false);
-  GetRenderer()->DrawPen(x + 5, y + 20, false);
-  GetRenderer()->DrawPen(x + 5, y + 15, false);
-  GetRenderer()->DrawPen(x - 5, y + 15, false);
-  GetRenderer()->DrawPen(x - 5, y + 20, false);
-  GetRenderer()->DrawPen(x - 15, y + 20, false);
-  GetRenderer()->DrawPen(x - 15, y - 20, true);
-  // ClosePath(true);
+  GetRenderer()->MovePen(x - 30, y - 40);
+  GetRenderer()->DrawPen(x + 30, y - 40, false);
+  GetRenderer()->DrawPen(x + 30, y + 40, false);
+  GetRenderer()->DrawPen(x + 10, y + 40, false);
+  GetRenderer()->DrawPen(x + 10, y + 30, false);
+  GetRenderer()->DrawPen(x - 10, y + 30, false);
+  GetRenderer()->DrawPen(x - 10, y + 40, false);
+  GetRenderer()->DrawPen(x - 30, y + 40, false);
+  GetRenderer()->DrawPen(x - 30, y - 40, true);
+  GetRenderer()->ClosePath(false);
   GetRenderer()->Restore();
 
   // Compass Markings
   GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightBold, "Courier");
-  d = degreesToRadians(d);
-  double_t pos = 6;
 
-  GetRenderer()->DrawText(x - 3 + (radius - pos) * cos(d + (M_PI * 2)), y - 2 - (radius - pos) * sin(d + (M_PI * 2)),
-                          "N", 10);
-  GetRenderer()->DrawText(x - 3 + (radius - pos) * cos(d + (M_PI)), y - 2 - (radius - pos) * sin(d + (M_PI)), "S", 10);
-  GetRenderer()->DrawText(x - 3 + (radius - pos) * cos(d + (M_PI / 2)), y - 2 - (radius - pos) * sin(d + (M_PI / 2)),
-                          "E", 10);
-  GetRenderer()->DrawText(x - 3 + (radius - pos) * cos(d + (M_PI + M_PI / 2)),
-                          y - 2 - (radius - pos) * sin(d + (M_PI + M_PI / 2)), "W", 10);
+  d = DegreesToRadians(d);
+  double_t pos = 12;
+  uint32_t font_size = 20;
+  uint32_t adjust_x = x - 4;
+  uint32_t adjust_y = y - 4;
+
+  GetRenderer()->DrawText(adjust_x - 3 + (radius - pos) * cos(d + (M_PI * 2)),
+                          adjust_y - 2 - (radius - pos) * sin(d + (M_PI * 2)), "N", font_size);
+  GetRenderer()->DrawText(adjust_x - 3 + (radius - pos) * cos(d + (M_PI)),
+                          adjust_y - 2 - (radius - pos) * sin(d + (M_PI)), "S", font_size);
+  GetRenderer()->DrawText(adjust_x - 3 + (radius - pos) * cos(d + (M_PI / 2)),
+                          adjust_y - 2 - (radius - pos) * sin(d + (M_PI / 2)), "E", font_size);
+  GetRenderer()->DrawText(adjust_x - 3 + (radius - pos) * cos(d + (M_PI + M_PI / 2)),
+                          adjust_y - 2 - (radius - pos) * sin(d + (M_PI + M_PI / 2)), "W", font_size);
 
   GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
   float step = (M_PI * 2) / 32;
-  int64_t p = 20;
+  int64_t p = 24;
   int64_t c = 0;
 
   d = degrees;
-  for (d = degreesToRadians(degrees); d <= degreesToRadians(degrees) + (M_PI * 2); d += step) {
-    p = c % 4 ? 14 : 10;
+  for (d = DegreesToRadians(degrees); d <= DegreesToRadians(degrees) + (M_PI * 2); d += step) {
+    p = c % 4 ? 28 : 20;
     c++;
-    GetRenderer()->MovePen(x + (radius - 21) * cos(d), y - (radius - 21) * sin(d));
+    GetRenderer()->MovePen(x + (radius - 31) * cos(d), y - (radius - 31) * sin(d));
     GetRenderer()->DrawPen(x + (radius - p) * cos(d), y - (radius - p) * sin(d), true);
   }
 
@@ -116,18 +124,18 @@ void WidgetPlanPositionIndicator::DrawPPI(ModeEnum mode, uint32_t x, uint32_t y,
     {
       int64_t x2, y2;
 
-      x2 = PLOT_CIRCLE_X(x, radius - 10, sightAzimuth);
-      y2 = PLOT_CIRCLE_Y(y, radius - 10, sightAzimuth);
+      x2 = PlotCircleX(x, radius - 10, sightAzimuth);
+      y2 = PlotCircleY(y, radius - 10, sightAzimuth);
       GetRenderer()->MovePen(x, y);
       GetRenderer()->DrawPen(x2, y2, true);
       GetRenderer()->SetLineThickness(1, LineType::kLineDashed);
-      x2 = PLOT_CIRCLE_X(x, radius - 10, (sightAzimuth - (angle / 2)));
-      y2 = PLOT_CIRCLE_Y(y, radius - 10, (sightAzimuth - (angle / 2)));
+      x2 = PlotCircleX(x, radius - 10, (sightAzimuth - (angle / 2)));
+      y2 = PlotCircleY(y, radius - 10, (sightAzimuth - (angle / 2)));
       GetRenderer()->MovePen(x, y);
       GetRenderer()->DrawPen(x2, y2, true);
       GetRenderer()->SetLineThickness(1, LineType::kLineDashed);
-      x2 = PLOT_CIRCLE_X(x, radius - 10, (sightAzimuth + (angle / 2)));
-      y2 = PLOT_CIRCLE_Y(y, radius - 10, (sightAzimuth + (angle / 2)));
+      x2 = PlotCircleX(x, radius - 10, (sightAzimuth + (angle / 2)));
+      y2 = PlotCircleY(y, radius - 10, (sightAzimuth + (angle / 2)));
       GetRenderer()->MovePen(x, y);
       GetRenderer()->DrawPen(x2, y2, true);
     }
@@ -137,7 +145,9 @@ void WidgetPlanPositionIndicator::DrawPPI(ModeEnum mode, uint32_t x, uint32_t y,
   GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
   GetRenderer()->SetColourBackground(HMI_CYAN);
   GetRenderer()->SetColourForeground(HMI_CYAN);
-  GetRenderer()->DrawRectangle(x - 1, y + 8, 1, 35, true);
-}
+  GetRenderer()->DrawRectangle(x - 1, y + 16, 1, 70, true);
+
+  GetRenderer()->Restore();
+};
 
 }  // namespace gva

@@ -67,8 +67,8 @@ FunctionSelect DefaultSettings::GetDefaultFunctionSelect() {
   function_select.labels[2].state = LabelStates::kLabelEnabled;
   function_select.labels[3].state = LabelStates::kLabelEnabledSelected;
   function_select.labels[4].state = LabelStates::kLabelEnabled;
-  function_select.labels[5].state = LabelStates::kLabelEnabled;
-  function_select.labels[6].state = LabelStates::kLabelDisabled;
+  function_select.labels[5].state = LabelStates::kLabelDisabled;
+  function_select.labels[6].state = LabelStates::kLabelEnabled;
   function_select.labels[7].state = LabelStates::kLabelEnabled;
   return function_select;
 }

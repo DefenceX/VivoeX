@@ -109,7 +109,7 @@ void TableWidget::AddRow(WeightType font_weight) {
          Renderer::PackRgb(HMI_YELLOW), font_weight);
 }
 
-void TableWidget::CurrentRowHighlight() { rows_[row_count_ - 1].SetHighlighted(true); }
+void TableWidget::CurrentRowHighlight() { rows_[current_row_ - 1].SetHighlighted(true); }
 
 void TableWidget::AddCell(std::string text, uint32_t width) { AddCell(text, width, CellAlignType::kAlignLeft); }
 

@@ -153,8 +153,6 @@ void Hmi::Reset() {
   screen_render_->GetWidget(KWidgetTypeCompass)->SetVisible(false);
   screen_render_->GetWidget(KWidgetTypeCompass)->SetY(360 + 28);
   screen_render_->GetWidget(KWidgetTypeCompass)->SetX(161);
-  screen_render_->GetWidget(KWidgetTypeKeyboard)
-      ->SetVisible((screen_render_->GetWidget(KWidgetTypeKeyboard)->GetVisible()) ? true : false);
   screen_.table.visible_ = false;
   screen_.control->visible = true;
   screen_.message.visible = false;

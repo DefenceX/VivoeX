@@ -13,6 +13,10 @@
 #define HEIGHT 480
 #define WIDTH 640
 
+struct {
+  gushort count;
+} glob;
+
 static gva::RendererGva renderer(WIDTH, HEIGHT);
 static gva::WidgetFunctionKeyToggle key(renderer);
 static gva::WidgetPlanPositionIndicator ppi(renderer);
@@ -42,17 +46,22 @@ static gboolean on_draw_event(GtkWidget *widget, cairo_t *cr, gpointer user_data
   gtk_window_get_size(GTK_WINDOW(win), &width, &height);
 
   do_drawing(cr, width, height);
-  sleep(1);
 
   if (counter >= 9999) exit(0);
-
-  gtk_widget_queue_draw(widget);
 
   return FALSE;
 }
 
+static gboolean time_handler(GtkWidget *widget) {
+  glob.count += 1;
+  gtk_widget_queue_draw(widget);
+
+  return TRUE;
+}
+
 static void do_drawing(cairo_t *cr, int width, int height) {
   renderer.render_.cr = cr;
+  cairo_save(cr);
 
   switch (counter) {
     case 0:
@@ -98,6 +107,7 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       break;
     case 5:
       // Keyboard, Lower case
+      cairo_translate(cr, 0, height / 2);
       renderer.Init(width, height);
       keyboard.DrawKeyboard(gva::KeyboardModeType::kKeyboardLower);
       renderer.Draw();
@@ -105,6 +115,7 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       break;
     case 6:
       // Keyboard, Upper case
+      cairo_translate(cr, 0, height / 2);
       renderer.Init(width, height);
       keyboard.DrawKeyboard(gva::KeyboardModeType::kKeyboardUpper);
       renderer.Draw();
@@ -112,6 +123,7 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       break;
     case 7:
       // Keyboard, numbers
+      cairo_translate(cr, 0, height / 2);
       renderer.Init(width, height);
       keyboard.DrawKeyboard(gva::KeyboardModeType::kKeyboardNumbers);
       renderer.Draw();
@@ -121,6 +133,9 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       counter = 9999;  // Cause loop to end and terminate
       break;
   }
+
+  cairo_restore(cr);
+
   counter++;
 }
 
@@ -140,6 +155,8 @@ int main(int argc, char *argv[]) {
   gtk_container_add(GTK_CONTAINER(window), darea);
 
   g_signal_connect(G_OBJECT(darea), "draw", G_CALLBACK(on_draw_event), NULL);
+  g_timeout_add(1000, (GSourceFunc)time_handler, (gpointer)window);
+
   g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
   gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);

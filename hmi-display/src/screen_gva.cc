@@ -94,9 +94,10 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
   //
   // Setup the required widgets
   //
-  widget_list_.push_back(new WidgetPlanPositionIndicator(static_cast<RendererGva &>(*this)));
-  widget_list_.push_back(new WidgetKeyboard(static_cast<RendererGva>(*this)));
-  widget_list_.push_back(new WidgetAlarmIndicator(static_cast<RendererGva &>(*this)));
+  RendererGva *renderer = this;
+  widget_list_.push_back(new WidgetPlanPositionIndicator(*renderer));
+  widget_list_.push_back(new WidgetKeyboard(*renderer));
+  widget_list_.push_back(new WidgetAlarmIndicator(*renderer));
 }
 
 ScreenGva::~ScreenGva() {
@@ -269,7 +270,9 @@ GvaStatusTypes ScreenGva::Update() {
   }
 
   // Draw the onscreen KEYBOARD
-  widget_list_[1]->Draw();
+  if (widget_list_[1]->GetVisible()) {
+    widget_list_[1]->Draw();
+  }
 
   // Setup and Draw the status bar, one row table
   if (screen_->status_bar->visible) {
