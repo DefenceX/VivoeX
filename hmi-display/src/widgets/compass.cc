@@ -63,15 +63,15 @@ void WidgetPlanPositionIndicator::DrawPPI(ModeEnum mode, uint32_t x, uint32_t y,
   // Compass
   GetRenderer()->SetColourBackground(HMI_BLACK);
   GetRenderer()->SetColourForeground(HMI_WHITE);
-  GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
+  GetRenderer()->SetLineThickness(2, LineType::kLineSolid);
   GetRenderer()->DrawCircle(x, y, radius, true);  // Compass
-  GetRenderer()->DrawCircle(x, y, 8, true);       // Compass
+  GetRenderer()->DrawCircle(x, y, 16, true);      // Compass
 
   // Vehicle outline
   GetRenderer()->Save();
   GetRenderer()->SetColourForeground(HMI_WHITE);
   GetRenderer()->SetColourBackground(HMI_WHITE);
-  GetRenderer()->SetLineThickness(2, LineType::kLineSolid);
+  GetRenderer()->SetLineThickness(4, LineType::kLineSolid);
   GetRenderer()->MovePen(x - 30, y - 40);
   GetRenderer()->DrawPen(x + 30, y - 40, false);
   GetRenderer()->DrawPen(x + 30, y + 40, false);
@@ -112,7 +112,7 @@ void WidgetPlanPositionIndicator::DrawPPI(ModeEnum mode, uint32_t x, uint32_t y,
   for (d = DegreesToRadians(degrees); d <= DegreesToRadians(degrees) + (M_PI * 2); d += step) {
     p = c % 4 ? 28 : 20;
     c++;
-    GetRenderer()->MovePen(x + (radius - 31) * cos(d), y - (radius - 31) * sin(d));
+    GetRenderer()->MovePen(x + (radius - 35) * cos(d), y - (radius - 35) * sin(d));
     GetRenderer()->DrawPen(x + (radius - p) * cos(d), y - (radius - p) * sin(d), true);
   }
 
@@ -143,7 +143,7 @@ void WidgetPlanPositionIndicator::DrawPPI(ModeEnum mode, uint32_t x, uint32_t y,
   }
 
   // Heading
-  GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
+  GetRenderer()->SetLineThickness(3, LineType::kLineSolid);
   GetRenderer()->SetColourBackground(HMI_CYAN);
   GetRenderer()->SetColourForeground(HMI_CYAN);
   GetRenderer()->DrawRectangle(x - 1, y + 16, 1, 70, true);
