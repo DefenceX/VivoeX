@@ -28,22 +28,29 @@
 
 namespace gva {
 
-void AlarmIndicator::Draw() {
+WidgetAlarmIndicator::WidgetAlarmIndicator(const RendererGva& renderer)
+    : WidgetX(renderer, KWidgetTypeAlarmIndicator) {}
+
+void WidgetAlarmIndicator::Draw() {
   if (GetVisible()) {
-    screen_->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightNormal,
-                         gva::ConfigData::GetInstance()->GetThemeFont());
-    screen_->SetColourBackground(HMI_RED);
-    screen_->SetColourForeground(HMI_WHITE);
-    screen_->DrawRoundedRectangle(110, 32, 420, 20, 6, true);
-    screen_->DrawColor(HMI_WHITE);
-    uint16_t width = screen_->GetTextWidth(text_, 14);
-    screen_->DrawText(110 + (420 / 2) - (width / 2), 38, text_, 14);
-    screen_->SetColourBackground(HMI_RED);
-    screen_->SetColourForeground(HMI_WHITE);
-    screen_->DrawColor(HMI_WHITE);
-    screen_->DrawRoundedRectangle(110 + (420 / 2) + (width / 2) + 4, 34, 19, 16, 4, true);
-    //      screen_->DrawIcon(ICON_ERROR, 110 + (420 / 2) + (width / 2) + 16, 42, 12, 12);
+    GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightNormal,
+                               gva::ConfigData::GetInstance()->GetThemeFont());
+    GetRenderer()->SetColourBackground(HMI_RED);
+    GetRenderer()->SetColourForeground(HMI_WHITE);
+    GetRenderer()->DrawRoundedRectangle(110, 32, 420, 20, 6, true);
+    GetRenderer()->DrawColor(HMI_WHITE);
+    uint16_t width = GetRenderer()->GetTextWidth(text_, 14);
+    GetRenderer()->DrawText(110 + (420 / 2) - (width / 2), 38, text_, 14);
+    GetRenderer()->SetColourBackground(HMI_RED);
+    GetRenderer()->SetColourForeground(HMI_WHITE);
+    GetRenderer()->DrawColor(HMI_WHITE);
+    GetRenderer()->DrawRoundedRectangle(110 + (420 / 2) + (width / 2) + 4, 34, 19, 16, 4, true);
+    //       GetRenderer()->DrawIcon(ICON_ERROR, 110 + (420 / 2) + (width / 2) + 16, 42, 12, 12);
   }
 }
+
+void WidgetAlarmIndicator::SetText(const std::string& text) { text_ = text; }
+
+void WidgetAlarmIndicator::SetType(const GvaAlarmType type) { type_ = type; }
 
 }  // namespace gva

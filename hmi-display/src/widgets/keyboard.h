@@ -23,19 +23,62 @@
 #ifndef HMI_DISPLAY_SRC_WIDGETS_KEYBOARD_H_
 #define HMI_DISPLAY_SRC_WIDGETS_KEYBOARD_H_
 
+#include <vector>
+
+#include "src/renderer_cairo_types.h"
 #include "src/widgets/widget.h"
 
 namespace gva {
 
-///
-/// \brief GVA standard keyboard
-///
-///
-class Keyboard : public WidgetX {
+class WidgetKeyboard : public WidgetX {
  public:
-  explicit Keyboard(HandleType handle&) : WidgetX(handle, KWidgetTypeCompass) {}
-  void Draw();
-  KeyboardModeType mode_;
+  ///
+  /// \brief Construct a new Widget Keyboard object
+  ///
+  /// \param renderer
+  ///
+  explicit WidgetKeyboard(const RendererGva& renderer);
+
+  ~WidgetKeyboard() {}
+
+  ///
+  /// \brief Draw the current widget
+  ///
+  ///
+  void Draw() final;
+
+  ///
+  /// \brief Draw the on screen keyboard
+  ///
+  /// \param mode
+  ///
+  void DrawKeyboard(KeyboardModeType mode);
+
+  ///
+  /// \brief Set the Mode object
+  ///
+  /// void SetMode(KeyboardModeType mode) { mode_ = mode; }
+
+  void SetMode(KeyboardModeType mode);
+
+  ///
+  /// \brief Get the Mode object
+  ///
+  /// \return KeyboardModeType
+  ///
+  KeyboardModeType GetMode() const;
+
+ private:
+  KeyboardModeType mode_ = KeyboardModeType::kKeyboardLower;
+  const std::vector<std::vector<char>> upperKeys_ = {{'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'},
+                                                     {'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', '-'},
+                                                     {'Z', 'X', 'C', 'V', 'B', 'N', 'M', ' ', '-', '-'}};
+  const std::vector<std::vector<char>> lowerKeys_ = {{'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'},
+                                                     {'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', '-'},
+                                                     {'z', 'x', 'c', 'v', 'b', 'n', 'm', ' ', '-', '-'}};
+  const std::vector<std::vector<char>> numKeys_ = {{'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'},
+                                                   {'-', '_', '.', ',', ';', ':', '"', '-', '-', '-'},
+                                                   {'!', '@', '#', '$', '%', '^', '&', ' ', '-', '-'}};
 };
 
 }  // namespace gva

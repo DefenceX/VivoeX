@@ -87,15 +87,15 @@ void StateOn::entry() {
   screen_render_ = new ScreenGva(&screen_, view_.width, view_.height);
 
   // Configure the widgets
-  ((Compass *)screen_render_->GetWidget(KWidgetTypeCompass))->bearingSight_ = 33;
+  ((WidgetPlanPositionIndicator *)screen_render_->GetWidget(KWidgetTypeCompass))->SetBearingSight(33);
   screen_render_->GetWidget(KWidgetTypeCompass)->SetX(161);
   screen_render_->GetWidget(KWidgetTypeCompass)->SetY(360 + 28);
   screen_render_->GetWidget(KWidgetTypeCompass)->SetVisible(true);
   screen_render_->GetWidget(KWidgetTypeAlarmIndicator)->SetVisible(true);
   screen_render_->GetWidget(KWidgetTypeAlarmIndicator)->SetY(422);
 
-  AlarmIndicator *ai = (AlarmIndicator *)screen_render_->GetWidget(KWidgetTypeAlarmIndicator);
-  strcpy(ai->text_, "Engine over temperature");
+  WidgetAlarmIndicator *ai = (WidgetAlarmIndicator *)screen_render_->GetWidget(KWidgetTypeAlarmIndicator);
+  ai->SetText("Engine over temperature");
 
   screen_.canvas = canvas_;
   screen_.canvas.visible = true;

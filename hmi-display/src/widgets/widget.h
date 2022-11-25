@@ -25,7 +25,7 @@
 #ifndef HMI_DISPLAY_SRC_WIDGETS_WIDGET_H_
 #define HMI_DISPLAY_SRC_WIDGETS_WIDGET_H_
 
-#include "src/renderer_cairo_types.h"
+#include "src/renderer_gva.h"
 #include "src/widgets/widget_types.h"
 
 namespace gva {
@@ -35,57 +35,61 @@ class HandleType;
 
 class WidgetX {
  public:
-  virtual ~WidgetX() = 0;
+  virtual ~WidgetX();
+
   ///
   /// \brief Construct a new Widget X object
   ///
   /// \param renderer The underlying renderer, should be cairo
   /// \param widget_type The type of widget
   ///
-  WidgetX(const HandleType& handle, WidgetEnum widget_typex) : handle_(handle) { widget_type_ = widget_typex; }
+  explicit WidgetX(const RendererGva& renderer, WidgetEnum widget_type);
 
   ///
   /// \brief Set the Visible object
   ///
   /// \param visible
   ///
+  ///
+  /// \param visible
+  ///
+  void SetVisible(bool visible);
 
-  void SetVisible(bool visible) { visible_ = visible; }
   ///
   /// \brief Get the Visible object
   ///
   /// \return true
   /// \return false
   ///
-  bool GetVisible() { return visible_; }
+  bool GetVisible() const;
 
   ///
   /// \brief Set the X dimension
   ///
   /// \param x
   ///
-  void SetX(int x) { x_ = x; }
+  void SetX(int x);
 
   ///
   /// \brief Get the Y dimension
   ///
   /// \return int
   ///
-  int GetX() { return x_; }
+  int GetX() const;
 
   ///
   /// \brief Set the Y dimension
   ///
   /// \param y
   ///
-  void SetY(int y) { y_ = y; }
+  void SetY(int y);
 
   ///
   /// \brief Get the Y dimension
   ///
   /// \return int
   ///
-  int GetY() { return y_; }
+  int GetY() const;
 
   ///
   /// \brief Draw the widget
@@ -98,10 +102,17 @@ class WidgetX {
   ///
   /// \return WidgetEnum
   ///
-  WidgetEnum GetType() { return widget_type_; }
+  WidgetEnum GetType() const;
+
+  ///
+  /// \brief Get the Renderer object
+  ///
+  /// \return RendererGva&
+  ///
+  RendererGva* GetRenderer() const;
 
  private:
-  const HandleType& handle_;
+  const RendererGva& renderer_;
   WidgetEnum widget_type_;
   bool visible_ = true;
   int x_ = 0;

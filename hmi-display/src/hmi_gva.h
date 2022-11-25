@@ -49,20 +49,6 @@
 
 namespace gva {
 
-//
-// forward declarations
-//
-// struct StateOff;
-// struct StateSA;
-// struct StateWPN;
-// struct StateDEF;
-// struct StateDRV;
-// struct StateSYS;
-// struct StateSTR;
-// struct StateCOM;
-// struct StateBMS;
-// struct StateAlarms;
-
 using hmi = Hmi;
 
 }  // namespace gva

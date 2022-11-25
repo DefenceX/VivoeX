@@ -28,16 +28,75 @@
 
 namespace gva {
 
-Keyboard::Keyboard(ScreenGva *screen) : WidgetX(screen, WIDGET_TYPE_KEYBOARD) {
-  // Initalise keyboard widget, hidden on creation
-  mode_ = KeyboardModeType::kKeyboardUpper;
-  SetVisible(false);
+WidgetKeyboard::WidgetKeyboard(const RendererGva& renderer) : WidgetX(renderer, KWidgetTypeKeyboard) {}
+
+void WidgetKeyboard::DrawKeyboard(KeyboardModeType mode) {
+  uint32_t i = 0;
+  uint32_t yLocation = 30 + 25;
+  uint32_t bSize = 33;
+  uint32_t padding = 5;
+  uint32_t fontSize = 14;
+  std::string keyText;
+  std::vector<std::vector<char>> keyboard;
+
+  GetRenderer()->SetColourForeground(HMI_MEDIUM_GREY);
+  GetRenderer()->SetColourBackground(HMI_DARK_GREY);
+  GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
+
+  switch (mode) {
+    case KeyboardModeType::kKeyboardUpper:
+      keyboard = upperKeys_;
+      break;
+    case KeyboardModeType::kKeyboardLower:
+      keyboard = upperKeys_;
+      break;
+    case KeyboardModeType::kKeyboardNumbers:
+      keyboard = upperKeys_;
+      break;
+  }
+
+  GetRenderer()->DrawRoundedRectangle(110, yLocation, 420, padding + ((bSize + 5) * 4) + 1, 6, true);
+  // DrawRectangle(110, yLocation, 420, padding + ((bSize + 5) * 4) + 1, true);
+  GetRenderer()->SetColourBackground(HMI_DARK_GREY);
+  GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
+  GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightBold,
+                             gva::ConfigData::GetInstance()->GetThemeFont());
+
+  // Draw keys
+  GetRenderer()->SetColourForeground(HMI_WHITE);
+  GetRenderer()->DrawColor(HMI_WHITE);
+  for (i = 0; i < 10; i++) {
+    keyText = keyboard[0][i];
+    GetRenderer()->DrawButton(keyText, fontSize, 125 + (i * (bSize + 5)), yLocation + padding + (bSize + 5) * 3, bSize);
+  }
+  for (i = 0; i < 9; i++) {
+    keyText = keyboard[1][i];
+    GetRenderer()->DrawButton(keyText, fontSize, 140 + (i * (bSize + 5)), yLocation + padding + (bSize + 5) * 2, bSize);
+  }
+  for (i = 0; i < 8; i++) {
+    keyText = keyboard[2][i];
+    GetRenderer()->DrawButton(keyText, fontSize, 160 + (i * (bSize + 5)), yLocation + padding + (bSize + 5) * 1, bSize);
+  }
+  GetRenderer()->DrawIcon(kIconRightArrorw, 426 + bSize / 2, yLocation + padding + (bSize + 5) + bSize / 2, 8, 10);
+  GetRenderer()->SetColourBackground(HMI_DARK_GREY);
+  GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
+  GetRenderer()->SetColourForeground(HMI_WHITE);
+
+  //
+  // Space Bar and Mode
+  //
+  GetRenderer()->DrawButton("123", fontSize, 144, yLocation + 5, bSize + 5, bSize, CellAlignType::kAlignRight);
+  GetRenderer()->DrawButton("SPACE", fontSize, 185, yLocation + 5, bSize + 202, bSize, CellAlignType::kAlignCentre);
+  GetRenderer()->DrawButton("", fontSize, 426, yLocation + 5, bSize, bSize, CellAlignType::kAlignRight);
+  GetRenderer()->DrawIcon(kIconUpArrow, 426 + bSize / 2, yLocation + 5 + bSize / 2 + 2, 12, 11);
+  GetRenderer()->SetColourBackground(HMI_DARK_GREY);
+  GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
+  GetRenderer()->SetColourForeground(HMI_WHITE);
+  GetRenderer()->DrawButton("Mode", fontSize, 463, yLocation + 20, 50, 50, CellAlignType::kAlignRight);
 }
 
-void Keyboard::Draw() {
-  if (GetVisible()) {
-    screen_->DrawKeyboard(mode_);
-  }
-}
+void WidgetKeyboard::SetMode(KeyboardModeType mode) { mode_ = mode; }
+
+KeyboardModeType WidgetKeyboard::GetMode() const { return mode_; }
 
 }  // namespace gva

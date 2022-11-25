@@ -142,6 +142,7 @@ class TouchGva {
         return true;
       }
     }
+    return false;
   }
 
  public:
@@ -223,7 +224,7 @@ class RendererGva : public RendererCairo {
   /// \param y Y pixel position
   /// \param size Size in pixels
   ///
-  void DrawButton(char *keytext, uint32_t fontSize, uint32_t x, uint32_t y, uint32_t size);
+  void DrawButton(const std::string keytext, uint32_t fontSize, uint32_t x, uint32_t y, uint32_t size);
 
   ///
   /// \brief Draw keyboard buttons
@@ -237,15 +238,8 @@ class RendererGva : public RendererCairo {
   /// \param width Width of button in pixels
   /// \param align Alignment
   ///
-  void DrawButton(char *keytext, uint32_t fontSize, uint32_t x, uint32_t y, uint32_t height, uint32_t width,
+  void DrawButton(const std::string keytext, uint32_t fontSize, uint32_t x, uint32_t y, uint32_t height, uint32_t width,
                   CellAlignType align);
-
-  ///
-  /// \brief Draw the onscreen keyboard
-  ///
-  /// \param mode
-  ///
-  void DrawKeyboard(KeyboardModeType mode);
 
   ///
   /// \brief Get the Touch object
@@ -256,15 +250,6 @@ class RendererGva : public RendererCairo {
 
  private:
   TouchGva touch_;
-  char upperKeys_[3][10] = {{'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'},
-                            {'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', '-'},
-                            {'Z', 'X', 'C', 'V', 'B', 'N', 'M', ' ', '-', '-'}};
-  char lowerKeys_[3][10] = {{'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'},
-                            {'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', '-'},
-                            {'z', 'x', 'c', 'v', 'b', 'n', 'm', ' ', '-', '-'}};
-  char numKeys_[3][10] = {{'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'},
-                          {'-', '_', '.', ',', ';', ':', '"', '-', '-', '-'},
-                          {'!', '@', '#', '$', '%', '^', '&', ' ', '-', '-'}};
 
  private:
   void SetStateLabel(LabelStates state, ConfigData *config);
@@ -273,45 +258,24 @@ class RendererGva : public RendererCairo {
   ConfigData *config_;
 };
 
-class FunctionKeySimple {
+class WidgetBase {
  public:
-  explicit FunctionKeySimple(RendererGva &renderer) : renderer_(renderer) {}
+  explicit WidgetBase(RendererGva &renderer) : renderer_(renderer) {}
   void Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::string text, uint32_t text_colour);
   uint32_t GetX() { return x_; }
   uint32_t GetY() { return y_; }
 
+  RendererGva &renderer_;
+
  private:
   uint32_t x_;
   uint32_t y_;
-  RendererGva &renderer_;
 };
 
-class FunctionKeyToggle : public FunctionKeySimple {
+class WidgetFunctionKeyToggle : public WidgetBase {
  public:
-  explicit FunctionKeyToggle(RendererGva &renderer) : FunctionKeySimple(renderer), renderer_(renderer) {}
+  explicit WidgetFunctionKeyToggle(RendererGva &renderer) : WidgetBase(renderer) {}
   void Toggle(const std::string &label1, const std::string &label2);
-
- private:
-  RendererGva &renderer_;
-};
-
-class PlanPositionIndicator : public FunctionKeySimple {
- public:
-  explicit PlanPositionIndicator(RendererGva &renderer) : FunctionKeySimple(renderer), renderer_(renderer) {}
-
-  ///
-  /// \brief Draw the Plan Position Indicator
-  ///
-  /// \param mode The PPI mode, different styles
-  /// \param x X pixel position
-  /// \param y Y pixel position
-  /// \param degrees Compass heading
-  /// \param sightAzimuth Camera heading
-  ///
-  void DrawPPI(uint8_t mode, uint32_t x, uint32_t y, uint32_t degrees, uint32_t sightAzimuth);
-
- private:
-  RendererGva &renderer_;
 };
 
 }  // namespace gva

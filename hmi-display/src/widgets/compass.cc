@@ -22,17 +22,122 @@
 /// \file compass.cc
 ///
 
-#include "compass.h"
+#include "src/widgets/compass.h"
 
-#include "src/screen_gva.h"
+#include <float.h>
+#include <math.h>
+#include <stdio.h>
+
+#include "src/gva_functions_common.h"
+#include "src/renderer_gva.h"
 
 namespace gva {
 
-void Compass::Draw() {
+WidgetPlanPositionIndicator::WidgetPlanPositionIndicator(const RendererGva& renderer)
+    : WidgetX(renderer, KWidgetTypeCompass) {}
+
+void WidgetPlanPositionIndicator::Draw() {
   if (GetVisible()) {
-    uint8_t mode = 0;
-    PlanPositionIndicator ppi() screen_->DrawPPI(mode, GetX(), GetY(), bearing_, bearingSight_);
+    WidgetPlanPositionIndicator::ModeEnum::kPpiClassicTankWithSight;
+    DrawPPI(mode_, GetX(), GetY(), bearing_, bearing_sight_);
   }
+}
+
+void WidgetPlanPositionIndicator::DrawPPI(ModeEnum mode, uint32_t x, uint32_t y, uint32_t degrees,
+                                          uint32_t sightAzimuth) {
+  double_t radius = 50;
+  double_t angle = 45;
+  double_t d;
+
+  GetRenderer()->DrawColor(HMI_WHITE);
+  /* Degrees north */
+  degrees += 270;
+  degrees = (degrees >= 360) ? degrees - 360 : degrees;
+  sightAzimuth += 270;
+  sightAzimuth = (sightAzimuth >= 360) ? sightAzimuth - 360 : sightAzimuth;
+  d = degrees;
+
+  // Compass
+  GetRenderer()->SetColourBackground(HMI_BLACK);
+  GetRenderer()->SetColourForeground(HMI_WHITE);
+  GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
+  GetRenderer()->DrawCircle(x, y, radius, true);  // Compass
+  GetRenderer()->DrawCircle(x, y, 8, true);       // Compass
+
+  // Vehicle outline
+  GetRenderer()->Save();
+  GetRenderer()->SetColourForeground(HMI_WHITE);
+  GetRenderer()->SetColourBackground(HMI_WHITE);
+  GetRenderer()->SetLineThickness(2, LineType::kLineSolid);
+  GetRenderer()->MovePen(x - 15, y - 20);
+  GetRenderer()->DrawPen(x + 15, y - 20, false);
+  GetRenderer()->DrawPen(x + 15, y + 20, false);
+  GetRenderer()->DrawPen(x + 5, y + 20, false);
+  GetRenderer()->DrawPen(x + 5, y + 15, false);
+  GetRenderer()->DrawPen(x - 5, y + 15, false);
+  GetRenderer()->DrawPen(x - 5, y + 20, false);
+  GetRenderer()->DrawPen(x - 15, y + 20, false);
+  GetRenderer()->DrawPen(x - 15, y - 20, true);
+  // ClosePath(true);
+  GetRenderer()->Restore();
+
+  // Compass Markings
+  GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightBold, "Courier");
+  d = degreesToRadians(d);
+  double_t pos = 6;
+
+  GetRenderer()->DrawText(x - 3 + (radius - pos) * cos(d + (M_PI * 2)), y - 2 - (radius - pos) * sin(d + (M_PI * 2)),
+                          "N", 10);
+  GetRenderer()->DrawText(x - 3 + (radius - pos) * cos(d + (M_PI)), y - 2 - (radius - pos) * sin(d + (M_PI)), "S", 10);
+  GetRenderer()->DrawText(x - 3 + (radius - pos) * cos(d + (M_PI / 2)), y - 2 - (radius - pos) * sin(d + (M_PI / 2)),
+                          "E", 10);
+  GetRenderer()->DrawText(x - 3 + (radius - pos) * cos(d + (M_PI + M_PI / 2)),
+                          y - 2 - (radius - pos) * sin(d + (M_PI + M_PI / 2)), "W", 10);
+
+  GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
+  float step = (M_PI * 2) / 32;
+  int64_t p = 20;
+  int64_t c = 0;
+
+  d = degrees;
+  for (d = degreesToRadians(degrees); d <= degreesToRadians(degrees) + (M_PI * 2); d += step) {
+    p = c % 4 ? 14 : 10;
+    c++;
+    GetRenderer()->MovePen(x + (radius - 21) * cos(d), y - (radius - 21) * sin(d));
+    GetRenderer()->DrawPen(x + (radius - p) * cos(d), y - (radius - p) * sin(d), true);
+  }
+
+  // Mode zero has sight
+  if (mode == ModeEnum::kPpiClassicTankWithSight) {
+    // Sight
+    GetRenderer()->SetLineThickness(2, LineType::kLineSolid);
+    GetRenderer()->SetColourBackground(HMI_WHITE);
+    GetRenderer()->SetColourForeground(HMI_WHITE);
+    {
+      int64_t x2, y2;
+
+      x2 = PLOT_CIRCLE_X(x, radius - 10, sightAzimuth);
+      y2 = PLOT_CIRCLE_Y(y, radius - 10, sightAzimuth);
+      GetRenderer()->MovePen(x, y);
+      GetRenderer()->DrawPen(x2, y2, true);
+      GetRenderer()->SetLineThickness(1, LineType::kLineDashed);
+      x2 = PLOT_CIRCLE_X(x, radius - 10, (sightAzimuth - (angle / 2)));
+      y2 = PLOT_CIRCLE_Y(y, radius - 10, (sightAzimuth - (angle / 2)));
+      GetRenderer()->MovePen(x, y);
+      GetRenderer()->DrawPen(x2, y2, true);
+      GetRenderer()->SetLineThickness(1, LineType::kLineDashed);
+      x2 = PLOT_CIRCLE_X(x, radius - 10, (sightAzimuth + (angle / 2)));
+      y2 = PLOT_CIRCLE_Y(y, radius - 10, (sightAzimuth + (angle / 2)));
+      GetRenderer()->MovePen(x, y);
+      GetRenderer()->DrawPen(x2, y2, true);
+    }
+  }
+
+  // Heading
+  GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
+  GetRenderer()->SetColourBackground(HMI_CYAN);
+  GetRenderer()->SetColourForeground(HMI_CYAN);
+  GetRenderer()->DrawRectangle(x - 1, y + 8, 1, 35, true);
 }
 
 }  // namespace gva

@@ -39,7 +39,7 @@ struct StateWPN : Hmi {
   void entry() override;
   void react(EventKeyPowerOn const &) override;
   void react(EventKeySA const &) override;
-  namespace gva void react(EventKeyDEF const &) override;
+  void react(EventKeyDEF const &) override;
   void react(EventKeySYS const &) override;
   void react(EventKeyDRV const &) override;
   void react(EventKeySTR const &) override;

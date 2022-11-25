@@ -25,6 +25,10 @@
 #ifndef HMI_DISPLAY_SRC_RENDERER_CAIRO_TYPES_H_
 #define HMI_DISPLAY_SRC_RENDERER_CAIRO_TYPES_H_
 
+#include <gtk/gtk.h>
+
+#include "src/renderer.h"
+
 namespace gva {
 
 struct gtkType {

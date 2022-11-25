@@ -17,56 +17,34 @@
 /// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 /// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ///
-/// \brief The datatypes used by all widgets
+/// \brief Template for all widgets
 ///
-/// \file widget_types.h
+/// \file widget.cc
 ///
 
-#ifndef HMI_DISPLAY_SRC_WIDGETS_WIDGET_TYPES_H_
-#define HMI_DISPLAY_SRC_WIDGETS_WIDGET_TYPES_H_
+#include "src/widgets/widget.h"
 
 namespace gva {
 
-enum class KeyboardModeType { kKeyboardLower = 0, kKeyboardUpper, kKeyboardNumbers };
+WidgetX::~WidgetX() = default;
 
-enum class CellAlignType { kAlignLeft = 0, kAlignCentre, kAlignRight };
+WidgetX::WidgetX(const RendererGva& renderer, WidgetEnum widget_type)
+    : renderer_(renderer), widget_type_(widget_type) {}
 
-enum class WeightType { kWeightNormal = 0, kWeightBold, kWeightItalic };
+void WidgetX::SetVisible(bool visible) { visible_ = visible; }
 
-//
-// Widgets
-//
-enum WidgetEnum { KWidgetTypeCompass = 0, KWidgetTypeKeyboard = 1, KWidgetTypeAlarmIndicator = 2 };
+bool WidgetX::GetVisible() const { return visible_; }
 
-typedef enum {
-  kIconNone = 0,
-  kIconUpArrow,
-  kIconDownArrow,
-  kIconRightArrorw,
-  ICON_RIGHT_ARROW,
-  kIconUpArrowOutline,
-  kIconDownArrowOutline,
-  kIconLeftArrorwOutline,
-  kIconRightArrowOutline,
-  kIconPlus,
-  kIconMinus,
-  kIconEnter,
-  kIconRotateLeft,
-  kIconRotateRight,
-  kIconPowerOff,
-  kIconLocation,
-  kIconWarning,
-  kIconError,
-  kIconInfo,
-  kIconCentre
-} IconType;
+void WidgetX::SetX(int x) { x_ = x; }
 
-struct GvaColourType {
-  int red;
-  int green;
-  int blue;
-};
+int WidgetX::GetX() const { return x_; }
+
+void WidgetX::SetY(int y) { y_ = y; }
+
+int WidgetX::GetY() const { return y_; }
+
+WidgetEnum WidgetX::GetType() const { return widget_type_; }
+
+RendererGva* WidgetX::GetRenderer() const { return const_cast<gva::RendererGva*>(&renderer_); }
 
 }  // namespace gva
-
-#endif  // HMI_DISPLAY_SRC_WIDGETS_WIDGET_TYPES_H_

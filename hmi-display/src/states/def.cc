@@ -46,7 +46,7 @@ GvaKeyEnum Hmi::KeyDEF(GvaKeyEnum keypress) {
     case GvaKeyEnum::kKeyF11:
     case GvaKeyEnum::kKeyF12:
       screen_.message.visible = true;
-      screen_.message.icon = ICON_ERROR;
+      screen_.message.icon = kIconError;
       screen_.message.brief.text = "Function key";
       screen_.message.detail.text = "Operation not implemented!";
       break;

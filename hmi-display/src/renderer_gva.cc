@@ -29,11 +29,6 @@
 #include "debug.h"
 #include "screen_gva.h"
 
-#define PLOT_CIRCLE_X(x, radius, degree) x + (radius)*cos(((M_PI * 2) / 360) * degree)
-#define PLOT_CIRCLE_Y(y, radius, degree) y - (radius)*sin(((M_PI * 2) / 360) * degree)
-#define degreesToRadians(angleDegrees) ((angleDegrees)*M_PI / 180.0)
-#define radiansToDegrees(angleRadians) ((angleRadians)*180.0 / M_PI)
-
 namespace gva {
 
 uint32_t GvaRow::addCell(GvaCell newcell, uint32_t width) {
@@ -47,8 +42,7 @@ RendererGva::RendererGva(uint32_t width, uint32_t height) : RendererCairo(height
   touch_.SetResolution(width, height);
 }
 
-void FunctionKeySimple::Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::string text,
-                             uint32_t text_colour) {
+void WidgetBase::Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::string text, uint32_t text_colour) {
   char copy[256];
   char delim[] = ".";
   char *ptr = NULL;
@@ -62,16 +56,16 @@ void FunctionKeySimple::Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t he
   renderer_.DrawColor(text_colour);
 
   if (text.substr(0, 4) == "icon:") {
-    if (text.substr(5, 20) == "exit") renderer_.DrawIcon(ICON_POWER_OFF, x + width / 2, y + height / 2, 20, 20);
-    if (text.substr(5, 20) == "uparrow") renderer_.DrawIcon(ICON_UP_ARROW, x + width / 2, y + height / 2, 20, 20);
-    if (text.substr(5, 20) == "downarrow") renderer_.DrawIcon(ICON_DOWN_ARROW, x + width / 2, y + height / 2, 20, 20);
+    if (text.substr(5, 20) == "exit") renderer_.DrawIcon(kIconPowerOff, x + width / 2, y + height / 2, 20, 20);
+    if (text.substr(5, 20) == "uparrow") renderer_.DrawIcon(kIconUpArrow, x + width / 2, y + height / 2, 20, 20);
+    if (text.substr(5, 20) == "downarrow") renderer_.DrawIcon(kIconDownArrow, x + width / 2, y + height / 2, 20, 20);
     if (text.substr(5, 20) == "rightarrow") renderer_.DrawIcon(ICON_RIGHT_ARROW, x + width / 2, y + height / 2, 20, 20);
-    if (text.substr(5, 20) == "leftarrow") renderer_.DrawIcon(ICON_LEFT_ARROW, x + width / 2, y + height / 2, 20, 20);
-    if (text.substr(5, 20) == "rotateleft") renderer_.DrawIcon(ICON_ROTATE_LEFT, x + width / 2, y + height / 2, 20, 20);
+    if (text.substr(5, 20) == "leftarrow") renderer_.DrawIcon(kIconRightArrorw, x + width / 2, y + height / 2, 20, 20);
+    if (text.substr(5, 20) == "rotateleft") renderer_.DrawIcon(kIconRotateLeft, x + width / 2, y + height / 2, 20, 20);
     if (text.substr(5, 20) == "rotateright")
-      renderer_.DrawIcon(ICON_ROTATE_RIGHT, x + width / 2, y + height / 2, 20, 20);
-    if (text.substr(5, 20) == "plus") renderer_.DrawIcon(ICON_PLUS, x + width / 2, y + height / 2, 20, 20);
-    if (text.substr(5, 20) == "minus") renderer_.DrawIcon(ICON_MINUS, x + width / 2, y + height / 2, 20, 20);
+      renderer_.DrawIcon(kIconRotateRight, x + width / 2, y + height / 2, 20, 20);
+    if (text.substr(5, 20) == "plus") renderer_.DrawIcon(kIconPlus, x + width / 2, y + height / 2, 20, 20);
+    if (text.substr(5, 20) == "minus") renderer_.DrawIcon(kIconMinus, x + width / 2, y + height / 2, 20, 20);
   } else {
     strncpy(copy, text.c_str(), 40);
     ptr = strtok(copy, delim);
@@ -88,7 +82,7 @@ void FunctionKeySimple::Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t he
   y_ = y;
 }
 
-void FunctionKeyToggle::Toggle(const std::string &label1, const std::string &label2) {
+void WidgetFunctionKeyToggle::Toggle(const std::string &label1, const std::string &label2) {
   renderer_.SetColourForeground(HMI_DARK_GREEN2);
   renderer_.SetColourBackground(HMI_YELLOW);
   if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::LABEL_ROUNDED) {
@@ -123,7 +117,7 @@ void RendererGva::DrawFunctionLabels(uint32_t x, const std::array<FunctionKeys::
 
   for (auto label : labels) {
     if (label.state != LabelStates::kLabelHidden) {
-      FunctionKeyToggle *key = new FunctionKeyToggle(*this);
+      WidgetFunctionKeyToggle *key = new WidgetFunctionKeyToggle(*this);
       SetStateLabel(label.state, config_);
 
       key->Draw(x, offset - (i * 72), 100, 50, label.text, GetStateTextColour(label.state, config_));
@@ -191,8 +185,8 @@ void RendererGva::DrawControlLabels(const uint32_t y, const std::array<CommonTas
       touch_.AddAbsolute(GvaFunctionGroupEnum::kBottom, int(GvaKeyEnum::kKeyF13) + i, (i * w) + offset, y,
                          (i * w) + w - 5 + offset, y + 20);
       DrawText((i * w) + offset + 5, y + 6, label.text.c_str(), 12);
-      if (i == 4) DrawIcon(ICON_UP_ARROW, (i * w) + offset + 34, y + 11, 15, 8);
-      if (i == 5) DrawIcon(ICON_DOWN_ARROW, (i * w) + offset + 34, y + 10, 15, 8);
+      if (i == 4) DrawIcon(kIconUpArrow, (i * w) + offset + 34, y + 11, 15, 8);
+      if (i == 5) DrawIcon(kIconDownArrow, (i * w) + offset + 34, y + 10, 15, 8);
     }
 
     i++;
@@ -215,9 +209,9 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
   Translate(x, y);
 
   switch (icon) {
-    case ICON_DOWN_ARROW:
+    case kIconDownArrow:
       Rotate(M_PI);
-    case ICON_UP_ARROW:
+    case kIconUpArrow:
       Scale(sx, sy);
       MovePenRaw(arrow[0][0], arrow[0][1]);
       for (uint16_t i = 1; i < 8; i++) {
@@ -225,9 +219,9 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       }
       ClosePath(true);
       break;
-    case ICON_DOWN_ARROW_OUTLINE:
+    case kIconDownArrowOutline:
       Rotate(M_PI);
-    case ICON_UP_ARROW_OUTLINE:
+    case kIconUpArrowOutline:
       Scale(sx, sy);
       MovePenRaw(arrow[0][0], arrow[0][1]);
       for (uint16_t i = 1; i < 8; i++) {
@@ -237,7 +231,7 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       break;
     case ICON_RIGHT_ARROW:
       Rotate(M_PI);
-    case ICON_LEFT_ARROW:
+    case kIconRightArrorw:
       Rotate(M_PI * 1.5);
       Scale(sx, sy);
       MovePenRaw(arrow[0][0], arrow[0][1]);
@@ -246,9 +240,9 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       }
       ClosePath(true);
       break;
-    case ICON_RIGHT_ARROW_OUTLINE:
+    case kIconRightArrowOutline:
       Rotate(M_PI);
-    case ICON_LEFT_ARROW_OUTLINE:
+    case kIconLeftArrorwOutline:
       Rotate(M_PI * 1.5);
       Scale(sx, sy);
       MovePenRaw(arrow[0][0], arrow[0][1]);
@@ -257,7 +251,7 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       }
       ClosePath(false);
       break;
-    case ICON_POWER_OFF:
+    case kIconPowerOff:
       SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
       Scale(sx, sy);
       DrawArcRaw(0, 0, 8, 290, 250);
@@ -265,7 +259,7 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       DrawPenRaw(0, -10);
       ClosePath(false);
       break;
-    case ICON_ROTATE_LEFT:
+    case kIconRotateLeft:
       SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
       Scale(sx, sy);
       DrawArcRaw(0, 0, 8, 315, 225);
@@ -275,7 +269,7 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       DrawPenRaw(9, -6);
       ClosePath(false);
       break;
-    case ICON_ROTATE_RIGHT:
+    case kIconRotateRight:
       SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
       Scale(sx, sy);
       DrawArcRaw(0, 0, 8, 315, 225);
@@ -285,7 +279,7 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       DrawPenRaw(-9, -6);
       ClosePath(false);
       break;
-    case ICON_PLUS:
+    case kIconPlus:
       SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
       Scale(sx, sy);
       MovePenRaw(-10, 0);
@@ -294,20 +288,20 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       DrawPenRaw(0, 10);
       ClosePath(false);
       break;
-    case ICON_MINUS:
+    case kIconMinus:
       SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
       Scale(sx, sy);
       MovePenRaw(-10, 0);
       DrawPenRaw(10, 0);
       ClosePath(false);
       break;
-    case ICON_INFO:
-    case ICON_ERROR:
-    case ICON_WARNING:
+    case kIconError:
+    case kIconInfo:
+    case kIconWarning:
       SetLineThickness(2, LineType::kLineSolid);
-      if (icon == ICON_INFO) SetColourBackground(HMI_GREEN);
-      if (icon == ICON_ERROR) SetColourBackground(HMI_RED);
-      if (icon == ICON_WARNING) SetColourBackground(HMI_ORANGE);
+      if (icon == kIconError) SetColourBackground(HMI_GREEN);
+      if (icon == kIconError) SetColourBackground(HMI_RED);
+      if (icon == kIconWarning) SetColourBackground(HMI_ORANGE);
       Scale(sx, sy);
       MovePenRaw(-10, -10);
       DrawPenRaw(0, +10);
@@ -324,102 +318,6 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       break;
   }
   Restore();
-}
-
-void PlanPositionIndicator::DrawPPI(uint8_t mode, uint32_t x, uint32_t y, uint32_t degrees, uint32_t sightAzimuth) {
-  double_t radius = 50;
-  double_t angle = 45;
-  double_t d;
-
-  renderer_.DrawColor(HMI_WHITE);
-  /* Degrees north */
-  degrees += 270;
-  degrees = (degrees >= 360) ? degrees - 360 : degrees;
-  sightAzimuth += 270;
-  sightAzimuth = (sightAzimuth >= 360) ? sightAzimuth - 360 : sightAzimuth;
-  d = degrees;
-
-  // Compass
-  renderer_.SetColourBackground(HMI_BLACK);
-  renderer_.SetColourForeground(HMI_WHITE);
-  renderer_.SetLineThickness(1, LineType::kLineSolid);
-  renderer_.DrawCircle(x, y, radius, true);  // Compass
-  renderer_.DrawCircle(x, y, 8, true);       // Compass
-
-  // Vehicle outline
-  renderer_.Save();
-  renderer_.SetColourForeground(HMI_WHITE);
-  renderer_.SetColourBackground(HMI_WHITE);
-  renderer_.SetLineThickness(2, LineType::kLineSolid);
-  renderer_.MovePen(x - 15, y - 20);
-  renderer_.DrawPen(x + 15, y - 20, false);
-  renderer_.DrawPen(x + 15, y + 20, false);
-  renderer_.DrawPen(x + 5, y + 20, false);
-  renderer_.DrawPen(x + 5, y + 15, false);
-  renderer_.DrawPen(x - 5, y + 15, false);
-  renderer_.DrawPen(x - 5, y + 20, false);
-  renderer_.DrawPen(x - 15, y + 20, false);
-  renderer_.DrawPen(x - 15, y - 20, true);
-  // ClosePath(true);
-  renderer_.Restore();
-
-  // Compass Markings
-  renderer_.SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightBold, "Courier");
-  d = degreesToRadians(d);
-  double_t pos = 6;
-
-  renderer_.DrawText(x - 3 + (radius - pos) * cos(d + (M_PI * 2)), y - 2 - (radius - pos) * sin(d + (M_PI * 2)), "N",
-                     10);
-  renderer_.DrawText(x - 3 + (radius - pos) * cos(d + (M_PI)), y - 2 - (radius - pos) * sin(d + (M_PI)), "S", 10);
-  renderer_.DrawText(x - 3 + (radius - pos) * cos(d + (M_PI / 2)), y - 2 - (radius - pos) * sin(d + (M_PI / 2)), "E",
-                     10);
-  renderer_.DrawText(x - 3 + (radius - pos) * cos(d + (M_PI + M_PI / 2)),
-                     y - 2 - (radius - pos) * sin(d + (M_PI + M_PI / 2)), "W", 10);
-
-  renderer_.SetLineThickness(1, LineType::kLineSolid);
-  float step = (M_PI * 2) / 32;
-  int64_t p = 20;
-  int64_t c = 0;
-
-  d = degrees;
-  for (d = degreesToRadians(degrees); d <= degreesToRadians(degrees) + (M_PI * 2); d += step) {
-    p = c % 4 ? 14 : 10;
-    c++;
-    renderer_.MovePen(x + (radius - 21) * cos(d), y - (radius - 21) * sin(d));
-    renderer_.DrawPen(x + (radius - p) * cos(d), y - (radius - p) * sin(d), true);
-  }
-
-  // Mode zero has sight
-  if (mode == 0) {
-    // Sight
-    renderer_.SetLineThickness(2, LineType::kLineSolid);
-    renderer_.SetColourBackground(HMI_WHITE);
-    renderer_.SetColourForeground(HMI_WHITE);
-    {
-      int64_t x2, y2;
-
-      x2 = PLOT_CIRCLE_X(x, radius - 10, sightAzimuth);
-      y2 = PLOT_CIRCLE_Y(y, radius - 10, sightAzimuth);
-      renderer_.MovePen(x, y);
-      renderer_.DrawPen(x2, y2, true);
-      renderer_.SetLineThickness(1, LineType::kLineDashed);
-      x2 = PLOT_CIRCLE_X(x, radius - 10, (sightAzimuth - (angle / 2)));
-      y2 = PLOT_CIRCLE_Y(y, radius - 10, (sightAzimuth - (angle / 2)));
-      renderer_.MovePen(x, y);
-      renderer_.DrawPen(x2, y2, true);
-      renderer_.SetLineThickness(1, LineType::kLineDashed);
-      x2 = PLOT_CIRCLE_X(x, radius - 10, (sightAzimuth + (angle / 2)));
-      y2 = PLOT_CIRCLE_Y(y, radius - 10, (sightAzimuth + (angle / 2)));
-      renderer_.MovePen(x, y);
-      renderer_.DrawPen(x2, y2, true);
-    }
-  }
-
-  // Heading
-  renderer_.SetLineThickness(1, LineType::kLineSolid);
-  renderer_.SetColourBackground(HMI_CYAN);
-  renderer_.SetColourForeground(HMI_CYAN);
-  renderer_.DrawRectangle(x - 1, y + 8, 1, 35, true);
 }
 
 void RendererGva::DrawMode() {
@@ -491,12 +389,12 @@ void RendererGva::DrawTable(GvaTable *table) {
   }
 }
 
-void RendererGva::DrawButton(char *keyText, uint32_t fontSize, uint32_t x, uint32_t y, uint32_t size) {
+void RendererGva::DrawButton(const std::string keyText, uint32_t fontSize, uint32_t x, uint32_t y, uint32_t size) {
   DrawButton(keyText, fontSize, x, y, size, size, CellAlignType::kAlignLeft);
 }
 
-void RendererGva::DrawButton(char *keyText, uint32_t fontSize, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
-                             CellAlignType align) {
+void RendererGva::DrawButton(const std::string keyText, uint32_t fontSize, uint32_t x, uint32_t y, uint32_t width,
+                             uint32_t height, CellAlignType align) {
   uint32_t textX = 6;
 
   SetColourForeground(HMI_GREY);
@@ -510,70 +408,6 @@ void RendererGva::DrawButton(char *keyText, uint32_t fontSize, uint32_t x, uint3
   if (align == CellAlignType::kAlignCentre) textX = (width / 2) - (textWidth / 2);
   DrawText(x + textX, y + (height - textHeight - 4), keyText, fontSize);
 };
-
-void RendererGva::DrawKeyboard(KeyboardModeType mode) {
-  uint32_t i = 0;
-  uint32_t yLocation = 30 + 25;
-  uint32_t bSize = 33;
-  uint32_t padding = 5;
-  uint32_t fontSize = 14;
-  char keyText[5];
-  char keyboard[3][10];
-
-  SetColourForeground(HMI_MEDIUM_GREY);
-  SetColourBackground(HMI_DARK_GREY);
-  SetLineThickness(1, LineType::kLineSolid);
-
-  switch (mode) {
-    case KeyboardModeType::kKeyboardUpper:
-      memcpy(keyboard, upperKeys_, sizeof(keyboard));
-      break;
-    case KeyboardModeType::kKeyboardLower:
-      memcpy(keyboard, lowerKeys_, sizeof(keyboard));
-      break;
-    case KeyboardModeType::kKeyboardNumbers:
-      memcpy(keyboard, numKeys_, sizeof(keyboard));
-      break;
-  }
-
-  DrawRoundedRectangle(110, yLocation, 420, padding + ((bSize + 5) * 4) + 1, 6, true);
-  // DrawRectangle(110, yLocation, 420, padding + ((bSize + 5) * 4) + 1, true);
-  SetColourBackground(HMI_DARK_GREY);
-  SetLineThickness(1, LineType::kLineSolid);
-  SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightBold, config_->GetThemeFont());
-
-  // Draw keys
-  SetColourForeground(HMI_WHITE);
-  DrawColor(HMI_WHITE);
-  for (i = 0; i < 10; i++) {
-    sprintf(keyText, "%c", keyboard[0][i]);
-    DrawButton(keyText, fontSize, 125 + (i * (bSize + 5)), yLocation + padding + (bSize + 5) * 3, bSize);
-  }
-  for (i = 0; i < 9; i++) {
-    sprintf(keyText, "%c", keyboard[1][i]);
-    DrawButton(keyText, fontSize, 140 + (i * (bSize + 5)), yLocation + padding + (bSize + 5) * 2, bSize);
-  }
-  for (i = 0; i < 8; i++) {
-    sprintf(keyText, "%c", keyboard[2][i]);
-    DrawButton(keyText, fontSize, 160 + (i * (bSize + 5)), yLocation + padding + (bSize + 5) * 1, bSize);
-  }
-  DrawIcon(ICON_LEFT_ARROW, 426 + bSize / 2, yLocation + padding + (bSize + 5) + bSize / 2, 8, 10);
-  SetColourBackground(HMI_DARK_GREY);
-  SetLineThickness(1, LineType::kLineSolid);
-  SetColourForeground(HMI_WHITE);
-
-  //
-  // Space Bar and Mode
-  //
-  DrawButton("123", fontSize, 144, yLocation + 5, bSize + 5, bSize, CellAlignType::kAlignRight);
-  DrawButton("SPACE", fontSize, 185, yLocation + 5, bSize + 202, bSize, CellAlignType::kAlignCentre);
-  DrawButton("", fontSize, 426, yLocation + 5, bSize, bSize, CellAlignType::kAlignRight);
-  DrawIcon(ICON_UP_ARROW, 426 + bSize / 2, yLocation + 5 + bSize / 2 + 2, 12, 11);
-  SetColourBackground(HMI_DARK_GREY);
-  SetLineThickness(1, LineType::kLineSolid);
-  SetColourForeground(HMI_WHITE);
-  DrawButton("Mode", fontSize, 463, yLocation + 20, 50, 50, CellAlignType::kAlignRight);
-}
 
 void RendererGva::SetStateLabel(LabelStates state, ConfigData *config) {
   switch (state) {

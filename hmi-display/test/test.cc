@@ -5,10 +5,18 @@
 #include <ctime>
 
 #include "src/renderer_gva.h"
+#include "src/widgets/alarm_indicator.h"
+#include "src/widgets/compass.h"
+#include "src/widgets/keyboard.h"
+#include "src/widgets/widget_types.h"
 
-static gva::RendererGva renderer(300, 250);
-static gva::FunctionKeyToggle key(renderer);
-static gva::PlanPositionIndicator ppi(renderer);
+#define HEIGHT 480
+#define WIDTH 640
+
+static gva::RendererGva renderer(WIDTH, HEIGHT);
+static gva::WidgetFunctionKeyToggle key(renderer);
+static gva::WidgetPlanPositionIndicator ppi(renderer);
+static gva::WidgetKeyboard keyboard(renderer);
 
 static void do_drawing(cairo_t *, int width, int h);
 
@@ -45,14 +53,13 @@ static gboolean on_draw_event(GtkWidget *widget, cairo_t *cr, gpointer user_data
 
 static void do_drawing(cairo_t *cr, int width, int height) {
   renderer.render_.cr = cr;
-  uint8_t mode = 0;
 
   switch (counter) {
     case 0:
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       renderer.Init(width, height);
-      ppi.DrawPPI(mode, 0, 0, 0, 90);
+      ppi.DrawPPI(gva::WidgetPlanPositionIndicator::ModeEnum::kPpiClassicTankWithSight, 0, 0, 0, 90);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_ppi_01.png");
       break;
@@ -60,7 +67,7 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       renderer.Init(width, height);
-      ppi.DrawPPI(mode, 0, 0, 350, 180);
+      ppi.DrawPPI(gva::WidgetPlanPositionIndicator::ModeEnum::kPpiClassicTankWithSight, 0, 0, 350, 180);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_ppi_02.png");
       break;
@@ -68,7 +75,7 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       renderer.Init(width, height);
-      ppi.DrawPPI(mode, 0, 0, 340, 270);
+      ppi.DrawPPI(gva::WidgetPlanPositionIndicator::ModeEnum::kPpiClassicTankWithSight, 0, 0, 340, 270);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_ppi_03.png");
       break;
@@ -76,7 +83,7 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       renderer.Init(width, height);
-      ppi.DrawPPI(mode, 0, 0, 330, 0);
+      ppi.DrawPPI(gva::WidgetPlanPositionIndicator::ModeEnum::kPpiClassicTankWithSight, 0, 0, 330, 0);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_ppi_04.png");
       break;
@@ -85,13 +92,33 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       renderer.Init(width, height);
-      mode = 1;
-      ppi.DrawPPI(mode, 0, 0, 320, 90);
+      ppi.DrawPPI(gva::WidgetPlanPositionIndicator::ModeEnum::kPpiClassicTankWithoutSight, 0, 0, 320, 90);
       renderer.Draw();
-      cairo_surface_write_to_png(cairo_get_group_target(cr), "test5.png");
-      counter = 9999;
+      cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_ppi_05.png");
+      break;
+    case 5:
+      // Keyboard, Lower case
+      renderer.Init(width, height);
+      keyboard.DrawKeyboard(gva::KeyboardModeType::kKeyboardLower);
+      renderer.Draw();
+      cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_keyboard_01.png");
+      break;
+    case 6:
+      // Keyboard, Upper case
+      renderer.Init(width, height);
+      keyboard.DrawKeyboard(gva::KeyboardModeType::kKeyboardUpper);
+      renderer.Draw();
+      cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_keyboard_02.png");
+      break;
+    case 7:
+      // Keyboard, numbers
+      renderer.Init(width, height);
+      keyboard.DrawKeyboard(gva::KeyboardModeType::kKeyboardNumbers);
+      renderer.Draw();
+      cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_keyboard_03.png");
       break;
     default:
+      counter = 9999;  // Cause loop to end and terminate
       break;
   }
   counter++;
@@ -116,7 +143,7 @@ int main(int argc, char *argv[]) {
   g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
   gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
-  gtk_window_set_default_size(GTK_WINDOW(window), 300, 250);
+  gtk_window_set_default_size(GTK_WINDOW(window), WIDTH, HEIGHT);
   gtk_window_set_title(GTK_WINDOW(window), "Widget testing");
 
   gtk_widget_show_all(window);

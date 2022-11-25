@@ -17,56 +17,25 @@
 /// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 /// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ///
-/// \brief The datatypes used by all widgets
+/// \brief
 ///
-/// \file widget_types.h
+/// \file gva_functions_common.cc
 ///
-
-#ifndef HMI_DISPLAY_SRC_WIDGETS_WIDGET_TYPES_H_
-#define HMI_DISPLAY_SRC_WIDGETS_WIDGET_TYPES_H_
+#include <math.h>
+#include <stdint.h>
 
 namespace gva {
 
-enum class KeyboardModeType { kKeyboardLower = 0, kKeyboardUpper, kKeyboardNumbers };
+double_t PlotCircleX(uint16_t x, double_t radius, double_t degree) {
+  return x + radius * cos((M_PI * 2) / 360) * degree;
+}
 
-enum class CellAlignType { kAlignLeft = 0, kAlignCentre, kAlignRight };
+double_t PlotCircleY(uint16_t y, double_t radius, double_t degree) {
+  return y - radius * sin((M_PI * 2) / 360) * degree;
+}
 
-enum class WeightType { kWeightNormal = 0, kWeightBold, kWeightItalic };
+double_t DegreesToRadians(double_t angle_degrees) { return (angle_degrees * M_PI / 180.0); }
 
-//
-// Widgets
-//
-enum WidgetEnum { KWidgetTypeCompass = 0, KWidgetTypeKeyboard = 1, KWidgetTypeAlarmIndicator = 2 };
-
-typedef enum {
-  kIconNone = 0,
-  kIconUpArrow,
-  kIconDownArrow,
-  kIconRightArrorw,
-  ICON_RIGHT_ARROW,
-  kIconUpArrowOutline,
-  kIconDownArrowOutline,
-  kIconLeftArrorwOutline,
-  kIconRightArrowOutline,
-  kIconPlus,
-  kIconMinus,
-  kIconEnter,
-  kIconRotateLeft,
-  kIconRotateRight,
-  kIconPowerOff,
-  kIconLocation,
-  kIconWarning,
-  kIconError,
-  kIconInfo,
-  kIconCentre
-} IconType;
-
-struct GvaColourType {
-  int red;
-  int green;
-  int blue;
-};
+double_t RadiansToDegrees(double_t angle_radians) { return (angle_radians * 180.0 / M_PI); }
 
 }  // namespace gva
-
-#endif  // HMI_DISPLAY_SRC_WIDGETS_WIDGET_TYPES_H_

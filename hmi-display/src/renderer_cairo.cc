@@ -70,7 +70,6 @@ void RendererCairo::Draw() {
   cairo_t *cr = render_.cr;
   /* Push the render to prevent flicker, flush when done */
   cairo_push_group(cr);
-  printf("File %s:%d, %s() items=%d\n", __FILE__, __LINE__, __FUNCTION__, draw_tail_);
   for (count = 0; count < draw_tail_; count++) {
     command_type *currentCmd = &Draw_commands_[count];
     switch (currentCmd->command) {
@@ -284,8 +283,10 @@ void RendererCairo::Draw() {
   cairo_pop_group_to_source(cr);
   cairo_paint(cr);
 }
+
 uint32_t RendererCairo::Init(uint32_t width, uint32_t height) {
   render_.surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
+  return 0;
 }
 
 uint32_t RendererCairo::Init(uint32_t width, uint32_t height, bool fullscreen, CallbackType cb, void *arg) {
@@ -529,7 +530,10 @@ uint32_t RendererCairo::DrawColor(uint8_t r, uint8_t g, uint8_t b) {
   return 0;
 }
 
-uint32_t RendererCairo::DrawColor(uint32_t rgb) { DrawColor((rgb & 0xff0000) >> 16, (rgb & 0xff00) >> 8, rgb & 0xff); }
+uint32_t RendererCairo::DrawColor(uint32_t rgb) {
+  DrawColor((rgb & 0xff0000) >> 16, (rgb & 0xff00) >> 8, rgb & 0xff);
+  return 0;
+}
 
 void RendererCairo::SetTextFont(uint32_t slope, WeightType weight, const std::string fontName) {
   Draw_commands_[draw_tail_].command = kCommandTextFont;

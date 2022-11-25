@@ -27,22 +27,78 @@
 
 #include <cstdint>
 
+#include "src/renderer_cairo_types.h"
 #include "src/widgets/widget.h"
 
 namespace gva {
 
-///
-/// \brief Draw the compass widget
-///
-///
-class Compass : public WidgetX {
+class WidgetPlanPositionIndicator : public WidgetX {
  public:
-  explicit Compass(HandleType handle&) : WidgetX(handle, KWidgetTypeCompass) {}
-  ~Compass() = default;
-  void Draw();
-  void SetBearing(int16_t bearing) { bearingSight_ = bearing; }
-  int16_t bearing_;
-  int16_t bearingSight_;
+  enum class ModeEnum { kPpiClassicTankWithSight, kPpiClassicTankWithoutSight, kPpiModernTankWithSights };
+
+  ///
+  /// \brief Construct a new Widget Plan Position Indicator object
+  ///
+  /// \param renderer
+  ///
+  explicit WidgetPlanPositionIndicator(const RendererGva& renderer);
+
+  ///
+  /// \brief The base overloaded Draw fuctions to draw this widget type
+  ///
+  ///
+  void Draw() final;
+
+  ///
+  /// \brief Draw the Plan Position Indicator
+  ///
+  /// \param mode The PPI mode, different styles
+  /// \param x X pixel position
+  /// \param y Y pixel position
+  /// \param degrees Compass heading
+  /// \param sightAzimuth Camera heading
+  ///
+  void DrawPPI(ModeEnum mode, uint32_t x, uint32_t y, uint32_t degrees, uint32_t sightAzimuth);
+
+  ///
+  /// \brief Set the Bearing object
+  ///
+  /// \param bearing
+  ///
+  void SetBearing(int16_t bearing) { bearing_ = bearing; }
+
+  ///
+  /// \brief Set the Bearing Sight object
+  ///
+  /// \param bearing
+  /// : WidgetX(renderer, KWidgetTypeAlarmIndicator) {}
+  void SetBearingSight(int16_t bearing_sight) { bearing_sight_ = bearing_sight; }
+
+  ///
+  /// \brief Get the Bearing object
+  ///
+  /// \return int16_t
+  ///
+  int16_t GetBearing() const { return bearing_; }
+
+  ///
+  /// \brief Get the Bearing Sight object
+  ///
+  /// \return int16_t
+  ///
+  int16_t GetBearingSight() const { return bearing_sight_; }
+
+  ///
+  /// \brief Set the Mode object
+  ///
+  /// \param mode
+  ///
+  void SetMode(ModeEnum mode) { mode_ = mode; }
+
+ private:
+  int16_t bearing_ = 0;
+  int16_t bearing_sight_ = 0;
+  ModeEnum mode_ = ModeEnum::kPpiClassicTankWithSight;
 };
 
 }  // namespace gva

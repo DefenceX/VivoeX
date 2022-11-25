@@ -25,8 +25,10 @@
 #define HMI_DISPLAY_SRC_WIDGETS_ALARM_INDICATOR_H_
 
 #include <cstdint>
+#include <string>
 
 #include "src/gva.h"
+#include "src/renderer_cairo_types.h"
 #include "src/widgets/widget.h"
 
 namespace gva {
@@ -35,11 +37,37 @@ namespace gva {
 /// \brief A GVA alarm indicator widget
 ///
 ///
-class AlarmIndicator : public WidgetX {
+class WidgetAlarmIndicator : public WidgetX {
  public:
-  explicit AlarmIndicator(HandleType handle&) : WidgetX(handle, KWidgetTypeAlarmIndicator) {}
-  void Draw();
-  char text_[256];
+  ///
+  /// \brief Construct a new Widget Alarm Indicator object
+  ///
+  /// \param renderer
+  ///
+  explicit WidgetAlarmIndicator(const RendererGva& renderer);
+
+  ///
+  /// \brief
+  ///
+  ///
+  void Draw() final;
+
+  ///
+  /// \brief Set the Text object
+  ///
+  /// \param text
+  ///
+  void SetText(const std::string& text);
+
+  ///
+  /// \brief Set the Type object
+  ///
+  /// \param type
+  ///
+  void SetType(const GvaAlarmType type);
+
+ private:
+  std::string text_;
   GvaAlarmType type_;
 };
 

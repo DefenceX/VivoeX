@@ -136,7 +136,7 @@
 
 namespace gva {
 
-void Hmi::SetCanvasPng(std::string file) {
+void Hmi::SetCanvasPng(const std::string file) {
   Hmi::GetScreen()->canvas.filename = file.c_str();
   Hmi::GetScreen()->canvas.bufferType = SurfaceType::kSurfaceFile;
   Hmi::GetScreen()->canvas.buffer = 0;
@@ -299,7 +299,8 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
   screen_.function_left.visible = true;
   screen_.function_right.visible = true;
 
-  gva::Compass *compass = static_cast<Compass *>(screen_render_->GetWidget(KWidgetTypeCompass));
+  gva::WidgetPlanPositionIndicator *compass =
+      static_cast<WidgetPlanPositionIndicator *>(screen_render_->GetWidget(KWidgetTypeCompass));
 
   KeySide(keypress);
   Key(keypress);
@@ -352,7 +353,7 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
     case GvaKeyEnum::kKeyF8:
     case GvaKeyEnum::kKeyF9:
       screen_.message.visible = true;
-      screen_.message.icon = ICON_INFO;
+      screen_.message.icon = kIconError;
       screen_.message.brief.text = "Function key";
       screen_.message.detail.text = "Operation not implemented!";
       break;

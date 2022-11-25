@@ -140,9 +140,10 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
   io->NextGvaEvent(&event);
   switch (event.type_) {
     case gva::kKeyEventReleased: {
-      gva::Compass *compass = static_cast<gva::Compass *>(gva::hmi::GetRendrer()->GetWidget(gva::KWidgetTypeCompass));
-      gva::Keyboard *keyboard =
-          static_cast<gva::Keyboard *>(gva::hmi::GetRendrer()->GetWidget(gva::KWidgetTypeKeyboard));
+      gva::WidgetPlanPositionIndicator *compass =
+          static_cast<gva::WidgetPlanPositionIndicator *>(gva::hmi::GetRendrer()->GetWidget(gva::KWidgetTypeCompass));
+      gva::WidgetKeyboard *keyboard =
+          static_cast<gva::WidgetKeyboard *>(gva::hmi::GetRendrer()->GetWidget(gva::KWidgetTypeKeyboard));
       switch (event.key_) {
         case gva::GvaKeyEnum::kKeyEscape:
           // exit on ESC key press
@@ -248,18 +249,18 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
         case gva::GvaKeyEnum::kKeyF17:
           // F17 Control Arrow Up
           {
-            keyboard->mode_ = (keyboard->mode_ == gva::KeyboardModeType::kKeyboardUpper)
+            keyboard->SetMode((keyboard->GetMode() == gva::KeyboardModeType::kKeyboardUpper)
                                   ? gva::KeyboardModeType::kKeyboardLower
-                                  : gva::KeyboardModeType::kKeyboardUpper;
+                                  : gva::KeyboardModeType::kKeyboardUpper);
             Dispatch(gva::GvaKeyEnum::kKeyF17);
           }
           break;
         case gva::GvaKeyEnum::kKeyF18:
           // F18 Control Arrow Down
           {
-            keyboard->mode_ = (keyboard->mode_ == gva::KeyboardModeType::kKeyboardNumbers)
+            keyboard->SetMode((keyboard->GetMode() == gva::KeyboardModeType::kKeyboardNumbers)
                                   ? gva::KeyboardModeType::kKeyboardUpper
-                                  : gva::KeyboardModeType::kKeyboardNumbers;
+                                  : gva::KeyboardModeType::kKeyboardNumbers);
             Dispatch(event.key_);
           }
           break;
@@ -281,16 +282,16 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
           { keyboard->SetVisible(keyboard->GetVisible() ? false : true); }
           break;
         case gva::GvaKeyEnum::kKeyPlus:
-          compass->bearing_ += 2;
+          compass->SetBearing(compass->GetBearing() + 2);
           break;
         case gva::GvaKeyEnum::kKeyRightArrow:
-          compass->bearingSight_ += 2;
+          compass->SetBearingSight(compass->GetBearingSight() + 2);
           break;
         case gva::GvaKeyEnum::kKeyMinus:
-          compass->bearing_ -= 2;
+          compass->SetBearing(compass->GetBearing() - 2);
           break;
         case gva::GvaKeyEnum::kKeyLeftArrow:
-          compass->bearingSight_ -= 2;
+          compass->SetBearingSight(compass->GetBearingSight() - 2);
           break;
         case gva::GvaKeyEnum::kKeyNextLabel: {
           Dispatch(event.key_);

@@ -17,56 +17,56 @@
 /// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 /// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ///
-/// \brief The datatypes used by all widgets
+/// \brief Common reusable functions
 ///
-/// \file widget_types.h
+/// \file gva_functions_common.h
 ///
 
-#ifndef HMI_DISPLAY_SRC_WIDGETS_WIDGET_TYPES_H_
-#define HMI_DISPLAY_SRC_WIDGETS_WIDGET_TYPES_H_
+#ifndef HMI_DISPLAY_SRC_GVA_FUNCTIONS_COMMON_H_
+#define HMI_DISPLAY_SRC_GVA_FUNCTIONS_COMMON_H_
+
+#include <float.h>
+#include <math.h>
+#include <stdint.h>
 
 namespace gva {
 
-enum class KeyboardModeType { kKeyboardLower = 0, kKeyboardUpper, kKeyboardNumbers };
+#define PLOT_CIRCLE_X(x, radius, degree) x + (radius)*cos(((M_PI * 2) / 360) * degree)
+#define PLOT_CIRCLE_Y(y, radius, degree) y - (radius)*sin(((M_PI * 2) / 360) * degree)
+#define degreesToRadians(angleDegrees) ((angleDegrees)*M_PI / 180.0)
+#define radiansToDegrees(angleRadians) ((angleRadians)*180.0 / M_PI)
 
-enum class CellAlignType { kAlignLeft = 0, kAlignCentre, kAlignRight };
+///
+/// \brief
+///
+/// \param x
+/// \param radius
+/// \param degree
+///
+double_t PlotCircleX(uint16_t x, double_t radius, double_t degree);
 
-enum class WeightType { kWeightNormal = 0, kWeightBold, kWeightItalic };
+///
+/// \brief
+///
+///
+double_t PlotCircleY(uint16_t y, double_t radius, double_t degree);
 
-//
-// Widgets
-//
-enum WidgetEnum { KWidgetTypeCompass = 0, KWidgetTypeKeyboard = 1, KWidgetTypeAlarmIndicator = 2 };
+///
+/// \brief Convert degrees to radians
+///
+/// \param angle_degrees
+/// \return double_t
+///
+double_t DegreesToRadians(double_t angle_degrees);
 
-typedef enum {
-  kIconNone = 0,
-  kIconUpArrow,
-  kIconDownArrow,
-  kIconRightArrorw,
-  ICON_RIGHT_ARROW,
-  kIconUpArrowOutline,
-  kIconDownArrowOutline,
-  kIconLeftArrorwOutline,
-  kIconRightArrowOutline,
-  kIconPlus,
-  kIconMinus,
-  kIconEnter,
-  kIconRotateLeft,
-  kIconRotateRight,
-  kIconPowerOff,
-  kIconLocation,
-  kIconWarning,
-  kIconError,
-  kIconInfo,
-  kIconCentre
-} IconType;
-
-struct GvaColourType {
-  int red;
-  int green;
-  int blue;
-};
+///
+/// \brief Convert radians to degrees
+///
+/// \param angle_radians
+/// \return double_t
+///
+double_t RadiansToDegrees(double_t angle_radians);
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_WIDGETS_WIDGET_TYPES_H_
+#endif  // HMI_DISPLAY_SRC_GVA_FUNCTIONS_COMMON_H_
