@@ -143,7 +143,13 @@ int main(int argc, char *argv[]) {
   GtkWidget *window;
   GtkWidget *darea;
 
+  int timeout = 1000;
+  if (argc == 2) {
+    timeout = atoi(argv[1]);
+  }
+
   std::cout << "Widget tester, created PNG files for all widgets" << std::endl;
+  std::cout << argv[1] << "   Timeout set to " << timeout << std::endl;
 
   gtk_init(&argc, &argv);
 
@@ -155,7 +161,7 @@ int main(int argc, char *argv[]) {
   gtk_container_add(GTK_CONTAINER(window), darea);
 
   g_signal_connect(G_OBJECT(darea), "draw", G_CALLBACK(on_draw_event), NULL);
-  g_timeout_add(1000, (GSourceFunc)time_handler, (gpointer)window);
+  g_timeout_add(timeout, (GSourceFunc)time_handler, (gpointer)window);
 
   g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
