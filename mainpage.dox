@@ -109,6 +109,24 @@ $ cmake ..
 $ make doxygen
 \endcode
 
+\section gui GUI
+\subsection widgets widgets
+There are built in graphical elements that can be animated and extended to meet your requirements some of these are shown below.
+\subsubsection ppi Plan Position Indicator (PPI)
+The PPI comes in servral modes, see gva::WidgetPlanPositionIndicator.
+\image html docs/widget_ppi_01.png  "Classic PPI, Sight East" 
+\image html docs/widget_ppi_02.png  "Classic PPI, Sight South" 
+\image html docs/widget_ppi_03.png  "Classic PPI, Sight West" 
+\image html docs/widget_ppi_04.png  "Classic PPI, Sight North" 
+\image html docs/widget_ppi_05.png  "Classic PPI without Site" 
+
+\subsubsection keyboard On screen keyboard
+The keyboard has servral input modes, see gva::WidgetKeyboard.
+\image html docs/widget_keyboard_01.png  "Keyboard, lower case" 
+\image html docs/widget_keyboard_02.png  "Keyboard, upper case" 
+\image html docs/widget_keyboard_03.png  "Keyboard, numeric case" 
+
+
 \section tools Tooling
 
 Some tools are available for testing the HMI.
