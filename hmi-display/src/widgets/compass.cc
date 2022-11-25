@@ -93,14 +93,15 @@ void WidgetPlanPositionIndicator::DrawPPI(ModeEnum mode, uint32_t x, uint32_t y,
   uint32_t adjust_x = x - 4;
   uint32_t adjust_y = y - 4;
 
+  GetRenderer()->SetTextFontSize(font_size);
   GetRenderer()->DrawText(adjust_x - 3 + (radius - pos) * cos(d + (M_PI * 2)),
-                          adjust_y - 2 - (radius - pos) * sin(d + (M_PI * 2)), "N", font_size);
+                          adjust_y - 2 - (radius - pos) * sin(d + (M_PI * 2)), "N");
   GetRenderer()->DrawText(adjust_x - 3 + (radius - pos) * cos(d + (M_PI)),
-                          adjust_y - 2 - (radius - pos) * sin(d + (M_PI)), "S", font_size);
+                          adjust_y - 2 - (radius - pos) * sin(d + (M_PI)), "S");
   GetRenderer()->DrawText(adjust_x - 3 + (radius - pos) * cos(d + (M_PI / 2)),
-                          adjust_y - 2 - (radius - pos) * sin(d + (M_PI / 2)), "E", font_size);
+                          adjust_y - 2 - (radius - pos) * sin(d + (M_PI / 2)), "E");
   GetRenderer()->DrawText(adjust_x - 3 + (radius - pos) * cos(d + (M_PI + M_PI / 2)),
-                          adjust_y - 2 - (radius - pos) * sin(d + (M_PI + M_PI / 2)), "W", font_size);
+                          adjust_y - 2 - (radius - pos) * sin(d + (M_PI + M_PI / 2)), "W");
 
   GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
   float step = (M_PI * 2) / 32;

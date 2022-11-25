@@ -62,7 +62,8 @@ void StateSTR::entry() {
     lastState_ = GvaFunctionEnum::KSpecialToRole;
     Reset();
 
-    screen_.function_top->labels[5].state = LabelStates::kLabelEnabledSelected;
+    if (screen_.function_top->labels[5].state != LabelStates::kLabelDisabled)
+      screen_.function_top->labels[5].state = LabelStates::kLabelEnabledSelected;
   }
 };
 

@@ -246,7 +246,8 @@ GvaStatusTypes ScreenGva::Update() {
 
   // Draw label
   if (screen_->label.visible) {
-    DrawLabel(screen_->label.x, screen_->label.y, screen_->label.text, screen_->label.fontSize);
+    SetTextFontSize(screen_->label.fontSize);
+    DrawLabel(screen_->label.x, screen_->label.y, screen_->label.text);
   }
 
   // Draw the LEFT bezel labels

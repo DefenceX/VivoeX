@@ -65,7 +65,7 @@ enum Draw_type {
   kCommandPenCurve,
   kCommandPenLine,
   kCommandPenDraw,
-  kCOmmandPenMove,
+  kCommandPenMove,
   kCommandPenRectangle,
   kCommandPenRoundedRectangle,
   kCommandPenThickness,
@@ -79,6 +79,7 @@ enum Draw_type {
   kCommandTextFont,
   kCommandPush,
   kCommandPop,
+  kCommandTextFontSize,
   kCommandText
 };
 

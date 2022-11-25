@@ -54,7 +54,7 @@ void WidgetBase::Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t height, s
   }
 
   renderer_.DrawColor(text_colour);
-
+  renderer_.SetTextFontSize(14);
   if (text.substr(0, 4) == "icon:") {
     if (text.substr(5, 20) == "exit") renderer_.DrawIcon(kIconPowerOff, x + width / 2, y + height / 2, 20, 20);
     if (text.substr(5, 20) == "uparrow") renderer_.DrawIcon(kIconUpArrow, x + width / 2, y + height / 2, 20, 20);
@@ -70,11 +70,11 @@ void WidgetBase::Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t height, s
     strncpy(copy, text.c_str(), 40);
     ptr = strtok(copy, delim);
     if (ptr != NULL) {
-      renderer_.DrawText(x + 4, y + 30, ptr, 14);
+      renderer_.DrawText(x + 4, y + 30, ptr);
       ptr = strtok(NULL, delim);
-      if (ptr != NULL) renderer_.DrawText(x + 4, y + 10, ptr, 14);
+      if (ptr != NULL) renderer_.DrawText(x + 4, y + 10, ptr);
     } else {
-      renderer_.DrawText(x + 4, y + 30, text, 14);
+      renderer_.DrawText(x + 4, y + 30, text);
     }
   }
 
@@ -85,13 +85,15 @@ void WidgetBase::Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t height, s
 void WidgetFunctionKeyToggle::Toggle(const std::string &label1, const std::string &label2) {
   renderer_.SetColourForeground(HMI_DARK_GREEN2);
   renderer_.SetColourBackground(HMI_YELLOW);
+  renderer_.SetTextFontSize(14);
+
   if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::LABEL_ROUNDED) {
     renderer_.DrawRoundedRectangle(GetX() + 5, GetY() + 5, 40, 20, 4, true);
   } else {
     renderer_.DrawRectangle(GetX() + 5, GetY() + 5, 40, 20, true);
   }
   renderer_.DrawColor(HMI_BLACK);
-  renderer_.DrawText(GetX() + 12, GetY() + 9, label1, 14);
+  renderer_.DrawText(GetX() + 12, GetY() + 9, label1);
   renderer_.SetColourBackground(HMI_GREY);
   renderer_.SetColourForeground(HMI_DARK_GREY);
 
@@ -101,7 +103,8 @@ void WidgetFunctionKeyToggle::Toggle(const std::string &label1, const std::strin
     renderer_.DrawRectangle(GetX() + 50, GetY() + 5, 45, 20, true);
   }
   renderer_.DrawColor(HMI_BLACK);
-  renderer_.DrawText(GetX() + 56, GetY() + 9, label2, 14);
+  renderer_.SetTextFontSize(14);
+  renderer_.DrawText(GetX() + 56, GetY() + 9, label2);
 }
 
 // On the left and right of the screen
@@ -164,15 +167,17 @@ void RendererGva::DrawControlLabels(const uint32_t y, const std::array<CommonTas
   uint32_t offset = 20;
   uint32_t w = 75;
 
-  SetColourForeground(config_->GetThemeLabelBorderEnabled());
-  SetColourBackground(config_->GetThemeLabelBackgroundEnabled());
   setLineType(CAIRO_LINE_JOIN_ROUND);
   SetLineThickness(config_->GetThemeLabelBorderThickness(), LineType::kLineSolid);
   SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightNormal, config_->GetThemeFont());
+  SetTextFontSize(12);
 
   for (auto label : labels) {
     SetLineThickness(config_->GetThemeLabelBorderThickness(), LineType::kLineSolid);
     if (label.state != LabelStates::kLabelDisabled) {
+      SetColourForeground(config_->GetThemeLabelBorderEnabled());
+      SetColourBackground(config_->GetThemeLabelBackgroundEnabled());
+
       SetStateLabel(label.state, config_);
 
       if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::LABEL_ROUNDED) {
@@ -184,7 +189,7 @@ void RendererGva::DrawControlLabels(const uint32_t y, const std::array<CommonTas
 
       touch_.AddAbsolute(GvaFunctionGroupEnum::kBottom, int(GvaKeyEnum::kKeyF13) + i, (i * w) + offset, y,
                          (i * w) + w - 5 + offset, y + 20);
-      DrawText((i * w) + offset + 5, y + 6, label.text.c_str(), 12);
+      DrawText((i * w) + offset + 5, y + 6, label.text.c_str());
       if (i == 4) DrawIcon(kIconUpArrow, (i * w) + offset + 34, y + 11, 15, 8);
       if (i == 5) DrawIcon(kIconDownArrow, (i * w) + offset + 34, y + 10, 15, 8);
     }
@@ -197,15 +202,15 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
   double sx, sy;
   int32_t arrow[8][2] = {{-5, -10}, {-4, -10}, {-4, 0}, {-8, 0}, {0, +10}, {8, 0}, {+4, 0}, {+4, -10}};
 
+  sx = (width / (double)13);
+  sy = (height / (double)15);
+
+  Save();
   DrawColor(HMI_WHITE);
   SetColourBackground(HMI_WHITE);
   SetColourForeground(HMI_WHITE);
   SetLineThickness(1, LineType::kLineSolid);
 
-  sx = (width / (double)13);
-  sy = (height / (double)15);
-
-  Save();
   Translate(x, y);
 
   switch (icon) {
@@ -227,7 +232,7 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       for (uint16_t i = 1; i < 8; i++) {
         DrawPenRaw(arrow[i][0], arrow[i][1]);
       }
-      ClosePath(false);
+      ClosePath(true);
       break;
     case ICON_RIGHT_ARROW:
       Rotate(M_PI);
@@ -249,7 +254,7 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       for (uint16_t i = 1; i < 8; i++) {
         DrawPenRaw(arrow[i][0], arrow[i][1]);
       }
-      ClosePath(false);
+      ClosePath(true);
       break;
     case kIconPowerOff:
       SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
@@ -257,7 +262,7 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       DrawArcRaw(0, 0, 8, 290, 250);
       MovePenRaw(0, -4);
       DrawPenRaw(0, -10);
-      ClosePath(false);
+      ClosePath(true);
       break;
     case kIconRotateLeft:
       SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
@@ -267,7 +272,7 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       DrawPenRaw(5, -1);
       MovePenRaw(5, -6);
       DrawPenRaw(9, -6);
-      ClosePath(false);
+      ClosePath(true);
       break;
     case kIconRotateRight:
       SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
@@ -277,7 +282,7 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       DrawPenRaw(-5, -1);
       MovePenRaw(-5, -6);
       DrawPenRaw(-9, -6);
-      ClosePath(false);
+      ClosePath(true);
       break;
     case kIconPlus:
       SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
@@ -286,14 +291,14 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       DrawPenRaw(10, 0);
       MovePenRaw(0, -10);
       DrawPenRaw(0, 10);
-      ClosePath(false);
+      ClosePath(true);
       break;
     case kIconMinus:
       SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
       Scale(sx, sy);
       MovePenRaw(-10, 0);
       DrawPenRaw(10, 0);
-      ClosePath(false);
+      ClosePath(true);
       break;
     case kIconError:
     case kIconInfo:
@@ -311,10 +316,10 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       DrawColor(HMI_WHITE);
       MovePenRaw(0, +3);
       DrawPenRaw(0, -3);
-      ClosePath(false);
+      ClosePath(true);
       MovePenRaw(0, -6);
       DrawPenRaw(0, -7);
-      ClosePath(false);
+      ClosePath(true);
       break;
   }
   Restore();
@@ -335,7 +340,8 @@ void RendererGva::DrawMode() {
 
   DrawRoundedRectangle(DEFAULT_WIDTH / 2 - (w / 2) - 5, y, w + 10, (h) + 15, 6, true);
   // DrawRectangle(DEFAULT_WIDTH / 2 - (w / 2) - 5, y, w + 10, (h) + 15, true);
-  DrawText(DEFAULT_WIDTH / 2 - (w / 2), y + 8, "Maintinance Mode", 12);
+  SetTextFontSize(12);
+  DrawText(DEFAULT_WIDTH / 2 - (w / 2), y + 8, "Maintinance Mode");
 }
 
 void RendererGva::DrawTable(GvaTable *table) {
@@ -383,7 +389,8 @@ void RendererGva::DrawTable(GvaTable *table) {
           pos = offset + 4;
           break;
       }
-      DrawText(pos, table->GetY() - (height * row) + 5, table->row_[row].cell_[column].text, 12);
+      SetTextFontSize(12);
+      DrawText(pos, table->GetY() - (height * row) + 5, table->row_[row].cell_[column].text);
       offset += tmp;
     }
   }
@@ -406,7 +413,8 @@ void RendererGva::DrawButton(const std::string keyText, uint32_t fontSize, uint3
 
   DrawColor(HMI_WHITE);
   if (align == CellAlignType::kAlignCentre) textX = (width / 2) - (textWidth / 2);
-  DrawText(x + textX, y + (height - textHeight - 4), keyText, fontSize);
+  SetTextFontSize(fontSize);
+  DrawText(x + textX, y + (height - textHeight - 4), keyText);
 };
 
 void RendererGva::SetStateLabel(LabelStates state, ConfigData *config) {
