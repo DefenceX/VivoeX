@@ -35,7 +35,7 @@ class HandleType;
 
 class WidgetX {
  public:
-  virtual ~WidgetX();
+  virtual ~WidgetX() = default;
 
   ///
   /// \brief Construct a new Widget X object

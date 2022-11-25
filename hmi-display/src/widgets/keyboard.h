@@ -9,7 +9,8 @@
 /// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
 /// subject to the following conditions:
 ///
-/// The above copyright noticecell->text
+/// The above copyright notice and this permission notice shall be included in all copies or substantial
+/// portions of the Software.
 /// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
 /// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
 /// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
@@ -23,6 +24,7 @@
 #ifndef HMI_DISPLAY_SRC_WIDGETS_KEYBOARD_H_
 #define HMI_DISPLAY_SRC_WIDGETS_KEYBOARD_H_
 
+#include <cstdint>
 #include <vector>
 
 #include "src/renderer_cairo_types.h"
@@ -37,9 +39,13 @@ class WidgetKeyboard : public WidgetX {
   ///
   /// \param renderer
   ///
-  explicit WidgetKeyboard(const RendererGva& renderer);
+  WidgetKeyboard(const RendererGva& renderer);
 
-  ~WidgetKeyboard() {}
+  ///
+  /// \brief Destroy the Widget Keyboard object
+  ///
+  ///
+  ~WidgetKeyboard() = default;
 
   ///
   /// \brief Draw the current widget
@@ -52,14 +58,14 @@ class WidgetKeyboard : public WidgetX {
   ///
   /// \param mode
   ///
-  void DrawKeyboard(KeyboardModeType mode);
+  void DrawKeyboard(const KeyboardModeType mode);
 
   ///
   /// \brief Set the Mode object
   ///
   /// void SetMode(KeyboardModeType mode) { mode_ = mode; }
 
-  void SetMode(KeyboardModeType mode);
+  void SetMode(const KeyboardModeType mode);
 
   ///
   /// \brief Get the Mode object

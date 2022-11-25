@@ -22,7 +22,7 @@
 /// \file keyboard.cc
 ///
 
-#include "keyboard.h"
+#include "src/widgets/keyboard.h"
 
 #include "src/screen_gva.h"
 
@@ -30,7 +30,9 @@ namespace gva {
 
 WidgetKeyboard::WidgetKeyboard(const RendererGva& renderer) : WidgetX(renderer, KWidgetTypeKeyboard) {}
 
-void WidgetKeyboard::DrawKeyboard(KeyboardModeType mode) {
+void WidgetKeyboard::Draw() { DrawKeyboard(mode_); }
+
+void WidgetKeyboard::DrawKeyboard(const KeyboardModeType mode) {
   uint32_t i = 0;
   uint32_t yLocation = 30 + 25;
   uint32_t bSize = 33;
@@ -95,7 +97,7 @@ void WidgetKeyboard::DrawKeyboard(KeyboardModeType mode) {
   GetRenderer()->DrawButton("Mode", fontSize, 463, yLocation + 20, 50, 50, CellAlignType::kAlignRight);
 }
 
-void WidgetKeyboard::SetMode(KeyboardModeType mode) { mode_ = mode; }
+void WidgetKeyboard::SetMode(const KeyboardModeType mode) { mode_ = mode; }
 
 KeyboardModeType WidgetKeyboard::GetMode() const { return mode_; }
 

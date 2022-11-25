@@ -26,8 +26,6 @@
 
 namespace gva {
 
-WidgetX::~WidgetX() = default;
-
 WidgetX::WidgetX(const RendererGva& renderer, WidgetEnum widget_type)
     : renderer_(renderer), widget_type_(widget_type) {}
 
