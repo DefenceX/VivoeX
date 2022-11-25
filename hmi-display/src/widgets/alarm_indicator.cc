@@ -36,13 +36,22 @@ void WidgetAlarmIndicator::Draw() {
     GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightNormal,
                                gva::ConfigData::GetInstance()->GetThemeFont());
     GetRenderer()->SetTextFontSize(14);
-    GetRenderer()->SetColourBackground(HMI_RED);
+    switch (type_) {
+      case GvaAlarmType::kAlarmAdvisory:
+        GetRenderer()->SetColourBackground(ConfigData::GetInstance()->GetThemeBackground());
+        break;
+      case GvaAlarmType::kAlarmCaution:
+        GetRenderer()->SetColourBackground(HMI_RED);
+        break;
+      case GvaAlarmType::kAlarmWarnings:
+        GetRenderer()->SetColourBackground(HMI_AMBER);
+        break;
+    }
     GetRenderer()->SetColourForeground(HMI_WHITE);
     GetRenderer()->DrawRoundedRectangle(110, 32, 420, 20, 6, true);
     GetRenderer()->DrawColor(HMI_WHITE);
     uint16_t width = GetRenderer()->GetTextWidth(text_, 14);
     GetRenderer()->DrawText(110 + (420 / 2) - (width / 2), 38, text_);
-    GetRenderer()->SetColourBackground(HMI_RED);
     GetRenderer()->SetColourForeground(HMI_WHITE);
     GetRenderer()->DrawColor(HMI_WHITE);
     GetRenderer()->DrawRoundedRectangle(110 + (420 / 2) + (width / 2) + 4, 34, 19, 16, 4, true);

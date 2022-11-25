@@ -21,6 +21,7 @@ static gva::RendererGva renderer(WIDTH, HEIGHT);
 static gva::WidgetFunctionKeyToggle key(renderer);
 static gva::WidgetPlanPositionIndicator ppi(renderer);
 static gva::WidgetKeyboard keyboard(renderer);
+static gva::WidgetAlarmIndicator alarmx(renderer);
 
 static void do_drawing(cairo_t *, int width, int h);
 
@@ -128,6 +129,36 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       keyboard.DrawKeyboard(gva::KeyboardModeType::kKeyboardNumbers);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_keyboard_03.png");
+      break;
+    case 8:
+      // Alarms Indicator
+      cairo_translate(cr, 0, height / 2);
+      renderer.Init(width, height);
+      alarmx.SetText("Software tester status advisory example message");
+      alarmx.SetType(gva::GvaAlarmType::kAlarmAdvisory);
+      alarmx.Draw();
+      renderer.Draw();
+      cairo_surface_write_to_png(cairo_get_group_target(cr), "alarm_02.png");
+      break;
+    case 9:
+      // Alarms Indicator
+      cairo_translate(cr, 0, height / 2);
+      renderer.Init(width, height);
+      alarmx.SetText("Software tester status warning example message");
+      alarmx.SetType(gva::GvaAlarmType::kAlarmWarnings);
+      alarmx.Draw();
+      renderer.Draw();
+      cairo_surface_write_to_png(cairo_get_group_target(cr), "alarm_03.png");
+      break;
+    case 10:
+      // Alarms Indicator
+      cairo_translate(cr, 0, height / 2);
+      renderer.Init(width, height);
+      alarmx.SetText("Software tester status caution example message");
+      alarmx.SetType(gva::GvaAlarmType::kAlarmCaution);
+      alarmx.Draw();
+      renderer.Draw();
+      cairo_surface_write_to_png(cairo_get_group_target(cr), "alarm_01.png");
       break;
     default:
       counter = 9999;  // Cause loop to end and terminate

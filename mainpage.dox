@@ -11,6 +11,11 @@
    - \ref build
    - \ref install
 - \ref docs
+- \ref widgets
+   - \ref ppi
+   - \ref keyboard
+   - \ref alarm
+
 - \ref tools
 
 This documentation was created from git hash <a href="https://github.com/DefenceX/vivoe-lite">#$(GIT_HASH)</a>
@@ -101,7 +106,7 @@ $ cpack -G RPM
 $ dnf install vivoe-lite-cyclone-ce-<version>>.x86_64.rpm  -y
 \endcode
 
-\section docs Documentation
+\subsection docs Documentation
 You can create this documentation on your own system using doxygen. 
 It is recommended that you run the cmake target to handle the macro replacements for version information as shown below (in the build directory)
 \code
@@ -109,8 +114,7 @@ $ cmake ..
 $ make doxygen
 \endcode
 
-\section gui GUI
-\subsection widgets widgets
+\subsection widgets Widgets
 There are built in graphical elements that can be animated and extended to meet your requirements some of these are shown below.
 \subsubsection ppi Plan Position Indicator (PPI)
 The PPI comes in servral modes, see gva::WidgetPlanPositionIndicator.
@@ -126,6 +130,13 @@ The keyboard has servral input modes, see gva::WidgetKeyboard.
 \image html docs/widget_keyboard_02.png  "Keyboard, upper case" 
 \image html docs/widget_keyboard_03.png  "Keyboard, numeric case" 
 
+\subsubsection alarm Alarm indicator
+The alarms states are displayed as follows, see gva::WidgetAlarmIndicator.
+\image html docs/alarm_01.png  "Advisory alarm example" 
+Note the advisory state will take the current theme background.
+\image html docs/alarm_02.png  "Warning alarm example" 
+\image html docs/alarm_03.png  "Caution alarm example" 
+
 
 \section tools Tooling
 
@@ -137,16 +148,13 @@ Tools fall into the command line section and GUI tools:
 
 
 
-/*! \page gui GUI tools for testing
+\page gui GUI tools for testing
 
  Lorem ipsum dolor sit amet
 
-/
-
-/*! \page cli Command line tools?
+\page cli Command line tools?
 
  This page is about how to draw a circle.
  Following sections describe circle:
  - \ref groupCircleDefinition "Definition of Circle"
  - \ref groupCircleClass "Circle Class"
-/
