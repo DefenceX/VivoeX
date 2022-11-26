@@ -65,30 +65,51 @@ void WidgetPlanPositionIndicator::DrawPPI(ModeEnum mode, uint32_t x, uint32_t y,
   GetRenderer()->SetColourForeground(HMI_WHITE);
   GetRenderer()->SetLineThickness(2, LineType::kLineSolid);
   GetRenderer()->DrawCircle(x, y, radius, true);  // Compass
-  GetRenderer()->DrawCircle(x, y, 16, true);      // Compass
 
-  // Vehicle outline
-  GetRenderer()->Save();
-  GetRenderer()->SetColourForeground(HMI_WHITE);
-  GetRenderer()->SetColourBackground(HMI_WHITE);
-  GetRenderer()->SetLineThickness(4, LineType::kLineSolid);
-  GetRenderer()->MovePen(x - 30, y - 40);
-  GetRenderer()->DrawPen(x + 30, y - 40, false);
-  GetRenderer()->DrawPen(x + 30, y + 40, false);
-  GetRenderer()->DrawPen(x + 10, y + 40, false);
-  GetRenderer()->DrawPen(x + 10, y + 30, false);
-  GetRenderer()->DrawPen(x - 10, y + 30, false);
-  GetRenderer()->DrawPen(x - 10, y + 40, false);
-  GetRenderer()->DrawPen(x - 30, y + 40, false);
-  GetRenderer()->DrawPen(x - 30, y - 40, true);
-  GetRenderer()->ClosePath(false);
-  GetRenderer()->Restore();
-
-  // Compass MarkingskeyboardNT_NORMAL, WeightType::kWeightBold, "Courier");
+  switch (mode) {
+    case ModeEnum::kPpiClassicArrowWithSight:
+    case ModeEnum::kPpiClassicArrowWithoutSight:
+      // Vehicle outline
+      GetRenderer()->Save();
+      GetRenderer()->SetLineType(CAIRO_LINE_JOIN_MITER);
+      GetRenderer()->SetColourForeground(HMI_WHITE);
+      GetRenderer()->SetColourBackground(HMI_WHITE);
+      GetRenderer()->SetLineThickness(8, LineType::kLineSolid, LineCapEnd::LINE_CAP_BUTT);
+      GetRenderer()->MovePen(x - 22, y - 30);
+      GetRenderer()->DrawPen(x, y - 10, false);
+      GetRenderer()->DrawPen(x + 22, y - 30, false);
+      GetRenderer()->DrawPen(x, y + 50, true);
+      GetRenderer()->ClosePath(false);
+      GetRenderer()->Restore();
+      break;
+    case ModeEnum::kPpiClassicTankWithSight:
+    case ModeEnum::kPpiClassicTankWithoutSight:
+    case ModeEnum::kPpiModernTankWithSights:
+    default:
+      // Vehicle outline
+      GetRenderer()->DrawCircle(x, y, 16, true);  // Inner circle
+      GetRenderer()->SetLineType(CAIRO_LINE_JOIN_MITER);
+      GetRenderer()->Save();
+      GetRenderer()->SetColourForeground(HMI_WHITE);
+      GetRenderer()->SetColourBackground(HMI_WHITE);
+      GetRenderer()->SetLineThickness(3, LineType::kLineSolid);
+      GetRenderer()->MovePen(x - 30, y - 40);
+      GetRenderer()->DrawPen(x + 30, y - 40, false);
+      GetRenderer()->DrawPen(x + 30, y + 40, false);
+      GetRenderer()->DrawPen(x + 10, y + 40, false);
+      GetRenderer()->DrawPen(x + 10, y + 30, false);
+      GetRenderer()->DrawPen(x - 10, y + 30, false);
+      GetRenderer()->DrawPen(x - 10, y + 40, false);
+      GetRenderer()->DrawPen(x - 30, y + 40, false);
+      GetRenderer()->DrawPen(x - 30, y - 40, true);
+      GetRenderer()->ClosePath(false);
+      GetRenderer()->Restore();
+      break;
+  }
 
   d = DegreesToRadians(d);
   double_t pos = 12;
-  uint32_t font_size = 20;
+  uint32_t font_size = 14;
   uint32_t adjust_x = x - 4;
   uint32_t adjust_y = y - 4;
 
@@ -115,12 +136,26 @@ void WidgetPlanPositionIndicator::DrawPPI(ModeEnum mode, uint32_t x, uint32_t y,
     GetRenderer()->DrawPen(x + (radius - p) * cos(d), y - (radius - p) * sin(d), true);
   }
 
+  // Heading (Goes under sight)
+  GetRenderer()->Save();
+  GetRenderer()->SetColourBackground(HMI_CYAN);
+  if ((mode == ModeEnum::kPpiClassicArrowWithSight) || (mode == ModeEnum::kPpiClassicArrowWithoutSight)) {
+    GetRenderer()->SetColourForeground(HMI_BLACK);
+    GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
+    GetRenderer()->DrawRectangle(x - 4, y, 8, 73, true);
+  } else {
+    GetRenderer()->SetColourForeground(HMI_CYAN);
+    GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
+    GetRenderer()->DrawRectangle(x - 2, y + 16, 4, 57, true);
+  }
+  GetRenderer()->Restore();
+
   // Mode zero has sight
-  if (mode == ModeEnum::kPpiClassicTankWithSight) {
+  if ((mode == ModeEnum::kPpiClassicTankWithSight) || (mode == ModeEnum::kPpiClassicArrowWithSight)) {
     // Sight
-    GetRenderer()->SetLineThickness(2, LineType::kLineSolid);
     GetRenderer()->SetColourBackground(HMI_WHITE);
     GetRenderer()->SetColourForeground(HMI_WHITE);
+    GetRenderer()->SetLineThickness(2, LineType::kLineSolid);
     {
       int64_t x2, y2;
 
@@ -140,12 +175,6 @@ void WidgetPlanPositionIndicator::DrawPPI(ModeEnum mode, uint32_t x, uint32_t y,
       GetRenderer()->DrawPen(x2, y2, true);
     }
   }
-
-  // Heading
-  GetRenderer()->SetLineThickness(3, LineType::kLineSolid);
-  GetRenderer()->SetColourBackground(HMI_CYAN);
-  GetRenderer()->SetColourForeground(HMI_CYAN);
-  GetRenderer()->DrawRectangle(x - 1, y + 16, 1, 70, true);
 
   GetRenderer()->Restore();
 };

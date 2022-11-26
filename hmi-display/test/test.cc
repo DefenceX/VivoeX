@@ -113,27 +113,63 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_ppi_05.png");
       break;
     case 5:
+      cairo_translate(cr, width / 2, height / 2);
+      cairo_scale(cr, 2, 2);
+      ppi.DrawPPI(gva::WidgetPlanPositionIndicator::ModeEnum::kPpiClassicArrowWithSight, 0, 0, 0, 90);
+      renderer.Draw();
+      cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_ppi_06.png");
+      break;
+    case 6:
+      cairo_translate(cr, width / 2, height / 2);
+      cairo_scale(cr, 2, 2);
+      ppi.DrawPPI(gva::WidgetPlanPositionIndicator::ModeEnum::kPpiClassicArrowWithSight, 0, 0, 350, 180);
+      renderer.Draw();
+      cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_ppi_07.png");
+      break;
+    case 7:
+      cairo_translate(cr, width / 2, height / 2);
+      cairo_scale(cr, 2, 2);
+      ppi.DrawPPI(gva::WidgetPlanPositionIndicator::ModeEnum::kPpiClassicArrowWithSight, 0, 0, 340, 270);
+      renderer.Draw();
+      cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_ppi_08.png");
+      break;
+    case 8:
+      cairo_translate(cr, width / 2, height / 2);
+      cairo_scale(cr, 2, 2);
+      ppi.DrawPPI(gva::WidgetPlanPositionIndicator::ModeEnum::kPpiClassicArrowWithSight, 0, 0, 330, 0);
+      renderer.Draw();
+      cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_ppi_09.png");
+      break;
+    case 9:
+      // Next PPI
+      cairo_translate(cr, width / 2, height / 2);
+      cairo_scale(cr, 2, 2);
+      ppi.DrawPPI(gva::WidgetPlanPositionIndicator::ModeEnum::kPpiClassicArrowWithoutSight, 0, 0, 320, 90);
+      renderer.Draw();
+      cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_ppi_10.png");
+      break;
+    case 10:
       // Keyboard, Lower case
       cairo_translate(cr, 0, height / 2);
       keyboard.DrawKeyboard(gva::KeyboardModeType::kKeyboardLower);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_keyboard_01.png");
       break;
-    case 6:
+    case 11:
       // Keyboard, Upper case
       cairo_translate(cr, 0, height / 2);
       keyboard.DrawKeyboard(gva::KeyboardModeType::kKeyboardUpper);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_keyboard_02.png");
       break;
-    case 7:
+    case 12:
       // Keyboard, numbers
       cairo_translate(cr, 0, height / 2);
       keyboard.DrawKeyboard(gva::KeyboardModeType::kKeyboardNumbers);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_keyboard_03.png");
       break;
-    case 8:
+    case 13:
       // Alarms Indicator
       cairo_translate(cr, 0, height / 2);
       alarmx.SetText("Software tester status advisory example message");
@@ -142,7 +178,7 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), "alarm_02.png");
       break;
-    case 9:
+    case 14:
       // Alarms Indicator
       cairo_translate(cr, 0, height / 2);
       alarmx.SetText("Software tester status warning example message");
@@ -151,7 +187,7 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), "alarm_03.png");
       break;
-    case 10:
+    case 15:
       // Alarms Indicator
       cairo_translate(cr, 0, height / 2);
       alarmx.SetText("Software tester status caution example message");
@@ -160,7 +196,7 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), "alarm_01.png");
       break;
-    case 11:
+    case 16:
       // Top
       cairo_translate(cr, 0, height / 2);
       {
@@ -174,7 +210,7 @@ static void do_drawing(cairo_t *cr, int width, int height) {
         cairo_surface_write_to_png(cairo_get_group_target(cr), "top_labels_01.png");
       }
       break;
-    case 12:
+    case 17:
       // Botton
       cairo_translate(cr, 0, height / 2);
       {
@@ -189,7 +225,7 @@ static void do_drawing(cairo_t *cr, int width, int height) {
         cairo_surface_write_to_png(cairo_get_group_target(cr), "bottom_labels_01.png");
       }
       break;
-    case 13:
+    case 18:
       // Left
       cairo_translate(cr, 0, height / 2);
       {
@@ -226,9 +262,11 @@ static void do_drawing(cairo_t *cr, int width, int height) {
                                                            gva::LabelStates::kLabelEnabled,
                                                            false,
                                                            false,
-                                                           "System",
+                                                           "Status",
                                                            "",
-                                                           ""};
+                                                           ""
+
+        };
         left.SetLabels(&labels);
         left.Draw();
         renderer.Draw();

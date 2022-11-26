@@ -364,7 +364,7 @@ void RendererCairo::SetColourBackground(uint32_t rgb) {
   SetColourBackground((rgb & 0xff0000) >> 16, (rgb & 0xff00) >> 8, rgb & 0xff);
 }
 
-void RendererCairo::setLineType(uint32_t type) {
+void RendererCairo::SetLineType(uint32_t type) {
   Command command;
   command.command = kCommandLineJoin;
   command.arg1 = type;

@@ -45,7 +45,7 @@ void WidgetTopLabels::DrawTopLabels(uint32_t y, const std::array<FunctionSelect:
 
   GetRenderer()->SetColourForeground(ConfigData::GetInstance()->GetThemeLabelBorderEnabled());
   GetRenderer()->SetColourBackground(ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
-  GetRenderer()->setLineType(CAIRO_LINE_JOIN_ROUND);
+  GetRenderer()->SetLineType(CAIRO_LINE_JOIN_ROUND);
   GetRenderer()->SetLineThickness(ConfigData::GetInstance()->GetThemeLabelBorderThickness(), LineType::kLineSolid);
 
   for (auto label : labels) {

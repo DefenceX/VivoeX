@@ -12,9 +12,13 @@
    - \ref install
 - \ref docs
 - \ref widgets
-   - \ref ppi
+   - \ref ppiclassictank
+   - \ref ppiclassicarrow
    - \ref keyboard
    - \ref alarm
+   - \ref function
+   - \ref control
+   - \ref labels
 
 - \ref tools
 
@@ -23,7 +27,7 @@ This documentation was created from git hash <a href="https://github.com/Defence
 \section users_guide User Guide
 \subsection intro Introduction
 \image html images/screen/ScreenshotSaFront.png  "Example Generic Vehicle Architecture HMI (Front Camera)" width=600px
-\subsection execute Running
+\subsection execute Runningfunction
 You can build vivoe-lite from source (See section on \ref build) or install from the pre build binaries on our website <a href="https://defencex.com.au/downloads.php">here</a>. 
 
 Once installed the executable should be part of your PATH and can be ran from anywhere (/etc/profile.d/vivoe-lite.sh), if you have issues you can run with the full path:
@@ -116,13 +120,20 @@ $ make doxygen
 
 \subsection widgets Widgets
 There are built in graphical elements that can be animated and extended to meet your requirements some of these are shown below.
-\subsubsection ppi Plan Position Indicator (PPI)
+\subsubsection ppiclassictank Plan Position Indicator (PPI), Classic Tank
 The PPI comes in servral modes, see gva::WidgetPlanPositionIndicator.
-\image html docs/widget_ppi_01.png  "Classic PPI, Sight East" 
-\image html docs/widget_ppi_02.png  "Classic PPI, Sight South" 
-\image html docs/widget_ppi_03.png  "Classic PPI, Sight West" 
-\image html docs/widget_ppi_04.png  "Classic PPI, Sight North" 
-\image html docs/widget_ppi_05.png  "Classic PPI without Site" 
+\image html docs/widget_ppi_01.png  "Classic tank PPI, Sight East" 
+\image html docs/widget_ppi_02.png  "Classic tank PPI, Sight South" 
+\image html docs/widget_ppi_03.png  "Classic tank PPI, Sight West" 
+\image html docs/widget_ppi_04.png  "Classic tank PPI, Sight North" 
+\image html docs/widget_ppi_05.png  "Classic tank PPI without Site" 
+\subsubsection ppiclassicarrow Plan Position Indicator (PPI), Classic Arrow
+
+\image html docs/widget_ppi_06.png  "Classic arrow PPI, Sight East" 
+\image html docs/widget_ppi_07.png  "Classic arrow PPI, Sight South" 
+\image html docs/widget_ppi_08.png  "Classic arrow PPI, Sight West" 
+\image html docs/widget_ppi_09.png  "Classic arrow PPI, Sight North" 
+\image html docs/widget_ppi_10.png  "Classic arrow PPI without Site" 
 
 \subsubsection keyboard On screen keyboard
 The keyboard has servral input modes, see gva::WidgetKeyboard.

@@ -112,7 +112,7 @@ void WidgetSideLabels::DrawFunctionLabels() {
   uint32_t i = 0;
   uint32_t offset = DEFAULT_HEIGHT - 88;
 
-  GetRenderer()->setLineType(CAIRO_LINE_JOIN_ROUND);
+  GetRenderer()->SetLineType(CAIRO_LINE_JOIN_ROUND);
   GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightNormal,
                              ConfigData::GetInstance()->GetThemeFont());
 

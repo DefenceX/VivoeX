@@ -142,7 +142,6 @@ void *ClockUpdate(void *arg) {
         ii = read(*a->gps, &c, 1);
         if (ii == 1) {
           buffer[i] = c;
-          //             pruint32_tf("0x%02x ", c);
         }
         if (i == MAX_NMEA) break;
       }

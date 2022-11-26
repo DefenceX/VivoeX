@@ -34,7 +34,13 @@ namespace gva {
 
 class WidgetPlanPositionIndicator : public WidgetX {
  public:
-  enum class ModeEnum { kPpiClassicTankWithSight, kPpiClassicTankWithoutSight, kPpiModernTankWithSights };
+  enum class ModeEnum {
+    kPpiClassicTankWithSight,
+    kPpiClassicTankWithoutSight,
+    kPpiClassicArrowWithSight,
+    kPpiClassicArrowWithoutSight,
+    kPpiModernTankWithSights
+  };
 
   ///
   /// \brief Construct a new Widget Plan Position Indicator object
@@ -102,7 +108,8 @@ class WidgetPlanPositionIndicator : public WidgetX {
   const double scale_ = 0.5;
   int16_t bearing_ = 0;
   int16_t bearing_sight_ = 0;
-  ModeEnum mode_ = ModeEnum::kPpiClassicTankWithSight;
+  // ModeEnum mode_ = ModeEnum::kPpiClassicTankWithSight;
+  ModeEnum mode_ = ModeEnum::kPpiClassicArrowWithSight;
 };
 
 }  // namespace gva

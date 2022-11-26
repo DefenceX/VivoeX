@@ -51,7 +51,7 @@ void WidgetBottomLabels::DrawControlLabels() {
 
   GetRenderer()->SetColourForeground(config_->GetThemeLabelBorderEnabled());
   GetRenderer()->SetColourBackground(config_->GetThemeLabelBackgroundEnabled());
-  GetRenderer()->setLineType(CAIRO_LINE_JOIN_ROUND);
+  GetRenderer()->SetLineType(CAIRO_LINE_JOIN_ROUND);
   GetRenderer()->SetLineThickness(config_->GetThemeLabelBorderThickness(), LineType::kLineSolid);
   GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightNormal, config_->GetThemeFont());
 

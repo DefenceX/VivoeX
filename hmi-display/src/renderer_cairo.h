@@ -77,69 +77,425 @@ class RendererCairo : public Renderer {
   uint32_t Init(uint32_t width, uint32_t height);
   uint32_t Init(uint32_t width, uint32_t height, bool fullscreen, CallbackType cb, void *arg);
   // Pure Virtual functions
+  ///
+  /// \brief Set the Pixel object
+  ///
+  /// \param x
+  /// \param y
+  ///
   void SetPixel(uint32_t x, uint32_t y) override;
+
+  ///
+  /// \brief Set the Colour object
+  ///
+  /// \param red
+  /// \param green
+  /// \param blue
+  ///
   void SetColour(uint8_t red, uint8_t green, uint8_t blue) override;
+
+  ///
+  /// \brief Set the Colour object
+  ///
+  /// \param rgb
+  ///
   void SetColour(uint32_t rgb);
+
+  ///
+  /// \brief Set the Colour Foreground object
+  ///
+  /// \param red
+  /// \param green
+  /// \param blue
+  ///
   void SetColourForeground(uint8_t red, uint8_t green, uint8_t blue) override;
+
+  ///
+  /// \brief Set the Colour Foreground object
+  ///
+  /// \param rgb
+  ///
   void SetColourForeground(uint32_t rgb);
+
+  ///
+  /// \brief Set the Colour Background object
+  ///
+  /// \param red
+  /// \param green
+  /// \param blue
+  ///
   void SetColourBackground(uint8_t red, uint8_t green, uint8_t blue) override;
+
+  ///
+  /// \brief Set the Colour Background object
+  ///
+  /// \param rgb
+  ///
   void SetColourBackground(uint32_t rgb);
-  void setLineType(uint32_t type);
+
+  ///
+  /// \brief Set the Line Type object
+  ///
+  /// \param type
+  ///
+  void SetLineType(uint32_t type);
+
+  ///
+  /// \brief Set the Line Thickness object
+  ///
+  /// \param thickness
+  /// \param fill
+  ///
   void SetLineThickness(uint32_t thickness, LineType fill);
+
+  ///
+  /// \brief Set the Line Thickness object
+  ///
+  /// \param thickness
+  /// \param fill
+  /// \param end
+  ///
   void SetLineThickness(uint32_t thickness, LineType fill, LineCapEnd end);
+
+  ///
+  /// \brief
+  ///
+  /// \param x
+  /// \param y
+  /// \return uint32_t
+  ///
   uint32_t MovePen(int32_t x, int32_t y);
+
+  ///
+  /// \brief
+  ///
+  /// \param x
+  /// \param y
+  /// \param close
+  /// \return uint32_t
+  ///
   uint32_t DrawPen(uint32_t x, uint32_t y, bool close);
+
+  ///
+  /// \brief
+  ///
+  /// \param x
+  /// \param y
+  /// \return uint32_t
+  ///
   uint32_t DrawPen(uint32_t x, uint32_t y) { return DrawPen(x, y, false); }
+
+  ///
+  /// \brief
+  ///
+  /// \param x
+  /// \param y
+  /// \return uint32_t
+  ///
   uint32_t MovePenRaw(int32_t x, int32_t y);
+
+  ///
+  /// \brief
+  ///
+  /// \param x
+  /// \param y
+  /// \return uint32_t
+  ///
   uint32_t DrawPenRaw(int32_t x, int32_t y);
+
+  ///
+  /// \brief
+  ///
+  /// \param x
+  /// \param y
+  /// \param radius
+  /// \param angle1
+  /// \param angle2
+  ///
   void DrawArcRaw(uint32_t x, uint32_t y, uint32_t radius, uint32_t angle1, uint32_t angle2);
+
+  ///
+  /// \brief
+  ///
+  /// \param x1
+  /// \param y1
+  /// \param x2
+  /// \param y2
+  /// \return uint32_t
+  ///
   uint32_t DrawLine(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2) override;
+
+  ///
+  /// \brief
+  ///
+  ///
   void Save();
+
+  ///
+  /// \brief
+  ///
+  ///
   void Restore();
+
+  ///
+  /// \brief
+  ///
+  /// \param x
+  /// \param y
+  ///
   void Scale(double x, double y);
+
+  ///
+  /// \brief
+  ///
+  /// \param x
+  /// \param y
+  ///
   void Translate(uint32_t x, uint32_t y);
+
+  ///
+  /// \brief
+  ///
+  /// \param radians
+  ///
   void Rotate(double radians);
+
+  ///
+  /// \brief
+  ///
+  /// \param fill
+  /// \return uint32_t
+  ///
   uint32_t ClosePath(bool fill);
+
+  ///
+  /// \brief
+  ///
+  /// \param x
+  /// \param y
+  /// \param radius
+  /// \param fill
+  ///
   void DrawCircle(uint32_t x, uint32_t y, uint32_t radius, bool fill) override;
+
+  ///
+  /// \brief
+  ///
+  /// \param x
+  /// \param y
+  /// \param width
+  /// \param height
+  /// \param fill
+  ///
   void DrawRectangle(uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool fill) override;
+
+  ///
+  /// \brief
+  ///
+  /// \param x
+  /// \param y
+  /// \param width
+  /// \param height
+  /// \param courner
+  /// \param fill
+  ///
   void DrawRoundedRectangle(uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t courner, bool fill);
+
+  ///
+  /// \brief
+  ///
+  /// \param x1
+  /// \param y1
+  /// \param x2
+  /// \param y2
+  /// \param x3
+  /// \param y3
+  /// \param fill
+  ///
   void DrawTriangle(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint32_t x3, uint32_t y3, bool fill);
+
+  ///
+  /// \brief
+  ///
+  /// \param r
+  /// \param g
+  /// \param b
+  /// \return uint32_t
+  ///
   uint32_t DrawColor(uint8_t r, uint8_t g, uint8_t b) override;
+
+  ///
+  /// \brief
+  ///
+  /// \param rgb
+  /// \return uint32_t
+  ///
   uint32_t DrawColor(uint32_t rgb);
+
+  ///
+  /// \brief Set the Text Font object
+  ///
+  /// \param slope
+  /// \param weight
+  /// \param fontName
+  ///
   void SetTextFont(uint32_t slope, WeightType weight, std::string fontName);
+
+  ///
+  /// \brief Set the Text Font Size object
+  ///
+  /// \param size
+  ///
   void SetTextFontSize(double size);
+
+  ///
+  /// \brief
+  ///
+  ///
   void Push();
+
+  ///
+  /// \brief
+  ///
+  ///
   void Pop();
+
+  ///
+  /// \brief Get the Text Width object
+  ///
+  /// \param str
+  /// \param fontSize
+  /// \return uint32_t
+  ///
   uint32_t GetTextWidth(const std::string str, uint32_t fontSize);
+
+  ///
+  /// \brief Get the Text Height object
+  ///
+  /// \param str
+  /// \param fontSize
+  /// \return uint32_t
+  ///
   uint32_t GetTextHeight(const std::string str, uint32_t fontSize);
+
+  ///
+  /// \brief
+  ///
+  /// \param x
+  /// \param y
+  /// \param text
+  ///
   void DrawText(uint32_t x, uint32_t y, const std::string text);
+
+  ///
+  /// \brief
+  ///
+  /// \param x
+  /// \param y
+  /// \param text
+  ///
   void DrawLabel(uint32_t x, uint32_t y, const std::string text);
+
+  ///
+  /// \brief
+  ///
+  /// \param x
+  /// \param text
+  /// \param size
+  ///
   void DrawTextCentre(uint32_t x, const std::string text, uint32_t size);
+
+  ///
+  /// \brief
+  ///
+  /// \param x
+  /// \param y
+  /// \param buffer
+  /// \param file
+  /// \return uint32_t
+  ///
   uint32_t TextureRGB(uint32_t x, uint32_t y, void *buffer, std::string file) override;
+
+  ///
+  /// \brief
+  ///
+  /// \param x
+  /// \param y
+  /// \param buffer
+  /// \return uint32_t
+  ///
   uint32_t TextureRGB(uint32_t x, uint32_t y, void *buffer);
+
+  ///
+  /// \brief
+  ///
+  /// \param x
+  /// \param y
+  /// \param surface
+  /// \return uint32_t
+  ///
   uint32_t TextureRGB(uint32_t x, uint32_t y, cairo_surface_t *surface);
 
   // Cairo specific functions
+
+  ///
+  /// \brief Redraw the screen
+  ///
+  ///
   void Draw();
+
+  ///
+  /// \brief
+  ///
+  ///
   void Reset() {
-    draw_tail_ = 0;
+    draw_commands_.clear();
     image_tail_ = 0;
   }
+
+  ///
+  /// \brief Get the Window object
+  ///
+  /// \return gtkType*
+  ///
   gtkType *GetWindow() { return &render_.win; }
 
+  ///
+  /// \brief Set the Height object
+  ///
+  /// \param height
+  ///
   void SetHeight(uint32_t height) {
     height_ = height;
     gtk_widget_set_size_request(render_.win.draw, (gint)width_, (gint)height_);
   }
+
+  ///
+  /// \brief Set the Width object
+  ///
+  /// \param width
+  ///
   void SetWidth(uint32_t width) {
     width_ = width;
     gtk_widget_set_size_request(render_.win.draw, (gint)width_, (gint)height_);
   }
+
+  ///
+  /// \brief Get the Height object
+  ///
+  /// \return uint32_t
+  ///
   uint32_t GetHeight() {
     gint h, w;
     gtk_widget_get_size_request(render_.win.draw, &w, &h);
     return static_cast<int>(w);
   }
+
+  ///
+  /// \brief Get the Width object
+  ///
+  /// \return uint32_t
+  ///
   uint32_t GetWidth() {
     gint h, w;
     gtk_widget_get_size_request(render_.win.draw, &w, &h);
@@ -162,7 +518,6 @@ class RendererCairo : public Renderer {
   // Render List
   //
   std::vector<Command> draw_commands_;
-  uint32_t draw_tail_ = 0;
 
   //
   // Image List
