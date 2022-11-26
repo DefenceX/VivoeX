@@ -27,9 +27,9 @@
 #include <cairo.h>
 #include <pthread.h>
 
+#include <map>
 #include <memory>
 #include <string>
-#include <vector>
 
 #include "common/log_gva.h"
 #include "nmea/nmea.h"
@@ -148,7 +148,7 @@ class ScreenGva : public RendererGva {
  private:
   char *PosDegrees(float lon, float lat);
   Screen *screen_;
-  std::vector<WidgetX *> widget_list_;
+  std::map<WidgetEnum, std::shared_ptr<WidgetX>> widget_list_;
   args args_;
   int gps_;
   uint32_t hndl_;

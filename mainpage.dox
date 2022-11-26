@@ -137,6 +137,18 @@ Note the advisory state will take the current theme background.
 \image html docs/alarm_02.png  "Warning alarm example" 
 \image html docs/alarm_03.png  "Caution alarm example" 
 
+\subsubsection function Functional Areas (usually at the top of screen)
+The functional area states are displayed as follows, see gva::WidgetTopLabels.
+\image html docs/top_labels_01.png  "Function key states" 
+
+\subsubsection control Control Areas (usually at the bottom of screen)
+The control states are displayed as follows, see gva::WidgetBottomLabels.
+\image html docs/bottom_labels_01.png  "Control key states" 
+
+\subsubsection labels Labels (usually at the side of screen, left and right)
+The label states are displayed as follows, see gva::WidgetSideLabels.
+\image html docs/side_labels_01.png  "Label key states" 
+
 
 \section tools Tooling
 

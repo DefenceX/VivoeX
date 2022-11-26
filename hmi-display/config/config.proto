@@ -71,7 +71,7 @@ message ThemeDefault {
   optional Colour theme_label_text_enabled_selected_changing = 8 [default = COLOUR_WHITE];
   optional Colour theme_label_text_enabled_selected = 9 [default = COLOUR_WHITE];
   optional Colour theme_label_text_enabled = 10 [default = COLOUR_WHITE];
-  optional Colour theme_label_text_disabled = 11 [default = COLOUR_BLACK];
+  optional Colour theme_label_text_disabled = 11 [default = COLOUR_WHITE];
   // Line Colour
   optional Colour theme_label_border_enabled_selected_changing = 12 [default = COLOUR_YELLOW];
   optional Colour theme_label_border_enabled_selected = 13 [default = COLOUR_YELLOW];
@@ -81,7 +81,7 @@ message ThemeDefault {
   optional LineStyle theme_label_line_enabled_selected_changing = 16 [default = LABEL_SOLID];
   optional LineStyle theme_label_line_enabled_selected = 17 [default = LABEL_SOLID];
   optional LineStyle theme_label_line_enabled = 18 [default = LABEL_SOLID];
-  optional LineStyle theme_label_line_disabled = 19 [default = LABEL_DASHED];
+  optional LineStyle theme_label_line_disabled = 19 [default = LABEL_SOLID];
 
   // General
 

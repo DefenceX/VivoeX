@@ -33,13 +33,13 @@ void WidgetX::SetVisible(bool visible) { visible_ = visible; }
 
 bool WidgetX::GetVisible() const { return visible_; }
 
-void WidgetX::SetX(int x) { x_ = x; }
+void WidgetX::SetX(uint32_t x) { x_ = x; }
 
-int WidgetX::GetX() const { return x_; }
+uint32_t WidgetX::GetX() const { return x_; }
 
-void WidgetX::SetY(int y) { y_ = y; }
+void WidgetX::SetY(uint32_t y) { y_ = y; }
 
-int WidgetX::GetY() const { return y_; }
+uint32_t WidgetX::GetY() const { return y_; }
 
 WidgetEnum WidgetX::GetType() const { return widget_type_; }
 

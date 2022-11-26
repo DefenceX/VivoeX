@@ -4,10 +4,14 @@
 
 #include <ctime>
 
+#include "src/gva.h"
 #include "src/renderer_gva.h"
 #include "src/widgets/alarm_indicator.h"
+#include "src/widgets/bottom_labels.h"
 #include "src/widgets/compass.h"
 #include "src/widgets/keyboard.h"
+#include "src/widgets/side_labels.h"
+#include "src/widgets/top_labels.h"
 #include "src/widgets/widget_types.h"
 
 #define HEIGHT 480
@@ -18,10 +22,15 @@ struct {
 } glob;
 
 static gva::RendererGva renderer(WIDTH, HEIGHT);
+static gva::TouchGva touch;  // Dummy to get the interactive widgets to render
 static gva::WidgetFunctionKeyToggle key(renderer);
 static gva::WidgetPlanPositionIndicator ppi(renderer);
 static gva::WidgetKeyboard keyboard(renderer);
 static gva::WidgetAlarmIndicator alarmx(renderer);
+static gva::WidgetTopLabels top(renderer, &touch);
+static gva::WidgetBottomLabels bottom(renderer, &touch);
+static gva::WidgetSideLabels left(renderer, &touch);
+static gva::WidgetSideLabels right(renderer, &touch);
 
 static void do_drawing(cairo_t *, int width, int h);
 
@@ -64,11 +73,12 @@ static void do_drawing(cairo_t *cr, int width, int height) {
   renderer.render_.cr = cr;
   cairo_save(cr);
 
+  renderer.Init(width, height);
+
   switch (counter) {
     case 0:
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
-      renderer.Init(width, height);
       ppi.DrawPPI(gva::WidgetPlanPositionIndicator::ModeEnum::kPpiClassicTankWithSight, 0, 0, 0, 90);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_ppi_01.png");
@@ -76,7 +86,6 @@ static void do_drawing(cairo_t *cr, int width, int height) {
     case 1:
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
-      renderer.Init(width, height);
       ppi.DrawPPI(gva::WidgetPlanPositionIndicator::ModeEnum::kPpiClassicTankWithSight, 0, 0, 350, 180);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_ppi_02.png");
@@ -84,7 +93,6 @@ static void do_drawing(cairo_t *cr, int width, int height) {
     case 2:
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
-      renderer.Init(width, height);
       ppi.DrawPPI(gva::WidgetPlanPositionIndicator::ModeEnum::kPpiClassicTankWithSight, 0, 0, 340, 270);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_ppi_03.png");
@@ -92,7 +100,6 @@ static void do_drawing(cairo_t *cr, int width, int height) {
     case 3:
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
-      renderer.Init(width, height);
       ppi.DrawPPI(gva::WidgetPlanPositionIndicator::ModeEnum::kPpiClassicTankWithSight, 0, 0, 330, 0);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_ppi_04.png");
@@ -101,7 +108,6 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       // Next PPI
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
-      renderer.Init(width, height);
       ppi.DrawPPI(gva::WidgetPlanPositionIndicator::ModeEnum::kPpiClassicTankWithoutSight, 0, 0, 320, 90);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_ppi_05.png");
@@ -109,7 +115,6 @@ static void do_drawing(cairo_t *cr, int width, int height) {
     case 5:
       // Keyboard, Lower case
       cairo_translate(cr, 0, height / 2);
-      renderer.Init(width, height);
       keyboard.DrawKeyboard(gva::KeyboardModeType::kKeyboardLower);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_keyboard_01.png");
@@ -117,7 +122,6 @@ static void do_drawing(cairo_t *cr, int width, int height) {
     case 6:
       // Keyboard, Upper case
       cairo_translate(cr, 0, height / 2);
-      renderer.Init(width, height);
       keyboard.DrawKeyboard(gva::KeyboardModeType::kKeyboardUpper);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_keyboard_02.png");
@@ -125,7 +129,6 @@ static void do_drawing(cairo_t *cr, int width, int height) {
     case 7:
       // Keyboard, numbers
       cairo_translate(cr, 0, height / 2);
-      renderer.Init(width, height);
       keyboard.DrawKeyboard(gva::KeyboardModeType::kKeyboardNumbers);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_keyboard_03.png");
@@ -133,7 +136,6 @@ static void do_drawing(cairo_t *cr, int width, int height) {
     case 8:
       // Alarms Indicator
       cairo_translate(cr, 0, height / 2);
-      renderer.Init(width, height);
       alarmx.SetText("Software tester status advisory example message");
       alarmx.SetType(gva::GvaAlarmType::kAlarmAdvisory);
       alarmx.Draw();
@@ -143,7 +145,6 @@ static void do_drawing(cairo_t *cr, int width, int height) {
     case 9:
       // Alarms Indicator
       cairo_translate(cr, 0, height / 2);
-      renderer.Init(width, height);
       alarmx.SetText("Software tester status warning example message");
       alarmx.SetType(gva::GvaAlarmType::kAlarmWarnings);
       alarmx.Draw();
@@ -153,13 +154,88 @@ static void do_drawing(cairo_t *cr, int width, int height) {
     case 10:
       // Alarms Indicator
       cairo_translate(cr, 0, height / 2);
-      renderer.Init(width, height);
       alarmx.SetText("Software tester status caution example message");
       alarmx.SetType(gva::GvaAlarmType::kAlarmCaution);
       alarmx.Draw();
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), "alarm_01.png");
       break;
+    case 11:
+      // Top
+      cairo_translate(cr, 0, height / 2);
+      {
+        std::array<gva::FunctionSelect::Labels, 8> labels = {
+            gva::LabelStates::kLabelEnabledSelected, gva::LabelStates::kLabelEnabled, gva::LabelStates::kLabelEnabled,
+            gva::LabelStates::kLabelEnabled,         gva::LabelStates::kLabelEnabled, gva::LabelStates::kLabelDisabled,
+            gva::LabelStates::kLabelEnabled,         gva::LabelStates::kLabelEnabled};
+        top.SetLabels(&labels);
+        top.Draw();
+        renderer.Draw();
+        cairo_surface_write_to_png(cairo_get_group_target(cr), "top_labels_01.png");
+      }
+      break;
+    case 12:
+      // Botton
+      cairo_translate(cr, 0, height / 2);
+      {
+        std::array<gva::CommonTaskKeys::Labels, 8> labels = {
+            gva::LabelStates::kLabelEnabledSelected, "Up",      gva::LabelStates::kLabelEnabled, "Alarms",
+            gva::LabelStates::kLabelEnabled,         "Threats", gva::LabelStates::kLabelEnabled, "Ack",
+            gva::LabelStates::kLabelEnabled,         "",        gva::LabelStates::kLabelEnabled, "",
+            gva::LabelStates::kLabelEnabled,         "Labels",  gva::LabelStates::kLabelEnabled, "Enter"};
+        bottom.SetLabels(&labels);
+        bottom.Draw();
+        renderer.Draw();
+        cairo_surface_write_to_png(cairo_get_group_target(cr), "bottom_labels_01.png");
+      }
+      break;
+    case 13:
+      // Left
+      cairo_translate(cr, 0, height / 2);
+      {
+        std::array<gva::FunctionKeys::Labels, 6> labels = {gva::LabelStates::kLabelEnabledSelected,
+                                                           true,
+                                                           false,
+                                                           "ECM",
+                                                           "",
+                                                           "",
+                                                           gva::LabelStates::kLabelEnabledSelectedChanging,
+                                                           true,
+                                                           true,
+                                                           "Spike",
+                                                           "",
+                                                           "",
+                                                           gva::LabelStates::kLabelDisabled,
+                                                           false,
+                                                           false,
+                                                           "HUMS",
+                                                           "",
+                                                           "",
+                                                           gva::LabelStates::kLabelEnabled,
+                                                           false,
+                                                           false,
+                                                           "Status",
+                                                           "",
+                                                           "",
+                                                           gva::LabelStates::kLabelHidden,
+                                                           false,
+                                                           false,
+                                                           "Maint",
+                                                           "",
+                                                           "",
+                                                           gva::LabelStates::kLabelEnabled,
+                                                           false,
+                                                           false,
+                                                           "System",
+                                                           "",
+                                                           ""};
+        left.SetLabels(&labels);
+        left.Draw();
+        renderer.Draw();
+        cairo_surface_write_to_png(cairo_get_group_target(cr), "side_labels_01.png");
+      }
+      break;
+
     default:
       counter = 9999;  // Cause loop to end and terminate
       break;

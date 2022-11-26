@@ -255,7 +255,6 @@ class RendererGva : public RendererCairo {
  private:
   void SetStateLabel(LabelStates state, ConfigData *config);
   void SetStateText(LabelStates state, ConfigData *config);
-  uint32_t GetStateTextColour(LabelStates state, ConfigData *config) const;
   ConfigData *config_ = nullptr;
 };
 

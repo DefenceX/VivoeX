@@ -62,6 +62,12 @@ double_t DegreesToRadians(double_t angle_degrees);
 ///
 double_t RadiansToDegrees(double_t angle_radians);
 
+///
+/// \brief Convert longitude to degrees
+///
+///
+float ToDegrees(float lon_lat);
+
 }  // namespace gva
 
 #endif  // HMI_DISPLAY_SRC_GVA_FUNCTIONS_COMMON_H_

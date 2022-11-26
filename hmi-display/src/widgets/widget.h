@@ -68,28 +68,28 @@ class WidgetX {
   ///
   /// \param x
   ///
-  virtual void SetX(int x);
+  virtual void SetX(uint32_t x);
 
   ///
   /// \brief Get the Y dimension
   ///
-  /// \return int
+  /// \return uint32_t
   ///
-  int GetX() const;
+  uint32_t GetX() const;
 
   ///
   /// \brief Set the Y dimension
   ///
   /// \param y
   ///
-  virtual void SetY(int y);
+  virtual void SetY(uint32_t y);
 
   ///
   /// \brief Get the Y dimension
   ///
-  /// \return int
+  /// \return uint32_t
   ///
-  int GetY() const;
+  uint32_t GetY() const;
 
   ///
   /// \brief Draw the widget
@@ -112,8 +112,8 @@ class WidgetX {
   RendererGva* GetRenderer() const;
 
  protected:
-  int x_ = 0;
-  int y_ = 0;
+  uint32_t x_ = 0;
+  uint32_t y_ = 0;
 
  private:
   const RendererGva& renderer_;

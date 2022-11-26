@@ -38,4 +38,10 @@ double_t DegreesToRadians(double_t angle_degrees) { return (angle_degrees * M_PI
 
 double_t RadiansToDegrees(double_t angle_radians) { return (angle_radians * 180.0 / M_PI); }
 
+float ToDegrees(float lon_lat) {
+  float d = lon_lat / 100;
+  float m = lon_lat - d * 100;
+  return d + m / (float)60;
+}
+
 }  // namespace gva

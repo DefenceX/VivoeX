@@ -84,8 +84,7 @@ void WidgetPlanPositionIndicator::DrawPPI(ModeEnum mode, uint32_t x, uint32_t y,
   GetRenderer()->ClosePath(false);
   GetRenderer()->Restore();
 
-  // Compass Markings
-  GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightBold, "Courier");
+  // Compass MarkingskeyboardNT_NORMAL, WeightType::kWeightBold, "Courier");
 
   d = DegreesToRadians(d);
   double_t pos = 12;

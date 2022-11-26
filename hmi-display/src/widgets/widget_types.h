@@ -36,7 +36,15 @@ enum class WeightType { kWeightNormal = 0, kWeightBold, kWeightItalic };
 //
 // Widgets
 //
-enum WidgetEnum { KWidgetTypeCompass = 0, KWidgetTypeKeyboard = 1, KWidgetTypeAlarmIndicator = 2 };
+enum WidgetEnum {
+  KWidgetTypeCompass,
+  KWidgetTypeKeyboard,
+  KWidgetTypeAlarmIndicator,
+  KWidgetTypeTopLabels,
+  KWidgetTypeBottomLabels,
+  KWidgetTypeLeftLabels,
+  KWidgetTypeRightLabels
+};
 
 typedef enum {
   kIconNone = 0,

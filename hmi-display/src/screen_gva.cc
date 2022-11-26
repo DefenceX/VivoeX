@@ -22,7 +22,7 @@
 /// \file screen_gva.cc
 ///
 
-#include "screen_gva.h"
+#include "src/screen_gva.h"
 
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -39,21 +39,19 @@
 #include <sstream>
 #include <string>
 
-#include "debug.h"
-#include "log_gva.h"
+#include "common/debug.h"
+#include "common/log_gva.h"
+#include "src/gva_functions_common.h"
 #include "widgets/alarm_indicator.h"
+#include "widgets/bottom_labels.h"
 #include "widgets/compass.h"
 #include "widgets/keyboard.h"
+#include "widgets/side_labels.h"
+#include "widgets/top_labels.h"
 
 #define MAX_NMEA 1000
 
 namespace gva {
-
-float toDegrees(float lon) {
-  uint32_t d = (uint32_t)lon / 100;
-  float m = lon - d * 100;
-  return d + m / (float)60;
-}
 
 ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : RendererGva(width, height) {
   screen_ = screen;
@@ -91,13 +89,20 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
   //
   StartClock(screen_->status_bar);
 
-  //
-  // Setup the required widgets
+  // WidgetTo
+  //  Setup the required widgets
   //
   RendererGva *renderer = this;
-  widget_list_.push_back(new WidgetPlanPositionIndicator(*renderer));
-  widget_list_.push_back(new WidgetKeyboard(*renderer));
-  widget_list_.push_back(new WidgetAlarmIndicator(*renderer));
+  TouchGva *touch = GetTouch();
+
+  // Here we need to add all the possible screen widgets to the widget list, at this point they are uninitialised
+  widget_list_[KWidgetTypeCompass] = std::make_shared<WidgetPlanPositionIndicator>(*renderer);
+  widget_list_[KWidgetTypeKeyboard] = std::make_shared<WidgetKeyboard>(*renderer);
+  widget_list_[KWidgetTypeAlarmIndicator] = std::make_shared<WidgetAlarmIndicator>(*renderer);
+  widget_list_[KWidgetTypeTopLabels] = std::make_shared<WidgetTopLabels>(*renderer, touch);
+  widget_list_[KWidgetTypeBottomLabels] = std::make_shared<WidgetBottomLabels>(*renderer, touch);
+  widget_list_[KWidgetTypeLeftLabels] = std::make_shared<WidgetSideLabels>(*renderer, touch);
+  widget_list_[KWidgetTypeRightLabels] = std::make_shared<WidgetSideLabels>(*renderer, touch);
 }
 
 ScreenGva::~ScreenGva() {
@@ -149,8 +154,8 @@ void *ClockUpdate(void *arg) {
       a->info->lon = a->location->lon;
       a->info->lat = a->location->lat;
       nmea_parse(a->parser, tmp, (uint32_t)strlen(tmp), a->info);
-      a->info->lat = toDegrees(a->info->lat);
-      a->info->lon = toDegrees(a->info->lon);
+      a->info->lat = ToDegrees(a->info->lat);
+      a->info->lon = ToDegrees(a->info->lon);
     }
 
     if (a->info->lon && a->info->lat) {
@@ -252,17 +257,25 @@ GvaStatusTypes ScreenGva::Update() {
 
   // Draw the LEFT bezel labels
   if (screen_->function_left.visible) {
-    DrawFunctionLabels(1, screen_->function_left.labels);
+    auto widget = (WidgetSideLabels *)GetWidget(KWidgetTypeLeftLabels);
+    widget->SetLabels(&screen_->function_left.labels);
+    widget->Draw();
   }
 
   // Draw the RIGHT bezel labels
   if (screen_->function_right.visible) {
-    DrawFunctionLabels(DEFAULT_WIDTH - 100 - 1, screen_->function_right.labels);
+    auto widget = (WidgetSideLabels *)GetWidget(KWidgetTypeRightLabels);
+    widget->SetLabels(&screen_->function_right.labels);
+    widget->SetX(DEFAULT_WIDTH - 100 - 1);
+    widget->Draw();
   }
 
   // Draw the TOP bezel labels
   if (screen_->function_top->visible) {
-    DrawTopLabels(DEFAULT_HEIGHT - 11, screen_->function_top->labels);
+    auto widget = (WidgetTopLabels *)GetWidget(KWidgetTypeTopLabels);
+    widget->SetY(DEFAULT_HEIGHT - 11);
+    widget->SetLabels(&screen_->function_top->labels);
+    widget->Draw();
   }
 
   // Draw the maintenance mode indicator
@@ -271,8 +284,8 @@ GvaStatusTypes ScreenGva::Update() {
   }
 
   // Draw the onscreen KEYBOARD
-  if (widget_list_[1]->GetVisible()) {
-    widget_list_[1]->Draw();
+  if (widget_list_[KWidgetTypeKeyboard]->GetVisible()) {
+    widget_list_[KWidgetTypeKeyboard]->Draw();
   }
 
   // Setup and Draw the status bar, one row table
@@ -304,7 +317,7 @@ GvaStatusTypes ScreenGva::Update() {
   }
 
   // TODO : Draw the alarms if any (Mock up)
-  widget_list_[2]->Draw();
+  widget_list_[KWidgetTypeAlarmIndicator]->Draw();
 
   // Setup and Draw the alarms
   if (screen_->table.visible_) {
@@ -340,10 +353,12 @@ GvaStatusTypes ScreenGva::Update() {
   }
 
   // Draw PPI (Plan Position Indicator)
-  widget_list_[0]->Draw();
+  widget_list_[KWidgetTypeCompass]->Draw();
 
   if (screen_->control->visible) {
-    DrawControlLabels(0, screen_->control->labels);
+    auto widget = (WidgetBottomLabels *)GetWidget(KWidgetTypeBottomLabels);
+    widget->SetLabels(&screen_->control->labels);
+    widget->Draw();
   }
 
   // Generic message box
@@ -385,14 +400,6 @@ GvaStatusTypes ScreenGva::Update() {
   last_screen_ = *screen_;
 }
 
-WidgetX *ScreenGva::GetWidget(WidgetEnum widget) {
-  for (uint32_t i = 0; i < widget_list_.size(); ++i) {
-    // Try and match widget enum and return pouint32_ter to it
-    if (widget_list_[i]->GetType() == widget) {
-      return widget_list_[i];
-    }
-  }
-}
+WidgetX *ScreenGva::GetWidget(WidgetEnum widget) { return widget_list_[widget].get(); }
 
-char *PosDegrees(float lon, float lat) {}
 }  // namespace gva

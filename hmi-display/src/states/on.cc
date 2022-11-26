@@ -95,6 +95,7 @@ void StateOn::entry() {
   screen_render_->GetWidget(KWidgetTypeAlarmIndicator)->SetY(422);
 
   WidgetAlarmIndicator *ai = (WidgetAlarmIndicator *)screen_render_->GetWidget(KWidgetTypeAlarmIndicator);
+  ai->SetType(GvaAlarmType::kAlarmCaution);
   ai->SetText("Engine over temperature");
 
   screen_.canvas = canvas_;
