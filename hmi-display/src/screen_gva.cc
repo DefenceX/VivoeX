@@ -176,7 +176,7 @@ void *ClockUpdate(void *arg) {
           GeographicLib::UTMUPS::Forward(a->info->lat, a->info->lon, zone, northp, x, y);
           std::string mgrs;
           GeographicLib::MGRS::Forward(zone, northp, x, y, a->info->lat, 5, mgrs);
-          a->locationFormat, "MGRS";
+          a->locationFormat = "MGRS";
           a->locationString = mgrs;
         } break;
       }
@@ -188,9 +188,6 @@ void *ClockUpdate(void *arg) {
 void ScreenGva::StartClock(StatusBar *barData) {
   pthread_t clock_thread_;
   args_.active = true;
-  args_.clockString = barData->labels[0].text;
-  args_.locationFormat = barData->labels[1].text;
-  args_.locationString = barData->labels[2].text;
   args_.parser = &parser_;
   args_.info = &info_;
   args_.gps = &gps_;
@@ -204,7 +201,7 @@ void ScreenGva::StartClock(StatusBar *barData) {
     logGva::log("Error creating thread", LOG_ERROR);
     return;
   }
-  logGva::log("uint32_ternal clock thread started", LOG_INFO);
+  logGva::log("Clock thread started", LOG_INFO);
 }
 
 GvaStatusTypes ScreenGva::Update() {
@@ -306,6 +303,9 @@ GvaStatusTypes ScreenGva::Update() {
     GvaColourType text = {UnpackRed(config_->GetThemeStatusText()), UnpackGreen(config_->GetThemeStatusText()),
                           UnpackBlue(config_->GetThemeStatusText())};
 
+    screen_->status_bar->labels[0].text = args_.clockString;
+    screen_->status_bar->labels[1].text = args_.locationFormat;
+    screen_->status_bar->labels[2].text = args_.locationString;
     for (i = 0; i < 7; i++) {
       CellAlignType align = CellAlignType::kAlignLeft;
       if (i == 1) align = CellAlignType::kAlignCentre;
