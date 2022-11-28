@@ -203,6 +203,19 @@ void Hmi::Labels(LabelModeEnum labels) {
 };
 
 void Hmi::KeySide(GvaKeyEnum key) {
+  // Clear any onscreen messages
+  screen_.message.visible = false;
+
+  // Reset the active label/s
+  screen_.function_left.visible = true;
+  for (auto &label : screen_.function_left.labels) {
+    if (label.state == LabelStates::kLabelEnabledSelected) label.state = LabelStates::kLabelEnabled;
+  }
+  screen_.function_right.visible = true;
+  for (auto &label : screen_.function_right.labels) {
+    if (label.state == LabelStates::kLabelEnabledSelected) label.state = LabelStates::kLabelEnabled;
+  }
+
   switch (key) {
     case GvaKeyEnum::kKeyF1:
       screen_.function_left.labels[0].state = LabelStates::kLabelEnabledSelected;

@@ -230,8 +230,6 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
           break;
         case gva::GvaKeyEnum::kKeyUnknown:  // No an active touch zone so just reset everything
         default:
-          printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
-
           // Ok this is awkward, the touch event probably drifted off the active zone so reset all.
           for (auto &label : gva::hmi::GetScreen()->function_top->labels) {
             if (label.state == gva::LabelStates::kLabelEnabledSelectedChanging)

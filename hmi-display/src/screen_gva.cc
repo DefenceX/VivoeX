@@ -373,7 +373,8 @@ GvaStatusTypes ScreenGva::Update() {
 
     table.border_ = config_->GetThemeLabelBorderThickness();
 
-    uint32_t background = gva::ConfigData::GetInstance()->GetThemeBackground();
+    uint32_t background = gva::ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled();
+
     newrow.addCell({screen_->message.brief.text,
                     CellAlignType::kAlignCentre,
                     {HMI_WHITE},
