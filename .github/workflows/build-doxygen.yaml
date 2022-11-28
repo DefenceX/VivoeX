@@ -28,12 +28,11 @@ jobs:
         run: sudo apt-get update
       - name: Apt Install
         run: sudo apt-get --no-install-recommends install xvfb doxygen graphviz wget plantuml imagemagick libgtk-3-dev libswscale-dev libprotobuf-c-dev geographiclib-doc libgeographic-dev libgeographic-dev libprotobuf-dev protobuf-compiler
-      - name: DISPLAY
-        run: export DISPLAY=':99.0'
       - name: Dummy X11
         run: Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
       - name: Doxygen
         run: |
+          export DISPLAY=':99.0' && \
           export MAJOR=$(sed -n '1p' < version) && \
           export MINOR=$(sed -n '2p' < version) && \
           export PATCH=$(sed -n '3p' < version) && \
