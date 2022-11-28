@@ -169,25 +169,6 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
   Restore();
 }
 
-void RendererGva::DrawMode() {
-  uint32_t offset = DEFAULT_WIDTH * 0.4;
-  uint32_t y = DEFAULT_HEIGHT * 0.12;
-
-  SetColourForeground(HMI_WHITE);
-  SetColourBackground(HMI_DARK_BLUE);
-  SetLineThickness(1, LineType::kLineSolid);
-
-  SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightNormal, config_->GetThemeFont());
-
-  uint32_t w = GetTextWidth("Maintinance Mode", 12);
-  uint32_t h = GetTextHeight("Maintinance Mode", 12);
-
-  DrawRoundedRectangle(DEFAULT_WIDTH / 2 - (w / 2) - 5, y, w + 10, (h) + 15, 6, true);
-  // DrawRectangle(DEFAULT_WIDTH / 2 - (w / 2) - 5, y, w + 10, (h) + 15, true);
-  SetTextFontSize(12);
-  DrawText(DEFAULT_WIDTH / 2 - (w / 2), y + 8, "Maintinance Mode");
-}
-
 void RendererGva::DrawTable(GvaTable *table) {
   uint32_t height = 19;
   uint32_t row = 0;

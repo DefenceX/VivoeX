@@ -61,6 +61,7 @@ set(SOURCES main.cc
 			src/widgets/top_labels.cc
 			src/widgets/bottom_labels.cc
 			src/widgets/side_labels.cc
+			src/widgets/mode.cc
 			src/widgets/alarm_indicator.cc
 			common/debug.cc 
 			common/log_gva.cc 

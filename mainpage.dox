@@ -19,15 +19,17 @@
    - \ref function
    - \ref control
    - \ref labels
+   - \ref mode
 
 - \ref tools
+   - \ref test-hmi
 
 This documentation was created from git hash <a href="https://github.com/DefenceX/vivoe-lite">#$(GIT_HASH)</a>
 
 \section users_guide User Guide
 \subsection intro Introduction
 \image html images/screen/ScreenshotSaFront.png  "Example Generic Vehicle Architecture HMI (Front Camera)" width=600px
-\subsection execute Runningfunction
+\subsection execute Execution
 You can build vivoe-lite from source (See section on \ref build) or install from the pre build binaries on our website <a href="https://defencex.com.au/downloads.php">here</a>. 
 
 Once installed the executable should be part of your PATH and can be ran from anywhere (/etc/profile.d/vivoe-lite.sh), if you have issues you can run with the full path:
@@ -160,24 +162,23 @@ The control states are displayed as follows, see gva::WidgetBottomLabels.
 The label states are displayed as follows, see gva::WidgetSideLabels.
 \image html docs/side_labels_01.png  "Label key states" 
 
+\subsubsection mode Operator Mode
+A mode example can be seen below gva::WidgetMode. It is a GVA requirement 
+that the operator is informed when the system is not operable due to maintinance.
+\image html docs/mode_01.png  "Opertator mode" 
 
 \section tools Tooling
 
-Some tools are available for testing the HMI.
-Tools fall into the command line section and GUI tools:
-- \subpage gui "GUI tools for testing"
+\subsection test-hmi Testing widgets
 
-- \subpage cli "Command line tools"
+When creating new widgets it is advisable to add tests for the widget element. All widgets 
+are derived from the gva::WidgetX base class. The simplest widget being the gva::WidgetMode 
+which can be used as a basic example of how to create a new widget.
 
+The test program test-hmi can assist you in testing your new widget without needing to build the 
+entire HMI.
 
+Widgets can then be rendered and viewed using the test-hmi console program. The current widgets built into the SDK are sown below:
 
-\page gui GUI tools for testing
+\image html /docs/classgva_1_1WidgetX__inherit__graph.png "Diagram showing current widgets in the SDK" 
 
- Lorem ipsum dolor sit amet
-
-\page cli Command line tools?
-
- This page is about how to draw a circle.
- Following sections describe circle:
- - \ref groupCircleDefinition "Definition of Circle"
- - \ref groupCircleClass "Circle Class"

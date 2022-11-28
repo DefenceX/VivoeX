@@ -19,6 +19,7 @@ set(SOURCE_FILES test.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/top_labels.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/bottom_labels.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/side_labels.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/mode.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/gva_functions_common.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../common/log_gva.cc
     ${PROTO_SRCS}

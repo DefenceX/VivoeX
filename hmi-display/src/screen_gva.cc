@@ -46,6 +46,7 @@
 #include "widgets/bottom_labels.h"
 #include "widgets/compass.h"
 #include "widgets/keyboard.h"
+#include "widgets/mode.h"
 #include "widgets/side_labels.h"
 #include "widgets/top_labels.h"
 
@@ -276,7 +277,8 @@ GvaStatusTypes ScreenGva::Update() {
 
   // Draw the maintenance mode indicator
   if (screen_->info.mode == ScreenMode::kModeMaintinance) {
-    DrawMode();
+    auto widget = (WidgetMode *)GetWidget(KWidgetTypeMode);
+    widget->Draw();
   }
 
   // Draw the onscreen KEYBOARD

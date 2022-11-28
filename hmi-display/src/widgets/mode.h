@@ -17,65 +17,62 @@
 /// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 /// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ///
-/// \brief The datatypes used by all widgets
+/// \brief The operational mode widget
 ///
-/// \file widget_types.h
+/// \file mode.h
 ///
 
-#ifndef HMI_DISPLAY_SRC_WIDGETS_WIDGET_TYPES_H_
-#define HMI_DISPLAY_SRC_WIDGETS_WIDGET_TYPES_H_
+#ifndef HMI_DISPLAY_SRC_WIDGETS_MODE_H_
+#define HMI_DISPLAY_SRC_WIDGETS_MODE_H_
+
+#include <cstdint>
+#include <string>
+#include <vector>
+
+#include "src/renderer_cairo_types.h"
+#include "src/widgets/widget.h"
 
 namespace gva {
 
-enum class KeyboardModeType { kKeyboardLower = 0, kKeyboardUpper, kKeyboardNumbers };
+class WidgetMode : public WidgetX {
+ public:
+  ///
+  /// \brief Construct a new Widget Keyboard object
+  ///
+  /// \param renderer
+  ///
+  explicit WidgetMode(const RendererGva& renderer);
 
-enum class CellAlignType { kAlignLeft = 0, kAlignCentre, kAlignRight };
+  ///
+  /// \brief Destroy the Widget mode object
+  ///
+  ///
+  ~WidgetMode() final = default;
 
-enum class WeightType { kWeightNormal = 0, kWeightBold, kWeightItalic };
+  ///
+  /// \brief Draw the current widget
+  ///
+  ///
+  void Draw() final;
 
-//
-// Widgets
-//
-enum WidgetEnum {
-  KWidgetTypeCompass,
-  KWidgetTypeKeyboard,
-  KWidgetTypeAlarmIndicator,
-  KWidgetTypeTopLabels,
-  KWidgetTypeBottomLabels,
-  KWidgetTypeLeftLabels,
-  KWidgetTypeRightLabels,
-  KWidgetTypeMode
-};
+  ///
+  /// \brief Set the Mode object
+  ///
+  /// \param mode
+  ///
+  void SetMode(const std::string mode);
 
-typedef enum {
-  kIconNone = 0,
-  kIconUpArrow,
-  kIconDownArrow,
-  kIconRightArrorw,
-  ICON_RIGHT_ARROW,
-  kIconUpArrowOutline,
-  kIconDownArrowOutline,
-  kIconLeftArrorwOutline,
-  kIconRightArrowOutline,
-  kIconPlus,
-  kIconMinus,
-  kIconEnter,
-  kIconRotateLeft,
-  kIconRotateRight,
-  kIconPowerOff,
-  kIconLocation,
-  kIconWarning,
-  kIconError,
-  kIconInfo,
-  kIconCentre
-} IconType;
+  ///
+  /// \brief Get the Mode object
+  ///
+  /// \return std::string
+  ///
+  std::string GetMode() const;
 
-struct GvaColourType {
-  int red;
-  int green;
-  int blue;
+ private:
+  std::string mode_ = "Maintinance Mode";
 };
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_WIDGETS_WIDGET_TYPES_H_
+#endif  // HMI_DISPLAY_SRC_WIDGETS_MODE_H_

@@ -10,6 +10,7 @@
 #include "src/widgets/bottom_labels.h"
 #include "src/widgets/compass.h"
 #include "src/widgets/keyboard.h"
+#include "src/widgets/mode.h"
 #include "src/widgets/side_labels.h"
 #include "src/widgets/top_labels.h"
 #include "src/widgets/widget_types.h"
@@ -31,6 +32,7 @@ static gva::WidgetTopLabels top(renderer, &touch);
 static gva::WidgetBottomLabels bottom(renderer, &touch);
 static gva::WidgetSideLabels left(renderer, &touch);
 static gva::WidgetSideLabels right(renderer, &touch);
+static gva::WidgetMode mode(renderer);
 
 static void do_drawing(cairo_t *, int width, int h);
 
@@ -215,10 +217,10 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       cairo_translate(cr, 0, height / 2);
       {
         std::array<gva::CommonTaskKeys::Labels, 8> labels = {
-            gva::LabelStates::kLabelEnabledSelected, "Up",      gva::LabelStates::kLabelEnabled, "Alarms",
-            gva::LabelStates::kLabelEnabled,         "Threats", gva::LabelStates::kLabelEnabled, "Ack",
-            gva::LabelStates::kLabelEnabled,         "",        gva::LabelStates::kLabelEnabled, "",
-            gva::LabelStates::kLabelEnabled,         "Labels",  gva::LabelStates::kLabelEnabled, "Enter"};
+            gva::LabelStates::kLabelEnabledSelected, "Up",      gva::LabelStates::kLabelEnabled,  "Alarms",
+            gva::LabelStates::kLabelDisabled,        "Threats", gva::LabelStates::kLabelDisabled, "Ack.",
+            gva::LabelStates::kLabelEnabled,         "",        gva::LabelStates::kLabelEnabled,  "",
+            gva::LabelStates::kLabelEnabled,         "Labels",  gva::LabelStates::kLabelEnabled,  "Enter"};
         bottom.SetLabels(&labels);
         bottom.Draw();
         renderer.Draw();
@@ -273,7 +275,14 @@ static void do_drawing(cairo_t *cr, int width, int height) {
         cairo_surface_write_to_png(cairo_get_group_target(cr), "side_labels_01.png");
       }
       break;
-
+    case 19:
+      // Alarms Indicator
+      cairo_translate(cr, 0, height / 2);
+      mode.SetMode("Software Testing Mode");
+      mode.Draw();
+      renderer.Draw();
+      cairo_surface_write_to_png(cairo_get_group_target(cr), "mode_01.png");
+      break;
     default:
       counter = 9999;  // Cause loop to end and terminate
       break;

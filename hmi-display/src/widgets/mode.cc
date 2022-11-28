@@ -17,65 +17,40 @@
 /// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 /// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ///
-/// \brief The datatypes used by all widgets
+/// \brief The operational mode widget
 ///
-/// \file widget_types.h
+/// \file mode.cc
 ///
 
-#ifndef HMI_DISPLAY_SRC_WIDGETS_WIDGET_TYPES_H_
-#define HMI_DISPLAY_SRC_WIDGETS_WIDGET_TYPES_H_
+#include "src/widgets/mode.h"
+
+#include "src/screen_gva.h"
 
 namespace gva {
 
-enum class KeyboardModeType { kKeyboardLower = 0, kKeyboardUpper, kKeyboardNumbers };
+WidgetMode::WidgetMode(const RendererGva& renderer) : WidgetX(renderer, KWidgetTypeMode) { SetVisible(false); }
 
-enum class CellAlignType { kAlignLeft = 0, kAlignCentre, kAlignRight };
+void WidgetMode::Draw() {
+  uint32_t offset = DEFAULT_WIDTH * 0.4;
+  uint32_t y = DEFAULT_HEIGHT * 0.12;
 
-enum class WeightType { kWeightNormal = 0, kWeightBold, kWeightItalic };
+  GetRenderer()->SetColourForeground(HMI_WHITE);
+  GetRenderer()->SetColourBackground(HMI_DARK_BLUE);
+  GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
 
-//
-// Widgets
-//
-enum WidgetEnum {
-  KWidgetTypeCompass,
-  KWidgetTypeKeyboard,
-  KWidgetTypeAlarmIndicator,
-  KWidgetTypeTopLabels,
-  KWidgetTypeBottomLabels,
-  KWidgetTypeLeftLabels,
-  KWidgetTypeRightLabels,
-  KWidgetTypeMode
-};
+  GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightNormal,
+                             ConfigData::GetInstance()->GetThemeFont());
 
-typedef enum {
-  kIconNone = 0,
-  kIconUpArrow,
-  kIconDownArrow,
-  kIconRightArrorw,
-  ICON_RIGHT_ARROW,
-  kIconUpArrowOutline,
-  kIconDownArrowOutline,
-  kIconLeftArrorwOutline,
-  kIconRightArrowOutline,
-  kIconPlus,
-  kIconMinus,
-  kIconEnter,
-  kIconRotateLeft,
-  kIconRotateRight,
-  kIconPowerOff,
-  kIconLocation,
-  kIconWarning,
-  kIconError,
-  kIconInfo,
-  kIconCentre
-} IconType;
+  uint32_t w = GetRenderer()->GetTextWidth(mode_, 12);
+  uint32_t h = GetRenderer()->GetTextHeight(mode_, 12);
 
-struct GvaColourType {
-  int red;
-  int green;
-  int blue;
-};
+  GetRenderer()->DrawRoundedRectangle(DEFAULT_WIDTH / 2 - (w / 2) - 5, y, w + 10, (h) + 15, 6, true);
+  GetRenderer()->SetTextFontSize(12);
+  GetRenderer()->DrawText(DEFAULT_WIDTH / 2 - (w / 2), y + 8, mode_);
+}
+
+void WidgetMode::SetMode(const std::string mode) { mode_ = mode; }
+
+std::string WidgetMode::GetMode() const { return mode_; }
 
 }  // namespace gva
-
-#endif  // HMI_DISPLAY_SRC_WIDGETS_WIDGET_TYPES_H_
