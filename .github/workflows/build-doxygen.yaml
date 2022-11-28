@@ -4,8 +4,6 @@ name: "Build : Doxygen"
 on:
   push:
     branches: main
-  # pull_request:
-  #   branches: main
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -29,14 +27,19 @@ jobs:
       - name: Apt Update
         run: sudo apt-get update
       - name: Apt Install
-        run: sudo apt-get --no-install-recommends install doxygen graphviz wget
+        run: sudo apt-get --no-install-recommends install doxygen graphviz wget plantuml imagemagick
       - name: Doxygen
         run: |
           export MAJOR=$(sed -n '1p' < version) && \
           export MINOR=$(sed -n '2p' < version) && \
           export PATCH=$(sed -n '3p' < version) && \
-          SEM_VERSION=$MAJOR.$MINOR.$PATCH doxygen && \
-          wget https://img.shields.io/badge/version-${SEM_VERSION}-blue.svg -O ./docs/version.svg
+          export GIT_HASH=$(git rev-parse --short HEAD) %% \
+          echo "Current version ${SEM_VERSION} with #${GIT_HASH}" && \
+          mkdir build && \
+          cd build && \
+          cd cmake .. && \
+          make doxygen && \
+          wget https://img.shields.io/badge/version-${SEM_VERSION}-blue.svg -O ../docs/version.svg
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact

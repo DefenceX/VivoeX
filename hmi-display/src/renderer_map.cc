@@ -17,7 +17,7 @@
 /// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 /// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ///
-/// \brief
+/// \brief A special object for handling maps. See https://github.com/Framstag/libosmscout
 ///
 /// \file renderer_map.cc
 ///
@@ -82,7 +82,7 @@ rendererMap::~rendererMap() {
 #endif
 };
 
-int rendererMap::Project(double zoom, double lon, double lat, cairo_surface_t **surface) {
+GvaStatusTypes rendererMap::Project(double zoom, double lon, double lat, cairo_surface_t **surface) {
   if (surface_ != nullptr) {
     if (cairo_ != nullptr) {
       /*
@@ -105,11 +105,11 @@ int rendererMap::Project(double zoom, double lon, double lat, cairo_surface_t **
 #endif
     }
   } else {
-    return GVA_ERROR;
+    return GvaStatusTypes::kGvaError;
   }
 
   *surface = surface_;
-  return GVA_SUCCESS;
+  return GvaStatusTypes::kGvaSuccess;
 };
 
 }  // namespace gva

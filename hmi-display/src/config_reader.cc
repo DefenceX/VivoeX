@@ -29,30 +29,33 @@
 #include <iostream>
 #include <string>
 
-#include "log_gva.h"
+#include "common/log_gva.h"
+#include "src/renderer_cairo.h"
 
 namespace gva {
 
 ConfigData* ConfigData::config_ = nullptr;
 
-ConfigData::ConfigData() {
-  char tmp[100];
+ConfigDataBase::ConfigDataBase() {
   // Verify that the version of the library that we linked against is
   // compatible with the version of the headers we compiled against.
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
-  snprintf(tmp, sizeof(tmp), "Created new config reader %s/%s", std::filesystem::current_path().c_str(),
-           config_file_.c_str());
-
-  logGva::log(tmp, LOG_INFO);
+  std::string message = "Created new config reader";
+  message.append(std::filesystem::current_path());
+  message.append("/");
+  message.append(config_file_);
+  logGva::log(message, LOG_INFO);
   current_config_ = std::make_unique<config::Gva>();
   {
     // Read the existing configuration file.
     std::fstream input(config_file_, std::fstream::in | std::fstream::binary);
     if (!input) {
-      snprintf(tmp, sizeof(tmp), "File not found. Creating a new file %s/%s", std::filesystem::current_path().c_str(),
-               config_file_.c_str());
-      logGva::log(tmp, LOG_INFO);
+      message = "File not found. Creating a new file";
+      message.append(std::filesystem::current_path());
+      message.append("/");
+      message.append(config_file_);
+      logGva::log(message, LOG_INFO);
       current_config_->set_name("Test HMI configuration.");
       // Doesn't write defaults unless they have been set once
       current_config_->set_height(current_config_->height());
@@ -72,7 +75,7 @@ ConfigData::ConfigData() {
   }
 }
 
-ConfigData::~ConfigData() {
+ConfigDataBase::~ConfigDataBase() {
   logGva::log("Closing config reader.", LOG_INFO);
   WriteData();
 }
@@ -86,9 +89,7 @@ ConfigData* ConfigData::GetInstance() {
   return config_;
 }
 
-std::string ConfigData::GetConfigFilename() { return current_config_->file().config_filename(); }
-
-void ConfigData::WriteData() {
+void ConfigDataBase::WriteData() {
   // Write the config back to disk.
   std::fstream output(config_file_, std::fstream::out | std::fstream::trunc | std::fstream::binary);
   if (!current_config_->SerializeToOstream(&output)) {
@@ -101,108 +102,156 @@ void ConfigData::WriteData() {
   google::protobuf::ShutdownProtobufLibrary();
 }
 
-int ConfigData::GetZoom() { return current_config_->zoom(); }
+std::string ConfigData::GetConfigFilename() const { return current_config_->file().config_filename(); }
 
-void ConfigData::SetZoom(int zoom) { current_config_->set_zoom(zoom); }
+int ConfigData::GetZoom() const { return current_config_->zoom(); }
 
-double ConfigData::GetTestLon() { return current_config_->test_lon(); }
+void ConfigData::SetZoom(int zoom) const { current_config_->set_zoom(zoom); }
 
-void ConfigData::SetTestLon(double lon) { current_config_->set_test_lon(lon); }
+double ConfigData::GetTestLon() const { return current_config_->test_lon(); }
 
-double ConfigData::GetTestLat() { return current_config_->test_lat(); }
+void ConfigData::SetTestLon(double lon) const { current_config_->set_test_lon(lon); }
 
-void ConfigData::SetTestLat(double lat) { current_config_->set_test_lat(lat); }
+double ConfigData::GetTestLat() const { return current_config_->test_lat(); }
 
-bool ConfigData::GetFullscreen() { return current_config_->fullscreen(); }
+void ConfigData::SetTestLat(double lat) const { current_config_->set_test_lat(lat); }
 
-void ConfigData::SetFullscreen(bool fullscreen) { current_config_->set_fullscreen(fullscreen); }
+bool ConfigData::GetFullscreen() const { return current_config_->fullscreen(); }
 
-uint32_t ConfigData::GetThemeBackground() { return (uint32_t)current_config_->theme().theme_background(); }
+void ConfigData::SetFullscreen(bool fullscreen) const { current_config_->set_fullscreen(fullscreen); }
 
-uint32_t ConfigData::GetTableBackground() { return (uint32_t)current_config_->theme().table_background(); }
+uint32_t ConfigDataTheme::GetThemeBackground() const { return (uint32_t)current_config_->theme().theme_background(); }
 
-uint16_t ConfigData::GetThemeLabelStyle() { return (uint32_t)current_config_->theme().theme_label_style(); }
+uint32_t ConfigDataTheme::GetTableBackground() const { return (uint32_t)current_config_->theme().table_background(); }
 
-uint32_t ConfigData::GetThemeLabelBackgroundEnabledSelectedChanging() {
+uint16_t ConfigDataTheme::GetThemeLabelStyle() const { return (uint32_t)current_config_->theme().theme_label_style(); }
+
+uint32_t ConfigDataTheme::GetThemeLabelBackgroundEnabledSelectedChanging() const {
   return (uint32_t)current_config_->theme().theme_label_background_enabled_selected_changing();
 }
 
-uint32_t ConfigData::GetThemeLabelBackgroundEnabledSelected() {
+uint32_t ConfigDataTheme::GetThemeLabelBackgroundEnabledSelected() const {
   return (uint32_t)current_config_->theme().theme_label_background_enabled_selected();
 }
 
-uint32_t ConfigData::GetThemeLabelBackgroundEnabled() {
+uint32_t ConfigDataTheme::GetThemeLabelBackgroundEnabled() const {
   return (uint32_t)current_config_->theme().theme_label_background_enabled();
 }
 
-uint32_t ConfigData::GetThemeLabelBackgroundDisabled() {
+uint32_t ConfigDataTheme::GetThemeLabelBackgroundDisabled() const {
   return (uint32_t)current_config_->theme().theme_label_background_disabled();
 }
 
-uint32_t ConfigData::GetThemeLabelTextEnabledSelectedChanging() {
+uint32_t ConfigDataTheme::GetThemeLabelTextEnabledSelectedChanging() const {
   return (uint32_t)current_config_->theme().theme_label_text_enabled_selected_changing();
 }
 
-uint32_t ConfigData::GetThemeLabelTextEnabledSelected() {
+uint32_t ConfigDataTheme::GetThemeLabelTextEnabledSelected() const {
   return (uint32_t)current_config_->theme().theme_label_text_enabled_selected();
 }
 
-uint32_t ConfigData::GetThemeLabelTextEnabled() {
+uint32_t ConfigDataTheme::GetThemeLabelTextEnabled() const {
   return (uint32_t)current_config_->theme().theme_label_text_enabled();
 }
 
-uint32_t ConfigData::GetThemeLabelTextDisabled() {
+uint32_t ConfigDataTheme::GetThemeLabelTextDisabled() const {
   return (uint32_t)current_config_->theme().theme_label_text_disabled();
 }
 
-uint32_t ConfigData::GetThemeLabelBorderEnabledSelectedChanging() {
+uint32_t ConfigDataTheme::GetThemeLabelBorderEnabledSelectedChanging() const {
   return (uint32_t)current_config_->theme().theme_label_border_enabled_selected_changing();
 }
 
-uint32_t ConfigData::GetThemeLabelBorderEnabledSelected() {
+uint32_t ConfigDataTheme::GetThemeLabelBorderEnabledSelected() const {
   return (uint32_t)current_config_->theme().theme_label_border_enabled_selected();
 }
 
-uint32_t ConfigData::GetThemeLabelBorderEnabled() {
+uint32_t ConfigDataTheme::GetThemeLabelBorderEnabled() const {
   return (uint32_t)current_config_->theme().theme_label_border_enabled();
 }
 
-uint32_t ConfigData::GetThemeLabelBorderDisabled() {
+uint32_t ConfigDataTheme::GetThemeLabelBorderDisabled() const {
   return (uint32_t)current_config_->theme().theme_label_border_disabled();
 }
 
-uint32_t ConfigData::GetThemeLabelBorderThickness() {
+LineType ConfigDataTheme::GetThemeLabelLineEnabledSelectedChanging() const {
+  switch (current_config_->theme().theme_label_line_enabled_selected_changing()) {
+    default:
+    case 0:
+      return LineType::kLineSolid;
+    case 1:
+      return LineType::kLineDotted;
+    case 2:
+      return LineType::kLineDashed;
+  };
+}
+
+LineType ConfigDataTheme::GetThemeLabelLineEnabledSelected() const {
+  switch (current_config_->theme().theme_label_line_enabled_selected()) {
+    default:
+    case 0:
+      return LineType::kLineSolid;
+    case 1:
+      return LineType::kLineDotted;
+    case 2:
+      return LineType::kLineDashed;
+  };
+}
+
+LineType ConfigDataTheme::GetThemeLabelLineEnabled() const {
+  switch (current_config_->theme().theme_label_line_enabled()) {
+    default:
+    case 0:
+      return LineType::kLineSolid;
+    case 1:
+      return LineType::kLineDotted;
+    case 2:
+      return LineType::kLineDashed;
+  };
+}
+
+LineType ConfigDataTheme::GetThemeLabelLineDisabled() const {
+  switch (current_config_->theme().theme_label_line_disabled()) {
+    default:
+    case 0:
+      return LineType::kLineSolid;
+    case 1:
+      return LineType::kLineDashedLarge;
+    case 2:
+      return LineType::kLineDotted;
+  };
+}
+
+uint32_t ConfigDataTheme::GetThemeLabelBorderThickness() const {
   return (uint32_t)current_config_->theme().theme_label_border_thickness();
 }
 
-uint32_t ConfigData::GetThemeTableBorderThickness() {
+uint32_t ConfigDataTheme::GetThemeTableBorderThickness() const {
   return (uint32_t)current_config_->theme().theme_table_border_thickness();
 }
 
-uint32_t ConfigData::GetThemeStatusBackground() { return (uint32_t)current_config_->theme().theme_status_background(); }
-
-uint32_t ConfigData::GetThemeStatusBorder() { return (uint32_t)current_config_->theme().theme_status_border(); }
-
-uint32_t ConfigData::GetThemeStatusText() { return (uint32_t)current_config_->theme().theme_status_text(); }
-
-uint32_t ConfigData::GetThemeAlert() { return (uint32_t)current_config_->theme().theme_alert(); }
-
-uint32_t ConfigData::GetThemeCritical() { return (uint32_t)current_config_->theme().theme_critical(); }
-
-const char* ConfigData::GetThemeFont() {
-  return reinterpret_cast<const char*>(current_config_->theme().theme_font().c_str());
+uint32_t ConfigDataTheme::GetThemeStatusBackground() const {
+  return (uint32_t)current_config_->theme().theme_status_background();
 }
 
-const char* ConfigData::GetLogPath() {
-  return reinterpret_cast<const char*>(current_config_->file().log_path().c_str());
+uint32_t ConfigDataTheme::GetThemeStatusBorder() const {
+  return (uint32_t)current_config_->theme().theme_status_border();
 }
 
-const char* ConfigData::GetLogFilename() {
-  return reinterpret_cast<const char*>(current_config_->file().log_filename().c_str());
-}
+uint32_t ConfigDataTheme::GetThemeStatusText() const { return (uint32_t)current_config_->theme().theme_status_text(); }
 
-const char* ConfigData::GetImagePath() {
-  return reinterpret_cast<const char*>(current_config_->file().images_path().c_str());
-}
+uint32_t ConfigDataTheme::GetThemeAlert() const { return (uint32_t)current_config_->theme().theme_alert(); }
+
+uint32_t ConfigDataTheme::GetThemeCritical() const { return (uint32_t)current_config_->theme().theme_critical(); }
+
+std::string ConfigDataTheme::GetThemeFont() const { return current_config_->theme().theme_font(); }
+
+std::string ConfigData::GetLogPath() const { return current_config_->file().log_path(); }
+
+std::string ConfigData::GetLogFilename() const { return current_config_->file().log_filename(); }
+
+std::string ConfigData::GetImagePath() const { return current_config_->file().images_path(); }
+
+std::string ConfigData::GetGpsDevice() const { return current_config_->gps_device(); }
 
 }  // namespace gva

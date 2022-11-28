@@ -17,7 +17,7 @@
 /// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 /// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ///
-/// \brief
+/// \brief The screen manager to handle all the on screen elements
 ///
 /// \file screen_gva.h
 ///
@@ -27,8 +27,9 @@
 #include <cairo.h>
 #include <pthread.h>
 
+#include <map>
 #include <memory>
-#include <vector>
+#include <string>
 
 #include "common/log_gva.h"
 #include "nmea/nmea.h"
@@ -38,115 +39,72 @@
 #include "widgets/widget.h"
 
 namespace gva {
-class ScreenGva;
 
-enum LocationEnum { LOCATION_FORMAT_LONG_LAT = 0, LOCATION_FORMAT_MGRS };
-
-enum ScreenMode { MODE_MAINTINENCE = 0, MODE_OPERATIONAL, MODE_BLACKOUT };
-
-enum LabelModeEnum { LABEL_ALL, LABEL_STATUS_ONLY, LABEL_MINIMAL };
-
-typedef struct FunctionSelect {
-  bool visible;
-  int active;
-  int hidden;
-} FunctionSelectType;
-
-typedef struct FunctionKeys {
-  bool visible;
-  int active;
-  int hidden;
-  int toggleActive;
-  int toggleOn;
-  char labels[6][40];
-} FunctionKeysType;
-
-typedef struct CommonTaskKeys {
-  bool visible;
-  int active;
-  int hidden;
-  char labels[8][40];
-} CommonTaskKeysType;
-
-typedef struct {
-  LocationEnum locationFormat;
-  float lat;
-  float lon;
-} LocationType;
-
-typedef struct StatusBar {
-  bool visible;
-  int x;
-  int y;
-  LocationType location;
-  char labels[7][80];
-} StatusBarType;
-
-enum SurfaceType { SURFACE_NONE = 0, SURFACE_FILE, SURFACE_BUFFER_RGB24, SURFACE_CAIRO, SURFACE_BLACKOUT };
-
-typedef struct Canvas {
+struct Canvas {
   bool visible;
   SurfaceType bufferType;
-  char filename[256];
+  std::string filename;
   char *buffer;
   cairo_surface_t *surface;
-} CanvasType;
+};
 
-typedef struct Label {
+struct Label {
   bool visible;
-  char text[256];
-  int x;
-  int y;
-  int fontSize;
-} LabelType;
+  std::string text;
+  uint32_t x;
+  uint32_t y;
+  uint32_t fontSize;
+};
 
-typedef struct Message {
+struct Message {
   bool visible;
-  int width;
+  uint32_t width;
   IconType icon;
   struct {
-    char text[256];
-    int fontSize;
+    std::string text;
+    uint32_t fontSize;
   } brief;
   struct {
-    char text[4096];
-    int fontSize;
+    std::string text;
+    uint32_t fontSize;
   } detail;
-} MessaGetYpe;
+};
 
-typedef struct Screen {
+struct Screen {
   struct {
-    char name[100];
+    std::string name;
     ScreenMode mode;
-    char gpsDevice[100];
+    std::string gpsDevice;
   } info;
-  GvaFunctionEnum currentFunction;
-  CanvasType canvas;
-  FunctionSelectType *function_top;
-  CommonTaskKeysType *control;
-  StatusBarType *status_bar;
-  FunctionKeysType function_left;
-  FunctionKeysType function_right;
-  TableWidget table;
-  LabelType label;
-  MessaGetYpe message;
-  LabelModeEnum labels;
-} ScreenType;
 
+  GvaFunctionEnum currentFunction;
+  Canvas canvas;
+  FunctionSelect *function_top;
+  CommonTaskKeys *control;
+  StatusBar *status_bar;
+  FunctionKeys function_left;
+  FunctionKeys function_right;
+  TableWidget table;
+  Label label;
+  Message message;
+  LabelModeEnum labels;
+};
+
+class ScreenGva;
 //
 // These are used by the clock thread to update the time and refresh the screen
 //
-typedef struct ArgStruct {
-  char *clockString;
-  char *locationFormat;
-  char *locationString;
+struct args {
+  std::string clockString;
+  std::string locationFormat;
+  std::string locationString;
   ScreenGva *screen;
   int *gps;
   nmeaINFO *info;
   nmeaPARSER *parser;
   bool active;
   LocationType *location;
-} args;
+};
 
 class ScreenGva : public RendererGva {
  public:
@@ -157,7 +115,7 @@ class ScreenGva : public RendererGva {
   /// \param width
   /// \param height
   ///
-  ScreenGva(ScreenType *screen, int width, int height);
+  ScreenGva(Screen *screen, uint32_t width, uint32_t height);
 
   ///
   /// \brief Destroy the Screen Gva object
@@ -168,16 +126,16 @@ class ScreenGva : public RendererGva {
   ///
   /// \brief Redraw the screen
   ///
-  /// \return int
+  /// \return GvaStatusTypes Status
   ///
-  int Update();
+  GvaStatusTypes Update();
 
   ///
   /// \brief Start the clock threa #include <vector>d running to update the clock (pthread started)
   ///
   /// \param barData
   ///
-  void StartClock(StatusBarType *barData);
+  void StartClock(StatusBar *barData);
 
   ///
   /// \brief Get the Widget object
@@ -189,12 +147,12 @@ class ScreenGva : public RendererGva {
 
  private:
   char *PosDegrees(float lon, float lat);
-  ScreenType *screen_;
-  std::vector<WidgetX *> widget_list_;
-  args *args_;
+  Screen *screen_;
+  std::map<WidgetEnum, std::shared_ptr<WidgetX>> widget_list_;
+  args args_;
   int gps_;
-  int hndl_;
-  ScreenType last_screen_;
+  uint32_t hndl_;
+  Screen last_screen_;
   pthread_t clock_thread_;
   nmeaINFO info_;
   nmeaPARSER parser_;

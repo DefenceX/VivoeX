@@ -65,7 +65,7 @@
     // Set the e-mail address of the author.  Replaces {email}.
     "doxdocgen.generic.authorEmail": "ross.newman@defencex.com.au",
     // Set the name of the author.  Replaces {author}.
-    "doxdocgen.generic.authorName": "ROss Newman",
+    "doxdocgen.generic.authorName": "Ross Newman",
     // Set the style of the author tag and your name.  Can template {author} and {email}.
     "doxdocgen.generic.authorTag": "\\author {author} ({email})",
     // If this is enabled a bool return value will be split into true and false return param.
@@ -202,6 +202,11 @@
         "concepts": "cpp",
         "numbers": "cpp",
         "semaphore": "cpp",
-        "stop_token": "cpp"
-    }
+        "stop_token": "cpp",
+        "*.inc": "cpp",
+        "filesystem": "cpp"
+    },
+    "cSpell.words": [
+        "defencex"
+    ]
 }

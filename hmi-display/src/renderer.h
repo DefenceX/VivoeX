@@ -17,7 +17,7 @@
 /// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 /// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ///
-/// \brief
+/// \brief The base class for a renderer. Renderers could be changed in the future.
 ///
 /// \file renderer.h
 ///
@@ -25,6 +25,8 @@
 #ifndef HMI_DISPLAY_SRC_RENDERER_H_
 #define HMI_DISPLAY_SRC_RENDERER_H_
 #include <stdint.h>
+
+#include <string>
 
 #include "src/debug.h"
 
@@ -80,14 +82,11 @@ class RendererCairo;
 
 class Renderer {
  public:
-  Renderer(uint32_t width, uint32_t height) {
-    width_ = width;
-    height_ = height;
-  }
-  uint32_t init(uint32_t width, uint32_t height);
+  Renderer(uint32_t width, uint32_t height);
+  ~Renderer() = default;
   virtual void SetPixel(uint32_t x, uint32_t y) = 0;
   virtual void SetColour(uint8_t red, uint8_t green, uint8_t blue) = 0;
-  virtual void SetColourForground(uint8_t red, uint8_t green, uint8_t blue) = 0;
+  virtual void SetColourForeground(uint8_t red, uint8_t green, uint8_t blue) = 0;
   virtual void SetColourBackground(uint8_t red, uint8_t green, uint8_t blue) = 0;
   static uint32_t GetWidth() { return width_; }
   static uint32_t GetHeight() { return height_; }
@@ -97,7 +96,7 @@ class Renderer {
   virtual void DrawCircle(uint32_t x, uint32_t y, uint32_t radius, bool fill) = 0;
   virtual void DrawRectangle(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, bool fill) = 0;
   virtual uint32_t DrawColor(uint8_t r, uint8_t g, uint8_t b) = 0;
-  virtual uint32_t TextureRGB(uint32_t x, uint32_t y, void *buffer, char *file) = 0;
+  virtual uint32_t TextureRGB(uint32_t x, uint32_t y, void *buffer, std::string file) = 0;
   static uint64_t PackRgb(uint8_t r, uint8_t g, uint8_t b) {
     uint64_t packed = (r << 16) | (g << 8) | b;
     return packed;

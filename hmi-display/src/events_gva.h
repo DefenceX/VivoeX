@@ -33,7 +33,15 @@
 
 namespace gva {
 
-enum EventEnumType { NO_EVENT = 0, KEY_EVENT, TOUCH_EVENT, DDS_EVENT, RESIZE_EVENT, REDRAW_EVENT };
+enum EventEnumType {
+  kNoEvent = 0,
+  kKeyEventPressed,
+  kKeyEventReleased,
+  kTouchEvent,
+  kDdsEvent,
+  kResizeEvent,
+  kRedrawEvent
+};
 
 struct TouchType {
   int x;
@@ -42,14 +50,14 @@ struct TouchType {
 
 class EventGvaType {
  public:
-  EventGvaType() { type = NO_EVENT; }
+  EventGvaType() { type_ = EventEnumType::kNoEvent; }
   EventGvaType(int x, int y) {
     touch_.x = x;
     touch_.y = y;
-    type = TOUCH_EVENT;
+    type_ = kTouchEvent;
   }
-  explicit EventGvaType(GvaKeyEnum key) : key_(key) { type = KEY_EVENT; }
-  EventEnumType type;
+  explicit EventGvaType(GvaKeyEnum key) : key_(key) { type_ = EventEnumType::kNoEvent; }
+  EventEnumType type_;
   GvaKeyEnum key_;
   TouchType touch_;
   ResolutionType resize_;
@@ -60,13 +68,55 @@ static TouchGva *touch_;
 
 class EventsGva {
  public:
+  ///
+  /// \brief Construct a new Events Gva object
+  ///
+  /// \param window The GTK3 window
+  /// \param touch Touch event register
+  ///
   EventsGva(gtkType *window, TouchGva *touch);
-  uint32_t NextGvaEvent(EventGvaType *event);  // Use for GTK/DDS/Touch events
+  GvaStatusTypes NextGvaEvent(EventGvaType *event);  // Use for GTK/DDS/Touch events
   static gboolean ButtonPressEventCb(GtkWidget *Widget, GdkEventButton *event, gpointer data);
+
+  ///
+  /// \brief  A button press event or touch label event, key released
+  ///
+  /// \param Widget
+  /// \param event
+  /// \param data
+  /// \return gboolean
+  ///
+  static gboolean ButtonReleaseEventCb(GtkWidget *Widget, GdkEventButton *event, gpointer data);
+
+  ///
+  /// \brief Handle button press events by either Drawing a rectangle or clearing the surface, depending on which button
+  /// was pressed. The ::button-press signal handler receives a GdkEventButton struct which contains this information.
+  ///
+  /// \param Widget
+  /// \param event
+  /// \return gboolean
+  ///
   static gboolean KeyPressEventCb(GtkWidget *Widget, GdkEventKey *event);
+
+  ///
+  /// \brief Handle button press events by either Drawing a rectangle or clearing the surface, depending on which button
+  /// was pressed. The ::button-press signal handler receives a GdkEventButton struct which contains this information.
+  ///
+  /// \param Widget
+  /// \param event
+  /// \return gboolean
+  ///
+  static gboolean KeyReleaseEventCb(GtkWidget *Widget, GdkEventKey *event);
+
+  ///
+  /// \brief Get the Window object
+  ///
+  /// \return gtkType*
+  ///
   gtkType *GetWindow() { return window_; }
 
  private:
+  static gboolean CreateKeyEvent(GtkWidget *Widget, GdkEventKey *event, EventEnumType type);
   gtkType *window_;
 };
 

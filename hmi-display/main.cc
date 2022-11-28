@@ -24,6 +24,8 @@
 
 #include <unistd.h>
 
+#include <cstddef>
+#include <cstdint>
 #include <iostream>
 #include <string>
 
@@ -34,12 +36,10 @@
 #include "src/gva_application.h"
 #include "src/hmi_gva.h"
 #include "src/renderer_map.h"
+#include "src/widgets/alarm_indicator.h"
+#include "src/widgets/compass.h"
+#include "src/widgets/keyboard.h"
 #include "video/src/gva_video_rtp_yuv.h"
-#include "widgets/alarm_indicator.h"
-#include "widgets/compass.h"
-#include "widgets/keyboard.h"
-
-gva::GvaApplication::Options options = {false, false, ""};
 
 ///
 /// \brief Parse the command line options
@@ -48,7 +48,7 @@ gva::GvaApplication::Options options = {false, false, ""};
 /// \param argv Argument array
 /// \param opt HMI application options
 ///
-int32_t GetOpt(int argc, char *argv[], gva::GvaApplication::Options *opt) {
+int32_t GetOpt(int argc, char *argv[], GvaApplication::Options *opt) {
   uint32_t c = 0;
 
   gva::ConfigData *configuration = gva::ConfigData::GetInstance();
@@ -79,9 +79,9 @@ int32_t GetOpt(int argc, char *argv[], gva::GvaApplication::Options *opt) {
         std::cout << "  -f : Fullscreen" << std::endl;
         return 0;
       case '?':
-        if (optopt == 'c') std::cerr << "Option -" << optopt << " requires an argument.\n" << std::endl;
-        //        else if (isprint(optopt))
-        //          cerr << "Unknown option `-" << c << "'" << endl;
+        if (optopt == 'c')
+          std::cerr << "Option -" << optopt << " requires an argument.\n" << std::endl;
+
         else
           std::cerr << std::hex << "Unknown option character, -h for help'" << optopt << "'." << std::endl;
         return 1;
@@ -93,19 +93,16 @@ int32_t GetOpt(int argc, char *argv[], gva::GvaApplication::Options *opt) {
 
 // printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
 int main(int argc, char *argv[]) {
-  uint32_t done = 0;
-  uint32_t hndl;
-  bool update;
   std::string ipaddr = "127.0.0.1";
   uint32_t port = 5004;
 
   std::cout << "hmi_display (By defencex.com.au)..." << std::endl;
 
-  int32_t ret = GetOpt(argc, argv, &options);
+  GvaApplication::Options options = {false, false, ""};
 
-  if (ret >= 0) return ret;
+  if (int32_t ret = GetOpt(argc, argv, &options); ret >= 0) return ret;
 
-  gva::GvaApplication app = gva::GvaApplication(options, ipaddr, port);
+  auto app = GvaApplication(options, ipaddr, port);
 
   // Blocking call to the application constructor
   app.Exec();

@@ -17,7 +17,7 @@
 /// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 /// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ///
-/// \brief
+/// \brief A view manager to handle the setup of new views and switching of views
 ///
 /// \file view_gva.cc
 ///
@@ -27,38 +27,36 @@
 #include "screen_gva.h"
 
 namespace gva {
-ViewGvaManager::ViewGvaManager(StatusBarType *status_bar) : status_bar_(status_bar) { idLast_ = 0; }
+ViewGvaManager::ViewGvaManager(StatusBar *status_bar) : status_bar_(status_bar) { idLast_ = 0; }
 
-ViewGva *ViewGvaManager::GetNewView(GvaFunctionEnum function, FunctionSelectType *top, CommonTaskKeysType *bottom,
-                                    FunctionKeysType left, FunctionKeysType right) {
-  view_[idLast_] = new ViewGva(function, top, bottom, left, right);
-  return view_[idLast_++];
+void ViewGvaManager::AddNewView(GvaFunctionEnum function, FunctionSelect *top, CommonTaskKeys *bottom,
+                                FunctionKeys left, FunctionKeys right) {
+  ViewGva view(function, top, bottom, left, right);
+  views_.push_back(view);
+  return;
 }
 
-ScreenType ViewGvaManager::GetScreen(GvaFunctionEnum function) {
+void ViewGvaManager::SetScreen(Screen *screen, GvaFunctionEnum function) {
   int i = 0;
-  ScreenType screen = {0};
-  for (i = 0; i < idLast_; i++) {
-    if (view_[i]->GetFunction() == function) {
-      screen.status_bar = status_bar_;
-      screen.function_top = view_[i]->GetTop();
-      screen.control = view_[i]->GetBottom();
-      screen.function_left = *view_[i]->GetLeft();
-      screen.function_right = *view_[i]->GetRight();
-      screen.currentFunction = function;
-      return screen;
+  for (auto view : views_) {
+    if (view.GetFunction() == function) {
+      screen->status_bar = status_bar_;
+      screen->function_top = view.GetTop();
+      screen->control = view.GetBottom();
+      screen->function_left = *view.GetLeft();
+      screen->function_right = *view.GetRight();
+      screen->currentFunction = function;
     }
   }
 }
 
 ViewGva *ViewGvaManager::GetView(GvaFunctionEnum function) {
   int i = 0;
-  ScreenType screen = {0};
-  for (i = 0; i < idLast_; i++) {
-    if (view_[i]->GetFunction() == function) {
-      return view_[i];
+  Screen screen = {0};
+  for (auto view : views_) {
+    if (view.GetFunction() == function) {
+      return &view;
     }
   }
 }
-
 };  // namespace gva

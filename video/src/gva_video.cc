@@ -19,7 +19,11 @@
 
 #include "src/gva_video.h"
 
+namespace gva {
+
 GvaVideoSource::GvaVideoSource(uint32_t height, uint32_t width) {
   height_ = height;
   width_ = width;
 }
+
+}  // namespace gva

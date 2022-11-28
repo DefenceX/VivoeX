@@ -17,7 +17,7 @@
 /// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 /// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ///
-/// \brief
+/// \brief A view manager to handle the setup of new views and switching of views
 ///
 /// \file view_gva.h
 ///
@@ -26,6 +26,7 @@
 #define HMI_DISPLAY_SRC_VIEW_GVA_H_
 #include <functional>
 #include <string>
+#include <vector>
 
 #include "src/config_reader.h"
 #include "src/gva.h"
@@ -56,32 +57,31 @@ class labelAction {
 
 class ViewGva {
  public:
-  ViewGva(GvaFunctionEnum function, FunctionSelectType *top, CommonTaskKeysType *bottom, FunctionKeysType left,
-          FunctionKeysType right)
+  ViewGva(GvaFunctionEnum function, FunctionSelect *top, CommonTaskKeys *bottom, FunctionKeys left, FunctionKeys right)
       : function_(function), function_top_(top), common_bottom_(bottom), function_left_(left), function_right_(right) {
     valid_ = true;
   }
   bool Valid() { return valid_; }
   bool Release() { valid_ = false; }
   void AddToggle(GvaKeyEnum key, bool rightActive, char *rightText, bool leftActive, char *leftText) {}
-  FunctionSelectType *GetTop() { return function_top_; }
-  CommonTaskKeysType *GetBottom() { return common_bottom_; }
-  FunctionKeysType *GetLeft() { return &function_left_; }
-  FunctionKeysType *GetRight() { return &function_right_; }
+  FunctionSelect *GetTop() { return function_top_; }
+  CommonTaskKeys *GetBottom() { return common_bottom_; }
+  FunctionKeys *GetLeft() { return &function_left_; }
+  FunctionKeys *GetRight() { return &function_right_; }
   GvaFunctionEnum GetFunction() { return function_; }
 
  private:
   bool valid_ = false;
   GvaFunctionEnum function_;
   // Screen top
-  FunctionSelectType *function_top_;
+  FunctionSelect *function_top_;
   // Screen bottom
-  CommonTaskKeysType *common_bottom_;
+  CommonTaskKeys *common_bottom_;
   // Screen left
-  FunctionKeysType function_left_;
+  FunctionKeys function_left_;
   labelAction *function_left_action_[6] = {0};
   // Screen right
-  FunctionKeysType function_right_;
+  FunctionKeys function_right_;
   labelAction *function_right_action_[6] = {0};
 };
 
@@ -89,18 +89,19 @@ typedef ViewGva ViewGva;
 
 class ViewGvaManager {
  public:
-  explicit ViewGvaManager(StatusBarType *StatusBar);
-  ViewGva *GetNewView(GvaFunctionEnum function, FunctionSelectType *top, CommonTaskKeysType *bottom,
-                      FunctionKeysType left, FunctionKeysType right);
-  ScreenType GetScreen(GvaFunctionEnum function);
+  explicit ViewGvaManager(StatusBar *StatusBar);
+  void AddNewView(GvaFunctionEnum function, FunctionSelect *top, CommonTaskKeys *bottom, FunctionKeys left,
+                  FunctionKeys right);
+  void SetScreen(Screen *screen, GvaFunctionEnum function);
   ViewGva *GetView(GvaFunctionEnum function);
 
  private:
-  ViewGva *view_[20];
-  StatusBarType *status_bar_;
+  std::vector<ViewGva> views_;
+  StatusBar *status_bar_;
   int idLast_;
   int id_ = 0;
 };
+
 }  // namespace gva
 
 #endif  // HMI_DISPLAY_SRC_VIEW_GVA_H_

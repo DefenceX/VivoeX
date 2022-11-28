@@ -1,0 +1,93 @@
+name: "Build CentOS Intel : Cyclone"
+
+on:
+  push:
+    branches: main
+  pull_request:
+    branches: main
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  build-centos-cyclone:
+    runs-on: ubuntu-22.04
+    container: centos:8
+
+    # Map a step output to a job output
+    outputs:
+      package_name: ${{ steps.package.outputs.RPM_PACKAGE }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Dnf Update
+        run: |
+          sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-* && \
+          sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-* && \
+          dnf update -y && \
+          dnf install epel-release -y && dnf update -y && \
+          dnf localinstall --nogpgcheck https://download1.rpmfusion.org/free/el/rpmfusion-free-release-8.noarch.rpm -y && \
+          dnf config-manager --set-enabled powertools -y
+
+      - name: Dnf Install
+        run: |
+          dnf install git cmake gcc-c++ python2-pip rpm-build cairo-devel libXt-devel doxygen libxml2-devel ncurses-devel libXext-devel ffmpeg-devel protobuf-devel protobuf-compiler GeographicLib-devel gtk3-devel -y && \
+          pip2 install cpplint --user
+
+      - name: CMake and Build
+        run: PATH=$PATH:${HOME}/.local/bin && mkdir build && cd build && cmake .. -DDDS=CYCLONE-CE .. && make -j $(nproc)
+
+      - name: Package for CentOS (.rpm)
+        id: package
+        run: PATH=$PATH:${HOME}/.local/bin && cd build && cpack -V -G RPM && echo "RPM_PACKAGE=$(ls *.rpm)" >> $GITHUB_ENV && echo "RPM_PACKAGE=$(ls *.rpm)" >> $GITHUB_OUTPUT
+
+      - name: Archive packaged .rpm
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.RPM_PACKAGE }}
+          path: build/${{ env.RPM_PACKAGE }}
+          retention-days: 30
+
+      - name: Archive logs
+        if: ${{ always() && !cancelled() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-logs
+          path: |
+            build/compile_commands.json
+            build/external/libnmea/build/CMakeFiles/CMakeOutput.log
+            build/external/cyclonedds/build/CMakeFiles/CMakeOutput.log
+            build/external/cyclonedds-cxx/build/CMakeFiles/CMakeOutput.log
+            build/CMakeFiles/CMakeOutput.log
+            build/_CPack_Packages/Linux/RPM/PreinstallOutput.log
+          retention-days: 30
+
+  install-centos-cyclone:
+    runs-on: ubuntu-22.04
+    container: centos:8
+    needs: [build-centos-cyclone]
+    if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
+
+    steps:
+      - name: Setup repos
+        run: |
+          sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-* && \
+          sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-* && \
+          dnf update -y && \
+          dnf install epel-release -y && dnf update -y && \
+          dnf localinstall --nogpgcheck https://download1.rpmfusion.org/free/el/rpmfusion-free-release-8.noarch.rpm -y && \
+          dnf config-manager --set-enabled powertools -y
+
+      - name: Read package name
+        run: echo ${{needs.build-centos-cyclone.outputs.package_name}}
+
+      - name: Download .rpm to install
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{needs.build-centos-cyclone.outputs.package_name}}
+
+      - name: Install package
+        run: dnf install ./*.rpm -y
+
+      - name: Run binary
+        run: /opt/gva/hmi/hmi-display -h

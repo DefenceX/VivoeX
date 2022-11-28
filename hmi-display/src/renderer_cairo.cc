@@ -17,7 +17,7 @@
 /// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 /// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ///
-/// \brief
+/// \brief The Cairo renderer for drawing on the screen. See https://www.cairographics.org/
 ///
 /// \file renderer_cairo.cc
 ///
@@ -63,22 +63,23 @@ RendererCairo::~RendererCairo() {
 void RendererCairo::Draw() {
   uint32_t count = 0;
   cairo_surface_t *surface;
-  double dashed[] = {1.0};
+  std::array<double, 1> dashed = {1.0};
+  std::array<double, 1> dashed_medium = {4.0};
+  std::array<double, 1> dashed_large = {8.0};
 
   cairo_t *cr = render_.cr;
-
-  /* Push the render to prevent flicker, flush when done */
+  // Push the render to prevent flicker, flush when done
   cairo_push_group(cr);
-  for (count = 0; count < draw_tail_; count++) {
-    command_type *currentCmd = &Draw_commands_[count];
-    switch (currentCmd->command) {
-      case COMMAND_CIRCLE:
+
+  for (auto currentCmd : draw_commands_) {
+    switch (currentCmd.command) {
+      case kCommandCircle:
         cairo_save(cr);
         cairo_new_path(cr);
-        cairo_translate(cr, (int)currentCmd->points[0].x, (int)currentCmd->points[0].y);
-        cairo_arc(cr, 0, 0, currentCmd->radius, 0, 2 * M_PI);
+        cairo_translate(cr, (int)currentCmd.points[0].x, (int)currentCmd.points[0].y);
+        cairo_arc(cr, 0, 0, currentCmd.radius, 0, 2 * M_PI);
         cairo_close_path(cr);
-        if (currentCmd->fill) {
+        if (currentCmd.fill) {
           cairo_set_source_rgb(cr, intToFloat(background_colour_.red), intToFloat(background_colour_.green),
                                intToFloat(background_colour_.blue));
           cairo_fill_preserve(cr);
@@ -90,45 +91,48 @@ void RendererCairo::Draw() {
         }
         cairo_restore(cr);
         break;
-      case COMMAND_ARC:
+      case kCommandArc:
         cairo_new_path(cr);
-        cairo_arc(cr, currentCmd->points[0].x, currentCmd->points[0].y, currentCmd->radius, currentCmd->angle1,
-                  currentCmd->angle2);
+        cairo_arc(cr, currentCmd.points[0].x, currentCmd.points[0].y, currentCmd.radius, currentCmd.angle1,
+                  currentCmd.angle2);
         cairo_stroke(cr);
         break;
-      case COMMAND_COLOUR_BG:
-        background_colour_.red = currentCmd->arg1;
-        background_colour_.green = currentCmd->arg2;
-        background_colour_.blue = currentCmd->arg3;
+      case kCommandColourBackground:
+        background_colour_.red = currentCmd.arg1;
+        background_colour_.green = currentCmd.arg2;
+        background_colour_.blue = currentCmd.arg3;
         break;
-      case COMMAND_COLOUR_FG:
-        forground_colour_.red = currentCmd->arg1;
-        forground_colour_.green = currentCmd->arg2;
-        forground_colour_.blue = currentCmd->arg3;
+      case kCommandColourForeground:
+        forground_colour_.red = currentCmd.arg1;
+        forground_colour_.green = currentCmd.arg2;
+        forground_colour_.blue = currentCmd.arg3;
         break;
-      case COMMAND_PEN_MOVE:
-        if (currentCmd->arg1) cairo_new_path(cr);
-        cairo_move_to(cr, currentCmd->points[0].x, currentCmd->points[0].y);
+      case kCommandPenMove:
+        if (currentCmd.arg1) cairo_new_path(cr);
+        cairo_move_to(cr, currentCmd.points[0].x, currentCmd.points[0].y);
         break;
-      case COMMAND_PEN_DRAW:
-        cairo_line_to(cr, currentCmd->points[0].x, currentCmd->points[0].y);
-        if (currentCmd->arg1 > 0) cairo_stroke(cr);
+      case kCommandPenDraw:
+        cairo_line_to(cr, currentCmd.points[0].x, currentCmd.points[0].y);
+        if (currentCmd.arg1 > 0) {
+          cairo_close_path(cr);
+          cairo_stroke(cr);
+        }
         break;
-      case COMMAND_PEN_LINE:
-        cairo_move_to(cr, currentCmd->points[0].x, currentCmd->points[0].y);
-        cairo_line_to(cr, currentCmd->points[1].x, currentCmd->points[1].y);
+      case kCommandPenLine:
+        cairo_move_to(cr, currentCmd.points[0].x, currentCmd.points[0].y);
+        cairo_line_to(cr, currentCmd.points[1].x, currentCmd.points[1].y);
         cairo_stroke(cr);
         break;
-      case COMMAND_PEN_RECTANGLE:
+      case kCommandPenRectangle:
         cairo_new_path(cr);
-        cairo_move_to(cr, currentCmd->points[0].x, currentCmd->points[0].y);
-        cairo_rel_line_to(cr, currentCmd->points[1].x - currentCmd->points[0].x, 0);
-        cairo_rel_line_to(cr, 0, currentCmd->points[1].y - currentCmd->points[0].y);
-        cairo_rel_line_to(cr, currentCmd->points[0].x - currentCmd->points[1].x, 0);
-        cairo_rel_line_to(cr, 0, currentCmd->points[0].y - currentCmd->points[1].y);
+        cairo_move_to(cr, currentCmd.points[0].x, currentCmd.points[0].y);
+        cairo_rel_line_to(cr, currentCmd.points[1].x - currentCmd.points[0].x, 0);
+        cairo_rel_line_to(cr, 0, currentCmd.points[1].y - currentCmd.points[0].y);
+        cairo_rel_line_to(cr, currentCmd.points[0].x - currentCmd.points[1].x, 0);
+        cairo_rel_line_to(cr, 0, currentCmd.points[0].y - currentCmd.points[1].y);
         cairo_close_path(cr);
 #if 1
-        if (currentCmd->fill) {
+        if (currentCmd.fill) {
           cairo_set_source_rgb(cr, intToFloat(background_colour_.red), intToFloat(background_colour_.green),
                                intToFloat(background_colour_.blue));
           cairo_fill_preserve(cr);
@@ -140,12 +144,12 @@ void RendererCairo::Draw() {
         }
 #endif
         break;
-      case COMMAND_PEN_ROUNDED_RECTANGLE: {
-        double width = currentCmd->arg1;
-        double height = currentCmd->arg2;
-        double corner_radius = (double)currentCmd->arg3; /* and corner curvature radius */
-        double x = currentCmd->points[0].x;
-        double y = currentCmd->points[0].y;
+      case kCommandPenRoundedRectangle: {
+        double width = currentCmd.arg1;
+        double height = currentCmd.arg2;
+        double corner_radius = (double)currentCmd.arg3; /* and corner curvature radius */
+        double x = currentCmd.points[0].x;
+        double y = currentCmd.points[0].y;
         double radius = corner_radius;
         double degrees = M_PI / 180.0;
 
@@ -156,7 +160,7 @@ void RendererCairo::Draw() {
         cairo_arc(cr, x + width - radius, y - height + radius, radius, 270 * degrees, 0 * degrees);
         cairo_close_path(cr);
       }
-        if (currentCmd->fill) {
+        if (currentCmd.fill) {
           cairo_set_source_rgb(cr, intToFloat(background_colour_.red), intToFloat(background_colour_.green),
                                intToFloat(background_colour_.blue));
           cairo_fill_preserve(cr);
@@ -165,16 +169,16 @@ void RendererCairo::Draw() {
           cairo_stroke(cr);
         }
         break;
-      case COMMAND_PEN_TRIANGLE:
+      case kCommandPenTriangle:
         cairo_new_path(cr);
-        cairo_move_to(cr, currentCmd->points[0].x, currentCmd->points[0].y);
-        cairo_rel_line_to(cr, currentCmd->points[1].x - currentCmd->points[0].x,
-                          currentCmd->points[1].y - currentCmd->points[0].y);
-        cairo_rel_line_to(cr, currentCmd->points[2].x - currentCmd->points[1].x,
-                          currentCmd->points[2].y - currentCmd->points[1].y);
+        cairo_move_to(cr, currentCmd.points[0].x, currentCmd.points[0].y);
+        cairo_rel_line_to(cr, currentCmd.points[1].x - currentCmd.points[0].x,
+                          currentCmd.points[1].y - currentCmd.points[0].y);
+        cairo_rel_line_to(cr, currentCmd.points[2].x - currentCmd.points[1].x,
+                          currentCmd.points[2].y - currentCmd.points[1].y);
         cairo_close_path(cr);
 
-        if (currentCmd->fill) {
+        if (currentCmd.fill) {
           cairo_set_source_rgb(cr, intToFloat(background_colour_.red), intToFloat(background_colour_.green),
                                intToFloat(background_colour_.blue));
           cairo_fill_preserve(cr);
@@ -185,15 +189,15 @@ void RendererCairo::Draw() {
           cairo_stroke(cr);
         }
         break;
-      case COMMAND_PEN_COLOUR:
-        cairo_set_source_rgb(cr, intToFloat(currentCmd->colour.red), intToFloat(currentCmd->colour.green),
-                             intToFloat(currentCmd->colour.blue));
+      case kCommandPenColour:
+        cairo_set_source_rgb(cr, intToFloat(currentCmd.colour.red), intToFloat(currentCmd.colour.green),
+                             intToFloat(currentCmd.colour.blue));
         break;
-      case COMMAND_PEN_THICKNESS:
-        cairo_set_line_width(cr, (cairo_line_join_t)currentCmd->arg1);
+      case kCommandPenThickness:
+        cairo_set_line_width(cr, (cairo_line_join_t)currentCmd.arg1);
         {
           cairo_line_cap_t cap;
-          switch (currentCmd->arg3) {
+          switch (currentCmd.arg3) {
             case LINE_CAP_BUTT:
               cap = CAIRO_LINE_CAP_BUTT;
               break;
@@ -206,67 +210,78 @@ void RendererCairo::Draw() {
           }
           cairo_set_line_cap(cr, cap);
         }
-        switch (currentCmd->arg2) {
-          case LINE_DASHED:
-            cairo_set_dash(cr, dashed, 1, 0);
+        switch (currentCmd.arg2) {
+          case int(LineType::kLineDashed):
+            cairo_set_dash(cr, &dashed[0], 1, 0);
             break;
-          case LINE_SOLID:
+          case int(LineType::kLineDashedMedium):
+            cairo_set_dash(cr, &dashed_medium[0], 1, 0);
+            break;
+          case int(LineType::kLineDashedLarge):
+            cairo_set_dash(cr, &dashed_large[0], 1, 0);
+            break;
+          case int(LineType::kLineSolid):
           default:
             cairo_set_dash(cr, 0, 0, 0);
             break;
         }
         break;
-      case COMMAND_SAVE:
+      case kCommandSave:
         cairo_save(cr);
         break;
-      case COMMAND_RESTORE:
+      case kCommandRestore:
         cairo_restore(cr);
         break;
-      case COMMAND_SCALE:
-        cairo_scale(cr, currentCmd->width, currentCmd->height);
+      case kCommandScale:
+        cairo_scale(cr, currentCmd.width, currentCmd.height);
         break;
-      case COMMAND_TRANSLATE:
-        cairo_translate(cr, currentCmd->arg1, currentCmd->arg2);
+      case kCommandTranslate:
+        cairo_translate(cr, currentCmd.arg1, currentCmd.arg2);
         cairo_rotate(cr, M_PI);
         break;
-      case COMMAND_ROTATE:
-        cairo_rotate(cr, currentCmd->width);
+      case kCommandRotate:
+        cairo_rotate(cr, currentCmd.width);
         break;
-      case COMMAND_CLOSE_PATH:
-        //        cairo_close_path(cr);
-        if (currentCmd->arg1 > 0) {
+      case kCommandClosePath:
+        if (currentCmd.arg1 > 0) {
           cairo_set_source_rgb(cr, intToFloat(background_colour_.red), intToFloat(background_colour_.green),
                                intToFloat(background_colour_.blue));
           cairo_fill(cr);
         }
-        cairo_stroke(cr);
+        cairo_close_path(cr);
         break;
-      case COMMAND_LINE_JOIN:
-        cairo_set_line_join(cr, (cairo_line_join_t)currentCmd->arg1);
+      case kCommandLineJoin:
+        cairo_set_line_join(cr, (cairo_line_join_t)currentCmd.arg1);
         break;
-      case COMMAND_IMAGE_TEXTURE:
-        cairo_set_source_surface(cr, image_list_[currentCmd->arg1].image, currentCmd->points[0].x,
-                                 currentCmd->points[0].y);
+      case kCommandImageTexture:
+        cairo_set_source_surface(cr, image_list_[currentCmd.arg1].image, currentCmd.points[0].x,
+                                 currentCmd.points[0].y);
         cairo_paint(cr);
-        // Only free the imageis it wasnt from cache. i.e. video
-        if (!image_list_[currentCmd->arg1].from_cache) cairo_surface_destroy(image_list_[currentCmd->arg1].image);
+        // Only free the image if it wasn't from cache. i.e. video
+        if (!image_list_[currentCmd.arg1].from_cache) cairo_surface_destroy(image_list_[currentCmd.arg1].image);
         break;
-      case COMMAND_IMAGE_TEXTURE_PERSIST:
-        cairo_set_source_surface(cr, image_list_[currentCmd->arg1].image, currentCmd->points[0].x,
-                                 currentCmd->points[0].y);
+      case kCommandImageTexturePersist:
+        cairo_set_source_surface(cr, image_list_[currentCmd.arg1].image, currentCmd.points[0].x,
+                                 currentCmd.points[0].y);
         cairo_paint(cr);
         break;
-      case COMMAND_TEXT_FONT:
-        cairo_select_font_face(cr, currentCmd->text, (cairo_font_slant_t)currentCmd->arg1,
-                               (cairo_font_weight_t)currentCmd->arg2);
+      case kCommandTextFont:
+        cairo_select_font_face(cr, currentCmd.text, (cairo_font_slant_t)currentCmd.arg1,
+                               (cairo_font_weight_t)currentCmd.arg2);
         break;
-      case COMMAND_TEXT:
-        cairo_save(cr);
-        cairo_set_font_size(cr, currentCmd->arg1);
-        cairo_move_to(cr, currentCmd->points[0].x, currentCmd->points[0].y);
-        cairo_show_text(cr, currentCmd->text);
-        cairo_restore(cr);
+      case kCommandPush:
+        cairo_push_group(cr);
         break;
+      case kCommandPop:
+        cairo_pop_group_to_source(cr);
+        break;
+      case kCommandTextFontSize:
+        cairo_set_font_size(cr, currentCmd.height);
+        break;
+      case kCommandText: {
+        cairo_move_to(cr, currentCmd.points[0].x, currentCmd.points[0].y);
+        cairo_show_text(cr, currentCmd.text);
+      } break;
       default:
         printf("[GVA] Unrecognised pauint32_t command!!!\n");
         break;
@@ -275,9 +290,17 @@ void RendererCairo::Draw() {
   // Pop the group and flush to display on the screen
   cairo_pop_group_to_source(cr);
   cairo_paint(cr);
+
+  // We did it. Lets empty the buffer of draw commands.
+  draw_commands_.clear();
 }
 
-uint32_t RendererCairo::init(uint32_t width, uint32_t height, bool fullscreen, CallbackType cb, void *arg) {
+uint32_t RendererCairo::Init(uint32_t width, uint32_t height) {
+  render_.surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
+  return 0;
+}
+
+uint32_t RendererCairo::Init(uint32_t width, uint32_t height, bool fullscreen, CallbackType cb, void *arg) {
   render_.size.width = width;
   render_.size.height = height;
 
@@ -309,44 +332,52 @@ uint32_t RendererCairo::init(uint32_t width, uint32_t height, bool fullscreen, C
 void RendererCairo::SetPixel(uint32_t x, uint32_t y) {}
 
 void RendererCairo::SetColour(uint8_t red, uint8_t green, uint8_t blue) {
-  SetColourForground(red, green, blue);
+  SetColourForeground(red, green, blue);
   SetColourBackground(red, green, blue);
 }
 
 void RendererCairo::SetColour(uint32_t rgb) { SetColour((rgb & 0xff0000) >> 16, (rgb & 0xff00) >> 8, rgb & 0xff); }
 
-void RendererCairo::SetColourForground(uint8_t red, uint8_t green, uint8_t blue) {
-  Draw_commands_[draw_tail_].command = COMMAND_COLOUR_FG;
-  Draw_commands_[draw_tail_].arg1 = red;
-  Draw_commands_[draw_tail_].arg2 = green;
-  Draw_commands_[draw_tail_++].arg3 = blue;
+void RendererCairo::SetColourForeground(uint8_t red, uint8_t green, uint8_t blue) {
+  Command command;
+  command.command = kCommandColourForeground;
+  command.arg1 = red;
+  command.arg2 = green;
+  command.arg3 = blue;
+  draw_commands_.push_back(command);
 }
 
-void RendererCairo::SetColourForground(uint32_t rgb) {
-  SetColourForground((rgb & 0xff0000) >> 16, (rgb & 0xff00) >> 8, rgb & 0xff);
+void RendererCairo::SetColourForeground(uint32_t rgb) {
+  SetColourForeground((rgb & 0xff0000) >> 16, (rgb & 0xff00) >> 8, rgb & 0xff);
 }
 
 void RendererCairo::SetColourBackground(uint8_t red, uint8_t green, uint8_t blue) {
-  Draw_commands_[draw_tail_].command = COMMAND_COLOUR_BG;
-  Draw_commands_[draw_tail_].arg1 = red;
-  Draw_commands_[draw_tail_].arg2 = green;
-  Draw_commands_[draw_tail_++].arg3 = blue;
+  Command command;
+  command.command = kCommandColourBackground;
+  command.arg1 = red;
+  command.arg2 = green;
+  command.arg3 = blue;
+  draw_commands_.push_back(command);
 }
 
 void RendererCairo::SetColourBackground(uint32_t rgb) {
   SetColourBackground((rgb & 0xff0000) >> 16, (rgb & 0xff00) >> 8, rgb & 0xff);
 }
 
-void RendererCairo::setLineType(uint32_t type) {
-  Draw_commands_[draw_tail_].command = COMMAND_LINE_JOIN;
-  Draw_commands_[draw_tail_++].arg1 = type;
+void RendererCairo::SetLineType(uint32_t type) {
+  Command command;
+  command.command = kCommandLineJoin;
+  command.arg1 = type;
+  draw_commands_.push_back(command);
 }
 
 void RendererCairo::SetLineThickness(uint32_t thickness, LineType fill, LineCapEnd end) {
-  Draw_commands_[draw_tail_].command = COMMAND_PEN_THICKNESS;
-  Draw_commands_[draw_tail_].arg1 = thickness;
-  Draw_commands_[draw_tail_].arg2 = fill;
-  Draw_commands_[draw_tail_++].arg3 = end;
+  Command command;
+  command.command = kCommandPenThickness;
+  command.arg1 = thickness;
+  command.arg2 = int(fill);
+  command.arg3 = end;
+  draw_commands_.push_back(command);
 }
 
 void RendererCairo::SetLineThickness(uint32_t thickness, LineType fill) {
@@ -358,18 +389,22 @@ uint32_t RendererCairo::MovePen(int32_t x, int32_t y) {
   y = render_.size.height - y;
 #endif
 
-  Draw_commands_[draw_tail_].command = COMMAND_PEN_MOVE;
-  Draw_commands_[draw_tail_].points[0].x = x;
-  Draw_commands_[draw_tail_].points[0].y = y;
-  Draw_commands_[draw_tail_++].arg1 = 1;  // 1 indicatesnew path
+  Command command;
+  command.command = kCommandPenMove;
+  command.points[0].x = x;
+  command.points[0].y = y;
+  command.arg1 = 1;  // 1 indicatesnew path
+  draw_commands_.push_back(command);
   return 0;
 }
 
 uint32_t RendererCairo::MovePenRaw(int32_t x, int32_t y) {
-  Draw_commands_[draw_tail_].command = COMMAND_PEN_MOVE;
-  Draw_commands_[draw_tail_].points[0].x = x;
-  Draw_commands_[draw_tail_].points[0].y = y;
-  Draw_commands_[draw_tail_++].arg1 = 0;  // 0 indicates no new path
+  Command command;
+  command.command = kCommandPenMove;
+  command.points[0].x = x;
+  command.points[0].y = y;
+  command.arg1 = 0;  // 0 indicates no new path
+  draw_commands_.push_back(command);
   return 0;
 }
 
@@ -378,50 +413,70 @@ uint32_t RendererCairo::DrawPen(uint32_t x, uint32_t y, bool close) {
   y = render_.size.height - y;
 #endif
 
-  Draw_commands_[draw_tail_].command = COMMAND_PEN_DRAW;
-  Draw_commands_[draw_tail_].points[0].x = x;
-  Draw_commands_[draw_tail_].points[0].y = y;
-  Draw_commands_[draw_tail_++].arg1 = close ? 1 : 0;
+  Command command;
+  command.command = kCommandPenDraw;
+  command.points[0].x = x;
+  command.points[0].y = y;
+  command.arg1 = close ? 1 : 0;
+  draw_commands_.push_back(command);
   return 0;
 }
 
 uint32_t RendererCairo::DrawPenRaw(int32_t x, int32_t y) {
   //  y = render_.size.height - y;
   //  x = render_.size.width - x;
-  Draw_commands_[draw_tail_].command = COMMAND_PEN_DRAW;
-  Draw_commands_[draw_tail_].points[0].x = x;
-  Draw_commands_[draw_tail_].points[0].y = y;
-  Draw_commands_[draw_tail_++].arg1 = 0;
+  Command command;
+  command.command = kCommandPenDraw;
+  command.points[0].x = x;
+  command.points[0].y = y;
+  command.arg1 = 0;
+  draw_commands_.push_back(command);
   return 0;
 }
 
-void RendererCairo::Save() { Draw_commands_[draw_tail_++].command = COMMAND_SAVE; }
+void RendererCairo::Save() {
+  Command command;
+  command.command = kCommandSave;
+  draw_commands_.push_back(command);
+}
 
-void RendererCairo::Restore() { Draw_commands_[draw_tail_++].command = COMMAND_RESTORE; }
+void RendererCairo::Restore() {
+  Command command;
+  command.command = kCommandRestore;
+  draw_commands_.push_back(command);
+}
 
 void RendererCairo::Scale(double x, double y) {
-  Draw_commands_[draw_tail_].command = COMMAND_SCALE;
-  Draw_commands_[draw_tail_].width = x;
-  Draw_commands_[draw_tail_++].height = y;
+  Command command;
+  command.command = kCommandScale;
+  command.width = x;
+  command.height = y;
+  draw_commands_.push_back(command);
 }
 
 void RendererCairo::Translate(uint32_t x, uint32_t y) {
 #if INVERTED
   y = render_.size.height - y;
 #endif
-  Draw_commands_[draw_tail_].command = COMMAND_TRANSLATE;
-  Draw_commands_[draw_tail_].arg1 = x;
-  Draw_commands_[draw_tail_++].arg2 = y;
+  Command command;
+  command.command = kCommandTranslate;
+  command.arg1 = x;
+  command.arg2 = y;
+  draw_commands_.push_back(command);
 }
 
 void RendererCairo::Rotate(double radians) {
-  Draw_commands_[draw_tail_].command = COMMAND_ROTATE;
-  Draw_commands_[draw_tail_++].width = radians;
+  Command command;
+  command.command = kCommandRotate;
+  command.width = radians;
+  draw_commands_.push_back(command);
 }
 
 uint32_t RendererCairo::ClosePath(bool fill) {
-  Draw_commands_[draw_tail_].command = COMMAND_CLOSE_PATH;
-  Draw_commands_[draw_tail_++].arg1 = fill ? 1 : 0;
+  Command command;
+  command.command = kCommandClosePath;
+  command.arg1 = fill ? 1 : 0;
+  draw_commands_.push_back(command);
   return 0;
 }
 
@@ -431,9 +486,11 @@ uint32_t RendererCairo::DrawLine(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t
   y2 = render_.size.height - y2;
 #endif
 
-  Draw_commands_[draw_tail_].command = COMMAND_PEN_LINE;
-  Draw_commands_[draw_tail_].points[0].x = x1;
-  Draw_commands_[draw_tail_++].points[0].y = y1;
+  Command command;
+  command.command = kCommandPenLine;
+  command.points[0].x = x1;
+  command.points[0].y = y1;
+  draw_commands_.push_back(command);
   return 0;
 }
 
@@ -442,23 +499,26 @@ void RendererCairo::DrawCircle(uint32_t x, uint32_t y, uint32_t radius, bool fil
   y = render_.size.height - y;
 #endif
 
-  Draw_commands_[draw_tail_].command = COMMAND_CIRCLE;
-  Draw_commands_[draw_tail_].points[0].x = x;
-  Draw_commands_[draw_tail_].points[0].y = y;
-  Draw_commands_[draw_tail_].radius = radius;
-  Draw_commands_[draw_tail_].points[1].x = 1;
-  Draw_commands_[draw_tail_].points[1].y = 0;
-  Draw_commands_[draw_tail_++].fill = fill ? 1 : 0;
+  Command command;
+  command.command = kCommandCircle;
+  command.points[0].x = x;
+  command.points[0].y = y;
+  command.radius = radius;
+  command.points[1].x = 1;
+  command.points[1].y = 0;
+  command.fill = fill ? 1 : 0;
+  draw_commands_.push_back(command);
 }
 
 void RendererCairo::DrawArcRaw(uint32_t x, uint32_t y, uint32_t radius, uint32_t angle1, uint32_t angle2) {
-  Draw_commands_[draw_tail_].command = COMMAND_ARC;
-  Draw_commands_[draw_tail_].points[0].x = x;
-  Draw_commands_[draw_tail_].points[0].y = y;
-  Draw_commands_[draw_tail_].radius = radius;
-  Draw_commands_[draw_tail_].angle1 = angle1 * (M_PI / 180.0);   /* angles are specified */
-  Draw_commands_[draw_tail_++].angle2 = angle2 * (M_PI / 180.0); /* in radians           */
-  ;
+  Command command;
+  command.command = kCommandArc;
+  command.points[0].x = x;
+  command.points[0].y = y;
+  command.radius = radius;
+  command.angle1 = angle1 * (M_PI / 180.0); /* angles are specified */
+  command.angle2 = angle2 * (M_PI / 180.0); /* in radians           */
+  draw_commands_.push_back(command);
 }
 
 void RendererCairo::DrawRectangle(uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool fill) {
@@ -469,12 +529,14 @@ void RendererCairo::DrawRectangle(uint32_t x, uint32_t y, uint32_t width, uint32
   height = render_.size.height - height;
 #endif
 
-  Draw_commands_[draw_tail_].command = COMMAND_PEN_RECTANGLE;
-  Draw_commands_[draw_tail_].points[0].x = x;
-  Draw_commands_[draw_tail_].points[0].y = y;
-  Draw_commands_[draw_tail_].points[1].x = width;
-  Draw_commands_[draw_tail_].points[1].y = height;
-  Draw_commands_[draw_tail_++].fill = fill ? 1 : 0;
+  Command command;
+  command.command = kCommandPenRectangle;
+  command.points[0].x = x;
+  command.points[0].y = y;
+  command.points[1].x = width;
+  command.points[1].y = height;
+  command.fill = fill ? 1 : 0;
+  draw_commands_.push_back(command);
 }
 
 void RendererCairo::DrawRoundedRectangle(uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t courner,
@@ -483,13 +545,15 @@ void RendererCairo::DrawRoundedRectangle(uint32_t x, uint32_t y, uint32_t width,
   y = render_.size.height - y;
 #endif
 
-  Draw_commands_[draw_tail_].command = COMMAND_PEN_ROUNDED_RECTANGLE;
-  Draw_commands_[draw_tail_].points[0].x = x;
-  Draw_commands_[draw_tail_].points[0].y = y;
-  Draw_commands_[draw_tail_].arg1 = width;
-  Draw_commands_[draw_tail_].arg2 = height;
-  Draw_commands_[draw_tail_].arg3 = courner;
-  Draw_commands_[draw_tail_++].fill = fill ? 1 : 0;
+  Command command;
+  command.command = kCommandPenRoundedRectangle;
+  command.points[0].x = x;
+  command.points[0].y = y;
+  command.arg1 = width;
+  command.arg2 = height;
+  command.arg3 = courner;
+  command.fill = fill ? 1 : 0;
+  draw_commands_.push_back(command);
 }
 
 void RendererCairo::DrawTriangle(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint32_t x3, uint32_t y3,
@@ -500,84 +564,117 @@ void RendererCairo::DrawTriangle(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t
   y3 = render_.size.height - y3;
 #endif
 
-  Draw_commands_[draw_tail_].command = COMMAND_PEN_TRIANGLE;
-  Draw_commands_[draw_tail_].points[0].x = x1;
-  Draw_commands_[draw_tail_].points[0].y = y1;
-  Draw_commands_[draw_tail_].points[1].x = x2;
-  Draw_commands_[draw_tail_].points[1].y = y2;
-  Draw_commands_[draw_tail_].points[2].x = x3;
-  Draw_commands_[draw_tail_].points[2].y = y3;
-  Draw_commands_[draw_tail_++].fill = fill ? 1 : 0;
+  Command command;
+  command.command = kCommandPenTriangle;
+  command.points[0].x = x1;
+  command.points[0].y = y1;
+  command.points[1].x = x2;
+  command.points[1].y = y2;
+  command.points[2].x = x3;
+  command.points[2].y = y3;
+  command.fill = fill ? 1 : 0;
+  draw_commands_.push_back(command);
 }
 
 uint32_t RendererCairo::DrawColor(uint8_t r, uint8_t g, uint8_t b) {
-  Draw_commands_[draw_tail_].command = COMMAND_PEN_COLOUR;
-  Draw_commands_[draw_tail_].colour.red = r;
-  Draw_commands_[draw_tail_].colour.green = g;
-  Draw_commands_[draw_tail_++].colour.blue = b;
+  Command command;
+  command.command = kCommandPenColour;
+  command.colour.red = r;
+  command.colour.green = g;
+  command.colour.blue = b;
+  draw_commands_.push_back(command);
   return 0;
 }
 
-uint32_t RendererCairo::DrawColor(uint32_t rgb) { DrawColor((rgb & 0xff0000) >> 16, (rgb & 0xff00) >> 8, rgb & 0xff); }
-
-void RendererCairo::SetTextFont(uint32_t slope, uint32_t weight, const char *fontName) {
-  Draw_commands_[draw_tail_].command = COMMAND_TEXT_FONT;
-  Draw_commands_[draw_tail_].arg1 = slope;
-  Draw_commands_[draw_tail_].arg2 = weight;
-  strcpy(Draw_commands_[draw_tail_++].text, fontName);
+uint32_t RendererCairo::DrawColor(uint32_t rgb) {
+  DrawColor((rgb & 0xff0000) >> 16, (rgb & 0xff00) >> 8, rgb & 0xff);
+  return 0;
 }
 
-uint32_t RendererCairo::GetTextWidth(char *str, uint32_t fontSize) {
+void RendererCairo::SetTextFontSize(double size) {
+  Command command;
+  command.command = kCommandTextFontSize;
+  command.height = size;
+  draw_commands_.push_back(command);
+}
+
+void RendererCairo::SetTextFont(uint32_t slope, WeightType weight, const std::string fontName) {
+  Command command;
+  command.command = kCommandTextFont;
+  command.arg1 = slope;
+  command.arg2 = int(weight);
+  strcpy(command.text, fontName.c_str());
+  draw_commands_.push_back(command);
+}
+
+void RendererCairo::Push() {
+  Command command;
+  command.command = kCommandPush;
+  draw_commands_.push_back(command);
+}
+
+void RendererCairo::Pop() {
+  Command command;
+  command.command = kCommandPop;
+  draw_commands_.push_back(command);
+}
+
+uint32_t RendererCairo::GetTextWidth(const std::string str, uint32_t fontSize) {
   cairo_t *cr = render_.cr;
   cairo_text_extents_t extents;
 
-  cairo_select_font_face(cr, config_->GetThemeFont(), CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
+  cairo_select_font_face(cr, config_->GetThemeFont().c_str(), CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
   cairo_set_font_size(cr, fontSize);
-  cairo_text_extents(cr, str, &extents);
+  cairo_text_extents(cr, str.c_str(), &extents);
   return extents.x_advance;
 }
 
-uint32_t RendererCairo::GetTextHeight(char *str, uint32_t fontSize) {
+uint32_t RendererCairo::GetTextHeight(const std::string str, uint32_t fontSize) {
   cairo_t *cr = render_.cr;
   cairo_text_extents_t extents;
 
   cairo_set_font_size(cr, fontSize);
-  cairo_text_extents(cr, str, &extents);
+  cairo_text_extents(cr, str.c_str(), &extents);
   return extents.height;
 }
 
-void RendererCairo::DrawText(uint32_t x, uint32_t y, char *text, uint32_t size) {
+void RendererCairo::DrawText(uint32_t x, uint32_t y, const std::string text) {
 #if INVERTED
   y = render_.size.height - y;
 #endif
 
-  Draw_commands_[draw_tail_].command = COMMAND_TEXT;
-  Draw_commands_[draw_tail_].points[0].x = x;
-  Draw_commands_[draw_tail_].points[0].y = y;
-  Draw_commands_[draw_tail_].arg1 = size;
-  strcpy(Draw_commands_[draw_tail_++].text, text);
+  Command command;
+  command.command = kCommandText;
+  command.points[0].x = x;
+  command.points[0].y = y;
+  strcpy(command.text, text.c_str());
+  draw_commands_.push_back(command);
 }
 
-void RendererCairo::DrawLabel(uint32_t x, uint32_t y, char *text, uint32_t size) {
+void RendererCairo::DrawLabel(uint32_t x, uint32_t y, const std::string text) {
   y = render_.size.height - y;
 
-  Draw_commands_[draw_tail_].command = COMMAND_TEXT;
-  Draw_commands_[draw_tail_].points[0].x = x;
-  Draw_commands_[draw_tail_].points[0].y = y;
-  Draw_commands_[draw_tail_].arg1 = size;
-  strcpy(Draw_commands_[draw_tail_++].text, text);
+  Command command;
+  command.command = kCommandText;
+  command.points[0].x = x;
+  command.points[0].y = y;
+  strncpy(command.text, text.c_str(), sizeof(command.text));
+  draw_commands_.push_back(command);
 }
 
-void RendererCairo::DrawTextCentre(uint32_t x, char *text, uint32_t size) { DrawText(x, 200, text, size); }
+void RendererCairo::DrawTextCentre(uint32_t x, const std::string text, uint32_t size) {
+  SetTextFontSize(size);
+  DrawText(x, 200, text);
+}
 
-uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, void *buffer, char *file) {
+uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, void *buffer, std::string file) {
   bool found_in_cache = false;
   uint32_t i = 0;
 
-  strcpy(image_list_[image_tail_].name, file);
+  strcpy(image_list_[image_tail_].name, file.c_str());
 
   for (i; i < cache_image_tail_; i++) {
-    if (strcmp(file, cache_image_list_[i].name) == 0) {
+    if (strcmp(file.c_str(), cache_image_list_[i].name) == 0) {
       // Found in cache
       found_in_cache = true;
       break;
@@ -590,16 +687,18 @@ uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, void *buffer, char *f
     image_list_[image_tail_].from_cache = true;
   } else {
     // Add to cache
-    cache_image_list_[cache_image_tail_].image = cairo_image_surface_create_from_png(file);
-    strcpy(cache_image_list_[cache_image_tail_].name, file);
+    cache_image_list_[cache_image_tail_].image = cairo_image_surface_create_from_png(file.c_str());
+    strcpy(cache_image_list_[cache_image_tail_].name, file.c_str());
     image_list_[image_tail_].from_cache = true;
     image_list_[image_tail_].image = cache_image_list_[cache_image_tail_++].image;
   }
 
-  Draw_commands_[draw_tail_].command = COMMAND_IMAGE_TEXTURE;
-  Draw_commands_[draw_tail_].points[0].x = x;
-  Draw_commands_[draw_tail_].points[0].y = y;
-  Draw_commands_[draw_tail_++].arg1 = image_tail_++;
+  Command command;
+  command.command = kCommandImageTexture;
+  command.points[0].x = x;
+  command.points[0].y = y;
+  command.arg1 = image_tail_++;
+  draw_commands_.push_back(command);
   return 0;
 }
 
@@ -608,20 +707,24 @@ uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, void *buffer) {
       cairo_image_surface_create_for_data(reinterpret_cast<unsigned char *>(buffer), CAIRO_FORMAT_RGB24, width_,
                                           height_, cairo_format_stride_for_width(CAIRO_FORMAT_RGB24, width_));
 
-  Draw_commands_[draw_tail_].command = COMMAND_IMAGE_TEXTURE;
-  Draw_commands_[draw_tail_].points[0].x = x;
-  Draw_commands_[draw_tail_].points[0].y = y;
-  Draw_commands_[draw_tail_++].arg1 = image_tail_++;
+  Command command;
+  command.command = kCommandImageTexture;
+  command.points[0].x = x;
+  command.points[0].y = y;
+  command.arg1 = image_tail_++;
+  draw_commands_.push_back(command);
   return 0;
 }
 
 uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, cairo_surface_t *surface) {
   image_list_[image_tail_].image = surface;
 
-  Draw_commands_[draw_tail_].command = COMMAND_IMAGE_TEXTURE_PERSIST;
-  Draw_commands_[draw_tail_].points[0].x = x;
-  Draw_commands_[draw_tail_].points[0].y = y;
-  Draw_commands_[draw_tail_++].arg1 = image_tail_++;
+  Command command;
+  command.command = kCommandImageTexturePersist;
+  command.points[0].x = x;
+  command.points[0].y = y;
+  command.arg1 = image_tail_++;
+  draw_commands_.push_back(command);
   return 0;
 }
 
@@ -643,15 +746,12 @@ gboolean RendererCairo::ConfigureEventCb(GtkWidget *Widget, GdkEventConfigure *e
   render_.surface = gdk_window_create_similar_surface(gtk_widget_get_window(Widget), CAIRO_CONTENT_COLOR,
                                                       gtk_widget_get_allocated_width(Widget),
                                                       gtk_widget_get_allocated_height(Widget));
-
   render_.cr = cairo_create(render_.surface);
-
   cairo_scale(render_.cr, (double)gtk_widget_get_allocated_width(Widget) / DEFAULT_WIDTH,
               (double)gtk_widget_get_allocated_height(Widget) / DEFAULT_HEIGHT);
   Renderer::SetWidth(gtk_widget_get_allocated_width(Widget));
   Renderer::SetHeight(gtk_widget_get_allocated_height(Widget));
   gtk_widget_queue_draw(Widget);
-
   // We've handled the configure event, no need for further processing.
   return TRUE;
 }
@@ -670,7 +770,10 @@ void RendererCairo::Activate(GtkApplication *app, gpointer user_data) {
   //
   g_signal_connect(render_.win.win, "destroy", G_CALLBACK(CloseWindow), NULL);
   g_signal_connect(render_.win.draw, "button-press-event", G_CALLBACK(gva::EventsGva::ButtonPressEventCb), NULL);
+  g_signal_connect(render_.win.draw, "button-release-event", G_CALLBACK(gva::EventsGva::ButtonReleaseEventCb), NULL);
   g_signal_connect(render_.win.win, "key-press-event", G_CALLBACK(gva::EventsGva::KeyPressEventCb), NULL);
+  g_signal_connect(render_.win.win, "key-release-event", G_CALLBACK(gva::EventsGva::KeyReleaseEventCb), NULL);
+
   //  g_signal_connect (render_.win.win, "key-release-event",
   //                    G_CALLBACK (EventsGva::KeyPressEventCb), NULL);
 
@@ -678,8 +781,8 @@ void RendererCairo::Activate(GtkApplication *app, gpointer user_data) {
   // subscribe to. In particular, we need to ask for the
   // button press and motion notify events that want to handle.
   //
-  gtk_widget_set_events(render_.win.draw,
-                        gtk_widget_get_events(render_.win.draw) | GDK_BUTTON_PRESS_MASK | GDK_POINTER_MOTION_MASK);
+  gtk_widget_set_events(render_.win.draw, gtk_widget_get_events(render_.win.draw) | GDK_BUTTON_PRESS_MASK |
+                                              GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK);
 
   //
   // Signals used to handle the backing surface

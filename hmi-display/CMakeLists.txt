@@ -6,10 +6,11 @@ pkg_check_modules(CAIRO REQUIRED cairo)
 pkg_check_modules(PANGO REQUIRED pango)
 pkg_check_modules(SWSCALE REQUIRED libswscale)
 
-add_subdirectory(widgets)
+add_subdirectory(src/widgets)
 add_subdirectory(common)
+add_subdirectory(config)
+add_subdirectory(test)
 #add_subdirectory(dds)
-#add_subdirectory(display)
 
 if(ENABLE_COVERAGE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g ")
@@ -44,47 +45,59 @@ link_directories(${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build)
 link_directories(${CMAKE_BINARY_DIR}/external/libnmea/build/src)
 
 message ("Platform " ${CMAKE_SYSTEM_NAME} " : " ${CMAKE_SYSTEM} ${MSYS} ${MSYS2}) 
-if (${CMAKE_SYSTEM_NAME} MATCHES "MINGW64_NT-10.0-17763")
-else()
-	find_package(Protobuf REQUIRED)
-	message(STATUS "Using Protocol Buffers ${Protobuf_VERSION}...")
-	include_directories(${Protobuf_INCLUDE_DIRS})
-	include_directories(${CMAKE_CURRENT_BINARY_DIR})
-	protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS config.proto)
-endif()
 
 set(SOURCES main.cc 
 			src/gva_application.cc
-            src/renderer.cc 
+			src/gva_functions_common.cc
+			src/renderer.cc 
 			src/renderer_cairo.cc 
 			src/renderer_gva.cc 
 			src/screen_gva.cc 
-			src/events_gva.cc .
-			widgets/keyboard.cc
-			widgets/compass.cc
-			widgets/alarm_indicator.cc
+			src/events_gva.cc 
+			src/widgets/widget.cc
+			src/widgets/keyboard.cc
+			src/widgets/table.cc
+			src/widgets/compass.cc
+			src/widgets/top_labels.cc
+			src/widgets/bottom_labels.cc
+			src/widgets/side_labels.cc
+			src/widgets/mode.cc
+			src/widgets/alarm_indicator.cc
 			common/debug.cc 
 			common/log_gva.cc 
 			src/hmi_gva.cc 
+			src/hmi_gva_defaults.cc 
 			src/hmi_gva_helpers.cc 
 			src/view_gva.cc 
 			src/renderer_map.cc 
-			src/config_reader.cc)
+			src/config_reader.cc
+			src/states/on.cc
+			src/states/off.cc
+			src/states/sa.cc
+			src/states/wpn.cc
+			src/states/sys.cc
+			src/states/def.cc
+			src/states/drv.cc
+			src/states/com.cc
+			src/states/str.cc
+			src/states/bms.cc
+			src/states/alarms.cc
+			)
 
 add_executable(hmi-display ${PROTO_SRCS} ${SOURCES})
 if (ENABLE_OSMSCOUT)
-	add_dependencies(hmi-display hmi-video libosmscout)
+	add_dependencies(hmi-display config-proto hmi-video libosmscout)
         set(OSMSCOUT_LIBS osmscout osmscout_map osmscout_map_cairo)
 else()
-	add_dependencies(hmi-display hmi-video ${DDS_STACK})
+	add_dependencies(hmi-display hmi-video config-proto ${DDS_STACK})
 endif()
-target_link_libraries (hmi-display Geographic ${OSMSCOUT_LIBS} ${Protobuf_LIBRARIES} stdc++fs)
+target_link_libraries (hmi-display Geographic config-proto ${OSMSCOUT_LIBS} ${Protobuf_LIBRARIES} stdc++fs)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std=c++11")
 
 link_directories(${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build ${CMAKE_BINARY_DIR}/external/libnmea/build/src)
-target_link_libraries(hmi-display png pthread hmi-video vivoe-media nmealib ${CAIRO_LIBRARIES} ${PANGO_LIBRARIES} ${SWSCALE_LIBRARIES} ${GTK3_LIBRARIES})
-target_include_directories(hmi-display PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/widgets   ${CMAKE_CURRENT_SOURCE_DIR}/common  ${CMAKE_BINARY_DIR}/hmi_display ${CAIRO_INCLUDE_DIRS} ${PANGO_INCLUDE_DIRS} ${SWSCALE_INCLUDE_DIRS} ${GTK3_INCLUDE_DIRS} common dds dds/location display)
+target_link_libraries(hmi-display png pthread hmi-video vivoe-media nmealib config-proto ${CAIRO_LIBRARIES} ${PANGO_LIBRARIES} ${SWSCALE_LIBRARIES} ${GTK3_LIBRARIES})
+target_include_directories(hmi-display PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_BINARY_DIR}/hmi-display/config ${CMAKE_CURRENT_SOURCE_DIR}/widgets ${CMAKE_CURRENT_SOURCE_DIR}/common ${CMAKE_BINARY_DIR}/hmi_display ${CAIRO_INCLUDE_DIRS} ${PANGO_INCLUDE_DIRS} ${SWSCALE_INCLUDE_DIRS} ${GTK3_INCLUDE_DIRS} common dds dds/location display)
 target_compile_options(hmi-display PUBLIC ${CAIRO_CFLAGS_OTHER} ${GTK3_CFLAGS_OTHER})
 
 install(TARGETS hmi-display DESTINATION /opt/gva/hmi)

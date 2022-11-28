@@ -22,6 +22,8 @@
 /// \file hmi_gva_helpers.cc
 ///
 
+#include <sstream>
+
 #include "hmi_gva.h"
 
 namespace gva {
@@ -34,7 +36,7 @@ void HmiHelper::TableLicences(TableWidget *table) {
   table->y_ = 390;
   table->width_ = 420;
 
-  table->AddRow(WEIGHT_BOLD);
+  table->AddRow(WeightType::kWeightBold);
   table->AddCell("Software", 80);
   table->AddCell("Licence", 20);
 
@@ -73,14 +75,14 @@ void HmiHelper::TableSystem(TableWidget *table) {
   table->y_ = 390;
   table->width_ = 420;
 
-  table->AddRow(WEIGHT_BOLD);
+  table->AddRow(WeightType::kWeightBold);
   table->AddCell("Fuction", 80);
   table->AddCell("Status", 20);
 
   table->AddRow();
-  char tmp[100];
-  snprintf(tmp, sizeof(tmp), "HMI Version %d.%d.%d", MAJOR, MINOR, PATCH);
-  table->AddCell(tmp, 80);
+  std::stringstream stream;
+  stream << "HMI Version " << MAJOR << "." << MINOR << "." << PATCH;
+  table->AddCell(stream.str(), 80);
   table->AddCell("Ok", 20);
 
   table->AddRow();
@@ -107,7 +109,7 @@ void HmiHelper::TableAlarms(TableWidget *table) {
   table->width_ = 420;
   table->background_colour_ = gva::ConfigData::GetInstance()->GetThemeBackground();
 
-  table->AddRow(WEIGHT_BOLD);
+  table->AddRow(WeightType::kWeightBold);
   table->AddCell("Time", 20);
   table->AddCell("Alarm Text", 50);
   table->AddCell("Cat", 10);
@@ -120,16 +122,16 @@ void HmiHelper::TableAlarms(TableWidget *table) {
   table->AddCell("RES", 20);
 
   table->AddRow(Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_RED), Renderer::PackRgb(HMI_WHITE),
-                Renderer::PackRgb(HMI_YELLOW), WEIGHT_NORMAL);
+                Renderer::PackRgb(HMI_YELLOW), WeightType::kWeightNormal);
   table->AddCell("15/6 15:26", 20);
-  table->AddCell("Engine over tempreture", 50);
+  table->AddCell("Engine over temperature", 50);
   table->AddCell("W", 10);
   table->AddCell("UNACK", 20);
 
   table->AddRow();
   table->CurrentRowHighlight();
   table->AddCell("15/6 15:29", 20);
-  table->AddCell("Engine over tempreture", 50);
+  table->AddCell("Engine over temperature", 50);
   table->AddCell("W", 10);
   table->AddCell("RES", 20);
 
@@ -143,38 +145,38 @@ void HmiHelper::TableAlarms(TableWidget *table) {
   table->AddCell("15/6 18:16", 20);
   table->AddCell("Air con fault", 50);
   table->AddCell("A", 10);
-  table->AddCell("ACT", 20);
+  table->AddCell("ACK", 20);
 
   table->AddRow(Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_GREY), Renderer::PackRgb(HMI_WHITE),
-                Renderer::PackRgb(HMI_YELLOW), WEIGHT_NORMAL);
+                Renderer::PackRgb(HMI_YELLOW), WeightType::kWeightNormal);
   table->AddCell("15/6 19:03", 20);
   table->AddCell("Gun barrel over tempreture", 50);
   table->AddCell("C", 10);
-  table->AddCell("ACT(OVR)", 20);
+  table->AddCell("ACK(OVR)", 20);
 
   table->AddRow(Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_ORANGE), Renderer::PackRgb(HMI_WHITE),
-                Renderer::PackRgb(HMI_YELLOW), WEIGHT_NORMAL);
+                Renderer::PackRgb(HMI_YELLOW), WeightType::kWeightNormal);
   table->AddCell("15/6 19:04", 20);
   table->AddCell("LRU xx fault", 50);
   table->AddCell("C", 10);
-  table->AddCell("ACT", 20);
+  table->AddCell("ACK", 20);
 
   table->AddRow(Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_ORANGE), Renderer::PackRgb(HMI_WHITE),
-                Renderer::PackRgb(HMI_YELLOW), WEIGHT_NORMAL);
+                Renderer::PackRgb(HMI_YELLOW), WeightType::kWeightNormal);
   table->AddCell("15/6 19:10", 20);
   table->AddCell("SAS Camera 1 (Day) over temperature", 50);
   table->AddCell("A", 10);
-  table->AddCell("ACT", 20);
+  table->AddCell("ACK", 20);
 
   table->AddRow(Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_ORANGE), Renderer::PackRgb(HMI_WHITE),
-                Renderer::PackRgb(HMI_YELLOW), WEIGHT_NORMAL);
+                Renderer::PackRgb(HMI_YELLOW), WeightType::kWeightNormal);
   table->AddCell("15/6 19:10", 20);
   table->AddCell("CBRN detected high CO2", 50);
   table->AddCell("C", 10);
-  table->AddCell("ACT", 20);
+  table->AddCell("ACK", 20);
 
   table->AddRow();
-  table->AddCell("Page 1 of 1", 100, ALIGN_RIGHT);
+  table->AddCell("Page 1 of 1", 100, CellAlignType::kAlignRight);
 }
 
 }  // namespace gva

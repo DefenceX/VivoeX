@@ -17,12 +17,12 @@
 /// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 /// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ///
-/// \brief
+/// \brief The screen manager to handle all the on screen elements
 ///
 /// \file screen_gva.cc
 ///
 
-#include "screen_gva.h"
+#include "src/screen_gva.h"
 
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -34,29 +34,27 @@
 #include <GeographicLib/LambertConformalConic.hpp>
 #include <GeographicLib/MGRS.hpp>
 #include <GeographicLib/UTMUPS.hpp>
+#include <iomanip>
 #include <iostream>
+#include <sstream>
 #include <string>
 
-#include "debug.h"
-#include "log_gva.h"
+#include "common/debug.h"
+#include "common/log_gva.h"
+#include "src/gva_functions_common.h"
 #include "widgets/alarm_indicator.h"
+#include "widgets/bottom_labels.h"
 #include "widgets/compass.h"
 #include "widgets/keyboard.h"
-
-using namespace std;
-using namespace GeographicLib;
+#include "widgets/mode.h"
+#include "widgets/side_labels.h"
+#include "widgets/top_labels.h"
 
 #define MAX_NMEA 1000
 
 namespace gva {
 
-float toDegrees(float lon) {
-  int d = (int)lon / 100;
-  float m = lon - d * 100;
-  return d + m / (float)60;
-}
-
-ScreenGva::ScreenGva(ScreenType *screen, int width, int height) : RendererGva(width, height) {
+ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : RendererGva(width, height) {
   screen_ = screen;
 
   char tmp[100];
@@ -72,13 +70,12 @@ ScreenGva::ScreenGva(ScreenType *screen, int width, int height) : RendererGva(wi
   nmea_parser_init(&parser_);
 
   // Open File Descriptor
-  gps_ = open(screen->info.gpsDevice, O_RDWR | O_NONBLOCK | O_NDELAY);
+  gps_ = open(screen->info.gpsDevice.c_str(), O_RDWR | O_NONBLOCK | O_NDELAY);
+
   if (gps_ > 0) {
-    sprintf(tmp, "GPS Opened %s", screen->info.gpsDevice);
-    logGva::log(tmp, LOG_INFO);
+    logGva::log("GPS Opened " + screen->info.gpsDevice, LOG_INFO);
   } else {
-    sprintf(tmp, "GPS Error Opening device %s", screen->info.gpsDevice);
-    logGva::log(tmp, LOG_ERROR);
+    logGva::log("GPS Error Opening device " + screen->info.gpsDevice, LOG_ERROR);
   }
   tcgetattr(gps_, &settings);
 
@@ -93,18 +90,25 @@ ScreenGva::ScreenGva(ScreenType *screen, int width, int height) : RendererGva(wi
   //
   StartClock(screen_->status_bar);
 
+  // WidgetTo
+  //  Setup the required widgets
   //
-  // Setup the required widgets
-  //
-  widget_list_.push_back(new Compass(this));
-  widget_list_.push_back(new Keyboard(this));
-  widget_list_.push_back(new AlarmIndicator(this));
+  RendererGva *renderer = this;
+  TouchGva *touch = GetTouch();
+
+  // Here we need to add all the possible screen widgets to the widget list, at this point they are uninitialised
+  widget_list_[KWidgetTypeCompass] = std::make_shared<WidgetPlanPositionIndicator>(*renderer);
+  widget_list_[KWidgetTypeKeyboard] = std::make_shared<WidgetKeyboard>(*renderer);
+  widget_list_[KWidgetTypeAlarmIndicator] = std::make_shared<WidgetAlarmIndicator>(*renderer);
+  widget_list_[KWidgetTypeTopLabels] = std::make_shared<WidgetTopLabels>(*renderer, touch);
+  widget_list_[KWidgetTypeBottomLabels] = std::make_shared<WidgetBottomLabels>(*renderer, touch);
+  widget_list_[KWidgetTypeLeftLabels] = std::make_shared<WidgetSideLabels>(*renderer, touch);
+  widget_list_[KWidgetTypeRightLabels] = std::make_shared<WidgetSideLabels>(*renderer, touch);
 }
 
 ScreenGva::~ScreenGva() {
-  args_->active = false;
+  args_.active = false;
   pthread_join(clock_thread_, 0);
-  free(args_);
   nmea_parser_destroy(&parser_);
   close(gps_);
   if (gps_) logGva::log("GPS closed", LOG_INFO);
@@ -121,11 +125,13 @@ void *ClockUpdate(void *arg) {
   char tmp[MAX_NMEA] = {0};
 
   while (a->active) {
-    int i, ii = 0;
+    uint32_t i, ii = 0;
     t = time(NULL);
     tm = localtime(&t);
-    sprintf(a->clockString, "%02d/%02d/%02d %02d:%02d:%02d", tm->tm_mday, tm->tm_mon + 1, tm->tm_year + 1900,
-            tm->tm_hour, tm->tm_min, tm->tm_sec);
+    char clock[1000];
+    sprintf(clock, "%02d/%02d/%02d %02d:%02d:%02d", tm->tm_mday, tm->tm_mon + 1, tm->tm_year + 1900, tm->tm_hour,
+            tm->tm_min, tm->tm_sec);
+    a->clockString = clock;
     if (*a->gps > 0) {
       i = 0;
       tcflush(*a->gps, TCIOFLUSH);
@@ -137,7 +143,6 @@ void *ClockUpdate(void *arg) {
         ii = read(*a->gps, &c, 1);
         if (ii == 1) {
           buffer[i] = c;
-          //             printf("0x%02x ", c);
         }
         if (i == MAX_NMEA) break;
       }
@@ -148,27 +153,31 @@ void *ClockUpdate(void *arg) {
       sprintf(tmp, "%s\r\n", buffer);
       a->info->lon = a->location->lon;
       a->info->lat = a->location->lat;
-      nmea_parse(a->parser, tmp, (int)strlen(tmp), a->info);
-      a->info->lat = toDegrees(a->info->lat);
-      a->info->lon = toDegrees(a->info->lon);
+      nmea_parse(a->parser, tmp, (uint32_t)strlen(tmp), a->info);
+      a->info->lat = ToDegrees(a->info->lat);
+      a->info->lon = ToDegrees(a->info->lon);
     }
 
     if (a->info->lon && a->info->lat) {
       switch (a->location->locationFormat) {
-        case LOCATION_FORMAT_LONG_LAT:
+        case LocationEnum::kLocationFormatLongLat:
+          a->locationFormat = "LONLAT";
+          {
+            std::stringstream stream;
+            stream << std::fixed << std::setprecision(2) << "Lat:" << a->info->lat << " Lon:" << a->info->lon << " ["
+                   << a->info->sig << "]" << a->info->fix;
+            a->locationString = stream.str();
+          }
           break;
-          sprintf(a->locationFormat, "LONLAT");
-          sprintf(a->locationString, "Lat:%05.06f Lon:%05.06f [%d,%d]", a->info->lat, a->info->lon, a->info->sig,
-                  a->info->fix);
-        case LOCATION_FORMAT_MGRS: {
+        case LocationEnum::kLocationFormatMgrs: {
           int zone;
           bool northp;
           double x, y;
-          UTMUPS::Forward(a->info->lat, a->info->lon, zone, northp, x, y);
-          string mgrs;
-          MGRS::Forward(zone, northp, x, y, a->info->lat, 5, mgrs);
-          sprintf(a->locationFormat, "MGRS");
-          sprintf(a->locationString, "%s", mgrs.c_str());
+          GeographicLib::UTMUPS::Forward(a->info->lat, a->info->lon, zone, northp, x, y);
+          std::string mgrs;
+          GeographicLib::MGRS::Forward(zone, northp, x, y, a->info->lat, 5, mgrs);
+          a->locationFormat = "MGRS";
+          a->locationString = mgrs;
         } break;
       }
     }
@@ -176,30 +185,26 @@ void *ClockUpdate(void *arg) {
   }
 }
 
-void ScreenGva::StartClock(StatusBarType *barData) {
+void ScreenGva::StartClock(StatusBar *barData) {
   pthread_t clock_thread_;
-  args_ = (args *)malloc(sizeof(args));
-  args_->active = true;
-  args_->clockString = barData->labels[0];
-  args_->locationFormat = barData->labels[1];
-  args_->locationString = barData->labels[2];
-  args_->parser = &parser_;
-  args_->info = &info_;
-  args_->gps = &gps_;
-  args_->screen = this;
-  args_->location = &barData->location;
-  args_->info->lon = DUMMY_LON;
-  args_->info->lat = DUMMY_LAT;
+  args_.active = true;
+  args_.parser = &parser_;
+  args_.info = &info_;
+  args_.gps = &gps_;
+  args_.screen = this;
+  args_.location = &barData->location;
+  args_.info->lon = DUMMY_LON;
+  args_.info->lat = DUMMY_LAT;
 
   /* Launch clock thread */
-  if (pthread_create(&clock_thread_, NULL, ClockUpdate, (void *)args_)) {
+  if (pthread_create(&clock_thread_, NULL, ClockUpdate, (void *)&args_)) {
     logGva::log("Error creating thread", LOG_ERROR);
     return;
   }
-  logGva::log("Internal clock thread started", LOG_INFO);
+  logGva::log("Clock thread started", LOG_INFO);
 }
 
-int ScreenGva::Update() {
+GvaStatusTypes ScreenGva::Update() {
   char *texture = 0;
 
   // Reset the Drawing context, must be Reset before reDrawing the screen
@@ -208,76 +213,84 @@ int ScreenGva::Update() {
 
   // Draw the background canvas first
   switch (screen_->canvas.bufferType) {
-    case SURFACE_CAIRO:
+    case SurfaceType::kSurfaceCairo:
       TextureRGB(0, 0, screen_->canvas.surface);
       break;
-    case SURFACE_FILE:
+    case SurfaceType::kSurfaceFile:
       TextureRGB(0, 0, screen_->canvas.buffer);
       TextureRGB(0, 0, texture, screen_->canvas.filename);
       break;
     default:
-    case SURFACE_NONE:
+    case SurfaceType::kSurfaceNone:
       // Set background green
-      SetColourForground(config_->GetThemeBackground());
+      SetColourForeground(config_->GetThemeBackground());
       SetColourBackground(config_->GetThemeBackground());
       DrawRectangle(0, 0, width_, height_, true);
       break;
-    case SURFACE_BLACKOUT:
+    case SurfaceType::kSurfaceBlackout:
       // Set background black
-      SetColourForground(HMI_BLACK);
+      SetColourForeground(HMI_BLACK);
       SetColourBackground(HMI_BLACK);
       DrawRectangle(0, 0, width_, height_, true);
       break;
   }
 
   // If BLACKOUT then nothing to render
-  if (screen_->info.mode == MODE_BLACKOUT) {
+  if (screen_->info.mode == ScreenMode::kModeBlackout) {
     //
     // Refresh display
     //
     Draw();
-    printf("Drawing blackout\n");
+    logGva::log("Blackout Requested", LOG_INFO);
     last_screen_ = *screen_;
-    return GVA_SUCCESS;
+    return GvaStatusTypes::kGvaSuccess;
   }
 
   // Draw label
   if (screen_->label.visible) {
-    DrawLabel(screen_->label.x, screen_->label.y, screen_->label.text, screen_->label.fontSize);
+    SetTextFontSize(screen_->label.fontSize);
+    DrawLabel(screen_->label.x, screen_->label.y, screen_->label.text);
   }
 
   // Draw the LEFT bezel labels
   if (screen_->function_left.visible) {
-    DrawFunctionLabels(1, screen_->function_left.active, screen_->function_left.hidden,
-                       screen_->function_left.toggleActive, screen_->function_left.toggleOn,
-                       screen_->function_left.labels);
+    auto widget = (WidgetSideLabels *)GetWidget(KWidgetTypeLeftLabels);
+    widget->SetLabels(&screen_->function_left.labels);
+    widget->Draw();
   }
 
   // Draw the RIGHT bezel labels
   if (screen_->function_right.visible) {
-    DrawFunctionLabels(DEFAULT_WIDTH - 100 - 1, screen_->function_right.active, screen_->function_right.hidden,
-                       screen_->function_right.toggleActive, screen_->function_right.toggleOn,
-                       screen_->function_right.labels);
+    auto widget = (WidgetSideLabels *)GetWidget(KWidgetTypeRightLabels);
+    widget->SetLabels(&screen_->function_right.labels);
+    widget->SetX(DEFAULT_WIDTH - 100 - 1);
+    widget->Draw();
   }
 
   // Draw the TOP bezel labels
   if (screen_->function_top->visible) {
-    DrawTopLabels(DEFAULT_HEIGHT - 11, screen_->function_top->active, screen_->function_top->hidden);
+    auto widget = (WidgetTopLabels *)GetWidget(KWidgetTypeTopLabels);
+    widget->SetY(DEFAULT_HEIGHT - 11);
+    widget->SetLabels(&screen_->function_top->labels);
+    widget->Draw();
   }
 
-  // Draw the maintinance mode indicator
-  if (screen_->info.mode == MODE_MAINTINENCE) {
-    DrawMode();
+  // Draw the maintenance mode indicator
+  if (screen_->info.mode == ScreenMode::kModeMaintinance) {
+    auto widget = (WidgetMode *)GetWidget(KWidgetTypeMode);
+    widget->Draw();
   }
 
   // Draw the onscreen KEYBOARD
-  widget_list_[1]->Draw();
+  if (widget_list_[KWidgetTypeKeyboard]->GetVisible()) {
+    widget_list_[KWidgetTypeKeyboard]->Draw();
+  }
 
   // Setup and Draw the status bar, one row table
   if (screen_->status_bar->visible) {
-    int i = 0;
+    uint32_t i = 0;
     // Setup and Draw the status bar, one row table
-    int widths[7] = {23, 8, 37, 8, 8, 8, 8};
+    uint32_t widths[7] = {23, 8, 37, 8, 8, 8, 8};
     GvaTable table(1, screen_->status_bar->y, 640);
     table.SetFontName(config_->GetThemeFont());
     GvaRow newrow;
@@ -291,10 +304,13 @@ int ScreenGva::Update() {
     GvaColourType text = {UnpackRed(config_->GetThemeStatusText()), UnpackGreen(config_->GetThemeStatusText()),
                           UnpackBlue(config_->GetThemeStatusText())};
 
+    screen_->status_bar->labels[0].text = args_.clockString;
+    screen_->status_bar->labels[1].text = args_.locationFormat;
+    screen_->status_bar->labels[2].text = args_.locationString;
     for (i = 0; i < 7; i++) {
-      cellAlignType align = ALIGN_LEFT;
-      if (i == 1) align = ALIGN_CENTRE;
-      GvaCellType cell = {screen_->status_bar->labels[i], align, border, background, text, WEIGHT_BOLD};
+      CellAlignType align = CellAlignType::kAlignLeft;
+      if (i == 1) align = CellAlignType::kAlignCentre;
+      GvaCell cell = {screen_->status_bar->labels[i].text, align, border, background, text, WeightType::kWeightBold};
       newrow.addCell(cell, widths[i]);
     }
     table.AddRow(newrow);
@@ -302,33 +318,38 @@ int ScreenGva::Update() {
   }
 
   // TODO : Draw the alarms if any (Mock up)
-  widget_list_[2]->Draw();
+  if (widget_list_[KWidgetTypeAlarmIndicator]->GetVisible()) {
+    widget_list_[KWidgetTypeAlarmIndicator]->Draw();
+  }
 
   // Setup and Draw the alarms
   if (screen_->table.visible_) {
     GvaTable table(screen_->table.x_, screen_->table.y_ + 33, screen_->table.width_);
     table.SetFontName(config_->GetThemeFont());
     table.border_ = 1;
-    for (int row = 0; row < screen_->table.row_count_; row++) {
+    for (auto row : screen_->table.rows_) {
       GvaRow newrow;
       RgbUnpackedType f, b, o;
-      for (int cell = 0; cell < screen_->table.rows_[row].cell_count; cell++) {
-        f = UnpackRgb(screen_->table.rows_[row].cells[cell].foreground_colour);
-        b = UnpackRgb(screen_->table.rows_[row].cells[cell].background_colour);
+      // for (uint32_t cell = 0; cell < screen_->table.rows_[row].cell_count_; cell++) {
+
+      for (auto cell : row.cells_) {
+        f = UnpackRgb(cell.GetForegroundColour());
+        b = UnpackRgb(cell.GetBackgroundColour());
 
         // Choose colour for cell border
-        if (screen_->table.rows_[row].highlighted == false) {
-          o = UnpackRgb(screen_->table.rows_[row].cells[cell].outline_colour);
+        if (row.GetHighlighted() == false) {
+          o = UnpackRgb(cell.GetOutlineColour());
         } else {
-          o = UnpackRgb(screen_->table.rows_[row].cells[cell].highlight_colour);
+          printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
+
+          o = UnpackRgb(cell.GetHighlightColour());
         }
 
-        newrow.addCell({screen_->table.rows_[row].cells[cell].text, screen_->table.rows_[row].cells[cell].alignment,
-                        o.r, o.g, o.b,  // Outline
-                        b.r, b.g, b.b,  // Background
-                        f.r, f.g, f.b,  // Foreground
-                        screen_->table.rows_[row].font_weight},
-                       screen_->table.rows_[row].cells[cell].width);
+        newrow.addCell({cell.GetText(), cell.GetCellAlignment(), o.r, o.g, o.b,  // Outline
+                        b.r, b.g, b.b,                                           // Background
+                        f.r, f.g, f.b,                                           // Foreground
+                        row.GetFontWeight()},
+                       cell.GetWidth());
       }
       table.AddRow(newrow);
     }
@@ -337,15 +358,16 @@ int ScreenGva::Update() {
   }
 
   // Draw PPI (Plan Position Indicator)
-  widget_list_[0]->Draw();
+  widget_list_[KWidgetTypeCompass]->Draw();
 
-  if (screen_->control->visible) {
-    DrawControlLabels(0, screen_->control->active, screen_->control->hidden);
+  if (screen_->control->visible_) {
+    auto widget = (WidgetBottomLabels *)GetWidget(KWidgetTypeBottomLabels);
+    widget->SetLabels(&screen_->control->labels_);
+    widget->Draw();
   }
 
   // Generic message box
   if (screen_->message.visible) {
-    char tmp[2][MAX_TEXT];
     GvaTable table(320 - 150, 260, 300);
     table.SetFontName(config_->GetThemeFont());
     GvaRow newrow;
@@ -353,24 +375,23 @@ int ScreenGva::Update() {
 
     table.border_ = config_->GetThemeLabelBorderThickness();
 
-    strcpy(tmp[0], screen_->message.brief.text);
-    uint32_t background = gva::ConfigData::GetInstance()->GetThemeBackground();
-    newrow.addCell({tmp[0],
-                    ALIGN_CENTRE,
+    uint32_t background = gva::ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled();
+
+    newrow.addCell({screen_->message.brief.text,
+                    CellAlignType::kAlignCentre,
                     {HMI_WHITE},
                     {background << 16 && 0xff, background << 8 && 0xff, background && 0xff},
                     {HMI_WHITE},
-                    WEIGHT_BOLD},
+                    WeightType::kWeightBold},
                    100);
     table.AddRow(newrow);
 
-    strcpy(tmp[1], screen_->message.detail.text);
-    newrow1.addCell({tmp[1],
-                     ALIGN_CENTRE,
+    newrow1.addCell({screen_->message.detail.text,
+                     CellAlignType::kAlignCentre,
                      {HMI_WHITE},
                      {background << 16 && 0xff, background << 8 && 0xff, background && 0xff},
                      {HMI_WHITE},
-                     WEIGHT_NORMAL},
+                     WeightType::kWeightNormal},
                     100);
     table.AddRow(newrow1);
     DrawTable(&table);
@@ -379,20 +400,12 @@ int ScreenGva::Update() {
   }
 
   //
-  // Refersh display
+  // Refresh display
   //
   Draw();
   last_screen_ = *screen_;
 }
 
-WidgetX *ScreenGva::GetWidget(WidgetEnum widget) {
-  for (int i = 0; i < widget_list_.size(); ++i) {
-    // Try and match widget enum and return pointer to it
-    if (widget_list_[i]->GetType() == widget) {
-      return widget_list_[i];
-    }
-  }
-}
+WidgetX *ScreenGva::GetWidget(WidgetEnum widget) { return widget_list_[widget].get(); }
 
-char *PosDegrees(float lon, float lat) {}
 }  // namespace gva

@@ -1,78 +1,184 @@
-/*! \mainpage User Manual
- *
- * \section sec1 Developer SDK Guide
- * This VIVOE (Vetronics Infrastructure for Video Over Ethernet) environment is currently tested on Ubuntu 22.04 LTS. 
- * Please ensure you have the following packages installed prior to building the application:
- * \subsection ssec11 Ubuntu 22.04
- * 
- * \code $ sudo apt install libcairo2-dev libxt-dev doxygen libxml2-dev ncurses-dev libxext-dev libswscale-dev \endcode
- * 
- * \subsection ssec12 CentOS 8
- * 
- * On CentOS there are a few additional repos required for the software to build these are epel-release and powertools, below are the settings to set these prior to installing the dependencies
- * \code 
- * $ dnf install epel-release -y
- * $ dnf config-manager --set-enabled powertools -y
- * $ dnf localinstall --nogpgcheck https://download1.rpmfusion.org/free/el/rpmfusion-free-release-8.noarch.rpm -y
- * $ dnf update -y
- * \endcode
- * Once the repos are updated install the following packages.
- * \code
- * $ dnf install cmake gcc-c++ cairo-devel libXt-devel doxygen libxml2-devel ncurses-devel libXext-devel ffmpeg-libs protobuf-devel protobuf-compiler GeographicLib-devel gtk3-devel -y
- * \endcode
- *
- * \section sec2 Building
- * This project has a couple of options that can be specified at compile time:
- *
- * \code $ cmake -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE=ON -DENABLE_OSMSCOUT=ON -DDDS=CYCLONE-CE ..\endcode
- *
- *Default DDS stack is currently CycloneDDS (default if not specified) but can also be built with Opensplice by setting -DDDS=OSPL-CE.
- *
- *To enable code coverage reports set ENABLE_COVERAGE. The gdb debugger is avaiable and configured for use with Microsoft Visual Code and the workspace files are part of the repo (recommended for developers).
- *
- *The BMS function can be configured with Open Street Maps but these need to be compiled and installed onto the system. Its recommeded that you run wit these switched off if you do not need this functionality. See below for more information on creating maps for your region / territory.
- *
- * \section sec3 Execution
- * Once the code is built the required files should be installed. There are two method for getting the files to their install locations. Firstly with cmake run:
- * \code
- * $ sudo make install
- * \endcode
- * Secondly you can create the platform specific install bundle and install that.
- * \subsubsection ubuntu-package Ubuntu 22:04
- * \code
- * $ cpack -G DEB
- * $ apt install vivoe-lite-cyclone-ce_<version>_amd64.deb -y
- * \endcode
- * \subsubsection centos-packaage CentOS 8
- * \code
- * $ cpack -G RPM
- * $ dnf install vivoe-lite-cyclone-ce-<version>>.x86_64.rpm  -y
- * \endcode
- * Once installed the executable should be part of your PATH and can be ran from anywhere (/etc/profile.d/vivoe-lite.sh), if you have issues you can run with the full path:
- * \code
- * $ /opt/gva/hmi-display
- * \endcode
+\mainpage User Manual
+\par Table of Contents
+
+- \ref users_guide
+   - @ref intro
+   - @ref execute
+- \ref sdk_guide
+   - \ref os
+       - \ref ubuntu
+       - \ref centos
+   - \ref build
+   - \ref install
+- \ref docs
+- \ref widgets
+   - \ref ppiclassictank
+   - \ref ppiclassicarrow
+   - \ref keyboard
+   - \ref alarm
+   - \ref function
+   - \ref control
+   - \ref labels
+   - \ref mode
+
+- \ref tools
+   - \ref test-hmi
+
+This documentation was created from git hash <a href="https://github.com/DefenceX/vivoe-lite">#$(GIT_HASH)</a>
+
+\section users_guide User Guide
+\subsection intro Introduction
+\image html images/screen/ScreenshotSaFront.png  "Example Generic Vehicle Architecture HMI (Front Camera)" width=600px
+\subsection execute Execution
+You can build vivoe-lite from source (See section on \ref build) or install from the pre build binaries on our website <a href="https://defencex.com.au/downloads.php">here</a>. 
+
+Once installed the executable should be part of your PATH and can be ran from anywhere (/etc/profile.d/vivoe-lite.sh), if you have issues you can run with the full path:
+\code
+$ /opt/gva/hmi-display
+\endcode
+For help you can list the options using:
+\code
+$ /opt/gva/hmi-display -h
+hmi_display (By defencex.com.au)...
+ -c : XML config fileexecute
+ -h : help
+ -w : Show HMI window, for debug when no GVA display present
+ -v : Version
+ -l : Live video
+ -f : Fullscreen
+\endcode
+ For instructions in installing vivoe-lite binary packages please refer to the Developer SDK section. 
+
+\section sdk_guide Developer SDK Guide
+This VIVOE (Vetronics Infrastructure for Video Over Ethernet) environment is currently tested on Ubuntu 22.04 LTS. 
+Please ensure you have the following packages installed prior to building the application:
+
+\subsection os OS Specific setup
+
+\subsubsection ubuntu Ubuntu 22.04
  
- * \section sec4 Tooling
- * 
- * Some tools are available for testing the HMI.
- * Tools fall into the command line section and GUI tools:
- * - \subpage gui "GUI tools for testing"
- *
- * - \subpage cli "Command line tools"
- *
- */ 
+\code $ sudo apt install libcairo2-dev libxt-dev libxml2-dev ncurses-dev libxext-dev libswscale-dev 
+\endcode
+And install these additional packages to build the documentation:
+\code 
+$ sudo apt install doxygen plantuml 
+\endcode
 
-/*! \page gui GUI tools for testing
- *
- * Lorem ipsum dolor sit amet
- *
- */
+\subsubsection centos CentOS 8
+ 
+On CentOS there are a few additional repos required for the software to build these are epel-release and powertools, below are the settings to set these prior to installing the dependencies
+\code 
+$ dnf install epel-release -y
+$ dnf config-manager --set-enabled powertools -y
+$ dnf localinstall --nogpgcheck https://download1.rpmfusion.org/free/el/rpmfusion-free-release-8.noarch.rpm -y
+$ dnf update -y
+\endcode
+Once the repos are updated install the following packages.
+\code
+$ dnf install cmake gcc-c++ cairo-devel libXt-devel libxml2-devel ncurses-devel libXext-devel ffmpeg-libs protobuf-devel protobuf-compiler GeographicLib-devel gtk3-devel -y
+\endcode
 
-/*! \page cli Command line tools?
- *
- * This page is about how to draw a circle.
- * Following sections describe circle:
- * - \ref groupCircleDefinition "Definition of Circle"
- * - \ref groupCircleClass "Circle Class"
- */
+And install these additional packages to build the documentation:
+\code 
+$ sudo dnf install doxygen plantuml 
+\endcode
+
+\subsection build Building
+This project has a couple of options that can be specified at compile time:
+
+\code $ cmake -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE=ON -DENABLE_OSMSCOUT=ON -DDDS=CYCLONE-CE ..
+\endcode
+
+Default DDS stack is currently CycloneDDS (default if not specified) but can also be built with Opensplice by setting -DDDS=OSPL-CE.
+
+To enable code coverage reports set ENABLE_COVERAGE. The gdb debugger is avaiable and configured for use with Microsoft Visual Code and the workspace files are part of the repo (recommended for developers).
+
+The BMS function can be configured with Open Street Maps but these need to be compiled and installed onto the system. Its recommeded that you run wit these switched off if you do not need this functionality. See below for more information on creating maps for your region / territory.
+
+\subsection install Installing
+Once the code is built the required files should be installed. There are two method for getting the files to their install locations. Firstly with cmake run:
+\code
+$ sudo make install
+\endcode
+Secondly you can create the platform specific install bundle and install that.
+\subsubsection ubuntu-package Ubuntu 22:04
+\code
+$ cpack -G DEB
+$ apt install vivoe-lite-cyclone-ce_<version>_amd64.deb -y
+\endcode
+\subsubsection centos-packaage CentOS 8
+\code
+$ cpack -G RPM
+$ dnf install vivoe-lite-cyclone-ce-<version>>.x86_64.rpm  -y
+\endcode
+
+\subsection docs Documentation
+You can create this documentation on your own system using doxygen. 
+It is recommended that you run the cmake target to handle the macro replacements for version information as shown below (in the build directory)
+\code
+$ cmake ..
+$ make doxygen
+\endcode
+
+\subsection widgets Widgets
+There are built in graphical elements that can be animated and extended to meet your requirements some of these are shown below.
+\subsubsection ppiclassictank Plan Position Indicator (PPI), Classic Tank
+The PPI comes in servral modes, see gva::WidgetPlanPositionIndicator.
+\image html docs/widget_ppi_01.png  "Classic tank PPI, Sight East" 
+\image html docs/widget_ppi_02.png  "Classic tank PPI, Sight South" 
+\image html docs/widget_ppi_03.png  "Classic tank PPI, Sight West" 
+\image html docs/widget_ppi_04.png  "Classic tank PPI, Sight North" 
+\image html docs/widget_ppi_05.png  "Classic tank PPI without Site" 
+\subsubsection ppiclassicarrow Plan Position Indicator (PPI), Classic Arrow
+
+\image html docs/widget_ppi_06.png  "Classic arrow PPI, Sight East" 
+\image html docs/widget_ppi_07.png  "Classic arrow PPI, Sight South" 
+\image html docs/widget_ppi_08.png  "Classic arrow PPI, Sight West" 
+\image html docs/widget_ppi_09.png  "Classic arrow PPI, Sight North" 
+\image html docs/widget_ppi_10.png  "Classic arrow PPI without Site" 
+
+\subsubsection keyboard On screen keyboard
+The keyboard has servral input modes, see gva::WidgetKeyboard.
+\image html docs/widget_keyboard_01.png  "Keyboard, lower case" 
+\image html docs/widget_keyboard_02.png  "Keyboard, upper case" 
+\image html docs/widget_keyboard_03.png  "Keyboard, numeric case" 
+
+\subsubsection alarm Alarm indicator
+The alarms states are displayed as follows, see gva::WidgetAlarmIndicator.
+\image html docs/alarm_01.png  "Advisory alarm example" 
+Note the advisory state will take the current theme background.
+\image html docs/alarm_02.png  "Warning alarm example" 
+\image html docs/alarm_03.png  "Caution alarm example" 
+
+\subsubsection function Functional Areas (usually at the top of screen)
+The functional area states are displayed as follows, see gva::WidgetTopLabels.
+\image html docs/top_labels_01.png  "Function key states" 
+
+\subsubsection control Control Areas (usually at the bottom of screen)
+The control states are displayed as follows, see gva::WidgetBottomLabels.
+\image html docs/bottom_labels_01.png  "Control key states" 
+
+\subsubsection labels Labels (usually at the side of screen, left and right)
+The label states are displayed as follows, see gva::WidgetSideLabels.
+\image html docs/side_labels_01.png  "Label key states" 
+
+\subsubsection mode Operator Mode
+A mode example can be seen below gva::WidgetMode. It is a GVA requirement 
+that the operator is informed when the system is not operable due to maintinance.
+\image html docs/mode_01.png  "Opertator mode" 
+
+\section tools Tooling
+
+\subsection test-hmi Testing widgets
+
+When creating new widgets it is advisable to add tests for the widget element. All widgets 
+are derived from the gva::WidgetX base class. The simplest widget being the gva::WidgetMode 
+which can be used as a basic example of how to create a new widget.
+
+The test program test-hmi can assist you in testing your new widget without needing to build the 
+entire HMI.
+
+Widgets can then be rendered and viewed using the test-hmi console program. The current widgets built into the SDK are sown below:
+
+\image html /docs/classgva_1_1WidgetX__inherit__graph.png "Diagram showing current widgets in the SDK" 
+

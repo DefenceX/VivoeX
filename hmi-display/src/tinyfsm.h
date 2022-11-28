@@ -46,7 +46,7 @@
 // #define DBG(str) do { std::cerr << str << std::endl; } while( false )
 // DBG("*** dbg_example *** " << __PRETTY_FUNCTION__);
 
-namespace tinyfsm {
+namespace gva::tinyfsm {
 
 // --------------------------------------------------------------------------
 
@@ -299,7 +299,7 @@ struct MealyMachine : tinyfsm::Fsm<F> {
   void exit(void) {}
 };
 
-}  // namespace tinyfsm
+}  // namespace gva::tinyfsm
 
 #define FSM_INITIAL_STATE(_FSM, _STATE)                  \
   namespace tinyfsm {                                    \

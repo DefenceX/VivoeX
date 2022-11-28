@@ -22,6 +22,8 @@
 #include <iostream>
 #include <string>
 
+namespace gva {
+
 GvaVideoRtpYuv::GvaVideoRtpYuv(const std::string& ip, uint32_t port, uint32_t height, uint32_t width)
     : GvaVideoSource(height, width), ip_(ip), port_(port) {
   frame_counter_ = 0;
@@ -58,3 +60,5 @@ const uint32_t GvaVideoRtpYuv::GvaReceiveFrame(char* buffer, VideoFormat format)
 }
 
 const uint32_t GvaVideoRtpYuv::GvaTransmitFrame(char* buffer, VideoFormat format) { return -1; };
+
+}  // namespace gva

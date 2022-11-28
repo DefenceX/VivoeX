@@ -26,37 +26,38 @@
 
 #include <memory>
 
-namespace gva {
+#include "src/widgets/keyboard.h"
+#include "src/widgets/widget.h"
 
-gva::GvaApplication::GvaApplication(const Options options, const std::string &ipaddr, const uint32_t port) {
+GvaApplication::GvaApplication(const Options options, const std::string &ipaddr, const uint32_t port) {
   options_ = options;
   char tmp[256];
 
   // instantiate events
-  EventKeyPowerOn on;
+  gva::EventKeyPowerOn on;
 
   // Start the state machine
-  hmi::start();
+  gva::hmi::start();
 
   // Open window and start event loop and set inital state to 'on'
-  hmi::dispatch(on);
+  gva::hmi::dispatch(on);
 
   //
   // Initialise the display events
   //
-  io_ = std::make_shared<EventsGva>(hmi::GetRendrer()->GetWindow(), hmi::GetRendrer()->GetTouch());
+  io_ = std::make_shared<gva::EventsGva>(gva::hmi::GetRendrer()->GetWindow(), gva::hmi::GetRendrer()->GetTouch());
 
   //
   // Setup video sources (default size will be 640 x 480 unless specified)
   // @todo hmi_display: Fix issue with stream blocking execution on RTP input
   // @body The RTP stream blocks for a whole frame slowing down the HMI.
   if (options_.videoEnabled == true) {
-    rtp_stream1_ = new GvaVideoRtpYuv(ipaddr, port);
+    rtp_stream1_ = new gva::GvaVideoRtpYuv(ipaddr, port);
     snprintf(tmp, strlen(tmp), "Resolution %dx%d", rtp_stream1_->GetHeight(), rtp_stream1_->GetWidth());
-    logGva::log(tmp, LOG_INFO);
+    gva::logGva::log(tmp, gva::LOG_INFO);
     rtp_buffer_ = reinterpret_cast<char *>(malloc(rtp_stream1_->GetHeight() * rtp_stream1_->GetWidth() * 4));
     snprintf(tmp, strlen(tmp), "GVA Incoming RTP stream initalized %s:%d", ipaddr, port);
-    logGva::log(tmp, LOG_INFO);
+    gva::logGva::log(tmp, gva::LOG_INFO);
   }
 }
 
@@ -64,8 +65,8 @@ void GvaApplication::Exec() {
   //
   // Start the render and event loop
   //
-  hmi::GetRendrer()->init(640, 480, gva::ConfigData::GetInstance()->GetFullscreen(), Update,
-                          reinterpret_cast<void *>(io_.get()));
+  gva::hmi::GetRendrer()->Init(640, 480, gva::ConfigData::GetInstance()->GetFullscreen(), Update,
+                               reinterpret_cast<void *>(io_.get()));
   // Free the config reader (writes data back to disk)
   gva::ConfigData::GetInstance()->WriteData();
 }
@@ -82,11 +83,11 @@ GvaApplication::~GvaApplication() {
 ///
 /// \param key Key input to dispatch
 ///
-void GvaApplication::Dispatch(GvaKeyEnum key) {
-  EventKeyFunction input;
+void GvaApplication::Dispatch(gva::GvaKeyEnum key) {
+  gva::EventKeyFunction input;
 
   input.key = key;
-  hmi::dispatch(input);
+  gva::hmi::dispatch(input);
 }
 
 ///
@@ -94,15 +95,15 @@ void GvaApplication::Dispatch(GvaKeyEnum key) {
 ///
 /// \param render Renderer handle
 ///
-void GvaApplication::Fullscreen(HandleType *render) {
+void GvaApplication::Fullscreen(gva::HandleType *render) {
   render->fullscreen ? gtk_window_unfullscreen(GTK_WINDOW(render->win.win))
                      : gtk_window_fullscreen(GTK_WINDOW(render->win.win));
   render->fullscreen = render->fullscreen ? false : true;
   gva::ConfigData::GetInstance()->SetFullscreen(render->fullscreen);
-  logGva::log("Toggle fullscreen", LOG_INFO);
+  gva::logGva::log("Toggle fullscreen", gva::LOG_INFO);
 }
 
-GvaVideoRtpYuv *GvaApplication::rtp_stream1_ = nullptr;
+gva::GvaVideoRtpYuv *GvaApplication::rtp_stream1_ = nullptr;
 GvaApplication::Options GvaApplication::options_ = {};
 
 ///
@@ -112,23 +113,22 @@ GvaApplication::Options GvaApplication::options_ = {};
 /// \param user_data Renderer handle
 ///
 void GvaApplication::Update(void *arg, gpointer user_data) {
-  EventsGva *io = static_cast<EventsGva *>(arg);
-  EventGvaType event;
+  gva::EventsGva *io = static_cast<gva::EventsGva *>(arg);
+  gva::EventGvaType event;
   bool update = true;
   static int c = 0;
   static uint32_t count = 0;
-  HandleType *render = static_cast<HandleType *>(user_data);
-
-  io->NextGvaEvent(&event);
+  gva::HandleType *render = static_cast<gva::HandleType *>(user_data);
 
   if (options_.videoEnabled) {
     // Get the live video frame if Driver (DRV)
-    if (hmi::GetScreen()->currentFunction == DRV) {
-      hmi::GetScreen()->canvas.bufferType = SURFACE_CAIRO;
-      hmi::GetScreen()->canvas.surface = cairo_image_surface_create(CAIRO_FORMAT_RGB24, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-      char *test = reinterpret_cast<char *>(cairo_image_surface_get_data(hmi::GetScreen()->canvas.surface));
-      rtp_stream1_->GvaReceiveFrame(test, RGBA_COLOUR);
-      cairo_surface_mark_dirty(hmi::GetScreen()->canvas.surface);
+    if (gva::hmi::GetScreen()->currentFunction == gva::GvaFunctionEnum::kDriver) {
+      gva::hmi::GetScreen()->canvas.bufferType = gva::SurfaceType::kSurfaceCairo;
+      gva::hmi::GetScreen()->canvas.surface =
+          cairo_image_surface_create(CAIRO_FORMAT_RGB24, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+      char *test = reinterpret_cast<char *>(cairo_image_surface_get_data(gva::hmi::GetScreen()->canvas.surface));
+      rtp_stream1_->GvaReceiveFrame(test, gva::RGBA_COLOUR);
+      cairo_surface_mark_dirty(gva::hmi::GetScreen()->canvas.surface);
 
       // @todo hmi_display: Add RTP HMI streaming output to display.
       // @body The HMI window is only a preview. Add RTP output and headless
@@ -136,209 +136,321 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
     }
   }
 
-  hmi::GetRendrer()->Update();
-  switch (event.type) {
-    case KEY_EVENT: {
-      Compass *compass = static_cast<Compass *>(hmi::GetRendrer()->GetWidget(WIDGET_TYPE_COMPASS));
-      Keyboard *keyboard = static_cast<Keyboard *>(hmi::GetRendrer()->GetWidget(WIDGET_TYPE_KEYBOARD));
+  gva::hmi::GetRendrer()->Update();
+
+  io->NextGvaEvent(&event);
+  switch (event.type_) {
+    case gva::EventEnumType::kKeyEventPressed:
+      gva::logGva::log("[GVA] Key press event being processed value=" + std::to_string(int(event.key_)), gva::LOG_INFO);
+
       switch (event.key_) {
-        case KEY_ESC:
+        case gva::GvaKeyEnum::KKeySituationalAwareness:
+          gva::hmi::GetScreen()->function_top->labels[0].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          break;
+        case gva::GvaKeyEnum::kKeyWeapon:
+          gva::hmi::GetScreen()->function_top->labels[1].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          break;
+        case gva::GvaKeyEnum::kKeyDefensiveSystems:
+          gva::hmi::GetScreen()->function_top->labels[2].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          break;
+        case gva::GvaKeyEnum::kKeySystems:
+          gva::hmi::GetScreen()->function_top->labels[3].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          break;
+        case gva::GvaKeyEnum::kKeyDriver:
+          gva::hmi::GetScreen()->function_top->labels[4].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          break;
+        case gva::GvaKeyEnum::kKeySpecialToRole:
+          gva::hmi::GetScreen()->function_top->labels[5].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          break;
+        case gva::GvaKeyEnum::kKeyCommunications:
+          gva::hmi::GetScreen()->function_top->labels[6].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          break;
+        case gva::GvaKeyEnum::kKeyBattlefieldManagementSystem:
+          gva::hmi::GetScreen()->function_top->labels[7].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          break;
+        case gva::GvaKeyEnum::kKeyF1:
+          gva::hmi::GetScreen()->function_left.labels[0].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          break;
+        case gva::GvaKeyEnum::kKeyF2:
+          gva::hmi::GetScreen()->function_left.labels[1].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          break;
+        case gva::GvaKeyEnum::kKeyF3:
+          gva::hmi::GetScreen()->function_left.labels[2].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          break;
+        case gva::GvaKeyEnum::kKeyF4:
+          gva::hmi::GetScreen()->function_left.labels[3].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          break;
+        case gva::GvaKeyEnum::kKeyF5:
+          gva::hmi::GetScreen()->function_left.labels[4].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          break;
+        case gva::GvaKeyEnum::kKeyF6:
+          gva::hmi::GetScreen()->function_left.labels[5].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          break;
+        case gva::GvaKeyEnum::kKeyF7:
+          gva::hmi::GetScreen()->function_right.labels[0].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          break;
+        case gva::GvaKeyEnum::kKeyF8:
+          gva::hmi::GetScreen()->function_right.labels[1].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          break;
+        case gva::GvaKeyEnum::kKeyF9:
+          gva::hmi::GetScreen()->function_right.labels[2].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          break;
+        case gva::GvaKeyEnum::kKeyF10:
+          gva::hmi::GetScreen()->function_right.labels[3].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          break;
+        case gva::GvaKeyEnum::kKeyF11:
+          gva::hmi::GetScreen()->function_right.labels[4].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          break;
+        case gva::GvaKeyEnum::kKeyF12:
+          gva::hmi::GetScreen()->function_right.labels[5].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          break;
+        case gva::GvaKeyEnum::kKeyF13:
+          gva::hmi::GetScreen()->control->labels_[0].state_ = gva::LabelStates::kLabelEnabledSelectedChanging;
+          break;
+        case gva::GvaKeyEnum::kKeyF14:
+          gva::hmi::GetScreen()->control->labels_[1].state_ = gva::LabelStates::kLabelEnabledSelectedChanging;
+          break;
+        case gva::GvaKeyEnum::kKeyF15:
+          gva::hmi::GetScreen()->control->labels_[2].state_ = gva::LabelStates::kLabelEnabledSelectedChanging;
+          break;
+        case gva::GvaKeyEnum::kKeyF16:
+          gva::hmi::GetScreen()->control->labels_[3].state_ = gva::LabelStates::kLabelEnabledSelectedChanging;
+          break;
+        case gva::GvaKeyEnum::kKeyF17:
+          gva::hmi::GetScreen()->control->labels_[4].state_ = gva::LabelStates::kLabelEnabledSelectedChanging;
+          break;
+        case gva::GvaKeyEnum::kKeyF18:
+          gva::hmi::GetScreen()->control->labels_[5].state_ = gva::LabelStates::kLabelEnabledSelectedChanging;
+          break;
+        case gva::GvaKeyEnum::kKeyF19:
+          gva::hmi::GetScreen()->control->labels_[6].state_ = gva::LabelStates::kLabelEnabledSelectedChanging;
+          break;
+        case gva::GvaKeyEnum::kKeyF20:
+          gva::hmi::GetScreen()->control->labels_[7].state_ = gva::LabelStates::kLabelEnabledSelectedChanging;
+          break;
+        case gva::GvaKeyEnum::kKeyUnknown:  // No an active touch zone so just reset everything
+        default:
+          // Ok this is awkward, the touch event probably drifted off the active zone so reset all.
+          for (auto &label : gva::hmi::GetScreen()->function_top->labels) {
+            if (label.state == gva::LabelStates::kLabelEnabledSelectedChanging)
+              label.state = gva::LabelStates::kLabelEnabledSelected;
+          }
+          for (auto &label : gva::hmi::GetScreen()->function_left.labels) {
+            if (label.state == gva::LabelStates::kLabelEnabledSelectedChanging) {
+              printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
+              label.state = gva::LabelStates::kLabelEnabledSelected;
+              gva::hmi::GetScreen()->function_left.labels[0].state = gva::LabelStates::kLabelEnabled;
+              gva::hmi::GetScreen()->function_left.labels[1].state = gva::LabelStates::kLabelEnabled;
+              gva::hmi::GetScreen()->function_left.labels[2].state = gva::LabelStates::kLabelEnabled;
+              gva::hmi::GetScreen()->function_left.labels[3].state = gva::LabelStates::kLabelEnabled;
+              gva::hmi::GetScreen()->function_left.labels[4].state = gva::LabelStates::kLabelEnabled;
+              gva::hmi::GetScreen()->function_left.labels[5].state = gva::LabelStates::kLabelEnabled;
+            }
+          }
+          for (auto &label : gva::hmi::GetScreen()->function_right.labels) {
+            if (label.state == gva::LabelStates::kLabelEnabledSelectedChanging)
+              label.state = gva::LabelStates::kLabelEnabledSelected;
+          }
+          for (auto &label : gva::hmi::GetScreen()->control->labels_) {
+            if (label.state_ == gva::LabelStates::kLabelEnabledSelectedChanging)
+              label.state_ = gva::LabelStates::kLabelEnabledSelected;
+          }
+
+          update = false;
+          break;
+      }
+      if (update) gva::hmi::GetRendrer()->Update();
+      break;
+
+    case gva::kKeyEventReleased: {
+      gva::WidgetPlanPositionIndicator *compass =
+          static_cast<gva::WidgetPlanPositionIndicator *>(gva::hmi::GetRendrer()->GetWidget(gva::KWidgetTypeCompass));
+
+      auto keyboard = (gva::WidgetKeyboard *)gva::hmi::GetRendrer()->GetWidget(gva::KWidgetTypeKeyboard);
+
+      gva::logGva::log("[GVA] Key release event being processed value=" + std::to_string(int(event.key_)),
+                       gva::LOG_INFO);
+
+      switch (event.key_) {
+        case gva::GvaKeyEnum::kKeyEscape:
           // exit on ESC key press
           if (render->surface) cairo_surface_destroy(render->surface);
           g_application_quit(G_APPLICATION(render->win.app));
           break;
-        case KEY_SA:
+        case gva::GvaKeyEnum::KKeySituationalAwareness:
           // 1 maps to F1
           {
-            EventKeySA sa;
+            gva::EventKeySA sa;
 
-            hmi::dispatch(sa);
+            gva::hmi::dispatch(sa);
           }
           break;
-        case KEY_WPN:
+        case gva::GvaKeyEnum::kKeyWeapon:
           // 2 maps to F2
           {
-            EventKeyWPN wpn;
+            gva::EventKeyWPN wpn;
 
-            hmi::dispatch(wpn);
+            gva::hmi::dispatch(wpn);
           }
           break;
-        case KEY_DEF:
+        case gva::GvaKeyEnum::kKeyDefensiveSystems:
           // 3 maps to F3
           {
-            EventKeyDEF def;
+            gva::EventKeyDEF def;
 
-            hmi::dispatch(def);
+            gva::hmi::dispatch(def);
           }
           break;
-        case KEY_SYS:
+        case gva::GvaKeyEnum::kKeySystems:
           // 4 maps to F4
           {
-            EventKeySYS sys;
+            gva::EventKeySYS sys;
 
-            hmi::dispatch(sys);
+            gva::hmi::dispatch(sys);
           }
           break;
-        case KEY_DRV:
+        case gva::GvaKeyEnum::kKeyDriver:
           // 5 maps to F5
           {
-            EventKeyDRV drv;
+            gva::EventKeyDRV drv;
 
-            hmi::dispatch(drv);
+            gva::hmi::dispatch(drv);
           }
           break;
-        case KEY_STR:
+        case gva::GvaKeyEnum::kKeySpecialToRole:
           // 6 maps to F6
           {
-            EventKeySTR str;
+            gva::EventKeySTR str;
 
-            hmi::dispatch(str);
+            gva::hmi::dispatch(str);
           }
           break;
-        case KEY_COM:
+        case gva::GvaKeyEnum::kKeyCommunications:
           // 7 maps to F7
           {
-            EventKeyCOM com;
+            gva::EventKeyCOM com;
 
-            hmi::dispatch(com);
+            gva::hmi::dispatch(gva::EventKeyCOM());
           }
           break;
-        case KEY_BMS:
+        case gva::GvaKeyEnum::kKeyBattlefieldManagementSystem:
           // 8 maps to F8
           {
-            EventKeyBMS bms;
+            gva::EventKeyBMS bms;
 
-            hmi::dispatch(bms);
+            gva::hmi::dispatch(bms);
           }
           break;
-        case KEY_F1:
-          Dispatch(KEY_F1);
+        case gva::GvaKeyEnum::kKeyF1:
+        case gva::GvaKeyEnum::kKeyF2:
+        case gva::GvaKeyEnum::kKeyF3:
+        case gva::GvaKeyEnum::kKeyF4:
+        case gva::GvaKeyEnum::kKeyF5:
+        case gva::GvaKeyEnum::kKeyF6:
+        case gva::GvaKeyEnum::kKeyF7:
+        case gva::GvaKeyEnum::kKeyF8:
+        case gva::GvaKeyEnum::kKeyF9:
+        case gva::GvaKeyEnum::kKeyF10:
+        case gva::GvaKeyEnum::kKeyF11:
+        case gva::GvaKeyEnum::kKeyF12:
+        case gva::GvaKeyEnum::kKeyF13:  // All drop through to here, just dispatch
+          Dispatch(event.key_);
           break;
-        case KEY_F2:
-          Dispatch(KEY_F2);
-          break;
-        case KEY_F3:
-          Dispatch(KEY_F3);
-          break;
-        case KEY_F4:
-          Dispatch(KEY_F4);
-          break;
-        case KEY_F5:
-          Dispatch(KEY_F5);
-          break;
-        case KEY_F6:
-          Dispatch(KEY_F6);
-          break;
-        case KEY_F7:
-          Dispatch(KEY_F7);
-          break;
-        case KEY_F8:
-          Dispatch(KEY_F8);
-          break;
-        case KEY_F9:
-          Dispatch(KEY_F9);
-          break;
-        case KEY_F10:
-          Dispatch(KEY_F10);
-          break;
-        case KEY_F11:
-          Dispatch(KEY_F11);
-          break;
-        case KEY_F12:
-          Dispatch(KEY_F12);
-          break;
-        case KEY_F13:
-          // Control UP
-          { Dispatch(KEY_F13); }
-          break;
-        case KEY_F14:
+        case gva::GvaKeyEnum::kKeyF14:
           // Control Alarms
           {
-            EventKeyAlarms alarms;
+            gva::EventKeyAlarms alarms;
 
-            hmi::dispatch(alarms);
-            Dispatch(KEY_F14);
+            gva::hmi::dispatch(alarms);
+            Dispatch(event.key_);
           }
           break;
-        case KEY_F15:
+        case gva::GvaKeyEnum::kKeyF15:
           // F15
-          { Dispatch(KEY_F15); }
+          Dispatch(event.key_);
           break;
-        case KEY_F16:
+        case gva::GvaKeyEnum::kKeyF16:
           // F16
-          { Dispatch(KEY_F16); }
+          Dispatch(gva::GvaKeyEnum::kKeyF16);
           break;
-        case KEY_F17:
+        case gva::GvaKeyEnum::kKeyF17:
           // F17 Control Arrow Up
           {
-            keyboard->mode_ = (keyboard->mode_ == KEYBOARD_UPPER) ? KEYBOARD_LOWER : KEYBOARD_UPPER;
-            Dispatch(KEY_F17);
+            keyboard->SetMode((keyboard->GetMode() == gva::KeyboardModeType::kKeyboardUpper)
+                                  ? gva::KeyboardModeType::kKeyboardLower
+                                  : gva::KeyboardModeType::kKeyboardUpper);
+            Dispatch(gva::GvaKeyEnum::kKeyF17);
           }
           break;
-        case KEY_F18:
+        case gva::GvaKeyEnum::kKeyF18:
           // F18 Control Arrow Down
           {
-            keyboard->mode_ = (keyboard->mode_ == KEYBOARD_NUMBERS) ? KEYBOARD_UPPER : KEYBOARD_NUMBERS;
-            Dispatch(KEY_F18);
+            keyboard->SetMode((keyboard->GetMode() == gva::KeyboardModeType::kKeyboardNumbers)
+                                  ? gva::KeyboardModeType::kKeyboardUpper
+                                  : gva::KeyboardModeType::kKeyboardNumbers);
+            Dispatch(event.key_);
           }
           break;
-        case KEY_F19:
+        case gva::GvaKeyEnum::kKeyF19:
           // F19 Control labels
-          { Dispatch(KEY_F19); }
+          Dispatch(event.key_);
           break;
-        case KEY_F20:
+        case gva::GvaKeyEnum::kKeyF20:
           // F20
-          { Dispatch(KEY_F20); }
+          Dispatch(event.key_);
           break;
-        case KEY_FULLSCREEN:
+        case gva::GvaKeyEnum::kKeyFullscreen:
           // f toggle fullscreen
           Fullscreen(render);
-          hmi::GetRendrer()->GetTouch()->SetResolution(gdk_screen_width(), gdk_screen_height());
+          gva::hmi::GetRendrer()->GetTouch()->SetResolution(gdk_screen_width(), gdk_screen_height());
           break;
-        case KEY_KEYBOARD:
+        case gva::GvaKeyEnum::kKeyKeyboard:
           // k toggle keyboard
           { keyboard->SetVisible(keyboard->GetVisible() ? false : true); }
           break;
-        case KEY_PLUS:
-          compass->bearing_ += 2;
+        case gva::GvaKeyEnum::kKeyPlus:
+          compass->SetBearing(compass->GetBearing() + 2);
           break;
-        case KEY_GREATER:
-          compass->bearingSight_ += 2;
+        case gva::GvaKeyEnum::kKeyRightArrow:
+          compass->SetBearingSight(compass->GetBearingSight() + 2);
           break;
-        case KEY_MINUS:
-          compass->bearing_ -= 2;
+        case gva::GvaKeyEnum::kKeyMinus:
+          compass->SetBearing(compass->GetBearing() - 2);
           break;
-        case KEY_LESS:
-          compass->bearingSight_ -= 2;
+        case gva::GvaKeyEnum::kKeyLeftArrow:
+          compass->SetBearingSight(compass->GetBearingSight() - 2);
           break;
-        case KEY_NEXT_LABEL: {
-          Dispatch(KEY_NEXT_LABEL);
+        case gva::GvaKeyEnum::kKeyNextLabel: {
+          Dispatch(event.key_);
         } break;
-        case KEY_PREV_LABEL: {
-          Dispatch(KEY_PREV_LABEL);
+        case gva::GvaKeyEnum::kKeyPreviousLabel: {
+          Dispatch(event.key_);
         } break;
+        case gva::GvaKeyEnum::kKeyUnknown:  // Drop through to default
         default:
-          printf("[GVA] KeyPress not defined 0x%x\n", event.key_);
+          gva::logGva::log("[GVA] Key release not defined " + std::to_string(int(event.key_)), gva::LOG_INFO);
           update = false;
           break;
       }
-      if (update) hmi::GetRendrer()->Update();
-    } break;
-    case RESIZE_EVENT: {
+      if (update) gva::hmi::GetRendrer()->Update();
+
+    }  // Key Released
+
+    break;
+    case gva::kResizeEvent: {
       printf("[GVA] WindowResize: %d x %d\n", event.resize_.width, event.resize_.height);
-      if (event.resize_.width != hmi::GetRendrer()->GetWidth() ||
-          event.resize_.height != hmi::GetRendrer()->GetHeight()) {
+      if (event.resize_.width != gva::hmi::GetRendrer()->GetWidth() ||
+          event.resize_.height != gva::hmi::GetRendrer()->GetHeight()) {
         printf("[GVA] WindowResize: %d x %d\n", event.resize_.width, event.resize_.height);
-        hmi::GetRendrer()->SetWidth(event.resize_.width);
-        hmi::GetRendrer()->SetHeight(event.resize_.height);
-        hmi::GetRendrer()->Update();
-        hmi::GetRendrer()->GetTouch()->SetResolution(event.resize_.width, event.resize_.height);
+        gva::hmi::GetRendrer()->SetWidth(event.resize_.width);
+        gva::hmi::GetRendrer()->SetHeight(event.resize_.height);
+        gva::hmi::GetRendrer()->Update();
+        gva::hmi::GetRendrer()->GetTouch()->SetResolution(event.resize_.width, event.resize_.height);
       }
     } break;
-    case REDRAW_EVENT: {
-      hmi::GetRendrer()->Update();
+    case gva::kRedrawEvent: {
+      gva::hmi::GetRendrer()->Update();
     } break;
   }
-}
 
 }  // namespace gva

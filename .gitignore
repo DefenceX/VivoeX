@@ -2,6 +2,7 @@
 *.so
 *.tcl
 *.swp
+*.pu
 external
 *~
 build
