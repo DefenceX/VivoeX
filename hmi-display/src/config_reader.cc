@@ -80,6 +80,15 @@ ConfigDataBase::~ConfigDataBase() {
   WriteData();
 }
 
+ConfigData* ConfigData::GetInstance() {
+  //  This is a safer way to create an instance. instance = new Singleton is
+  //  dangerous in case two instance threads wants to access at the same time
+  if (config_ == nullptr) {
+    config_ = new ConfigData();
+  }
+  return config_;
+}
+
 void ConfigDataBase::WriteData() {
   // Write the config back to disk.
   std::fstream output(config_file_, std::fstream::out | std::fstream::trunc | std::fstream::binary);
@@ -91,15 +100,6 @@ void ConfigDataBase::WriteData() {
   logGva::log("Updated configuration file", LOG_INFO);
   // Optional:  Delete all global objects allocated by libprotobuf.
   google::protobuf::ShutdownProtobufLibrary();
-}
-
-ConfigData* ConfigData::GetInstance() {
-  //  This is a safer way to create an instance. instance = new Singleton is
-  //  dangerous in case two instance threads wants to access at the same time
-  if (config_ == nullptr) {
-    config_ = new ConfigData();
-  }
-  return config_;
 }
 
 std::string ConfigData::GetConfigFilename() const { return current_config_->file().config_filename(); }

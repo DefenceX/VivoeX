@@ -62,10 +62,10 @@ class WidgetMode : public WidgetX {
   ///
   void SetMode(const std::string mode);
 
+  /// KWidgetTypeMode
+  ///  \brief Get the Mode object
   ///
-  /// \brief Get the Mode object
-  ///
-  /// \return std::string
+  ///  \return std::string
   ///
   std::string GetMode() const;
 
