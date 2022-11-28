@@ -180,7 +180,7 @@ enum class GvaFunctionGroupEnum { kTop, kBottom, kLeft, kRight, kAlarmTable, kKe
 ///
 ///
 enum class GvaKeyEnum {
-  kKeyNone = 0,
+  kKeyUnknown = 0,
   KKeySituationalAwareness,
   kKeyWeapon,
   kKeyDefensiveSystems,

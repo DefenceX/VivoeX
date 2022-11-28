@@ -43,24 +43,19 @@ EventsGva::EventsGva(gtkType* window, TouchGva* touch) {
 // The ::button-press signal handler receives a GdkEventButton
 // struct which contains this information.
 gboolean EventsGva::ButtonPressEventCb(GtkWidget* Widget, GdkEventButton* event, gpointer data) {
-  if (event->button == GDK_BUTTON_PRIMARY) {
-    EventGvaType gvaEvent;
-    uint32_t binding = 0;
+  EventGvaType gvaEvent;
+  uint32_t binding = 0;
 
-    touch_->Check(GvaFunctionGroupEnum::kTop, &binding, event->x, event->y);
-    if (!binding) touch_->Check(GvaFunctionGroupEnum::kBottom, &binding, event->x, event->y);
-    if (!binding) touch_->Check(GvaFunctionGroupEnum::kRight, &binding, event->x, event->y);
-    if (!binding) touch_->Check(GvaFunctionGroupEnum::kLeft, &binding, event->x, event->y);
-    if (binding) {
-      gvaEvent.type_ = kKeyEventReleased;
-      gvaEvent.key_ = (GvaKeyEnum)binding;
-      eventqueue_.push_back(gvaEvent);
-    }
-    logGva::log("[GVA] Mouse press event " + std::to_string(event->button) + " (Primary button)", LOG_INFO);
+  touch_->Check(GvaFunctionGroupEnum::kTop, &binding, event->x, event->y);
+  if (!binding) touch_->Check(GvaFunctionGroupEnum::kBottom, &binding, event->x, event->y);
+  if (!binding) touch_->Check(GvaFunctionGroupEnum::kRight, &binding, event->x, event->y);
+  if (!binding) touch_->Check(GvaFunctionGroupEnum::kLeft, &binding, event->x, event->y);
+  if (binding) {
+    gvaEvent.type_ = kKeyEventPressed;
+    gvaEvent.key_ = (GvaKeyEnum)binding;
+    eventqueue_.push_back(gvaEvent);
 
-  } else if (event->button == GDK_BUTTON_SECONDARY) {
-    // Not much to do here now as second button is unused
-    logGva::log("[GVA] Mouse press event " + std::to_string(event->button) + " (Secondary button)", LOG_INFO);
+    logGva::log("[GVA] Button press event " + std::to_string(event->button), LOG_INFO);
   }
 
   // We've handled the event, stop processing
@@ -80,12 +75,13 @@ gboolean EventsGva::ButtonReleaseEventCb(GtkWidget* Widget, GdkEventButton* even
       gvaEvent.type_ = EventEnumType::kKeyEventReleased;
       gvaEvent.key_ = (GvaKeyEnum)binding;
       eventqueue_.push_back(gvaEvent);
+    } else {
+      // Not an active hotspot so cant set key but event still happened.
+      gvaEvent.type_ = EventEnumType::kKeyEventReleased;
+      gvaEvent.key_ = GvaKeyEnum::kKeyUnknown;
+      eventqueue_.push_back(gvaEvent);
     }
-    logGva::log("[GVA] Mouse release event " + std::to_string(event->button) + " (Primary button)", LOG_INFO);
-
-  } else if (event->button == GDK_BUTTON_SECONDARY) {
-    // Not much to do here now as second button is unused
-    logGva::log("[GVA] Mouse release event " + std::to_string(event->button) + " (Secondary button)", LOG_INFO);
+    logGva::log("[GVA] Button release event " + std::to_string(event->button), LOG_INFO);
   }
 
   // We've handled the event, stop processing
@@ -345,7 +341,7 @@ gboolean EventsGva::CreateKeyEvent(GtkWidget* Widget, GdkEventKey* event, EventE
       break;
 
     default:
-      printf("[GVA] KeyPress not defined 0x%x\n", event->keyval);
+      gva::logGva::log("[GVA] KeyPress not defined " + std::to_string(int(gvaEvent.key_)), gva::LOG_INFO);
       previous_key_ = event->keyval;
       return TRUE;
   }

@@ -316,7 +316,9 @@ GvaStatusTypes ScreenGva::Update() {
   }
 
   // TODO : Draw the alarms if any (Mock up)
-  widget_list_[KWidgetTypeAlarmIndicator]->Draw();
+  if (widget_list_[KWidgetTypeAlarmIndicator]->GetVisible()) {
+    widget_list_[KWidgetTypeAlarmIndicator]->Draw();
+  }
 
   // Setup and Draw the alarms
   if (screen_->table.visible_) {

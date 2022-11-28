@@ -53,6 +53,7 @@ namespace gva {
 void StateAlarms::entry() {
   printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
 
+  // Check to see if alarms was requested from hidden state, if so go back to last menu.
   if (screen_.control->labels[1].state != LabelStates::kLabelHidden) {
     if (alarmson_) {
       alarmson_ = false;
@@ -106,6 +107,8 @@ void StateAlarms::react(EventKeySTR const &) { transit<StateSTR>(); };
 void StateAlarms::react(EventKeyCOM const &) { transit<StateCOM>(); };
 
 void StateAlarms::react(EventKeyBMS const &) { transit<StateBMS>(); };
+
+void StateAlarms::react(EventKeyAlarms const &) { transit<StateAlarms>(); };
 
 void StateAlarms::react(EventKeyFunction const &e) { Key(e.key); };
 

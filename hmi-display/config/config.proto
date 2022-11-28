@@ -63,7 +63,7 @@ message ThemeDefault {
 
   optional LabelStyle theme_label_style = 3 [default = LABEL_ROUNDED];
   // Background label colour
-  optional Colour theme_label_background_enabled_selected_changing = 4 [default = COLOUR_BLACK];
+  optional Colour theme_label_background_enabled_selected_changing = 4 [default = COLOUR_YELLOW];
   optional Colour theme_label_background_enabled_selected = 5 [default = COLOUR_DARK_GREEN];
   optional Colour theme_label_background_enabled = 6 [default = COLOUR_DARK_GREEN];
   optional Colour theme_label_background_disabled = 7 [default = COLOUR_GREY];
@@ -73,7 +73,7 @@ message ThemeDefault {
   optional Colour theme_label_text_enabled = 10 [default = COLOUR_WHITE];
   optional Colour theme_label_text_disabled = 11 [default = COLOUR_WHITE];
   // Line Colour
-  optional Colour theme_label_border_enabled_selected_changing = 12 [default = COLOUR_YELLOW];
+  optional Colour theme_label_border_enabled_selected_changing = 12 [default = COLOUR_DARK_GREEN2];
   optional Colour theme_label_border_enabled_selected = 13 [default = COLOUR_YELLOW];
   optional Colour theme_label_border_enabled = 14 [default = COLOUR_DARK_GREEN2];
   optional Colour theme_label_border_disabled = 15 [default = COLOUR_DARK_GREY];
