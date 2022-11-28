@@ -379,15 +379,15 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeyBattlefieldManagementSystemRi
 #if (ENABLE_OSMSCOUT)
   LabelStates state = LabelStates::kLabelEnabled;
 #else
-  LabelStates state = LabelStates::kLabelHidden;
+  LabelStates state = LabelStates::kLabelDisabled;
 #endif
   keys.labels[0].state = state;
   keys.labels[0].text = "Unused";
   keys.labels[0].toggleActive = false;
-  keys.labels[1].state = state;
+  keys.labels[1].state = LabelStates::kLabelHidden;
   keys.labels[1].text = "Unused";
   keys.labels[1].toggleActive = false;
-  keys.labels[2].state = state;
+  keys.labels[2].state = LabelStates::kLabelHidden;
   keys.labels[2].text = "icon:leftarrow";
   keys.labels[2].toggleActive = false;
   keys.labels[3].state = state;

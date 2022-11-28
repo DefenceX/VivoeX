@@ -51,6 +51,8 @@
 namespace gva {
 
 void StateAlarms::entry() {
+  printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
+
   if (screen_.control->labels[1].state != LabelStates::kLabelHidden) {
     if (alarmson_) {
       alarmson_ = false;
@@ -85,6 +87,7 @@ void StateAlarms::entry() {
     alarmson_ = true;
     manager_->SetScreen(&screen_, GvaFunctionEnum::kAlarmsX);
     HmiHelper::TableAlarms(&screen_.table);
+    screen_.table.visible_ = true;
   }
 };
 

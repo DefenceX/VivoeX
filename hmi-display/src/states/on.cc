@@ -73,13 +73,13 @@ void StateOn::entry() {
                        gva::DefaultSettings::GetDefaultFunctionKeyCommunicationsLeft(),
                        gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden());
   // Battlefield Management System (BMS)
-  manager_->AddNewView(GvaFunctionEnum::kAlarmsX, &top_, &bottom_,
+  manager_->AddNewView(GvaFunctionEnum::kBattlefieldManagementSystem, &top_, &bottom_,
                        gva::DefaultSettings::GetDefaultFunctionKeyBattlefieldManagementSystemLeft(),
                        gva::DefaultSettings::GetDefaultFunctionKeyBattlefieldManagementSystemRight());
   // Alarms
-  manager_->AddNewView(GvaFunctionEnum::kBattlefieldManagementSystem, &top_, &bottom_,
-                       gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden(),
-                       gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden());
+  manager_->AddNewView(GvaFunctionEnum::kAlarmsX, &top_, &bottom_,
+                       gva::DefaultSettings::GetDefaultFunctionKeyAlarmsLeft(),
+                       gva::DefaultSettings::GetDefaultFunctionKeyAlarmsRight());
 
   manager_->SetScreen(&screen_, GvaFunctionEnum::kSystems);
 

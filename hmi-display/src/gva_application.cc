@@ -26,6 +26,7 @@
 
 #include <memory>
 
+#include "src/widgets/keyboard.h"
 #include "src/widgets/widget.h"
 
 GvaApplication::GvaApplication(const Options options, const std::string &ipaddr, const uint32_t port) {
@@ -142,8 +143,11 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
     case gva::kKeyEventReleased: {
       gva::WidgetPlanPositionIndicator *compass =
           static_cast<gva::WidgetPlanPositionIndicator *>(gva::hmi::GetRendrer()->GetWidget(gva::KWidgetTypeCompass));
-      gva::WidgetKeyboard *keyboard =
-          static_cast<gva::WidgetKeyboard *>(gva::hmi::GetRendrer()->GetWidget(gva::KWidgetTypeKeyboard));
+
+      auto keyboard = (gva::WidgetKeyboard *)gva::hmi::GetRendrer()->GetWidget(gva::KWidgetTypeKeyboard);
+
+      gva::logGva::log("[GVA} Key event being processed value=" + std::to_string(int(event.key_)), gva::LOG_INFO);
+
       switch (event.key_) {
         case gva::GvaKeyEnum::kKeyEscape:
           // exit on ESC key press
