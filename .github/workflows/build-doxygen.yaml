@@ -40,8 +40,7 @@ jobs:
           mkdir -p /var/log && \
           sudo touch /var/log/gva.log && \
           sudo chmod a+rw /var/log/gva.log && \
-          ls -hal && \
-          sudo chmod a+rw ./docs && \
+          mkdir ./docs
           ls -hal && \
           sudo mkdir -p /opt/gva/hmi && \
           sudo cp ./images/au /opt/gva/hmi/images -r && \
