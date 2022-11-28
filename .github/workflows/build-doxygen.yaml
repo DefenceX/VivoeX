@@ -36,7 +36,8 @@ jobs:
           export MAJOR=$(sed -n '1p' < version) && \
           export MINOR=$(sed -n '2p' < version) && \
           export PATCH=$(sed -n '3p' < version) && \
-          export GIT_HASH=$(git rev-parse --short HEAD) && \
+          export PATCH=$(sed -n '3p' < version) && \
+          export SEM_VERSION=${MAJOR}.${MINOR}.${PATCH} && \
           mkdir -p /var/log && \
           sudo touch /var/log/gva.log && \
           sudo chmod a+rw /var/log/gva.log && \
