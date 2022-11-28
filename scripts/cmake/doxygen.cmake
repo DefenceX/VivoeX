@@ -1,6 +1,6 @@
 
 # The test program is used to ganerate all the widgets, argument 1 is 1millisecond delay in displaying images
-add_custom_target(doxygen-images COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/test-hmi 1)
+add_custom_target(doxygen-images COMMAND strace ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/test-hmi 1)
 add_dependencies(doxygen-images test-hmi)
 
 add_custom_target(doxygen-images-convert COMMAND convert ${CMAKE_BINARY_DIR}/*.png -trim +repage  -set filename:f '%t' ${CMAKE_SOURCE_DIR}/docs/'%[filename:f].png')
