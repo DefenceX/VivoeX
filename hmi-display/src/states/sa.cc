@@ -31,7 +31,13 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
   std::string filename;
 
   screen_.function_left.visible = true;
+  for (auto &label : screen_.function_left.labels) {
+    if (label.state == LabelStates::kLabelEnabledSelected) label.state = LabelStates::kLabelEnabled;
+  }
   screen_.function_right.visible = true;
+  for (auto &label : screen_.function_right.labels) {
+    if (label.state == LabelStates::kLabelEnabledSelected) label.state = LabelStates::kLabelEnabled;
+  }
 
   gva::WidgetPlanPositionIndicator *compass =
       static_cast<WidgetPlanPositionIndicator *>(screen_render_->GetWidget(KWidgetTypeCompass));
@@ -115,6 +121,8 @@ void StateSA::entry() {
 };
 
 void StateSA::react(EventKeyPowerOn const &) { transit<StateOff>(); };
+
+void StateSA::react(EventKeySA const &) { transit<StateSA>(); };
 
 void StateSA::react(EventKeyWPN const &) { transit<StateWPN>(); };
 

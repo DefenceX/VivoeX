@@ -43,6 +43,7 @@ struct StateSTR : Hmi {
   void react(EventKeyDEF const &) override;
   void react(EventKeySYS const &) override;
   void react(EventKeyDRV const &) override;
+  void react(EventKeySTR const &) override;
   void react(EventKeyCOM const &) override;
   void react(EventKeyBMS const &) override;
   void react(EventKeyAlarms const &) override;

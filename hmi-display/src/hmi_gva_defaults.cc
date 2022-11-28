@@ -39,23 +39,23 @@ Screen DefaultSettings::GetDefaultScreen() {
 
 CommonTaskKeys DefaultSettings::GetDefaultCommonTaskKeys() {
   CommonTaskKeys common_task_keys;
-  common_task_keys.visible = true;
-  common_task_keys.labels[0].state = LabelStates::kLabelHidden;
-  common_task_keys.labels[0].text = "Up";
-  common_task_keys.labels[1].state = LabelStates::kLabelEnabled;
-  common_task_keys.labels[1].text = "Alarms";
-  common_task_keys.labels[2].state = LabelStates::kLabelHidden;
-  common_task_keys.labels[2].text = "Threats";
-  common_task_keys.labels[3].state = LabelStates::kLabelHidden;
-  common_task_keys.labels[3].text = "Ack";
-  common_task_keys.labels[4].state = LabelStates::kLabelHidden;
-  common_task_keys.labels[4].text = "";
-  common_task_keys.labels[5].state = LabelStates::kLabelHidden;
-  common_task_keys.labels[5].text = "";
-  common_task_keys.labels[6].state = LabelStates::kLabelHidden;
-  common_task_keys.labels[6].text = "Labels";
-  common_task_keys.labels[7].state = LabelStates::kLabelEnabled;
-  common_task_keys.labels[7].text = "Enter";
+  common_task_keys.visible_ = true;
+  common_task_keys.labels_[0].state_ = LabelStates::kLabelHidden;
+  common_task_keys.labels_[0].text_ = "Up";
+  common_task_keys.labels_[1].state_ = LabelStates::kLabelEnabled;
+  common_task_keys.labels_[1].text_ = "Alarms";
+  common_task_keys.labels_[2].state_ = LabelStates::kLabelHidden;
+  common_task_keys.labels_[2].text_ = "Threats";
+  common_task_keys.labels_[3].state_ = LabelStates::kLabelHidden;
+  common_task_keys.labels_[3].text_ = "Ack";
+  common_task_keys.labels_[4].state_ = LabelStates::kLabelHidden;
+  common_task_keys.labels_[4].text_ = "";
+  common_task_keys.labels_[5].state_ = LabelStates::kLabelHidden;
+  common_task_keys.labels_[5].text_ = "";
+  common_task_keys.labels_[6].state_ = LabelStates::kLabelHidden;
+  common_task_keys.labels_[6].text_ = "Labels";
+  common_task_keys.labels_[7].state_ = LabelStates::kLabelEnabled;
+  common_task_keys.labels_[7].text_ = "Enter";
   return common_task_keys;
 }
 

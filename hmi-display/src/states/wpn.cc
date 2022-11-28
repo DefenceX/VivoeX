@@ -76,6 +76,8 @@ void StateWPN::react(EventKeyPowerOn const &) { transit<StateOff>(); };
 
 void StateWPN::react(EventKeySA const &) { transit<StateSA>(); };
 
+void StateWPN::react(EventKeyWPN const &) { transit<StateWPN>(); };
+
 void StateWPN::react(EventKeyDEF const &) { transit<StateDEF>(); };
 
 void StateWPN::react(EventKeySYS const &) { transit<StateSYS>(); };

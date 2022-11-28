@@ -205,32 +205,31 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
           gva::hmi::GetScreen()->function_right.labels[5].state = gva::LabelStates::kLabelEnabledSelectedChanging;
           break;
         case gva::GvaKeyEnum::kKeyF13:
-          gva::hmi::GetScreen()->control->labels[0].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->control->labels_[0].state_ = gva::LabelStates::kLabelEnabledSelectedChanging;
           break;
         case gva::GvaKeyEnum::kKeyF14:
-          gva::hmi::GetScreen()->control->labels[1].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->control->labels_[1].state_ = gva::LabelStates::kLabelEnabledSelectedChanging;
           break;
         case gva::GvaKeyEnum::kKeyF15:
-          gva::hmi::GetScreen()->control->labels[2].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->control->labels_[2].state_ = gva::LabelStates::kLabelEnabledSelectedChanging;
           break;
         case gva::GvaKeyEnum::kKeyF16:
-          gva::hmi::GetScreen()->control->labels[3].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->control->labels_[3].state_ = gva::LabelStates::kLabelEnabledSelectedChanging;
           break;
         case gva::GvaKeyEnum::kKeyF17:
-          gva::hmi::GetScreen()->control->labels[4].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->control->labels_[4].state_ = gva::LabelStates::kLabelEnabledSelectedChanging;
           break;
         case gva::GvaKeyEnum::kKeyF18:
-          gva::hmi::GetScreen()->control->labels[5].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->control->labels_[5].state_ = gva::LabelStates::kLabelEnabledSelectedChanging;
           break;
         case gva::GvaKeyEnum::kKeyF19:
-          gva::hmi::GetScreen()->control->labels[6].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->control->labels_[6].state_ = gva::LabelStates::kLabelEnabledSelectedChanging;
           break;
         case gva::GvaKeyEnum::kKeyF20:
-          gva::hmi::GetScreen()->control->labels[7].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->control->labels_[7].state_ = gva::LabelStates::kLabelEnabledSelectedChanging;
           break;
         case gva::GvaKeyEnum::kKeyUnknown:  // No an active touch zone so just reset everything
         default:
-          gva::logGva::log("[GVA] Key press not defined " + std::to_string(int(event.key_)), gva::LOG_INFO);
           printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
 
           // Ok this is awkward, the touch event probably drifted off the active zone so reset all.
@@ -254,9 +253,9 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
             if (label.state == gva::LabelStates::kLabelEnabledSelectedChanging)
               label.state = gva::LabelStates::kLabelEnabledSelected;
           }
-          for (auto &label : gva::hmi::GetScreen()->control->labels) {
-            if (label.state == gva::LabelStates::kLabelEnabledSelectedChanging)
-              label.state = gva::LabelStates::kLabelEnabledSelected;
+          for (auto &label : gva::hmi::GetScreen()->control->labels_) {
+            if (label.state_ == gva::LabelStates::kLabelEnabledSelectedChanging)
+              label.state_ = gva::LabelStates::kLabelEnabledSelected;
           }
 
           update = false;

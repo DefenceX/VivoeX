@@ -137,6 +137,8 @@ void StateBMS::entry() {
   }
 };
 
+void StateBMS::exit() { ResetState(&screen_.function_top->labels[7].state); }
+
 void StateBMS::react(EventKeyPowerOn const &) { transit<StateOff>(); };
 
 void StateBMS::react(EventKeySA const &) { transit<StateSA>(); };
@@ -152,6 +154,8 @@ void StateBMS::react(EventKeyDRV const &) { transit<StateDRV>(); };
 void StateBMS::react(EventKeySTR const &) { transit<StateSTR>(); };
 
 void StateBMS::react(EventKeyCOM const &) { transit<StateCOM>(); };
+
+void StateBMS::react(EventKeyBMS const &) { transit<StateBMS>(); };
 
 void StateBMS::react(EventKeyAlarms const &) { transit<StateAlarms>(); };
 

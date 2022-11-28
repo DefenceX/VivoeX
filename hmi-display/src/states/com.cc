@@ -81,6 +81,8 @@ void StateCOM::react(EventKeyDRV const &) { transit<StateDRV>(); };
 
 void StateCOM::react(EventKeySTR const &) { transit<StateSTR>(); };
 
+void StateCOM::react(EventKeyCOM const &) { transit<StateCOM>(); };
+
 void StateCOM::react(EventKeyBMS const &) { transit<StateBMS>(); };
 
 void StateCOM::react(EventKeyAlarms const &) { transit<StateAlarms>(); };

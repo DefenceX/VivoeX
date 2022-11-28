@@ -74,6 +74,8 @@ void StateDEF::react(EventKeySA const &) { transit<StateSA>(); };
 
 void StateDEF::react(EventKeyWPN const &) { transit<StateWPN>(); };
 
+void StateDEF::react(EventKeyDEF const &) { transit<StateDEF>(); };
+
 void StateDEF::react(EventKeySYS const &) { transit<StateSYS>(); };
 
 void StateDEF::react(EventKeyDRV const &) { transit<StateDRV>(); };

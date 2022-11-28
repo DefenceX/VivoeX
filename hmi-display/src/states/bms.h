@@ -37,6 +37,7 @@ namespace gva {
 
 struct StateBMS : Hmi {
   void entry() override;
+  void exit() override;
   void react(EventKeyPowerOn const &) override;
   void react(EventKeySA const &) override;
   void react(EventKeyWPN const &) override;
@@ -45,6 +46,7 @@ struct StateBMS : Hmi {
   void react(EventKeyDRV const &) override;
   void react(EventKeySTR const &) override;
   void react(EventKeyCOM const &) override;
+  void react(EventKeyBMS const &) override;
   void react(EventKeyAlarms const &) override;
   void react(EventKeyFunction const &e) override;
 };

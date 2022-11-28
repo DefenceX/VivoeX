@@ -102,6 +102,8 @@ void StateSYS::react(EventKeyWPN const &) { transit<StateWPN>(); };
 
 void StateSYS::react(EventKeyDEF const &) { transit<StateDEF>(); };
 
+void StateSYS::react(EventKeySYS const &) { transit<StateSYS>(); };
+
 void StateSYS::react(EventKeyDRV const &) { transit<StateDRV>(); };
 
 void StateSYS::react(EventKeySTR const &) { transit<StateSTR>(); };

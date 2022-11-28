@@ -78,6 +78,8 @@ void StateDRV::react(EventKeyDEF const &) { transit<StateDEF>(); };
 
 void StateDRV::react(EventKeySYS const &) { transit<StateSYS>(); };
 
+void StateDRV::react(EventKeyDRV const &) { transit<StateDRV>(); };
+
 void StateDRV::react(EventKeySTR const &) { transit<StateSTR>(); };
 
 void StateDRV::react(EventKeyCOM const &) { transit<StateCOM>(); };

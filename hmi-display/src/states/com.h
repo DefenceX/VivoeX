@@ -44,6 +44,7 @@ struct StateCOM : Hmi {
   void react(EventKeySYS const &) override;
   void react(EventKeyDRV const &) override;
   void react(EventKeySTR const &) override;
+  void react(EventKeyCOM const &) override;
   void react(EventKeyBMS const &) override;
   void react(EventKeyAlarms const &) override;
   void react(EventKeyFunction const &e) override;

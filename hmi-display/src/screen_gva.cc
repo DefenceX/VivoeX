@@ -338,6 +338,8 @@ GvaStatusTypes ScreenGva::Update() {
         if (row.GetHighlighted() == false) {
           o = UnpackRgb(cell.GetOutlineColour());
         } else {
+          printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
+
           o = UnpackRgb(cell.GetHighlightColour());
         }
 
@@ -356,9 +358,9 @@ GvaStatusTypes ScreenGva::Update() {
   // Draw PPI (Plan Position Indicator)
   widget_list_[KWidgetTypeCompass]->Draw();
 
-  if (screen_->control->visible) {
+  if (screen_->control->visible_) {
     auto widget = (WidgetBottomLabels *)GetWidget(KWidgetTypeBottomLabels);
-    widget->SetLabels(&screen_->control->labels);
+    widget->SetLabels(&screen_->control->labels_);
     widget->Draw();
   }
 

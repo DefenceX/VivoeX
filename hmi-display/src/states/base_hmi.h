@@ -76,7 +76,7 @@ struct Hmi : tinyfsm::Fsm<Hmi> {
   // virtual void react(EventToggle const &) = 0;
 
   virtual void entry(void) {}  // entry actions in some States
-  void exit(void) {}           // no exit actions
+  virtual void exit(void) {}   // no exit actions
 
   // alternative: enforce entry actions in all States (pure virtual)
   // virtual void entry(void) = 0;
@@ -106,6 +106,7 @@ struct Hmi : tinyfsm::Fsm<Hmi> {
   static GvaKeyEnum KeyCOM(GvaKeyEnum key);
   static GvaKeyEnum KeyBMS(GvaKeyEnum key);
   static void Reset();
+  static void ResetState(LabelStates *state);
   static void SetCanvasPng(std::string file);
   static ScreenGva *GetRendrer() { return screen_render_; }
   static Screen *GetScreen() { return &screen_; }

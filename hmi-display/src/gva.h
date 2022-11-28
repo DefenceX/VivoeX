@@ -119,12 +119,12 @@ struct FunctionKeys {
 ///
 ///
 struct CommonTaskKeys {
-  bool visible;
+  bool visible_;
   struct Labels {
-    LabelStates state;
-    std::string text;
+    LabelStates state_;
+    std::string text_;
   };
-  std::array<CommonTaskKeys::Labels, 8> labels;
+  std::array<CommonTaskKeys::Labels, 8> labels_;
 };
 
 struct LocationType {

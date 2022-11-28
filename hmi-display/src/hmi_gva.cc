@@ -154,7 +154,7 @@ void Hmi::Reset() {
   screen_render_->GetWidget(KWidgetTypeCompass)->SetY(360 + 28);
   screen_render_->GetWidget(KWidgetTypeCompass)->SetX(161);
   screen_.table.visible_ = false;
-  screen_.control->visible = true;
+  screen_.control->visible_ = true;
   screen_.message.visible = false;
   screen_.info.mode = ScreenMode::kModeOperational;
   alarmson_ = false;
@@ -169,7 +169,7 @@ void Hmi::Labels(LabelModeEnum labels) {
         screen_render_->GetWidget(KWidgetTypeCompass)->SetVisible(true);
       screen_.function_left.visible = true;
       screen_.function_right.visible = true;
-      screen_.control->visible = true;
+      screen_.control->visible_ = true;
       screen_.function_top->visible = true;
       screen_.status_bar->visible = true;
       screen_.status_bar->y = 446;
@@ -181,7 +181,7 @@ void Hmi::Labels(LabelModeEnum labels) {
     case LabelModeEnum::kLabelStatusOnly:
       screen_.function_left.visible = false;
       screen_.function_right.visible = false;
-      screen_.control->visible = false;
+      screen_.control->visible_ = false;
       screen_.function_top->visible = false;
       screen_.status_bar->visible = true;
       screen_.status_bar->y = 459;
@@ -193,7 +193,7 @@ void Hmi::Labels(LabelModeEnum labels) {
     case LabelModeEnum::kLabelMinimal:
       screen_.function_left.visible = false;
       screen_.function_right.visible = false;
-      screen_.control->visible = false;
+      screen_.control->visible_ = false;
       screen_.function_top->visible = false;
       screen_.status_bar->visible = false;
       screen_render_->GetWidget(KWidgetTypeAlarmIndicator)->SetVisible(false);
@@ -247,26 +247,26 @@ GvaKeyEnum Hmi::Key(GvaKeyEnum keypress) {
   KeySide(keypress);
   switch (keypress) {
     case GvaKeyEnum::kKeyF13:
-      screen_.control->labels[0].state = LabelStates::kLabelEnabled;
+      screen_.control->labels_[0].state_ = LabelStates::kLabelEnabled;
       break;
     case GvaKeyEnum::kKeyF14:
       if (screen_.currentFunction == GvaFunctionEnum::kAlarmsX)
-        screen_.control->labels[1].state = LabelStates::kLabelEnabled;
+        screen_.control->labels_[1].state_ = LabelStates::kLabelEnabled;
       break;
     case GvaKeyEnum::kKeyF15:
-      screen_.control->labels[2].state = LabelStates::kLabelEnabled;
+      screen_.control->labels_[2].state_ = LabelStates::kLabelEnabled;
       break;
     case GvaKeyEnum::kKeyF16:
-      screen_.control->labels[3].state = LabelStates::kLabelEnabled;
+      screen_.control->labels_[3].state_ = LabelStates::kLabelEnabled;
       break;
     case GvaKeyEnum::kKeyF17:
-      screen_.control->labels[4].state = LabelStates::kLabelEnabled;
+      screen_.control->labels_[4].state_ = LabelStates::kLabelEnabled;
       break;
     case GvaKeyEnum::kKeyF18:
-      screen_.control->labels[5].state = LabelStates::kLabelEnabled;
+      screen_.control->labels_[5].state_ = LabelStates::kLabelEnabled;
       break;
     case GvaKeyEnum::kKeyF19:
-      screen_.control->labels[6].state = LabelStates::kLabelEnabled;
+      screen_.control->labels_[6].state_ = LabelStates::kLabelEnabled;
       switch (screen_.labels) {
         case LabelModeEnum::kLabelAll:
           screen_.labels = LabelModeEnum::kLabelStatusOnly;
@@ -281,13 +281,22 @@ GvaKeyEnum Hmi::Key(GvaKeyEnum keypress) {
       Labels(screen_.labels);
       break;
     case GvaKeyEnum::kKeyF20:
-      screen_.control->labels[7].state = LabelStates::kLabelEnabled;
+      screen_.control->labels_[7].state_ = LabelStates::kLabelEnabled;
       screen_.message.visible = false;
       break;
     default:
       break;
   }
   return keypress;
+}
+
+void Hmi::ResetState(LabelStates *state) {
+  switch (screen_.function_top->labels[7].state) {
+    case LabelStates::kLabelEnabledSelectedChanging:
+    case LabelStates::kLabelEnabledSelected:
+      *state = LabelStates::kLabelEnabled;
+      break;
+  }
 }
 
 ViewGvaManager *Hmi::manager_;
