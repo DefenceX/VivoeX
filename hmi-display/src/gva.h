@@ -30,7 +30,7 @@
 
 #define MAJOR 0
 #define MINOR 3
-#define PATCH 2138
+#define PATCH 4138
 
 #define MIN_HEIGHT 480
 
