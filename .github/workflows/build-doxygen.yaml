@@ -39,6 +39,7 @@ jobs:
           export GIT_HASH=$(git rev-parse --short HEAD) && \
           mkdir -p /var/log && \
           sudo touch /var/log/gva.log && \
+          sudo chmod a+rw /var/log/gva.log && \
           echo "Current version ${SEM_VERSION} with #${GIT_HASH}" && \
           mkdir build && \
           cd build && \
