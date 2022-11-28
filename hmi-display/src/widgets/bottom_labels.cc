@@ -56,11 +56,7 @@ void WidgetBottomLabels::DrawControlLabels() {
   GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightNormal, config_->GetThemeFont());
 
   for (auto label : *labels_) {
-    GetRenderer()->SetLineThickness(config_->GetThemeLabelBorderThickness(), LineType::kLineSolid);
-    if (label.state_ != LabelStates::kLabelDisabled) {
-      GetRenderer()->SetColourForeground(config_->GetThemeLabelBorderEnabled());
-      GetRenderer()->SetColourBackground(config_->GetThemeLabelBackgroundEnabled());
-
+    if (label.state_ != LabelStates::kLabelHidden) {
       SetStateLabel(label.state_);
 
       if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::LABEL_ROUNDED) {
@@ -70,8 +66,10 @@ void WidgetBottomLabels::DrawControlLabels() {
       }
       SetStateText(label.state_);
 
-      touch_->AddAbsolute(GvaFunctionGroupEnum::kBottom, int(GvaKeyEnum::kKeyF13) + i, (i * w) + offset, GetY(),
-                          (i * w) + w - 5 + offset, GetY() + 20);
+      if (label.state_ != LabelStates::kLabelDisabled) {
+        touch_->AddAbsolute(GvaFunctionGroupEnum::kBottom, int(GvaKeyEnum::kKeyF13) + i, (i * w) + offset, GetY(),
+                            (i * w) + w - 5 + offset, GetY() + 20);
+      }
       GetRenderer()->DrawText((i * w) + offset + 5, GetY() + 6, label.text_.c_str());
       if (i == 4) GetRenderer()->DrawIcon(kIconUpArrow, (i * w) + offset + 34, GetY() + 11, 15, 8);
       if (i == 5) GetRenderer()->DrawIcon(kIconDownArrow, (i * w) + offset + 34, GetY() + 10, 15, 8);

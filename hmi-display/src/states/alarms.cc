@@ -51,8 +51,6 @@
 namespace gva {
 
 void StateAlarms::entry() {
-  printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
-
   // Check to see if alarms was requested from hidden state, if so go back to last menu.
   if (screen_.control->labels_[1].state_ != LabelStates::kLabelHidden) {
     if (alarmson_) {
