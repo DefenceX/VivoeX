@@ -33,7 +33,7 @@ jobs:
           export MAJOR=$(sed -n '1p' < version) && \
           export MINOR=$(sed -n '2p' < version) && \
           export PATCH=$(sed -n '3p' < version) && \
-          export GIT_HASH=$(git rev-parse --short HEAD) %% \
+          export GIT_HASH=$(git rev-parse --short HEAD) && \
           echo "Current version ${SEM_VERSION} with #${GIT_HASH}" && \
           mkdir build && \
           cd build && \
