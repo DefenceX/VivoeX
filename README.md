@@ -1,4 +1,4 @@
-[![Action cyclone](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-centos-amd64-cyclone.yaml/badge.svg)](https://github.com/DefenceX/vivoe-lite/actions/workflows/build-centos-amd64-cyclone.yaml)
+[![Action cyclone](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-ubuntu-amd64-cyclone.yaml/badge.svg)](https://github.com/DefenceX/vivoe-lite/actions/workflows/build-ubuntu-amd64-cyclone.yaml)
 [![Action cyclone](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-centos-amd64-cyclone.yaml/badge.svg)](https://github.com/DefenceX/vivoe-lite/actions/workflows/build-centos-amd64-cyclone.yaml)
 [![Action opensplice](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-ubuntu-amd64-opensplice.yaml/badge.svg)](https://github.com/DefenceX/vivoe-lite/actions/workflows/build-ubuntu-amd64-opensplice.yaml)
 [![Action doxygen](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-doxygen.yaml/badge.svg)](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-doxygen.yaml)
