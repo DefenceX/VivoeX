@@ -30,6 +30,8 @@ jobs:
         run: sudo apt-get --no-install-recommends install doxygen graphviz wget plantuml imagemagick libgtk-3-dev libswscale-dev libprotobuf-c-dev geographiclib-doc libgeographic-dev libgeographic-dev libprotobuf-dev protobuf-compiler
       - name: Doxygen
         run: |
+          export DISPLAY=:99 && \
+          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &  && \
           export MAJOR=$(sed -n '1p' < version) && \
           export MINOR=$(sed -n '2p' < version) && \
           export PATCH=$(sed -n '3p' < version) && \
