@@ -37,6 +37,7 @@ jobs:
           export MINOR=$(sed -n '2p' < version) && \
           export PATCH=$(sed -n '3p' < version) && \
           export GIT_HASH=$(git rev-parse --short HEAD) && \
+          mkdir -p /var/log && \
           touch /var/log/gva.log && \
           echo "Current version ${SEM_VERSION} with #${GIT_HASH}" && \
           mkdir build && \
