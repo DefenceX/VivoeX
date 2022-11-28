@@ -37,7 +37,7 @@ jobs:
           echo "Current version ${SEM_VERSION} with #${GIT_HASH}" && \
           mkdir build && \
           cd build && \
-          cd cmake .. && \
+          cmake .. && \
           make doxygen && \
           wget https://img.shields.io/badge/version-${SEM_VERSION}-blue.svg -O ../docs/version.svg
       - name: Setup Pages
