@@ -33,11 +33,12 @@ jobs:
         run:
           sudo apt-get --no-install-recommends install xserver-xorg-video-dummy && \
           cp scripts/config/xorg.conf /etc/X11 && \
-          export XAUTHORITY=/home/admin/.Xauthority && \
-          xrandr -d :0  -q && \
-          xrandr -d :0 --output default --mode 1280x960
+          # export XAUTHORITY=/home/admin/.Xauthority && \
+          # xrandr -d :0  -q && \
+          # xrandr -d :0 --output default --mode 1280x960
       - name: Doxygen
         run: |
+          export XAUTHORITY=/home/admin/.Xauthority && \
           export DISPLAY=':0' && \
           export MAJOR=$(sed -n '1p' < version) && \
           export MINOR=$(sed -n '2p' < version) && \
