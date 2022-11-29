@@ -3,7 +3,7 @@
 add_custom_target(doxygen-images COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/test-hmi 1)
 add_dependencies(doxygen-images test-hmi)
 
-add_custom_target(doxygen-images-convert COMMAND convert ${CMAKE_BINARY_DIR}/*.png -trim +repage  -set filename:f '%t' ${CMAKE_SOURCE_DIR}/docs/'%[filename:f].png')
+add_custom_target(doxygen-images-convert COMMAND convert ${CMAKE_BINARY_DIR}/*.png -trim +repage  -set filename:f '%t' ${CMAKE_SOURCE_DIR}/images/doxygen/'%[filename:f].png')
 add_dependencies(doxygen-images-convert doxygen-images)
 
 set(ENV{'SEM_VERSION'} ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSION})

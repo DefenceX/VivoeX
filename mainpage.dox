@@ -125,55 +125,55 @@ $ make doxygen
 There are built in graphical elements that can be animated and extended to meet your requirements some of these are shown below.
 \subsubsection ppiclassictank Plan Position Indicator (PPI), Classic Tank
 The PPI comes in servral modes, see gva::WidgetPlanPositionIndicator.
-\image html docs/widget_ppi_01.png  "Classic tank PPI, Sight East" 
-\image html docs/widget_ppi_02.png  "Classic tank PPI, Sight South" 
-\image html docs/widget_ppi_03.png  "Classic tank PPI, Sight West" 
-\image html docs/widget_ppi_04.png  "Classic tank PPI, Sight North" 
-\image html docs/widget_ppi_05.png  "Classic tank PPI without Site" 
+\image html images/doxygen/widget_ppi_01.png  "Classic tank PPI, Sight East" 
+\image html images/doxygen/widget_ppi_02.png  "Classic tank PPI, Sight South" 
+\image html images/doxygen/widget_ppi_03.png  "Classic tank PPI, Sight West" 
+\image html images/doxygen/widget_ppi_04.png  "Classic tank PPI, Sight North" 
+\image html images/doxygen/widget_ppi_05.png  "Classic tank PPI without Site" 
 
 \subsubsection ppiclassicarrow Plan Position Indicator (PPI), Classic Arrow
-\image html docs/widget_ppi_06.png  "Classic arrow PPI, Sight East" 
-\image html docs/widget_ppi_07.png  "Classic arrow PPI, Sight South" 
-\image html docs/widget_ppi_08.png  "Classic arrow PPI, Sight West" 
-\image html docs/widget_ppi_09.png  "Classic arrow PPI, Sight North" 
-\image html docs/widget_ppi_10.png  "Classic arrow PPI without Site" 
+\image html images/doxygen/widget_ppi_06.png  "Classic arrow PPI, Sight East" 
+\image html images/doxygen/widget_ppi_07.png  "Classic arrow PPI, Sight South" 
+\image html images/doxygen/widget_ppi_08.png  "Classic arrow PPI, Sight West" 
+\image html images/doxygen/widget_ppi_09.png  "Classic arrow PPI, Sight North" 
+\image html images/doxygen/widget_ppi_10.png  "Classic arrow PPI without Site" 
 
 \subsubsection ppimodern Plan Position Indicator (PPI), Modern
-\image html docs/widget_ppi_11.png  "Modern PPI, Sight East" 
-\image html docs/widget_ppi_12.png  "Modern PPI, Sight South" 
-\image html docs/widget_ppi_13.png  "Modern PPI, Sight West" 
-\image html docs/widget_ppi_14.png  "Modern PPI, Sight North" 
-\image html docs/widget_ppi_15.png  "Modern PPI without Site" 
+\image html images/doxygen/widget_ppi_11.png  "Modern PPI, Sight East" 
+\image html images/doxygen/widget_ppi_12.png  "Modern PPI, Sight South" 
+\image html images/doxygen/widget_ppi_13.png  "Modern PPI, Sight West" 
+\image html images/doxygen/widget_ppi_14.png  "Modern PPI, Sight North" 
+\image html images/doxygen/widget_ppi_15.png  "Modern PPI without Site" 
 
 \subsubsection keyboard On screen keyboard
 The keyboard has servral input modes, see gva::WidgetKeyboard.
-\image html docs/widget_keyboard_01.png  "Keyboard, lower case" 
-\image html docs/widget_keyboard_02.png  "Keyboard, upper case" 
-\image html docs/widget_keyboard_03.png  "Keyboard, numeric case" 
+\image html images/doxygen/widget_keyboard_01.png  "Keyboard, lower case" 
+\image html images/doxygen/widget_keyboard_02.png  "Keyboard, upper case" 
+\image html images/doxygen/widget_keyboard_03.png  "Keyboard, numeric case" 
 
 \subsubsection alarm Alarm indicator
 The alarms states are displayed as follows, see gva::WidgetAlarmIndicator.
-\image html docs/alarm_01.png  "Advisory alarm example" 
+\image html images/doxygen/alarm_01.png  "Advisory alarm example" 
 Note the advisory state will take the current theme background.
-\image html docs/alarm_02.png  "Warning alarm example" 
-\image html docs/alarm_03.png  "Caution alarm example" 
+\image html images/doxygen/alarm_02.png  "Warning alarm example" 
+\image html images/doxygen/alarm_03.png  "Caution alarm example" 
 
 \subsubsection function Functional Areas (usually at the top of screen)
 The functional area states are displayed as follows, see gva::WidgetTopLabels.
-\image html docs/top_labels_01.png  "Function key states" 
+\image html images/doxygen/top_labels_01.png  "Function key states" 
 
 \subsubsection control Control Areas (usually at the bottom of screen)
 The control states are displayed as follows, see gva::WidgetBottomLabels.
-\image html docs/bottom_labels_01.png  "Control key states" 
+\image html images/doxygen/bottom_labels_01.png  "Control key states" 
 
 \subsubsection labels Labels (usually at the side of screen, left and right)
 The label states are displayed as follows, see gva::WidgetSideLabels.
-\image html docs/side_labels_01.png  "Label key states" 
+\image html images/doxygen/side_labels_01.png  "Label key states" 
 
 \subsubsection mode Operator Mode
 A mode example can be seen below gva::WidgetMode. It is a GVA requirement 
 that the operator is informed when the system is not operable due to maintinance.
-\image html docs/mode_01.png  "Opertator mode" 
+\image html images/doxygen/mode_01.png  "Opertator mode" 
 
 \section tools Tooling
 
