@@ -327,42 +327,42 @@ GvaStatusTypes ScreenGva::Update() {
   }
 
   // Setup and Draw the alarms
-  if (widget_list_[KWidgetTypeTable]->GetVisible()) {
-    auto table_widget = (WidgetTable *)GetWidget(KWidgetTypeTable);
+  // if (widget_list_[KWidgetTypeTable]->GetVisible()) {
+  //   auto table_widget = (WidgetTable *)GetWidget(KWidgetTypeTable);
 
-    GvaTable table(table_widget->GetX(), table_widget->GetY() + 33, table_widget->width_);
-    table.SetFontName(config_->GetThemeFont());
-    table.border_ = 1;
-    for (auto row : table_widget->rows_) {
-      GvaRow newrow;
-      RgbUnpackedType f, b, o;
-      // for (uint32_t cell = 0; cell < table.rows_[row].cell_count_; cell++) {
+  //   GvaTable table(table_widget->GetX(), table_widget->GetY() + 33, table_widget->width_);
+  //   table.SetFontName(config_->GetThemeFont());
+  //   table.border_ = 1;
+  //   for (auto row : table_widget->rows_) {
+  //     GvaRow newrow;
+  //     RgbUnpackedType f, b, o;
+  //     // for (uint32_t cell = 0; cell < table.rows_[row].cell_count_; cell++) {
 
-      for (auto cell : row.cells_) {
-        f = UnpackRgb(cell.GetForegroundColour());
-        b = UnpackRgb(cell.GetBackgroundColour());
+  //     for (auto cell : row.cells_) {
+  //       f = UnpackRgb(cell.GetForegroundColour());
+  //       b = UnpackRgb(cell.GetBackgroundColour());
 
-        // Choose colour for cell border
-        if (row.GetHighlighted() == false) {
-          o = UnpackRgb(cell.GetOutlineColour());
-        } else {
-          printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
+  //       // Choose colour for cell border
+  //       if (row.GetHighlighted() == false) {
+  //         o = UnpackRgb(cell.GetOutlineColour());
+  //       } else {
+  //         printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
 
-          o = UnpackRgb(cell.GetHighlightColour());
-        }
+  //         o = UnpackRgb(cell.GetHighlightColour());
+  //       }
 
-        newrow.addCell({cell.GetText(), cell.GetCellAlignment(), o.r, o.g, o.b,  // Outline
-                        b.r, b.g, b.b,                                           // Background
-                        f.r, f.g, f.b,                                           // Foreground
-                        row.GetFontWeight()},
-                       cell.GetWidth());
-      }
-      table.AddRow(newrow);
-    }
+  //       newrow.addCell({cell.GetText(), cell.GetCellAlignment(), o.r, o.g, o.b,  // Outline
+  //                       b.r, b.g, b.b,                                           // Background
+  //                       f.r, f.g, f.b,                                           // Foreground
+  //                       row.GetFontWeight()},
+  //                      cell.GetWidth());
+  //     }
+  //     table.AddRow(newrow);
+  //   }
 
-    table_widget->SetTable(&table);
-    table_widget->Draw();
-  }
+  // table_widget->SetTable(&table);
+  // table_widget->Draw();
+  // }
 
   // Draw PPI (Plan Position Indicator)
   widget_list_[KWidgetTypeCompass]->Draw();
@@ -403,8 +403,8 @@ GvaStatusTypes ScreenGva::Update() {
     table.AddRow(newrow1);
 
     auto table_widget = (WidgetTable *)GetWidget(KWidgetTypeTable);
-    table_widget->SetTable(&table);
-    table_widget->Draw();
+    // table_widget->SetTable(&table);
+    // table_widget->Draw();
 
     DrawIcon(screen_->message.icon, 320 - 150 + 300 - 17, 270, 11, 11);
   }
