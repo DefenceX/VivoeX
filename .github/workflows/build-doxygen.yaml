@@ -38,7 +38,7 @@ jobs:
           export GIT_HASH=$(git rev-parse --short HEAD) && \
           echo "Current version ${SEM_VERSION} with #${GIT_HASH}" && \
           doxygen && \
-          wget https://img.shields.io/badge/version-${SEM_VERSION}-blue.svg -O ../docs/version.svg
+          wget https://img.shields.io/badge/version-${SEM_VERSION}-blue.svg -O docs/version.svg
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact
