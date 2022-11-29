@@ -27,6 +27,7 @@ set(SOURCE_FILES test.cc
 
 include_directories(${CMAKE_BINARY_DIR}/external/libnmea/src/include)
 link_directories(${CMAKE_BINARY_DIR}/external/libnmea/build/src)
+link_libraries(-lstdc++fs)
 
 add_executable(test-hmi ${SOURCE_FILES})
 

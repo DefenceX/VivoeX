@@ -83,7 +83,8 @@ set(SOURCES main.cc
 			src/states/bms.cc
 			src/states/alarms.cc
 			)
-
+			
+link_libraries(-lstdc++fs)
 add_executable(hmi-display ${PROTO_SRCS} ${SOURCES})
 if (ENABLE_OSMSCOUT)
 	add_dependencies(hmi-display config-proto hmi-video libosmscout)
