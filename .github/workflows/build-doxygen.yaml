@@ -39,6 +39,14 @@ jobs:
           # export XAUTHORITY=${HOME}/.Xauthority && \
           # xrandr -d :0  -q && \
           # xrandr -d :0 --output default --mode 1280x960
+      - name: Dummy X11 (Setup)
+        run: ls -hal ${HOME} && \
+          cp scripts/config/xorg.conf /etc/X11  && \
+          pwd && \
+          ls -hal ${HOME} && \
+          export XAUTHORITY=${HOME}/.Xauthority && \
+          xrandr -d :0  -q && \
+          xrandr -d :0 --output default --mode 1280x960
       - name: Doxygen
         run: |
           export XAUTHORITY=/home/admin/.Xauthority && \
