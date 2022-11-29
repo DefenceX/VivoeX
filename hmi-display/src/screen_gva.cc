@@ -104,6 +104,8 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
   widget_list_[KWidgetTypeBottomLabels] = std::make_shared<WidgetBottomLabels>(*renderer, touch);
   widget_list_[KWidgetTypeLeftLabels] = std::make_shared<WidgetSideLabels>(*renderer, touch);
   widget_list_[KWidgetTypeRightLabels] = std::make_shared<WidgetSideLabels>(*renderer, touch);
+  widget_list_[KWidgetTypeRightLabels] = std::make_shared<WidgetSideLabels>(*renderer, touch);
+  widget_list_[KWidgetTypeTable] = std::make_shared<WidgetTable>(*renderer, touch);
 }
 
 ScreenGva::~ScreenGva() {
@@ -314,7 +316,9 @@ GvaStatusTypes ScreenGva::Update() {
       newrow.addCell(cell, widths[i]);
     }
     table.AddRow(newrow);
-    DrawTable(&table);
+    auto table_widget = (WidgetTable *)GetWidget(KWidgetTypeTable);
+    table_widget->SetTable(&table);
+    table_widget->Draw();
   }
 
   // TODO : Draw the alarms if any (Mock up)
@@ -323,14 +327,16 @@ GvaStatusTypes ScreenGva::Update() {
   }
 
   // Setup and Draw the alarms
-  if (screen_->table.visible_) {
-    GvaTable table(screen_->table.x_, screen_->table.y_ + 33, screen_->table.width_);
+  if (widget_list_[KWidgetTypeTable]->GetVisible()) {
+    auto table_widget = (WidgetTable *)GetWidget(KWidgetTypeTable);
+
+    GvaTable table(table_widget->GetX(), table_widget->GetY() + 33, table_widget->width_);
     table.SetFontName(config_->GetThemeFont());
     table.border_ = 1;
-    for (auto row : screen_->table.rows_) {
+    for (auto row : table_widget->rows_) {
       GvaRow newrow;
       RgbUnpackedType f, b, o;
-      // for (uint32_t cell = 0; cell < screen_->table.rows_[row].cell_count_; cell++) {
+      // for (uint32_t cell = 0; cell < table.rows_[row].cell_count_; cell++) {
 
       for (auto cell : row.cells_) {
         f = UnpackRgb(cell.GetForegroundColour());
@@ -354,7 +360,8 @@ GvaStatusTypes ScreenGva::Update() {
       table.AddRow(newrow);
     }
 
-    DrawTable(&table);
+    table_widget->SetTable(&table);
+    table_widget->Draw();
   }
 
   // Draw PPI (Plan Position Indicator)
@@ -394,7 +401,10 @@ GvaStatusTypes ScreenGva::Update() {
                      WeightType::kWeightNormal},
                     100);
     table.AddRow(newrow1);
-    DrawTable(&table);
+
+    auto table_widget = (WidgetTable *)GetWidget(KWidgetTypeTable);
+    table_widget->SetTable(&table);
+    table_widget->Draw();
 
     DrawIcon(screen_->message.icon, 320 - 150 + 300 - 17, 270, 11, 11);
   }

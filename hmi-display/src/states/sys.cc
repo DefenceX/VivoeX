@@ -29,16 +29,17 @@ namespace gva {
 GvaKeyEnum Hmi::KeySYS(GvaKeyEnum keypress) {
   screen_.function_left.visible = true;
   screen_.function_right.visible = true;
+  WidgetTable *table = (WidgetTable *)screen_render_->GetWidget(KWidgetTypeTable);
 
   KeySide(keypress);
   Key(keypress);
 
   switch (keypress) {
     case GvaKeyEnum::kKeyF1:
-      HmiHelper::TableSystem(&screen_.table);
+      HmiHelper::TableSystem(table);
       break;
     case GvaKeyEnum::kKeyF5:
-      HmiHelper::TableLicences(&screen_.table);
+      HmiHelper::TableLicences(table);
       break;
     case GvaKeyEnum::kKeyF2:
     case GvaKeyEnum::kKeyF3:
@@ -76,6 +77,7 @@ GvaKeyEnum Hmi::KeySYS(GvaKeyEnum keypress) {
 
 void StateSYS::entry() {
   if (screen_.function_top->labels[3].state != LabelStates::kLabelHidden) {
+    WidgetTable *table = (WidgetTable *)screen_render_->GetWidget(KWidgetTypeTable);
     std::string filename;
     manager_->SetScreen(&screen_, GvaFunctionEnum::kSystems);
     lastState_ = GvaFunctionEnum::kSystems;
@@ -88,7 +90,7 @@ void StateSYS::entry() {
     filename.append("/FrontCenter.png");
     SetCanvasPng(filename.c_str());
 
-    HmiHelper::TableSystem(&screen_.table);
+    HmiHelper::TableSystem(table);
 
     screen_.function_top->labels[3].state = LabelStates::kLabelEnabledSelected;
   }

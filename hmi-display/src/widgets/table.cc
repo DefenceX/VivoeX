@@ -24,13 +24,72 @@
 
 #include "table.h"
 
-#include "log_gva.h"
+#include "src/screen_gva.h"
 
 namespace gva {
 
+WidgetTable::WidgetTable(const RendererGva& renderer, TouchGva* touch)
+    : WidgetX(renderer, KWidgetTypeTable), touch_(touch) {}
+
+void WidgetTable::Draw() { DrawTable(table_); }
+
+void WidgetTable::SetTable(GvaTable* table) { table_ = table; }
+
+void WidgetTable::DrawTable(GvaTable* table) {
+  uint32_t height = 19;
+  uint32_t row = 0;
+  uint32_t column = 0;
+
+  GetRenderer()->SetLineThickness(ConfigData::GetInstance()->GetThemeTableBorderThickness(), LineType::kLineSolid);
+  GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightBold, table->fontname_);
+  GetRenderer()->SetColourBackground(gva::ConfigData::GetInstance()->GetThemeBackground());
+
+  for (row = 0; row < table->rows_; row++) {
+    uint32_t offset = table->GetX();
+
+    for (column = 0; column < table->row_[row].cells_; column++) {
+      uint32_t pos = 0;
+      uint32_t tmp = table->row_[row].widths_[column] * ((double)table->GetWidth() / 100);
+
+      GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, table->row_[row].cell_[column].weight,
+                                 table->fontname_);
+
+      GetRenderer()->SetColourForeground(table->row_[row].cell_[column].foreground.red,
+                                         table->row_[row].cell_[column].foreground.green,
+                                         table->row_[row].cell_[column].foreground.blue);
+      GetRenderer()->SetColourBackground(table->row_[row].cell_[column].background.red,
+                                         table->row_[row].cell_[column].background.green,
+                                         table->row_[row].cell_[column].background.blue);
+      GetRenderer()->DrawRectangle(offset, table->GetY() - (height * row), tmp, height, true);
+
+      GetRenderer()->DrawColor(table->row_[row].cell_[column].textcolour.red,
+                               table->row_[row].cell_[column].textcolour.green,
+                               table->row_[row].cell_[column].textcolour.blue);
+
+      uint32_t w = GetRenderer()->GetTextWidth(table->row_[row].cell_[column].text, 12);
+
+      switch (table->row_[row].cell_[column].align) {
+        case CellAlignType::kAlignCentre:
+          pos = offset + (tmp / 2 - w / 2);
+          break;
+        case CellAlignType::kAlignRight:
+          pos = offset + (tmp - w - 4);
+          break;
+        case CellAlignType::kAlignLeft:
+        default:
+          pos = offset + 4;
+          break;
+      }
+      GetRenderer()->SetTextFontSize(12);
+      GetRenderer()->DrawText(pos, table->GetY() - (height * row) + 5, table->row_[row].cell_[column].text);
+      offset += tmp;
+    }
+  }
+}
+
 // Class CellType
 
-TableWidget::CellType::CellType(const std::string text, const uint32_t width, const uint32_t background_colour,
+WidgetTable::CellType::CellType(const std::string text, const uint32_t width, const uint32_t background_colour,
                                 const uint32_t foreground_colour, const uint32_t outline_colour,
                                 const uint32_t highlight_colour, const CellAlignType alignment)
     : width_(width),
@@ -43,23 +102,23 @@ TableWidget::CellType::CellType(const std::string text, const uint32_t width, co
   return;
 }
 
-uint32_t TableWidget::CellType::GetWidth() const { return width_; }
+uint32_t WidgetTable::CellType::GetWidth() const { return width_; }
 
-std::string TableWidget::CellType::GetText() const { return text_; }
+std::string WidgetTable::CellType::GetText() const { return text_; }
 
-uint32_t TableWidget::CellType::GetForegroundColour() const { return foreground_colour_; }
+uint32_t WidgetTable::CellType::GetForegroundColour() const { return foreground_colour_; }
 
-uint32_t TableWidget::CellType::GetBackgroundColour() const { return foreground_colour_; }
+uint32_t WidgetTable::CellType::GetBackgroundColour() const { return foreground_colour_; }
 
-uint32_t TableWidget::CellType::GetOutlineColour() const { return foreground_colour_; }
+uint32_t WidgetTable::CellType::GetOutlineColour() const { return foreground_colour_; }
 
-uint32_t TableWidget::CellType::GetHighlightColour() const { return foreground_colour_; }
+uint32_t WidgetTable::CellType::GetHighlightColour() const { return foreground_colour_; }
 
-CellAlignType TableWidget::CellType::GetCellAlignment() const { return alignment_; }
+CellAlignType WidgetTable::CellType::GetCellAlignment() const { return alignment_; }
 
 // Class RowType
 
-TableWidget::RowType::RowType(const uint32_t background_colour, const uint32_t foreground_colour,
+WidgetTable::RowType::RowType(const uint32_t background_colour, const uint32_t foreground_colour,
                               const uint32_t outline_colour, const uint32_t highlight_colour,
                               const WeightType font_weight, const bool highlighted, const CellAlignType alignment)
     : background_colour_(background_colour),
@@ -70,58 +129,56 @@ TableWidget::RowType::RowType(const uint32_t background_colour, const uint32_t f
       highlighted_(highlighted),
       alignment_(alignment) {}
 
-uint32_t TableWidget::RowType::GetForegroundColour() const { return foreground_colour_; }
+uint32_t WidgetTable::RowType::GetForegroundColour() const { return foreground_colour_; }
 
-uint32_t TableWidget::RowType::GetBackgroundColour() const { return foreground_colour_; }
+uint32_t WidgetTable::RowType::GetBackgroundColour() const { return foreground_colour_; }
 
-uint32_t TableWidget::RowType::GetOutlineColour() const { return foreground_colour_; }
+uint32_t WidgetTable::RowType::GetOutlineColour() const { return foreground_colour_; }
 
-uint32_t TableWidget::RowType::GetHighlightColour() const { return foreground_colour_; }
+uint32_t WidgetTable::RowType::GetHighlightColour() const { return foreground_colour_; }
 
-WeightType TableWidget::RowType::GetFontWeight() const { return font_weight_; }
+WeightType WidgetTable::RowType::GetFontWeight() const { return font_weight_; }
 
-bool TableWidget::RowType::GetHighlighted() const { return highlighted_; }
+bool WidgetTable::RowType::GetHighlighted() const { return highlighted_; }
 
-void TableWidget::RowType::SetHighlighted(bool value) { highlighted_ = value; }
+void WidgetTable::RowType::SetHighlighted(bool value) { highlighted_ = value; }
 
-CellAlignType TableWidget::RowType::GetCellAlignment() const { return alignment_; }
+CellAlignType WidgetTable::RowType::GetCellAlignment() const { return alignment_; }
 
 // Class TableWidget
 
-TableWidget::TableWidget() { configuration_ = gva::ConfigData::GetInstance(); }
-
-void TableWidget::AddRow(uint32_t forground_colour, uint32_t background_colour, uint32_t outline_colour,
+void WidgetTable::AddRow(uint32_t forground_colour, uint32_t background_colour, uint32_t outline_colour,
                          uint32_t highlight_colour, WeightType font_weight) {
   RowType row(background_colour, forground_colour, outline_colour, highlight_colour, font_weight, false,
               CellAlignType::kAlignLeft);
   rows_.push_back(row);
 }
 
-void TableWidget::AddRow() {
+void WidgetTable::AddRow() {
   RowType row(ConfigData::GetInstance()->GetTableBackground(), Renderer::PackRgb(HMI_WHITE),
               Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_YELLOW), WeightType::kWeightNormal, false,
               CellAlignType::kAlignLeft);
   rows_.push_back(row);
 }
 
-void TableWidget::AddRow(WeightType font_weight) {
+void WidgetTable::AddRow(WeightType font_weight) {
   AddRow(ConfigData::GetInstance()->GetTableBackground(), Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_WHITE),
          Renderer::PackRgb(HMI_YELLOW), font_weight);
 }
 
-void TableWidget::CurrentRowHighlight() { rows_[current_row_ - 1].SetHighlighted(true); }
+void WidgetTable::CurrentRowHighlight() { rows_[current_row_ - 1].SetHighlighted(true); }
 
-void TableWidget::AddCell(std::string text, uint32_t width) { AddCell(text, width, CellAlignType::kAlignLeft); }
+void WidgetTable::AddCell(std::string text, uint32_t width) { AddCell(text, width, CellAlignType::kAlignLeft); }
 
-void TableWidget::AddCell(std::string text, uint32_t width, CellAlignType align) {
+void WidgetTable::AddCell(std::string text, uint32_t width, CellAlignType align) {
   AddCell(text, width, align, ConfigData::GetInstance()->GetTableBackground());
 }
 
-void TableWidget::AddCell(std::string text, uint32_t width, uint32_t background_colour) {
+void WidgetTable::AddCell(std::string text, uint32_t width, uint32_t background_colour) {
   AddCell(text, width, CellAlignType::kAlignLeft, background_colour);
 }
 
-void TableWidget::AddCell(std::string text, uint32_t width, CellAlignType align, uint32_t background_colour) {
+void WidgetTable::AddCell(std::string text, uint32_t width, CellAlignType align, uint32_t background_colour) {
   auto row = rows_.back();
   if (rows_.size()) {
     CellType cell(text, width, row.GetBackgroundColour(), row.GetForegroundColour(), row.GetOutlineColour(),
@@ -132,7 +189,7 @@ void TableWidget::AddCell(std::string text, uint32_t width, CellAlignType align,
   }
 }
 
-void TableWidget::Reset() {
+void WidgetTable::Reset() {
   visible_ = false;
   rows_.clear();
 }

@@ -153,7 +153,6 @@ void Hmi::Reset() {
   screen_render_->GetWidget(KWidgetTypeCompass)->SetVisible(false);
   screen_render_->GetWidget(KWidgetTypeCompass)->SetY(360 + 28);
   screen_render_->GetWidget(KWidgetTypeCompass)->SetX(161);
-  screen_.table.visible_ = false;
   screen_.control->visible_ = true;
   screen_.message.visible = false;
   screen_.info.mode = ScreenMode::kModeOperational;
@@ -327,7 +326,6 @@ StatusBar Hmi::status_;
 FunctionSelect Hmi::top_;
 CommonTaskKeys Hmi::bottom_;
 Canvas Hmi::canvas_;
-TableWidget Hmi::alarms_;
 Screen Hmi::screen_;
 ScreenGva *Hmi::screen_render_;
 rendererMap *Hmi::map_;

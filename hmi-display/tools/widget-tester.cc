@@ -16,6 +16,7 @@
 #include "src/widgets/keyboard.h"
 #include "src/widgets/mode.h"
 #include "src/widgets/side_labels.h"
+#include "src/widgets/table.h"
 #include "src/widgets/top_labels.h"
 #include "src/widgets/widget_types.h"
 
@@ -37,6 +38,7 @@ static gva::WidgetBottomLabels bottom(renderer, &touch);
 static gva::WidgetSideLabels left(renderer, &touch);
 static gva::WidgetSideLabels right(renderer, &touch);
 static gva::WidgetMode mode(renderer);
+static gva::WidgetTable table(renderer, &touch);
 
 static void do_drawing(cairo_t *, int width, int h);
 

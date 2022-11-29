@@ -100,8 +100,6 @@ void StateOn::entry() {
 
   screen_.canvas = canvas_;
   screen_.canvas.visible = true;
-  screen_.table = alarms_;
-  screen_.table.visible_ = false;
   screen_.labels = LabelModeEnum::kLabelAll;
   std::string filename = ConfigData::GetInstance()->GetImagePath();
   filename.append("/FRONT_CENTRE.png");

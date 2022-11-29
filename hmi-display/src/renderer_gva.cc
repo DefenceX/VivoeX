@@ -176,56 +176,6 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
   Restore();
 }
 
-void RendererGva::DrawTable(GvaTable *table) {
-  uint32_t height = 19;
-  uint32_t row = 0;
-  uint32_t column = 0;
-
-  SetLineThickness(config_->GetThemeTableBorderThickness(), LineType::kLineSolid);
-  SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightBold, table->fontname_);
-  SetColourBackground(gva::ConfigData::GetInstance()->GetThemeBackground());
-
-  for (row = 0; row < table->rows_; row++) {
-    uint32_t offset = table->GetX();
-
-    for (column = 0; column < table->row_[row].cells_; column++) {
-      uint32_t pos = 0;
-      uint32_t tmp = table->row_[row].widths_[column] * ((double)table->GetWidth() / 100);
-
-      SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, table->row_[row].cell_[column].weight, table->fontname_);
-
-      SetColourForeground(table->row_[row].cell_[column].foreground.red,
-                          table->row_[row].cell_[column].foreground.green,
-                          table->row_[row].cell_[column].foreground.blue);
-      SetColourBackground(table->row_[row].cell_[column].background.red,
-                          table->row_[row].cell_[column].background.green,
-                          table->row_[row].cell_[column].background.blue);
-      DrawRectangle(offset, table->GetY() - (height * row), tmp, height, true);
-
-      DrawColor(table->row_[row].cell_[column].textcolour.red, table->row_[row].cell_[column].textcolour.green,
-                table->row_[row].cell_[column].textcolour.blue);
-
-      uint32_t w = GetTextWidth(table->row_[row].cell_[column].text, 12);
-
-      switch (table->row_[row].cell_[column].align) {
-        case CellAlignType::kAlignCentre:
-          pos = offset + (tmp / 2 - w / 2);
-          break;
-        case CellAlignType::kAlignRight:
-          pos = offset + (tmp - w - 4);
-          break;
-        case CellAlignType::kAlignLeft:
-        default:
-          pos = offset + 4;
-          break;
-      }
-      SetTextFontSize(12);
-      DrawText(pos, table->GetY() - (height * row) + 5, table->row_[row].cell_[column].text);
-      offset += tmp;
-    }
-  }
-}
-
 void RendererGva::DrawButton(const std::string keyText, uint32_t fontSize, uint32_t x, uint32_t y, uint32_t size) {
   DrawButton(keyText, fontSize, x, y, size, size, CellAlignType::kAlignLeft);
 }

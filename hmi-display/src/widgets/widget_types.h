@@ -44,7 +44,8 @@ enum WidgetEnum {
   KWidgetTypeBottomLabels,
   KWidgetTypeLeftLabels,
   KWidgetTypeRightLabels,
-  KWidgetTypeMode
+  KWidgetTypeMode,
+  KWidgetTypeTable
 };
 
 typedef enum {

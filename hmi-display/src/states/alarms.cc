@@ -53,6 +53,8 @@ namespace gva {
 void StateAlarms::entry() {
   // Check to see if alarms was requested from hidden state, if so go back to last menu.
   if (screen_.control->labels_[1].state_ != LabelStates::kLabelHidden) {
+    WidgetTable *table = (WidgetTable *)screen_render_->GetWidget(KWidgetTypeTable);
+
     if (alarmson_) {
       alarmson_ = false;
       switch (lastState_) {
@@ -85,8 +87,8 @@ void StateAlarms::entry() {
     Reset();
     alarmson_ = true;
     manager_->SetScreen(&screen_, GvaFunctionEnum::kAlarmsX);
-    HmiHelper::TableAlarms(&screen_.table);
-    screen_.table.visible_ = true;
+    HmiHelper::TableAlarms(table);
+    table->SetVisible(true);
   }
 };
 

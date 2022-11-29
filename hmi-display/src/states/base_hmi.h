@@ -87,7 +87,6 @@ struct Hmi : tinyfsm::Fsm<Hmi> {
   static FunctionSelect top_;
   static CommonTaskKeys bottom_;
   static Canvas canvas_;
-  static TableWidget alarms_;
   static Screen screen_;
   static ScreenGva *screen_render_;
   static rendererMap *map_;

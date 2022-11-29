@@ -28,7 +28,7 @@
 
 namespace gva {
 
-void HmiHelper::TableLicences(TableWidget *table) {
+void HmiHelper::TableLicences(WidgetTable *table) {
   table->Reset();
   table->visible_ = true;
 
@@ -67,7 +67,7 @@ void HmiHelper::TableLicences(TableWidget *table) {
   table->AddCell("BSD", 20);
 }
 
-void HmiHelper::TableSystem(TableWidget *table) {
+void HmiHelper::TableSystem(WidgetTable *table) {
   table->Reset();
   table->visible_ = true;
 
@@ -102,7 +102,7 @@ void HmiHelper::TableSystem(TableWidget *table) {
   table->AddCell("Off", 20, Renderer::PackRgb(HMI_ORANGE));
 }
 
-void HmiHelper::TableAlarms(TableWidget *table) {
+void HmiHelper::TableAlarms(WidgetTable *table) {
   table->visible_ = true;
   table->x_ = 110;
   table->y_ = 390;

@@ -29,6 +29,7 @@
 #include <vector>
 
 #include "src/renderer_gva.h"
+#include "src/widgets/widget.h"
 #include "src/widgets/widget_types.h"
 
 namespace gva {
@@ -37,8 +38,21 @@ namespace gva {
 /// \brief A widget representing a table of elements
 ///
 ///
-class TableWidget {
+class WidgetTable : public WidgetX {
  public:
+  ///
+  /// \brief Construct a new Widget Keyboard object
+  ///
+  /// \param renderer
+  ///
+  explicit WidgetTable(const RendererGva &renderer, TouchGva *touch);
+
+  ///
+  /// \brief Destroy the Widget Keyboard object
+  ///
+  ///
+  ~WidgetTable() final = default;
+
   ///
   /// \brief This is the class describing a TableWidget cell
   ///
@@ -130,6 +144,19 @@ class TableWidget {
   };
 
   ///
+  /// \brief The base class override to draw the table once setup
+  ///
+  ///
+  void Draw() override;
+
+  ///
+  /// \brief Draw the table from the supplied GvaTable object
+  ///
+  /// \param table
+  ///
+  void SetTable(GvaTable *table);
+
+  ///
   /// \brief This is the class describing a TableWidget row
   ///
   ///
@@ -163,14 +190,16 @@ class TableWidget {
     ///
     /// \brief Get the Foreground Colour object
     ///
+    /// \brief Get the Background Colour object
+    ///
     /// \return uint32_t
     ///
     uint32_t GetForegroundColour() const;
 
+    /// table_
+    ///  \brief Get the Background Colour object
     ///
-    /// \brief Get the Background Colour object
-    ///
-    /// \return uint32_t
+    ///  \return uint32_t
     ///
     uint32_t GetBackgroundColour() const;
 
@@ -191,7 +220,7 @@ class TableWidget {
     ///
     /// \brief Get the Font Weight object
     ///
-    /// \return WeightType
+    /// \return WeightTypetable_
     ///
     WeightType GetFontWeight() const;
 
@@ -228,22 +257,16 @@ class TableWidget {
   };
 
   ///
-  /// \brief Construct a new Table Widget object
-  ///
-  ///
-  TableWidget();
-
-  ///
   /// \brief Add a row to the table
   ///
-  /// \param forground_colour Foreground colour
+  /// \param foreground_colour Foreground colour
   /// \param background_colour Background colour
   /// \param outline_colour Outline colour
   /// \param highlight_colour Highlight colour
   /// \param font_weight The font weight
   ///
-  void AddRow(uint32_t forground_colour, uint32_t background_colour, uint32_t outline_colour, uint32_t highlight_colour,
-              WeightType font_weight);
+  void AddRow(uint32_t foreground_colour, uint32_t background_colour, uint32_t outline_colour,
+              uint32_t highlight_colour, WeightType font_weight);
 
   ///
   /// \brief Add a row to the table
@@ -285,9 +308,7 @@ class TableWidget {
   /// \brief Add a new cell specifying alignment
   ///
   /// \param text The text to be contained in the cell
-  /// \param width The width of the cell in pixels
-  /// \param align Alignment CellAlignType::
-  ///
+  /// \param width The width of the ctable_
   void AddCell(std::string text, uint32_t width, CellAlignType align);
 
   ///
@@ -316,7 +337,9 @@ class TableWidget {
   std::vector<RowType> rows_;
 
  private:
-  ConfigData *configuration_ = nullptr;
+  GvaTable *table_;
+  void DrawTable(GvaTable *table);
+  TouchGva *touch_;
 };
 
 }  // namespace gva

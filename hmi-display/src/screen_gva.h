@@ -84,7 +84,6 @@ struct Screen {
   StatusBar *status_bar;
   FunctionKeys function_left;
   FunctionKeys function_right;
-  TableWidget table;
   Label label;
   Message message;
   LabelModeEnum labels;

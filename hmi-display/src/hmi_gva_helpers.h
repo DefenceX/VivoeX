@@ -30,9 +30,9 @@ namespace gva {
 
 class HmiHelper {
  public:
-  static void TableLicences(TableWidget *table);
-  static void TableSystem(TableWidget *table);
-  static void TableAlarms(TableWidget *table);
+  static void TableLicences(WidgetTable *table);
+  static void TableSystem(WidgetTable *table);
+  static void TableAlarms(WidgetTable *table);
 };
 
 }  // namespace gva
