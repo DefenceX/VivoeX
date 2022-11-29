@@ -30,26 +30,12 @@ jobs:
         run: sudo apt-get --no-install-recommends install xvfb doxygen graphviz wget plantuml imagemagick libgtk-3-dev libswscale-dev libprotobuf-c-dev geographiclib-doc libgeographic-dev libgeographic-dev libprotobuf-dev protobuf-compiler
       - name: Dummy X11
         # run: Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-        run:
-          sudo apt-get --no-install-recommends install xserver-xorg-video-dummy -y
-          # ls -hal && \
-          # cp scripts/config/xorg.conf /etc/X11 && \
-          # pwd && \
-          # ls -hal ${HOME} && \
-          # export XAUTHORITY=${HOME}/.Xauthority && \
-          # xrandr -d :0  -q && \
-          # xrandr -d :0 --output default --mode 1280x960
+        run: sudo apt-get --no-install-recommends install xserver-xorg-video-dummy -y
       - name: Dummy X11 (Setup)
-        run: ls -hal ${HOME} && \
-          cp scripts/config/xorg.conf /etc/X11  && \
-          pwd && \
-          ls -hal ${HOME} && \
-          export XAUTHORITY=${HOME}/.Xauthority && \
-          xrandr -d :0  -q && \
-          xrandr -d :0 --output default --mode 1280x960
+        # This needs to run for the duration of the GUI application
+        run: sudo X -config ./scripts/config/xorg.conf &
       - name: Doxygen
         run: |
-          export XAUTHORITY=/home/admin/.Xauthority && \
           export DISPLAY=':0' && \
           export MAJOR=$(sed -n '1p' < version) && \
           export MINOR=$(sed -n '2p' < version) && \
