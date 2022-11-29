@@ -180,5 +180,5 @@ entire HMI.
 
 Widgets can then be rendered and viewed using the test-hmi console program. The current widgets built into the SDK are sown below:
 
-\image html /docs/classgva_1_1WidgetX__inherit__graph.png "Diagram showing current widgets in the SDK" 
+\image html classgva_1_1WidgetX__inherit__graph.png "Diagram showing current widgets in the SDK" 
 

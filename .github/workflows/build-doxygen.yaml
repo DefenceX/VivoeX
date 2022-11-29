@@ -33,7 +33,7 @@ jobs:
         run: sudo apt-get --no-install-recommends install xserver-xorg-video-dummy
       - name: Doxygen
         run: |
-          export DISPLAY=':99.0' && \
+          export DISPLAY=':0' && \
           export MAJOR=$(sed -n '1p' < version) && \
           export MINOR=$(sed -n '2p' < version) && \
           export PATCH=$(sed -n '3p' < version) && \
