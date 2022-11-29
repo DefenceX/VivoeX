@@ -27,16 +27,9 @@ jobs:
       - name: Apt Update
         run: sudo apt-get update
       - name: Apt Install
-        run: sudo apt-get --no-install-recommends install xvfb doxygen graphviz wget plantuml imagemagick libgtk-3-dev libswscale-dev libprotobuf-c-dev geographiclib-doc libgeographic-dev libgeographic-dev libprotobuf-dev protobuf-compiler
-      # - name: Dummy X11
-      #   # run: Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-      #   run: sudo apt-get --no-install-recommends install lxqt xserver-xorg-video-dummy -y
-      # - name: Dummy X11 (Setup)
-      #   # This needs to run for the duration of the GUI application
-      #   run: sudo X -config ./scripts/config/xorg.conf &
+        run: sudo apt-get --no-install-recommends install doxygen graphviz wget plantuml
       - name: Doxygen
         run: |
-          /etc/init.d/lightdm start  && \
           export DISPLAY=':0' && \
           export MAJOR=$(sed -n '1p' < version) && \
           export MINOR=$(sed -n '2p' < version) && \
