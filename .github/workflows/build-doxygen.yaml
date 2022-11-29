@@ -32,7 +32,7 @@ jobs:
         # run: Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
         run:
           sudo apt-get --no-install-recommends install xserver-xorg-video-dummy && \
-          sudo cp scripts/config/xorg.conf /etc/X11 && \
+          cp scripts/config/xorg.conf /etc/X11 && \
           export XAUTHORITY=/home/admin/.Xauthority && \
           xrandr -d :0  -q && \
           xrandr -d :0 --output default --mode 1280x960
@@ -48,14 +48,12 @@ jobs:
           sudo touch /var/log/gva.log && \
           sudo chmod a+rw /var/log/gva.log && \
           mkdir ./docs
-          ls -hal && \
           sudo mkdir -p /opt/gva/hmi && \
           sudo cp ./images/au /opt/gva/hmi/images -r && \
           echo "Current version ${SEM_VERSION} with #${GIT_HASH}" && \
           mkdir build && \
           cd build && \
           cmake .. && \
-          ls -hal && \
           make doxygen && \
           wget https://img.shields.io/badge/version-${SEM_VERSION}-blue.svg -O ../docs/version.svg
       - name: Setup Pages
