@@ -9,7 +9,7 @@ pkg_check_modules(SWSCALE REQUIRED libswscale)
 add_subdirectory(src/widgets)
 add_subdirectory(common)
 add_subdirectory(config)
-add_subdirectory(test)
+add_subdirectory(tools)
 #add_subdirectory(dds)
 
 if(ENABLE_COVERAGE)
@@ -83,7 +83,7 @@ set(SOURCES main.cc
 			src/states/bms.cc
 			src/states/alarms.cc
 			)
-			
+
 link_libraries(-lstdc++fs)
 add_executable(hmi-display ${PROTO_SRCS} ${SOURCES})
 if (ENABLE_OSMSCOUT)

@@ -1,4 +1,4 @@
-project(test-hmi)
+project(widget-tester)
 
 include(FindPkgConfig)
 
@@ -6,7 +6,7 @@ pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
 pkg_check_modules(CAIRO REQUIRED cairo)
 find_package(Protobuf REQUIRED)
 
-set(SOURCE_FILES test.cc
+set(SOURCE_FILES widget-tester.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/renderer_gva.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/renderer.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/renderer_cairo.cc
@@ -29,10 +29,10 @@ include_directories(${CMAKE_BINARY_DIR}/external/libnmea/src/include)
 link_directories(${CMAKE_BINARY_DIR}/external/libnmea/build/src)
 link_libraries(-lstdc++fs)
 
-add_executable(test-hmi ${SOURCE_FILES})
+add_executable(widget-tester ${SOURCE_FILES})
 
-target_link_libraries(test-hmi nmealib config-proto ${CAIRO_LIBRARIES} ${GTK3_LIBRARIES} )
-target_include_directories(test-hmi PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_BINARY_DIR}/hmi-display/config ${CMAKE_CURRENT_SOURCE_DIR}/../hmi-display${CAIRO_INCLUDE_DIRS} ${PANGO_INCLUDE_DIRS} ${GTK3_INCLUDE_DIRS})
-target_compile_options(test-hmi PUBLIC ${CAIRO_CFLAGS_OTHER} ${GTK3_CFLAGS_OTHER})
-add_dependencies(test-hmi libnmea config-proto)
+target_link_libraries(widget-tester nmealib config-proto ${CAIRO_LIBRARIES} ${GTK3_LIBRARIES} )
+target_include_directories(widget-tester PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_BINARY_DIR}/hmi-display/config ${CMAKE_CURRENT_SOURCE_DIR}/../hmi-display${CAIRO_INCLUDE_DIRS} ${PANGO_INCLUDE_DIRS} ${GTK3_INCLUDE_DIRS})
+target_compile_options(widget-tester PUBLIC ${CAIRO_CFLAGS_OTHER} ${GTK3_CFLAGS_OTHER})
+add_dependencies(widget-tester libnmea config-proto)
 
