@@ -14,6 +14,7 @@
 - \ref widgets
    - \ref ppiclassictank
    - \ref ppiclassicarrow
+   - \ref ppimodern
    - \ref keyboard
    - \ref alarm
    - \ref function
@@ -129,13 +130,20 @@ The PPI comes in servral modes, see gva::WidgetPlanPositionIndicator.
 \image html docs/widget_ppi_03.png  "Classic tank PPI, Sight West" 
 \image html docs/widget_ppi_04.png  "Classic tank PPI, Sight North" 
 \image html docs/widget_ppi_05.png  "Classic tank PPI without Site" 
-\subsubsection ppiclassicarrow Plan Position Indicator (PPI), Classic Arrow
 
+\subsubsection ppiclassicarrow Plan Position Indicator (PPI), Classic Arrow
 \image html docs/widget_ppi_06.png  "Classic arrow PPI, Sight East" 
 \image html docs/widget_ppi_07.png  "Classic arrow PPI, Sight South" 
 \image html docs/widget_ppi_08.png  "Classic arrow PPI, Sight West" 
 \image html docs/widget_ppi_09.png  "Classic arrow PPI, Sight North" 
 \image html docs/widget_ppi_10.png  "Classic arrow PPI without Site" 
+
+\subsubsection ppimodern Plan Position Indicator (PPI), Modern
+\image html docs/widget_ppi_11.png  "Modern PPI, Sight East" 
+\image html docs/widget_ppi_12.png  "Modern PPI, Sight South" 
+\image html docs/widget_ppi_13.png  "Modern PPI, Sight West" 
+\image html docs/widget_ppi_14.png  "Modern PPI, Sight North" 
+\image html docs/widget_ppi_15.png  "Modern PPI without Site" 
 
 \subsubsection keyboard On screen keyboard
 The keyboard has servral input modes, see gva::WidgetKeyboard.

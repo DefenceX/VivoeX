@@ -237,18 +237,20 @@ void RendererCairo::Draw() {
         break;
       case kCommandTranslate:
         cairo_translate(cr, currentCmd.arg1, currentCmd.arg2);
-        cairo_rotate(cr, M_PI);
         break;
       case kCommandRotate:
         cairo_rotate(cr, currentCmd.width);
         break;
       case kCommandClosePath:
+        cairo_close_path(cr);
         if (currentCmd.arg1 > 0) {
           cairo_set_source_rgb(cr, intToFloat(background_colour_.red), intToFloat(background_colour_.green),
                                intToFloat(background_colour_.blue));
-          cairo_fill(cr);
+          cairo_fill_preserve(cr);
+          cairo_set_source_rgb(cr, intToFloat(forground_colour_.red), intToFloat(forground_colour_.green),
+                               intToFloat(forground_colour_.blue));
+          cairo_stroke(cr);
         }
-        cairo_close_path(cr);
         break;
       case kCommandLineJoin:
         cairo_set_line_join(cr, (cairo_line_join_t)currentCmd.arg1);

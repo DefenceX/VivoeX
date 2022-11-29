@@ -39,7 +39,8 @@ class WidgetPlanPositionIndicator : public WidgetX {
     kPpiClassicTankWithoutSight,
     kPpiClassicArrowWithSight,
     kPpiClassicArrowWithoutSight,
-    kPpiModernTankWithSights
+    kPpiModernTankWithSights,
+    kPpiModernTankWithoutSights
   };
 
   ///
@@ -54,6 +55,12 @@ class WidgetPlanPositionIndicator : public WidgetX {
   ///
   ///
   void Draw() final;
+
+  ///
+  /// \brief Draw a modern looking PPI
+  ///
+  ///
+  void DrawModern(uint32_t x, uint32_t y, uint32_t degrees, uint32_t sightAzimuth, bool sight);
 
   ///
   /// \brief Draw the Plan Position Indicator
@@ -108,8 +115,7 @@ class WidgetPlanPositionIndicator : public WidgetX {
   const double scale_ = 0.5;
   int16_t bearing_ = 0;
   int16_t bearing_sight_ = 0;
-  // ModeEnum mode_ = ModeEnum::kPpiClassicTankWithSight;
-  ModeEnum mode_ = ModeEnum::kPpiClassicArrowWithSight;
+  ModeEnum mode_ = ModeEnum::kPpiClassicTankWithSight;
 };
 
 }  // namespace gva

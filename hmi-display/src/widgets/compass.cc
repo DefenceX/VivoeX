@@ -43,27 +43,132 @@ void WidgetPlanPositionIndicator::Draw() {
   }
 }
 
-void DrawModern() {}
+void WidgetPlanPositionIndicator::DrawModern(uint32_t x, uint32_t y, uint32_t degrees, uint32_t sightAzimuth,
+                                             bool sight) {
+  double_t radius = 100;
+  double_t angle = 45;
+  double_t d = degrees;  // Degrees north
+
+  GetRenderer()->Save();
+  GetRenderer()->Scale(scale_, scale_);
+  GetRenderer()->DrawColor(HMI_WHITE);
+
+  // Compass
+  GetRenderer()->SetColourBackground(HMI_GREY);
+  GetRenderer()->SetColourForeground(HMI_WHITE);
+  GetRenderer()->SetLineThickness(2, LineType::kLineSolid);
+  GetRenderer()->DrawCircle(x, y, radius, true);  // Compass outline
+  GetRenderer()->SetColourBackground(HMI_BLACK);
+  GetRenderer()->DrawCircle(x, y, 80, true);  // Inner circle
+
+  GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
+  float step = (M_PI * 2) / 12;
+  int64_t p = 30;
+  int64_t c = 0;
+
+  d = degrees;
+  for (d = DegreesToRadians(degrees) - 6; d <= DegreesToRadians(degrees) + (M_PI * 2); d += step) {
+    c++;
+    GetRenderer()->MovePen(x + (radius - 20) * cos(d), y - (radius - 20) * sin(d));
+    GetRenderer()->DrawPen(x + (radius)*cos(d), y - (radius)*sin(d), true);
+  }
+
+  // Draw Text markers
+  d = DegreesToRadians(degrees);
+  double_t pos = 10;
+  uint32_t font_size = 14;
+  uint32_t adjust_x = x - 4;
+  uint32_t adjust_y = y - 4;
+
+  GetRenderer()->SetTextFontSize(font_size);
+  GetRenderer()->DrawText(adjust_x - 3 + (radius - pos) * cos(d + (M_PI * 2)),
+                          adjust_y - 2 - (radius - pos) * sin(d + (M_PI * 2)), "N");
+  GetRenderer()->DrawText(adjust_x - 3 + (radius - pos) * cos(d + (M_PI)),
+                          adjust_y - 2 - (radius - pos) * sin(d + (M_PI)), "S");
+  GetRenderer()->DrawText(adjust_x - 3 + (radius - pos) * cos(d + (M_PI / 2)),
+                          adjust_y - 2 - (radius - pos) * sin(d + (M_PI / 2)), "E");
+  GetRenderer()->DrawText(adjust_x - 3 + (radius - pos) * cos(d + (M_PI + M_PI / 2)),
+                          adjust_y - 2 - (radius - pos) * sin(d + (M_PI + M_PI / 2)), "W");
+  // Vehicle outline
+  GetRenderer()->SetLineType(CAIRO_LINE_JOIN_MITER);
+  GetRenderer()->Save();
+  GetRenderer()->DrawColor(HMI_WHITE);
+  GetRenderer()->SetColourForeground(HMI_WHITE);
+  GetRenderer()->SetColourBackground(HMI_GREY);
+  GetRenderer()->SetLineThickness(2, LineType::kLineSolid);
+  GetRenderer()->MovePen(x - 30, y - 65);
+  GetRenderer()->DrawPen(x + 30, y - 65, false);
+  GetRenderer()->DrawPen(x + 30, y + 30, false);
+  GetRenderer()->DrawPen(x + 22, y + 57, false);
+  GetRenderer()->DrawPen(x + 15, y + 67, false);
+  GetRenderer()->DrawPen(x - 15, y + 67, false);
+  GetRenderer()->DrawPen(x - 22, y + 57, false);
+  GetRenderer()->DrawPen(x - 30, y + 30, false);
+  GetRenderer()->DrawPen(x - 30, y - 65, false);
+  GetRenderer()->ClosePath(true);
+  GetRenderer()->Restore();
+
+  // Turret outline
+  GetRenderer()->Save();
+  GetRenderer()->SetColourForeground(HMI_WHITE);
+  GetRenderer()->SetColourBackground(HMI_GREY);
+  GetRenderer()->SetLineThickness(2, LineType::kLineSolid);
+  GetRenderer()->MovePen(x - 14, y - 57);
+  GetRenderer()->DrawPen(x - 25, y - 52, false);
+  GetRenderer()->DrawPen(x - 25, y - 20, false);
+  GetRenderer()->DrawPen(x - 20, y + 4, false);
+  GetRenderer()->DrawPen(x - 8, y + 4, false);
+  GetRenderer()->DrawPen(x - 4, y - 10, false);
+  GetRenderer()->DrawPen(x - 4, y - 20, false);
+  GetRenderer()->DrawPen(x + 25, y - 20, false);
+  GetRenderer()->DrawPen(x + 25, y - 52, false);
+  GetRenderer()->DrawPen(x + 14, y - 57, false);
+  GetRenderer()->ClosePath(true);
+  GetRenderer()->DrawRectangle(x - 4, y - 20, 6, 44, true);
+  GetRenderer()->Restore();
+
+  if (sight == true) {
+    // Sight
+    GetRenderer()->Save();
+    GetRenderer()->Translate(-14, 0);
+    GetRenderer()->Rotate(gva::DegreesToRadians(sightAzimuth));
+    GetRenderer()->DrawCircle(x, y, 3, true);
+    GetRenderer()->SetColourBackground(HMI_CYAN);
+    GetRenderer()->DrawTriangle(x, y, x - 8, y + 16, x + 6, y + 16, true);
+    GetRenderer()->SetColourBackground(HMI_DARK_BLUE);
+    GetRenderer()->SetColourForeground(HMI_DARK_BLUE);
+    GetRenderer()->DrawTriangle(x, y, x - 3, y + 15, x + 1, y + 15, true);
+    GetRenderer()->Restore();
+  }
+  GetRenderer()->Restore();
+}
+
 void WidgetPlanPositionIndicator::DrawPPI(ModeEnum mode, uint32_t x, uint32_t y, uint32_t degrees,
                                           uint32_t sightAzimuth) {
   double_t radius = 100;
   double_t angle = 45;
-  double_t d;
+  double_t d = degrees;
+  uint32_t s = sightAzimuth;
+
+  /* Degrees north */
+  d += 270;
+  d = (d >= 360) ? d - 360 : d;
+  s += 270;
+  s = (s >= 360) ? s - 360 : s;
 
   if (mode == ModeEnum::kPpiModernTankWithSights) {
-    DrawModern();
+    DrawModern(x, y, degrees, sightAzimuth, true);
     return;
   }
+  if (mode == ModeEnum::kPpiModernTankWithoutSights) {
+    DrawModern(x, y, degrees, sightAzimuth, false);
+    return;
+  }
+
   GetRenderer()->Save();
   GetRenderer()->Scale(scale_, scale_);
 
   GetRenderer()->DrawColor(HMI_WHITE);
-  /* Degrees north */
-  degrees += 270;
-  degrees = (degrees >= 360) ? degrees - 360 : degrees;
-  sightAzimuth += 270;
-  sightAzimuth = (sightAzimuth >= 360) ? sightAzimuth - 360 : sightAzimuth;
-  d = degrees;
 
   // Compass
   GetRenderer()->SetColourBackground(HMI_BLACK);
