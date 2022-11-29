@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   build-ubuntu-opensplice:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v3
       - name: Apt Update
