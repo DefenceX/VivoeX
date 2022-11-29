@@ -96,9 +96,9 @@ class GvaTable : public RenderBase {
 
 class Hotspot : public RenderBase {
  public:
-  Hotspot(GvaFunctionGroupEnum groupId, uint32_t x, uint32_t y) : group_id_(groupId), binding_(0), RenderBase(x, y) {}
+  Hotspot(GvaFunctionGroupEnum groupId, uint32_t x, uint32_t y) : RenderBase(x, y), group_id_(groupId), binding_(0) {}
   Hotspot(GvaFunctionGroupEnum groupId, uint32_t binding, uint32_t x, uint32_t y, uint32_t width, uint32_t height)
-      : group_id_(groupId), binding_(binding), RenderBase(x, y, width, height) {}
+      : RenderBase(x, y, width, height), group_id_(groupId), binding_(binding) {}
   GvaFunctionGroupEnum GetGroupId() { return group_id_; }
   uint32_t GetBinding() { return binding_; }
 

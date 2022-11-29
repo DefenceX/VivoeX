@@ -54,7 +54,6 @@ static void tran_setup(GtkWidget *win) {
 }
 
 static int counter = 0;
-static GtkWidget *window;
 
 static gboolean on_draw_event(GtkWidget *widget, cairo_t *cr, gpointer user_data) {
   GtkWidget *win = gtk_widget_get_toplevel(widget);

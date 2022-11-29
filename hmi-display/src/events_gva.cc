@@ -31,6 +31,7 @@
 namespace gva {
 
 static uint32_t previous_key_;
+static TouchGva* touch_;
 
 EventsGva::EventsGva(gtkType* window, TouchGva* touch) {
   window_ = window;
@@ -97,11 +98,9 @@ gboolean EventsGva::KeyReleaseEventCb(GtkWidget* Widget, GdkEventKey* event) {
 }
 
 gboolean EventsGva::CreateKeyEvent(GtkWidget* Widget, GdkEventKey* event, EventEnumType type) {
-  GdkModifierType modifiers;
   EventGvaType gvaEvent;
   gvaEvent.type_ = type;
 
-  modifiers = gtk_accelerator_get_default_mod_mask();
   std::string state = (EventEnumType::kKeyEventPressed == type) ? "(Pressed) " : "(Released) ";
   logGva::log("[GVA] Key press event " + state + std::to_string(event->keyval) + " (prev " +
                   std::to_string(previous_key_) + ")",
@@ -352,7 +351,7 @@ gboolean EventsGva::CreateKeyEvent(GtkWidget* Widget, GdkEventKey* event, EventE
 GvaStatusTypes EventsGva::NextGvaEvent(EventGvaType* event) {
   EventGvaType popEvent;
 
-  popEvent.type_ == EventEnumType::kNoEvent;
+  popEvent.type_ = EventEnumType::kNoEvent;
   if (!eventqueue_.empty()) {
     popEvent = eventqueue_.back();
     eventqueue_.pop_back();

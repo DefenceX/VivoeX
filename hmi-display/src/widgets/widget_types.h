@@ -52,7 +52,7 @@ typedef enum {
   kIconUpArrow,
   kIconDownArrow,
   kIconRightArrorw,
-  ICON_RIGHT_ARROW,
+  kIconRightArrow,
   kIconUpArrowOutline,
   kIconDownArrowOutline,
   kIconLeftArrorwOutline,

@@ -78,7 +78,7 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       }
       ClosePath(true);
       break;
-    case ICON_RIGHT_ARROW:
+    case kIconRightArrow:
       Rotate(M_PI);
     case kIconRightArrorw:
       Rotate(M_PI * 1.5);
@@ -165,6 +165,13 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       DrawPenRaw(0, -7);
       ClosePath(true);
       break;
+    case kIconNone:
+    case kIconEnter:
+    case kIconLocation:
+    case kIconCentre:
+    default:
+      // These have not been implemented yet
+      break;
   }
   Restore();
 }
@@ -173,7 +180,6 @@ void RendererGva::DrawTable(GvaTable *table) {
   uint32_t height = 19;
   uint32_t row = 0;
   uint32_t column = 0;
-  uint32_t columns;
 
   SetLineThickness(config_->GetThemeTableBorderThickness(), LineType::kLineSolid);
   SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightBold, table->fontname_);
@@ -200,7 +206,6 @@ void RendererGva::DrawTable(GvaTable *table) {
                 table->row_[row].cell_[column].textcolour.blue);
 
       uint32_t w = GetTextWidth(table->row_[row].cell_[column].text, 12);
-      uint32_t h = GetTextHeight(table->row_[row].cell_[column].text, 12);
 
       switch (table->row_[row].cell_[column].align) {
         case CellAlignType::kAlignCentre:

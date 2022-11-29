@@ -33,8 +33,6 @@ namespace gva {
 
 enum { LOG_DEBUG = 0, LOG_INFO, LOG_WARNING, LOG_ERROR };
 
-static FILE* m_errorfd;
-
 ///
 /// \brief A simple, light weight logging function for debug purposes
 ///
@@ -64,6 +62,7 @@ class logGva {
   static void finish();
 
  private:
+  static FILE* m_errorfd;
 };
 
 }  // namespace gva

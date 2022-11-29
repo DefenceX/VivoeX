@@ -31,7 +31,6 @@ namespace gva {
 WidgetMode::WidgetMode(const RendererGva& renderer) : WidgetX(renderer, KWidgetTypeMode) { SetVisible(false); }
 
 void WidgetMode::Draw() {
-  uint32_t offset = DEFAULT_WIDTH * 0.4;
   uint32_t y = DEFAULT_HEIGHT * 0.12;
 
   GetRenderer()->SetColourForeground(HMI_WHITE);

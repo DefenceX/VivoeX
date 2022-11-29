@@ -64,7 +64,6 @@ class EventGvaType {
 };
 
 static std::vector<EventGvaType> eventqueue_;
-static TouchGva *touch_;
 
 class EventsGva {
  public:

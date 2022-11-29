@@ -263,7 +263,7 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeySystemsRight() {
   keys.labels[3].state = LabelStates::kLabelDisabled;
   keys.labels[3].text = "Roll.Allocation";
   keys.labels[3].toggleActive = false;
-  keys.labels[4].state = LabelStates::kLabelDisabled;
+  keys.labels[4].state = LabelStates::kLabelEnabled;
   keys.labels[4].text = "Blackout";
   keys.labels[4].toggleActive = false;
   keys.labels[5].state = LabelStates::kLabelEnabled;
@@ -359,16 +359,16 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeyBattlefieldManagementSystemLe
   keys.labels[1].text = "Unused";
   keys.labels[1].toggleActive = false;
   keys.labels[2].state = state;
-  keys.labels[2].text = "Shift.up";
+  keys.labels[2].text = "icon:uparrow";
   keys.labels[2].toggleActive = false;
   keys.labels[3].state = state;
-  keys.labels[3].text = "Shift.down";
+  keys.labels[3].text = "icon:downarrow";
   keys.labels[3].toggleActive = false;
   keys.labels[4].state = state;
-  keys.labels[4].text = "Zoom +";
+  keys.labels[4].text = "icon:plus";
   keys.labels[4].toggleActive = false;
   keys.labels[5].state = state;
-  keys.labels[5].text = "Rotate.>>";
+  keys.labels[5].text = "icon:rotateleft";
   keys.labels[5].toggleActive = false;
   return keys;
 }
@@ -381,13 +381,13 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeyBattlefieldManagementSystemRi
 #else
   LabelStates state = LabelStates::kLabelDisabled;
 #endif
-  keys.labels[0].state = state;
+  keys.labels[0].state = LabelStates::kLabelHidden;
   keys.labels[0].text = "Unused";
   keys.labels[0].toggleActive = false;
   keys.labels[1].state = LabelStates::kLabelHidden;
   keys.labels[1].text = "Unused";
   keys.labels[1].toggleActive = false;
-  keys.labels[2].state = LabelStates::kLabelHidden;
+  keys.labels[2].state = state;
   keys.labels[2].text = "icon:leftarrow";
   keys.labels[2].toggleActive = false;
   keys.labels[3].state = state;

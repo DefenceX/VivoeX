@@ -61,8 +61,6 @@ RendererCairo::~RendererCairo() {
 }
 
 void RendererCairo::Draw() {
-  uint32_t count = 0;
-  cairo_surface_t *surface;
   std::array<double, 1> dashed = {1.0};
   std::array<double, 1> dashed_medium = {4.0};
   std::array<double, 1> dashed_large = {8.0};
@@ -325,7 +323,7 @@ uint32_t RendererCairo::Init(uint32_t width, uint32_t height, bool fullscreen, C
 
   render_.fullscreen = render_.fullscreen ? fullscreen : fullscreen;
 
-  uint32_t status = g_application_run(G_APPLICATION(render_.win.app), 0, 0);
+  g_application_run(G_APPLICATION(render_.win.app), 0, 0);
   g_object_unref(render_.win.app);
 
   return 0;
@@ -675,7 +673,7 @@ uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, void *buffer, std::st
 
   strcpy(image_list_[image_tail_].name, file.c_str());
 
-  for (i; i < cache_image_tail_; i++) {
+  for (i = 0; i < cache_image_tail_; i++) {
     if (strcmp(file.c_str(), cache_image_list_[i].name) == 0) {
       // Found in cache
       found_in_cache = true;

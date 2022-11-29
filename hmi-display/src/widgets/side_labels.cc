@@ -51,13 +51,13 @@ void WidgetSideLabels::Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t hei
 
   GetRenderer()->DrawColor(text_colour);
   GetRenderer()->SetTextFontSize(14);
-  if (text.substr(0, 4) == "icon:") {
+  if (text.substr(0, 5) == "icon:") {
     if (text.substr(5, 20) == "exit") GetRenderer()->DrawIcon(kIconPowerOff, x + width / 2, y + height / 2, 20, 20);
     if (text.substr(5, 20) == "uparrow") GetRenderer()->DrawIcon(kIconUpArrow, x + width / 2, y + height / 2, 20, 20);
     if (text.substr(5, 20) == "downarrow")
       GetRenderer()->DrawIcon(kIconDownArrow, x + width / 2, y + height / 2, 20, 20);
     if (text.substr(5, 20) == "rightarrow")
-      GetRenderer()->DrawIcon(ICON_RIGHT_ARROW, x + width / 2, y + height / 2, 20, 20);
+      GetRenderer()->DrawIcon(kIconRightArrow, x + width / 2, y + height / 2, 20, 20);
     if (text.substr(5, 20) == "leftarrow")
       GetRenderer()->DrawIcon(kIconRightArrorw, x + width / 2, y + height / 2, 20, 20);
     if (text.substr(5, 20) == "rotateleft")

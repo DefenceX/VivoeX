@@ -38,7 +38,6 @@ WidgetPlanPositionIndicator::WidgetPlanPositionIndicator(const RendererGva& rend
 
 void WidgetPlanPositionIndicator::Draw() {
   if (GetVisible()) {
-    WidgetPlanPositionIndicator::ModeEnum::kPpiClassicTankWithSight;
     DrawPPI(mode_, GetX(), GetY(), bearing_, bearing_sight_);
   }
 }
@@ -46,7 +45,6 @@ void WidgetPlanPositionIndicator::Draw() {
 void WidgetPlanPositionIndicator::DrawModern(uint32_t x, uint32_t y, uint32_t degrees, uint32_t sightAzimuth,
                                              bool sight) {
   double_t radius = 100;
-  double_t angle = 45;
   double_t d = degrees;  // Degrees north
 
   GetRenderer()->Save();
@@ -63,7 +61,6 @@ void WidgetPlanPositionIndicator::DrawModern(uint32_t x, uint32_t y, uint32_t de
 
   GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
   float step = (M_PI * 2) / 12;
-  int64_t p = 30;
   int64_t c = 0;
 
   d = degrees;
