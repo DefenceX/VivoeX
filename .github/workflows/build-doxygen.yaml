@@ -31,9 +31,10 @@ jobs:
       - name: Dummy X11
         # run: Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
         run: sudo apt-get --no-install-recommends install lxqt xserver-xorg-video-dummy -y
-      # - name: Dummy X11 (Setup)
-      # This needs to run for the duration of the GUI application
-      # run: sudo X -config ./scripts/config/xorg.conf &
+      - name: Dummy X11 (Setup)
+        # This needs to run for the duration of the GUI application
+        # run: sudo X -config ./scripts/config/xorg.conf &
+        run: /etc/init.d/lxdm start
       - name: Doxygen
         run: |
           export DISPLAY=':0' && \
