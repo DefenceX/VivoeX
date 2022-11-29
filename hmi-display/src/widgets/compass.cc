@@ -43,12 +43,17 @@ void WidgetPlanPositionIndicator::Draw() {
   }
 }
 
+void DrawModern() {}
 void WidgetPlanPositionIndicator::DrawPPI(ModeEnum mode, uint32_t x, uint32_t y, uint32_t degrees,
                                           uint32_t sightAzimuth) {
   double_t radius = 100;
   double_t angle = 45;
   double_t d;
 
+  if (mode == ModeEnum::kPpiModernTankWithSights) {
+    DrawModern();
+    return;
+  }
   GetRenderer()->Save();
   GetRenderer()->Scale(scale_, scale_);
 
