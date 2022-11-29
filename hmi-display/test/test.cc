@@ -329,7 +329,7 @@ static void do_drawing(cairo_t *cr, int width, int height) {
   }
 
   cairo_restore(cr);
-  numbers counter++;
+  counter++;
 }
 
 int main(int argc, char *argv[]) {
