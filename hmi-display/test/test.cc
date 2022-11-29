@@ -1,6 +1,10 @@
 #include <cairo.h>
+#include <ctype.h>
 #include <gtk/gtk.h>
 #include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 #include <ctime>
 
@@ -312,7 +316,7 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       }
       break;
     case 24:
-      // Alarms Indicator
+      // Mode Indicator
       cairo_translate(cr, 0, height / 2);
       mode.SetMode("Software Testing Mode");
       mode.Draw();
@@ -325,21 +329,83 @@ static void do_drawing(cairo_t *cr, int width, int height) {
   }
 
   cairo_restore(cr);
-
-  counter++;
+  numbers counter++;
 }
 
 int main(int argc, char *argv[]) {
+  int aflag = 0;
+  int bflag = 0;
+  char *cvalue = NULL;
+  int index;
+  int c;
+  int id = 0;
+  int timeout = 1000;
+
   GtkWidget *window;
   GtkWidget *darea;
 
-  int timeout = 1000;
-  if (argc == 2) {
-    timeout = atoi(argv[1]);
-  }
+  opterr = 0;
+
+  while ((c = getopt(argc, argv, "i:ht:")) != -1) switch (c) {
+      case 'i':
+        id = atoi(optarg);
+        break;
+      case 'h':
+        std::cout << "Help for test-hmi:" << std::endl;
+        std::cout
+            << "    -t <milliseconds>    timeout in milliseconds between widget renders, 1 second if not specified."
+            << std::endl;
+        std::cout << "    -i <number>          The id of the single widget to render from list below (timeout does not "
+                     "apply here):"
+                  << std::endl;
+        std::cout << "       0: PPI classic tank site, north facing site " << std::endl;
+        std::cout << "       1: PPI classic tank site, east facing site " << std::endl;
+        std::cout << "       2: PPI classic tank site, south facing site " << std::endl;
+        std::cout << "       3: PPI classic tank site, west facing site " << std::endl;
+        std::cout << "       4: PPI classic tank site with no site " << std::endl;
+        std::cout << "       5: PPI classic arrow site, north facing site " << std::endl;
+        std::cout << "       6: PPI classic arrow site, east facing site " << std::endl;
+        std::cout << "       7: PPI classic arrow site, south facing site " << std::endl;
+        std::cout << "       8: PPI classic arrow site, west facing site " << std::endl;
+        std::cout << "       9: PPI classic arrow site with no site " << std::endl;
+        std::cout << "       10: PPI modern site, north facing site " << std::endl;
+        std::cout << "       11: PPI modern site, east facing site " << std::endl;
+        std::cout << "       12: PPI modern site, south facing site " << std::endl;
+        std::cout << "       13: PPI modern site, west facing site " << std::endl;
+        std::cout << "       14: PPI modern site with no site " << std::endl;
+        std::cout << "       15: Keyboard, lower case " << std::endl;
+        std::cout << "       16: Keyboard, upper case " << std::endl;
+        std::cout << "       17: Keyboard, numbers " << std::endl;
+        std::cout << "       18: Alarms indicator, advisory " << std::endl;
+        std::cout << "       19: Alarms indicator, warning " << std::endl;
+        std::cout << "       20: Alarms indicator, caution " << std::endl;
+        std::cout << "       21: Labels for top of screen, functional areas" << std::endl;
+        std::cout << "       22: Labels for bottom of screen, control " << std::endl;
+        std::cout << "       23: Labels for side of screen, used for both left and right hand sides " << std::endl;
+        std::cout << "       24: Operator mode, visual indication of the non operational mode/s" << std::endl;
+        return 0;
+      case 't':
+        timeout = atoi(optarg);
+        break;
+      case '?':
+        if (optopt == 'c')
+          fprintf(stderr, "Option -%c requires an argument.\n", optopt);
+        else if (isprint(optopt))
+          fprintf(stderr, "Unknown option `-%c'.\n", optopt);
+        else
+          fprintf(stderr, "Unknown option character `\\x%x'.\n", optopt);
+        return 1;
+      default:
+        abort();
+    }
+
+  printf("aflag = %d, bflag = %d, cvalue = %s\n", aflag, bflag, cvalue);
+
+  for (index = optind; index < argc; index++) printf("Non-option argument %s\n", argv[index]);
 
   std::cout << "Widget tester, created PNG files for all widgets" << std::endl;
-  std::cout << argv[1] << "   Timeout set to " << timeout << std::endl;
+  std::cout << "   Timeout set to " << timeout << std::endl;
+  std::cout << "   Identity set to " << id << std::endl;
 
   gtk_init(&argc, &argv);
 
@@ -351,7 +417,13 @@ int main(int argc, char *argv[]) {
   gtk_container_add(GTK_CONTAINER(window), darea);
 
   g_signal_connect(G_OBJECT(darea), "draw", G_CALLBACK(on_draw_event), NULL);
-  g_timeout_add(timeout, (GSourceFunc)time_handler, (gpointer)window);
+
+  if (id > 0) {
+    // Just do a single widget no need for timer
+    counter = id;
+  } else {
+    g_timeout_add(timeout, (GSourceFunc)time_handler, (gpointer)window);
+  }
 
   g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
