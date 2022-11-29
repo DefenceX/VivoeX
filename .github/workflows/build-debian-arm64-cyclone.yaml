@@ -61,7 +61,7 @@ jobs:
           retention-days: 30
 
   install-ubuntu-cyclone:
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     needs: [build-ubuntu-cyclone]
     if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
 
