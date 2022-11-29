@@ -1,4 +1,4 @@
-name: "Build Ubuntu ARM64 : Cyclone"
+name: "Build Debian ARM64 : Cyclone"
 
 on: workflow_dispatch
 
