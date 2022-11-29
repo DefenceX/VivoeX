@@ -33,10 +33,10 @@ jobs:
         run: sudo apt-get --no-install-recommends install lxqt xserver-xorg-video-dummy -y
       - name: Dummy X11 (Setup)
         # This needs to run for the duration of the GUI application
-        run: sudo X -config ./scripts/config/xorg.conf & && \
-          /etc/init.d/lightdm start
+        run: sudo X -config ./scripts/config/xorg.conf &
       - name: Doxygen
         run: |
+          /etc/init.d/lightdm start  && \
           export DISPLAY=':0' && \
           export MAJOR=$(sed -n '1p' < version) && \
           export MINOR=$(sed -n '2p' < version) && \
