@@ -28,7 +28,7 @@ dnf install epel-release -y
 dnf config-manager --set-enabled powertools -y
 dnf localinstall --nogpgcheck https://download1.rpmfusion.org/free/el/rpmfusion-free-release-8.noarch.rpm -y
 dnf update -y
-dnf install cmake gcc-c++ cairo-devel libXt-devel doxygen libXext-devel ffmpeg-libs protobuf-devel protobuf-compiler GeographicLib-devel gtk3-devel -y
+dnf install cmake gcc-c++ cairo-devel libXt-devel doxygen libXext-devel ffmpeg-devel protobuf-devel protobuf-compiler GeographicLib-devel gtk3-devel -y
 
 ```
 Additional packages for building documentation:
