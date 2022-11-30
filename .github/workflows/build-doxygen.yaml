@@ -40,7 +40,7 @@ jobs:
           ls -hal && \
           ls -hal ./images/doxygen && \
           echo "Current version ${SEM_VERSION} with #${GIT_HASH} and path ${IMAGE_PATH}" && \
-          doxygen && \
+          IMAGE_PATH=./images/doxygen doxygen && \
           wget https://img.shields.io/badge/version-${SEM_VERSION}-blue.svg -O docs/version.svg
       - name: Setup Pages
         uses: actions/configure-pages@v2
