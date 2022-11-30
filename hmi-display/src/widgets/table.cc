@@ -41,8 +41,8 @@ void WidgetTable::DrawTable(GvaTable* table) {
   uint32_t column = 0;
 
   GetRenderer()->SetLineThickness(ConfigData::GetInstance()->GetThemeTableBorderThickness(), LineType::kLineSolid);
-  GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightBold, table->fontname_);
-  GetRenderer()->SetColourBackground(gva::ConfigData::GetInstance()->GetThemeBackground());
+  GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightBold, table->fontname_, 12);
+  GetRenderer()->SetColourBackground(gva::ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
 
   for (row = 0; row < table->rows_; row++) {
     uint32_t offset = table->GetX();
@@ -52,7 +52,7 @@ void WidgetTable::DrawTable(GvaTable* table) {
       uint32_t tmp = table->row_[row].widths_[column] * ((double)table->GetWidth() / 100);
 
       GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, table->row_[row].cell_[column].weight,
-                                 table->fontname_);
+                                 table->fontname_, 12);
 
       GetRenderer()->SetColourForeground(table->row_[row].cell_[column].foreground.red,
                                          table->row_[row].cell_[column].foreground.green,

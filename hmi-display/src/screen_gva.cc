@@ -389,7 +389,9 @@ GvaStatusTypes ScreenGva::Update() {
     newrow.addCell({screen_->message.brief.text,
                     widget::CellAlignType::kAlignCentre,
                     {HMI_WHITE},
-                    {background << 16 && 0xff, background << 8 && 0xff, background && 0xff},
+                    UnpackRed(background),
+                    UnpackGreen(background),
+                    UnpackBlue(background),
                     {HMI_WHITE},
                     widget::WeightType::kWeightBold},
                    100);
@@ -398,7 +400,9 @@ GvaStatusTypes ScreenGva::Update() {
     newrow1.addCell({screen_->message.detail.text,
                      widget::CellAlignType::kAlignCentre,
                      {HMI_WHITE},
-                     {background << 16 && 0xff, background << 8 && 0xff, background && 0xff},
+                     UnpackRed(background),
+                     UnpackGreen(background),
+                     UnpackBlue(background),
                      {HMI_WHITE},
                      widget::WeightType::kWeightNormal},
                     100);

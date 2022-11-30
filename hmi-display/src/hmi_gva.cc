@@ -253,14 +253,7 @@ void Hmi::KeySide(GvaKeyEnum key) {
       screen_.function_right.labels[5].state = LabelStates::kLabelEnabledSelected;
       break;
     default:
-      printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
-
-      for (auto &label : screen_.function_right.labels) {
-        if ((label.state == LabelStates::kLabelEnabledSelectedChanging) ||
-            (label.state == LabelStates::kLabelEnabledSelected)) {
-          label.state == LabelStates::kLabelEnabledSelected;
-        }
-      }
+      break;
   }
 }
 

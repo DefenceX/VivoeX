@@ -28,14 +28,14 @@ namespace gva {
 
 void StateOn::entry() {
   /* 4:3 aspect ratio @ lowest resolution */
-  view_ = {MIN_WIDTH, MIN_HEIGHT, 24};
+  view_ = {kMinimumWidth, kMinimumHeight, 24};
 
   if (!manager_) manager_ = new ViewGvaManager(&status_);
 
 #ifdef ENABLE_OSMSCOUT
   // Render a map for BMS
   map_ = new rendererMap("/opt/osmscout/maps/australia-latest/", "/opt/osmscout/stylesheets/standard.oss", MIN_WIDTH,
-                         MIN_HEIGHT);
+                         kMinimumHeight);
 #endif
   top_ = DefaultSettings::GetDefaultFunctionSelect();
   bottom_ = DefaultSettings::GetDefaultCommonTaskKeys();

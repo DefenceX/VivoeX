@@ -50,7 +50,9 @@ void WidgetSideLabels::Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t hei
   }
 
   GetRenderer()->DrawColor(text_colour);
-  GetRenderer()->SetTextFontSize(14);
+  GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightNormal,
+                             ConfigData::GetInstance()->GetThemeFont(), 14);
+
   if (text.substr(0, 5) == "icon:") {
     if (text.substr(5, 20) == "exit")
       GetRenderer()->DrawIcon(widget::IconType::kIconPowerOff, x + width / 2, y + height / 2, 20, 20);
@@ -74,9 +76,13 @@ void WidgetSideLabels::Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t hei
     strncpy(copy, text.c_str(), 40);
     ptr = strtok(copy, delim);
     if (ptr != NULL) {
-      GetRenderer()->DrawText(x + 4, y + 30, ptr);
+      uint32_t width = GetRenderer()->GetTextWidth(ptr, 14);
+      GetRenderer()->DrawText(x + (98 - width) / 2, y + 30, ptr);
       ptr = strtok(NULL, delim);
-      if (ptr != NULL) GetRenderer()->DrawText(x + 4, y + 10, ptr);
+      if (ptr != NULL) {
+        width = GetRenderer()->GetTextWidth(ptr, 14);
+        GetRenderer()->DrawText(x + (100 - width) / 2, y + 10, ptr);
+      }
     } else {
       GetRenderer()->DrawText(x + 4, y + 30, text);
     }
@@ -118,7 +124,7 @@ void WidgetSideLabels::DrawFunctionLabels() {
 
   GetRenderer()->SetLineType(CAIRO_LINE_JOIN_ROUND);
   GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightNormal,
-                             ConfigData::GetInstance()->GetThemeFont());
+                             ConfigData::GetInstance()->GetThemeFont(), 14);
 
   uint32_t firstKey = (GetX() < DEFAULT_WIDTH / 2) ? int(GvaKeyEnum::kKeyF1) : int(GvaKeyEnum::kKeyF7);
   GvaFunctionGroupEnum group =

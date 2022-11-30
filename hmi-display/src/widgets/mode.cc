@@ -38,13 +38,12 @@ void WidgetMode::Draw() {
   GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
 
   GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightNormal,
-                             ConfigData::GetInstance()->GetThemeFont());
+                             ConfigData::GetInstance()->GetThemeFont(), 12);
 
   uint32_t w = GetRenderer()->GetTextWidth(mode_, 12);
   uint32_t h = GetRenderer()->GetTextHeight(mode_, 12);
 
   GetRenderer()->DrawRoundedRectangle(DEFAULT_WIDTH / 2 - (w / 2) - 5, y, w + 10, (h) + 15, 6, true);
-  GetRenderer()->SetTextFontSize(12);
   GetRenderer()->DrawText(DEFAULT_WIDTH / 2 - (w / 2), y + 8, mode_);
 }
 

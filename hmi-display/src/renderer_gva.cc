@@ -191,7 +191,7 @@ void RendererGva::DrawButton(const std::string keyText, uint32_t fontSize, uint3
   SetColourForeground(HMI_GREY);
   DrawRoundedRectangle(x, y, width, height, 6, true);
   SetColourForeground(HMI_WHITE);
-  SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightBold, config_->GetThemeFont());
+  SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightBold, config_->GetThemeFont(), 14);
   uint32_t textHeight = GetTextHeight("qh", fontSize);
   uint32_t textWidth = GetTextWidth(keyText, fontSize);
 

@@ -63,7 +63,7 @@ void WidgetKeyboard::DrawKeyboard(const widget::KeyboardModeType mode) {
   GetRenderer()->SetColourBackground(HMI_DARK_GREY);
   GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
   GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightBold,
-                             gva::ConfigData::GetInstance()->GetThemeFont());
+                             gva::ConfigData::GetInstance()->GetThemeFont(), fontSize);
 
   // Draw keys
   GetRenderer()->SetColourForeground(HMI_WHITE);

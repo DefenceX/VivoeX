@@ -40,12 +40,12 @@ WidgetPlanPositionIndicator::WidgetPlanPositionIndicator(const RendererGva& rend
 
 void WidgetPlanPositionIndicator::Draw() {
   if (GetVisible()) {
-    DrawPPI(mode_, GetX(), GetY(), bearing_, bearing_sight_);
+    DrawPPI(mode_, GetX(), GetY(), bearing_, bearing_sight_, 0);
   }
 }
 
 void WidgetPlanPositionIndicator::DrawModern(uint32_t x, uint32_t y, uint32_t degrees, uint32_t sightAzimuth,
-                                             bool sight) {
+                                             uint32_t weaponAzimuth, bool sight) const {
   double_t radius = 100;
   double_t d = degrees;  // Degrees north
 
@@ -80,14 +80,14 @@ void WidgetPlanPositionIndicator::DrawModern(uint32_t x, uint32_t y, uint32_t de
   uint32_t adjust_y = y - 4;
 
   GetRenderer()->SetTextFontSize(font_size);
-  GetRenderer()->DrawText(adjust_x - 3 + (radius - pos) * cos(d + (M_PI * 2)),
-                          adjust_y - 2 - (radius - pos) * sin(d + (M_PI * 2)), "N");
-  GetRenderer()->DrawText(adjust_x - 3 + (radius - pos) * cos(d + (M_PI)),
-                          adjust_y - 2 - (radius - pos) * sin(d + (M_PI)), "S");
-  GetRenderer()->DrawText(adjust_x - 3 + (radius - pos) * cos(d + (M_PI / 2)),
-                          adjust_y - 2 - (radius - pos) * sin(d + (M_PI / 2)), "E");
-  GetRenderer()->DrawText(adjust_x - 3 + (radius - pos) * cos(d + (M_PI + M_PI / 2)),
-                          adjust_y - 2 - (radius - pos) * sin(d + (M_PI + M_PI / 2)), "W");
+  GetRenderer()->DrawText((uint32_t)(adjust_x - 3 + (radius - pos) * cos(d + (M_PI * 2))),
+                          (uint32_t)(adjust_y - 2 - (radius - pos) * sin(d + (M_PI * 2))), "N");
+  GetRenderer()->DrawText((uint32_t)(adjust_x - 3 + (radius - pos) * cos(d + (M_PI))),
+                          (uint32_t)(adjust_y - 2 - (radius - pos) * sin(d + (M_PI))), "S");
+  GetRenderer()->DrawText((uint32_t)(adjust_x - 3 + (radius - pos) * cos(d + (M_PI / 2))),
+                          (uint32_t)(adjust_y - 2 - (radius - pos) * sin(d + (M_PI / 2))), "E");
+  GetRenderer()->DrawText((uint32_t)(adjust_x - 3 + (radius - pos) * cos(d + (M_PI + M_PI / 2))),
+                          (uint32_t)(adjust_y - 2 - (radius - pos) * sin(d + (M_PI + M_PI / 2))), "W");
   // Vehicle outline
   GetRenderer()->SetLineType(CAIRO_LINE_JOIN_MITER);
   GetRenderer()->Save();
@@ -143,24 +143,23 @@ void WidgetPlanPositionIndicator::DrawModern(uint32_t x, uint32_t y, uint32_t de
 }
 
 void WidgetPlanPositionIndicator::DrawPPI(widget::ModeEnum mode, uint32_t x, uint32_t y, uint32_t degrees,
-                                          uint32_t sightAzimuth) {
+                                          uint32_t sightAzimuth, uint32_t weaponAzimuth) {
   double_t radius = 100;
   double_t angle = 45;
-  double_t d = degrees;
-  uint32_t s = sightAzimuth;
+  double_t d = 0;
 
   /* Degrees north */
-  d += 270;
-  d = (d >= 360) ? d - 360 : d;
-  s += 270;
-  s = (s >= 360) ? s - 360 : s;
+  degrees += 270;
+  degrees = (degrees >= 360) ? degrees - 360 : degrees;
+  sightAzimuth += 270;
+  sightAzimuth = (sightAzimuth >= 360) ? sightAzimuth - 360 : sightAzimuth;
 
   if (mode == widget::ModeEnum::kPpiModernTankWithSights) {
-    DrawModern(x, y, degrees, sightAzimuth, true);
+    DrawModern(x, y, degrees, sightAzimuth, 10, true);
     return;
   }
   if (mode == widget::ModeEnum::kPpiModernTankWithoutSights) {
-    DrawModern(x, y, degrees, sightAzimuth, false);
+    DrawModern(x, y, degrees, sightAzimuth, 10, false);
     return;
   }
 
@@ -216,24 +215,25 @@ void WidgetPlanPositionIndicator::DrawPPI(widget::ModeEnum mode, uint32_t x, uin
       break;
   }
 
-  d = DegreesToRadians(d);
+  d = DegreesToRadians(degrees);
   double_t pos = 12;
   uint32_t font_size = 14;
   uint32_t adjust_x = x - 4;
   uint32_t adjust_y = y - 4;
 
-  GetRenderer()->SetTextFontSize(font_size);
-  GetRenderer()->DrawText(adjust_x - 3 + (radius - pos) * cos(d + (M_PI * 2)),
-                          adjust_y - 2 - (radius - pos) * sin(d + (M_PI * 2)), "N");
-  GetRenderer()->DrawText(adjust_x - 3 + (radius - pos) * cos(d + (M_PI)),
-                          adjust_y - 2 - (radius - pos) * sin(d + (M_PI)), "S");
-  GetRenderer()->DrawText(adjust_x - 3 + (radius - pos) * cos(d + (M_PI / 2)),
-                          adjust_y - 2 - (radius - pos) * sin(d + (M_PI / 2)), "E");
-  GetRenderer()->DrawText(adjust_x - 3 + (radius - pos) * cos(d + (M_PI + M_PI / 2)),
-                          adjust_y - 2 - (radius - pos) * sin(d + (M_PI + M_PI / 2)), "W");
+  GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightNormal,
+                             gva::ConfigData::GetInstance()->GetThemeFont(), font_size);
+  GetRenderer()->DrawText((uint32_t)(adjust_x - 3 + (radius - pos) * cos(d + (M_PI * 2))),
+                          (uint32_t)(adjust_y - 2 - (radius - pos) * sin(d + (M_PI * 2))), "N");
+  GetRenderer()->DrawText((uint32_t)(adjust_x - 3 + (radius - pos) * cos(d + (M_PI))),
+                          (uint32_t)(adjust_y - 2 - (radius - pos) * sin(d + (M_PI))), "S");
+  GetRenderer()->DrawText((uint32_t)(adjust_x - 3 + (radius - pos) * cos(d + (M_PI / 2))),
+                          (uint32_t)(adjust_y - 2 - (radius - pos) * sin(d + (M_PI / 2))), "E");
+  GetRenderer()->DrawText((uint32_t)(adjust_x - 3 + (radius - pos) * cos(d + (M_PI + M_PI / 2))),
+                          (uint32_t)(adjust_y - 2 - (radius - pos) * sin(d + (M_PI + M_PI / 2))), "W");
 
   GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
-  float step = (M_PI * 2) / 32;
+  double step = (M_PI * 2) / 32;
   int64_t p = 24;
   int64_t c = 0;
 
@@ -241,8 +241,8 @@ void WidgetPlanPositionIndicator::DrawPPI(widget::ModeEnum mode, uint32_t x, uin
   for (d = DegreesToRadians(degrees); d <= DegreesToRadians(degrees) + (M_PI * 2); d += step) {
     p = c % 4 ? 28 : 20;
     c++;
-    GetRenderer()->MovePen(x + (radius - 35) * cos(d), y - (radius - 35) * sin(d));
-    GetRenderer()->DrawPen(x + (radius - p) * cos(d), y - (radius - p) * sin(d), true);
+    GetRenderer()->MovePen((uint32_t)(x + (radius - 35) * cos(d)), (uint32_t)(y - (radius - 35) * sin(d)));
+    GetRenderer()->DrawPen((uint32_t)(x + (radius - p) * cos(d)), (uint32_t)(y - (radius - p) * sin(d)), true);
   }
 
   // Heading (Goes under sight)

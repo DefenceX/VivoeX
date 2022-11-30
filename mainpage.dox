@@ -188,10 +188,10 @@ When creating new widgets it is advisable to add tests for the widget element. A
 are derived from the gva::WidgetX base class. The simplest widget being the gva::WidgetMode 
 which can be used as a basic example of how to create a new widget.
 
-The test program widget-tester can assist you in testing your new widget without needing to build the 
+The test program hmi-display/tools/widget-tester.cc can assist you in testing your new widget without needing to build the 
 entire HMI.
 
-Widgets can then be rendered and viewed using the widget-tester console program. The current widgets built into the SDK are sown below:
+Widgets can then be rendered and viewed using the widget-tester.cc console program. The current widgets built into the SDK are sown below:
 
 \image html classgva_1_1WidgetX__inherit__graph.png "Diagram showing current widgets in the SDK" 
 

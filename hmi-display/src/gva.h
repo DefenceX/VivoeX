@@ -28,20 +28,15 @@
 #include <array>
 #include <string>
 
-#define MAJOR 0
-#define MINOR 3
-#define PATCH 5138
-
-#define MIN_HEIGHT 480
-
-enum class SurfaceType { SURFACE_NONE = 0, SURFACE_FILE, SURFACE_BUFFER_RGB24, SURFACE_CAIRO, SURFACE_BLACKOUT };
-
-#define MIN_WIDTH 640
-
-#define RENDER_HEIGHT 1024
-#define RENDER_WIDTH 1920
+enum class SurfaceType { kSurfaceNone = 0, kSurfaceFile, kSurfaceRgb24, kSurfaceCairo, kSurfaceBlackout };
 
 namespace gva {
+
+static const uint32_t kSemVerMajor = 0;
+static const uint32_t kSemVerMinor = 3;
+static const uint32_t kSemVerPatch = 878;
+static const uint32_t kMinimumHeight = 480;
+static const uint32_t kMinimumWidth = 640;
 
 enum class LocationEnum { kLocationFormatLongLat = 0, kLocationFormatMgrs };
 

@@ -54,7 +54,7 @@ void WidgetBottomLabels::DrawControlLabels() {
   GetRenderer()->SetLineType(CAIRO_LINE_JOIN_ROUND);
   GetRenderer()->SetLineThickness(config_->GetThemeLabelBorderThickness(), LineType::kLineSolid);
   GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightNormal,
-                             config_->GetThemeFont());
+                             config_->GetThemeFont(), 12);
 
   for (auto label : *labels_) {
     if (label.state_ != LabelStates::kLabelHidden) {
@@ -71,12 +71,25 @@ void WidgetBottomLabels::DrawControlLabels() {
         touch_->AddAbsolute(GvaFunctionGroupEnum::kBottom, int(GvaKeyEnum::kKeyF13) + i, (i * w) + offset, GetY(),
                             (i * w) + w - 5 + offset, GetY() + 20);
       }
-      GetRenderer()->DrawText((i * w) + offset + 5, GetY() + 6, label.text_.c_str());
-      if (i == 4) GetRenderer()->DrawIcon(widget::IconType::kIconUpArrow, (i * w) + offset + 34, GetY() + 11, 15, 8);
-      if (i == 5) GetRenderer()->DrawIcon(widget::IconType::kIconDownArrow, (i * w) + offset + 34, GetY() + 10, 15, 8);
-    }
 
-    i++;
+      switch (i) {
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+        case 6: {
+          uint32_t width = GetRenderer()->GetTextWidth(label.text_, 12);
+          GetRenderer()->DrawText((i * w) + offset + ((70 - width) / 2), GetY() + 6, label.text_.c_str());
+        } break;
+        case 4:
+          GetRenderer()->DrawIcon(widget::IconType::kIconUpArrow, (i * w) + offset + 34, GetY() + 11, 15, 8);
+          break;
+        case 5:
+          GetRenderer()->DrawIcon(widget::IconType::kIconDownArrow, (i * w) + offset + 34, GetY() + 10, 15, 8);
+          break;
+      }
+      i++;
+    }
   }
 }
 

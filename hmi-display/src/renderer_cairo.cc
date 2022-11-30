@@ -268,6 +268,8 @@ void RendererCairo::Draw() {
       case kCommandTextFont:
         cairo_select_font_face(cr, currentCmd.text, (cairo_font_slant_t)currentCmd.arg1,
                                (cairo_font_weight_t)currentCmd.arg2);
+        cairo_set_font_size(cr, currentCmd.width);
+
         break;
       case kCommandPush:
         cairo_push_group(cr);
@@ -599,11 +601,12 @@ void RendererCairo::SetTextFontSize(double size) {
   draw_commands_.push_back(command);
 }
 
-void RendererCairo::SetTextFont(uint32_t slope, widget::WeightType weight, const std::string fontName) {
+void RendererCairo::SetTextFont(uint32_t slope, widget::WeightType weight, const std::string fontName, double size) {
   Command command;
   command.command = kCommandTextFont;
   command.arg1 = slope;
   command.arg2 = int(weight);
+  command.width = size;
   strcpy(command.text, fontName.c_str());
   draw_commands_.push_back(command);
 }
@@ -764,7 +767,7 @@ void RendererCairo::Activate(GtkApplication *app, gpointer user_data) {
   render_.win.draw = gtk_drawing_area_new();
   gtk_container_add(GTK_CONTAINER(render_.win.win), render_.win.draw);
   // set a minimum size
-  gtk_widget_set_size_request(render_.win.draw, MIN_WIDTH, MIN_HEIGHT);
+  gtk_widget_set_size_request(render_.win.draw, kMinimumWidth, kMinimumHeight);
 
   //
   // Event signals
@@ -774,9 +777,6 @@ void RendererCairo::Activate(GtkApplication *app, gpointer user_data) {
   g_signal_connect(render_.win.draw, "button-release-event", G_CALLBACK(gva::EventsGva::ButtonReleaseEventCb), NULL);
   g_signal_connect(render_.win.win, "key-press-event", G_CALLBACK(gva::EventsGva::KeyPressEventCb), NULL);
   g_signal_connect(render_.win.win, "key-release-event", G_CALLBACK(gva::EventsGva::KeyReleaseEventCb), NULL);
-
-  //  g_signal_connect (render_.win.win, "key-release-event",
-  //                    G_CALLBACK (EventsGva::KeyPressEventCb), NULL);
 
   // Ask to receive events the Drawing area doesn't normally
   // subscribe to. In particular, we need to ask for the

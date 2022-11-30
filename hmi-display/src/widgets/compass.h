@@ -51,7 +51,8 @@ class WidgetPlanPositionIndicator : public WidgetX {
   /// \brief Draw a modern looking PPI
   ///
   ///
-  void DrawModern(uint32_t x, uint32_t y, uint32_t degrees, uint32_t sightAzimuth, bool sight);
+  void DrawModern(uint32_t x, uint32_t y, uint32_t degrees, uint32_t sightAzimuth, uint32_t weaponAzimuth,
+                  bool sight) const;
 
   ///
   /// \brief Draw the Plan Position Indicator
@@ -62,7 +63,8 @@ class WidgetPlanPositionIndicator : public WidgetX {
   /// \param degrees Compass heading
   /// \param sightAzimuth Camera heading
   ///
-  void DrawPPI(widget::ModeEnum mode, uint32_t x, uint32_t y, uint32_t degrees, uint32_t sightAzimuth);
+  void DrawPPI(widget::ModeEnum mode, uint32_t x, uint32_t y, uint32_t degrees, uint32_t sightAzimuth,
+               uint32_t weaponAzimuth);
 
   ///
   /// \brief Set the Bearing object

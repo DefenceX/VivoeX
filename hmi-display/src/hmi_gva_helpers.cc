@@ -81,7 +81,7 @@ void HmiHelper::TableSystem(WidgetTable *table) {
 
   table->AddRow();
   std::stringstream stream;
-  stream << "HMI Version " << MAJOR << "." << MINOR << "." << PATCH;
+  stream << "HMI Version " << kSemVerMajor << "." << kSemVerMinor << "." << kSemVerPatch;
   table->AddCell(stream.str(), 80);
   table->AddCell("Ok", 20);
 

@@ -133,7 +133,7 @@ class TouchGva {
     x = x / static_cast<float>(Renderer::GetWidth() / static_cast<float>(DEFAULT_WIDTH));
     y = y / static_cast<float>(Renderer::GetHeight() / static_cast<float>(DEFAULT_HEIGHT));
     // Invert now adjusted for size
-    y = MIN_HEIGHT - y;
+    y = kMinimumHeight - y;
 
     for (auto i = hotspots_.begin(); i != hotspots_.end(); ++i) {
       if ((x > i->GetX()) && (x < (i->GetX() + i->GetWidth())) && (y > i->GetY()) &&

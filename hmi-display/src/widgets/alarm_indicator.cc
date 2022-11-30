@@ -34,8 +34,7 @@ WidgetAlarmIndicator::WidgetAlarmIndicator(const RendererGva& renderer)
 void WidgetAlarmIndicator::Draw() {
   if (GetVisible()) {
     GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightNormal,
-                               gva::ConfigData::GetInstance()->GetThemeFont());
-    GetRenderer()->SetTextFontSize(14);
+                               gva::ConfigData::GetInstance()->GetThemeFont(), 14);
     switch (type_) {
       case GvaAlarmType::kAlarmAdvisory:
         GetRenderer()->SetColourBackground(ConfigData::GetInstance()->GetThemeBackground());

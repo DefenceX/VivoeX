@@ -55,7 +55,8 @@ int32_t GetOpt(int argc, char *argv[], GvaApplication::Options *opt) {
 
   while ((c = getopt(argc, argv, "hvwclf::")) != -1) switch (c) {
       case 'v':
-        std::cout << "Version " << MAJOR << "." << MINOR << "." << PATCH << std::endl;
+        std::cout << "Version " << gva::kSemVerMajor << "." << gva::kSemVerMinor << "." << gva::kSemVerPatch
+                  << std::endl;
         return 0;
       case 'w':
         opt->windowEnabled = true;
