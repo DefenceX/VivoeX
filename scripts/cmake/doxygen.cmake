@@ -3,7 +3,6 @@
 add_custom_target(doxygen-images COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/widget-tester -t 1)
 add_dependencies(doxygen-images widget-tester)
 
-file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/images/doxygen/)
 add_custom_target(doxygen-images-convert COMMAND convert ${CMAKE_BINARY_DIR}/*.png -trim +repage  -set filename:f '%t' ${CMAKE_BINARY_DIR}/images/doxygen/'%[filename:f].png')
 add_dependencies(doxygen-images-convert doxygen-images)
 
@@ -14,6 +13,7 @@ add_custom_target(doxygen COMMAND IMAGE_PATH=${CMAKE_BINARY_DIR}/images/doxygen 
 
 # Move any changed images over into source to be checked in
 # We cannot check PNG files directly as the header changes after each generation so do a pixel by pixel check to fin differancesS
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/images/doxygen/)
 file(GLOB PNG_FILES ${CMAKE_BINARY_DIR}/images/doxygen/*.png)
 foreach(FILENAME_FULL ${PNG_FILES})
   get_filename_component(FILENAME_ONLY ${FILENAME_FULL} NAME)

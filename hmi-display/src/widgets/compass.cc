@@ -147,12 +147,17 @@ void WidgetPlanPositionIndicator::DrawPPI(widget::ModeEnum mode, uint32_t x, uin
   double_t radius = 100;
   double_t angle = 45;
   double_t d = 0;
+  const uint32_t font_size = 14;
 
-  /* Degrees north */
+  // Degrees north
   degrees += 270;
   degrees = (degrees >= 360) ? degrees - 360 : degrees;
   sightAzimuth += 270;
   sightAzimuth = (sightAzimuth >= 360) ? sightAzimuth - 360 : sightAzimuth;
+
+  // Set the font for all compass/s
+  GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightNormal,
+                             gva::ConfigData::GetInstance()->GetThemeFont(), font_size);
 
   if (mode == widget::ModeEnum::kPpiModernTankWithSights) {
     DrawModern(x, y, degrees, sightAzimuth, 10, true);
@@ -217,12 +222,9 @@ void WidgetPlanPositionIndicator::DrawPPI(widget::ModeEnum mode, uint32_t x, uin
 
   d = DegreesToRadians(degrees);
   double_t pos = 12;
-  uint32_t font_size = 14;
   uint32_t adjust_x = x - 4;
   uint32_t adjust_y = y - 4;
 
-  GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightNormal,
-                             gva::ConfigData::GetInstance()->GetThemeFont(), font_size);
   GetRenderer()->DrawText((uint32_t)(adjust_x - 3 + (radius - pos) * cos(d + (M_PI * 2))),
                           (uint32_t)(adjust_y - 2 - (radius - pos) * sin(d + (M_PI * 2))), "N");
   GetRenderer()->DrawText((uint32_t)(adjust_x - 3 + (radius - pos) * cos(d + (M_PI))),
