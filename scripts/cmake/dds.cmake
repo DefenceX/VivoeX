@@ -178,7 +178,7 @@ ExternalProject_Add(
     GIT_REPOSITORY      https://github.com/DefenceX/opensplice
     GIT_SHALLOW         5
     GIT_CONFIG          fetch.recurseSubmodules=true
-    CONFIGURE_COMMAND   bash -c "cd ${CMAKE_BINARY_DIR}/external/opensplice/src && source ./configure x86_64.linux-release"
+    CONFIGURE_COMMAND   bash -c "cd ${CMAKE_BINARY_DIR}/external/opensplice/src && export GSOAPHOME=/usr/share/gsoap && source ./configure x86_64.linux-release"
     PREFIX              ${CMAKE_BINARY_DIR}/external/opensplice/prefix
     TMP_DIR             ${CMAKE_BINARY_DIR}/external/opensplice/tmp
     STAMP_DIR           ${CMAKE_BINARY_DIR}/external/opensplice/stamp
