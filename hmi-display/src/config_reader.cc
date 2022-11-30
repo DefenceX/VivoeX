@@ -84,12 +84,12 @@ ConfigData* ConfigData::GetInstance() {
   //  This is a safer way to create an instance. instance = new Singleton is
   //  dangerous in case two instance threads wants to access at the same time
   if (config_ == nullptr) {
-    config_ = new ConfigData();
+    config_ = new ConfigData();  // NOLINT, this is needed for singleton creation
   }
   return config_;
 }
 
-void ConfigDataBase::WriteData() {
+void ConfigDataBase::WriteData() const {
   // Write the config back to disk.
   std::fstream output(config_file_, std::fstream::out | std::fstream::trunc | std::fstream::binary);
   if (!current_config_->SerializeToOstream(&output)) {
@@ -122,7 +122,7 @@ uint32_t ConfigDataTheme::GetThemeBackground() const { return (uint32_t)current_
 
 uint32_t ConfigDataTheme::GetTableBackground() const { return (uint32_t)current_config_->theme().table_background(); }
 
-uint16_t ConfigDataTheme::GetThemeLabelStyle() const { return (uint32_t)current_config_->theme().theme_label_style(); }
+uint16_t ConfigDataTheme::GetThemeLabelStyle() const { return (uint16_t)current_config_->theme().theme_label_style(); }
 
 uint32_t ConfigDataTheme::GetThemeLabelBackgroundEnabledSelectedChanging() const {
   return (uint32_t)current_config_->theme().theme_label_background_enabled_selected_changing();
@@ -220,7 +220,7 @@ LineType ConfigDataTheme::GetThemeLabelLineDisabled() const {
   };
 }
 
-widget::ModeEnum ConfigDataTheme::GetPpiMode() {
+widget::ModeEnum ConfigDataTheme::GetPpiMode() const {
   switch (current_config_->theme().widget_ppi_style()) {
     default:
     case config::PpiStyle::kPpiClassicTankWithSight:

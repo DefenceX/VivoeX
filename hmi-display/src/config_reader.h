@@ -55,7 +55,7 @@ class ConfigDataBase {
   ///
   /// \brief Write contents of protobuf
   ///
-  void WriteData();
+  void WriteData() const;
 
  protected:
   std::unique_ptr<config::Gva> current_config_;
@@ -204,7 +204,7 @@ class ConfigDataTheme : public ConfigDataBase {
   ///
   /// \return ModeEnum
   ///
-  widget::ModeEnum GetPpiMode();
+  widget::ModeEnum GetPpiMode() const;
 
   ///
   /// \brief Get the Theme Label Border Thickness object
