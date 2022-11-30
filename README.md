@@ -1,7 +1,6 @@
 [![Action cyclone](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-ubuntu-amd64-cyclone.yaml/badge.svg)](https://github.com/DefenceX/vivoe-lite/actions/workflows/build-ubuntu-amd64-cyclone.yaml)
 [![Action cyclone](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-centos-amd64-cyclone.yaml/badge.svg)](https://github.com/DefenceX/vivoe-lite/actions/workflows/build-centos-amd64-cyclone.yaml)
 [![Action cyclone](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-debian-arm64-cyclone.yaml/badge.svg)](https://github.com/DefenceX/vivoe-lite/actions/workflows/build-debian-arm64-cyclone.yaml)
-[![Action opensplice](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-ubuntu-amd64-opensplice.yaml/badge.svg)](https://github.com/DefenceX/vivoe-lite/actions/workflows/build-ubuntu-amd64-opensplice.yaml)
 [![Action doxygen](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-doxygen.yaml/badge.svg)](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-doxygen.yaml)
 [![License](https://img.shields.io/badge/licence-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/2927/badge)](https://bestpractices.coreinfrastructure.org/projects/2927)
