@@ -61,7 +61,7 @@ enum class IconType {
   kIconUpArrow,
   kIconDownArrow,
   kIconRightArrow,
-  kIconRightArrow,
+  kIconLeftArrow,
   kIconUpArrowOutline,
   kIconDownArrowOutline,
   kIconLeftArrowOutline,

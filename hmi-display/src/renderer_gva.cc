@@ -26,6 +26,8 @@
 
 #include <math.h> /* sqrt */
 
+#include <array>
+
 #include "debug.h"
 #include "screen_gva.h"
 
@@ -43,8 +45,10 @@ RendererGva::RendererGva(uint32_t width, uint32_t height) : RendererCairo(height
 }
 
 void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
-  double sx, sy;
-  int32_t arrow[8][2] = {{-5, -10}, {-4, -10}, {-4, 0}, {-8, 0}, {0, +10}, {8, 0}, {+4, 0}, {+4, -10}};
+  double sx;
+  double sy;
+  std::array arrow{std::array{-5, -10}, std::array{-4, -10}, std::array{-4, 0}, std::array{-8, 0},
+                   std::array{0, +10},  std::array{8, 0},    std::array{+4, 0}, std::array{+4, -10}};
 
   sx = (width / (double)13);
   sy = (height / (double)15);
@@ -80,7 +84,7 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
       break;
     case widget::IconType::kIconRightArrow:
       Rotate(M_PI);
-    case widget::IconType::kIconRightArrow:
+    case widget::IconType::kIconLeftArrow:
       Rotate(M_PI * 1.5);
       Scale(sx, sy);
       MovePenRaw(arrow[0][0], arrow[0][1]);
