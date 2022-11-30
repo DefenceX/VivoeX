@@ -23,6 +23,8 @@
 #define HEIGHT 480
 #define WIDTH 640
 
+std::string path;
+
 struct {
   gushort count;
 } glob;
@@ -88,28 +90,28 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       cairo_scale(cr, 2, 2);
       ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicTankWithSight, 0, 0, 0, 90, 10);
       renderer.Draw();
-      cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_ppi_01.png");
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_01.png").c_str());
       break;
     case 1:
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicTankWithSight, 0, 0, 350, 180, 20);
       renderer.Draw();
-      cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_ppi_02.png");
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_02.png").c_str());
       break;
     case 2:
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicTankWithSight, 0, 0, 340, 270, 30);
       renderer.Draw();
-      cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_ppi_03.png");
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_03.png").c_str());
       break;
     case 3:
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicTankWithSight, 0, 0, 330, 0, 40);
       renderer.Draw();
-      cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_ppi_04.png");
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_04.png").c_str());
       break;
     case 4:
       // Next PPI
@@ -117,35 +119,35 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       cairo_scale(cr, 2, 2);
       ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicTankWithoutSight, 0, 0, 320, 90, 0);
       renderer.Draw();
-      cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_ppi_05.png");
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_05.png").c_str());
       break;
     case 5:
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicArrowWithSight, 0, 0, 0, 90, 10);
       renderer.Draw();
-      cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_ppi_06.png");
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_06.png").c_str());
       break;
     case 6:
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicArrowWithSight, 0, 0, 350, 180, 20);
       renderer.Draw();
-      cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_ppi_07.png");
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_07.png").c_str());
       break;
     case 7:
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicArrowWithSight, 0, 0, 340, 270, 30);
       renderer.Draw();
-      cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_ppi_08.png");
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_08.png").c_str());
       break;
     case 8:
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicArrowWithSight, 0, 0, 330, 0, 40);
       renderer.Draw();
-      cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_ppi_09.png");
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_09.png").c_str());
       break;
     case 9:
       // Next PPI
@@ -153,35 +155,35 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       cairo_scale(cr, 2, 2);
       ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicArrowWithoutSight, 0, 0, 320, 90, 0);
       renderer.Draw();
-      cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_ppi_10.png");
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_10.png").c_str());
       break;
     case 10:
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       ppi.DrawPPI(gva::widget::ModeEnum::kPpiModernTankWithSights, 0, 0, 0, 90, 10);
       renderer.Draw();
-      cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_ppi_11.png");
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_11.png").c_str());
       break;
     case 11:
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       ppi.DrawPPI(gva::widget::ModeEnum::kPpiModernTankWithSights, 0, 0, 350, 180, 20);
       renderer.Draw();
-      cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_ppi_12.png");
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_12.png").c_str());
       break;
     case 12:
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       ppi.DrawPPI(gva::widget::ModeEnum::kPpiModernTankWithSights, 0, 0, 340, 270, 30);
       renderer.Draw();
-      cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_ppi_13.png");
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_13.png").c_str());
       break;
     case 13:
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       ppi.DrawPPI(gva::widget::ModeEnum::kPpiModernTankWithSights, 0, 0, 330, 0, 40);
       renderer.Draw();
-      cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_ppi_14.png");
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_14.png").c_str());
       break;
     case 14:
       // Next PPI
@@ -189,28 +191,28 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       cairo_scale(cr, 2, 2);
       ppi.DrawPPI(gva::widget::ModeEnum::kPpiModernTankWithoutSights, 0, 0, 320, 90, 0);
       renderer.Draw();
-      cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_ppi_15.png");
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_15.png").c_str());
       break;
     case 15:
       // Keyboard, Lower case
       cairo_translate(cr, 0, height / 2);
       keyboard.DrawKeyboard(gva::widget::KeyboardModeType::kKeyboardLower);
       renderer.Draw();
-      cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_keyboard_01.png");
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_keyboard_01.png").c_str());
       break;
     case 16:
       // Keyboard, Upper case
       cairo_translate(cr, 0, height / 2);
       keyboard.DrawKeyboard(gva::widget::KeyboardModeType::kKeyboardUpper);
       renderer.Draw();
-      cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_keyboard_02.png");
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_keyboard_02.png").c_str());
       break;
     case 17:
       // Keyboard, numbers
       cairo_translate(cr, 0, height / 2);
       keyboard.DrawKeyboard(gva::widget::KeyboardModeType::kKeyboardNumbers);
       renderer.Draw();
-      cairo_surface_write_to_png(cairo_get_group_target(cr), "widget_keyboard_03.png");
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_keyboard_03.png").c_str());
       break;
     case 18:
       // Alarms Indicator
@@ -219,7 +221,7 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       alarmx.SetType(gva::GvaAlarmType::kAlarmAdvisory);
       alarmx.Draw();
       renderer.Draw();
-      cairo_surface_write_to_png(cairo_get_group_target(cr), "alarm_02.png");
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/alarm_02.png").c_str());
       break;
     case 19:
       // Alarms Indicator
@@ -228,7 +230,7 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       alarmx.SetType(gva::GvaAlarmType::kAlarmWarnings);
       alarmx.Draw();
       renderer.Draw();
-      cairo_surface_write_to_png(cairo_get_group_target(cr), "alarm_03.png");
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/alarm_03.png").c_str());
       break;
     case 20:
       // Alarms Indicator
@@ -237,7 +239,7 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       alarmx.SetType(gva::GvaAlarmType::kAlarmCaution);
       alarmx.Draw();
       renderer.Draw();
-      cairo_surface_write_to_png(cairo_get_group_target(cr), "alarm_01.png");
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/alarm_01.png").c_str());
       break;
     case 21:
       // Top
@@ -250,7 +252,7 @@ static void do_drawing(cairo_t *cr, int width, int height) {
         top.SetLabels(&labels);
         top.Draw();
         renderer.Draw();
-        cairo_surface_write_to_png(cairo_get_group_target(cr), "top_labels_01.png");
+        cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/top_labels_01.png").c_str());
       }
       break;
     case 22:
@@ -265,7 +267,7 @@ static void do_drawing(cairo_t *cr, int width, int height) {
         bottom.SetLabels(&labels);
         bottom.Draw();
         renderer.Draw();
-        cairo_surface_write_to_png(cairo_get_group_target(cr), "bottom_labels_01.png");
+        cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/bottom_labels_01.png").c_str());
       }
       break;
     case 23:
@@ -280,12 +282,6 @@ static void do_drawing(cairo_t *cr, int width, int height) {
                                                            "",
                                                            gva::LabelStates::kLabelEnabledSelectedChanging,
                                                            true,
-                                                           true,
-                                                           "Spike",
-                                                           "",
-                                                           "",
-                                                           gva::LabelStates::kLabelDisabled,
-                                                           false,
                                                            false,
                                                            "HUMS",
                                                            "",
@@ -313,7 +309,7 @@ static void do_drawing(cairo_t *cr, int width, int height) {
         left.SetLabels(&labels);
         left.Draw();
         renderer.Draw();
-        cairo_surface_write_to_png(cairo_get_group_target(cr), "side_labels_01.png");
+        cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/side_labels_01.png").c_str());
       }
       break;
     case 24:
@@ -322,7 +318,7 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       mode.SetMode("Software Testing Mode");
       mode.Draw();
       renderer.Draw();
-      cairo_surface_write_to_png(cairo_get_group_target(cr), "mode_01.png");
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/mode_01.png").c_str());
       break;
     default:
       counter = 9999;  // Cause loop to end and terminate
@@ -347,21 +343,23 @@ int main(int argc, char *argv[]) {
 
   opterr = 0;
 
-  while ((c = getopt(argc, argv, "i:ht:")) != -1) switch (c) {
+  while ((c = getopt(argc, argv, "o:i:ht:")) != -1) switch (c) {
+      case 'o':
+        path = optarg;
+        break;
       case 'i':
         id = atoi(optarg);
         break;
       case 'h':
         std::cout << "Help for test-hmi:" << std::endl;
         std::cout
-            << "    -t <milliseconds>    timeout in milliseconds between widget renders, 1 second if not specified."
+            << "    -t <milliseconds>    A timeout in milliseconds between widget renders, 1 second if not specified."
             << std::endl;
-        std::cout << "    -i <number>          The id of the single widget to render from list below (timeout does not "
+        std::cout << "    -o <dir>             The output directory to save images." << std::endl;
+        std::cout << "    -i <number>          The ID of the single widget to render from list below (timeout does not "
                      "apply here):"
                   << std::endl;
         std::cout << "       0: PPI classic tank site, north facing site " << std::endl;
-        std::cout << "       1: PPI classic tank site, east facing site " << std::endl;
-        std::cout << "       2: PPI classic tank site, south facing site " << std::endl;
         std::cout << "       3: PPI classic tank site, west facing site " << std::endl;
         std::cout << "       4: PPI classic tank site with no site " << std::endl;
         std::cout << "       5: PPI classic arrow site, north facing site " << std::endl;
