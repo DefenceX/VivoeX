@@ -37,6 +37,8 @@ jobs:
           export SEM_VERSION=${MAJOR}.${MINOR}.${PATCH} && \
           export GIT_HASH=$(git rev-parse --short HEAD) && \
           export IMAGE_PATH=${HOME}/images/doxygen && \
+          ls -hal && \
+          ls -hal ./images/doxygen && \
           echo "Current version ${SEM_VERSION} with #${GIT_HASH} and path ${IMAGE_PATH}" && \
           doxygen && \
           wget https://img.shields.io/badge/version-${SEM_VERSION}-blue.svg -O docs/version.svg
