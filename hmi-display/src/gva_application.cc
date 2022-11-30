@@ -169,40 +169,40 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
           gva::hmi::GetScreen()->function_top->labels[7].state = gva::LabelStates::kLabelEnabledSelectedChanging;
           break;
         case gva::GvaKeyEnum::kKeyF1:
-          gva::hmi::GetScreen()->function_left.labels[0].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->function_left.SetEnabledEnabledChanging(0);
           break;
         case gva::GvaKeyEnum::kKeyF2:
-          gva::hmi::GetScreen()->function_left.labels[1].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->function_left.SetEnabledEnabledChanging(1);
           break;
         case gva::GvaKeyEnum::kKeyF3:
-          gva::hmi::GetScreen()->function_left.labels[2].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->function_left.SetEnabledEnabledChanging(2);
           break;
         case gva::GvaKeyEnum::kKeyF4:
-          gva::hmi::GetScreen()->function_left.labels[3].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->function_left.SetEnabledEnabledChanging(3);
           break;
         case gva::GvaKeyEnum::kKeyF5:
-          gva::hmi::GetScreen()->function_left.labels[4].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->function_left.SetEnabledEnabledChanging(4);
           break;
         case gva::GvaKeyEnum::kKeyF6:
-          gva::hmi::GetScreen()->function_left.labels[5].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->function_left.SetEnabledEnabledChanging(5);
           break;
         case gva::GvaKeyEnum::kKeyF7:
-          gva::hmi::GetScreen()->function_right.labels[0].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->function_right.SetEnabledEnabledChanging(0);
           break;
         case gva::GvaKeyEnum::kKeyF8:
-          gva::hmi::GetScreen()->function_right.labels[1].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->function_right.SetEnabledEnabledChanging(1);
           break;
         case gva::GvaKeyEnum::kKeyF9:
-          gva::hmi::GetScreen()->function_right.labels[2].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->function_right.SetEnabledEnabledChanging(2);
           break;
         case gva::GvaKeyEnum::kKeyF10:
-          gva::hmi::GetScreen()->function_right.labels[3].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->function_right.SetEnabledEnabledChanging(3);
           break;
         case gva::GvaKeyEnum::kKeyF11:
-          gva::hmi::GetScreen()->function_right.labels[4].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->function_right.SetEnabledEnabledChanging(4);
           break;
         case gva::GvaKeyEnum::kKeyF12:
-          gva::hmi::GetScreen()->function_right.labels[5].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->function_right.SetEnabledEnabledChanging(5);
           break;
         case gva::GvaKeyEnum::kKeyF13:
           gva::hmi::GetScreen()->control->labels_[0].state_ = gva::LabelStates::kLabelEnabledSelectedChanging;

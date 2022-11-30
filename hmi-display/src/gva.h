@@ -101,6 +101,17 @@ struct FunctionKeys {
   /// \brief Set the label to Enabled
   ///
   ///
+  void SetEnabledEnabledChanging(int index) {
+    Reset();
+    if ((labels[index].state != LabelStates::kLabelDisabled) && (labels[index].state != LabelStates::kLabelHidden)) {
+      labels[index].state = LabelStates::kLabelEnabledSelectedChanging;
+    }
+  }
+
+  ///
+  /// \brief Set the label to Enabled
+  ///
+  ///
   void SetEnabled(int index) {
     Reset();
     if ((labels[index].state != LabelStates::kLabelDisabled) && (labels[index].state != LabelStates::kLabelHidden)) {
