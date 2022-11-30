@@ -25,7 +25,7 @@
 #ifndef HMI_DISPLAY_SRC_WIDGETS_WIDGET_TYPES_H_
 #define HMI_DISPLAY_SRC_WIDGETS_WIDGET_TYPES_H_
 
-namespace gva {
+namespace gva::widget {
 
 enum class KeyboardModeType { kKeyboardLower = 0, kKeyboardUpper, kKeyboardNumbers };
 
@@ -46,6 +46,14 @@ enum WidgetEnum {
   KWidgetTypeRightLabels,
   KWidgetTypeMode,
   KWidgetTypeTable
+};
+enum class ModeEnum {
+  kPpiClassicTankWithSight,
+  kPpiClassicTankWithoutSight,
+  kPpiClassicArrowWithSight,
+  kPpiClassicArrowWithoutSight,
+  kPpiModernTankWithSights,
+  kPpiModernTankWithoutSights
 };
 
 typedef enum {
@@ -77,6 +85,6 @@ struct GvaColourType {
   int blue;
 };
 
-}  // namespace gva
+}  // namespace gva::widget
 
 #endif  // HMI_DISPLAY_SRC_WIDGETS_WIDGET_TYPES_H_

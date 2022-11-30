@@ -43,7 +43,7 @@ class WidgetX {
   /// \param renderer The underlying renderer, should be cairo
   /// \param widget_type The type of widget
   ///
-  explicit WidgetX(const RendererGva& renderer, WidgetEnum widget_type);
+  explicit WidgetX(const RendererGva& renderer, widget::WidgetEnum widget_type);
 
   ///
   /// \brief Set the Visible object
@@ -102,7 +102,7 @@ class WidgetX {
   ///
   /// \return WidgetEnum
   ///
-  WidgetEnum GetType() const;
+  widget::WidgetEnum GetType() const;
 
   ///
   /// \brief Get the Renderer object
@@ -117,7 +117,7 @@ class WidgetX {
 
  private:
   const RendererGva& renderer_;
-  WidgetEnum widget_type_;
+  widget::WidgetEnum widget_type_;
   bool visible_ = true;
 };
 

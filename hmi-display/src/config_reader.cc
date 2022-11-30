@@ -102,8 +102,6 @@ void ConfigDataBase::WriteData() {
   google::protobuf::ShutdownProtobufLibrary();
 }
 
-std::string ConfigData::GetConfigFilename() const { return current_config_->file().config_filename(); }
-
 int ConfigData::GetZoom() const { return current_config_->zoom(); }
 
 void ConfigData::SetZoom(int zoom) const { current_config_->set_zoom(zoom); }
@@ -219,6 +217,24 @@ LineType ConfigDataTheme::GetThemeLabelLineDisabled() const {
       return LineType::kLineDashedLarge;
     case 2:
       return LineType::kLineDotted;
+  };
+}
+
+widget::ModeEnum ConfigDataTheme::GetPpiMode() {
+  switch (current_config_->theme().widget_ppi_style()) {
+    default:
+    case config::PpiStyle::kPpiClassicTankWithSight:
+      return widget::ModeEnum::kPpiClassicTankWithSight;
+    case config::PpiStyle::kPpiClassicTankWithoutSight:
+      return widget::ModeEnum::kPpiClassicTankWithoutSight;
+    case config::PpiStyle::kPpiClassicArrowWithSight:
+      return widget::ModeEnum::kPpiClassicArrowWithSight;
+    case config::PpiStyle::kPpiClassicArrowWithoutSight:
+      return widget::ModeEnum::kPpiClassicArrowWithoutSight;
+    case config::PpiStyle::kPpiModernTankWithSights:
+      return widget::ModeEnum::kPpiModernTankWithSights;
+    case config::PpiStyle::kPpiModernTankWithoutSights:
+      return widget::ModeEnum::kPpiModernTankWithoutSights;
   };
 }
 

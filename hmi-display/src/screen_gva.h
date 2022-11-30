@@ -36,7 +36,7 @@
 #include "src/gva.h"
 #include "src/renderer_gva.h"
 #include "widgets/table.h"
-#include "widgets/widget.h"
+#include "widgets/widget_types.h"
 
 namespace gva {
 
@@ -59,7 +59,7 @@ struct Label {
 struct Message {
   bool visible;
   uint32_t width;
-  IconType icon;
+  widget::IconType icon;
   struct {
     std::string text;
     uint32_t fontSize;
@@ -142,12 +142,12 @@ class ScreenGva : public RendererGva {
   /// \param widget
   /// \return WidgetX*
   ///
-  WidgetX *GetWidget(WidgetEnum widget);
+  WidgetX *GetWidget(widget::WidgetEnum widget);
 
  private:
   char *PosDegrees(float lon, float lat);
   Screen *screen_;
-  std::map<WidgetEnum, std::shared_ptr<WidgetX>> widget_list_;
+  std::map<widget::WidgetEnum, std::shared_ptr<WidgetX>> widget_list_;
   args args_;
   int gps_;
   uint32_t hndl_;

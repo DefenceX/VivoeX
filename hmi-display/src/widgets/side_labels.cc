@@ -29,7 +29,7 @@
 namespace gva {
 
 WidgetSideLabels::WidgetSideLabels(const RendererGva& renderer, TouchGva* touch)
-    : WidgetX(renderer, KWidgetTypeCompass), touch_(touch) {}
+    : WidgetX(renderer, widget::KWidgetTypeCompass), touch_(touch) {}
 
 void WidgetSideLabels::Draw() {
   if (GetVisible()) {
@@ -43,7 +43,7 @@ void WidgetSideLabels::Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t hei
   char delim[] = ".";
   char* ptr = NULL;
 
-  if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::LABEL_ROUNDED) {
+  if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::kLabelRounded) {
     GetRenderer()->DrawRoundedRectangle(x, y, width, height, 6, true);
   } else {
     GetRenderer()->DrawRectangle(x, y, width, height, true);
@@ -52,20 +52,23 @@ void WidgetSideLabels::Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t hei
   GetRenderer()->DrawColor(text_colour);
   GetRenderer()->SetTextFontSize(14);
   if (text.substr(0, 5) == "icon:") {
-    if (text.substr(5, 20) == "exit") GetRenderer()->DrawIcon(kIconPowerOff, x + width / 2, y + height / 2, 20, 20);
-    if (text.substr(5, 20) == "uparrow") GetRenderer()->DrawIcon(kIconUpArrow, x + width / 2, y + height / 2, 20, 20);
+    if (text.substr(5, 20) == "exit")
+      GetRenderer()->DrawIcon(widget::kIconPowerOff, x + width / 2, y + height / 2, 20, 20);
+    if (text.substr(5, 20) == "uparrow")
+      GetRenderer()->DrawIcon(widget::kIconUpArrow, x + width / 2, y + height / 2, 20, 20);
     if (text.substr(5, 20) == "downarrow")
-      GetRenderer()->DrawIcon(kIconDownArrow, x + width / 2, y + height / 2, 20, 20);
+      GetRenderer()->DrawIcon(widget::kIconDownArrow, x + width / 2, y + height / 2, 20, 20);
     if (text.substr(5, 20) == "rightarrow")
-      GetRenderer()->DrawIcon(kIconRightArrow, x + width / 2, y + height / 2, 20, 20);
+      GetRenderer()->DrawIcon(widget::kIconRightArrow, x + width / 2, y + height / 2, 20, 20);
     if (text.substr(5, 20) == "leftarrow")
-      GetRenderer()->DrawIcon(kIconRightArrorw, x + width / 2, y + height / 2, 20, 20);
+      GetRenderer()->DrawIcon(widget::kIconRightArrorw, x + width / 2, y + height / 2, 20, 20);
     if (text.substr(5, 20) == "rotateleft")
-      GetRenderer()->DrawIcon(kIconRotateLeft, x + width / 2, y + height / 2, 20, 20);
+      GetRenderer()->DrawIcon(widget::kIconRotateLeft, x + width / 2, y + height / 2, 20, 20);
     if (text.substr(5, 20) == "rotateright")
-      GetRenderer()->DrawIcon(kIconRotateRight, x + width / 2, y + height / 2, 20, 20);
-    if (text.substr(5, 20) == "plus") GetRenderer()->DrawIcon(kIconPlus, x + width / 2, y + height / 2, 20, 20);
-    if (text.substr(5, 20) == "minus") GetRenderer()->DrawIcon(kIconMinus, x + width / 2, y + height / 2, 20, 20);
+      GetRenderer()->DrawIcon(widget::kIconRotateRight, x + width / 2, y + height / 2, 20, 20);
+    if (text.substr(5, 20) == "plus") GetRenderer()->DrawIcon(widget::kIconPlus, x + width / 2, y + height / 2, 20, 20);
+    if (text.substr(5, 20) == "minus")
+      GetRenderer()->DrawIcon(widget::kIconMinus, x + width / 2, y + height / 2, 20, 20);
   } else {
     strncpy(copy, text.c_str(), 40);
     ptr = strtok(copy, delim);
@@ -87,7 +90,7 @@ void WidgetSideLabels::Toggle(const std::string& label1, const std::string& labe
   GetRenderer()->SetColourBackground(HMI_YELLOW);
   GetRenderer()->SetTextFontSize(14);
 
-  if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::LABEL_ROUNDED) {
+  if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::kLabelRounded) {
     GetRenderer()->DrawRoundedRectangle(GetX() + 5, GetY() + 5, 40, 20, 4, true);
   } else {
     GetRenderer()->DrawRectangle(GetX() + 5, GetY() + 5, 40, 20, true);
@@ -97,7 +100,7 @@ void WidgetSideLabels::Toggle(const std::string& label1, const std::string& labe
   GetRenderer()->SetColourBackground(HMI_GREY);
   GetRenderer()->SetColourForeground(HMI_DARK_GREY);
 
-  if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::LABEL_ROUNDED) {
+  if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::kLabelRounded) {
     GetRenderer()->DrawRoundedRectangle(GetX() + 50, GetY() + 5, 45, 20, 4, true);
   } else {
     GetRenderer()->DrawRectangle(GetX() + 50, GetY() + 5, 45, 20, true);
@@ -113,7 +116,7 @@ void WidgetSideLabels::DrawFunctionLabels() {
   uint32_t offset = DEFAULT_HEIGHT - 88;
 
   GetRenderer()->SetLineType(CAIRO_LINE_JOIN_ROUND);
-  GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightNormal,
+  GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightNormal,
                              ConfigData::GetInstance()->GetThemeFont());
 
   uint32_t firstKey = (GetX() < DEFAULT_WIDTH / 2) ? int(GvaKeyEnum::kKeyF1) : int(GvaKeyEnum::kKeyF7);

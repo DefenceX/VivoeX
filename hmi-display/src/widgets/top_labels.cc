@@ -29,7 +29,7 @@
 namespace gva {
 
 WidgetTopLabels::WidgetTopLabels(const RendererGva& renderer, TouchGva* touch)
-    : WidgetX(renderer, KWidgetTypeCompass), touch_(touch) {}
+    : WidgetX(renderer, widget::KWidgetTypeCompass), touch_(touch) {}
 
 void WidgetTopLabels::Draw() {
   if (GetVisible()) {
@@ -52,7 +52,7 @@ void WidgetTopLabels::DrawTopLabels(uint32_t y, const std::array<FunctionSelect:
     if (label.state != LabelStates::kLabelDisabled) {
       SetStateLabel(label.state);
 
-      if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::LABEL_ROUNDED) {
+      if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::kLabelRounded) {
         GetRenderer()->DrawRoundedRectangle((i * width) + offset, y, width - 10, 10, 4, true);
       } else {
         GetRenderer()->DrawRectangle((i * width) + offset, y, width - 10, 10, true);

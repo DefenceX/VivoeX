@@ -276,7 +276,8 @@ void RendererCairo::Draw() {
         cairo_pop_group_to_source(cr);
         break;
       case kCommandTextFontSize:
-        cairo_set_font_size(cr, currentCmd.height);
+        // @todo (Ross Newman): This causes the canvas to go blck so disabled for now
+        // cairo_set_font_size(cr, currentCmd.height);
         break;
       case kCommandText: {
         cairo_move_to(cr, currentCmd.points[0].x, currentCmd.points[0].y);
@@ -598,7 +599,7 @@ void RendererCairo::SetTextFontSize(double size) {
   draw_commands_.push_back(command);
 }
 
-void RendererCairo::SetTextFont(uint32_t slope, WeightType weight, const std::string fontName) {
+void RendererCairo::SetTextFont(uint32_t slope, widget::WeightType weight, const std::string fontName) {
   Command command;
   command.command = kCommandTextFont;
   command.arg1 = slope;

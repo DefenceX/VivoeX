@@ -36,7 +36,7 @@ void HmiHelper::TableLicences(WidgetTable *table) {
   table->y_ = 390;
   table->width_ = 420;
 
-  table->AddRow(WeightType::kWeightBold);
+  table->AddRow(widget::WeightType::kWeightBold);
   table->AddCell("Software", 80);
   table->AddCell("Licence", 20);
 
@@ -75,7 +75,7 @@ void HmiHelper::TableSystem(WidgetTable *table) {
   table->y_ = 390;
   table->width_ = 420;
 
-  table->AddRow(WeightType::kWeightBold);
+  table->AddRow(widget::WeightType::kWeightBold);
   table->AddCell("Fuction", 80);
   table->AddCell("Status", 20);
 
@@ -109,7 +109,7 @@ void HmiHelper::TableAlarms(WidgetTable *table) {
   table->width_ = 420;
   table->background_colour_ = gva::ConfigData::GetInstance()->GetThemeBackground();
 
-  table->AddRow(WeightType::kWeightBold);
+  table->AddRow(widget::WeightType::kWeightBold);
   table->AddCell("Time", 20);
   table->AddCell("Alarm Text", 50);
   table->AddCell("Cat", 10);
@@ -122,7 +122,7 @@ void HmiHelper::TableAlarms(WidgetTable *table) {
   table->AddCell("RES", 20);
 
   table->AddRow(Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_RED), Renderer::PackRgb(HMI_WHITE),
-                Renderer::PackRgb(HMI_YELLOW), WeightType::kWeightNormal);
+                Renderer::PackRgb(HMI_YELLOW), widget::WeightType::kWeightNormal);
   table->AddCell("15/6 15:26", 20);
   table->AddCell("Engine over temperature", 50);
   table->AddCell("W", 10);
@@ -148,35 +148,35 @@ void HmiHelper::TableAlarms(WidgetTable *table) {
   table->AddCell("ACK", 20);
 
   table->AddRow(Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_GREY), Renderer::PackRgb(HMI_WHITE),
-                Renderer::PackRgb(HMI_YELLOW), WeightType::kWeightNormal);
+                Renderer::PackRgb(HMI_YELLOW), widget::WeightType::kWeightNormal);
   table->AddCell("15/6 19:03", 20);
   table->AddCell("Gun barrel over tempreture", 50);
   table->AddCell("C", 10);
   table->AddCell("ACK(OVR)", 20);
 
   table->AddRow(Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_ORANGE), Renderer::PackRgb(HMI_WHITE),
-                Renderer::PackRgb(HMI_YELLOW), WeightType::kWeightNormal);
+                Renderer::PackRgb(HMI_YELLOW), widget::WeightType::kWeightNormal);
   table->AddCell("15/6 19:04", 20);
   table->AddCell("LRU xx fault", 50);
   table->AddCell("C", 10);
   table->AddCell("ACK", 20);
 
   table->AddRow(Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_ORANGE), Renderer::PackRgb(HMI_WHITE),
-                Renderer::PackRgb(HMI_YELLOW), WeightType::kWeightNormal);
+                Renderer::PackRgb(HMI_YELLOW), widget::WeightType::kWeightNormal);
   table->AddCell("15/6 19:10", 20);
   table->AddCell("SAS Camera 1 (Day) over temperature", 50);
   table->AddCell("A", 10);
   table->AddCell("ACK", 20);
 
   table->AddRow(Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_ORANGE), Renderer::PackRgb(HMI_WHITE),
-                Renderer::PackRgb(HMI_YELLOW), WeightType::kWeightNormal);
+                Renderer::PackRgb(HMI_YELLOW), widget::WeightType::kWeightNormal);
   table->AddCell("15/6 19:10", 20);
   table->AddCell("CBRN detected high CO2", 50);
   table->AddCell("C", 10);
   table->AddCell("ACK", 20);
 
   table->AddRow();
-  table->AddCell("Page 1 of 1", 100, CellAlignType::kAlignRight);
+  table->AddCell("Page 1 of 1", 100, widget::CellAlignType::kAlignRight);
 }
 
 }  // namespace gva

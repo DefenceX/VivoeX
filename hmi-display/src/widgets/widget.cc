@@ -26,7 +26,7 @@
 
 namespace gva {
 
-WidgetX::WidgetX(const RendererGva& renderer, WidgetEnum widget_type)
+WidgetX::WidgetX(const RendererGva& renderer, widget::WidgetEnum widget_type)
     : renderer_(renderer), widget_type_(widget_type) {}
 
 void WidgetX::SetVisible(bool visible) { visible_ = visible; }
@@ -41,7 +41,7 @@ void WidgetX::SetY(uint32_t y) { y_ = y; }
 
 uint32_t WidgetX::GetY() const { return y_; }
 
-WidgetEnum WidgetX::GetType() const { return widget_type_; }
+widget::WidgetEnum WidgetX::GetType() const { return widget_type_; }
 
 RendererGva* WidgetX::GetRenderer() const { return const_cast<gva::RendererGva*>(&renderer_); }
 

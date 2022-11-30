@@ -46,7 +46,7 @@ GvaKeyEnum Hmi::KeyWPN(GvaKeyEnum keypress) {
     case GvaKeyEnum::kKeyF11:
     case GvaKeyEnum::kKeyF12:
       screen_.message.visible = true;
-      screen_.message.icon = kIconError;
+      screen_.message.icon = widget::kIconError;
       screen_.message.brief.text = "Function key";
       screen_.message.detail.text = "Operation not implemented!";
       break;
@@ -63,7 +63,8 @@ void StateWPN::entry() {
     lastState_ = GvaFunctionEnum::kWeapon;
     Reset();
 
-    if (screen_.labels != LabelModeEnum::kLabelMinimal) screen_render_->GetWidget(KWidgetTypeCompass)->SetVisible(true);
+    if (screen_.labels != LabelModeEnum::kLabelMinimal)
+      screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetVisible(true);
     screen_.canvas.visible = true;
     filename = ConfigData::GetInstance()->GetImagePath();
     filename.append("/FrontCenter.png");

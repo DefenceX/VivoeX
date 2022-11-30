@@ -339,7 +339,7 @@ class RendererCairo : public Renderer {
   /// \param weight
   /// \param fontName
   ///
-  void SetTextFont(uint32_t slope, WeightType weight, std::string fontName);
+  void SetTextFont(uint32_t slope, widget::WeightType weight, std::string fontName);
 
   ///
   /// \brief Set the Text Font Size object

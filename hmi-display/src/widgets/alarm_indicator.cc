@@ -29,11 +29,11 @@
 namespace gva {
 
 WidgetAlarmIndicator::WidgetAlarmIndicator(const RendererGva& renderer)
-    : WidgetX(renderer, KWidgetTypeAlarmIndicator) {}
+    : WidgetX(renderer, widget::KWidgetTypeAlarmIndicator) {}
 
 void WidgetAlarmIndicator::Draw() {
   if (GetVisible()) {
-    GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightNormal,
+    GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightNormal,
                                gva::ConfigData::GetInstance()->GetThemeFont());
     GetRenderer()->SetTextFontSize(14);
     switch (type_) {

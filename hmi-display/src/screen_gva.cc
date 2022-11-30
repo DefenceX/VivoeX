@@ -97,15 +97,15 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
   TouchGva *touch = GetTouch();
 
   // Here we need to add all the possible screen widgets to the widget list, at this point they are uninitialised
-  widget_list_[KWidgetTypeCompass] = std::make_shared<WidgetPlanPositionIndicator>(*renderer);
-  widget_list_[KWidgetTypeKeyboard] = std::make_shared<WidgetKeyboard>(*renderer);
-  widget_list_[KWidgetTypeAlarmIndicator] = std::make_shared<WidgetAlarmIndicator>(*renderer);
-  widget_list_[KWidgetTypeTopLabels] = std::make_shared<WidgetTopLabels>(*renderer, touch);
-  widget_list_[KWidgetTypeBottomLabels] = std::make_shared<WidgetBottomLabels>(*renderer, touch);
-  widget_list_[KWidgetTypeLeftLabels] = std::make_shared<WidgetSideLabels>(*renderer, touch);
-  widget_list_[KWidgetTypeRightLabels] = std::make_shared<WidgetSideLabels>(*renderer, touch);
-  widget_list_[KWidgetTypeRightLabels] = std::make_shared<WidgetSideLabels>(*renderer, touch);
-  widget_list_[KWidgetTypeTable] = std::make_shared<WidgetTable>(*renderer, touch);
+  widget_list_[widget::KWidgetTypeCompass] = std::make_shared<WidgetPlanPositionIndicator>(*renderer);
+  widget_list_[widget::KWidgetTypeKeyboard] = std::make_shared<WidgetKeyboard>(*renderer);
+  widget_list_[widget::KWidgetTypeAlarmIndicator] = std::make_shared<WidgetAlarmIndicator>(*renderer);
+  widget_list_[widget::KWidgetTypeTopLabels] = std::make_shared<WidgetTopLabels>(*renderer, touch);
+  widget_list_[widget::KWidgetTypeBottomLabels] = std::make_shared<WidgetBottomLabels>(*renderer, touch);
+  widget_list_[widget::KWidgetTypeLeftLabels] = std::make_shared<WidgetSideLabels>(*renderer, touch);
+  widget_list_[widget::KWidgetTypeRightLabels] = std::make_shared<WidgetSideLabels>(*renderer, touch);
+  widget_list_[widget::KWidgetTypeRightLabels] = std::make_shared<WidgetSideLabels>(*renderer, touch);
+  widget_list_[widget::KWidgetTypeTable] = std::make_shared<WidgetTable>(*renderer, touch);
 }
 
 ScreenGva::~ScreenGva() {
@@ -256,14 +256,14 @@ GvaStatusTypes ScreenGva::Update() {
 
   // Draw the LEFT bezel labels
   if (screen_->function_left.visible) {
-    auto widget = (WidgetSideLabels *)GetWidget(KWidgetTypeLeftLabels);
+    auto widget = (WidgetSideLabels *)GetWidget(widget::KWidgetTypeLeftLabels);
     widget->SetLabels(&screen_->function_left.labels);
     widget->Draw();
   }
 
   // Draw the RIGHT bezel labels
   if (screen_->function_right.visible) {
-    auto widget = (WidgetSideLabels *)GetWidget(KWidgetTypeRightLabels);
+    auto widget = (WidgetSideLabels *)GetWidget(widget::KWidgetTypeRightLabels);
     widget->SetLabels(&screen_->function_right.labels);
     widget->SetX(DEFAULT_WIDTH - 100 - 1);
     widget->Draw();
@@ -271,7 +271,7 @@ GvaStatusTypes ScreenGva::Update() {
 
   // Draw the TOP bezel labels
   if (screen_->function_top->visible) {
-    auto widget = (WidgetTopLabels *)GetWidget(KWidgetTypeTopLabels);
+    auto widget = (WidgetTopLabels *)GetWidget(widget::KWidgetTypeTopLabels);
     widget->SetY(DEFAULT_HEIGHT - 11);
     widget->SetLabels(&screen_->function_top->labels);
     widget->Draw();
@@ -279,13 +279,13 @@ GvaStatusTypes ScreenGva::Update() {
 
   // Draw the maintenance mode indicator
   if (screen_->info.mode == ScreenMode::kModeMaintinance) {
-    auto widget = (WidgetMode *)GetWidget(KWidgetTypeMode);
+    auto widget = (WidgetMode *)GetWidget(widget::KWidgetTypeMode);
     widget->Draw();
   }
 
   // Draw the onscreen KEYBOARD
-  if (widget_list_[KWidgetTypeKeyboard]->GetVisible()) {
-    widget_list_[KWidgetTypeKeyboard]->Draw();
+  if (widget_list_[widget::KWidgetTypeKeyboard]->GetVisible()) {
+    widget_list_[widget::KWidgetTypeKeyboard]->Draw();
   }
 
   // Setup and Draw the status bar, one row table
@@ -298,77 +298,79 @@ GvaStatusTypes ScreenGva::Update() {
     GvaRow newrow;
 
     // Use theme colours
-    GvaColourType border = {UnpackRed(config_->GetThemeStatusBorder()), UnpackGreen(config_->GetThemeStatusBorder()),
-                            UnpackBlue(config_->GetThemeStatusBorder())};
-    GvaColourType background = {UnpackRed(config_->GetThemeStatusBackground()),
-                                UnpackGreen(config_->GetThemeStatusBackground()),
-                                UnpackBlue(config_->GetThemeStatusBackground())};
-    GvaColourType text = {UnpackRed(config_->GetThemeStatusText()), UnpackGreen(config_->GetThemeStatusText()),
-                          UnpackBlue(config_->GetThemeStatusText())};
+    widget::GvaColourType border = {UnpackRed(config_->GetThemeStatusBorder()),
+                                    UnpackGreen(config_->GetThemeStatusBorder()),
+                                    UnpackBlue(config_->GetThemeStatusBorder())};
+    widget::GvaColourType background = {UnpackRed(config_->GetThemeStatusBackground()),
+                                        UnpackGreen(config_->GetThemeStatusBackground()),
+                                        UnpackBlue(config_->GetThemeStatusBackground())};
+    widget::GvaColourType text = {UnpackRed(config_->GetThemeStatusText()), UnpackGreen(config_->GetThemeStatusText()),
+                                  UnpackBlue(config_->GetThemeStatusText())};
 
     screen_->status_bar->labels[0].text = args_.clockString;
     screen_->status_bar->labels[1].text = args_.locationFormat;
     screen_->status_bar->labels[2].text = args_.locationString;
     for (i = 0; i < 7; i++) {
-      CellAlignType align = CellAlignType::kAlignLeft;
-      if (i == 1) align = CellAlignType::kAlignCentre;
-      GvaCell cell = {screen_->status_bar->labels[i].text, align, border, background, text, WeightType::kWeightBold};
+      widget::CellAlignType align = widget::CellAlignType::kAlignLeft;
+      if (i == 1) align = widget::CellAlignType::kAlignCentre;
+      GvaCell cell = {screen_->status_bar->labels[i].text, align, border, background, text,
+                      widget::WeightType::kWeightBold};
       newrow.addCell(cell, widths[i]);
     }
     table.AddRow(newrow);
-    auto table_widget = (WidgetTable *)GetWidget(KWidgetTypeTable);
+    auto table_widget = (WidgetTable *)GetWidget(widget::KWidgetTypeTable);
     table_widget->SetTable(&table);
     table_widget->Draw();
   }
 
   // TODO : Draw the alarms if any (Mock up)
-  if (widget_list_[KWidgetTypeAlarmIndicator]->GetVisible()) {
-    widget_list_[KWidgetTypeAlarmIndicator]->Draw();
+  if (widget_list_[widget::KWidgetTypeAlarmIndicator]->GetVisible()) {
+    widget_list_[widget::KWidgetTypeAlarmIndicator]->Draw();
   }
 
   // Setup and Draw the alarms
-  // if (widget_list_[KWidgetTypeTable]->GetVisible()) {
-  //   auto table_widget = (WidgetTable *)GetWidget(KWidgetTypeTable);
+  if (widget_list_[widget::KWidgetTypeTable]->GetVisible()) {
+    auto table_widget = (WidgetTable *)GetWidget(widget::KWidgetTypeTable);
 
-  //   GvaTable table(table_widget->GetX(), table_widget->GetY() + 33, table_widget->width_);
-  //   table.SetFontName(config_->GetThemeFont());
-  //   table.border_ = 1;
-  //   for (auto row : table_widget->rows_) {
-  //     GvaRow newrow;
-  //     RgbUnpackedType f, b, o;
-  //     // for (uint32_t cell = 0; cell < table.rows_[row].cell_count_; cell++) {
+    GvaTable table(table_widget->GetX(), table_widget->GetY() + 33, table_widget->width_);
+    table.SetFontName(config_->GetThemeFont());
+    table.border_ = 1;
+    for (auto row : table_widget->rows_) {
+      GvaRow newrow;
+      RgbUnpackedType f, b, o;
+      // for (uint32_t cell = 0; cell < table.rows_[row].cell_count_; cell++) {
 
-  //     for (auto cell : row.cells_) {
-  //       f = UnpackRgb(cell.GetForegroundColour());
-  //       b = UnpackRgb(cell.GetBackgroundColour());
+      for (auto cell : row.cells_) {
+        f = UnpackRgb(cell.GetForegroundColour());
+        b = UnpackRgb(cell.GetBackgroundColour());
 
-  //       // Choose colour for cell border
-  //       if (row.GetHighlighted() == false) {
-  //         o = UnpackRgb(cell.GetOutlineColour());
-  //       } else {
-  //         printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
+        // Choose colour for cell border
+        if (row.GetHighlighted() == false) {
+          o = UnpackRgb(cell.GetOutlineColour());
+        } else {
+          printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
 
-  //         o = UnpackRgb(cell.GetHighlightColour());
-  //       }
+          o = UnpackRgb(cell.GetHighlightColour());
+        }
 
-  //       newrow.addCell({cell.GetText(), cell.GetCellAlignment(), o.r, o.g, o.b,  // Outline
-  //                       b.r, b.g, b.b,                                           // Background
-  //                       f.r, f.g, f.b,                                           // Foreground
-  //                       row.GetFontWeight()},
-  //                      cell.GetWidth());
-  //     }
-  //     table.AddRow(newrow);
-  //   }
+        newrow.addCell({cell.GetText(), cell.GetCellAlignment(), o.r, o.g, o.b,  // Outline
+                        b.r, b.g, b.b,                                           // Background
+                        f.r, f.g, f.b,                                           // Foreground
+                        row.GetFontWeight()},
+                       cell.GetWidth());
+      }
+      table.AddRow(newrow);
+    }
 
-  // table_widget->SetTable(&table);
-  // table_widget->Draw();
-  // }
+    table_widget->SetTable(&table);
+    table_widget->Draw();
+  }
 
   // Draw PPI (Plan Position Indicator)
-  widget_list_[KWidgetTypeCompass]->Draw();
+  widget_list_[widget::KWidgetTypeCompass]->Draw();
 
   if (screen_->control->visible_) {
-    auto widget = (WidgetBottomLabels *)GetWidget(KWidgetTypeBottomLabels);
+    auto widget = (WidgetBottomLabels *)GetWidget(widget::KWidgetTypeBottomLabels);
     widget->SetLabels(&screen_->control->labels_);
     widget->Draw();
   }
@@ -385,26 +387,26 @@ GvaStatusTypes ScreenGva::Update() {
     uint32_t background = gva::ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled();
 
     newrow.addCell({screen_->message.brief.text,
-                    CellAlignType::kAlignCentre,
+                    widget::CellAlignType::kAlignCentre,
                     {HMI_WHITE},
                     {background << 16 && 0xff, background << 8 && 0xff, background && 0xff},
                     {HMI_WHITE},
-                    WeightType::kWeightBold},
+                    widget::WeightType::kWeightBold},
                    100);
     table.AddRow(newrow);
 
     newrow1.addCell({screen_->message.detail.text,
-                     CellAlignType::kAlignCentre,
+                     widget::CellAlignType::kAlignCentre,
                      {HMI_WHITE},
                      {background << 16 && 0xff, background << 8 && 0xff, background && 0xff},
                      {HMI_WHITE},
-                     WeightType::kWeightNormal},
+                     widget::WeightType::kWeightNormal},
                     100);
     table.AddRow(newrow1);
 
-    auto table_widget = (WidgetTable *)GetWidget(KWidgetTypeTable);
-    // table_widget->SetTable(&table);
-    // table_widget->Draw();
+    auto table_widget = (WidgetTable *)GetWidget(widget::KWidgetTypeTable);
+    table_widget->SetTable(&table);
+    table_widget->Draw();
 
     DrawIcon(screen_->message.icon, 320 - 150 + 300 - 17, 270, 11, 11);
   }
@@ -416,6 +418,6 @@ GvaStatusTypes ScreenGva::Update() {
   last_screen_ = *screen_;
 }
 
-WidgetX *ScreenGva::GetWidget(WidgetEnum widget) { return widget_list_[widget].get(); }
+WidgetX *ScreenGva::GetWidget(widget::WidgetEnum widget) { return widget_list_[widget].get(); }
 
 }  // namespace gva

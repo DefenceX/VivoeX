@@ -32,7 +32,7 @@
 namespace gva {
 
 WidgetBottomLabels::WidgetBottomLabels(const RendererGva& renderer, TouchGva* touch)
-    : WidgetX(renderer, KWidgetTypeCompass), touch_(touch) {
+    : WidgetX(renderer, widget::KWidgetTypeCompass), touch_(touch) {
   config_ = ConfigData::GetInstance();
 }
 
@@ -53,13 +53,14 @@ void WidgetBottomLabels::DrawControlLabels() {
   GetRenderer()->SetColourBackground(config_->GetThemeLabelBackgroundEnabled());
   GetRenderer()->SetLineType(CAIRO_LINE_JOIN_ROUND);
   GetRenderer()->SetLineThickness(config_->GetThemeLabelBorderThickness(), LineType::kLineSolid);
-  GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightNormal, config_->GetThemeFont());
+  GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightNormal,
+                             config_->GetThemeFont());
 
   for (auto label : *labels_) {
     if (label.state_ != LabelStates::kLabelHidden) {
       SetStateLabel(label.state_);
 
-      if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::LABEL_ROUNDED) {
+      if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::kLabelRounded) {
         GetRenderer()->DrawRoundedRectangle((i * w) + offset, GetY(), w - 5, 20, 4, true);
       } else {
         GetRenderer()->DrawRectangle((i * w) + offset, GetY(), w - 5, 20, true);
@@ -71,8 +72,8 @@ void WidgetBottomLabels::DrawControlLabels() {
                             (i * w) + w - 5 + offset, GetY() + 20);
       }
       GetRenderer()->DrawText((i * w) + offset + 5, GetY() + 6, label.text_.c_str());
-      if (i == 4) GetRenderer()->DrawIcon(kIconUpArrow, (i * w) + offset + 34, GetY() + 11, 15, 8);
-      if (i == 5) GetRenderer()->DrawIcon(kIconDownArrow, (i * w) + offset + 34, GetY() + 10, 15, 8);
+      if (i == 4) GetRenderer()->DrawIcon(widget::kIconUpArrow, (i * w) + offset + 34, GetY() + 11, 15, 8);
+      if (i == 5) GetRenderer()->DrawIcon(widget::kIconDownArrow, (i * w) + offset + 34, GetY() + 10, 15, 8);
     }
 
     i++;

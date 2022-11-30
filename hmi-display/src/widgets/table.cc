@@ -29,7 +29,7 @@
 namespace gva {
 
 WidgetTable::WidgetTable(const RendererGva& renderer, TouchGva* touch)
-    : WidgetX(renderer, KWidgetTypeTable), touch_(touch) {}
+    : WidgetX(renderer, widget::KWidgetTypeTable), touch_(touch) {}
 
 void WidgetTable::Draw() { DrawTable(table_); }
 
@@ -41,7 +41,7 @@ void WidgetTable::DrawTable(GvaTable* table) {
   uint32_t column = 0;
 
   GetRenderer()->SetLineThickness(ConfigData::GetInstance()->GetThemeTableBorderThickness(), LineType::kLineSolid);
-  GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightBold, table->fontname_);
+  GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightBold, table->fontname_);
   GetRenderer()->SetColourBackground(gva::ConfigData::GetInstance()->GetThemeBackground());
 
   for (row = 0; row < table->rows_; row++) {
@@ -69,13 +69,13 @@ void WidgetTable::DrawTable(GvaTable* table) {
       uint32_t w = GetRenderer()->GetTextWidth(table->row_[row].cell_[column].text, 12);
 
       switch (table->row_[row].cell_[column].align) {
-        case CellAlignType::kAlignCentre:
+        case widget::CellAlignType::kAlignCentre:
           pos = offset + (tmp / 2 - w / 2);
           break;
-        case CellAlignType::kAlignRight:
+        case widget::CellAlignType::kAlignRight:
           pos = offset + (tmp - w - 4);
           break;
-        case CellAlignType::kAlignLeft:
+        case widget::CellAlignType::kAlignLeft:
         default:
           pos = offset + 4;
           break;
@@ -91,7 +91,7 @@ void WidgetTable::DrawTable(GvaTable* table) {
 
 WidgetTable::CellType::CellType(const std::string text, const uint32_t width, const uint32_t background_colour,
                                 const uint32_t foreground_colour, const uint32_t outline_colour,
-                                const uint32_t highlight_colour, const CellAlignType alignment)
+                                const uint32_t highlight_colour, const widget::CellAlignType alignment)
     : width_(width),
       text_(text),
       background_colour_(background_colour),
@@ -114,13 +114,14 @@ uint32_t WidgetTable::CellType::GetOutlineColour() const { return foreground_col
 
 uint32_t WidgetTable::CellType::GetHighlightColour() const { return foreground_colour_; }
 
-CellAlignType WidgetTable::CellType::GetCellAlignment() const { return alignment_; }
+widget::CellAlignType WidgetTable::CellType::GetCellAlignment() const { return alignment_; }
 
 // Class RowType
 
 WidgetTable::RowType::RowType(const uint32_t background_colour, const uint32_t foreground_colour,
                               const uint32_t outline_colour, const uint32_t highlight_colour,
-                              const WeightType font_weight, const bool highlighted, const CellAlignType alignment)
+                              const widget::WeightType font_weight, const bool highlighted,
+                              const widget::CellAlignType alignment)
     : background_colour_(background_colour),
       foreground_colour_(foreground_colour),
       outline_colour_(outline_colour),
@@ -137,48 +138,48 @@ uint32_t WidgetTable::RowType::GetOutlineColour() const { return foreground_colo
 
 uint32_t WidgetTable::RowType::GetHighlightColour() const { return foreground_colour_; }
 
-WeightType WidgetTable::RowType::GetFontWeight() const { return font_weight_; }
+widget::WeightType WidgetTable::RowType::GetFontWeight() const { return font_weight_; }
 
 bool WidgetTable::RowType::GetHighlighted() const { return highlighted_; }
 
 void WidgetTable::RowType::SetHighlighted(bool value) { highlighted_ = value; }
 
-CellAlignType WidgetTable::RowType::GetCellAlignment() const { return alignment_; }
+widget::CellAlignType WidgetTable::RowType::GetCellAlignment() const { return alignment_; }
 
 // Class TableWidget
 
 void WidgetTable::AddRow(uint32_t forground_colour, uint32_t background_colour, uint32_t outline_colour,
-                         uint32_t highlight_colour, WeightType font_weight) {
+                         uint32_t highlight_colour, widget::WeightType font_weight) {
   RowType row(background_colour, forground_colour, outline_colour, highlight_colour, font_weight, false,
-              CellAlignType::kAlignLeft);
+              widget::CellAlignType::kAlignLeft);
   rows_.push_back(row);
 }
 
 void WidgetTable::AddRow() {
   RowType row(ConfigData::GetInstance()->GetTableBackground(), Renderer::PackRgb(HMI_WHITE),
-              Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_YELLOW), WeightType::kWeightNormal, false,
-              CellAlignType::kAlignLeft);
+              Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_YELLOW), widget::WeightType::kWeightNormal, false,
+              widget::CellAlignType::kAlignLeft);
   rows_.push_back(row);
 }
 
-void WidgetTable::AddRow(WeightType font_weight) {
+void WidgetTable::AddRow(widget::WeightType font_weight) {
   AddRow(ConfigData::GetInstance()->GetTableBackground(), Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_WHITE),
          Renderer::PackRgb(HMI_YELLOW), font_weight);
 }
 
 void WidgetTable::CurrentRowHighlight() { rows_[current_row_ - 1].SetHighlighted(true); }
 
-void WidgetTable::AddCell(std::string text, uint32_t width) { AddCell(text, width, CellAlignType::kAlignLeft); }
+void WidgetTable::AddCell(std::string text, uint32_t width) { AddCell(text, width, widget::CellAlignType::kAlignLeft); }
 
-void WidgetTable::AddCell(std::string text, uint32_t width, CellAlignType align) {
+void WidgetTable::AddCell(std::string text, uint32_t width, widget::CellAlignType align) {
   AddCell(text, width, align, ConfigData::GetInstance()->GetTableBackground());
 }
 
 void WidgetTable::AddCell(std::string text, uint32_t width, uint32_t background_colour) {
-  AddCell(text, width, CellAlignType::kAlignLeft, background_colour);
+  AddCell(text, width, widget::CellAlignType::kAlignLeft, background_colour);
 }
 
-void WidgetTable::AddCell(std::string text, uint32_t width, CellAlignType align, uint32_t background_colour) {
+void WidgetTable::AddCell(std::string text, uint32_t width, widget::CellAlignType align, uint32_t background_colour) {
   auto row = rows_.back();
   if (rows_.size()) {
     CellType cell(text, width, row.GetBackgroundColour(), row.GetForegroundColour(), row.GetOutlineColour(),

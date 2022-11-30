@@ -150,9 +150,9 @@ void Hmi::Reset() {
   Labels(screen_.labels);
   screen_.canvas.visible = false;
   screen_.canvas.bufferType = SurfaceType::kSurfaceNone;
-  screen_render_->GetWidget(KWidgetTypeCompass)->SetVisible(false);
-  screen_render_->GetWidget(KWidgetTypeCompass)->SetY(360 + 28);
-  screen_render_->GetWidget(KWidgetTypeCompass)->SetX(161);
+  screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetVisible(false);
+  screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetY(360 + 28);
+  screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetX(161);
   screen_.control->visible_ = true;
   screen_.message.visible = false;
   screen_.info.mode = ScreenMode::kModeOperational;
@@ -165,17 +165,17 @@ void Hmi::Labels(LabelModeEnum labels) {
       if ((screen_.currentFunction == GvaFunctionEnum::kSituationalAwareness) ||
           (screen_.currentFunction == GvaFunctionEnum::kWeapon) ||
           (screen_.currentFunction == GvaFunctionEnum::kDriver))
-        screen_render_->GetWidget(KWidgetTypeCompass)->SetVisible(true);
+        screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetVisible(true);
       screen_.function_left.visible = true;
       screen_.function_right.visible = true;
       screen_.control->visible_ = true;
       screen_.function_top->visible = true;
       screen_.status_bar->visible = true;
       screen_.status_bar->y = 446;
-      screen_render_->GetWidget(KWidgetTypeAlarmIndicator)->SetVisible(true);
-      screen_render_->GetWidget(KWidgetTypeCompass)->SetY(360 + 28);
-      screen_render_->GetWidget(KWidgetTypeCompass)->SetX(161);
-      screen_render_->GetWidget(KWidgetTypeAlarmIndicator)->SetY(423);
+      screen_render_->GetWidget(widget::KWidgetTypeAlarmIndicator)->SetVisible(true);
+      screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetY(360 + 28);
+      screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetX(161);
+      screen_render_->GetWidget(widget::KWidgetTypeAlarmIndicator)->SetY(423);
       break;
     case LabelModeEnum::kLabelStatusOnly:
       screen_.function_left.visible = false;
@@ -184,10 +184,10 @@ void Hmi::Labels(LabelModeEnum labels) {
       screen_.function_top->visible = false;
       screen_.status_bar->visible = true;
       screen_.status_bar->y = 459;
-      screen_render_->GetWidget(KWidgetTypeAlarmIndicator)->SetVisible(true);
-      screen_render_->GetWidget(KWidgetTypeAlarmIndicator)->SetY(423);
-      screen_render_->GetWidget(KWidgetTypeCompass)->SetY(360 + 42);
-      screen_render_->GetWidget(KWidgetTypeCompass)->SetX(161 - 106);
+      screen_render_->GetWidget(widget::KWidgetTypeAlarmIndicator)->SetVisible(true);
+      screen_render_->GetWidget(widget::KWidgetTypeAlarmIndicator)->SetY(423);
+      screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetY(360 + 42);
+      screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetX(161 - 106);
       break;
     case LabelModeEnum::kLabelMinimal:
       screen_.function_left.visible = false;
@@ -195,8 +195,8 @@ void Hmi::Labels(LabelModeEnum labels) {
       screen_.control->visible_ = false;
       screen_.function_top->visible = false;
       screen_.status_bar->visible = false;
-      screen_render_->GetWidget(KWidgetTypeAlarmIndicator)->SetVisible(false);
-      screen_render_->GetWidget(KWidgetTypeCompass)->SetVisible(false);
+      screen_render_->GetWidget(widget::KWidgetTypeAlarmIndicator)->SetVisible(false);
+      screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetVisible(false);
       break;
   }
 };

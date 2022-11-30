@@ -29,7 +29,7 @@ namespace gva {
 GvaKeyEnum Hmi::KeySYS(GvaKeyEnum keypress) {
   screen_.function_left.visible = true;
   screen_.function_right.visible = true;
-  WidgetTable *table = (WidgetTable *)screen_render_->GetWidget(KWidgetTypeTable);
+  WidgetTable *table = (WidgetTable *)screen_render_->GetWidget(widget::KWidgetTypeTable);
 
   KeySide(keypress);
   Key(keypress);
@@ -50,7 +50,7 @@ GvaKeyEnum Hmi::KeySYS(GvaKeyEnum keypress) {
     case GvaKeyEnum::kKeyF9:
     case GvaKeyEnum::kKeyF10:
       screen_.message.visible = true;
-      screen_.message.icon = kIconError;
+      screen_.message.icon = widget::kIconError;
       screen_.message.brief.text = "Function key";
       screen_.message.detail.text = "Operation not implemented!";
       break;
@@ -77,7 +77,7 @@ GvaKeyEnum Hmi::KeySYS(GvaKeyEnum keypress) {
 
 void StateSYS::entry() {
   if (screen_.function_top->labels[3].state != LabelStates::kLabelHidden) {
-    WidgetTable *table = (WidgetTable *)screen_render_->GetWidget(KWidgetTypeTable);
+    WidgetTable *table = (WidgetTable *)screen_render_->GetWidget(widget::KWidgetTypeTable);
     std::string filename;
     manager_->SetScreen(&screen_, GvaFunctionEnum::kSystems);
     lastState_ = GvaFunctionEnum::kSystems;

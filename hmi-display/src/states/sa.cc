@@ -31,7 +31,7 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
   std::string filename;
 
   gva::WidgetPlanPositionIndicator *compass =
-      static_cast<WidgetPlanPositionIndicator *>(screen_render_->GetWidget(KWidgetTypeCompass));
+      static_cast<WidgetPlanPositionIndicator *>(screen_render_->GetWidget(widget::KWidgetTypeCompass));
 
   KeySide(keypress);
   Key(keypress);
@@ -84,7 +84,7 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
     case GvaKeyEnum::kKeyF8:
     case GvaKeyEnum::kKeyF9:
       screen_.message.visible = true;
-      screen_.message.icon = kIconError;
+      screen_.message.icon = widget::kIconError;
       screen_.message.brief.text = "Function key";
       screen_.message.detail.text = "Operation not implemented!";
       break;
@@ -99,8 +99,9 @@ void StateSA::entry() {
     Reset();
     screen_.function_top->labels[0].state = LabelStates::kLabelEnabledSelected;
 
-    if (screen_.labels != LabelModeEnum::kLabelMinimal) screen_render_->GetWidget(KWidgetTypeCompass)->SetVisible(true);
-    screen_render_->GetWidget(KWidgetTypeCompass)->SetVisible(true);
+    if (screen_.labels != LabelModeEnum::kLabelMinimal)
+      screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetVisible(true);
+    screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetVisible(true);
     if (!screen_.canvas.surface) {
       std::string filename;
       filename = ConfigData::GetInstance()->GetImagePath();

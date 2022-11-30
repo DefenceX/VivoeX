@@ -87,14 +87,14 @@ void StateOn::entry() {
   screen_render_ = new ScreenGva(&screen_, view_.width, view_.height);
 
   // Configure the widgets
-  ((WidgetPlanPositionIndicator *)screen_render_->GetWidget(KWidgetTypeCompass))->SetBearingSight(33);
-  screen_render_->GetWidget(KWidgetTypeCompass)->SetX(161);
-  screen_render_->GetWidget(KWidgetTypeCompass)->SetY(360 + 28);
-  screen_render_->GetWidget(KWidgetTypeCompass)->SetVisible(true);
-  screen_render_->GetWidget(KWidgetTypeAlarmIndicator)->SetVisible(true);
-  screen_render_->GetWidget(KWidgetTypeAlarmIndicator)->SetY(422);
+  ((WidgetPlanPositionIndicator *)screen_render_->GetWidget(widget::KWidgetTypeCompass))->SetBearingSight(33);
+  screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetX(161);
+  screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetY(360 + 28);
+  screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetVisible(true);
+  screen_render_->GetWidget(widget::KWidgetTypeAlarmIndicator)->SetVisible(true);
+  screen_render_->GetWidget(widget::KWidgetTypeAlarmIndicator)->SetY(422);
 
-  WidgetAlarmIndicator *ai = (WidgetAlarmIndicator *)screen_render_->GetWidget(KWidgetTypeAlarmIndicator);
+  WidgetAlarmIndicator *ai = (WidgetAlarmIndicator *)screen_render_->GetWidget(widget::KWidgetTypeAlarmIndicator);
   ai->SetType(GvaAlarmType::kAlarmCaution);
   ai->SetText("Engine over temperature");
 

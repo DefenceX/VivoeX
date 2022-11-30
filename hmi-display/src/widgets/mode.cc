@@ -28,7 +28,7 @@
 
 namespace gva {
 
-WidgetMode::WidgetMode(const RendererGva& renderer) : WidgetX(renderer, KWidgetTypeMode) { SetVisible(false); }
+WidgetMode::WidgetMode(const RendererGva& renderer) : WidgetX(renderer, widget::KWidgetTypeMode) { SetVisible(false); }
 
 void WidgetMode::Draw() {
   uint32_t y = DEFAULT_HEIGHT * 0.12;
@@ -37,7 +37,7 @@ void WidgetMode::Draw() {
   GetRenderer()->SetColourBackground(HMI_DARK_BLUE);
   GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
 
-  GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightNormal,
+  GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightNormal,
                              ConfigData::GetInstance()->GetThemeFont());
 
   uint32_t w = GetRenderer()->GetTextWidth(mode_, 12);

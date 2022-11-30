@@ -34,15 +34,6 @@ namespace gva {
 
 class WidgetPlanPositionIndicator : public WidgetX {
  public:
-  enum class ModeEnum {
-    kPpiClassicTankWithSight,
-    kPpiClassicTankWithoutSight,
-    kPpiClassicArrowWithSight,
-    kPpiClassicArrowWithoutSight,
-    kPpiModernTankWithSights,
-    kPpiModernTankWithoutSights
-  };
-
   ///
   /// \brief Construct a new Widget Plan Position Indicator object
   ///
@@ -71,7 +62,7 @@ class WidgetPlanPositionIndicator : public WidgetX {
   /// \param degrees Compass heading
   /// \param sightAzimuth Camera heading
   ///
-  void DrawPPI(ModeEnum mode, uint32_t x, uint32_t y, uint32_t degrees, uint32_t sightAzimuth);
+  void DrawPPI(widget::ModeEnum mode, uint32_t x, uint32_t y, uint32_t degrees, uint32_t sightAzimuth);
 
   ///
   /// \brief Set the Bearing object
@@ -106,7 +97,7 @@ class WidgetPlanPositionIndicator : public WidgetX {
   ///
   /// \param mode
   ///
-  void SetMode(ModeEnum mode) { mode_ = mode; }
+  void SetMode(widget::ModeEnum mode) { mode_ = mode; }
 
   void SetX(uint32_t x) override { x_ = x * 2; }
   void SetY(uint32_t y) override { y_ = y - (100); }
@@ -115,7 +106,7 @@ class WidgetPlanPositionIndicator : public WidgetX {
   const double scale_ = 0.5;
   int16_t bearing_ = 0;
   int16_t bearing_sight_ = 0;
-  ModeEnum mode_ = ModeEnum::kPpiClassicTankWithSight;
+  widget::ModeEnum mode_ = widget::ModeEnum::kPpiClassicTankWithSight;
 };
 
 }  // namespace gva

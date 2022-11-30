@@ -63,7 +63,7 @@ class WidgetTable : public WidgetX {
     ~CellType() = default;
     CellType(const std::string text, const uint32_t width, const uint32_t background_colour,
              const uint32_t foreground_colour, const uint32_t outline_colour, const uint32_t highlight_colour,
-             const CellAlignType alignment);
+             const widget::CellAlignType alignment);
 
     CellType(const CellType &a)
         : width_(a.width_),
@@ -131,7 +131,7 @@ class WidgetTable : public WidgetX {
     ///
     /// \return const CellAlignType
     ///
-    CellAlignType GetCellAlignment() const;
+    widget::CellAlignType GetCellAlignment() const;
 
    private:
     uint32_t width_ = 0;
@@ -140,7 +140,7 @@ class WidgetTable : public WidgetX {
     uint32_t foreground_colour_ = 0;
     uint32_t outline_colour_ = 0;
     uint32_t highlight_colour_ = 0;
-    CellAlignType alignment_ = CellAlignType::kAlignLeft;
+    widget::CellAlignType alignment_ = widget::CellAlignType::kAlignLeft;
   };
 
   ///
@@ -165,8 +165,8 @@ class WidgetTable : public WidgetX {
     RowType() = default;
     ~RowType() = default;
     RowType(const uint32_t background_colour, const uint32_t foreground_colour, const uint32_t outline_colour,
-            const uint32_t highlight_colour, const WeightType font_weight, const bool highlighted,
-            const CellAlignType alignment);
+            const uint32_t highlight_colour, const widget::WeightType font_weight, const bool highlighted,
+            const widget::CellAlignType alignment);
     RowType(const RowType &a)
         : background_colour_(a.background_colour_),
           foreground_colour_(a.foreground_colour_),
@@ -222,7 +222,7 @@ class WidgetTable : public WidgetX {
     ///
     /// \return WeightTypetable_
     ///
-    WeightType GetFontWeight() const;
+    widget::WeightType GetFontWeight() const;
 
     ///
     /// \brief Get the Highlighted object
@@ -244,16 +244,16 @@ class WidgetTable : public WidgetX {
     ///
     /// \return CellAlignType
     ///
-    CellAlignType GetCellAlignment() const;
+    widget::CellAlignType GetCellAlignment() const;
 
    private:
     uint32_t background_colour_ = 0;
     uint32_t foreground_colour_ = 0;
     uint32_t outline_colour_ = 0;
     uint32_t highlight_colour_ = 0;
-    WeightType font_weight_ = WeightType::kWeightNormal;
+    widget::WeightType font_weight_ = widget::WeightType::kWeightNormal;
     bool highlighted_ = false;
-    CellAlignType alignment_ = CellAlignType::kAlignLeft;
+    widget::CellAlignType alignment_ = widget::CellAlignType::kAlignLeft;
   };
 
   ///
@@ -266,7 +266,7 @@ class WidgetTable : public WidgetX {
   /// \param font_weight The font weight
   ///
   void AddRow(uint32_t foreground_colour, uint32_t background_colour, uint32_t outline_colour,
-              uint32_t highlight_colour, WeightType font_weight);
+              uint32_t highlight_colour, widget::WeightType font_weight);
 
   ///
   /// \brief Add a row to the table
@@ -279,7 +279,7 @@ class WidgetTable : public WidgetX {
   ///
   /// \param font_weight The font weight
   ///
-  void AddRow(WeightType font_weight);
+  void AddRow(widget::WeightType font_weight);
 
   ///
   /// \brief Set the highlighted row
@@ -309,7 +309,7 @@ class WidgetTable : public WidgetX {
   ///
   /// \param text The text to be contained in the cell
   /// \param width The width of the ctable_
-  void AddCell(std::string text, uint32_t width, CellAlignType align);
+  void AddCell(std::string text, uint32_t width, widget::CellAlignType align);
 
   ///
   /// \brief Add a new cell specifying alignment
@@ -319,7 +319,7 @@ class WidgetTable : public WidgetX {
   /// \param align Alignment CellAlignType::
   /// \param background_colour Cell background colour
   ///
-  void AddCell(std::string text, uint32_t width, CellAlignType align, uint32_t background_colour);
+  void AddCell(std::string text, uint32_t width, widget::CellAlignType align, uint32_t background_colour);
 
   ///
   /// \brief Reset the table

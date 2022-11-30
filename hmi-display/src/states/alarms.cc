@@ -53,7 +53,7 @@ namespace gva {
 void StateAlarms::entry() {
   // Check to see if alarms was requested from hidden state, if so go back to last menu.
   if (screen_.control->labels_[1].state_ != LabelStates::kLabelHidden) {
-    WidgetTable *table = (WidgetTable *)screen_render_->GetWidget(KWidgetTypeTable);
+    WidgetTable *table = (WidgetTable *)screen_render_->GetWidget(widget::KWidgetTypeTable);
 
     if (alarmson_) {
       alarmson_ = false;

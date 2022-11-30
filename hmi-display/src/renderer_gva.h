@@ -62,11 +62,11 @@ class RenderBase {
 class GvaCell {
  public:
   std::string text;
-  CellAlignType align;
-  GvaColourType foreground;
-  GvaColourType background;
-  GvaColourType textcolour;
-  WeightType weight;
+  widget::CellAlignType align;
+  widget::GvaColourType foreground;
+  widget::GvaColourType background;
+  widget::GvaColourType textcolour;
+  widget::WeightType weight;
 };
 
 class GvaRow : public RenderBase {
@@ -201,7 +201,7 @@ class RendererGva : public RendererCairo {
   /// \param width Width of the icon
   /// \param height Height of the icon
   ///
-  void DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width, uint32_t height);
+  void DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32_t width, uint32_t height);
 
   ///
   /// \brief Draw a table
@@ -240,7 +240,7 @@ class RendererGva : public RendererCairo {
   /// \param align Alignment
   ///
   void DrawButton(const std::string keytext, uint32_t fontSize, uint32_t x, uint32_t y, uint32_t height, uint32_t width,
-                  CellAlignType align);
+                  widget::CellAlignType align);
 
   ///
   /// \brief Get the Touch object

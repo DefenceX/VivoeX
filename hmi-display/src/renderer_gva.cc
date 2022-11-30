@@ -42,7 +42,7 @@ RendererGva::RendererGva(uint32_t width, uint32_t height) : RendererCairo(height
   touch_.SetResolution(width, height);
 }
 
-void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
+void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
   double sx, sy;
   int32_t arrow[8][2] = {{-5, -10}, {-4, -10}, {-4, 0}, {-8, 0}, {0, +10}, {8, 0}, {+4, 0}, {+4, -10}};
 
@@ -58,9 +58,9 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
   Translate(x, y);
 
   switch (icon) {
-    case kIconDownArrow:
+    case widget::kIconDownArrow:
       Rotate(M_PI);
-    case kIconUpArrow:
+    case widget::kIconUpArrow:
       Scale(sx, sy);
       MovePenRaw(arrow[0][0], arrow[0][1]);
       for (uint16_t i = 1; i < 8; i++) {
@@ -68,9 +68,9 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       }
       ClosePath(true);
       break;
-    case kIconDownArrowOutline:
+    case widget::kIconDownArrowOutline:
       Rotate(M_PI);
-    case kIconUpArrowOutline:
+    case widget::kIconUpArrowOutline:
       Scale(sx, sy);
       MovePenRaw(arrow[0][0], arrow[0][1]);
       for (uint16_t i = 1; i < 8; i++) {
@@ -78,9 +78,9 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       }
       ClosePath(true);
       break;
-    case kIconRightArrow:
+    case widget::kIconRightArrow:
       Rotate(M_PI);
-    case kIconRightArrorw:
+    case widget::kIconRightArrorw:
       Rotate(M_PI * 1.5);
       Scale(sx, sy);
       MovePenRaw(arrow[0][0], arrow[0][1]);
@@ -89,9 +89,9 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       }
       ClosePath(true);
       break;
-    case kIconRightArrowOutline:
+    case widget::kIconRightArrowOutline:
       Rotate(M_PI);
-    case kIconLeftArrorwOutline:
+    case widget::kIconLeftArrorwOutline:
       Rotate(M_PI * 1.5);
       Scale(sx, sy);
       MovePenRaw(arrow[0][0], arrow[0][1]);
@@ -100,7 +100,7 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       }
       ClosePath(true);
       break;
-    case kIconPowerOff:
+    case widget::kIconPowerOff:
       SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
       Scale(sx, sy);
       DrawArcRaw(0, 0, 8, 290, 250);
@@ -108,7 +108,7 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       DrawPenRaw(0, -10);
       ClosePath(true);
       break;
-    case kIconRotateLeft:
+    case widget::kIconRotateLeft:
       SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
       Scale(sx, sy);
       DrawArcRaw(0, 0, 8, 315, 225);
@@ -118,7 +118,7 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       DrawPenRaw(9, -6);
       ClosePath(true);
       break;
-    case kIconRotateRight:
+    case widget::kIconRotateRight:
       SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
       Scale(sx, sy);
       DrawArcRaw(0, 0, 8, 315, 225);
@@ -128,7 +128,7 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       DrawPenRaw(-9, -6);
       ClosePath(true);
       break;
-    case kIconPlus:
+    case widget::kIconPlus:
       SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
       Scale(sx, sy);
       MovePenRaw(-10, 0);
@@ -137,20 +137,20 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       DrawPenRaw(0, 10);
       ClosePath(true);
       break;
-    case kIconMinus:
+    case widget::kIconMinus:
       SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
       Scale(sx, sy);
       MovePenRaw(-10, 0);
       DrawPenRaw(10, 0);
       ClosePath(true);
       break;
-    case kIconError:
-    case kIconInfo:
-    case kIconWarning:
+    case widget::kIconError:
+    case widget::kIconInfo:
+    case widget::kIconWarning:
       SetLineThickness(2, LineType::kLineSolid);
-      if (icon == kIconError) SetColourBackground(HMI_GREEN);
-      if (icon == kIconError) SetColourBackground(HMI_RED);
-      if (icon == kIconWarning) SetColourBackground(HMI_ORANGE);
+      if (icon == widget::kIconError) SetColourBackground(HMI_GREEN);
+      if (icon == widget::kIconError) SetColourBackground(HMI_RED);
+      if (icon == widget::kIconWarning) SetColourBackground(HMI_ORANGE);
       Scale(sx, sy);
       MovePenRaw(-10, -10);
       DrawPenRaw(0, +10);
@@ -165,10 +165,10 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       DrawPenRaw(0, -7);
       ClosePath(true);
       break;
-    case kIconNone:
-    case kIconEnter:
-    case kIconLocation:
-    case kIconCentre:
+    case widget::kIconNone:
+    case widget::kIconEnter:
+    case widget::kIconLocation:
+    case widget::kIconCentre:
     default:
       // These have not been implemented yet
       break;
@@ -177,22 +177,22 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
 }
 
 void RendererGva::DrawButton(const std::string keyText, uint32_t fontSize, uint32_t x, uint32_t y, uint32_t size) {
-  DrawButton(keyText, fontSize, x, y, size, size, CellAlignType::kAlignLeft);
+  DrawButton(keyText, fontSize, x, y, size, size, widget::CellAlignType::kAlignLeft);
 }
 
 void RendererGva::DrawButton(const std::string keyText, uint32_t fontSize, uint32_t x, uint32_t y, uint32_t width,
-                             uint32_t height, CellAlignType align) {
+                             uint32_t height, widget::CellAlignType align) {
   uint32_t textX = 6;
 
   SetColourForeground(HMI_GREY);
   DrawRoundedRectangle(x, y, width, height, 6, true);
   SetColourForeground(HMI_WHITE);
-  SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightBold, config_->GetThemeFont());
+  SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightBold, config_->GetThemeFont());
   uint32_t textHeight = GetTextHeight("qh", fontSize);
   uint32_t textWidth = GetTextWidth(keyText, fontSize);
 
   DrawColor(HMI_WHITE);
-  if (align == CellAlignType::kAlignCentre) textX = (width / 2) - (textWidth / 2);
+  if (align == widget::CellAlignType::kAlignCentre) textX = (width / 2) - (textWidth / 2);
   SetTextFontSize(fontSize);
   DrawText(x + textX, y + (height - textHeight - 4), keyText);
 };

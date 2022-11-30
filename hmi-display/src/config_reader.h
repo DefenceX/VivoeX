@@ -30,6 +30,7 @@
 
 #include "config.pb.h"  // NOLINT
 #include "src/gva.h"
+#include "src/widgets/widget_types.h"
 
 namespace gva {
 
@@ -197,6 +198,13 @@ class ConfigDataTheme : public ConfigDataBase {
   /// \return LineType
   ///
   LineType GetThemeLabelLineDisabled() const;
+
+  ///
+  /// \brief Get the Ppi Mode object
+  ///
+  /// \return ModeEnum
+  ///
+  widget::ModeEnum GetPpiMode();
 
   ///
   /// \brief Get the Theme Label Border Thickness object

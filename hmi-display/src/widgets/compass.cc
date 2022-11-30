@@ -34,7 +34,9 @@
 namespace gva {
 
 WidgetPlanPositionIndicator::WidgetPlanPositionIndicator(const RendererGva& renderer)
-    : WidgetX(renderer, KWidgetTypeCompass) {}
+    : WidgetX(renderer, widget::KWidgetTypeCompass) {
+  mode_ = ConfigData::GetInstance()->GetPpiMode();
+}
 
 void WidgetPlanPositionIndicator::Draw() {
   if (GetVisible()) {
@@ -140,7 +142,7 @@ void WidgetPlanPositionIndicator::DrawModern(uint32_t x, uint32_t y, uint32_t de
   GetRenderer()->Restore();
 }
 
-void WidgetPlanPositionIndicator::DrawPPI(ModeEnum mode, uint32_t x, uint32_t y, uint32_t degrees,
+void WidgetPlanPositionIndicator::DrawPPI(widget::ModeEnum mode, uint32_t x, uint32_t y, uint32_t degrees,
                                           uint32_t sightAzimuth) {
   double_t radius = 100;
   double_t angle = 45;
@@ -153,11 +155,11 @@ void WidgetPlanPositionIndicator::DrawPPI(ModeEnum mode, uint32_t x, uint32_t y,
   s += 270;
   s = (s >= 360) ? s - 360 : s;
 
-  if (mode == ModeEnum::kPpiModernTankWithSights) {
+  if (mode == widget::ModeEnum::kPpiModernTankWithSights) {
     DrawModern(x, y, degrees, sightAzimuth, true);
     return;
   }
-  if (mode == ModeEnum::kPpiModernTankWithoutSights) {
+  if (mode == widget::ModeEnum::kPpiModernTankWithoutSights) {
     DrawModern(x, y, degrees, sightAzimuth, false);
     return;
   }
@@ -174,8 +176,8 @@ void WidgetPlanPositionIndicator::DrawPPI(ModeEnum mode, uint32_t x, uint32_t y,
   GetRenderer()->DrawCircle(x, y, radius, true);  // Compass
 
   switch (mode) {
-    case ModeEnum::kPpiClassicArrowWithSight:
-    case ModeEnum::kPpiClassicArrowWithoutSight:
+    case widget::ModeEnum::kPpiClassicArrowWithSight:
+    case widget::ModeEnum::kPpiClassicArrowWithoutSight:
       // Vehicle outline
       GetRenderer()->Save();
       GetRenderer()->SetLineType(CAIRO_LINE_JOIN_MITER);
@@ -189,9 +191,9 @@ void WidgetPlanPositionIndicator::DrawPPI(ModeEnum mode, uint32_t x, uint32_t y,
       GetRenderer()->ClosePath(false);
       GetRenderer()->Restore();
       break;
-    case ModeEnum::kPpiClassicTankWithSight:
-    case ModeEnum::kPpiClassicTankWithoutSight:
-    case ModeEnum::kPpiModernTankWithSights:
+    case widget::ModeEnum::kPpiClassicTankWithSight:
+    case widget::ModeEnum::kPpiClassicTankWithoutSight:
+    case widget::ModeEnum::kPpiModernTankWithSights:
     default:
       // Vehicle outline
       GetRenderer()->DrawCircle(x, y, 16, true);  // Inner circle
@@ -246,7 +248,8 @@ void WidgetPlanPositionIndicator::DrawPPI(ModeEnum mode, uint32_t x, uint32_t y,
   // Heading (Goes under sight)
   GetRenderer()->Save();
   GetRenderer()->SetColourBackground(HMI_CYAN);
-  if ((mode == ModeEnum::kPpiClassicArrowWithSight) || (mode == ModeEnum::kPpiClassicArrowWithoutSight)) {
+  if ((mode == widget::ModeEnum::kPpiClassicArrowWithSight) ||
+      (mode == widget::ModeEnum::kPpiClassicArrowWithoutSight)) {
     GetRenderer()->SetColourForeground(HMI_BLACK);
     GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
     GetRenderer()->DrawRectangle(x - 4, y, 8, 73, true);
@@ -258,7 +261,7 @@ void WidgetPlanPositionIndicator::DrawPPI(ModeEnum mode, uint32_t x, uint32_t y,
   GetRenderer()->Restore();
 
   // Mode zero has sight
-  if ((mode == ModeEnum::kPpiClassicTankWithSight) || (mode == ModeEnum::kPpiClassicArrowWithSight)) {
+  if ((mode == widget::ModeEnum::kPpiClassicTankWithSight) || (mode == widget::ModeEnum::kPpiClassicArrowWithSight)) {
     // Sight
     GetRenderer()->SetColourBackground(HMI_WHITE);
     GetRenderer()->SetColourForeground(HMI_WHITE);

@@ -263,10 +263,10 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
       break;
 
     case gva::kKeyEventReleased: {
-      gva::WidgetPlanPositionIndicator *compass =
-          static_cast<gva::WidgetPlanPositionIndicator *>(gva::hmi::GetRendrer()->GetWidget(gva::KWidgetTypeCompass));
+      gva::WidgetPlanPositionIndicator *compass = static_cast<gva::WidgetPlanPositionIndicator *>(
+          gva::hmi::GetRendrer()->GetWidget(gva::widget::KWidgetTypeCompass));
 
-      auto keyboard = (gva::WidgetKeyboard *)gva::hmi::GetRendrer()->GetWidget(gva::KWidgetTypeKeyboard);
+      auto keyboard = (gva::WidgetKeyboard *)gva::hmi::GetRendrer()->GetWidget(gva::widget::KWidgetTypeKeyboard);
 
       gva::logGva::log("[GVA] Key release event being processed value=" + std::to_string(int(event.key_)),
                        gva::LOG_INFO);
@@ -376,18 +376,18 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
         case gva::GvaKeyEnum::kKeyF17:
           // F17 Control Arrow Up
           {
-            keyboard->SetMode((keyboard->GetMode() == gva::KeyboardModeType::kKeyboardUpper)
-                                  ? gva::KeyboardModeType::kKeyboardLower
-                                  : gva::KeyboardModeType::kKeyboardUpper);
+            keyboard->SetMode((keyboard->GetMode() == gva::widget::KeyboardModeType::kKeyboardUpper)
+                                  ? gva::widget::KeyboardModeType::kKeyboardLower
+                                  : gva::widget::KeyboardModeType::kKeyboardUpper);
             Dispatch(gva::GvaKeyEnum::kKeyF17);
           }
           break;
         case gva::GvaKeyEnum::kKeyF18:
           // F18 Control Arrow Down
           {
-            keyboard->SetMode((keyboard->GetMode() == gva::KeyboardModeType::kKeyboardNumbers)
-                                  ? gva::KeyboardModeType::kKeyboardUpper
-                                  : gva::KeyboardModeType::kKeyboardNumbers);
+            keyboard->SetMode((keyboard->GetMode() == gva::widget::KeyboardModeType::kKeyboardNumbers)
+                                  ? gva::widget::KeyboardModeType::kKeyboardUpper
+                                  : gva::widget::KeyboardModeType::kKeyboardNumbers);
             Dispatch(event.key_);
           }
           break;

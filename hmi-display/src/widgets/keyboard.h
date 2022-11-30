@@ -29,6 +29,7 @@
 
 #include "src/renderer_cairo_types.h"
 #include "src/widgets/widget.h"
+#include "src/widgets/widget_types.h"
 
 namespace gva {
 
@@ -58,24 +59,24 @@ class WidgetKeyboard : public WidgetX {
   ///
   /// \param mode
   ///
-  void DrawKeyboard(const KeyboardModeType mode);
+  void DrawKeyboard(const widget::KeyboardModeType mode);
 
   ///
   /// \brief Set the Mode object
   ///
   /// void SetMode(KeyboardModeType mode) { mode_ = mode; }
 
-  void SetMode(const KeyboardModeType mode);
+  void SetMode(const widget::KeyboardModeType mode);
 
   ///
   /// \brief Get the Mode object
   ///
   /// \return KeyboardModeType
   ///
-  KeyboardModeType GetMode() const;
+  widget::KeyboardModeType GetMode() const;
 
  private:
-  KeyboardModeType mode_ = KeyboardModeType::kKeyboardUpper;
+  widget::KeyboardModeType mode_ = widget::KeyboardModeType::kKeyboardUpper;
   const std::vector<std::vector<char>> upperKeys_ = {{'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'},
                                                      {'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', '-'},
                                                      {'Z', 'X', 'C', 'V', 'B', 'N', 'M', ' ', '-', '-'}};
