@@ -18,14 +18,32 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ///
 /// \brief This is a test application for generating widget .png files and testing of widgets. You can call this program
-/// from the commandline using the following to get help: \code $ widget-tester -h \endcode This program will loop
-/// through all images displaying them on the screen, each image will aslo be written to disk as a .png file with a
+/// from the command line using the following to get help:
+///
+/// \code
+/// $ widget-tester -h
+/// \endcode This program will loop
+/// through all images displaying them on the screen, each image will also be written to disk as a .png file with a
 /// transparent background. These images are the ones included in the doxygen user documentation.
 ///
 /// To use this program for testing you can view a single image using its ID. IDs are listed when you run with the -h
 /// help option.
 ///
 /// \image html widget_ppi_06.png  "Example classic arrow PPI showing in tool"
+/// The above PPI (Plan Position Indicator) has the ID of 0 and so can be viewed using the command line below:
+/// \code
+/// $ widget-tester -i 0 -o /tmp
+/// \endcode
+/// The resulting output image will be placed in the /tmp directory.
+///
+/// To generate all the images you can cycle through all IDs by running the command:
+/// \code
+/// $ widget-tester -t 500 -o ./images
+/// \endcode
+///
+/// Widgets will be displayed every 500 milliseconds on the screen until all images have been displayed. By not
+/// specifying an ID we get all the images, the default timeout to 1 second. All images for all widgets will be placed
+/// in the ./images folder
 ///
 /// \file widget-tester.cc
 ///
