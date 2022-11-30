@@ -17,7 +17,7 @@ add_custom_target(doxygen COMMAND IMAGE_PATH=${CMAKE_BINARY_DIR}/images/doxygen 
 file(GLOB PNG_FILES ${CMAKE_BINARY_DIR}/images/doxygen/*.png)
 foreach(FILENAME_FULL ${PNG_FILES})
   get_filename_component(FILENAME_ONLY ${FILENAME_FULL} NAME)
-  execute_process(COMMAND compare -metric AE ${FILENAME_FULL} ${CMAKE_SOURCE_DIR}/images/doxygen/${FILENAME_ONLY} ${CMAKE_BINARY_DIR}diff.png ERROR_VARIABLE PIXELS_DIFF OUTPUT_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
+  execute_process(COMMAND compare -metric AE ${FILENAME_FULL} ${CMAKE_SOURCE_DIR}/images/doxygen/${FILENAME_ONLY} ${CMAKE_BINARY_DIR}/diff.png ERROR_VARIABLE PIXELS_DIFF OUTPUT_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
   if (NOT PIXELS_DIFF MATCHES "0")
     message(STATUS "PNG file '${FILENAME_ONLY}' has changed with ${PIXELS_DIFF} pixels differing, copied into source")
     execute_process(COMMAND cp ${FILENAME_FULL} ${CMAKE_SOURCE_DIR}/images/doxygen/${FILENAME_ONLY})
