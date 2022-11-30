@@ -144,9 +144,6 @@ void Hmi::SetCanvasPng(const std::string file) {
 
 void Hmi::Reset() {
   screen_.status_bar->visible = true;
-  // screen_.function_top->Reset();
-  // screen_.function_left.Reset();
-  // screen_.function_right.Reset();
   Labels(screen_.labels);
   screen_.canvas.visible = false;
   screen_.canvas.bufferType = SurfaceType::kSurfaceNone;

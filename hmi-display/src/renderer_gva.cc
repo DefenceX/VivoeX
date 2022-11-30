@@ -47,8 +47,8 @@ RendererGva::RendererGva(uint32_t width, uint32_t height) : RendererCairo(height
 void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
   double sx;
   double sy;
-  std::array arrow{std::array{-5, -10}, std::array{-4, -10}, std::array{-4, 0}, std::array{-8, 0},
-                   std::array{0, +10},  std::array{8, 0},    std::array{+4, 0}, std::array{+4, -10}};
+  std::array arrow{std::array{-4, -10}, std::array{-4, 0}, std::array{-8, 0},  std::array{0, +10},
+                   std::array{8, 0},    std::array{+4, 0}, std::array{+4, -10}};
 
   sx = (width / (double)13);
   sy = (height / (double)15);
@@ -67,8 +67,8 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
     case widget::IconType::kIconUpArrow:
       Scale(sx, sy);
       MovePenRaw(arrow[0][0], arrow[0][1]);
-      for (uint16_t i = 1; i < 8; i++) {
-        DrawPenRaw(arrow[i][0], arrow[i][1]);
+      for (auto point : arrow) {
+        DrawPenRaw(point[0], point[1]);
       }
       ClosePath(true);
       break;
@@ -77,8 +77,8 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
     case widget::IconType::kIconUpArrowOutline:
       Scale(sx, sy);
       MovePenRaw(arrow[0][0], arrow[0][1]);
-      for (uint16_t i = 1; i < 8; i++) {
-        DrawPenRaw(arrow[i][0], arrow[i][1]);
+      for (auto point : arrow) {
+        DrawPenRaw(point[0], point[1]);
       }
       ClosePath(true);
       break;
@@ -88,8 +88,8 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
       Rotate(M_PI * 1.5);
       Scale(sx, sy);
       MovePenRaw(arrow[0][0], arrow[0][1]);
-      for (uint16_t i = 1; i < 8; i++) {
-        DrawPenRaw(arrow[i][0], arrow[i][1]);
+      for (auto point : arrow) {
+        DrawPenRaw(point[0], point[1]);
       }
       ClosePath(true);
       break;
@@ -99,8 +99,8 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
       Rotate(M_PI * 1.5);
       Scale(sx, sy);
       MovePenRaw(arrow[0][0], arrow[0][1]);
-      for (uint16_t i = 1; i < 8; i++) {
-        DrawPenRaw(arrow[i][0], arrow[i][1]);
+      for (auto point : arrow) {
+        DrawPenRaw(point[0], point[1]);
       }
       ClosePath(true);
       break;
