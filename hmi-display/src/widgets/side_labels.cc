@@ -53,22 +53,23 @@ void WidgetSideLabels::Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t hei
   GetRenderer()->SetTextFontSize(14);
   if (text.substr(0, 5) == "icon:") {
     if (text.substr(5, 20) == "exit")
-      GetRenderer()->DrawIcon(widget::kIconPowerOff, x + width / 2, y + height / 2, 20, 20);
+      GetRenderer()->DrawIcon(widget::IconType::kIconPowerOff, x + width / 2, y + height / 2, 20, 20);
     if (text.substr(5, 20) == "uparrow")
-      GetRenderer()->DrawIcon(widget::kIconUpArrow, x + width / 2, y + height / 2, 20, 20);
+      GetRenderer()->DrawIcon(widget::IconType::kIconUpArrow, x + width / 2, y + height / 2, 20, 20);
     if (text.substr(5, 20) == "downarrow")
-      GetRenderer()->DrawIcon(widget::kIconDownArrow, x + width / 2, y + height / 2, 20, 20);
+      GetRenderer()->DrawIcon(widget::IconType::kIconDownArrow, x + width / 2, y + height / 2, 20, 20);
     if (text.substr(5, 20) == "rightarrow")
-      GetRenderer()->DrawIcon(widget::kIconRightArrow, x + width / 2, y + height / 2, 20, 20);
+      GetRenderer()->DrawIcon(widget::IconType::kIconRightArrow, x + width / 2, y + height / 2, 20, 20);
     if (text.substr(5, 20) == "leftarrow")
-      GetRenderer()->DrawIcon(widget::kIconRightArrorw, x + width / 2, y + height / 2, 20, 20);
+      GetRenderer()->DrawIcon(widget::IconType::kIconRightArrow, x + width / 2, y + height / 2, 20, 20);
     if (text.substr(5, 20) == "rotateleft")
-      GetRenderer()->DrawIcon(widget::kIconRotateLeft, x + width / 2, y + height / 2, 20, 20);
+      GetRenderer()->DrawIcon(widget::IconType::kIconRotateLeft, x + width / 2, y + height / 2, 20, 20);
     if (text.substr(5, 20) == "rotateright")
-      GetRenderer()->DrawIcon(widget::kIconRotateRight, x + width / 2, y + height / 2, 20, 20);
-    if (text.substr(5, 20) == "plus") GetRenderer()->DrawIcon(widget::kIconPlus, x + width / 2, y + height / 2, 20, 20);
+      GetRenderer()->DrawIcon(widget::IconType::kIconRotateRight, x + width / 2, y + height / 2, 20, 20);
+    if (text.substr(5, 20) == "plus")
+      GetRenderer()->DrawIcon(widget::IconType::kIconPlus, x + width / 2, y + height / 2, 20, 20);
     if (text.substr(5, 20) == "minus")
-      GetRenderer()->DrawIcon(widget::kIconMinus, x + width / 2, y + height / 2, 20, 20);
+      GetRenderer()->DrawIcon(widget::IconType::kIconMinus, x + width / 2, y + height / 2, 20, 20);
   } else {
     strncpy(copy, text.c_str(), 40);
     ptr = strtok(copy, delim);

@@ -58,9 +58,9 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
   Translate(x, y);
 
   switch (icon) {
-    case widget::kIconDownArrow:
+    case widget::IconType::kIconDownArrow:
       Rotate(M_PI);
-    case widget::kIconUpArrow:
+    case widget::IconType::kIconUpArrow:
       Scale(sx, sy);
       MovePenRaw(arrow[0][0], arrow[0][1]);
       for (uint16_t i = 1; i < 8; i++) {
@@ -68,9 +68,9 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
       }
       ClosePath(true);
       break;
-    case widget::kIconDownArrowOutline:
+    case widget::IconType::kIconDownArrowOutline:
       Rotate(M_PI);
-    case widget::kIconUpArrowOutline:
+    case widget::IconType::kIconUpArrowOutline:
       Scale(sx, sy);
       MovePenRaw(arrow[0][0], arrow[0][1]);
       for (uint16_t i = 1; i < 8; i++) {
@@ -78,9 +78,9 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
       }
       ClosePath(true);
       break;
-    case widget::kIconRightArrow:
+    case widget::IconType::kIconRightArrow:
       Rotate(M_PI);
-    case widget::kIconRightArrorw:
+    case widget::IconType::kIconRightArrow:
       Rotate(M_PI * 1.5);
       Scale(sx, sy);
       MovePenRaw(arrow[0][0], arrow[0][1]);
@@ -89,9 +89,9 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
       }
       ClosePath(true);
       break;
-    case widget::kIconRightArrowOutline:
+    case widget::IconType::kIconRightArrowOutline:
       Rotate(M_PI);
-    case widget::kIconLeftArrorwOutline:
+    case widget::IconType::kIconLeftArrowOutline:
       Rotate(M_PI * 1.5);
       Scale(sx, sy);
       MovePenRaw(arrow[0][0], arrow[0][1]);
@@ -100,7 +100,7 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
       }
       ClosePath(true);
       break;
-    case widget::kIconPowerOff:
+    case widget::IconType::kIconPowerOff:
       SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
       Scale(sx, sy);
       DrawArcRaw(0, 0, 8, 290, 250);
@@ -108,7 +108,7 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
       DrawPenRaw(0, -10);
       ClosePath(true);
       break;
-    case widget::kIconRotateLeft:
+    case widget::IconType::kIconRotateLeft:
       SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
       Scale(sx, sy);
       DrawArcRaw(0, 0, 8, 315, 225);
@@ -118,7 +118,7 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
       DrawPenRaw(9, -6);
       ClosePath(true);
       break;
-    case widget::kIconRotateRight:
+    case widget::IconType::kIconRotateRight:
       SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
       Scale(sx, sy);
       DrawArcRaw(0, 0, 8, 315, 225);
@@ -128,7 +128,7 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
       DrawPenRaw(-9, -6);
       ClosePath(true);
       break;
-    case widget::kIconPlus:
+    case widget::IconType::kIconPlus:
       SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
       Scale(sx, sy);
       MovePenRaw(-10, 0);
@@ -137,20 +137,20 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
       DrawPenRaw(0, 10);
       ClosePath(true);
       break;
-    case widget::kIconMinus:
+    case widget::IconType::kIconMinus:
       SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
       Scale(sx, sy);
       MovePenRaw(-10, 0);
       DrawPenRaw(10, 0);
       ClosePath(true);
       break;
-    case widget::kIconError:
-    case widget::kIconInfo:
-    case widget::kIconWarning:
+    case widget::IconType::kIconError:
+    case widget::IconType::kIconInfo:
+    case widget::IconType::kIconWarning:
       SetLineThickness(2, LineType::kLineSolid);
-      if (icon == widget::kIconError) SetColourBackground(HMI_GREEN);
-      if (icon == widget::kIconError) SetColourBackground(HMI_RED);
-      if (icon == widget::kIconWarning) SetColourBackground(HMI_ORANGE);
+      if (icon == widget::IconType::kIconError) SetColourBackground(HMI_GREEN);
+      if (icon == widget::IconType::kIconError) SetColourBackground(HMI_RED);
+      if (icon == widget::IconType::kIconWarning) SetColourBackground(HMI_ORANGE);
       Scale(sx, sy);
       MovePenRaw(-10, -10);
       DrawPenRaw(0, +10);
@@ -165,10 +165,10 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
       DrawPenRaw(0, -7);
       ClosePath(true);
       break;
-    case widget::kIconNone:
-    case widget::kIconEnter:
-    case widget::kIconLocation:
-    case widget::kIconCentre:
+    case widget::IconType::kIconNone:
+    case widget::IconType::kIconEnter:
+    case widget::IconType::kIconLocation:
+    case widget::IconType::kIconCentre:
     default:
       // These have not been implemented yet
       break;

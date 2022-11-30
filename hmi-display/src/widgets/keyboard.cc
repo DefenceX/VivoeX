@@ -80,8 +80,8 @@ void WidgetKeyboard::DrawKeyboard(const widget::KeyboardModeType mode) {
     keyText = keyboard[2][i];
     GetRenderer()->DrawButton(keyText, fontSize, 160 + (i * (bSize + 5)), yLocation + padding + (bSize + 5) * 1, bSize);
   }
-  GetRenderer()->DrawIcon(widget::kIconRightArrorw, 426 + bSize / 2, yLocation + padding + (bSize + 5) + bSize / 2, 8,
-                          10);
+  GetRenderer()->DrawIcon(widget::IconType::kIconRightArrow, 426 + bSize / 2,
+                          yLocation + padding + (bSize + 5) + bSize / 2, 8, 10);
   GetRenderer()->SetColourBackground(HMI_DARK_GREY);
   GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
   GetRenderer()->SetColourForeground(HMI_WHITE);
@@ -93,7 +93,7 @@ void WidgetKeyboard::DrawKeyboard(const widget::KeyboardModeType mode) {
   GetRenderer()->DrawButton("SPACE", fontSize, 185, yLocation + 5, bSize + 202, bSize,
                             widget::CellAlignType::kAlignCentre);
   GetRenderer()->DrawButton("", fontSize, 426, yLocation + 5, bSize, bSize, widget::CellAlignType::kAlignRight);
-  GetRenderer()->DrawIcon(widget::kIconUpArrow, 426 + bSize / 2, yLocation + 5 + bSize / 2 + 2, 12, 11);
+  GetRenderer()->DrawIcon(widget::IconType::kIconUpArrow, 426 + bSize / 2, yLocation + 5 + bSize / 2 + 2, 12, 11);
   GetRenderer()->SetColourBackground(HMI_DARK_GREY);
   GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
   GetRenderer()->SetColourForeground(HMI_WHITE);

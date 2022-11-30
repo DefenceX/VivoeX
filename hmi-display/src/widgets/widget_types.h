@@ -56,15 +56,15 @@ enum class ModeEnum {
   kPpiModernTankWithoutSights
 };
 
-typedef enum {
+enum class IconType {
   kIconNone = 0,
   kIconUpArrow,
   kIconDownArrow,
-  kIconRightArrorw,
+  kIconRightArrow,
   kIconRightArrow,
   kIconUpArrowOutline,
   kIconDownArrowOutline,
-  kIconLeftArrorwOutline,
+  kIconLeftArrowOutline,
   kIconRightArrowOutline,
   kIconPlus,
   kIconMinus,
@@ -77,7 +77,7 @@ typedef enum {
   kIconError,
   kIconInfo,
   kIconCentre
-} IconType;
+};
 
 struct GvaColourType {
   int red;

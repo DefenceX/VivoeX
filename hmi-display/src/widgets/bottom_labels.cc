@@ -72,8 +72,8 @@ void WidgetBottomLabels::DrawControlLabels() {
                             (i * w) + w - 5 + offset, GetY() + 20);
       }
       GetRenderer()->DrawText((i * w) + offset + 5, GetY() + 6, label.text_.c_str());
-      if (i == 4) GetRenderer()->DrawIcon(widget::kIconUpArrow, (i * w) + offset + 34, GetY() + 11, 15, 8);
-      if (i == 5) GetRenderer()->DrawIcon(widget::kIconDownArrow, (i * w) + offset + 34, GetY() + 10, 15, 8);
+      if (i == 4) GetRenderer()->DrawIcon(widget::IconType::kIconUpArrow, (i * w) + offset + 34, GetY() + 11, 15, 8);
+      if (i == 5) GetRenderer()->DrawIcon(widget::IconType::kIconDownArrow, (i * w) + offset + 34, GetY() + 10, 15, 8);
     }
 
     i++;

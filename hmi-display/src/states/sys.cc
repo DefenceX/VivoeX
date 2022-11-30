@@ -50,7 +50,7 @@ GvaKeyEnum Hmi::KeySYS(GvaKeyEnum keypress) {
     case GvaKeyEnum::kKeyF9:
     case GvaKeyEnum::kKeyF10:
       screen_.message.visible = true;
-      screen_.message.icon = widget::kIconError;
+      screen_.message.icon = widget::IconType::kIconError;
       screen_.message.brief.text = "Function key";
       screen_.message.detail.text = "Operation not implemented!";
       break;
