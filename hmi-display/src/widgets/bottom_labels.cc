@@ -77,7 +77,8 @@ void WidgetBottomLabels::DrawControlLabels() {
         case 1:
         case 2:
         case 3:
-        case 6: {
+        case 6:
+        case 7: {
           uint32_t width = GetRenderer()->GetTextWidth(label.text_, 12);
           GetRenderer()->DrawText((i * w) + offset + ((70 - width) / 2), GetY() + 6, label.text_.c_str());
         } break;
