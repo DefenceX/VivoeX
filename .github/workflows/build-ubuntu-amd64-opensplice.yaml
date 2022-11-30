@@ -28,6 +28,7 @@ jobs:
           pip install cpplint --user
       - name: Configure
         run: |
+          export && \
           unset JAVA_HOME && \
           unset JAVAC_COMMAND && \
           mkdir build && \

@@ -36,7 +36,6 @@ jobs:
 
       - name: CMake and Build
         run: |
-          export && \
           PATH=$PATH:${HOME}/.local/bin && \
           mkdir build && cd build && \
           cmake .. -DDDS=CYCLONE-CE .. && make -j $(nproc)
