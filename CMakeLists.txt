@@ -22,7 +22,7 @@ execute_process(COMMAND ../update.sh)
 add_subdirectory(video)
 add_subdirectory(hmi-display)
 
-## Here you can set the default 'dummy' camer feed images
+## Here you can set the default 'dummy' camera feed images
 #set(IMAGE_PATH ${CMAKE_SOURCE_DIR}/images/uk)
 set(IMAGE_PATH ${CMAKE_SOURCE_DIR}/images/au)
 

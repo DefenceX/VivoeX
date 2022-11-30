@@ -36,47 +36,49 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
   KeySide(keypress);
   Key(keypress);
 
+  compass->SetMode(widget::ModeEnum::kPpiClassicArrowWithSight);
   switch (keypress) {
     case GvaKeyEnum::kKeyF2:
       filename = path;
       filename.append("/Quad.png");
       SetCanvasPng(filename);
+      compass->SetMode(widget::ModeEnum::kPpiClassicArrowWithoutSight);
       break;
     case GvaKeyEnum::kKeyF4:
       filename = path;
       filename.append("/FrontRight.png");
       SetCanvasPng(filename.c_str());
-      compass->SetBearing(45);
+      compass->SetBearingSight(45);
       break;
     case GvaKeyEnum::kKeyF5:
       filename = path;
       filename.append("/FrontCenter.png");
       SetCanvasPng(filename.c_str());
-      compass->SetBearing(0);
+      compass->SetBearingSight(0);
       break;
     case GvaKeyEnum::kKeyF6:
       filename = path;
       filename.append("/FrontLeft.png");
       SetCanvasPng(filename.c_str());
-      compass->SetBearing(315);
+      compass->SetBearingSight(315);
       break;
     case GvaKeyEnum::kKeyF10:
       filename = path;
       filename.append("/Right.png");
       SetCanvasPng(filename.c_str());
-      compass->SetBearing(90);
+      compass->SetBearingSight(90);
       break;
     case GvaKeyEnum::kKeyF11:
       filename = path;
       filename.append("/Rear.png");
       SetCanvasPng(filename.c_str());
-      compass->SetBearing(180);
+      compass->SetBearingSight(180);
       break;
     case GvaKeyEnum::kKeyF12:
       filename = path;
       filename.append("/Left.png");
       SetCanvasPng(filename.c_str());
-      compass->SetBearing(270);
+      compass->SetBearingSight(270);
       break;
     case GvaKeyEnum::kKeyF1:
     case GvaKeyEnum::kKeyF3:

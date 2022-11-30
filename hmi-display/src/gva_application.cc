@@ -429,7 +429,7 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
         case gva::GvaKeyEnum::kKeyUnknown:  // Drop through to default
         default:
           gva::logGva::log("[GVA] Key release not defined " + std::to_string(int(event.key_)), gva::LOG_INFO);
-          Dispatch(event.key_);  // Displatch it anyway as this will clear any existing changing states
+          Dispatch(event.key_);  // Dispatch it anyway as this will clear any existing changing states
           update = false;
           break;
       }

@@ -144,9 +144,9 @@ void Hmi::SetCanvasPng(const std::string file) {
 
 void Hmi::Reset() {
   screen_.status_bar->visible = true;
-  screen_.function_top->Reset();
-  screen_.function_left.Reset();
-  screen_.function_right.Reset();
+  // screen_.function_top->Reset();
+  // screen_.function_left.Reset();
+  // screen_.function_right.Reset();
   Labels(screen_.labels);
   screen_.canvas.visible = false;
   screen_.canvas.bufferType = SurfaceType::kSurfaceNone;
@@ -208,49 +208,61 @@ void Hmi::KeySide(GvaKeyEnum key) {
   // Reset the active label/s
   screen_.function_left.visible = true;
   for (auto &label : screen_.function_left.labels) {
-    if (label.state == LabelStates::kLabelEnabledSelected) label.state = LabelStates::kLabelEnabled;
+    if (label.state == LabelStates::kLabelEnabledSelectedChanging) label.state = LabelStates::kLabelEnabled;
   }
   screen_.function_right.visible = true;
   for (auto &label : screen_.function_right.labels) {
-    if (label.state == LabelStates::kLabelEnabledSelected) label.state = LabelStates::kLabelEnabled;
+    if (label.state == LabelStates::kLabelEnabledSelectedChanging) label.state = LabelStates::kLabelEnabled;
   }
 
   switch (key) {
     case GvaKeyEnum::kKeyF1:
-      screen_.function_left.labels[0].state = LabelStates::kLabelEnabledSelected;
+      screen_.function_right.Reset();
+      screen_.function_left.SetEnabled(0);
       break;
     case GvaKeyEnum::kKeyF2:
-      screen_.function_left.labels[1].state = LabelStates::kLabelEnabledSelected;
+      screen_.function_right.Reset();
+      screen_.function_left.SetEnabled(1);
       break;
     case GvaKeyEnum::kKeyF3:
-      screen_.function_left.labels[2].state = LabelStates::kLabelEnabledSelected;
+      screen_.function_right.Reset();
+      screen_.function_left.SetEnabled(2);
       break;
     case GvaKeyEnum::kKeyF4:
-      screen_.function_left.labels[3].state = LabelStates::kLabelEnabledSelected;
+      screen_.function_right.Reset();
+      screen_.function_left.SetEnabled(3);
       break;
     case GvaKeyEnum::kKeyF5:
-      screen_.function_left.labels[4].state = LabelStates::kLabelEnabledSelected;
+      screen_.function_right.Reset();
+      screen_.function_left.SetEnabled(4);
       break;
     case GvaKeyEnum::kKeyF6:
-      screen_.function_left.labels[5].state = LabelStates::kLabelEnabledSelected;
+      screen_.function_right.Reset();
+      screen_.function_left.SetEnabled(5);
       break;
     case GvaKeyEnum::kKeyF7:
-      screen_.function_right.labels[0].state = LabelStates::kLabelEnabledSelected;
+      screen_.function_right.SetEnabled(0);
+      screen_.function_left.Reset();
       break;
     case GvaKeyEnum::kKeyF8:
-      screen_.function_right.labels[1].state = LabelStates::kLabelEnabledSelected;
+      screen_.function_right.SetEnabled(1);
+      screen_.function_left.Reset();
       break;
     case GvaKeyEnum::kKeyF9:
-      screen_.function_right.labels[2].state = LabelStates::kLabelEnabledSelected;
+      screen_.function_right.SetEnabled(2);
+      screen_.function_left.Reset();
       break;
     case GvaKeyEnum::kKeyF10:
-      screen_.function_right.labels[3].state = LabelStates::kLabelEnabledSelected;
+      screen_.function_right.SetEnabled(3);
+      screen_.function_left.Reset();
       break;
     case GvaKeyEnum::kKeyF11:
-      screen_.function_right.labels[4].state = LabelStates::kLabelEnabledSelected;
+      screen_.function_right.SetEnabled(4);
+      screen_.function_left.Reset();
       break;
     case GvaKeyEnum::kKeyF12:
-      screen_.function_right.labels[5].state = LabelStates::kLabelEnabledSelected;
+      screen_.function_right.SetEnabled(5);
+      screen_.function_right.Reset();
       break;
     default:
       break;

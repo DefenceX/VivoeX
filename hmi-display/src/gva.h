@@ -34,7 +34,7 @@ namespace gva {
 
 static const uint32_t kSemVerMajor = 0;
 static const uint32_t kSemVerMinor = 3;
-static const uint32_t kSemVerPatch = 890;
+static const uint32_t kSemVerPatch = 891;
 static const uint32_t kMinimumHeight = 480;
 static const uint32_t kMinimumWidth = 640;
 
@@ -98,6 +98,17 @@ struct FunctionKeys {
   std::array<Labels, 6> labels;
 
   ///
+  /// \brief Set the label to Enabled
+  ///
+  ///
+  void SetEnabled(int index) {
+    Reset();
+    if ((labels[index].state != LabelStates::kLabelDisabled) && (labels[index].state != LabelStates::kLabelHidden)) {
+      labels[index].state = LabelStates::kLabelEnabledSelected;
+    }
+  }
+
+  ///
   /// \brief Reset the label from 'enabled selected' to 'enabled'
   ///
   ///
@@ -105,6 +116,7 @@ struct FunctionKeys {
     visible = true;
     for (auto& label : labels) {
       if (label.state == LabelStates::kLabelEnabledSelected) label.state = LabelStates::kLabelEnabled;
+      if (label.state == LabelStates::kLabelEnabledSelectedChanging) label.state = LabelStates::kLabelEnabled;
     }
   }
 };

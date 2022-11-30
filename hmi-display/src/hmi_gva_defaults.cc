@@ -128,7 +128,7 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden() {
 FunctionKeys DefaultSettings::GetDefaultFunctionKeysSituationalAwarenessLeft() {
   FunctionKeys keys;
   keys.visible = true;
-  keys.labels[0].state = LabelStates::kLabelEnabledSelected;
+  keys.labels[0].state = LabelStates::kLabelDisabled;
   keys.labels[0].text = "Remote.Wpn Sight";
   keys.labels[0].toggleActive = false;
   keys.labels[1].state = LabelStates::kLabelEnabled;
@@ -140,7 +140,7 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeysSituationalAwarenessLeft() {
   keys.labels[3].state = LabelStates::kLabelEnabled;
   keys.labels[3].text = "Front right";
   keys.labels[3].toggleActive = false;
-  keys.labels[4].state = LabelStates::kLabelEnabled;
+  keys.labels[4].state = LabelStates::kLabelEnabledSelected;
   keys.labels[4].text = "Front";
   keys.labels[4].toggleActive = false;
   keys.labels[5].state = LabelStates::kLabelEnabled;
