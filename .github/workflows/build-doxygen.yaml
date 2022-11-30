@@ -36,7 +36,7 @@ jobs:
           export PATCH=$(sed -n '3p' < version) && \
           export SEM_VERSION=${MAJOR}.${MINOR}.${PATCH} && \
           export GIT_HASH=$(git rev-parse --short HEAD) && \
-          export IMAGE_DIR=${HOME}/images/doxygen && \
+          export IMAGE_DIR=./images/doxygen && \
           ls -hal ${IMAGE_DIR} && \
           echo "Current version ${SEM_VERSION} with #${GIT_HASH} and path ${IMAGE_DIR}" && \
           doxygen && \
