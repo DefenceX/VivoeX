@@ -187,7 +187,7 @@ ExternalProject_Add(
     INSTALL_DIR         ${CMAKE_BINARY_DIR}/external/opensplice/install
     SOURCE_SUBDIR       ""
     BUILD_IN_SOURCE     TRUE
-    BUILD_COMMAND       bash -c "cd ${CMAKE_BINARY_DIR}/external/opensplice/src && source ./configure x86_64.linux-release && make CFLAGS=-Wno-error -j-fPIC $(nproc)"
+    BUILD_COMMAND       bash -c "cd ${CMAKE_BINARY_DIR}/external/opensplice/src && source ./configure x86_64.linux-release && make $(nproc) CFLAGS='-Wno-error -j-fPIC'"
     INSTALL_COMMAND     bash -c "cd ${CMAKE_BINARY_DIR}/external/opensplice/src && source ./configure x86_64.linux-release && make DESTDIR=${CMAKE_BINARY_DIR}/external/install install"
     TEST_COMMAND        ""
     UPDATE_DISCONNECTED 1
