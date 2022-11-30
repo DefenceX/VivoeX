@@ -1,3 +1,35 @@
+//
+// MIT License
+//
+// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+// associated documentation files (the 'Software'), to deal in the Software without restriction,
+// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+// subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial
+// portions of the Software.
+// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+///
+/// \brief This is a test application for generating widget .png files and testing of widgets. You can call this program
+/// from the commandline using the following to get help: \code $ widget-tester -h \endcode This program will loop
+/// through all images displaying them on the screen, each image will aslo be written to disk as a .png file with a
+/// transparent background. These images are the ones included in the doxygen user documentation.
+///
+/// To use this program for testing you can view a single image using its ID. IDs are listed when you run with the -h
+/// help option.
+///
+/// \image html widget_ppi_06.png  "Example classic arrow PPI showing in tool"
+///
+/// \file widget-tester.cc
+///
+
 #include <cairo.h>
 #include <ctype.h>
 #include <gtk/gtk.h>
@@ -20,16 +52,12 @@
 #include "src/widgets/top_labels.h"
 #include "src/widgets/widget_types.h"
 
-#define HEIGHT 480
-#define WIDTH 640
+const uint32_t kScreenHeight = 480;
+const uint32_t kScreenWidth = 640;
 
 std::string path;
 
-struct {
-  gushort count;
-} glob;
-
-static gva::RendererGva renderer(WIDTH, HEIGHT);
+static gva::RendererGva renderer(kScreenWidth, kScreenHeight);
 static gva::TouchGva touch;  // Dummy to get the interactive widgets to render
 static gva::WidgetFunctionKeyToggle key(renderer);
 static gva::WidgetPlanPositionIndicator ppi(renderer);
@@ -44,6 +72,11 @@ static gva::WidgetTable table(renderer, &touch);
 
 static void do_drawing(cairo_t *, int width, int h);
 
+///
+/// \brief Transparent window setup, saves .png files have a transparent layer for the background
+///
+/// \param win
+///
 static void tran_setup(GtkWidget *win) {
   GdkScreen *screen;
   GdkVisual *visual;
@@ -51,7 +84,6 @@ static void tran_setup(GtkWidget *win) {
   gtk_widget_set_app_paintable(win, TRUE);
   screen = gdk_screen_get_default();
   visual = gdk_screen_get_rgba_visual(screen);
-
   if (visual != NULL && gdk_screen_is_composited(screen)) {
     gtk_widget_set_visual(win, visual);
   }
@@ -59,6 +91,14 @@ static void tran_setup(GtkWidget *win) {
 
 static int counter = 0;
 
+///
+/// \brief Manage the GTK3 on draw event, callback
+///
+/// \param widget
+/// \param cr
+/// \param user_data
+/// \return gboolean
+///
 static gboolean on_draw_event(GtkWidget *widget, cairo_t *cr, gpointer user_data) {
   GtkWidget *win = gtk_widget_get_toplevel(widget);
   int width, height;
@@ -71,13 +111,25 @@ static gboolean on_draw_event(GtkWidget *widget, cairo_t *cr, gpointer user_data
   return FALSE;
 }
 
+///
+/// \brief A timer to enable looping through images
+///
+/// \param widget
+/// \return gboolean
+///
 static gboolean time_handler(GtkWidget *widget) {
-  glob.count += 1;
   gtk_widget_queue_draw(widget);
 
   return TRUE;
 }
 
+///
+/// \brief A GTK3 drawing callback to render the required image
+///
+/// \param cr
+/// \param width
+/// \param height
+///
 static void do_drawing(cairo_t *cr, int width, int height) {
   renderer.render_.cr = cr;
   cairo_save(cr);
@@ -329,6 +381,13 @@ static void do_drawing(cairo_t *cr, int width, int height) {
   counter++;
 }
 
+///
+/// \brief The main entry point for the widget tester application
+///
+/// \param argc
+/// \param argv
+/// \return int
+///
 int main(int argc, char *argv[]) {
   int aflag = 0;
   int bflag = 0;
@@ -427,7 +486,7 @@ int main(int argc, char *argv[]) {
   g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
   gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
-  gtk_window_set_default_size(GTK_WINDOW(window), WIDTH, HEIGHT);
+  gtk_window_set_default_size(GTK_WINDOW(window), kScreenWidth, kScreenHeight);
   gtk_window_set_title(GTK_WINDOW(window), "Widget testing");
 
   gtk_widget_show_all(window);
