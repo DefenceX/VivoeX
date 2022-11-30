@@ -36,11 +36,11 @@ jobs:
           export PATCH=$(sed -n '3p' < version) && \
           export SEM_VERSION=${MAJOR}.${MINOR}.${PATCH} && \
           export GIT_HASH=$(git rev-parse --short HEAD) && \
-          export IMAGE_PATH=${HOME}/images/doxygen && \
+          export IMAGE_DIR=${HOME}/images/doxygen && \
           ls -hal && \
           ls -hal ./images/doxygen && \
-          echo "Current version ${SEM_VERSION} with #${GIT_HASH} and path ${IMAGE_PATH}" && \
-          IMAGE_PATH=./images/doxygen doxygen && \
+          echo "Current version ${SEM_VERSION} with #${GIT_HASH} and path ${IMAGE_DIR}" && \
+          doxygen && \
           wget https://img.shields.io/badge/version-${SEM_VERSION}-blue.svg -O docs/version.svg
       - name: Setup Pages
         uses: actions/configure-pages@v2
