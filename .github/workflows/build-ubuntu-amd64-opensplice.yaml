@@ -33,7 +33,7 @@ jobs:
           mkdir build && \
           cd build && \
           cmake -DDDS=OSPL-CE .. && \
-          make -j ${nproc}
+          make
 
       - name: Package
         run: cd $HOME/build && cpack -G RPM && PACKAGE=$(ls ./build/*.rpm)
