@@ -61,9 +61,7 @@ void StateCOM::entry() {
   if (screen_.function_top->labels[6].state != LabelStates::kLabelHidden) {
     manager_->SetScreen(&screen_, GvaFunctionEnum::kCommunications);
     lastState_ = GvaFunctionEnum::kCommunications;
-    Reset();
-
-    screen_.function_top->labels[6].state = LabelStates::kLabelEnabledSelected;
+    screen_.function_top->SetEnabled(6);
   }
 };
 

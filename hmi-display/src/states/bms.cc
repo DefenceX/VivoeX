@@ -123,8 +123,7 @@ void StateBMS::entry() {
   if (screen_.function_top->labels[7].state != LabelStates::kLabelHidden) {
     manager_->SetScreen(&screen_, GvaFunctionEnum::kBattlefieldManagementSystem);
     lastState_ = GvaFunctionEnum::kBattlefieldManagementSystem;
-    Reset();
-
+    screen_.function_top->SetEnabled(7);
     screen_.canvas.visible = true;
 #ifdef ENABLE_OSMSCOUT
     map_->SetWidth((double)screen_render_->GetWidth() / DEFAULT_WIDTH);
@@ -133,7 +132,6 @@ void StateBMS::entry() {
                   &screen_.canvas.surface);
     screen_.canvas.bufferType = SURFACE_CAIRO;
 #endif
-    screen_.function_top->labels[7].state = LabelStates::kLabelEnabledSelected;
   }
 };
 

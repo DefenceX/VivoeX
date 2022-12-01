@@ -81,7 +81,7 @@ void StateSYS::entry() {
     std::string filename;
     manager_->SetScreen(&screen_, GvaFunctionEnum::kSystems);
     lastState_ = GvaFunctionEnum::kSystems;
-    Reset();
+    screen_.function_top->SetEnabled(3);
 
     screen_.status_bar->labels[3].state = LabelStates::kLabelEnabledSelected;
     screen_.function_top->labels[3].state = LabelStates::kLabelEnabledSelected;
@@ -91,8 +91,6 @@ void StateSYS::entry() {
     SetCanvasPng(filename.c_str());
 
     HmiHelper::TableSystem(table);
-
-    screen_.function_top->labels[3].state = LabelStates::kLabelEnabledSelected;
   }
 };
 

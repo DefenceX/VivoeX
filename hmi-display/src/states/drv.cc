@@ -60,12 +60,10 @@ void StateDRV::entry() {
   if (screen_.function_top->labels[4].state != LabelStates::kLabelHidden) {
     manager_->SetScreen(&screen_, GvaFunctionEnum::kDriver);
     lastState_ = GvaFunctionEnum::kDriver;
-    Reset();
-
     if (screen_.labels != LabelModeEnum::kLabelMinimal)
       screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetVisible(true);
     screen_.status_bar->visible = true;
-    screen_.function_top->labels[4].state = LabelStates::kLabelEnabledSelected;
+    screen_.function_top->SetEnabled(4);
   }
 };
 

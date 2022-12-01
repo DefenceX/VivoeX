@@ -60,10 +60,7 @@ void StateSTR::entry() {
   if (screen_.function_top->labels[5].state != LabelStates::kLabelHidden) {
     manager_->SetScreen(&screen_, GvaFunctionEnum::KSpecialToRole);
     lastState_ = GvaFunctionEnum::KSpecialToRole;
-    Reset();
-
-    if (screen_.function_top->labels[5].state != LabelStates::kLabelDisabled)
-      screen_.function_top->labels[5].state = LabelStates::kLabelEnabledSelected;
+    screen_.function_top->SetEnabled(5);
   }
 };
 

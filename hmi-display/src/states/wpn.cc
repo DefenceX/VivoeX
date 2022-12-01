@@ -61,7 +61,7 @@ void StateWPN::entry() {
     std::string filename;
     manager_->SetScreen(&screen_, GvaFunctionEnum::kWeapon);
     lastState_ = GvaFunctionEnum::kWeapon;
-    Reset();
+    screen_.function_top->SetEnabled(1);
 
     if (screen_.labels != LabelModeEnum::kLabelMinimal)
       screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetVisible(true);
@@ -69,7 +69,6 @@ void StateWPN::entry() {
     filename = ConfigData::GetInstance()->GetImagePath();
     filename.append("/FrontCenter.png");
     SetCanvasPng(filename.c_str());
-    screen_.function_top->labels[1].state = LabelStates::kLabelEnabledSelected;
   }
 };
 

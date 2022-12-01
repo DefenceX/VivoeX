@@ -10,6 +10,7 @@
        - \ref centos
    - \ref build
    - \ref install
+   - \ref developers
 - \ref docs
 - \ref widgets
    - \ref ppiclassictank
@@ -95,13 +96,6 @@ Default DDS stack is currently CycloneDDS (default if not specified) but can als
 To enable code coverage reports set ENABLE_COVERAGE. The gdb debugger is avaiable and configured for use with Microsoft Visual Code and the workspace files are part of the repo (recommended for developers).
 
 The BMS function can be configured with Open Street Maps but these need to be compiled and installed onto the system. Its recommeded that you run wit these switched off if you do not need this functionality. See below for more information on creating maps for your region / territory.
-\subsection developers
-If you wish to start working with this code base then this section provides guidance for developers. The build system is CMake and you should have a 
-good understanding of the CMake build system before station to add code into this reop.
-
-The project to broken down into modules and submodules these can be seen in the diagram below:
-
-\image html cmake.png  "CMake dependancies"
 
 \subsection install Installing
 Once the code is built the required files should be installed. There are two method for getting the files to their install locations. Firstly with cmake run:
@@ -119,6 +113,14 @@ $ apt install vivoe-lite-cyclone-ce_<version>_amd64.deb -y
 $ cpack -G RPM
 $ dnf install vivoe-lite-cyclone-ce-<version>>.x86_64.rpm  -y
 \endcode
+
+\subsection developers Developers
+If you wish to start working with this code base then this section provides guidance for developers. The build system is CMake and you should have a 
+good understanding of the CMake build system before station to add code into this reop.
+
+The project to broken down into modules and submodules these can be seen in the diagram below:
+
+\image html cmake.png  "CMake dependancies"
 
 \subsection docs Documentation
 You can create this documentation on your own system using doxygen. 

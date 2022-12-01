@@ -15,12 +15,12 @@ name: Codacy Security Scan
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [ "main" ]
+    branches: ["main"]
   schedule:
-    - cron: '18 7 * * 6'
+    - cron: "18 7 * * 6"
 
 permissions:
   contents: read
@@ -46,7 +46,7 @@ jobs:
             libpango1.0-dev libxt-dev libxml2-dev ncurses-dev libxext-dev libswscale-dev libprotobuf-c-dev \
             geographiclib-doc libgeographic-dev libgeographic-dev libprotobuf23 libprotobuf-dev \
             protobuf-compiler autoconf automake libtool curl make g++ unzip lsb-release
-            
+
       # Execute Codacy Analysis CLI and generate a SARIF output with the security issues identified during the analysis
       - name: Run Codacy Analysis CLI
         uses: codacy/codacy-analysis-cli-action@d840f886c4bd4edc059706d09c6a1586111c540b

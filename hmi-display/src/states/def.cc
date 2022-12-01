@@ -59,9 +59,7 @@ GvaKeyEnum Hmi::KeyDEF(GvaKeyEnum keypress) {
 void StateDEF::entry() {
   if (screen_.function_top->labels[2].state != LabelStates::kLabelHidden) {
     manager_->SetScreen(&screen_, GvaFunctionEnum::kDefensiveSystems);
-    lastState_ = GvaFunctionEnum::kDefensiveSystems;
-    Reset();
-
+    screen_.function_top->SetEnabled(2);
     screen_.status_bar->visible = true;
     screen_.function_top->visible = true;
     screen_.function_top->labels[2].state = LabelStates::kLabelEnabledSelected;
