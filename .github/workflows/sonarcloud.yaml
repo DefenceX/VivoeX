@@ -24,10 +24,13 @@ jobs:
           sudo apt-get --no-install-recommends install catch cpplint rpm libgtk-3-dev valgrind libcairo2-dev \
             libpango1.0-dev libxt-dev libxml2-dev ncurses-dev libxext-dev libswscale-dev libprotobuf-c-dev \
             geographiclib-doc libgeographic-dev libgeographic-dev libprotobuf23 libprotobuf-dev \
-            protobuf-compiler autoconf automake libtool curl make g++ unzip lsb-release
+            protobuf-compiler autoconf automake libtool curl make g++ unzip lsb-release tree
       - name: Run build-wrapper
         run: |
-          build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} cmake --build ./vivoe-lite/build/ --config Release
+          ls -hal && \
+          pwd && \
+          tree -L 3 -d
+          build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} cmake --build ./build/ --config Release
       - name: Run sonar-scanner
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
