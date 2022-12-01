@@ -34,7 +34,7 @@ namespace gva {
 
 static const uint32_t kSemVerMajor = 0;
 static const uint32_t kSemVerMinor = 3;
-static const uint32_t kSemVerPatch = 904;
+static const uint32_t kSemVerPatch = 942;
 static const uint32_t kMinimumHeight = 480;
 static const uint32_t kMinimumWidth = 640;
 
@@ -70,6 +70,27 @@ class FunctionSelect {
   std::array<Labels, 8> labels;
 
   ///
+  /// \brief Set the label to Enabled
+  ///
+  ///
+  void SetEnabledEnabledChanging(int index) {
+    if ((labels[index].state != LabelStates::kLabelDisabled) && (labels[index].state != LabelStates::kLabelHidden)) {
+      labels[index].state = LabelStates::kLabelEnabledSelectedChanging;
+    }
+  }
+
+  ///
+  /// \brief Set the label to Enabled
+  ///
+  ///
+  void SetEnabled(int index) {
+    Reset();
+    if ((labels[index].state != LabelStates::kLabelDisabled) && (labels[index].state != LabelStates::kLabelHidden)) {
+      labels[index].state = LabelStates::kLabelEnabledSelected;
+    }
+  }
+
+  ///
   /// \brief Reset the label from 'enabled selected' to 'enabled'
   ///
   ///
@@ -102,7 +123,6 @@ struct FunctionKeys {
   ///
   ///
   void SetEnabledEnabledChanging(int index) {
-    Reset();
     if ((labels[index].state != LabelStates::kLabelDisabled) && (labels[index].state != LabelStates::kLabelHidden)) {
       labels[index].state = LabelStates::kLabelEnabledSelectedChanging;
     }
@@ -135,14 +155,50 @@ struct FunctionKeys {
 ///
 /// \brief These are at the bottom of the screen
 ///
-///
-struct CommonTaskKeys {
+///    Reset();
+
+class CommonTaskKeys {
+ public:
   bool visible_;
   struct Labels {
     LabelStates state_;
     std::string text_;
   };
   std::array<CommonTaskKeys::Labels, 8> labels_;
+
+  ///
+  /// \brief Set the label to Enabled
+  ///
+  ///
+  void SetEnabledEnabledChanging(int index) {
+    Reset();
+    if ((labels_[index].state_ != LabelStates::kLabelDisabled) &&
+        (labels_[index].state_ != LabelStates::kLabelHidden)) {
+      labels_[index].state_ = LabelStates::kLabelEnabledSelectedChanging;
+    }
+  }
+
+  ///
+  /// \brief Set the label to Enabled
+  ///
+  ///
+  void SetEnabled(int index) {
+    if ((labels_[index].state_ != LabelStates::kLabelDisabled) &&
+        (labels_[index].state_ != LabelStates::kLabelHidden)) {
+      labels_[index].state_ = LabelStates::kLabelEnabledSelected;
+    }
+  }
+
+  ///
+  /// \brief Reset the label from 'enabled selected' to 'enabled'
+  ///
+  ///
+  void Reset() {
+    for (auto& label : labels_) {
+      if (label.state_ == LabelStates::kLabelEnabledSelected) label.state_ = LabelStates::kLabelEnabled;
+      if (label.state_ == LabelStates::kLabelEnabledSelectedChanging) label.state_ = LabelStates::kLabelEnabled;
+    }
+  }
 };
 
 struct LocationType {

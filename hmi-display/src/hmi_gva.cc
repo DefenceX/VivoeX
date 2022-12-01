@@ -270,26 +270,27 @@ GvaKeyEnum Hmi::Key(GvaKeyEnum keypress) {
   KeySide(keypress);
   switch (keypress) {
     case GvaKeyEnum::kKeyF13:
-      screen_.control->labels_[0].state_ = LabelStates::kLabelEnabled;
+      screen_.control->SetEnabled(0);
       break;
     case GvaKeyEnum::kKeyF14:
-      if (screen_.currentFunction == GvaFunctionEnum::kAlarmsX)
-        screen_.control->labels_[1].state_ = LabelStates::kLabelEnabled;
+      if (screen_.currentFunction == GvaFunctionEnum::kAlarmsX) {
+        screen_.control->SetEnabled(1);
+      }
       break;
     case GvaKeyEnum::kKeyF15:
-      screen_.control->labels_[2].state_ = LabelStates::kLabelEnabled;
+      screen_.control->SetEnabled(2);
       break;
     case GvaKeyEnum::kKeyF16:
-      screen_.control->labels_[3].state_ = LabelStates::kLabelEnabled;
+      screen_.control->SetEnabled(3);
       break;
     case GvaKeyEnum::kKeyF17:
-      screen_.control->labels_[4].state_ = LabelStates::kLabelEnabled;
+      screen_.control->SetEnabled(4);
       break;
     case GvaKeyEnum::kKeyF18:
-      screen_.control->labels_[5].state_ = LabelStates::kLabelEnabled;
+      screen_.control->SetEnabled(5);
       break;
     case GvaKeyEnum::kKeyF19:
-      screen_.control->labels_[6].state_ = LabelStates::kLabelEnabled;
+      screen_.control->SetEnabled(6);
       switch (screen_.labels) {
         case LabelModeEnum::kLabelAll:
           screen_.labels = LabelModeEnum::kLabelStatusOnly;
@@ -304,7 +305,7 @@ GvaKeyEnum Hmi::Key(GvaKeyEnum keypress) {
       Labels(screen_.labels);
       break;
     case GvaKeyEnum::kKeyF20:
-      screen_.control->labels_[7].state_ = LabelStates::kLabelEnabled;
+      screen_.control->SetEnabled(7);
       screen_.message.visible = false;
       break;
     default:

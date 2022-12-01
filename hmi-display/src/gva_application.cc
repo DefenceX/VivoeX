@@ -145,31 +145,31 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
 
       switch (event.key_) {
         case gva::GvaKeyEnum::KKeySituationalAwareness:
-          gva::hmi::GetScreen()->function_top->labels[0].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->function_top->SetEnabledEnabledChanging(0);
           break;
         case gva::GvaKeyEnum::kKeyWeapon:
-          gva::hmi::GetScreen()->function_top->labels[1].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->function_top->SetEnabledEnabledChanging(1);
           break;
         case gva::GvaKeyEnum::kKeyDefensiveSystems:
-          gva::hmi::GetScreen()->function_top->labels[2].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->function_top->SetEnabledEnabledChanging(2);
           break;
         case gva::GvaKeyEnum::kKeySystems:
-          gva::hmi::GetScreen()->function_top->labels[3].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->function_top->SetEnabledEnabledChanging(3);
           break;
         case gva::GvaKeyEnum::kKeyDriver:
-          gva::hmi::GetScreen()->function_top->labels[4].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->function_top->SetEnabledEnabledChanging(4);
           break;
         case gva::GvaKeyEnum::kKeySpecialToRole:
-          gva::hmi::GetScreen()->function_top->labels[5].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->function_top->SetEnabledEnabledChanging(5);
           break;
         case gva::GvaKeyEnum::kKeyCommunications:
-          gva::hmi::GetScreen()->function_top->labels[6].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->function_top->SetEnabledEnabledChanging(6);
           break;
         case gva::GvaKeyEnum::kKeyBattlefieldManagementSystem:
-          gva::hmi::GetScreen()->function_top->labels[7].state = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->function_top->SetEnabledEnabledChanging(7);
           break;
         case gva::GvaKeyEnum::kKeyF1:
-          gva::hmi::GetScreen()->function_left.SetEnabledEnabledChanging(0);
+          gva::hmi::GetScreen()->function_top->SetEnabledEnabledChanging(0);
           break;
         case gva::GvaKeyEnum::kKeyF2:
           gva::hmi::GetScreen()->function_left.SetEnabledEnabledChanging(1);

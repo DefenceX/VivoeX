@@ -208,5 +208,9 @@
     },
     "cSpell.words": [
         "defencex"
-    ]
+    ],
+    "sonarlint.connectedMode.project": {
+        "connectionId": "defencex",
+        "projectKey": "DefenceX_vivoe-lite"
+    }
 }

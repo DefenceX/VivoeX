@@ -25,4 +25,4 @@ foreach(FILENAME_FULL ${PNG_FILES})
 
 endforeach()
 
-add_dependencies(doxygen doxygen-images-convert)
+add_dependencies(doxygen doxygen-images-convert dot)

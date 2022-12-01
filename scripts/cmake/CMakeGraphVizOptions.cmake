@@ -1,0 +1,4 @@
+# CMakeGraphVizOptions.cmake
+set(GRAPHVIZ_GRAPH_NAME "vivoe-lite")
+set(GRAPHVIZ_EXTERNAL_LIBS FALSE)
+set(GRAPHVIZ_CUSTOM_TARGETS TRUE)
