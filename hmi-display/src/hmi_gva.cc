@@ -214,52 +214,52 @@ void Hmi::KeySide(GvaKeyEnum key) {
 
   switch (key) {
     case GvaKeyEnum::kKeyF1:
-      screen_.function_right.Reset();
+      screen_.function_right.ResetAllEnabledEnabled();
       screen_.function_left.SetEnabled(0);
       break;
     case GvaKeyEnum::kKeyF2:
-      screen_.function_right.Reset();
+      screen_.function_right.ResetAllEnabledEnabled();
       screen_.function_left.SetEnabled(1);
       break;
     case GvaKeyEnum::kKeyF3:
-      screen_.function_right.Reset();
+      screen_.function_right.ResetAllEnabledEnabled();
       screen_.function_left.SetEnabled(2);
       break;
     case GvaKeyEnum::kKeyF4:
-      screen_.function_right.Reset();
+      screen_.function_right.ResetAllEnabledEnabled();
       screen_.function_left.SetEnabled(3);
       break;
     case GvaKeyEnum::kKeyF5:
-      screen_.function_right.Reset();
+      screen_.function_right.ResetAllEnabledEnabled();
       screen_.function_left.SetEnabled(4);
       break;
     case GvaKeyEnum::kKeyF6:
-      screen_.function_right.Reset();
+      screen_.function_right.ResetAllEnabledEnabled();
       screen_.function_left.SetEnabled(5);
       break;
     case GvaKeyEnum::kKeyF7:
       screen_.function_right.SetEnabled(0);
-      screen_.function_left.Reset();
+      screen_.function_left.ResetAllEnabledEnabled();
       break;
     case GvaKeyEnum::kKeyF8:
       screen_.function_right.SetEnabled(1);
-      screen_.function_left.Reset();
+      screen_.function_left.ResetAllEnabledEnabled();
       break;
     case GvaKeyEnum::kKeyF9:
       screen_.function_right.SetEnabled(2);
-      screen_.function_left.Reset();
+      screen_.function_left.ResetAllEnabledEnabled();
       break;
     case GvaKeyEnum::kKeyF10:
       screen_.function_right.SetEnabled(3);
-      screen_.function_left.Reset();
+      screen_.function_left.ResetAllEnabledEnabled();
       break;
     case GvaKeyEnum::kKeyF11:
       screen_.function_right.SetEnabled(4);
-      screen_.function_left.Reset();
+      screen_.function_left.ResetAllEnabledEnabled();
       break;
     case GvaKeyEnum::kKeyF12:
       screen_.function_right.SetEnabled(5);
-      screen_.function_right.Reset();
+      screen_.function_right.ResetAllEnabledEnabled();
       break;
     default:
       break;
@@ -271,26 +271,33 @@ GvaKeyEnum Hmi::Key(GvaKeyEnum keypress) {
   switch (keypress) {
     case GvaKeyEnum::kKeyF13:
       screen_.control->SetEnabled(0);
+      screen_.control->ResetAllEnabledSelected();
       break;
     case GvaKeyEnum::kKeyF14:
       if (screen_.currentFunction == GvaFunctionEnum::kAlarmsX) {
         screen_.control->SetEnabled(1);
+        screen_.control->ResetAllEnabledSelected();
       }
       break;
     case GvaKeyEnum::kKeyF15:
       screen_.control->SetEnabled(2);
+      screen_.control->ResetAllEnabledSelected();
       break;
     case GvaKeyEnum::kKeyF16:
       screen_.control->SetEnabled(3);
+      screen_.control->ResetAllEnabledSelected();
       break;
     case GvaKeyEnum::kKeyF17:
       screen_.control->SetEnabled(4);
+      screen_.control->ResetAllEnabledSelected();
       break;
     case GvaKeyEnum::kKeyF18:
       screen_.control->SetEnabled(5);
+      screen_.control->ResetAllEnabledSelected();
       break;
     case GvaKeyEnum::kKeyF19:
       screen_.control->SetEnabled(6);
+      screen_.control->ResetAllEnabledSelected();
       switch (screen_.labels) {
         case LabelModeEnum::kLabelAll:
           screen_.labels = LabelModeEnum::kLabelStatusOnly;
@@ -306,6 +313,7 @@ GvaKeyEnum Hmi::Key(GvaKeyEnum keypress) {
       break;
     case GvaKeyEnum::kKeyF20:
       screen_.control->SetEnabled(7);
+      screen_.control->ResetAllEnabledSelected();
       screen_.message.visible = false;
       break;
     default:

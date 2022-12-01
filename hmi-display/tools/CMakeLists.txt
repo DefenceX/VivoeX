@@ -35,5 +35,7 @@ add_executable(widget-tester ${SOURCE_FILES})
 target_link_libraries(widget-tester nmealib config-proto ${CAIRO_LIBRARIES} ${GTK3_LIBRARIES} )
 target_include_directories(widget-tester PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_BINARY_DIR}/hmi-display/config ${CMAKE_CURRENT_SOURCE_DIR}/../hmi-display${CAIRO_INCLUDE_DIRS} ${PANGO_INCLUDE_DIRS} ${GTK3_INCLUDE_DIRS})
 target_compile_options(widget-tester PUBLIC ${CAIRO_CFLAGS_OTHER} ${GTK3_CFLAGS_OTHER})
+set_target_properties(widget-tester PROPERTIES UNITY_BUILD ON)
+
 add_dependencies(widget-tester libnmea config-proto)
 

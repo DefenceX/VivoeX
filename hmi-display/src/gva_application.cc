@@ -205,57 +205,31 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
           gva::hmi::GetScreen()->function_right.SetEnabledEnabledChanging(5);
           break;
         case gva::GvaKeyEnum::kKeyF13:
-          gva::hmi::GetScreen()->control->labels_[0].state_ = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->control->SetEnabledEnabledChanging(0);
           break;
         case gva::GvaKeyEnum::kKeyF14:
-          gva::hmi::GetScreen()->control->labels_[1].state_ = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->control->SetEnabledEnabledChanging(1);
           break;
         case gva::GvaKeyEnum::kKeyF15:
-          gva::hmi::GetScreen()->control->labels_[2].state_ = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->control->SetEnabledEnabledChanging(2);
           break;
         case gva::GvaKeyEnum::kKeyF16:
-          gva::hmi::GetScreen()->control->labels_[3].state_ = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->control->SetEnabledEnabledChanging(3);
           break;
         case gva::GvaKeyEnum::kKeyF17:
-          gva::hmi::GetScreen()->control->labels_[4].state_ = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->control->SetEnabledEnabledChanging(4);
           break;
         case gva::GvaKeyEnum::kKeyF18:
-          gva::hmi::GetScreen()->control->labels_[5].state_ = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->control->SetEnabledEnabledChanging(5);
           break;
         case gva::GvaKeyEnum::kKeyF19:
-          gva::hmi::GetScreen()->control->labels_[6].state_ = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->control->SetEnabledEnabledChanging(6);
           break;
         case gva::GvaKeyEnum::kKeyF20:
-          gva::hmi::GetScreen()->control->labels_[7].state_ = gva::LabelStates::kLabelEnabledSelectedChanging;
+          gva::hmi::GetScreen()->control->SetEnabledEnabledChanging(7);
           break;
         case gva::GvaKeyEnum::kKeyUnknown:  // No an active touch zone so just reset everything
         default:
-          // Ok this is awkward, the touch event probably drifted off the active zone so reset all.
-          for (auto &label : gva::hmi::GetScreen()->function_top->labels) {
-            if (label.state == gva::LabelStates::kLabelEnabledSelectedChanging)
-              label.state = gva::LabelStates::kLabelEnabledSelected;
-          }
-          for (auto &label : gva::hmi::GetScreen()->function_left.labels) {
-            if (label.state == gva::LabelStates::kLabelEnabledSelectedChanging) {
-              printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
-              label.state = gva::LabelStates::kLabelEnabledSelected;
-              gva::hmi::GetScreen()->function_left.labels[0].state = gva::LabelStates::kLabelEnabled;
-              gva::hmi::GetScreen()->function_left.labels[1].state = gva::LabelStates::kLabelEnabled;
-              gva::hmi::GetScreen()->function_left.labels[2].state = gva::LabelStates::kLabelEnabled;
-              gva::hmi::GetScreen()->function_left.labels[3].state = gva::LabelStates::kLabelEnabled;
-              gva::hmi::GetScreen()->function_left.labels[4].state = gva::LabelStates::kLabelEnabled;
-              gva::hmi::GetScreen()->function_left.labels[5].state = gva::LabelStates::kLabelEnabled;
-            }
-          }
-          for (auto &label : gva::hmi::GetScreen()->function_right.labels) {
-            if (label.state == gva::LabelStates::kLabelEnabledSelectedChanging)
-              label.state = gva::LabelStates::kLabelEnabledSelected;
-          }
-          for (auto &label : gva::hmi::GetScreen()->control->labels_) {
-            if (label.state_ == gva::LabelStates::kLabelEnabledSelectedChanging)
-              label.state_ = gva::LabelStates::kLabelEnabledSelected;
-          }
-
           update = false;
           break;
       }
@@ -429,6 +403,11 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
         case gva::GvaKeyEnum::kKeyUnknown:  // Drop through to default
         default:
           gva::logGva::log("[GVA] Key release not defined " + std::to_string(int(event.key_)), gva::LOG_INFO);
+          // When we have wondered off a hotspot we need to reset and changing labels.
+          gva::hmi::GetScreen()->function_left.ResetAllEnabledSelectedChanging();
+          gva::hmi::GetScreen()->function_right.ResetAllEnabledSelectedChanging();
+          gva::hmi::GetScreen()->function_top->ResetAllEnabledSelectedChanging();
+          gva::hmi::GetScreen()->control->ResetAllEnabledSelectedChanging();
           Dispatch(event.key_);  // Dispatch it anyway as this will clear any existing changing states
           update = false;
           break;

@@ -122,6 +122,7 @@ GvaKeyEnum Hmi::KeyBMS(GvaKeyEnum keypress) {
 void StateBMS::entry() {
   if (screen_.function_top->labels[7].state != LabelStates::kLabelHidden) {
     manager_->SetScreen(&screen_, GvaFunctionEnum::kBattlefieldManagementSystem);
+    Reset();
     lastState_ = GvaFunctionEnum::kBattlefieldManagementSystem;
     screen_.function_top->SetEnabled(7);
     screen_.canvas.visible = true;

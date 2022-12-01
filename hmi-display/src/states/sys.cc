@@ -79,6 +79,7 @@ void StateSYS::entry() {
   if (screen_.function_top->labels[3].state != LabelStates::kLabelHidden) {
     WidgetTable *table = (WidgetTable *)screen_render_->GetWidget(widget::KWidgetTypeTable);
     std::string filename;
+    Reset();
     manager_->SetScreen(&screen_, GvaFunctionEnum::kSystems);
     lastState_ = GvaFunctionEnum::kSystems;
     screen_.function_top->SetEnabled(3);

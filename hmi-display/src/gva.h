@@ -34,7 +34,7 @@ namespace gva {
 
 static const uint32_t kSemVerMajor = 0;
 static const uint32_t kSemVerMinor = 3;
-static const uint32_t kSemVerPatch = 948;
+static const uint32_t kSemVerPatch = 996;
 static const uint32_t kMinimumHeight = 480;
 static const uint32_t kMinimumWidth = 640;
 
@@ -60,7 +60,39 @@ enum class LineType {
   kLineDashedLarge,
 };
 
-class FunctionSelect {
+///
+/// \brief Base class implementing basic label state changes and checks.
+///
+///
+class StateBase {
+ public:
+  void StateEnabledSelectedChanging(LabelStates* state) const {
+    if ((*state != LabelStates::kLabelDisabled) && (*state != LabelStates::kLabelHidden)) {
+      *state = LabelStates::kLabelEnabledSelectedChanging;
+    }
+  }
+  void StateEnabledSelected(LabelStates* state) const {
+    if ((*state != LabelStates::kLabelDisabled) && (*state != LabelStates::kLabelHidden)) {
+      *state = LabelStates::kLabelEnabledSelected;
+    }
+  }
+  void ResetEnabledSelected(LabelStates* state) const {
+    if ((*state != LabelStates::kLabelDisabled) && (*state != LabelStates::kLabelHidden)) {
+      if (*state == LabelStates::kLabelEnabledSelected) {
+        *state = LabelStates::kLabelEnabled;
+      }
+    }
+  }
+  void ResetEnabledSelectedChanging(LabelStates* state) const {
+    if ((*state != LabelStates::kLabelDisabled) && (*state != LabelStates::kLabelHidden)) {
+      if (*state == LabelStates::kLabelEnabledSelectedChanging) {
+        *state = LabelStates::kLabelEnabled;
+      }
+    }
+  }
+};
+
+class FunctionSelect : public StateBase {
  public:
   bool visible;
 
@@ -73,31 +105,36 @@ class FunctionSelect {
   /// \brief Set the label to Enabled
   ///
   ///
-  void SetEnabledEnabledChanging(int index) {
-    if ((labels[index].state != LabelStates::kLabelDisabled) && (labels[index].state != LabelStates::kLabelHidden)) {
-      labels[index].state = LabelStates::kLabelEnabledSelectedChanging;
-    }
-  }
+  void SetEnabledEnabledChanging(int index) { StateEnabledSelectedChanging(&labels[index].state); }
 
   ///
   /// \brief Set the label to Enabled
   ///
   ///
   void SetEnabled(int index) {
-    Reset();
-    if ((labels[index].state != LabelStates::kLabelDisabled) && (labels[index].state != LabelStates::kLabelHidden)) {
-      labels[index].state = LabelStates::kLabelEnabledSelected;
-    }
+    ResetAllEnabledEnabled();
+    StateEnabledSelected(&labels[index].state);
   }
 
   ///
   /// \brief Reset the label from 'enabled selected' to 'enabled'
   ///
   ///
-  void Reset() {
+  void ResetAllEnabledEnabled() {
     visible = true;
     for (auto& label : labels) {
-      if (label.state == LabelStates::kLabelEnabledSelected) label.state = LabelStates::kLabelEnabled;
+      ResetEnabledSelected(&label.state);
+    }
+  }
+
+  ///
+  /// \brief Reset and label in the LabelStates::kLabelEnabledSelectedChanging state to
+  /// LabelStates::kLabelEnabledSelected
+  ///
+  ///
+  void ResetAllEnabledSelectedChanging() {
+    for (auto& label : labels) {
+      ResetEnabledSelectedChanging(&label.state);
     }
   }
 };
@@ -106,7 +143,7 @@ class FunctionSelect {
 /// \brief These are at the top of the screen
 ///
 ///
-struct FunctionKeys {
+struct FunctionKeys : public StateBase {
   bool visible;
   struct Labels {
     LabelStates state;
@@ -122,32 +159,36 @@ struct FunctionKeys {
   /// \brief Set the label to Enabled
   ///
   ///
-  void SetEnabledEnabledChanging(int index) {
-    if ((labels[index].state != LabelStates::kLabelDisabled) && (labels[index].state != LabelStates::kLabelHidden)) {
-      labels[index].state = LabelStates::kLabelEnabledSelectedChanging;
-    }
-  }
+  void SetEnabledEnabledChanging(int index) { StateEnabledSelectedChanging(&labels[index].state); }
 
   ///
   /// \brief Set the label to Enabled
   ///
   ///
   void SetEnabled(int index) {
-    Reset();
-    if ((labels[index].state != LabelStates::kLabelDisabled) && (labels[index].state != LabelStates::kLabelHidden)) {
-      labels[index].state = LabelStates::kLabelEnabledSelected;
-    }
+    ResetAllEnabledEnabled();
+    StateEnabledSelected(&labels[index].state);
   }
 
   ///
   /// \brief Reset the label from 'enabled selected' to 'enabled'
   ///
   ///
-  void Reset() {
+  void ResetAllEnabledEnabled() {
     visible = true;
     for (auto& label : labels) {
-      if (label.state == LabelStates::kLabelEnabledSelected) label.state = LabelStates::kLabelEnabled;
-      if (label.state == LabelStates::kLabelEnabledSelectedChanging) label.state = LabelStates::kLabelEnabled;
+      ResetEnabledSelected(&label.state);
+    }
+  }
+
+  ///
+  /// \brief Reset and label in the LabelStates::kLabelEnabledSelectedChanging state to
+  /// LabelStates::kLabelEnabledSelected
+  ///
+  ///
+  void ResetAllEnabledSelectedChanging() {
+    for (auto& label : labels) {
+      ResetEnabledSelectedChanging(&label.state);
     }
   }
 };
@@ -155,9 +196,9 @@ struct FunctionKeys {
 ///
 /// \brief These are at the bottom of the screen
 ///
-///    Reset();
+///
 
-class CommonTaskKeys {
+class CommonTaskKeys : public StateBase {
  public:
   bool visible_;
   struct Labels {
@@ -171,32 +212,35 @@ class CommonTaskKeys {
   ///
   ///
   void SetEnabledEnabledChanging(int index) {
-    Reset();
-    if ((labels_[index].state_ != LabelStates::kLabelDisabled) &&
-        (labels_[index].state_ != LabelStates::kLabelHidden)) {
-      labels_[index].state_ = LabelStates::kLabelEnabledSelectedChanging;
-    }
+    ResetAllEnabledSelected();
+    StateEnabledSelectedChanging(&labels_[index].state_);
   }
 
   ///
   /// \brief Set the label to Enabled
   ///
   ///
-  void SetEnabled(int index) {
-    if ((labels_[index].state_ != LabelStates::kLabelDisabled) &&
-        (labels_[index].state_ != LabelStates::kLabelHidden)) {
-      labels_[index].state_ = LabelStates::kLabelEnabledSelected;
-    }
-  }
+  void SetEnabled(int index) { StateEnabledSelected(&labels_[index].state_); }
 
   ///
   /// \brief Reset the label from 'enabled selected' to 'enabled'
   ///
   ///
-  void Reset() {
+  void ResetAllEnabledSelected() {
     for (auto& label : labels_) {
-      if (label.state_ == LabelStates::kLabelEnabledSelected) label.state_ = LabelStates::kLabelEnabled;
-      if (label.state_ == LabelStates::kLabelEnabledSelectedChanging) label.state_ = LabelStates::kLabelEnabled;
+      ResetEnabledSelected(&label.state_);
+    }
+  }
+
+  ///
+  /// \brief Reset and label in the LabelStates::kLabelEnabledSelectedChanging state to
+  /// LabelStates::kLabelEnabledSelected
+  ///
+  ///
+  void ResetAllEnabledSelectedChanging() {
+    for (auto& label : labels_) {
+      printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
+      ResetEnabledSelectedChanging(&label.state_);
     }
   }
 };

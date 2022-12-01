@@ -98,6 +98,7 @@ void StateSA::entry() {
   if (screen_.function_top->labels[0].state != LabelStates::kLabelHidden) {
     manager_->SetScreen(&screen_, GvaFunctionEnum::kSituationalAwareness);
     lastState_ = GvaFunctionEnum::kSituationalAwareness;
+    Reset();
     screen_.function_top->SetEnabled(0);
 
     if (screen_.labels != LabelModeEnum::kLabelMinimal)

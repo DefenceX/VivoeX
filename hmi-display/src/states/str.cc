@@ -58,6 +58,7 @@ GvaKeyEnum Hmi::KeySTR(GvaKeyEnum keypress) {
 
 void StateSTR::entry() {
   if (screen_.function_top->labels[5].state != LabelStates::kLabelHidden) {
+    Reset();
     manager_->SetScreen(&screen_, GvaFunctionEnum::KSpecialToRole);
     lastState_ = GvaFunctionEnum::KSpecialToRole;
     screen_.function_top->SetEnabled(5);

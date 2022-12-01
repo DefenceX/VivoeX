@@ -59,6 +59,7 @@ GvaKeyEnum Hmi::KeyDRV(GvaKeyEnum keypress) {
 void StateDRV::entry() {
   if (screen_.function_top->labels[4].state != LabelStates::kLabelHidden) {
     manager_->SetScreen(&screen_, GvaFunctionEnum::kDriver);
+    Reset();
     lastState_ = GvaFunctionEnum::kDriver;
     if (screen_.labels != LabelModeEnum::kLabelMinimal)
       screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetVisible(true);
