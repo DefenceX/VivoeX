@@ -2,7 +2,7 @@
 [![Action cyclone](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-centos-amd64-cyclone.yaml/badge.svg)](https://github.com/DefenceX/vivoe-lite/actions/workflows/build-centos-amd64-cyclone.yaml)
 [![Action cyclone](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-debian-arm64-cyclone.yaml/badge.svg)](https://github.com/DefenceX/vivoe-lite/actions/workflows/build-debian-arm64-cyclone.yaml)
 [![Action doxygen](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-doxygen.yaml/badge.svg)](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-doxygen.yaml)
-![Action sonarscan](https://github.com/DefenceX/vivoe-lite/actions/workflows/sonarcloud.yaml)
+[![Action sonarscan](https://github.com/DefenceX/vivoe-lite/actions/workflows/sonarcloud.yaml/badge.svg)](https://sonarcloud.io/project/overview?id=DefenceX_vivoe-lite)
 ![Action codeql](https://github.com/DefenceX/vivoe-lite/actions/workflows/codeql.yml/badge.svg)
 ![Action codacy](https://github.com/DefenceX/vivoe-lite/actions/workflows/codacy.yml/badge.svg)
 [![License](https://img.shields.io/badge/licence-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
