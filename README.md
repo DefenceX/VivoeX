@@ -23,7 +23,7 @@ apt install libcairo2-dev libxt-dev cpplint python-is-python3 libxml2-dev libxex
 ```
 Additional packages for building documentation:
 ```
-apt install doxygen plantuml -y
+apt install doxygen plantuml imagemagick -y
 ```
 We also want to support CentOS try, some extra setup:
 ```
@@ -36,7 +36,7 @@ dnf install cmake gcc-c++ cairo-devel libXt-devel doxygen libXext-devel ffmpeg-d
 ```
 Additional packages for building documentation:
 ```
-dnf install doxygen plantuml -y
+dnf install doxygen plantuml ImageMagick -y
 ```
 
 # Build

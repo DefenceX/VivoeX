@@ -63,7 +63,7 @@ Please ensure you have the following packages installed prior to building the ap
 \endcode
 And install these additional packages to build the documentation:
 \code 
-$ sudo apt install doxygen plantuml 
+$ sudo apt install doxygen plantuml imagemagick
 \endcode
 
 \subsubsection centos CentOS 8
@@ -82,7 +82,7 @@ $ dnf install cmake gcc-c++ cairo-devel libXt-devel libxml2-devel ncurses-devel 
 
 And install these additional packages to build the documentation:
 \code 
-$ sudo dnf install doxygen plantuml 
+$ sudo dnf install doxygen plantuml ImageMagick
 \endcode
 
 \subsection build Building
