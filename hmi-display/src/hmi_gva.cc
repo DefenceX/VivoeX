@@ -250,7 +250,7 @@ void Hmi::KeySide(GvaKeyEnum key) {
       break;
     case GvaKeyEnum::kKeyF12:
       screen_.function_right.SetEnabled(5);
-      screen_.function_right.ResetAllEnabledEnabled();
+      screen_.function_left.ResetAllEnabledEnabled();
       break;
     default:
       break;

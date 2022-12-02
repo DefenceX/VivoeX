@@ -57,7 +57,7 @@ rendererMap::rendererMap(std::string map, std::string style, int width, int heig
     logGva::log("Cannot open libosmscout style", LOG_ERROR);
   }
 
-  surface_ = cairo_image_surface_create(CAIRO_FORMAT_RGB24, width_, height_);
+  surface_ = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width_, height_);
   if (surface_ != nullptr) {
     cairo_ = cairo_create(surface_);
     logGva::log("Created libosmscout cairo surface", LOG_INFO);

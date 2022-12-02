@@ -169,7 +169,7 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
           gva::hmi::GetScreen()->function_top->SetEnabledEnabledChanging(7);
           break;
         case gva::GvaKeyEnum::kKeyF1:
-          gva::hmi::GetScreen()->function_top->SetEnabledEnabledChanging(0);
+          gva::hmi::GetScreen()->function_left.SetEnabledEnabledChanging(0);
           break;
         case gva::GvaKeyEnum::kKeyF2:
           gva::hmi::GetScreen()->function_left.SetEnabledEnabledChanging(1);

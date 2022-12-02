@@ -34,7 +34,7 @@ namespace gva {
 
 static const uint32_t kSemVerMajor = 0;
 static const uint32_t kSemVerMinor = 3;
-static const uint32_t kSemVerPatch = 1042;
+static const uint32_t kSemVerPatch = 1054;
 static const uint32_t kMinimumHeight = 480;
 static const uint32_t kMinimumWidth = 640;
 
@@ -239,7 +239,6 @@ class CommonTaskKeys : public StateBase {
   ///
   void ResetAllEnabledSelectedChanging() {
     for (auto& label : labels_) {
-      printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
       ResetEnabledSelectedChanging(&label.state_);
     }
   }
