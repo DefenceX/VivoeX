@@ -240,7 +240,7 @@ install(FILES
 # All other images
 install(FILES  
     ${CMAKE_SOURCE_DIR}/images/DefenceX.png 
-    DESTINATION "/opt/gva/hmi/images")
+    DESTINATION "/opt/gva/hmi/images/screen")
 
 aux_source_directory(${CMAKE_SOURCE_DIR}/src src)
 
