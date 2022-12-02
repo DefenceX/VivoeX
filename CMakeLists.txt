@@ -234,7 +234,6 @@ install(FILES
     ${IMAGE_PATH}/Rear.png 
     ${IMAGE_PATH}/Left.png 
     ${IMAGE_PATH}/Quad.png 
-    ${IMAGE_PATH}/DefenceX.png 
     DESTINATION "/opt/gva/hmi/images")
 
 # All other images
