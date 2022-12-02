@@ -31,8 +31,6 @@
 #include "src/debug.h"
 
 #define MAX_HANDLES 10
-#define DEFAULT_WIDTH 640
-#define DEFAULT_HEIGHT 480
 
 #define HMI_AMBER 255, 153, 0
 #define HMI_WHITE 255, 255, 255

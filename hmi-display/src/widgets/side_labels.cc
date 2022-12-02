@@ -120,15 +120,15 @@ void WidgetSideLabels::Toggle(const std::string& label1, const std::string& labe
 // On the left and right of the screen
 void WidgetSideLabels::DrawFunctionLabels() {
   uint32_t i = 0;
-  uint32_t offset = DEFAULT_HEIGHT - 88;
+  uint32_t offset = kMinimumHeight - 88;
 
   GetRenderer()->SetLineType(CAIRO_LINE_JOIN_ROUND);
   GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightNormal,
                              ConfigData::GetInstance()->GetThemeFont(), 14);
 
-  uint32_t firstKey = (GetX() < DEFAULT_WIDTH / 2) ? int(GvaKeyEnum::kKeyF1) : int(GvaKeyEnum::kKeyF7);
+  uint32_t firstKey = (GetX() < kMinimumWidth / 2) ? int(GvaKeyEnum::kKeyF1) : int(GvaKeyEnum::kKeyF7);
   GvaFunctionGroupEnum group =
-      (GetX() < DEFAULT_WIDTH / 2) ? GvaFunctionGroupEnum::kLeft : GvaFunctionGroupEnum::kRight;
+      (GetX() < kMinimumWidth / 2) ? GvaFunctionGroupEnum::kLeft : GvaFunctionGroupEnum::kRight;
 
   for (auto label : *labels_) {
     if (label.state != LabelStates::kLabelHidden) {

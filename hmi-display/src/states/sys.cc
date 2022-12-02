@@ -78,7 +78,6 @@ GvaKeyEnum Hmi::KeySYS(GvaKeyEnum keypress) {
 void StateSYS::entry() {
   if (screen_.function_top->labels[3].state != LabelStates::kLabelHidden) {
     WidgetTable *table = (WidgetTable *)screen_render_->GetWidget(widget::KWidgetTypeTable);
-    std::string filename;
     Reset();
     manager_->SetScreen(&screen_, GvaFunctionEnum::kSystems);
     lastState_ = GvaFunctionEnum::kSystems;
@@ -87,7 +86,7 @@ void StateSYS::entry() {
     screen_.status_bar->labels[3].state = LabelStates::kLabelEnabledSelected;
     screen_.function_top->labels[3].state = LabelStates::kLabelEnabledSelected;
     screen_.canvas.visible = true;
-    filename = ConfigData::GetInstance()->GetImagePath();
+    std::string filename = ConfigData::GetInstance()->GetImagePath();
     filename.append("/FrontCenter.png");
     SetCanvasPng(filename.c_str());
 

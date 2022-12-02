@@ -76,7 +76,7 @@ FunctionSelect DefaultSettings::GetDefaultFunctionSelect() {
 StatusBar DefaultSettings::GetDefaultStatusBar() {
   StatusBar status_bar;
   status_bar.visible = true;
-  status_bar.x = DEFAULT_HEIGHT - 11;
+  status_bar.x = kMinimumHeight - 11;
   status_bar.y = 0;
   status_bar.location.locationFormat = LocationEnum::kLocationFormatMgrs;
   status_bar.location.lon = gva::ConfigData::GetInstance()->GetTestLon();

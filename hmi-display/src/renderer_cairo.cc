@@ -286,7 +286,7 @@ void RendererCairo::Draw() {
         cairo_show_text(cr, currentCmd.text);
       } break;
       default:
-        printf("[GVA] Unrecognised pauint32_t command!!!\n");
+        printf("[GVA] Unrecognised command!!!\n");
         break;
     }
   }
@@ -685,13 +685,26 @@ uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, void *buffer, std::st
     }
   }
 
+  // Set background black, this is needed for transparent .png files
+  SetColourForeground(ConfigData::GetInstance()->GetThemeBackground());
+  SetColourBackground(ConfigData::GetInstance()->GetThemeBackground());
+  DrawRectangle(0, 0, width_, height_, true);
+
   if (found_in_cache) {
     // Copy from cache
     image_list_[image_tail_].image = cache_image_list_[i].image;
     image_list_[image_tail_].from_cache = true;
   } else {
     // Add to cache
-    cache_image_list_[cache_image_tail_].image = cairo_image_surface_create_from_png(file.c_str());
+    cairo_surface_t *surf = cairo_image_surface_create_from_png(file.c_str());
+    int width = cairo_image_surface_get_width(surf);
+    int height = cairo_image_surface_get_height(surf);
+
+    if ((height != gva::kMinimumHeight) || (width != gva::kMinimumWidth)) {
+      cairo_surface_set_device_scale(surf, (double)width / kMinimumWidth, (double)height / kMinimumHeight);
+    }
+
+    cache_image_list_[cache_image_tail_].image = surf;
     strcpy(cache_image_list_[cache_image_tail_].name, file.c_str());
     image_list_[image_tail_].from_cache = true;
     image_list_[image_tail_].image = cache_image_list_[cache_image_tail_++].image;
@@ -708,8 +721,8 @@ uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, void *buffer, std::st
 
 uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, void *buffer) {
   image_list_[image_tail_].image =
-      cairo_image_surface_create_for_data(reinterpret_cast<unsigned char *>(buffer), CAIRO_FORMAT_RGB24, width_,
-                                          height_, cairo_format_stride_for_width(CAIRO_FORMAT_RGB24, width_));
+      cairo_image_surface_create_for_data(reinterpret_cast<unsigned char *>(buffer), CAIRO_FORMAT_ARGB32, width_,
+                                          height_, cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, width_));
 
   Command command;
   command.command = kCommandImageTexture;
@@ -751,8 +764,8 @@ gboolean RendererCairo::ConfigureEventCb(GtkWidget *Widget, GdkEventConfigure *e
                                                       gtk_widget_get_allocated_width(Widget),
                                                       gtk_widget_get_allocated_height(Widget));
   render_.cr = cairo_create(render_.surface);
-  cairo_scale(render_.cr, (double)gtk_widget_get_allocated_width(Widget) / DEFAULT_WIDTH,
-              (double)gtk_widget_get_allocated_height(Widget) / DEFAULT_HEIGHT);
+  cairo_scale(render_.cr, (double)gtk_widget_get_allocated_width(Widget) / kMinimumWidth,
+              (double)gtk_widget_get_allocated_height(Widget) / kMinimumHeight);
   Renderer::SetWidth(gtk_widget_get_allocated_width(Widget));
   Renderer::SetHeight(gtk_widget_get_allocated_height(Widget));
   gtk_widget_queue_draw(Widget);

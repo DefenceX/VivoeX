@@ -107,8 +107,8 @@ GvaKeyEnum Hmi::KeyBMS(GvaKeyEnum keypress) {
     sprintf(tmp, "[BMS] Zoom level %d lat %f, %f", configuration.GetZoom(), configuration.GetTestLat(),
             ((double)configuration.GetZoom() / 10000000) * ((double)configuration.GetZoom() / 10000));
     loglog(tmp, LOG_INFO);
-    map_->SetWidth((double)scregvaen_render_->GetWidth() / DEFAULT_WIDTH);
-    map_->SetHeight((double)screen_render_->GetHeight() / DEFAULT_HEIGHT);
+    map_->SetWidth((double)scregvaen_render_->GetWidth() / kMinimumWidth);
+    map_->SetHeight((double)screen_render_->GetHeight() / kMinimumHeight);
     sprintf(tmp, "[BMS] res %d x %d", screen_render_->GetWidth(), screen_render_->GetHeight());
     loglog(tmp, LOG_INFO);
     map_->Project(configuration.GetZoom(), configuration.GetTestLon(), configuration.GetTestLat(),
@@ -124,11 +124,15 @@ void StateBMS::entry() {
     manager_->SetScreen(&screen_, GvaFunctionEnum::kBattlefieldManagementSystem);
     Reset();
     lastState_ = GvaFunctionEnum::kBattlefieldManagementSystem;
+    std::string filename = ConfigData::GetInstance()->GetImagePath();
+    screen_.canvas.visible = true;
+    filename.append("/DefenceX.png");
+    SetCanvasPng(filename.c_str());
     screen_.function_top->SetEnabled(7);
     screen_.canvas.visible = true;
 #ifdef ENABLE_OSMSCOUT
-    map_->SetWidth((double)screen_render_->GetWidth() / DEFAULT_WIDTH);
-    map_->SetHeight((double)screen_render_->GetHeight() / DEFAULT_HEIGHT);
+    map_->SetWidth((double)screen_render_->GetWidth() / kMinimumWidth);
+    map_->SetHeight((double)screen_render_->GetHeight() / kMinimumHeight);
     map_->Project(configuration.GetZoom(), configuration.GetTestLon(), configuration.GetTestLat(),
                   &screen_.canvas.surface);
     screen_.canvas.bufferType = SURFACE_CAIRO;
@@ -136,7 +140,7 @@ void StateBMS::entry() {
   }
 };
 
-void StateBMS::exit() { ResetState(&screen_.function_top->labels[7].state); }
+void StateBMS::exit() {}
 
 void StateBMS::react(EventKeyPowerOn const &) { transit<StateOff>(); };
 

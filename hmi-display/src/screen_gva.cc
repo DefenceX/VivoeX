@@ -265,14 +265,14 @@ GvaStatusTypes ScreenGva::Update() {
   if (screen_->function_right.visible) {
     auto widget = (WidgetSideLabels *)GetWidget(widget::KWidgetTypeRightLabels);
     widget->SetLabels(&screen_->function_right.labels);
-    widget->SetX(DEFAULT_WIDTH - 100 - 1);
+    widget->SetX(kMinimumWidth - 100 - 1);
     widget->Draw();
   }
 
   // Draw the TOP bezel labels
   if (screen_->function_top->visible) {
     auto widget = (WidgetTopLabels *)GetWidget(widget::KWidgetTypeTopLabels);
-    widget->SetY(DEFAULT_HEIGHT - 11);
+    widget->SetY(kMinimumHeight - 11);
     widget->SetLabels(&screen_->function_top->labels);
     widget->Draw();
   }

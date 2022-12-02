@@ -125,7 +125,7 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
     if (gva::hmi::GetScreen()->currentFunction == gva::GvaFunctionEnum::kDriver) {
       gva::hmi::GetScreen()->canvas.bufferType = gva::SurfaceType::kSurfaceCairo;
       gva::hmi::GetScreen()->canvas.surface =
-          cairo_image_surface_create(CAIRO_FORMAT_RGB24, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+          cairo_image_surface_create(CAIRO_FORMAT_ARGB32, gva::kMinimumWidth, gva::kMinimumHeight);
       char *test = reinterpret_cast<char *>(cairo_image_surface_get_data(gva::hmi::GetScreen()->canvas.surface));
       rtp_stream1_->GvaReceiveFrame(test, gva::RGBA_COLOUR);
       cairo_surface_mark_dirty(gva::hmi::GetScreen()->canvas.surface);

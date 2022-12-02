@@ -130,8 +130,8 @@ class TouchGva {
   void Reset() { hotspots_.clear(); }
   bool Check(GvaFunctionGroupEnum groupId, uint32_t *binding, uint32_t x, uint32_t y) {
     // Adjust for resized windows
-    x = x / static_cast<float>(Renderer::GetWidth() / static_cast<float>(DEFAULT_WIDTH));
-    y = y / static_cast<float>(Renderer::GetHeight() / static_cast<float>(DEFAULT_HEIGHT));
+    x = x / static_cast<float>(Renderer::GetWidth() / static_cast<float>(kMinimumWidth));
+    y = y / static_cast<float>(Renderer::GetHeight() / static_cast<float>(kMinimumHeight));
     // Invert now adjusted for size
     y = kMinimumHeight - y;
 

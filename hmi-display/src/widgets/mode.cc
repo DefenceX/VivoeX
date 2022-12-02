@@ -31,7 +31,7 @@ namespace gva {
 WidgetMode::WidgetMode(const RendererGva& renderer) : WidgetX(renderer, widget::KWidgetTypeMode) { SetVisible(false); }
 
 void WidgetMode::Draw() {
-  uint32_t y = DEFAULT_HEIGHT * 0.12;
+  uint32_t y = kMinimumHeight * 0.12;
 
   GetRenderer()->SetColourForeground(HMI_WHITE);
   GetRenderer()->SetColourBackground(HMI_DARK_BLUE);
@@ -43,8 +43,8 @@ void WidgetMode::Draw() {
   uint32_t w = GetRenderer()->GetTextWidth(mode_, 12);
   uint32_t h = GetRenderer()->GetTextHeight(mode_, 12);
 
-  GetRenderer()->DrawRoundedRectangle(DEFAULT_WIDTH / 2 - (w / 2) - 5, y, w + 10, (h) + 15, 6, true);
-  GetRenderer()->DrawText(DEFAULT_WIDTH / 2 - (w / 2), y + 8, mode_);
+  GetRenderer()->DrawRoundedRectangle(kMinimumWidth / 2 - (w / 2) - 5, y, w + 10, (h) + 15, 6, true);
+  GetRenderer()->DrawText(kMinimumWidth / 2 - (w / 2), y + 8, mode_);
 }
 
 void WidgetMode::SetMode(const std::string mode) { mode_ = mode; }

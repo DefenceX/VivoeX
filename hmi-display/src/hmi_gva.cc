@@ -202,16 +202,7 @@ void Hmi::KeySide(GvaKeyEnum key) {
   // Clear any onscreen messages
   screen_.message.visible = false;
 
-  // Reset the active label/s
-  screen_.function_left.visible = true;
-  for (auto &label : screen_.function_left.labels) {
-    if (label.state == LabelStates::kLabelEnabledSelectedChanging) label.state = LabelStates::kLabelEnabled;
-  }
-  screen_.function_right.visible = true;
-  for (auto &label : screen_.function_right.labels) {
-    if (label.state == LabelStates::kLabelEnabledSelectedChanging) label.state = LabelStates::kLabelEnabled;
-  }
-
+  // Manage the changing of functional areas
   switch (key) {
     case GvaKeyEnum::kKeyF1:
       screen_.function_right.ResetAllEnabledEnabled();
@@ -274,10 +265,8 @@ GvaKeyEnum Hmi::Key(GvaKeyEnum keypress) {
       screen_.control->ResetAllEnabledSelected();
       break;
     case GvaKeyEnum::kKeyF14:
-      if (screen_.currentFunction == GvaFunctionEnum::kAlarmsX) {
-        screen_.control->SetEnabled(1);
-        screen_.control->ResetAllEnabledSelected();
-      }
+      screen_.control->SetEnabled(1);
+      screen_.control->ResetAllEnabledSelected();
       break;
     case GvaKeyEnum::kKeyF15:
       screen_.control->SetEnabled(2);
@@ -320,15 +309,6 @@ GvaKeyEnum Hmi::Key(GvaKeyEnum keypress) {
       break;
   }
   return keypress;
-}
-
-void Hmi::ResetState(LabelStates *state) {
-  switch (screen_.function_top->labels[7].state) {
-    case LabelStates::kLabelEnabledSelectedChanging:
-    case LabelStates::kLabelEnabledSelected:
-      *state = LabelStates::kLabelEnabled;
-      break;
-  }
 }
 
 ViewGvaManager *Hmi::manager_;
