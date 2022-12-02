@@ -111,6 +111,28 @@ class WidgetX {
   ///
   RendererGva* GetRenderer() const;
 
+  ///
+  /// \brief Set the State Text of an on screen label
+  ///
+  /// \param state
+  ///
+  void SetStateText(LabelStates state);
+
+  ///
+  /// \brief Set the State Label object
+  ///
+  /// \param state
+  ///
+  void SetStateLabel(const LabelStates state);
+
+  ///
+  /// \brief Get the State Text Colour object
+  ///
+  /// \param state
+  /// \return uint32_t
+  ///
+  uint32_t GetStateTextColour(LabelStates state) const;
+
  protected:
   uint32_t x_ = 0;
   uint32_t y_ = 0;

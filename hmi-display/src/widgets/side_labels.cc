@@ -134,7 +134,7 @@ void WidgetSideLabels::DrawFunctionLabels() {
     if (label.state != LabelStates::kLabelHidden) {
       SetStateLabel(label.state);
 
-      Draw(GetX(), offset - (i * 72), 100, 50, label.text, GetStateTextColour(label.state, ConfigData::GetInstance()));
+      Draw(GetX(), offset - (i * 72), 100, 50, label.text, GetStateTextColour(label.state));
       if (label.state != LabelStates::kLabelDisabled) {
         touch_->Add(group, (uint32_t)(firstKey + i), GetX(), offset - (i * 72), 100, 50);
       }
@@ -145,54 +145,5 @@ void WidgetSideLabels::DrawFunctionLabels() {
 }
 
 void WidgetSideLabels::SetLabels(std::array<FunctionKeys::Labels, 6>* labels) { labels_ = labels; }
-
-void WidgetSideLabels::SetStateLabel(LabelStates state) {
-  ConfigData* config = ConfigData::GetInstance();
-  switch (state) {
-    default:
-    case LabelStates::kLabelHidden:
-      // Nothing to do let just return
-      break;
-    case LabelStates::kLabelDisabled:
-      GetRenderer()->SetColourForeground(ConfigData::GetInstance()->GetThemeLabelBorderDisabled());
-      GetRenderer()->SetColourBackground(ConfigData::GetInstance()->GetThemeLabelBackgroundDisabled());
-      GetRenderer()->SetLineThickness(config->GetThemeLabelBorderThickness(), config->GetThemeLabelLineDisabled());
-      break;
-    case LabelStates::kLabelEnabled:
-      GetRenderer()->SetColourForeground(ConfigData::GetInstance()->GetThemeLabelBorderEnabled());
-      GetRenderer()->SetColourBackground(ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
-      GetRenderer()->SetLineThickness(config->GetThemeLabelBorderThickness(), config->GetThemeLabelLineEnabled());
-      break;
-    case LabelStates::kLabelEnabledSelected:
-      GetRenderer()->SetColourForeground(ConfigData::GetInstance()->GetThemeLabelBorderEnabledSelected());
-      GetRenderer()->SetColourBackground(ConfigData::GetInstance()->GetThemeLabelBackgroundEnabledSelected());
-      GetRenderer()->SetLineThickness(config->GetThemeLabelBorderThickness(),
-                                      config->GetThemeLabelLineEnabledSelected());
-      break;
-    case LabelStates::kLabelEnabledSelectedChanging:
-      GetRenderer()->SetColourForeground(ConfigData::GetInstance()->GetThemeLabelBorderEnabledSelectedChanging());
-      GetRenderer()->SetColourBackground(ConfigData::GetInstance()->GetThemeLabelBackgroundEnabledSelectedChanging());
-      GetRenderer()->SetLineThickness(config->GetThemeLabelBorderThickness(),
-                                      config->GetThemeLabelLineEnabledSelectedChanging());
-      break;
-  }
-}
-
-uint32_t WidgetSideLabels::GetStateTextColour(LabelStates state, ConfigData* config) const {
-  switch (state) {
-    default:
-    case LabelStates::kLabelHidden:
-      // Nothing to do but return hidden if requested
-      return config->GetThemeLabelTextDisabled();
-    case LabelStates::kLabelDisabled:
-      return config->GetThemeLabelTextDisabled();
-    case LabelStates::kLabelEnabled:
-      return config->GetThemeLabelTextEnabled();
-    case LabelStates::kLabelEnabledSelected:
-      return config->GetThemeLabelTextEnabledSelected();
-    case LabelStates::kLabelEnabledSelectedChanging:
-      return config->GetThemeLabelTextEnabledSelectedChanging();
-  }
-}
 
 }  // namespace gva

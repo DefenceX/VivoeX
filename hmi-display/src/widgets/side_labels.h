@@ -62,23 +62,6 @@ class WidgetSideLabels : public WidgetX {
   ///
   void SetLabels(std::array<FunctionKeys::Labels, 6>* labels);
 
-  ///
-  /// \brief Set the State Label object
-  ///
-  /// \param state
-  /// \param config
-  ///
-  void SetStateLabel(LabelStates state);
-
-  ///
-  /// \brief Get the State Text Colour object
-  ///
-  /// \param state
-  /// \param config
-  /// \return uint32_t
-  ///
-  uint32_t GetStateTextColour(LabelStates state, ConfigData* config) const;
-
  private:
   ///
   /// \brief Draw the actual function labels (x6)

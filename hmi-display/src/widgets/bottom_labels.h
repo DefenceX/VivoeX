@@ -62,31 +62,6 @@ class WidgetBottomLabels : public WidgetX {
   ///
   void SetLabels(std::array<CommonTaskKeys::Labels, 8>* labels);
 
-  ///
-  /// \brief Set the State Label object
-  ///
-  /// \param state
-  /// \param config
-  ///
-  void SetStateLabel(const LabelStates state);
-
-  ///
-  /// \brief Set the State Text object
-  ///
-  /// \param state
-  /// \param config
-  ///
-  void SetStateText(LabelStates state);
-
-  ///
-  /// \brief Get the State Text Colour object
-  ///
-  /// \param state
-  /// \param config
-  /// \return uint32_t
-  ///
-  uint32_t GetStateTextColour(LabelStates state) const;
-
  private:
   void DrawControlLabels();
   ConfigData* config_ = nullptr;

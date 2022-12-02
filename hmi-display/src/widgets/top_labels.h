@@ -61,14 +61,6 @@ class WidgetTopLabels : public WidgetX {
   ///
   void SetLabels(std::array<FunctionSelect::Labels, 8>* labels);
 
-  ///
-  /// \brief Set the State Label object
-  ///
-  /// \param state
-  /// \param config
-  ///
-  void SetStateLabel(LabelStates state);
-
  private:
   ///
   /// \brief Draw the labels along the top of the screen with the states as set using SetLabels()

@@ -66,36 +66,4 @@ void WidgetTopLabels::DrawTopLabels(uint32_t y, const std::array<FunctionSelect:
 
 void WidgetTopLabels::SetLabels(std::array<FunctionSelect::Labels, 8>* labels) { labels_ = labels; }
 
-void WidgetTopLabels::SetStateLabel(LabelStates state) {
-  ConfigData* config = ConfigData::GetInstance();
-  switch (state) {
-    default:
-    case LabelStates::kLabelHidden:
-      // Nothing to do let just return
-      break;
-    case LabelStates::kLabelDisabled:
-      GetRenderer()->SetColourForeground(ConfigData::GetInstance()->GetThemeLabelBorderDisabled());
-      GetRenderer()->SetColourBackground(ConfigData::GetInstance()->GetThemeLabelBackgroundDisabled());
-      GetRenderer()->SetLineThickness(config->GetThemeLabelBorderThickness(), config->GetThemeLabelLineDisabled());
-      break;
-    case LabelStates::kLabelEnabled:
-      GetRenderer()->SetColourForeground(ConfigData::GetInstance()->GetThemeLabelBorderEnabled());
-      GetRenderer()->SetColourBackground(ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
-      GetRenderer()->SetLineThickness(config->GetThemeLabelBorderThickness(), config->GetThemeLabelLineEnabled());
-      break;
-    case LabelStates::kLabelEnabledSelected:
-      GetRenderer()->SetColourForeground(ConfigData::GetInstance()->GetThemeLabelBorderEnabledSelected());
-      GetRenderer()->SetColourBackground(ConfigData::GetInstance()->GetThemeLabelBackgroundEnabledSelected());
-      GetRenderer()->SetLineThickness(config->GetThemeLabelBorderThickness(),
-                                      config->GetThemeLabelLineEnabledSelected());
-      break;
-    case LabelStates::kLabelEnabledSelectedChanging:
-      GetRenderer()->SetColourForeground(ConfigData::GetInstance()->GetThemeLabelBorderEnabledSelectedChanging());
-      GetRenderer()->SetColourBackground(ConfigData::GetInstance()->GetThemeLabelBackgroundEnabledSelectedChanging());
-      GetRenderer()->SetLineThickness(config->GetThemeLabelBorderThickness(),
-                                      config->GetThemeLabelLineEnabledSelectedChanging());
-      break;
-  }
-}
-
 }  // namespace gva
