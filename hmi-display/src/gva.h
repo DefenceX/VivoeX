@@ -34,7 +34,7 @@ namespace gva {
 
 static const uint32_t kSemVerMajor = 0;
 static const uint32_t kSemVerMinor = 3;
-static const uint32_t kSemVerPatch = 1054;
+static const uint32_t kSemVerPatch = 1068;
 static const uint32_t kMinimumHeight = 480;
 static const uint32_t kMinimumWidth = 640;
 
@@ -76,6 +76,13 @@ class StateBase {
       *state = LabelStates::kLabelEnabledSelected;
     }
   }
+  void ResetEnabled(LabelStates* state) const {
+    if ((*state != LabelStates::kLabelDisabled) && (*state != LabelStates::kLabelHidden)) {
+      if ((*state == LabelStates::kLabelEnabledSelected) || (*state == LabelStates::kLabelEnabledSelectedChanging)) {
+        *state = LabelStates::kLabelEnabled;
+      }
+    }
+  }
   void ResetEnabledSelected(LabelStates* state) const {
     if ((*state != LabelStates::kLabelDisabled) && (*state != LabelStates::kLabelHidden)) {
       if (*state == LabelStates::kLabelEnabledSelected) {
@@ -112,15 +119,25 @@ class FunctionSelect : public StateBase {
   ///
   ///
   void SetEnabled(int index) {
-    ResetAllEnabledEnabled();
+    ResetAllEnabled();
     StateEnabledSelected(&labels[index].state);
+  }
+
+  ///
+  /// \brief Reset all LabelStates::kLabelEnabledSelected buttons.
+  ///
+  ///
+  void ResetAllEnabled() {
+    for (auto& label : labels) {
+      ResetEnabled(&label.state);
+    }
   }
 
   ///
   /// \brief Reset the label from 'enabled selected' to 'enabled'
   ///
   ///
-  void ResetAllEnabledEnabled() {
+  void ResetAllEnabledSelected() {
     visible = true;
     for (auto& label : labels) {
       ResetEnabledSelected(&label.state);
@@ -166,15 +183,25 @@ struct FunctionKeys : public StateBase {
   ///
   ///
   void SetEnabled(int index) {
-    ResetAllEnabledEnabled();
+    ResetAllEnabled();
     StateEnabledSelected(&labels[index].state);
+  }
+
+  ///
+  /// \brief Reset all LabelStates::kLabelEnabledSelected buttons.
+  ///
+  ///
+  void ResetAllEnabled() {
+    for (auto& label : labels) {
+      ResetEnabled(&label.state);
+    }
   }
 
   ///
   /// \brief Reset the label from 'enabled selected' to 'enabled'
   ///
   ///
-  void ResetAllEnabledEnabled() {
+  void ResetAllEnabledSelected() {
     visible = true;
     for (auto& label : labels) {
       ResetEnabledSelected(&label.state);
@@ -220,7 +247,20 @@ class CommonTaskKeys : public StateBase {
   /// \brief Set the label to Enabled
   ///
   ///
-  void SetEnabled(int index) { StateEnabledSelected(&labels_[index].state_); }
+  void SetEnabled(int index) {
+    ResetAllEnabled();
+    StateEnabledSelected(&labels_[index].state_);
+  }
+
+  ///
+  /// \brief Reset all LabelStates::kLabelEnabledSelected buttons.
+  ///
+  ///
+  void ResetAllEnabled() {
+    for (auto& label : labels_) {
+      ResetEnabled(&label.state_);
+    }
+  }
 
   ///
   /// \brief Reset the label from 'enabled selected' to 'enabled'

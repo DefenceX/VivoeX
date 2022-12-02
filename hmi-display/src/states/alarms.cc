@@ -89,6 +89,7 @@ void StateAlarms::entry() {
     manager_->SetScreen(&screen_, GvaFunctionEnum::kAlarmsX);
     HmiHelper::TableAlarms(table);
     table->SetVisible(true);
+    screen_.control->SetEnabled(1);
   }
 };
 
