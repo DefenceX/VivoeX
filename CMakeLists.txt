@@ -225,16 +225,22 @@ install(FILES ${CMAKE_BINARY_DIR}/external/libnmea/build/src/libnmealib.so
               ${DDS_LIBS}
         DESTINATION "/opt/gva/libs" PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE GROUP_WRITE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_WRITE WORLD_EXECUTE)
 
-# Images
-install(FILES  ${IMAGE_PATH}/FrontRight.png 
-               ${IMAGE_PATH}/FrontCenter.png 
-               ${IMAGE_PATH}/FrontLeft.png 
-               ${IMAGE_PATH}/Right.png 
-               ${IMAGE_PATH}/Rear.png 
-               ${IMAGE_PATH}/Left.png 
-               ${IMAGE_PATH}/Quad.png 
-               ${IMAGE_PATH}/DefenceX.png 
-               DESTINATION "/opt/gva/hmi/images")
+# Images for dummy camera feeds
+install(FILES  
+    ${IMAGE_PATH}/FrontRight.png 
+    ${IMAGE_PATH}/FrontCenter.png 
+    ${IMAGE_PATH}/FrontLeft.png 
+    ${IMAGE_PATH}/Right.png 
+    ${IMAGE_PATH}/Rear.png 
+    ${IMAGE_PATH}/Left.png 
+    ${IMAGE_PATH}/Quad.png 
+    ${IMAGE_PATH}/DefenceX.png 
+    DESTINATION "/opt/gva/hmi/images")
+
+# All other images
+install(FILES  
+    ${CMAKE_SOURCE_DIR}/images/DefenceX.png 
+    DESTINATION "/opt/gva/hmi/images")
 
 aux_source_directory(${CMAKE_SOURCE_DIR}/src src)
 
