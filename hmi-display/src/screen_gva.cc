@@ -293,34 +293,20 @@ GvaStatusTypes ScreenGva::Update() {
     uint32_t i = 0;
     // Setup and Draw the status bar, one row table
     uint32_t widths[7] = {23, 8, 37, 8, 8, 8, 8};
-    GvaTable table(1, screen_->status_bar->y, 640);
-    table.SetFontName(config_->GetThemeFont());
-    GvaRow newrow;
+    auto table = (WidgetTable *)GetWidget(widget::KWidgetTypeTable);
+    table->SetX(1);
+    table->SetY(screen_->status_bar->y);
+    table->SetWidth(640);
+    table->AddRow();
 
-    // Use theme colours
-    widget::GvaColourType border = {UnpackRed(config_->GetThemeStatusBorder()),
-                                    UnpackGreen(config_->GetThemeStatusBorder()),
-                                    UnpackBlue(config_->GetThemeStatusBorder())};
-    widget::GvaColourType background = {UnpackRed(config_->GetThemeStatusBackground()),
-                                        UnpackGreen(config_->GetThemeStatusBackground()),
-                                        UnpackBlue(config_->GetThemeStatusBackground())};
-    widget::GvaColourType text = {UnpackRed(config_->GetThemeStatusText()), UnpackGreen(config_->GetThemeStatusText()),
-                                  UnpackBlue(config_->GetThemeStatusText())};
-
+    // Update the status bar cells
     screen_->status_bar->labels[0].text = args_.clockString;
     screen_->status_bar->labels[1].text = args_.locationFormat;
     screen_->status_bar->labels[2].text = args_.locationString;
     for (i = 0; i < 7; i++) {
-      widget::CellAlignType align = widget::CellAlignType::kAlignLeft;
-      if (i == 1) align = widget::CellAlignType::kAlignCentre;
-      GvaCell cell = {screen_->status_bar->labels[i].text, align, border, background, text,
-                      widget::WeightType::kWeightBold};
-      newrow.addCell(cell, widths[i]);
+      table->AddCell(screen_->status_bar->labels[i].text, widths[i], widget::CellAlignType::kAlignLeft);
     }
-    table.AddRow(newrow);
-    auto table_widget = (WidgetTable *)GetWidget(widget::KWidgetTypeTable);
-    table_widget->SetTable(&table);
-    table_widget->Draw();
+    table->Draw();
   }
 
   // TODO : Draw the alarms if any (Mock up)
@@ -331,38 +317,16 @@ GvaStatusTypes ScreenGva::Update() {
   // Setup and Draw the alarms
   if (widget_list_[widget::KWidgetTypeTable]->GetVisible()) {
     auto table_widget = (WidgetTable *)GetWidget(widget::KWidgetTypeTable);
-
-    GvaTable table(table_widget->GetX(), table_widget->GetY() + 33, table_widget->width_);
-    table.SetFontName(config_->GetThemeFont());
-    table.border_ = 1;
+    table_widget->AddRow();
     for (auto row : table_widget->rows_) {
       GvaRow newrow;
       RgbUnpackedType f, b, o;
-      // for (uint32_t cell = 0; cell < table.rows_[row].cell_count_; cell++) {
+      // for (uint32_t cell = 0; cell < table->rows_[row].cell_count_; cell++) {
 
       for (auto cell : row.cells_) {
-        f = UnpackRgb(cell.GetForegroundColour());
-        b = UnpackRgb(cell.GetBackgroundColour());
-
-        // Choose colour for cell border
-        if (row.GetHighlighted() == false) {
-          o = UnpackRgb(cell.GetOutlineColour());
-        } else {
-          printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
-
-          o = UnpackRgb(cell.GetHighlightColour());
-        }
-
-        newrow.addCell({cell.GetText(), cell.GetCellAlignment(), o.r, o.g, o.b,  // Outline
-                        b.r, b.g, b.b,                                           // Background
-                        f.r, f.g, f.b,                                           // Foreground
-                        row.GetFontWeight()},
-                       cell.GetWidth());
+        table_widget->AddCell(cell.GetText(), cell.GetWidth(), cell.GetCellAlignment(), cell.GetBackgroundColour());
       }
-      table.AddRow(newrow);
     }
-
-    table_widget->SetTable(&table);
     table_widget->Draw();
   }
 
@@ -377,39 +341,20 @@ GvaStatusTypes ScreenGva::Update() {
 
   // Generic message box
   if (screen_->message.visible) {
-    GvaTable table(320 - 150, 260, 300);
-    table.SetFontName(config_->GetThemeFont());
-    GvaRow newrow;
-    GvaRow newrow1;
-
-    table.border_ = config_->GetThemeLabelBorderThickness();
+    auto table = (WidgetTable *)GetWidget(widget::KWidgetTypeTable);
+    table->SetX(320 - 150);
+    table->SetY(260);
+    table->SetWidth(300);
 
     uint32_t background = gva::ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled();
 
-    newrow.addCell({screen_->message.brief.text,
-                    widget::CellAlignType::kAlignCentre,
-                    {HMI_WHITE},
-                    UnpackRed(background),
-                    UnpackGreen(background),
-                    UnpackBlue(background),
-                    {HMI_WHITE},
-                    widget::WeightType::kWeightBold},
-                   100);
-    table.AddRow(newrow);
+    table->AddRow();
+    table->AddCell(screen_->message.detail.text, 300, widget::CellAlignType::kAlignCentre, background);
 
-    newrow1.addCell({screen_->message.detail.text,
-                     widget::CellAlignType::kAlignCentre,
-                     {HMI_WHITE},
-                     UnpackRed(background),
-                     UnpackGreen(background),
-                     UnpackBlue(background),
-                     {HMI_WHITE},
-                     widget::WeightType::kWeightNormal},
-                    100);
-    table.AddRow(newrow1);
+    table->AddRow();
+    table->AddCell(screen_->message.detail.text, 300, widget::CellAlignType::kAlignCentre, background);
 
     auto table_widget = (WidgetTable *)GetWidget(widget::KWidgetTypeTable);
-    table_widget->SetTable(&table);
     table_widget->Draw();
 
     DrawIcon(screen_->message.icon, 320 - 150 + 300 - 17, 270, 11, 11);

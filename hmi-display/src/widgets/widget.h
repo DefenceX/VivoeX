@@ -92,6 +92,34 @@ class WidgetX {
   uint32_t GetY() const;
 
   ///
+  /// \brief Set the Width
+  ///
+  /// \param width
+  ///
+  void SetWidth(uint32_t width);
+
+  ///
+  /// \brief Get the Width
+  ///
+  /// \return uint32_t
+  ///
+  uint32_t GetWidth() const;
+
+  ///
+  /// \brief Set the Height
+  ///
+  /// \param width
+  ///
+  void SetHeight(uint32_t width);
+
+  ///
+  /// \brief Get the Height
+  ///
+  /// \return uint32_t
+  ///
+  uint32_t GetHeight() const;
+
+  ///
   /// \brief Draw the widget
   ///
   ///
@@ -136,6 +164,8 @@ class WidgetX {
  protected:
   uint32_t x_ = 0;
   uint32_t y_ = 0;
+  uint32_t width_ = 0;
+  uint32_t height_ = 0;
 
  private:
   const RendererGva& renderer_;

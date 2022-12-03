@@ -31,44 +31,36 @@ namespace gva {
 WidgetTable::WidgetTable(const RendererGva& renderer, TouchGva* touch)
     : WidgetX(renderer, widget::KWidgetTypeTable), touch_(touch) {}
 
-void WidgetTable::Draw() { DrawTable(table_); }
+void WidgetTable::Draw() { DrawTable(); }
 
-void WidgetTable::SetTable(GvaTable* table) { table_ = table; }
-
-void WidgetTable::DrawTable(GvaTable* table) {
+void WidgetTable::DrawTable() {
   uint32_t height = 19;
-  uint32_t row = 0;
-  uint32_t column = 0;
 
   GetRenderer()->SetLineThickness(ConfigData::GetInstance()->GetThemeTableBorderThickness(), LineType::kLineSolid);
-  GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightBold, table->fontname_, 12);
+  GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightBold,
+                             ConfigData::GetInstance()->GetThemeFont(), 12);
   GetRenderer()->SetColourBackground(gva::ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
 
-  for (row = 0; row < table->rows_; row++) {
-    uint32_t offset = table->GetX();
+  uint16_t row_count = 0;
+  for (auto row : rows_) {
+    uint32_t offset = GetX();
 
-    for (column = 0; column < table->row_[row].cells_; column++) {
+    for (auto column : row.cells_) {
       uint32_t pos = 0;
-      uint32_t tmp = table->row_[row].widths_[column] * ((double)table->GetWidth() / 100);
+      uint32_t tmp = column.GetWidth() * ((double)width_ / 100);
 
-      GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, table->row_[row].cell_[column].weight,
-                                 table->fontname_, 12);
+      GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, row.GetFontWeight(),
+                                 ConfigData::GetInstance()->GetThemeFont(), 12);
 
-      GetRenderer()->SetColourForeground(table->row_[row].cell_[column].foreground.red,
-                                         table->row_[row].cell_[column].foreground.green,
-                                         table->row_[row].cell_[column].foreground.blue);
-      GetRenderer()->SetColourBackground(table->row_[row].cell_[column].background.red,
-                                         table->row_[row].cell_[column].background.green,
-                                         table->row_[row].cell_[column].background.blue);
-      GetRenderer()->DrawRectangle(offset, table->GetY() - (height * row), tmp, height, true);
+      GetRenderer()->SetColourForeground(column.GetForegroundColour());
+      GetRenderer()->SetColourBackground(column.GetBackgroundColour());
+      GetRenderer()->DrawRectangle(offset, GetY() - (GetY() * row_count), tmp, height, true);
 
-      GetRenderer()->DrawColor(table->row_[row].cell_[column].textcolour.red,
-                               table->row_[row].cell_[column].textcolour.green,
-                               table->row_[row].cell_[column].textcolour.blue);
+      GetRenderer()->DrawColor(HMI_WHITE);
 
-      uint32_t w = GetRenderer()->GetTextWidth(table->row_[row].cell_[column].text, 12);
+      uint32_t w = GetRenderer()->GetTextWidth(column.GetText(), 12);
 
-      switch (table->row_[row].cell_[column].align) {
+      switch (column.GetCellAlignment()) {
         case widget::CellAlignType::kAlignCentre:
           pos = offset + (tmp / 2 - w / 2);
           break;
@@ -81,9 +73,10 @@ void WidgetTable::DrawTable(GvaTable* table) {
           break;
       }
       GetRenderer()->SetTextFontSize(12);
-      GetRenderer()->DrawText(pos, table->GetY() - (height * row) + 5, table->row_[row].cell_[column].text);
+      GetRenderer()->DrawText(pos, GetY() - (GetY() * row_count) + 5, column.GetText());
       offset += tmp;
     }
+    row_count++;
   }
 }
 

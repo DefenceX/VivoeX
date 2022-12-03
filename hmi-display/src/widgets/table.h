@@ -150,13 +150,6 @@ class WidgetTable : public WidgetX {
   void Draw() override;
 
   ///
-  /// \brief Draw the table from the supplied GvaTable object
-  ///
-  /// \param table
-  ///
-  void SetTable(GvaTable *table);
-
-  ///
   /// \brief This is the class describing a TableWidget row
   ///
   ///
@@ -188,30 +181,30 @@ class WidgetTable : public WidgetX {
     std::vector<CellType> cells_;
 
     ///
-    /// \brief Get the Foreground Colour object
+    /// \brief Get the Foreground Colour
     ///
-    /// \brief Get the Background Colour object
+    /// \brief Get the Background Colour
     ///
     /// \return uint32_t
     ///
     uint32_t GetForegroundColour() const;
 
     /// table_
-    ///  \brief Get the Background Colour object
+    ///  \brief Get the Background Colour
     ///
     ///  \return uint32_t
     ///
     uint32_t GetBackgroundColour() const;
 
     ///
-    /// \brief Get the Outline Colour object
+    /// \brief Get the Outline Colour
     ///
     /// \return uint32_t
     ///
     uint32_t GetOutlineColour() const;
 
     ///
-    /// \brief Get the Highlight Colour object
+    /// \brief Get the Highlight Colour
     ///
     /// \return uint32_t
     ///
@@ -220,7 +213,7 @@ class WidgetTable : public WidgetX {
     ///
     /// \brief Get the Font Weight object
     ///
-    /// \return WeightTypetable_
+    /// \return widget::WeightType
     ///
     widget::WeightType GetFontWeight() const;
 
@@ -233,7 +226,7 @@ class WidgetTable : public WidgetX {
     bool GetHighlighted() const;
 
     ///
-    /// \brief Set the Highlighted object
+    /// \brief Set the Highlighted flag
     ///
     /// \param value
     ///
@@ -328,17 +321,12 @@ class WidgetTable : public WidgetX {
   void Reset();
 
   bool visible_;
-  uint32_t height_;
-  uint32_t width_;
-  uint32_t x_;
-  uint32_t y_;
   uint32_t current_row_ = 3;
   uint32_t background_colour_;
   std::vector<RowType> rows_;
 
  private:
-  GvaTable *table_;
-  void DrawTable(GvaTable *table);
+  void DrawTable();
   TouchGva *touch_;
 };
 

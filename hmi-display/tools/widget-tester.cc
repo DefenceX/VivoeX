@@ -59,6 +59,7 @@
 #include <ctime>
 
 #include "src/gva.h"
+#include "src/hmi_gva_helpers.h"
 #include "src/renderer_gva.h"
 #include "src/widgets/alarm_indicator.h"
 #include "src/widgets/bottom_labels.h"
@@ -389,7 +390,17 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       mode.Draw();
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/mode_01.png").c_str());
+    case 25:
       break;
+      {
+        gva::HmiHelper::TableAlarms(&table);
+        table.SetX(100);
+        table.SetY(50);
+        table.SetWidth(440);
+        table.Draw();
+      }
+      break;
+
     default:
       counter = 9999;  // Cause loop to end and terminate
       break;
@@ -459,6 +470,7 @@ int main(int argc, char *argv[]) {
         std::cout << "       22: Labels for bottom of screen, control " << std::endl;
         std::cout << "       23: Labels for side of screen, used for both left and right hand sides " << std::endl;
         std::cout << "       24: Operator mode, visual indication of the non operational mode/s" << std::endl;
+        std::cout << "       25: Table example, sample alarms/s" << std::endl;
         return 0;
       case 't':
         timeout = atoi(optarg);

@@ -41,6 +41,14 @@ void WidgetX::SetY(uint32_t y) { y_ = y; }
 
 uint32_t WidgetX::GetY() const { return y_; }
 
+void WidgetX::SetWidth(uint32_t width) { width_ = width; }
+
+uint32_t WidgetX::GetWidth() const { return width_; }
+
+void WidgetX::SetHeight(uint32_t height) { height_ = height; }
+
+uint32_t WidgetX::GetHeight() const { return height_; }
+
 widget::WidgetEnum WidgetX::GetType() const { return widget_type_; }
 
 RendererGva* WidgetX::GetRenderer() const { return const_cast<gva::RendererGva*>(&renderer_); }

@@ -32,17 +32,16 @@ void HmiHelper::TableLicences(WidgetTable *table) {
   table->Reset();
   table->visible_ = true;
 
-  table->x_ = 110;
-  table->y_ = 390;
-  table->width_ = 420;
+  table->SetX(110);
+  table->SetY(390);
+  table->SetWidth(420);
 
   table->AddRow(widget::WeightType::kWeightBold);
   table->AddCell("Software", 80);
   table->AddCell("Licence", 20);
 
   table->AddRow();
-  char tmp[100];
-  snprintf(tmp, sizeof(tmp), "Vivoe Lite");
+  std::string tmp = "Vivoe Lite";
   table->AddCell(tmp, 80);
   table->AddCell("MIT", 20);
 
@@ -59,8 +58,8 @@ void HmiHelper::TableLicences(WidgetTable *table) {
   table->AddCell("ODbL", 20);
 
   table->AddRow();
-  table->AddCell("FastRTPS", 80);
-  table->AddCell("Apache-2.0", 20);
+  table->AddCell("Cyclone DDS", 80);
+  table->AddCell("Eclipse", 20);
 
   table->AddRow();
   table->AddCell("Protobuf", 80);
@@ -71,9 +70,9 @@ void HmiHelper::TableSystem(WidgetTable *table) {
   table->Reset();
   table->visible_ = true;
 
-  table->x_ = 110;
-  table->y_ = 390;
-  table->width_ = 420;
+  table->SetX(110);
+  table->SetY(390);
+  table->SetWidth(420);
 
   table->AddRow(widget::WeightType::kWeightBold);
   table->AddCell("Fuction", 80);
@@ -104,9 +103,9 @@ void HmiHelper::TableSystem(WidgetTable *table) {
 
 void HmiHelper::TableAlarms(WidgetTable *table) {
   table->visible_ = true;
-  table->x_ = 110;
-  table->y_ = 390;
-  table->width_ = 420;
+  table->SetX(110);
+  table->SetY(390);
+  table->SetWidth(420);
   table->background_colour_ = gva::ConfigData::GetInstance()->GetThemeBackground();
 
   table->AddRow(widget::WeightType::kWeightBold);

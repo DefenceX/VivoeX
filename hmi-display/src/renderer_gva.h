@@ -79,21 +79,6 @@ class GvaRow : public RenderBase {
   uint32_t cells_ = 0;
 };
 
-class GvaTable : public RenderBase {
- public:
-  GvaTable(uint32_t x, uint32_t y, uint32_t width) : RenderBase(x, y, width) {}
-  uint32_t AddRow(GvaRow newrow) {
-    row_[rows_++] = newrow;
-    return rows_;
-  }
-  void SetFontName(std::string name) { fontname_ = name; }
-  void SetBorderThickness(uint32_t thickness) { border_ = thickness; }
-  uint32_t rows_ = 0;
-  uint32_t border_ = gva::ConfigData::GetInstance()->GetThemeTableBorderThickness();
-  GvaRow row_[MAX_ROWS];
-  std::string fontname_ = "Courier";
-};
-
 class Hotspot : public RenderBase {
  public:
   Hotspot(GvaFunctionGroupEnum groupId, uint32_t x, uint32_t y) : RenderBase(x, y), group_id_(groupId), binding_(0) {}
@@ -202,19 +187,6 @@ class RendererGva : public RendererCairo {
   /// \param height Height of the icon
   ///
   void DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32_t width, uint32_t height);
-
-  ///
-  /// \brief Draw a table
-  ///
-  /// \param table The table values
-  ///
-  void DrawTable(GvaTable *table);
-
-  ///
-  /// \brief Draw the operational mode
-  ///
-  ///
-  void DrawMode();
 
   ///
   /// \brief Draw keyboard buttons
