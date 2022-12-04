@@ -87,7 +87,7 @@ static gva::WidgetBottomLabels bottom(renderer, &touch);
 static gva::WidgetSideLabels left(renderer, &touch);
 static gva::WidgetSideLabels right(renderer, &touch);
 static gva::WidgetMode mode(renderer);
-static gva::WidgetTable table(renderer, &touch);
+static gva::WidgetTable table(renderer, &touch, gva::ConfigData::GetInstance()->GetThemeBackground());
 
 static void do_drawing(cairo_t *, int width, int h);
 

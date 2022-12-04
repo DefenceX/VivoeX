@@ -105,7 +105,8 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
   widget_list_[widget::KWidgetTypeLeftLabels] = std::make_shared<WidgetSideLabels>(*renderer, touch);
   widget_list_[widget::KWidgetTypeRightLabels] = std::make_shared<WidgetSideLabels>(*renderer, touch);
   widget_list_[widget::KWidgetTypeRightLabels] = std::make_shared<WidgetSideLabels>(*renderer, touch);
-  widget_list_[widget::KWidgetTypeTable] = std::make_shared<WidgetTable>(*renderer, touch);
+  widget_list_[widget::KWidgetTypeTable] =
+      std::make_shared<WidgetTable>(*renderer, touch, ConfigData::GetInstance()->GetThemeBackground());
 }
 
 ScreenGva::~ScreenGva() {
@@ -319,10 +320,6 @@ GvaStatusTypes ScreenGva::Update() {
     auto table_widget = (WidgetTable *)GetWidget(widget::KWidgetTypeTable);
     table_widget->AddRow();
     for (auto row : table_widget->rows_) {
-      GvaRow newrow;
-      RgbUnpackedType f, b, o;
-      // for (uint32_t cell = 0; cell < table->rows_[row].cell_count_; cell++) {
-
       for (auto cell : row.cells_) {
         table_widget->AddCell(cell.GetText(), cell.GetWidth(), cell.GetCellAlignment(), cell.GetBackgroundColour());
       }

@@ -30,7 +30,7 @@ namespace gva {
 
 void HmiHelper::TableLicences(WidgetTable *table) {
   table->Reset();
-  table->visible_ = true;
+  table->SetVisible(true);
 
   table->SetX(110);
   table->SetY(390);
@@ -68,7 +68,7 @@ void HmiHelper::TableLicences(WidgetTable *table) {
 
 void HmiHelper::TableSystem(WidgetTable *table) {
   table->Reset();
-  table->visible_ = true;
+  table->SetVisible(true);
 
   table->SetX(110);
   table->SetY(390);
@@ -102,11 +102,11 @@ void HmiHelper::TableSystem(WidgetTable *table) {
 }
 
 void HmiHelper::TableAlarms(WidgetTable *table) {
-  table->visible_ = true;
+  table->SetVisible(true);
   table->SetX(110);
   table->SetY(390);
   table->SetWidth(420);
-  table->background_colour_ = gva::ConfigData::GetInstance()->GetThemeBackground();
+  table->SetBackgroundColour(gva::ConfigData::GetInstance()->GetThemeBackground());
 
   table->AddRow(widget::WeightType::kWeightBold);
   table->AddCell("Time", 20);

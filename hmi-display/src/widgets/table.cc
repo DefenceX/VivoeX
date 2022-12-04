@@ -28,8 +28,8 @@
 
 namespace gva {
 
-WidgetTable::WidgetTable(const RendererGva& renderer, TouchGva* touch)
-    : WidgetX(renderer, widget::KWidgetTypeTable), touch_(touch) {}
+WidgetTable::WidgetTable(const RendererGva& renderer, TouchGva* touch, uint32_t background_colour)
+    : WidgetX(renderer, widget::KWidgetTypeTable), touch_(touch), background_colour_(background_colour) {}
 
 void WidgetTable::Draw() { DrawTable(); }
 
@@ -101,11 +101,11 @@ std::string WidgetTable::CellType::GetText() const { return text_; }
 
 uint32_t WidgetTable::CellType::GetForegroundColour() const { return foreground_colour_; }
 
-uint32_t WidgetTable::CellType::GetBackgroundColour() const { return foreground_colour_; }
+uint32_t WidgetTable::CellType::GetBackgroundColour() const { return background_colour_; }
 
 uint32_t WidgetTable::CellType::GetOutlineColour() const { return foreground_colour_; }
 
-uint32_t WidgetTable::CellType::GetHighlightColour() const { return foreground_colour_; }
+uint32_t WidgetTable::CellType::GetHighlightColour() const { return highlight_colour_; }
 
 widget::CellAlignType WidgetTable::CellType::GetCellAlignment() const { return alignment_; }
 
@@ -125,11 +125,11 @@ WidgetTable::RowType::RowType(const uint32_t background_colour, const uint32_t f
 
 uint32_t WidgetTable::RowType::GetForegroundColour() const { return foreground_colour_; }
 
-uint32_t WidgetTable::RowType::GetBackgroundColour() const { return foreground_colour_; }
+uint32_t WidgetTable::RowType::GetBackgroundColour() const { return background_colour_; }
 
-uint32_t WidgetTable::RowType::GetOutlineColour() const { return foreground_colour_; }
+uint32_t WidgetTable::RowType::GetOutlineColour() const { return outline_colour_; }
 
-uint32_t WidgetTable::RowType::GetHighlightColour() const { return foreground_colour_; }
+uint32_t WidgetTable::RowType::GetHighlightColour() const { return highlight_colour_; }
 
 widget::WeightType WidgetTable::RowType::GetFontWeight() const { return font_weight_; }
 
@@ -173,18 +173,16 @@ void WidgetTable::AddCell(std::string text, uint32_t width, uint32_t background_
 }
 
 void WidgetTable::AddCell(std::string text, uint32_t width, widget::CellAlignType align, uint32_t background_colour) {
-  auto row = rows_.back();
   if (rows_.size()) {
-    CellType cell(text, width, row.GetBackgroundColour(), row.GetForegroundColour(), row.GetOutlineColour(),
-                  row.GetHighlightColour(), align);
-    row.cells_.push_back(cell);
+    CellType cell(text, width, background_colour_, foreground_colour_, outline_colour_, highlight_colour_, align);
+    rows_.back().cells_.push_back(cell);
   } else {
     logGva::log("[GVA] No rows could be found when adding new cell.", LOG_ERROR);
   }
 }
 
 void WidgetTable::Reset() {
-  visible_ = false;
+  SetVisible(false);
   rows_.clear();
 }
 

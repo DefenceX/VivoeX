@@ -45,7 +45,7 @@ class WidgetTable : public WidgetX {
   ///
   /// \param renderer
   ///
-  explicit WidgetTable(const RendererGva &renderer, TouchGva *touch);
+  explicit WidgetTable(const RendererGva &renderer, TouchGva *touch, uint32_t background_colour);
 
   ///
   /// \brief Destroy the Widget Keyboard object
@@ -178,7 +178,6 @@ class WidgetTable : public WidgetX {
       alignment_ = a.alignment_;
       return *this;
     }
-    std::vector<CellType> cells_;
 
     ///
     /// \brief Get the Foreground Colour
@@ -238,6 +237,8 @@ class WidgetTable : public WidgetX {
     /// \return CellAlignType
     ///
     widget::CellAlignType GetCellAlignment() const;
+
+    std::vector<CellType> cells_;
 
    private:
     uint32_t background_colour_ = 0;
@@ -320,14 +321,30 @@ class WidgetTable : public WidgetX {
   ///
   void Reset();
 
-  bool visible_;
-  uint32_t current_row_ = 3;
-  uint32_t background_colour_;
+  ///
+  /// \brief Get the Background Colour attribute
+  ///
+  /// \return uint32_t
+  ///
+  uint32_t GetBackgroundColour() { return background_colour_; }
+
+  ///
+  /// \brief Set the Background Colour attribute
+  ///
+  /// \param background_colour
+  ///
+  void SetBackgroundColour(uint32_t background_colour) { background_colour_ = background_colour; }
+
   std::vector<RowType> rows_;
 
  private:
   void DrawTable();
   TouchGva *touch_;
+  uint32_t current_row_ = 3;
+  uint32_t background_colour_;
+  uint32_t foreground_colour_ = Renderer::PackRgb(HMI_WHITE);
+  uint32_t outline_colour_ = Renderer::PackRgb(HMI_WHITE);
+  uint32_t highlight_colour_ = Renderer::PackRgb(HMI_WHITE);
 };
 
 }  // namespace gva
