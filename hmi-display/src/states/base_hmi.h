@@ -104,6 +104,7 @@ struct Hmi : tinyfsm::Fsm<Hmi> {
   static GvaKeyEnum KeySTR(GvaKeyEnum key);
   static GvaKeyEnum KeyCOM(GvaKeyEnum key);
   static GvaKeyEnum KeyBMS(GvaKeyEnum key);
+  static GvaKeyEnum KeyAlarms(GvaKeyEnum key);
   static void Reset();
   static void SetCanvasPng(std::string file);
   static ScreenGva *GetRendrer() { return screen_render_; }

@@ -153,6 +153,8 @@ void Hmi::Reset() {
   screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetY(360 + 28);
   screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetX(161);
   screen_.control->visible_ = true;
+  screen_.control->SetDisabled(4);  // Up Arrow
+  screen_.control->SetDisabled(5);  // Down Arrow
   screen_.message.visible = false;
   screen_.info.mode = ScreenMode::kModeOperational;
   alarmson_ = false;
@@ -278,11 +280,11 @@ GvaKeyEnum Hmi::Key(GvaKeyEnum keypress) {
       screen_.control->SetEnabled(3);
       screen_.control->ResetAllEnabled();
       break;
-    case GvaKeyEnum::kKeyF17:
+    case GvaKeyEnum::kKeyF17:  // Up Arrow
       screen_.control->SetEnabled(4);
       screen_.control->ResetAllEnabled();
       break;
-    case GvaKeyEnum::kKeyF18:
+    case GvaKeyEnum::kKeyF18:  // Down Arrow
       screen_.control->SetEnabled(5);
       screen_.control->ResetAllEnabled();
       break;

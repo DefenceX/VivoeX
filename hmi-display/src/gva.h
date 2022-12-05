@@ -72,7 +72,7 @@ class StateBase {
     }
   }
   void StateEnabledSelected(LabelStates* state) const {
-    if ((*state != LabelStates::kLabelDisabled) && (*state != LabelStates::kLabelHidden)) {
+    if (*state != LabelStates::kLabelDisabled) {
       *state = LabelStates::kLabelEnabledSelected;
     }
   }
@@ -256,6 +256,7 @@ class CommonTaskKeys : public StateBase {
   void SetEnabled(int index) {
     ResetAllEnabled();
     StateEnabledSelected(&labels_[index].state_);
+    labels_[index].state_ = LabelStates::kLabelEnabled;
   }
 
   ///

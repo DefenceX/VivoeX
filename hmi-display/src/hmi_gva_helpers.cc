@@ -132,7 +132,6 @@ void HmiHelper::TableAlarms(WidgetTable *table) {
   table->AddCell("UNACK", 20);
 
   table->AddRow();
-  table->CurrentRowHighlight();
   table->AddCell("15/6 15:29", 20);
   table->AddCell("Engine over temperature", 50);
   table->AddCell("W", 10);

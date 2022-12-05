@@ -50,6 +50,19 @@
 
 namespace gva {
 
+GvaKeyEnum Hmi::KeyAlarms(GvaKeyEnum keypress) {
+  WidgetTable *table = (WidgetTable *)screen_render_->GetWidget(widget::KWidgetTypeTable);
+
+  switch (keypress) {
+    case GvaKeyEnum::kKeyF17:  // Down Arrow
+      table->SetPreviousRow();
+      break;
+    case GvaKeyEnum::kKeyF18:  // Up Arrow
+      table->SetNextRow();
+      break;
+  }
+};
+
 void StateAlarms::entry() {
   // Check to see if alarms was requested from hidden state, if so go back to last menu.
   if (screen_.control->labels_[1].state_ != LabelStates::kLabelHidden) {
@@ -116,6 +129,9 @@ void StateAlarms::react(EventKeyBMS const &) { transit<StateBMS>(); };
 
 void StateAlarms::react(EventKeyAlarms const &) { transit<StateAlarms>(); };
 
-void StateAlarms::react(EventKeyFunction const &e) { Key(e.key); };
+void StateAlarms::react(EventKeyFunction const &e) {
+  Key(e.key);
+  KeyAlarms(e.key);
+};
 
 }  // namespace gva

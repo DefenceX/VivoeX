@@ -87,12 +87,6 @@ class WidgetTable : public WidgetX {
   void AddRow(widget::WeightType font_weight);
 
   ///
-  /// \brief Set the highlighted row
-  ///
-  ///
-  void CurrentRowHighlight();
-
-  ///
   /// widgets \brief Add a basic cell
   ///
   /// \param text The text to be contained in the cell
@@ -152,6 +146,14 @@ class WidgetTable : public WidgetX {
   /// \param row
   ///
   void SetCurrentRow(uint32_t row) { current_row_ = row; }
+
+  void SetNextRow() {
+    if (current_row_ < rows_.size() - 2) current_row_++;
+  }
+
+  void SetPreviousRow() {
+    if (current_row_ > 1) current_row_--;
+  }
 
   ///
   /// \brief Get the Current selected highlighted row
