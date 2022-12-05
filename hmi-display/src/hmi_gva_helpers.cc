@@ -69,6 +69,7 @@ void HmiHelper::TableLicences(WidgetTable *table) {
 void HmiHelper::TableSystem(WidgetTable *table) {
   table->Reset();
   table->SetVisible(true);
+  table->SetBackgroundColour(ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
 
   table->SetX(110);
   table->SetY(390);
@@ -102,17 +103,20 @@ void HmiHelper::TableSystem(WidgetTable *table) {
 }
 
 void HmiHelper::TableAlarms(WidgetTable *table) {
+  table->Reset();
   table->SetVisible(true);
+  table->SetBackgroundColour(ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
+
   table->SetX(110);
-  table->SetY(390);
+  table->SetY(423);
   table->SetWidth(420);
-  table->SetBackgroundColour(gva::ConfigData::GetInstance()->GetThemeBackground());
 
   table->AddRow(widget::WeightType::kWeightBold);
   table->AddCell("Time", 20);
   table->AddCell("Alarm Text", 50);
   table->AddCell("Cat", 10);
   table->AddCell("Status", 20);
+  table->SetCurrentRow(1);
 
   table->AddRow();
   table->AddCell("15/6 15:06", 20);

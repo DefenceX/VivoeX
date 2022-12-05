@@ -60,6 +60,7 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
   SetLineThickness(1, LineType::kLineSolid);
 
   Translate(x, y);
+  Rotate(M_PI);
 
   switch (icon) {
     case widget::IconType::kIconDownArrow:
@@ -119,7 +120,8 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
       MovePenRaw(5, -6);
       DrawPenRaw(5, -1);
       MovePenRaw(5, -6);
-      DrawPenRaw(9, -6);
+      Rotate(M_PI);
+
       ClosePath(true);
       break;
     case widget::IconType::kIconRotateRight:
@@ -151,6 +153,8 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
     case widget::IconType::kIconError:
     case widget::IconType::kIconInfo:
     case widget::IconType::kIconWarning:
+      Rotate(M_PI);
+
       SetLineThickness(2, LineType::kLineSolid);
       if (icon == widget::IconType::kIconError) SetColourBackground(HMI_GREEN);
       if (icon == widget::IconType::kIconError) SetColourBackground(HMI_RED);

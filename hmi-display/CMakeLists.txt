@@ -89,10 +89,10 @@ set(SOURCES main.cc
 link_libraries(-lstdc++fs)
 add_executable(hmi-display ${PROTO_SRCS} ${SOURCES})
 if (ENABLE_OSMSCOUT)
-	add_dependencies(hmi-display config-proto hmi-video libosmscout)
+	add_dependencies(hmi-display geographiclib hmi-video config-proto ${DDS_STACK} libosmscout)
         set(OSMSCOUT_LIBS osmscout osmscout_map osmscout_map_cairo)
 else()
-	add_dependencies(hmi-display hmi-video config-proto ${DDS_STACK})
+	add_dependencies(hmi-display geographiclib hmi-video config-proto ${DDS_STACK})
 endif()
 
 target_link_libraries (hmi-display ${GEOGRAPHIC_LIBRARIES} GeographicLib config-proto ${OSMSCOUT_LIBS} ${Protobuf_LIBRARIES} ${GTK_LIBRARIES3} stdc++fs)

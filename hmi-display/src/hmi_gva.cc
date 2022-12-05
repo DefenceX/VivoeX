@@ -148,6 +148,7 @@ void Hmi::Reset() {
   screen_.function_top->ResetAllEnabled();
   screen_.canvas.visible = false;
   screen_.canvas.bufferType = SurfaceType::kSurfaceNone;
+  screen_render_->GetWidget(widget::KWidgetTypeTable)->SetVisible(false);
   screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetVisible(false);
   screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetY(360 + 28);
   screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetX(161);

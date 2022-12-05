@@ -47,14 +47,14 @@ void WidgetTable::DrawTable() {
 
     for (auto column : *row.GetCells()) {
       uint32_t pos = 0;
-      uint32_t tmp = column.GetWidth() * ((double)width_ / 100);
+      uint32_t cell_width = (float)(GetWidth() / (float)100) * column.GetWidth();  // As a percentage of thetable width
 
       GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, row.GetFontWeight(),
                                  ConfigData::GetInstance()->GetThemeFont(), 12);
 
       GetRenderer()->SetColourForeground(column.GetForegroundColour());
       GetRenderer()->SetColourBackground(column.GetBackgroundColour());
-      GetRenderer()->DrawRectangle(offset, GetY() - (GetY() * row_count), tmp, height, true);
+      GetRenderer()->DrawRectangle(offset, (GetY() - (row_count * height)), cell_width, height, true);
 
       GetRenderer()->DrawColor(HMI_WHITE);
 
@@ -62,20 +62,25 @@ void WidgetTable::DrawTable() {
 
       switch (column.GetCellAlignment()) {
         case widget::CellAlignType::kAlignCentre:
-          pos = offset + (tmp / 2 - w / 2);
+          pos = offset + (cell_width / 2 - w / 2);
           break;
         case widget::CellAlignType::kAlignRight:
-          pos = offset + (tmp - w - 4);
+          pos = offset + (cell_width - w - 4);
           break;
         case widget::CellAlignType::kAlignLeft:
         default:
           pos = offset + 4;
           break;
       }
-      GetRenderer()->DrawText(pos, GetY() - (GetY() * row_count) + 5, column.GetText());
-      offset += tmp;
+      GetRenderer()->DrawText(pos, (GetY() - (row_count * height)) + 6, column.GetText());
+      offset += cell_width;
     }
     row_count++;
+  }
+  // Highlight the selected row
+  if (current_row_) {
+    GetRenderer()->DrawColor(highlight_colour_);
+    GetRenderer()->DrawRectangle(GetX(), (GetY() - (current_row_ * height)), GetWidth(), height, false);
   }
 }
 
@@ -90,16 +95,6 @@ void WidgetTable::AddRow() {
   RowType row(ConfigData::GetInstance()->GetTableBackground(), Renderer::PackRgb(HMI_WHITE),
               Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_YELLOW), widget::WeightType::kWeightNormal, false,
               widget::CellAlignType::kAlignLeft);
-
-  CellType cell("Test", 1, 2, 3, 4, 5, widget::CellAlignType::kAlignLeft);
-  row.GetCells()->push_back(cell);
-  row.GetCells()->push_back(cell);
-  row.GetCells()->push_back(cell);
-  row.GetCells()->push_back(cell);
-
-  RowType row2 = row;
-  rows_.push_back(row);
-  rows_.push_back(row);
   rows_.push_back(row);
 }
 
@@ -130,6 +125,7 @@ void WidgetTable::AddCell(std::string text, uint32_t width, widget::CellAlignTyp
 }
 
 void WidgetTable::Reset() {
+  current_row_ = 0;
   SetVisible(false);
   rows_.clear();
 }

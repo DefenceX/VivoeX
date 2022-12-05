@@ -40,5 +40,5 @@ target_include_directories(widget-tester PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CM
 target_compile_options(widget-tester PUBLIC ${CAIRO_CFLAGS_OTHER} ${GTK3_CFLAGS_OTHER})
 set_target_properties(widget-tester PROPERTIES UNITY_BUILD ON)
 
-add_dependencies(widget-tester libnmea config-proto)
+add_dependencies(widget-tester geographiclib libnmea config-proto)
 

@@ -210,7 +210,10 @@
     "cSpell.words": [
         "defencex",
         "mgrs",
-        "northp"
+        "northp",
+        "rightarrow",
+        "rotateleft",
+        "rotateright"
     ],
     "sonarlint.connectedMode.project": {
         "connectionId": "defencex",

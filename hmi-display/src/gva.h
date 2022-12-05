@@ -34,7 +34,7 @@ namespace gva {
 
 static const uint32_t kSemVerMajor = 0;
 static const uint32_t kSemVerMinor = 3;
-static const uint32_t kSemVerPatch = 1289;
+static const uint32_t kSemVerPatch = 1295;
 static const uint32_t kMinimumHeight = 480;
 static const uint32_t kMinimumWidth = 640;
 
@@ -242,6 +242,12 @@ class CommonTaskKeys : public StateBase {
     ResetAllEnabledSelected();
     StateEnabledSelectedChanging(&labels_[index].state_);
   }
+
+  ///
+  /// \brief Set the label to Enabled
+  ///
+  ///
+  void SetDisabled(int index) { labels_[index].state_ = LabelStates::kLabelDisabled; }
 
   ///
   /// \brief Set the label to Enabled

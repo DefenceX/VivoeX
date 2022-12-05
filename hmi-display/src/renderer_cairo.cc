@@ -48,6 +48,8 @@ RendererCairo::RendererCairo(uint32_t width, uint32_t height) : Renderer(width, 
   texture_ = 0;
   image_tail_ = 0;
   config_ = gva::ConfigData::GetInstance();
+  render_.size.width = gva::kMinimumWidth;
+  render_.size.height = gva::kMinimumHeight;
 }
 
 RendererCairo::~RendererCairo() {

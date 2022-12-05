@@ -290,24 +290,29 @@ GvaStatusTypes ScreenGva::Update() {
   }
 
   // Setup and Draw the status bar, one row table
-  if (screen_->status_bar->visible) {
+  // if (screen_->status_bar->visible)
+  {
+    WidgetTable status_bar_table(*(RendererGva *)this, GetTouch(),
+                                 ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
     uint32_t i = 0;
     // Setup and Draw the status bar, one row table
     uint32_t widths[7] = {23, 8, 37, 8, 8, 8, 8};
-    auto table = (WidgetTable *)GetWidget(widget::KWidgetTypeTable);
-    table->SetX(1);
-    table->SetY(screen_->status_bar->y);
-    table->SetWidth(640);
-    table->AddRow();
+    status_bar_table.SetVisible(true);
+    status_bar_table.SetX(1);
+    status_bar_table.SetY(gva::kMinimumHeight - 34);
+    status_bar_table.SetWidth(640);
+    status_bar_table.SetBackgroundColour(ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
+
+    status_bar_table.AddRow();
 
     // Update the status bar cells
     screen_->status_bar->labels[0].text = args_.clockString;
     screen_->status_bar->labels[1].text = args_.locationFormat;
     screen_->status_bar->labels[2].text = args_.locationString;
     for (i = 0; i < 7; i++) {
-      table->AddCell(screen_->status_bar->labels[i].text, widths[i], widget::CellAlignType::kAlignLeft);
+      status_bar_table.AddCell(screen_->status_bar->labels[i].text, widths[i], widget::CellAlignType::kAlignLeft);
     }
-    table->Draw();
+    status_bar_table.Draw();
   }
 
   // TODO : Draw the alarms if any (Mock up)
@@ -318,12 +323,6 @@ GvaStatusTypes ScreenGva::Update() {
   // Setup and Draw the alarms
   if (widget_list_[widget::KWidgetTypeTable]->GetVisible()) {
     auto table_widget = (WidgetTable *)GetWidget(widget::KWidgetTypeTable);
-    table_widget->AddRow();
-    for (auto row : table_widget->GetRows()) {
-      for (auto cell : *row.GetCells()) {
-        table_widget->AddCell(cell.GetText(), cell.GetWidth(), cell.GetCellAlignment(), cell.GetBackgroundColour());
-      }
-    }
     table_widget->Draw();
   }
 
@@ -338,21 +337,22 @@ GvaStatusTypes ScreenGva::Update() {
 
   // Generic message box
   if (screen_->message.visible) {
-    auto table = (WidgetTable *)GetWidget(widget::KWidgetTypeTable);
-    table->SetX(320 - 150);
-    table->SetY(260);
-    table->SetWidth(300);
+    WidgetTable message_box_table(*(RendererGva *)this, GetTouch(),
+                                  ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
+    message_box_table.SetX((gva::kMinimumWidth / 2) - 150);
+    message_box_table.SetY(260);
+    message_box_table.SetWidth(300);
+    message_box_table.SetBackgroundColour(ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
 
     uint32_t background = gva::ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled();
 
-    table->AddRow();
-    table->AddCell(screen_->message.detail.text, 300, widget::CellAlignType::kAlignCentre, background);
+    message_box_table.AddRow();
+    message_box_table.AddCell("System Information", 100, widget::CellAlignType::kAlignCentre, background);
 
-    table->AddRow();
-    table->AddCell(screen_->message.detail.text, 300, widget::CellAlignType::kAlignCentre, background);
+    message_box_table.AddRow();
+    message_box_table.AddCell(screen_->message.detail.text, 100, widget::CellAlignType::kAlignCentre, background);
 
-    auto table_widget = (WidgetTable *)GetWidget(widget::KWidgetTypeTable);
-    table_widget->Draw();
+    message_box_table.Draw();
 
     DrawIcon(screen_->message.icon, 320 - 150 + 300 - 17, 270, 11, 11);
   }

@@ -254,7 +254,7 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeySystemsRight() {
   keys.visible = true;
   keys.labels[0].text = "Commander.Health";
   keys.labels[0].toggleActive = false;
-  keys.labels[1].state = LabelStates::kLabelEnabled;
+  keys.labels[1].state = LabelStates::kLabelDisabled;
   keys.labels[1].text = "Gunner.Health";
   keys.labels[1].toggleActive = false;
   keys.labels[2].state = LabelStates::kLabelDisabled;
@@ -278,7 +278,7 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeySystemsLeft() {
   keys.labels[0].state = LabelStates::kLabelEnabledSelected;
   keys.labels[0].text = "Overview";
   keys.labels[0].toggleActive = false;
-  keys.labels[1].state = LabelStates::kLabelEnabled;
+  keys.labels[1].state = LabelStates::kLabelDisabled;
   keys.labels[1].text = "Automotive";
   keys.labels[1].toggleActive = false;
   keys.labels[2].state = LabelStates::kLabelDisabled;
@@ -287,7 +287,7 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeySystemsLeft() {
   keys.labels[2].state = LabelStates::kLabelDisabled;
   keys.labels[3].text = "System";
   keys.labels[3].toggleActive = false;
-  keys.labels[4].state = LabelStates::kLabelDisabled;
+  keys.labels[4].state = LabelStates::kLabelEnabled;
   keys.labels[4].text = "Licences";
   keys.labels[4].toggleActive = false;
   keys.labels[5].state = LabelStates::kLabelDisabled;

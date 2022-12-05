@@ -147,6 +147,21 @@ class WidgetTable : public WidgetX {
   void SetBackgroundColour(uint32_t background_colour) { background_colour_ = background_colour; }
 
   ///
+  /// \brief Set the Current selected row, will be highlighted in the theme colours
+  ///
+  /// \param row
+  ///
+  void SetCurrentRow(uint32_t row) { current_row_ = row; }
+
+  ///
+  /// \brief Get the Current selected highlighted row
+  ///
+  /// \param row
+  /// \return uint32_t
+  ///
+  uint32_t GetCurrentRow() const { return current_row_; }
+
+  ///
   /// \brief Get the Rows vector
   ///
   /// \return std::vector<RowType>&
@@ -158,11 +173,11 @@ class WidgetTable : public WidgetX {
   void DrawTable();
   TouchGva *touch_;
   uint32_t current_cell_ = 0;
-  uint32_t current_row_ = 3;
+  uint32_t current_row_ = 0;
   uint32_t background_colour_;
   uint32_t foreground_colour_ = Renderer::PackRgb(HMI_WHITE);
-  uint32_t outline_colour_ = Renderer::PackRgb(HMI_WHITE);
-  uint32_t highlight_colour_ = Renderer::PackRgb(HMI_WHITE);
+  uint32_t outline_colour_ = ConfigData::GetInstance()->GetThemeLabelBorderEnabled();
+  uint32_t highlight_colour_ = ConfigData::GetInstance()->GetThemeLabelBorderEnabledSelected();
 };
 
 }  // namespace gva
