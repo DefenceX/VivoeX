@@ -41,6 +41,44 @@ RowType::RowType(const uint32_t background_colour, const uint32_t foreground_col
       highlighted_(highlighted),
       alignment_(alignment) {}
 
+RowType::RowType(const RowType &a)
+    : background_colour_(a.background_colour_),
+      foreground_colour_(a.foreground_colour_),
+      outline_colour_(a.outline_colour_),
+      highlight_colour_(a.highlight_colour_),
+      font_weight_(a.font_weight_),
+      highlighted_(a.highlighted_),
+      alignment_(a.alignment_) {}
+
+// RowType &RowType::operator=(const RowType &a) {
+//   background_colour_ = a.background_colour_;
+//   foreground_colour_ = a.foreground_colour_;
+//   outline_colour_ = a.outline_colour_;
+//   highlight_colour_ = a.highlight_colour_;
+//   font_weight_ = a.font_weight_;
+//   highlighted_ = a.highlighted_;
+//   alignment_ = a.alignment_;
+//   for (auto cell : a.cells_) {
+//     cells_.push_back(cell);
+//   };
+//   return *this;
+// }
+
+RowType &RowType::operator=(const RowType &a) {
+  background_colour_ = a.background_colour_;
+  foreground_colour_ = a.foreground_colour_;
+  outline_colour_ = a.outline_colour_;
+  highlight_colour_ = a.highlight_colour_;
+  font_weight_ = a.font_weight_;
+  highlighted_ = a.highlighted_;
+  alignment_ = a.alignment_;
+  printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
+  for (auto cell : a.cells_) {
+    cells_.push_back(cell);
+  };
+  return *this;
+}
+
 uint32_t RowType::GetForegroundColour() const { return foreground_colour_; }
 
 uint32_t RowType::GetBackgroundColour() const { return background_colour_; }

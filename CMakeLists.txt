@@ -223,6 +223,9 @@ install(FILES ${CMAKE_BINARY_DIR}/etc/profile.d/vivoe-lite.sh DESTINATION "/etc/
 install(FILES ${CMAKE_BINARY_DIR}/external/libnmea/build/src/libnmealib.so 
               ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build/libvivoe-media.so
               ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build/libvivoe-media.so.1
+              ${CMAKE_BINARY_DIR}/external/geographiclib/src/build/src/libGeographicLib.so
+              ${CMAKE_BINARY_DIR}/external/geographiclib/src/build/src/libGeographicLib.so.23
+              ${CMAKE_BINARY_DIR}/external/geographiclib/src/build/src/libGeographicLib.so.23.0.1
               ${DDS_LIBS}
         DESTINATION "/opt/gva/libs" PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE GROUP_WRITE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_WRITE WORLD_EXECUTE)
 

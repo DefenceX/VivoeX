@@ -12,6 +12,7 @@ set(SOURCE_FILES widget-tester.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/renderer_cairo.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/config_reader.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/events_gva.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/hmi_gva_helpers.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/widget.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/compass.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/keyboard.cc

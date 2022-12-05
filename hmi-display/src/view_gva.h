@@ -62,7 +62,7 @@ class ViewGva {
     valid_ = true;
   }
   bool Valid() { return valid_; }
-  bool Release() { valid_ = false; }
+  void Release() { valid_ = false; }
   void AddToggle(GvaKeyEnum key, bool rightActive, char *rightText, bool leftActive, char *leftText) {}
   FunctionSelect *GetTop() { return function_top_; }
   CommonTaskKeys *GetBottom() { return common_bottom_; }

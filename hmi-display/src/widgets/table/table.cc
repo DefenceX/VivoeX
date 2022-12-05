@@ -45,7 +45,7 @@ void WidgetTable::DrawTable() {
   for (auto row : rows_) {
     uint32_t offset = GetX();
 
-    for (auto column : row.cells_) {
+    for (auto column : *row.GetCells()) {
       uint32_t pos = 0;
       uint32_t tmp = column.GetWidth() * ((double)width_ / 100);
 
@@ -90,6 +90,16 @@ void WidgetTable::AddRow() {
   RowType row(ConfigData::GetInstance()->GetTableBackground(), Renderer::PackRgb(HMI_WHITE),
               Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_YELLOW), widget::WeightType::kWeightNormal, false,
               widget::CellAlignType::kAlignLeft);
+
+  CellType cell("Test", 1, 2, 3, 4, 5, widget::CellAlignType::kAlignLeft);
+  row.GetCells()->push_back(cell);
+  row.GetCells()->push_back(cell);
+  row.GetCells()->push_back(cell);
+  row.GetCells()->push_back(cell);
+
+  RowType row2 = row;
+  rows_.push_back(row);
+  rows_.push_back(row);
   rows_.push_back(row);
 }
 
@@ -113,7 +123,7 @@ void WidgetTable::AddCell(std::string text, uint32_t width, uint32_t background_
 void WidgetTable::AddCell(std::string text, uint32_t width, widget::CellAlignType align, uint32_t background_colour) {
   if (rows_.size()) {
     CellType cell(text, width, background_colour_, foreground_colour_, outline_colour_, highlight_colour_, align);
-    rows_.back().cells_.push_back(cell);
+    rows_.back().GetCells()->push_back(cell);
   } else {
     logGva::log("[GVA] No rows could be found when adding new cell.", LOG_ERROR);
   }

@@ -17,7 +17,7 @@
 /// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 /// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ///
-/// \brief
+/// \brief A class capturing all the cell attributes in a table
 ///
 /// \file cell_type.h
 ///
@@ -41,24 +41,8 @@ class CellType {
            const uint32_t foreground_colour, const uint32_t outline_colour, const uint32_t highlight_colour,
            const widget::CellAlignType alignment);
 
-  CellType(const CellType &a)
-      : width_(a.width_),
-        text_(a.text_),
-        background_colour_(a.background_colour_),
-        foreground_colour_(a.foreground_colour_),
-        outline_colour_(a.outline_colour_),
-        highlight_colour_(a.highlight_colour_),
-        alignment_(a.alignment_) {}
-  CellType &operator=(const CellType &a) {
-    width_ = a.width_;
-    text_ = a.text_;
-    background_colour_ = a.background_colour_;
-    foreground_colour_ = a.foreground_colour_;
-    outline_colour_ = a.outline_colour_;
-    highlight_colour_ = a.highlight_colour_;
-    alignment_ = a.alignment_;
-    return *this;
-  }
+  CellType(const CellType &a);
+  CellType &operator=(const CellType &a);
 
   ///
   /// \brief Get the Width object

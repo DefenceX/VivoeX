@@ -390,16 +390,13 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       mode.Draw();
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/mode_01.png").c_str());
-    case 25:
-      break;
-      {
-        gva::HmiHelper::TableAlarms(&table);
-        table.SetX(100);
-        table.SetY(50);
-        table.SetWidth(440);
-        table.Draw();
-      }
-      break;
+    case 25: {
+      gva::HmiHelper::TableAlarms(&table);
+      table.SetX(100);
+      table.SetY(50);
+      table.SetWidth(440);
+      table.Draw();
+    } break;
 
     default:
       counter = 9999;  // Cause loop to end and terminate

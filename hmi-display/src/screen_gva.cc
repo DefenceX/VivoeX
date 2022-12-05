@@ -319,8 +319,8 @@ GvaStatusTypes ScreenGva::Update() {
   if (widget_list_[widget::KWidgetTypeTable]->GetVisible()) {
     auto table_widget = (WidgetTable *)GetWidget(widget::KWidgetTypeTable);
     table_widget->AddRow();
-    for (auto row : table_widget->rows_) {
-      for (auto cell : row.cells_) {
+    for (auto row : table_widget->GetRows()) {
+      for (auto cell : *row.GetCells()) {
         table_widget->AddCell(cell.GetText(), cell.GetWidth(), cell.GetCellAlignment(), cell.GetBackgroundColour());
       }
     }

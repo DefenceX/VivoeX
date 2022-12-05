@@ -146,11 +146,18 @@ class WidgetTable : public WidgetX {
   ///
   void SetBackgroundColour(uint32_t background_colour) { background_colour_ = background_colour; }
 
-  std::vector<RowType> rows_;
+  ///
+  /// \brief Get the Rows vector
+  ///
+  /// \return std::vector<RowType>&
+  ///
+  std::vector<RowType> &GetRows() { return rows_; }
 
  private:
+  std::vector<RowType> rows_;
   void DrawTable();
   TouchGva *touch_;
+  uint32_t current_cell_ = 0;
   uint32_t current_row_ = 3;
   uint32_t background_colour_;
   uint32_t foreground_colour_ = Renderer::PackRgb(HMI_WHITE);

@@ -41,6 +41,26 @@ CellType::CellType(const std::string text, const uint32_t width, const uint32_t 
   return;
 }
 
+CellType::CellType(const CellType &a)
+    : width_(a.width_),
+      text_(a.text_),
+      background_colour_(a.background_colour_),
+      foreground_colour_(a.foreground_colour_),
+      outline_colour_(a.outline_colour_),
+      highlight_colour_(a.highlight_colour_),
+      alignment_(a.alignment_) {}
+
+CellType &CellType::operator=(const CellType &a) {
+  width_ = a.width_;
+  text_ = a.text_;
+  background_colour_ = a.background_colour_;
+  foreground_colour_ = a.foreground_colour_;
+  outline_colour_ = a.outline_colour_;
+  highlight_colour_ = a.highlight_colour_;
+  alignment_ = a.alignment_;
+  return *this;
+}
+
 uint32_t CellType::GetWidth() const { return width_; }
 
 std::string CellType::GetText() const { return text_; }
