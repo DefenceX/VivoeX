@@ -79,38 +79,6 @@ void WidgetTable::DrawTable() {
   }
 }
 
-// Class RowType
-
-WidgetTable::RowType::RowType(const uint32_t background_colour, const uint32_t foreground_colour,
-                              const uint32_t outline_colour, const uint32_t highlight_colour,
-                              const widget::WeightType font_weight, const bool highlighted,
-                              const widget::CellAlignType alignment)
-    : background_colour_(background_colour),
-      foreground_colour_(foreground_colour),
-      outline_colour_(outline_colour),
-      highlight_colour_(highlight_colour),
-      font_weight_(font_weight),
-      highlighted_(highlighted),
-      alignment_(alignment) {}
-
-uint32_t WidgetTable::RowType::GetForegroundColour() const { return foreground_colour_; }
-
-uint32_t WidgetTable::RowType::GetBackgroundColour() const { return background_colour_; }
-
-uint32_t WidgetTable::RowType::GetOutlineColour() const { return outline_colour_; }
-
-uint32_t WidgetTable::RowType::GetHighlightColour() const { return highlight_colour_; }
-
-widget::WeightType WidgetTable::RowType::GetFontWeight() const { return font_weight_; }
-
-bool WidgetTable::RowType::GetHighlighted() const { return highlighted_; }
-
-void WidgetTable::RowType::SetHighlighted(bool value) { highlighted_ = value; }
-
-widget::CellAlignType WidgetTable::RowType::GetCellAlignment() const { return alignment_; }
-
-// Class TableWidget
-
 void WidgetTable::AddRow(uint32_t forground_colour, uint32_t background_colour, uint32_t outline_colour,
                          uint32_t highlight_colour, widget::WeightType font_weight) {
   RowType row(background_colour, forground_colour, outline_colour, highlight_colour, font_weight, false,

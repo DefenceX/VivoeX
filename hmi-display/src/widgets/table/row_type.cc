@@ -17,42 +17,44 @@
 /// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 /// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ///
-/// \brief A class capturing all the cell attributes in a table
+/// \brief A class capturing all the row attributes in a table
 ///
-/// \file cell_type.cc
+/// \file row_type.cc
 ///
 
-#include "src/widgets/table/cell_type.h"
+#include "src/widgets/table/row_type.h"
 
-// Class CellType
+#include "src/widgets/widget_types.h"
 
 namespace gva {
 
-CellType::CellType(const std::string text, const uint32_t width, const uint32_t background_colour,
-                   const uint32_t foreground_colour, const uint32_t outline_colour, const uint32_t highlight_colour,
-                   const widget::CellAlignType alignment)
-    : width_(width),
-      text_(text),
-      background_colour_(background_colour),
+// Class RowType
+
+RowType::RowType(const uint32_t background_colour, const uint32_t foreground_colour, const uint32_t outline_colour,
+                 const uint32_t highlight_colour, const widget::WeightType font_weight, const bool highlighted,
+                 const widget::CellAlignType alignment)
+    : background_colour_(background_colour),
       foreground_colour_(foreground_colour),
       outline_colour_(outline_colour),
       highlight_colour_(highlight_colour),
-      alignment_(alignment) {
-  return;
-}
+      font_weight_(font_weight),
+      highlighted_(highlighted),
+      alignment_(alignment) {}
 
-uint32_t CellType::GetWidth() const { return width_; }
+uint32_t RowType::GetForegroundColour() const { return foreground_colour_; }
 
-std::string CellType::GetText() const { return text_; }
+uint32_t RowType::GetBackgroundColour() const { return background_colour_; }
 
-uint32_t CellType::GetForegroundColour() const { return foreground_colour_; }
+uint32_t RowType::GetOutlineColour() const { return outline_colour_; }
 
-uint32_t CellType::GetBackgroundColour() const { return background_colour_; }
+uint32_t RowType::GetHighlightColour() const { return highlight_colour_; }
 
-uint32_t CellType::GetOutlineColour() const { return foreground_colour_; }
+widget::WeightType RowType::GetFontWeight() const { return font_weight_; }
 
-uint32_t CellType::GetHighlightColour() const { return highlight_colour_; }
+bool RowType::GetHighlighted() const { return highlighted_; }
 
-widget::CellAlignType CellType::GetCellAlignment() const { return alignment_; }
+void RowType::SetHighlighted(bool value) { highlighted_ = value; }
+
+widget::CellAlignType RowType::GetCellAlignment() const { return alignment_; }
 
 }  // namespace gva

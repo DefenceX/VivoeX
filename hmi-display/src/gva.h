@@ -34,7 +34,7 @@ namespace gva {
 
 static const uint32_t kSemVerMajor = 0;
 static const uint32_t kSemVerMinor = 3;
-static const uint32_t kSemVerPatch = 1275;
+static const uint32_t kSemVerPatch = 1286;
 static const uint32_t kMinimumHeight = 480;
 static const uint32_t kMinimumWidth = 640;
 

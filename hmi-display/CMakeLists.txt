@@ -58,6 +58,7 @@ set(SOURCES main.cc
 			src/widgets/keyboard.cc
 			src/widgets/table/table.cc
 			src/widgets/table/cell_type.cc
+			src/widgets/table/row_type.cc
 			src/widgets/compass.cc
 			src/widgets/top_labels.cc
 			src/widgets/bottom_labels.cc

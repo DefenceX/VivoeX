@@ -30,6 +30,7 @@
 
 #include "src/renderer_gva.h"
 #include "src/widgets/table/cell_type.h"
+#include "src/widgets/table/row_type.h"
 #include "src/widgets/widget.h"
 #include "src/widgets/widget_types.h"
 
@@ -59,107 +60,6 @@ class WidgetTable : public WidgetX {
   ///
   ///
   void Draw() override;
-
-  ///
-  /// \brief This is the class describing a TableWidget row
-  ///
-  ///
-  class RowType {
-   public:
-    RowType() = default;
-    ~RowType() = default;
-    RowType(const uint32_t background_colour, const uint32_t foreground_colour, const uint32_t outline_colour,
-            const uint32_t highlight_colour, const widget::WeightType font_weight, const bool highlighted,
-            const widget::CellAlignType alignment);
-    RowType(const RowType &a)
-        : background_colour_(a.background_colour_),
-          foreground_colour_(a.foreground_colour_),
-          outline_colour_(a.outline_colour_),
-          highlight_colour_(a.highlight_colour_),
-          font_weight_(a.font_weight_),
-          highlighted_(a.highlighted_),
-          alignment_(a.alignment_) {}
-    RowType &operator=(const RowType &a) {
-      background_colour_ = a.background_colour_;
-      foreground_colour_ = a.foreground_colour_;
-      outline_colour_ = a.outline_colour_;
-      highlight_colour_ = a.highlight_colour_;
-      font_weight_ = a.font_weight_;
-      highlighted_ = a.highlighted_;
-      alignment_ = a.alignment_;
-      return *this;
-    }
-
-    ///
-    /// \brief Get the Foreground Colour
-    ///
-    /// \brief Get the Background Colour
-    ///
-    /// \return uint32_t
-    ///
-    uint32_t GetForegroundColour() const;
-
-    /// table_
-    ///  \brief Get the Background Colour
-    ///
-    ///  \return uint32_t
-    ///
-    uint32_t GetBackgroundColour() const;
-
-    ///
-    /// \brief Get the Outline Colour
-    ///
-    /// \return uint32_t
-    ///
-    uint32_t GetOutlineColour() const;
-
-    ///
-    /// \brief Get the Highlight Colour
-    ///
-    /// \return uint32_t
-    ///
-    uint32_t GetHighlightColour() const;
-
-    ///
-    /// \brief Get the Font Weight object
-    ///
-    /// \return widget::WeightType
-    ///
-    widget::WeightType GetFontWeight() const;
-
-    ///
-    /// \brief Get the Highlighted object
-    ///
-    /// \return true
-    /// \return false
-    ///
-    bool GetHighlighted() const;
-
-    ///
-    /// \brief Set the Highlighted flag
-    ///
-    /// \param value
-    ///
-    void SetHighlighted(bool value);
-
-    ///
-    /// \brief Get the Cell Alignment object
-    ///
-    /// \return CellAlignType
-    ///
-    widget::CellAlignType GetCellAlignment() const;
-
-    std::vector<CellType> cells_;
-
-   private:
-    uint32_t background_colour_ = 0;
-    uint32_t foreground_colour_ = 0;
-    uint32_t outline_colour_ = 0;
-    uint32_t highlight_colour_ = 0;
-    widget::WeightType font_weight_ = widget::WeightType::kWeightNormal;
-    bool highlighted_ = false;
-    widget::CellAlignType alignment_ = widget::CellAlignType::kAlignLeft;
-  };
 
   ///
   /// \brief Add a row to the table
