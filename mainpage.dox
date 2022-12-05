@@ -189,6 +189,11 @@ A mode example can be seen below gva::WidgetMode. It is a GVA requirement
 that the operator is informed when the system is not operable due to maintinance.
 \image html mode_01.png  "Opertator mode" 
 
+\subsubsection tabble Tables
+A table example example can be seen below gva::WidgetMode, add rows and cells as required these can be colour coded and highlighted for interactive table.
+\image html table_01.png  "Table, example message box" 
+\image html table_02.png  "Table, example alarms table" 
+
 \section tools Tooling
 
 \subsection test-hmi Testing widgets
