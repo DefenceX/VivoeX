@@ -76,5 +76,5 @@ jobs:
 
       - name: Run binary
         run: |
-          ldconfig && \
+          sudo ldconfig && \
           /opt/gva/hmi/hmi-display -h
