@@ -33,9 +33,6 @@ jobs:
         id: package
         run: cd build && cpack -V -G DEB && echo "DEB_PACKAGE=$(ls *.deb)" >> $GITHUB_ENV && echo "DEB_PACKAGE=$(ls *.deb)" >> $GITHUB_OUTPUT
 
-      # - name: CTestDEB_PACKAGE
-      #   run: xvfb-run --server-args="-screen 0 1024x768x24" ctest -T memcheck
-
       - name: Post
         run: cd .. && bash <(curl -s https://codecov.io/bash)
 
@@ -78,4 +75,6 @@ jobs:
         run: ls -hal && sudo apt-get install ./*.deb -y
 
       - name: Run binary
-        run: /opt/gva/hmi/hmi-display -h
+        run: |
+          ldconfig && \
+          /opt/gva/hmi/hmi-display -h
