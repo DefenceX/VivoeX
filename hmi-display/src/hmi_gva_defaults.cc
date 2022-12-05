@@ -54,7 +54,7 @@ CommonTaskKeys DefaultSettings::GetDefaultCommonTaskKeys() {
   common_task_keys.labels_[5].text_ = "";
   common_task_keys.labels_[6].state_ = LabelStates::kLabelEnabled;
   common_task_keys.labels_[6].text_ = "Labels";
-  common_task_keys.labels_[7].state_ = LabelStates::kLabelEnabled;
+  common_task_keys.labels_[7].state_ = LabelStates::kLabelDisabled;
   common_task_keys.labels_[7].text_ = "Enter";
   return common_task_keys;
 }

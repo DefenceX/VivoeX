@@ -106,7 +106,7 @@ void StateAlarms::entry() {
     // Update the controls
     screen_.control->SetEnabled(4);  // Up Arrow
     screen_.control->SetEnabled(5);  // Down Arrow
-    screen_.control->SetEnabled(6);  // Enter
+    screen_.control->SetEnabled(7);  // Enter
     screen_.control->SetEnabled(1);
   }
 };

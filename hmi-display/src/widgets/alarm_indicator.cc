@@ -28,8 +28,8 @@
 
 namespace gva {
 
-WidgetAlarmIndicator::WidgetAlarmIndicator(const RendererGva& renderer)
-    : WidgetX(renderer, widget::KWidgetTypeAlarmIndicator) {}
+WidgetAlarmIndicator::WidgetAlarmIndicator(const RendererGva& renderer, TouchGva* touch)
+    : WidgetX(renderer, widget::KWidgetTypeAlarmIndicator), touch_(touch) {}
 
 void WidgetAlarmIndicator::Draw() {
   if (GetVisible()) {
@@ -54,6 +54,8 @@ void WidgetAlarmIndicator::Draw() {
     GetRenderer()->SetColourForeground(HMI_WHITE);
     GetRenderer()->DrawColor(HMI_WHITE);
     GetRenderer()->DrawRoundedRectangle(110 + (420 / 2) + (width / 2) + 4, 34, 19, 16, 4, true);
+
+    touch_->Add(GvaFunctionGroupEnum::kAlarmsIndicator, (uint32_t)(GvaKeyEnum::kKeyF16), 110, 32, 420, 20);
     //       GetRenderer()->DrawIcon(ICON_ERROR, 110 + (420 / 2) + (width / 2) + 16, 42, 12, 12);
   }
 }

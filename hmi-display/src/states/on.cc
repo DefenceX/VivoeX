@@ -97,6 +97,8 @@ void StateOn::entry() {
   WidgetAlarmIndicator *ai = (WidgetAlarmIndicator *)screen_render_->GetWidget(widget::KWidgetTypeAlarmIndicator);
   ai->SetType(GvaAlarmType::kAlarmCaution);
   ai->SetText("Engine over temperature");
+  // As there is an alarm set the Ack control to enabled
+  screen_.control->SetEnabled(3);
 
   screen_.canvas = canvas_;
   screen_.canvas.visible = true;

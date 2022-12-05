@@ -99,7 +99,7 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
   // Here we need to add all the possible screen widgets to the widget list, at this point they are uninitialised
   widget_list_[widget::KWidgetTypeCompass] = std::make_shared<WidgetPlanPositionIndicator>(*renderer);
   widget_list_[widget::KWidgetTypeKeyboard] = std::make_shared<WidgetKeyboard>(*renderer);
-  widget_list_[widget::KWidgetTypeAlarmIndicator] = std::make_shared<WidgetAlarmIndicator>(*renderer);
+  widget_list_[widget::KWidgetTypeAlarmIndicator] = std::make_shared<WidgetAlarmIndicator>(*renderer, touch);
   widget_list_[widget::KWidgetTypeTopLabels] = std::make_shared<WidgetTopLabels>(*renderer, touch);
   widget_list_[widget::KWidgetTypeBottomLabels] = std::make_shared<WidgetBottomLabels>(*renderer, touch);
   widget_list_[widget::KWidgetTypeLeftLabels] = std::make_shared<WidgetSideLabels>(*renderer, touch);
@@ -290,8 +290,7 @@ GvaStatusTypes ScreenGva::Update() {
   }
 
   // Setup and Draw the status bar, one row table
-  // if (screen_->status_bar->visible)
-  {
+  if (screen_->status_bar->visible) {
     WidgetTable status_bar_table(*(RendererGva *)this, GetTouch(),
                                  ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
     uint32_t i = 0;
@@ -299,10 +298,9 @@ GvaStatusTypes ScreenGva::Update() {
     uint32_t widths[7] = {23, 8, 37, 8, 8, 8, 8};
     status_bar_table.SetVisible(true);
     status_bar_table.SetX(1);
-    status_bar_table.SetY(gva::kMinimumHeight - 34);
+    status_bar_table.SetY(screen_->status_bar->y);
     status_bar_table.SetWidth(640);
     status_bar_table.SetBackgroundColour(ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
-
     status_bar_table.AddRow();
 
     // Update the status bar cells
@@ -323,6 +321,13 @@ GvaStatusTypes ScreenGva::Update() {
   // Setup and Draw the alarms
   if (widget_list_[widget::KWidgetTypeTable]->GetVisible()) {
     auto table_widget = (WidgetTable *)GetWidget(widget::KWidgetTypeTable);
+    if (screen_->labels != LabelModeEnum::kLabelAll) {
+      table_widget->SetWidth(kMinimumWidth - 40);
+      table_widget->SetX(20);
+    } else {
+      table_widget->SetX(110);
+      table_widget->SetWidth(420);
+    }
     table_widget->Draw();
   }
 

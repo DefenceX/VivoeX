@@ -337,7 +337,7 @@ enum class GvaAlarmType { kAlarmWarnings, kAlarmCaution, kAlarmAdvisory };
 /// \brief These are the functional groups
 ///
 ///
-enum class GvaFunctionGroupEnum { kTop, kBottom, kLeft, kRight, kAlarmTable, kKeyboard };
+enum class GvaFunctionGroupEnum { kTop, kBottom, kLeft, kRight, kAlarmTable, kKeyboard, kAlarmsIndicator };
 
 ///
 /// \brief These are physical GVA keys around the display

@@ -81,7 +81,7 @@ static gva::TouchGva touch;  // Dummy to get the interactive widgets to render
 static gva::WidgetFunctionKeyToggle key(renderer);
 static gva::WidgetPlanPositionIndicator ppi(renderer);
 static gva::WidgetKeyboard keyboard(renderer);
-static gva::WidgetAlarmIndicator alarmx(renderer);
+static gva::WidgetAlarmIndicator alarmx(renderer, &touch);
 static gva::WidgetTopLabels top(renderer, &touch);
 static gva::WidgetBottomLabels bottom(renderer, &touch);
 static gva::WidgetSideLabels left(renderer, &touch);
@@ -405,6 +405,13 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       message_box_table.Draw();
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/table_01.png").c_str());
+
+    } break;
+    case 26: {
+      gva::HmiHelper::TableAlarms(&table);
+      table.Draw();
+      renderer.Draw();
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/table_02.png").c_str());
 
     } break;
 

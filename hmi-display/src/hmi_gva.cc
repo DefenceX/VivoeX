@@ -155,6 +155,7 @@ void Hmi::Reset() {
   screen_.control->visible_ = true;
   screen_.control->SetDisabled(4);  // Up Arrow
   screen_.control->SetDisabled(5);  // Down Arrow
+  screen_.control->SetDisabled(7);  // Enter
   screen_.message.visible = false;
   screen_.info.mode = ScreenMode::kModeOperational;
   alarmson_ = false;
@@ -173,10 +174,8 @@ void Hmi::Labels(LabelModeEnum labels) {
       screen_.function_top->visible = true;
       screen_.status_bar->visible = true;
       screen_.status_bar->y = 446;
-      screen_render_->GetWidget(widget::KWidgetTypeAlarmIndicator)->SetVisible(true);
       screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetY(360 + 28);
       screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetX(161);
-      screen_render_->GetWidget(widget::KWidgetTypeAlarmIndicator)->SetY(423);
       break;
     case LabelModeEnum::kLabelStatusOnly:
       screen_.function_left.visible = false;
@@ -185,8 +184,6 @@ void Hmi::Labels(LabelModeEnum labels) {
       screen_.function_top->visible = false;
       screen_.status_bar->visible = true;
       screen_.status_bar->y = 459;
-      screen_render_->GetWidget(widget::KWidgetTypeAlarmIndicator)->SetVisible(true);
-      screen_render_->GetWidget(widget::KWidgetTypeAlarmIndicator)->SetY(423);
       screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetY(360 + 42);
       screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetX(161 - 106);
       break;
@@ -196,7 +193,6 @@ void Hmi::Labels(LabelModeEnum labels) {
       screen_.control->visible_ = false;
       screen_.function_top->visible = false;
       screen_.status_bar->visible = false;
-      screen_render_->GetWidget(widget::KWidgetTypeAlarmIndicator)->SetVisible(false);
       screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetVisible(false);
       break;
   }
@@ -276,9 +272,12 @@ GvaKeyEnum Hmi::Key(GvaKeyEnum keypress) {
       screen_.control->SetEnabled(2);
       screen_.control->ResetAllEnabled();
       break;
-    case GvaKeyEnum::kKeyF16:
+    case GvaKeyEnum::kKeyF16:  // Ack
       screen_.control->SetEnabled(3);
       screen_.control->ResetAllEnabled();
+      // Clear alarms here till LDM
+      screen_.control->SetDisabled(3);
+      screen_render_->GetWidget(widget::KWidgetTypeAlarmIndicator)->SetVisible(false);
       break;
     case GvaKeyEnum::kKeyF17:  // Up Arrow
       screen_.control->SetEnabled(4);

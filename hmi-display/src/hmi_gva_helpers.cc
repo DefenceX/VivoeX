@@ -103,6 +103,10 @@ void HmiHelper::TableSystem(WidgetTable *table) {
 }
 
 void HmiHelper::TableAlarms(WidgetTable *table) {
+  uint32_t foreground_colour = Renderer::PackRgb(HMI_WHITE);
+  uint32_t background_colour = ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled();
+  uint32_t highlight_colour = ConfigData::GetInstance()->GetThemeLabelBorderEnabledSelected();
+  uint32_t outline_colour = ConfigData::GetInstance()->GetThemeLabelBorderEnabled();
   table->Reset();
   table->SetVisible(true);
   table->SetBackgroundColour(ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
@@ -118,7 +122,8 @@ void HmiHelper::TableAlarms(WidgetTable *table) {
   table->AddCell("Status", 20);
   table->SetCurrentRow(1);
 
-  table->AddRow();
+  table->AddRow(foreground_colour, background_colour, outline_colour, highlight_colour,
+                widget::WeightType::kWeightNormal);
   table->AddCell("15/6 15:06", 20);
   table->AddCell("Low engine oil pressure", 50);
   table->AddCell("W", 10);
@@ -154,7 +159,7 @@ void HmiHelper::TableAlarms(WidgetTable *table) {
   table->AddCell("15/6 19:03", 20);
   table->AddCell("Gun barrel over tempreture", 50);
   table->AddCell("C", 10);
-  table->AddCell("ACK(OVR)", 20);
+  table->AddCell("ACK(OVR)", 20, Renderer::PackRgb(HMI_GREY));
 
   table->AddRow(Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_ORANGE), Renderer::PackRgb(HMI_WHITE),
                 Renderer::PackRgb(HMI_YELLOW), widget::WeightType::kWeightNormal);

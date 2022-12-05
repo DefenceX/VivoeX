@@ -53,12 +53,9 @@ void WidgetTable::DrawTable() {
       GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, row.GetFontWeight(),
                                  ConfigData::GetInstance()->GetThemeFont(), 12);
 
-      GetRenderer()->SetColourForeground(column.GetForegroundColour());
-      GetRenderer()->SetColourBackground(column.GetBackgroundColour());
       GetRenderer()->Save();
-      // GetRenderer()->DrawColor(HMI_DARK_GREEN2);
-      GetRenderer()->SetColourForeground(HMI_DARK_GREEN2);
-      // GetRenderer()->SetColourBackground(HMI_DARK_GREEN2);
+      GetRenderer()->SetColourForeground(outline_colour_);
+      GetRenderer()->SetColourBackground(row.GetBackgroundColour());
       GetRenderer()->DrawRectangle(offset, (GetY() - (row_count * height)), cell_width, height, true);
       GetRenderer()->Restore();
 
@@ -76,7 +73,7 @@ void WidgetTable::DrawTable() {
           pos = offset + 4;
           break;
       }
-      GetRenderer()->DrawText(pos, (GetY() - (row_count * height)) + 6, column.GetText());
+      GetRenderer()->DrawText(pos, (GetY() - (row_count * height)) + 5, column.GetText());
       offset += cell_width;
     }
     row_count++;
@@ -88,9 +85,9 @@ void WidgetTable::DrawTable() {
   }
 }
 
-void WidgetTable::AddRow(uint32_t forground_colour, uint32_t background_colour, uint32_t outline_colour,
+void WidgetTable::AddRow(uint32_t foreground_colour, uint32_t background_colour, uint32_t outline_colour,
                          uint32_t highlight_colour, widget::WeightType font_weight) {
-  RowType row(background_colour, forground_colour, outline_colour, highlight_colour, font_weight, false,
+  RowType row(background_colour, foreground_colour, outline_colour, highlight_colour, font_weight, false,
               widget::CellAlignType::kAlignLeft);
   rows_.push_back(row);
 }
@@ -103,8 +100,8 @@ void WidgetTable::AddRow() {
 }
 
 void WidgetTable::AddRow(widget::WeightType font_weight) {
-  AddRow(ConfigData::GetInstance()->GetTableBackground(), Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_WHITE),
-         Renderer::PackRgb(HMI_YELLOW), font_weight);
+  AddRow(Renderer::PackRgb(HMI_WHITE), ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled(),
+         Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_YELLOW), font_weight);
 }
 
 void WidgetTable::AddCell(std::string text, uint32_t width) { AddCell(text, width, widget::CellAlignType::kAlignLeft); }
@@ -119,7 +116,7 @@ void WidgetTable::AddCell(std::string text, uint32_t width, uint32_t background_
 
 void WidgetTable::AddCell(std::string text, uint32_t width, widget::CellAlignType align, uint32_t background_colour) {
   if (rows_.size()) {
-    CellType cell(text, width, background_colour_, foreground_colour_, outline_colour_, highlight_colour_, align);
+    CellType cell(text, width, background_colour, foreground_colour_, outline_colour_, highlight_colour_, align);
     rows_.back().GetCells()->push_back(cell);
   } else {
     logGva::log("[GVA] No rows could be found when adding new cell.", LOG_ERROR);

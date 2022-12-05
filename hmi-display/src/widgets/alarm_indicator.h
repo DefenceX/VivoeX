@@ -44,7 +44,7 @@ class WidgetAlarmIndicator : public WidgetX {
   ///
   /// \param renderer
   ///
-  explicit WidgetAlarmIndicator(const RendererGva& renderer);
+  explicit WidgetAlarmIndicator(const RendererGva& renderer, TouchGva* touch);
 
   ///
   /// \brief
@@ -67,6 +67,7 @@ class WidgetAlarmIndicator : public WidgetX {
   void SetType(const GvaAlarmType type);
 
  private:
+  TouchGva* touch_;
   std::string text_;
   GvaAlarmType type_;
 };
