@@ -105,7 +105,7 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
       ClosePath(true);
       break;
     case widget::IconType::kIconPowerOff:
-      SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
+      SetLineThickness(2, LineType::kLineSolid, LineCapEnd::kLineCapRound);
       Scale(sx, sy);
       DrawArcRaw(0, 0, 8, 290, 250);
       MovePenRaw(0, -4);
@@ -113,7 +113,7 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
       ClosePath(true);
       break;
     case widget::IconType::kIconRotateLeft:
-      SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
+      SetLineThickness(2, LineType::kLineSolid, LineCapEnd::kLineCapRound);
       Scale(sx, sy);
       DrawArcRaw(0, 0, 8, 315, 225);
       MovePenRaw(5, -6);
@@ -123,7 +123,7 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
       ClosePath(true);
       break;
     case widget::IconType::kIconRotateRight:
-      SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
+      SetLineThickness(2, LineType::kLineSolid, LineCapEnd::kLineCapRound);
       Scale(sx, sy);
       DrawArcRaw(0, 0, 8, 315, 225);
       MovePenRaw(-5, -6);
@@ -133,7 +133,7 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
       ClosePath(true);
       break;
     case widget::IconType::kIconPlus:
-      SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
+      SetLineThickness(2, LineType::kLineSolid, LineCapEnd::kLineCapRound);
       Scale(sx, sy);
       MovePenRaw(-10, 0);
       DrawPenRaw(10, 0);
@@ -142,7 +142,7 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
       ClosePath(true);
       break;
     case widget::IconType::kIconMinus:
-      SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
+      SetLineThickness(2, LineType::kLineSolid, LineCapEnd::kLineCapRound);
       Scale(sx, sy);
       MovePenRaw(-10, 0);
       DrawPenRaw(10, 0);
@@ -191,13 +191,12 @@ void RendererGva::DrawButton(const std::string keyText, uint32_t fontSize, uint3
   SetColourForeground(HMI_GREY);
   DrawRoundedRectangle(x, y, width, height, 6, true);
   SetColourForeground(HMI_WHITE);
-  SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightBold, config_->GetThemeFont(), 14);
+  SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightBold, config_->GetThemeFont(), fontSize);
   uint32_t textHeight = GetTextHeight("qh", fontSize);
   uint32_t textWidth = GetTextWidth(keyText, fontSize);
 
   DrawColor(HMI_WHITE);
   if (align == widget::CellAlignType::kAlignCentre) textX = (width / 2) - (textWidth / 2);
-  SetTextFontSize(fontSize);
   DrawText(x + textX, y + (height - textHeight - 4), keyText);
 };
 

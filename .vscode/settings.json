@@ -204,10 +204,13 @@
         "semaphore": "cpp",
         "stop_token": "cpp",
         "*.inc": "cpp",
-        "filesystem": "cpp"
+        "filesystem": "cpp",
+        "complex": "cpp"
     },
     "cSpell.words": [
-        "defencex"
+        "defencex",
+        "mgrs",
+        "northp"
     ],
     "sonarlint.connectedMode.project": {
         "connectionId": "defencex",

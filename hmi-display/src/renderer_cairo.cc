@@ -194,15 +194,16 @@ void RendererCairo::Draw() {
       case kCommandPenThickness:
         cairo_set_line_width(cr, (cairo_line_join_t)currentCmd.arg1);
         {
-          cairo_line_cap_t cap;
-          switch (currentCmd.arg3) {
-            case LINE_CAP_BUTT:
+          cairo_line_cap_t cap = CAIRO_LINE_CAP_SQUARE;
+          switch ((LineCapEnd)currentCmd.arg3) {
+            default:
+            case LineCapEnd::kLineCapButt:
               cap = CAIRO_LINE_CAP_BUTT;
               break;
-            case LINE_CAP_ROUND:
+            case LineCapEnd::kLineCapRound:
               cap = CAIRO_LINE_CAP_ROUND;
               break;
-            case LINE_CAP_SQUARE:
+            case LineCapEnd::kLineCapSquare:
               cap = CAIRO_LINE_CAP_SQUARE;
               break;
           }
@@ -257,16 +258,16 @@ void RendererCairo::Draw() {
         cairo_set_source_surface(cr, image_list_[currentCmd.arg1].image, currentCmd.points[0].x,
                                  currentCmd.points[0].y);
         cairo_paint(cr);
-        // Only free the image if it wasn't from cache. i.e. video
-        if (!image_list_[currentCmd.arg1].from_cache) cairo_surface_destroy(image_list_[currentCmd.arg1].image);
-        break;
+        // // Only free the image if it wasn't from cache. i.e. video
+        // if (!image_list_[currentCmd.arg1].from_cache) cairo_surface_destroy(image_list_[currentCmd.arg1].image);
+        // break;
       case kCommandImageTexturePersist:
         cairo_set_source_surface(cr, image_list_[currentCmd.arg1].image, currentCmd.points[0].x,
                                  currentCmd.points[0].y);
         cairo_paint(cr);
         break;
       case kCommandTextFont:
-        cairo_select_font_face(cr, currentCmd.text, (cairo_font_slant_t)currentCmd.arg1,
+        cairo_select_font_face(cr, currentCmd.text.c_str(), (cairo_font_slant_t)currentCmd.arg1,
                                (cairo_font_weight_t)currentCmd.arg2);
         cairo_set_font_size(cr, currentCmd.width);
 
@@ -277,13 +278,9 @@ void RendererCairo::Draw() {
       case kCommandPop:
         cairo_pop_group_to_source(cr);
         break;
-      case kCommandTextFontSize:
-        // @todo (Ross Newman): This causes the canvas to go blck so disabled for now
-        // cairo_set_font_size(cr, currentCmd.height);
-        break;
       case kCommandText: {
         cairo_move_to(cr, currentCmd.points[0].x, currentCmd.points[0].y);
-        cairo_show_text(cr, currentCmd.text);
+        cairo_show_text(cr, currentCmd.text.c_str());
       } break;
       default:
         printf("[GVA] Unrecognised command!!!\n");
@@ -379,12 +376,12 @@ void RendererCairo::SetLineThickness(uint32_t thickness, LineType fill, LineCapE
   command.command = kCommandPenThickness;
   command.arg1 = thickness;
   command.arg2 = int(fill);
-  command.arg3 = end;
+  command.arg3 = int(end);
   draw_commands_.push_back(command);
 }
 
 void RendererCairo::SetLineThickness(uint32_t thickness, LineType fill) {
-  SetLineThickness(thickness, fill, LINE_CAP_BUTT);
+  SetLineThickness(thickness, fill, LineCapEnd::kLineCapButt);
 }
 
 uint32_t RendererCairo::MovePen(int32_t x, int32_t y) {
@@ -594,20 +591,13 @@ uint32_t RendererCairo::DrawColor(uint32_t rgb) {
   return 0;
 }
 
-void RendererCairo::SetTextFontSize(double size) {
-  Command command;
-  command.command = kCommandTextFontSize;
-  command.height = size;
-  draw_commands_.push_back(command);
-}
-
 void RendererCairo::SetTextFont(uint32_t slope, widget::WeightType weight, const std::string fontName, double size) {
   Command command;
   command.command = kCommandTextFont;
   command.arg1 = slope;
   command.arg2 = int(weight);
   command.width = size;
-  strcpy(command.text, fontName.c_str());
+  command.text = fontName;
   draw_commands_.push_back(command);
 }
 
@@ -651,7 +641,7 @@ void RendererCairo::DrawText(uint32_t x, uint32_t y, const std::string text) {
   command.command = kCommandText;
   command.points[0].x = x;
   command.points[0].y = y;
-  strcpy(command.text, text.c_str());
+  command.text = text;
   draw_commands_.push_back(command);
 }
 
@@ -662,23 +652,20 @@ void RendererCairo::DrawLabel(uint32_t x, uint32_t y, const std::string text) {
   command.command = kCommandText;
   command.points[0].x = x;
   command.points[0].y = y;
-  strncpy(command.text, text.c_str(), sizeof(command.text));
+  command.text = text;
   draw_commands_.push_back(command);
 }
 
-void RendererCairo::DrawTextCentre(uint32_t x, const std::string text, uint32_t size) {
-  SetTextFontSize(size);
-  DrawText(x, 200, text);
-}
+void RendererCairo::DrawTextCentre(uint32_t x, const std::string text, uint32_t size) { DrawText(x, 200, text); }
 
 uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, void *buffer, std::string file) {
   bool found_in_cache = false;
   uint32_t i = 0;
 
-  strcpy(image_list_[image_tail_].name, file.c_str());
+  image_list_[image_tail_].name = file;
 
   for (i = 0; i < cache_image_tail_; i++) {
-    if (strcmp(file.c_str(), cache_image_list_[i].name) == 0) {
+    if (cache_image_list_[i].name == file) {
       // Found in cache
       found_in_cache = true;
       break;
@@ -697,6 +684,10 @@ uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, void *buffer, std::st
   } else {
     // Add to cache
     cairo_surface_t *surf = cairo_image_surface_create_from_png(file.c_str());
+    if (cairo_surface_status(surf) != CAIRO_STATUS_SUCCESS) {
+      logGva::log("Could not load file " + file + ", not found!", LOG_ERROR);
+      return -1;
+    }
     int width = cairo_image_surface_get_width(surf);
     int height = cairo_image_surface_get_height(surf);
 
@@ -705,7 +696,7 @@ uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, void *buffer, std::st
     }
 
     cache_image_list_[cache_image_tail_].image = surf;
-    strcpy(cache_image_list_[cache_image_tail_].name, file.c_str());
+    cache_image_list_[cache_image_tail_].name = file;
     image_list_[image_tail_].from_cache = true;
     image_list_[image_tail_].image = cache_image_list_[cache_image_tail_++].image;
   }

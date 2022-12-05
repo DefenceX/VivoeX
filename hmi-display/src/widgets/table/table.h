@@ -21,14 +21,15 @@
 ///
 /// \file table.h
 ///
-#ifndef HMI_DISPLAY_SRC_WIDGETS_TABLE_H_
-#define HMI_DISPLAY_SRC_WIDGETS_TABLE_H_
+#ifndef HMI_DISPLAY_SRC_WIDGETS_TABLE_TABLE_H_
+#define HMI_DISPLAY_SRC_WIDGETS_TABLE_TABLE_H_
 
 #include <memory>
 #include <string>
 #include <vector>
 
 #include "src/renderer_gva.h"
+#include "src/widgets/table/cell_type.h"
 #include "src/widgets/widget.h"
 #include "src/widgets/widget_types.h"
 
@@ -52,96 +53,6 @@ class WidgetTable : public WidgetX {
   ///
   ///
   ~WidgetTable() final = default;
-
-  ///
-  /// \brief This is the class describing a TableWidget cell
-  ///
-  ///
-  class CellType {
-   public:
-    CellType() = default;
-    ~CellType() = default;
-    CellType(const std::string text, const uint32_t width, const uint32_t background_colour,
-             const uint32_t foreground_colour, const uint32_t outline_colour, const uint32_t highlight_colour,
-             const widget::CellAlignType alignment);
-
-    CellType(const CellType &a)
-        : width_(a.width_),
-          text_(a.text_),
-          background_colour_(a.background_colour_),
-          foreground_colour_(a.foreground_colour_),
-          outline_colour_(a.outline_colour_),
-          highlight_colour_(a.highlight_colour_),
-          alignment_(a.alignment_) {}
-    CellType &operator=(const CellType &a) {
-      width_ = a.width_;
-      text_ = a.text_;
-      background_colour_ = a.background_colour_;
-      foreground_colour_ = a.foreground_colour_;
-      outline_colour_ = a.outline_colour_;
-      highlight_colour_ = a.highlight_colour_;
-      alignment_ = a.alignment_;
-      return *this;
-    }
-
-    ///
-    /// \brief Get the Width object
-    ///
-    /// \return const uint32_t
-    ///
-    uint32_t GetWidth() const;
-
-    ///
-    /// \brief Get the Text object
-    ///
-    /// \return const std::string
-    ///
-    std::string GetText() const;
-
-    ///
-    /// \brief Get the Foreground Colour object
-    ///
-    /// \return const uint32_t
-    ///
-    uint32_t GetForegroundColour() const;
-
-    ///
-    /// \brief Get the Background Colour object
-    ///
-    /// \return const uint32_t
-    ///
-    uint32_t GetBackgroundColour() const;
-
-    ///
-    /// \brief Get the Outline Colour object
-    ///
-    /// \return const uint32_t
-    ///
-    uint32_t GetOutlineColour() const;
-
-    ///
-    /// \brief Get the Highlight Colour object
-    ///
-    /// \return const uint32_t
-    ///
-    uint32_t GetHighlightColour() const;
-
-    ///
-    /// \brief Get the Cell Alignment object
-    ///
-    /// \return const CellAlignType
-    ///
-    widget::CellAlignType GetCellAlignment() const;
-
-   private:
-    uint32_t width_ = 0;
-    std::string text_ = "";
-    uint32_t background_colour_ = 0;
-    uint32_t foreground_colour_ = 0;
-    uint32_t outline_colour_ = 0;
-    uint32_t highlight_colour_ = 0;
-    widget::CellAlignType alignment_ = widget::CellAlignType::kAlignLeft;
-  };
 
   ///
   /// \brief The base class override to draw the table once setup
@@ -349,4 +260,4 @@ class WidgetTable : public WidgetX {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_WIDGETS_TABLE_H_
+#endif  // HMI_DISPLAY_SRC_WIDGETS_TABLE_TABLE_H_

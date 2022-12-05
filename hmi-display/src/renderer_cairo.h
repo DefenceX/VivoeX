@@ -46,7 +46,7 @@ struct Command {
   Draw_type command;
   double height;
   double width;
-  PointType points[3];
+  std::array<PointType, 3> points;
   double radius;
   double angle1;
   double angle2;
@@ -55,17 +55,17 @@ struct Command {
   int32_t arg2;
   int32_t arg3;
   int32_t arg4;
-  char text[80];
+  std::string text;
   bool fill;
 };
 
 struct image_type {
-  char name[255];
+  std::string name;
   cairo_surface_t *image;
   bool from_cache;
 };
 
-typedef enum { LINE_CAP_BUTT, LINE_CAP_ROUND, LINE_CAP_SQUARE } LineCapEnd;
+enum class LineCapEnd { kLineCapButt, kLineCapRound, kLineCapSquare };
 
 typedef void (*CallbackType)(void *io, gpointer data);
 
@@ -340,13 +340,6 @@ class RendererCairo : public Renderer {
   /// \param fontName
   ///
   void SetTextFont(uint32_t slope, widget::WeightType weight, std::string fontName, double size);
-
-  ///
-  /// \brief Set the Text Font Size object
-  ///
-  /// \param size
-  ///
-  void SetTextFontSize(double size);
 
   ///
   /// \brief

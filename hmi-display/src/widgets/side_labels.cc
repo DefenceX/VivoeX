@@ -95,7 +95,6 @@ void WidgetSideLabels::Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t hei
 void WidgetSideLabels::Toggle(const std::string& label1, const std::string& label2) {
   GetRenderer()->SetColourForeground(HMI_DARK_GREEN2);
   GetRenderer()->SetColourBackground(HMI_YELLOW);
-  GetRenderer()->SetTextFontSize(14);
 
   if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::kLabelRounded) {
     GetRenderer()->DrawRoundedRectangle(GetX() + 5, GetY() + 5, 40, 20, 4, true);
@@ -113,7 +112,6 @@ void WidgetSideLabels::Toggle(const std::string& label1, const std::string& labe
     GetRenderer()->DrawRectangle(GetX() + 50, GetY() + 5, 45, 20, true);
   }
   GetRenderer()->DrawColor(HMI_BLACK);
-  GetRenderer()->SetTextFontSize(14);
   GetRenderer()->DrawText(GetX() + 56, GetY() + 9, label2);
 }
 

@@ -17,7 +17,8 @@
                 "/usr/include/harfbuzz",
                 "/usr/include/gdk-pixbuf-2.0",
                 "/usr/include/atk-1.0",
-                "${workspaceFolder}/hmi-display"
+                "${workspaceFolder}/hmi-display",
+                "${workspaceFolder}/build/external/install/usr/local/include"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/g++",

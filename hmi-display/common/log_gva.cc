@@ -40,6 +40,9 @@ void logGva::log(const char* message, const uint16_t type) {
   }
   fprintf(m_errorfd, "[%ld] *%s* %s\n", info.uptime, msgType, message);
   fflush(m_errorfd);
+  if (type == LOG_ERROR) {
+    std::cout << message << std::endl;
+  }
 }
 
 void logGva::finish() { fclose(m_errorfd); }

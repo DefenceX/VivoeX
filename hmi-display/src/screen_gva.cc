@@ -175,7 +175,8 @@ void *ClockUpdate(void *arg) {
         case LocationEnum::kLocationFormatMgrs: {
           int zone;
           bool northp;
-          double x, y;
+          double x;
+          double y;
           GeographicLib::UTMUPS::Forward(a->info->lat, a->info->lon, zone, northp, x, y);
           std::string mgrs;
           GeographicLib::MGRS::Forward(zone, northp, x, y, a->info->lat, 5, mgrs);
@@ -251,7 +252,6 @@ GvaStatusTypes ScreenGva::Update() {
 
   // Draw label
   if (screen_->label.visible) {
-    SetTextFontSize(screen_->label.fontSize);
     DrawLabel(screen_->label.x, screen_->label.y, screen_->label.text);
   }
 

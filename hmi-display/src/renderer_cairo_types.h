@@ -79,7 +79,6 @@ enum Draw_type {
   kCommandTextFont,
   kCommandPush,
   kCommandPop,
-  kCommandTextFontSize,
   kCommandText
 };
 

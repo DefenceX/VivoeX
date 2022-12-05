@@ -67,7 +67,7 @@
 #include "src/widgets/keyboard.h"
 #include "src/widgets/mode.h"
 #include "src/widgets/side_labels.h"
-#include "src/widgets/table.h"
+#include "src/widgets/table/table.h"
 #include "src/widgets/top_labels.h"
 #include "src/widgets/widget_types.h"
 
@@ -418,9 +418,6 @@ static void do_drawing(cairo_t *cr, int width, int height) {
 /// \return int
 ///
 int main(int argc, char *argv[]) {
-  int aflag = 0;
-  int bflag = 0;
-  char *cvalue = NULL;
   int index;
   int c;
   int id = 0;
@@ -486,8 +483,6 @@ int main(int argc, char *argv[]) {
       default:
         abort();
     }
-
-  printf("aflag = %d, bflag = %d, cvalue = %s\n", aflag, bflag, cvalue);
 
   for (index = optind; index < argc; index++) printf("Non-option argument %s\n", argv[index]);
 

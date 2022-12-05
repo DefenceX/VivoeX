@@ -35,7 +35,7 @@
 #include "nmea/nmea.h"
 #include "src/gva.h"
 #include "src/renderer_gva.h"
-#include "widgets/table.h"
+#include "widgets/table/table.h"
 #include "widgets/widget_types.h"
 
 namespace gva {

@@ -79,7 +79,9 @@ void WidgetPlanPositionIndicator::DrawModern(uint32_t x, uint32_t y, uint32_t de
   uint32_t adjust_x = x - 4;
   uint32_t adjust_y = y - 4;
 
-  GetRenderer()->SetTextFontSize(font_size);
+  GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightNormal,
+                             ConfigData::GetInstance()->GetThemeFont(), font_size);
+
   GetRenderer()->DrawText((uint32_t)(adjust_x - 3 + (radius - pos) * cos(d + (M_PI * 2))),
                           (uint32_t)(adjust_y - 2 - (radius - pos) * sin(d + (M_PI * 2))), "N");
   GetRenderer()->DrawText((uint32_t)(adjust_x - 3 + (radius - pos) * cos(d + (M_PI))),
@@ -187,7 +189,7 @@ void WidgetPlanPositionIndicator::DrawPPI(widget::ModeEnum mode, uint32_t x, uin
       GetRenderer()->SetLineType(CAIRO_LINE_JOIN_MITER);
       GetRenderer()->SetColourForeground(HMI_WHITE);
       GetRenderer()->SetColourBackground(HMI_WHITE);
-      GetRenderer()->SetLineThickness(8, LineType::kLineSolid, LineCapEnd::LINE_CAP_BUTT);
+      GetRenderer()->SetLineThickness(8, LineType::kLineSolid, LineCapEnd::kLineCapButt);
       GetRenderer()->MovePen(x - 22, y - 30);
       GetRenderer()->DrawPen(x, y - 10, false);
       GetRenderer()->DrawPen(x + 22, y - 30, false);

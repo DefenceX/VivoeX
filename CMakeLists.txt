@@ -9,6 +9,7 @@ include(scripts/cmake/cpp.cmake)
 include(scripts/cmake/cpack.cmake)
 include(scripts/cmake/doxygen.cmake)
 include(scripts/cmake/dot.cmake)
+include(scripts/cmake/geographic.cmake)
 
 include_directories(${CMAKE_SOURCE_DIR}/hmi-display)
 
