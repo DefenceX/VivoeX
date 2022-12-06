@@ -34,7 +34,7 @@ namespace gva {
 
 static const uint32_t kSemVerMajor = 0;
 static const uint32_t kSemVerMinor = 3;
-static const uint32_t kSemVerPatch = 1317;
+static const uint32_t kSemVerPatch = 1318;
 static const uint32_t kMinimumHeight = 480;
 static const uint32_t kMinimumWidth = 640;
 
@@ -66,13 +66,17 @@ enum class LineType {
 ///
 class StateBase {
  public:
+  bool IsActive(LabelStates* state) {
+    return ((*state != LabelStates::kLabelDisabled) && (*state != LabelStates::kLabelHidden));
+  }
+
   void StateEnabledSelectedChanging(LabelStates* state) const {
     if ((*state != LabelStates::kLabelDisabled) && (*state != LabelStates::kLabelHidden)) {
       *state = LabelStates::kLabelEnabledSelectedChanging;
     }
   }
   void StateEnabledSelected(LabelStates* state) const {
-    if (*state != LabelStates::kLabelDisabled) {
+    if ((*state != LabelStates::kLabelDisabled) && (*state != LabelStates::kLabelHidden)) {
       *state = LabelStates::kLabelEnabledSelected;
     }
   }
@@ -172,6 +176,8 @@ struct FunctionKeys : public StateBase {
   };
   std::array<Labels, 6> labels;
 
+  bool Active(int index) { return IsActive(&labels[index].state); }
+
   ///
   /// \brief Set the label to Enabled
   ///
@@ -250,13 +256,19 @@ class CommonTaskKeys : public StateBase {
   void SetDisabled(int index) { labels_[index].state_ = LabelStates::kLabelDisabled; }
 
   ///
-  /// \brief Set the label to Enabled
+  /// \brief Set state to EnabledSelected regardless of current state (no checking for valid state transition).
+  ///
+  /// \param index
+  ///
+  void ForceEnabledSelected(int index) { labels_[index].state_ = LabelStates::kLabelEnabledSelected; }
+
+  ///
+  /// \brief Set the label to EnabledSelected
   ///
   ///
-  void SetEnabled(int index) {
+  void SetEnabledSelected(int index) {
     ResetAllEnabled();
     StateEnabledSelected(&labels_[index].state_);
-    labels_[index].state_ = LabelStates::kLabelEnabled;
   }
 
   ///

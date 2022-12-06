@@ -104,10 +104,10 @@ void StateAlarms::entry() {
     table->SetVisible(true);
 
     // Update the controls
-    screen_.control->SetEnabled(4);  // Up Arrow
-    screen_.control->SetEnabled(5);  // Down Arrow
-    screen_.control->SetEnabled(7);  // Enter
-    screen_.control->SetEnabled(1);
+    screen_.control->ForceEnabledSelected(4);  // Up Arrow
+    screen_.control->ForceEnabledSelected(5);  // Down Arrow
+    screen_.control->ForceEnabledSelected(7);  // Enter
+    screen_.control->ForceEnabledSelected(1);
   }
 };
 

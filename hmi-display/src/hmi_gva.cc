@@ -154,7 +154,6 @@ void Hmi::Reset() {
   if (screen_.currentFunction == GvaFunctionEnum::kDriver) {
     screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetY(190);
     screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetX(120);
-
   } else {
     screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetY(190);
     screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetX(330);
@@ -218,7 +217,7 @@ void Hmi::Labels(LabelModeEnum labels) {
 };
 
 void Hmi::KeySide(GvaKeyEnum key) {
-  // Clear any onscreen messages
+  // Clear any on screen messages
   screen_.message.visible = false;
 
   // Manage the changing of functional areas
@@ -280,34 +279,34 @@ GvaKeyEnum Hmi::Key(GvaKeyEnum keypress) {
   KeySide(keypress);
   switch (keypress) {
     case GvaKeyEnum::kKeyF13:
-      screen_.control->SetEnabled(0);
+      screen_.control->SetEnabledSelected(0);
       screen_.control->ResetAllEnabled();
       break;
     case GvaKeyEnum::kKeyF14:
-      screen_.control->SetEnabled(1);
+      screen_.control->SetEnabledSelected(1);
       screen_.control->ResetAllEnabled();
       break;
     case GvaKeyEnum::kKeyF15:
-      screen_.control->SetEnabled(2);
+      screen_.control->SetEnabledSelected(2);
       screen_.control->ResetAllEnabled();
       break;
     case GvaKeyEnum::kKeyF16:  // Ack
-      screen_.control->SetEnabled(3);
+      screen_.control->SetEnabledSelected(3);
       screen_.control->ResetAllEnabled();
       // Clear alarms here till LDM
       screen_.control->SetDisabled(3);
       screen_render_->GetWidget(widget::KWidgetTypeAlarmIndicator)->SetVisible(false);
       break;
     case GvaKeyEnum::kKeyF17:  // Up Arrow
-      screen_.control->SetEnabled(4);
+      screen_.control->SetEnabledSelected(4);
       screen_.control->ResetAllEnabled();
       break;
     case GvaKeyEnum::kKeyF18:  // Down Arrow
-      screen_.control->SetEnabled(5);
+      screen_.control->SetEnabledSelected(5);
       screen_.control->ResetAllEnabled();
       break;
     case GvaKeyEnum::kKeyF19:
-      screen_.control->SetEnabled(6);
+      screen_.control->SetEnabledSelected(6);
       screen_.control->ResetAllEnabled();
       switch (screen_.labels) {
         case LabelModeEnum::kLabelAll:
@@ -323,7 +322,7 @@ GvaKeyEnum Hmi::Key(GvaKeyEnum keypress) {
       Labels(screen_.labels);
       break;
     case GvaKeyEnum::kKeyF20:
-      screen_.control->SetEnabled(7);
+      screen_.control->SetEnabledSelected(7);
       screen_.control->ResetAllEnabled();
       screen_.message.visible = false;
       break;

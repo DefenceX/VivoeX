@@ -103,7 +103,6 @@ void StateSA::entry() {
 
     if (screen_.labels != LabelModeEnum::kLabelMinimal)
       screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetVisible(true);
-    screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetVisible(true);
     if (!screen_.canvas.surface) {
       std::string filename;
       filename = ConfigData::GetInstance()->GetImagePath();

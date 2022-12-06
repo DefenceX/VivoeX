@@ -316,19 +316,42 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
           }
           break;
         case gva::GvaKeyEnum::kKeyF1:
+          if (gva::hmi::GetScreen()->function_left.Active(0)) Dispatch(event.key_);
+          break;
         case gva::GvaKeyEnum::kKeyF2:
+          if (gva::hmi::GetScreen()->function_left.Active(1)) Dispatch(event.key_);
+          break;
         case gva::GvaKeyEnum::kKeyF3:
+          if (gva::hmi::GetScreen()->function_left.Active(2)) Dispatch(event.key_);
+          break;
         case gva::GvaKeyEnum::kKeyF4:
+          if (gva::hmi::GetScreen()->function_left.Active(3)) Dispatch(event.key_);
+          break;
         case gva::GvaKeyEnum::kKeyF5:
+          if (gva::hmi::GetScreen()->function_left.Active(4)) Dispatch(event.key_);
+          break;
         case gva::GvaKeyEnum::kKeyF6:
+          if (gva::hmi::GetScreen()->function_left.Active(5)) Dispatch(event.key_);
+          break;
         case gva::GvaKeyEnum::kKeyF7:
+          if (gva::hmi::GetScreen()->function_right.Active(0)) Dispatch(event.key_);
+          break;
         case gva::GvaKeyEnum::kKeyF8:
+          if (gva::hmi::GetScreen()->function_right.Active(1)) Dispatch(event.key_);
+          break;
         case gva::GvaKeyEnum::kKeyF9:
+          if (gva::hmi::GetScreen()->function_right.Active(2)) Dispatch(event.key_);
+          break;
         case gva::GvaKeyEnum::kKeyF10:
+          if (gva::hmi::GetScreen()->function_right.Active(3)) Dispatch(event.key_);
+          break;
         case gva::GvaKeyEnum::kKeyF11:
+          if (gva::hmi::GetScreen()->function_right.Active(4)) Dispatch(event.key_);
+          break;
         case gva::GvaKeyEnum::kKeyF12:
-        case gva::GvaKeyEnum::kKeyF13:  // All drop through to here, just dispatch
-          Dispatch(event.key_);
+          if (gva::hmi::GetScreen()->function_right.Active(5)) Dispatch(event.key_);
+          break;
+        case gva::GvaKeyEnum::kKeyF13:
           break;
         case gva::GvaKeyEnum::kKeyF14:
           // Control Alarms

@@ -24,6 +24,8 @@
 
 #include "wpn.h"
 
+#include "src/gva.h"
+
 namespace gva {
 
 GvaKeyEnum Hmi::KeyWPN(GvaKeyEnum keypress) {
@@ -59,8 +61,8 @@ GvaKeyEnum Hmi::KeyWPN(GvaKeyEnum keypress) {
 void StateWPN::entry() {
   if (screen_.function_top->labels[1].state != LabelStates::kLabelHidden) {
     std::string filename;
-    Reset();
     manager_->SetScreen(&screen_, GvaFunctionEnum::kWeapon);
+    Reset();
     lastState_ = GvaFunctionEnum::kWeapon;
     screen_.function_top->SetEnabled(1);
 
