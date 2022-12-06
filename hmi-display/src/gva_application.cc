@@ -127,7 +127,7 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
       gva::hmi::GetScreen()->canvas.surface =
           cairo_image_surface_create(CAIRO_FORMAT_ARGB32, gva::kMinimumWidth, gva::kMinimumHeight);
       char *test = reinterpret_cast<char *>(cairo_image_surface_get_data(gva::hmi::GetScreen()->canvas.surface));
-      rtp_stream1_->GvaReceiveFrame(test, gva::RGBA_COLOUR);
+      rtp_stream1_->GvaReceiveFrame(test, gva::VideoFormat::kFormatRgbaColour);
       cairo_surface_mark_dirty(gva::hmi::GetScreen()->canvas.surface);
 
       // @todo hmi_display: Add RTP HMI streaming output to display.
