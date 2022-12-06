@@ -70,7 +70,7 @@ class WidgetMode : public WidgetX {
   std::string GetMode() const;
 
  private:
-  std::string mode_ = "Maintinance Mode";
+  std::string mode_ = "Maintenance Mode";
 };
 
 }  // namespace gva

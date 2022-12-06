@@ -296,7 +296,7 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeySystemsLeft() {
   return keys;
 }
 
-FunctionKeys DefaultSettings::GetDefaultFunctionKeyDriverLeft() {
+FunctionKeys DefaultSettings::GetDefaultFunctionKeyDriverRight() {
   FunctionKeys keys;
   keys.visible = true;
   keys.labels[0].state = LabelStates::kLabelEnabledSelected;

@@ -17,39 +17,64 @@
 /// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 /// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ///
-/// \brief
+/// \brief This is the drivers dials, these are RPM and speed primarilly
 ///
-/// \file alarms.h
+/// \file driver.h
 ///
-#ifndef HMI_DISPLAY_SRC_STATES_ALARMS_H_
-#define HMI_DISPLAY_SRC_STATES_ALARMS_H_
+#ifndef HMI_DISPLAY_SRC_WIDGETS_DRIVER_H_
+#define HMI_DISPLAY_SRC_WIDGETS_DRIVER_H_
 
-#include <iostream>
+#include <cstdint>
 
-#include "src/gva.h"
-#include "src/hmi_gva.h"
-#include "src/states/base_hmi.h"
-#include "src/view_gva.h"
-#include "src/widgets/alarm_indicator.h"
-#include "src/widgets/compass.h"
+#include "src/renderer_cairo_types.h"
+#include "src/widgets/widget.h"
 
 namespace gva {
 
-struct StateAlarms : Hmi {
-  void entry() override;
-  void exit() override;
-  void react(EventKeySA const &) override;
-  void react(EventKeyWPN const &) override;
-  void react(EventKeyDEF const &) override;
-  void react(EventKeySYS const &) override;
-  void react(EventKeyDRV const &) override;
-  void react(EventKeySTR const &) override;
-  void react(EventKeyCOM const &) override;
-  void react(EventKeyBMS const &) override;
-  void react(EventKeyAlarms const &) override;
-  void react(EventKeyFunction const &e) override;
+class WidgetDriverDial : public WidgetX {
+ public:
+  ///
+  /// \brief Construct a new Widget Plan Position Indicator object
+  ///
+  /// \param renderer
+  ///
+  explicit WidgetDriverDial(const RendererGva& renderer);
+
+  ///
+  /// \brief The base overloaded Draw fuctions to draw this widget type
+  ///
+  ///
+  void Draw() final;
+
+  ///
+  /// \brief Set the ValueS
+  ///
+  /// \param bearing
+  ///
+  void SetValue(int16_t value) { value_ = value; }
+
+  ///
+  /// \brief Get the Value
+  ///
+  /// \return int16_t
+  ///
+  int16_t GetValue() const { return value_; }
+
+  ///
+  /// \brief Set the Mode object
+  ///
+  /// \param mode
+  ///
+  void SetMode(widget::DialType mode) { mode_ = mode; }
+
+ private:
+  const double scale_ = 0.5;
+  int16_t value_ = 0;
+  bool indicator_left_ = false;
+  bool indicator_right_ = false;
+  widget::DialType mode_ = widget::DialType::kDialSpeedKph;
 };
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_STATES_ALARMS_H_
+#endif  // HMI_DISPLAY_SRC_WIDGETS_DRIVER_H_

@@ -33,7 +33,6 @@
 #include <iostream>
 
 #include "events_gva.h"
-#define INVERTED 1
 
 namespace gva {
 
@@ -154,10 +153,10 @@ void RendererCairo::Draw() {
         double degrees = M_PI / 180.0;
 
         cairo_new_sub_path(cr);
-        cairo_arc(cr, x + width - radius, y - radius, radius, 0 * degrees, 90 * degrees);
-        cairo_arc(cr, x + radius, y - radius, radius, 90 * degrees, 180 * degrees);
-        cairo_arc(cr, x + radius, y - height + radius, radius, 180 * degrees, 270 * degrees);
-        cairo_arc(cr, x + width - radius, y - height + radius, radius, 270 * degrees, 0 * degrees);
+        cairo_arc(cr, x + radius, y + radius, radius, 180 * degrees, 270 * degrees);
+        cairo_arc(cr, x + width - radius, y + radius, radius, 270 * degrees, 0 * degrees);
+        cairo_arc(cr, x + width - radius, y + height - radius, radius, 0 * degrees, 90 * degrees);
+        cairo_arc(cr, x + radius, y + height - radius, radius, 90 * degrees, 180 * degrees);
         cairo_close_path(cr);
       }
         if (currentCmd.fill) {
@@ -240,7 +239,9 @@ void RendererCairo::Draw() {
         cairo_translate(cr, currentCmd.arg1, currentCmd.arg2);
         break;
       case kCommandRotate:
+
         cairo_rotate(cr, currentCmd.width);
+
         break;
       case kCommandClosePath:
         cairo_close_path(cr);
@@ -387,10 +388,6 @@ void RendererCairo::SetLineThickness(uint32_t thickness, LineType fill) {
 }
 
 uint32_t RendererCairo::MovePen(int32_t x, int32_t y) {
-#if INVERTED
-  y = render_.size.height - y;
-#endif
-
   Command command;
   command.command = kCommandPenMove;
   command.points[0].x = x;
@@ -411,10 +408,6 @@ uint32_t RendererCairo::MovePenRaw(int32_t x, int32_t y) {
 }
 
 uint32_t RendererCairo::DrawPen(uint32_t x, uint32_t y, bool close) {
-#if INVERTED
-  y = render_.size.height - y;
-#endif
-
   Command command;
   command.command = kCommandPenDraw;
   command.points[0].x = x;
@@ -457,9 +450,6 @@ void RendererCairo::Scale(double x, double y) {
 }
 
 void RendererCairo::Translate(uint32_t x, uint32_t y) {
-#if INVERTED
-  y = render_.size.height - y;
-#endif
   Command command;
   command.command = kCommandTranslate;
   command.arg1 = x;
@@ -483,11 +473,6 @@ uint32_t RendererCairo::ClosePath(bool fill) {
 }
 
 uint32_t RendererCairo::DrawLine(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2) {
-#if INVERTED
-  y1 = render_.size.height - y1;
-  y2 = render_.size.height - y2;
-#endif
-
   Command command;
   command.command = kCommandPenLine;
   command.points[0].x = x1;
@@ -497,10 +482,6 @@ uint32_t RendererCairo::DrawLine(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t
 }
 
 void RendererCairo::DrawCircle(uint32_t x, uint32_t y, uint32_t radius, bool fill) {
-#if INVERTED
-  y = render_.size.height - y;
-#endif
-
   Command command;
   command.command = kCommandCircle;
   command.points[0].x = x;
@@ -526,10 +507,6 @@ void RendererCairo::DrawArcRaw(uint32_t x, uint32_t y, uint32_t radius, uint32_t
 void RendererCairo::DrawRectangle(uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool fill) {
   width += x;
   height += y;
-#if INVERTED
-  y = render_.size.height - y;
-  height = render_.size.height - height;
-#endif
 
   Command command;
   command.command = kCommandPenRectangle;
@@ -543,10 +520,6 @@ void RendererCairo::DrawRectangle(uint32_t x, uint32_t y, uint32_t width, uint32
 
 void RendererCairo::DrawRoundedRectangle(uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t courner,
                                          bool fill) {
-#if INVERTED
-  y = render_.size.height - y;
-#endif
-
   Command command;
   command.command = kCommandPenRoundedRectangle;
   command.points[0].x = x;
@@ -560,12 +533,6 @@ void RendererCairo::DrawRoundedRectangle(uint32_t x, uint32_t y, uint32_t width,
 
 void RendererCairo::DrawTriangle(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint32_t x3, uint32_t y3,
                                  bool fill) {
-#if INVERTED
-  y1 = render_.size.height - y1;
-  y2 = render_.size.height - y2;
-  y3 = render_.size.height - y3;
-#endif
-
   Command command;
   command.command = kCommandPenTriangle;
   command.points[0].x = x1;
@@ -635,10 +602,6 @@ uint32_t RendererCairo::GetTextHeight(const std::string str, uint32_t fontSize) 
 }
 
 void RendererCairo::DrawText(uint32_t x, uint32_t y, const std::string text) {
-#if INVERTED
-  y = render_.size.height - y;
-#endif
-
   Command command;
   command.command = kCommandText;
   command.points[0].x = x;

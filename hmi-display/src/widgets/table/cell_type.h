@@ -27,6 +27,8 @@
 
 #include <string>
 
+#include "src/widgets/widget_types.h"
+
 namespace gva {
 
 ///

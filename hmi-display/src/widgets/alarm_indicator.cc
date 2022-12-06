@@ -47,16 +47,16 @@ void WidgetAlarmIndicator::Draw() {
         break;
     }
     GetRenderer()->SetColourForeground(HMI_WHITE);
-    GetRenderer()->DrawRoundedRectangle(110, 32, 420, 20, 6, true);
+    GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
+    GetRenderer()->DrawRoundedRectangle(110, 429, 420, 20, 6, true);
     GetRenderer()->DrawColor(HMI_WHITE);
     uint16_t width = GetRenderer()->GetTextWidth(text_, 14);
-    GetRenderer()->DrawText(110 + (420 / 2) - (width / 2), 38, text_);
+    GetRenderer()->DrawText(110 + (420 / 2) - (width / 2), 444, text_);
     GetRenderer()->SetColourForeground(HMI_WHITE);
     GetRenderer()->DrawColor(HMI_WHITE);
-    GetRenderer()->DrawRoundedRectangle(110 + (420 / 2) + (width / 2) + 4, 34, 19, 16, 4, true);
+    GetRenderer()->DrawRoundedRectangle(110 + (420 / 2) + (width / 2) + 4, 431, 19, 16, 4, true);
 
     touch_->Add(GvaFunctionGroupEnum::kAlarmsIndicator, (uint32_t)(GvaKeyEnum::kKeyF16), 110, 32, 420, 20);
-    //       GetRenderer()->DrawIcon(ICON_ERROR, 110 + (420 / 2) + (width / 2) + 16, 42, 12, 12);
   }
 }
 

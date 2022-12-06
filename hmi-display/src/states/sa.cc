@@ -108,6 +108,7 @@ void StateSA::entry() {
       std::string filename;
       filename = ConfigData::GetInstance()->GetImagePath();
       filename.append("/FrontCenter.png");
+
       SetCanvasPng(filename.c_str());
     }
   }

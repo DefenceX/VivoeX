@@ -16,6 +16,7 @@ set(SOURCE_FILES widget-tester.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/widget.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/compass.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/keyboard.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/driver.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/alarm_indicator.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/top_labels.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/bottom_labels.cc

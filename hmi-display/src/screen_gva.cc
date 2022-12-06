@@ -45,6 +45,7 @@
 #include "widgets/alarm_indicator.h"
 #include "widgets/bottom_labels.h"
 #include "widgets/compass.h"
+#include "widgets/driver.h"
 #include "widgets/keyboard.h"
 #include "widgets/mode.h"
 #include "widgets/side_labels.h"
@@ -99,6 +100,7 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
   // Here we need to add all the possible screen widgets to the widget list, at this point they are uninitialised
   widget_list_[widget::KWidgetTypeCompass] = std::make_shared<WidgetPlanPositionIndicator>(*renderer);
   widget_list_[widget::KWidgetTypeKeyboard] = std::make_shared<WidgetKeyboard>(*renderer);
+  widget_list_[widget::kWidgetTypeDriverDial] = std::make_shared<WidgetDriverDial>(*renderer);
   widget_list_[widget::KWidgetTypeAlarmIndicator] = std::make_shared<WidgetAlarmIndicator>(*renderer, touch);
   widget_list_[widget::KWidgetTypeTopLabels] = std::make_shared<WidgetTopLabels>(*renderer, touch);
   widget_list_[widget::KWidgetTypeBottomLabels] = std::make_shared<WidgetBottomLabels>(*renderer, touch);
@@ -250,11 +252,6 @@ GvaStatusTypes ScreenGva::Update() {
     return GvaStatusTypes::kGvaSuccess;
   }
 
-  // Draw label
-  if (screen_->label.visible) {
-    DrawLabel(screen_->label.x, screen_->label.y, screen_->label.text);
-  }
-
   // Draw the LEFT bezel labels
   if (screen_->function_left.visible) {
     auto widget = (WidgetSideLabels *)GetWidget(widget::KWidgetTypeLeftLabels);
@@ -273,7 +270,7 @@ GvaStatusTypes ScreenGva::Update() {
   // Draw the TOP bezel labels
   if (screen_->function_top->visible) {
     auto widget = (WidgetTopLabels *)GetWidget(widget::KWidgetTypeTopLabels);
-    widget->SetY(kMinimumHeight - 11);
+    widget->SetY(2);
     widget->SetLabels(&screen_->function_top->labels);
     widget->Draw();
   }
@@ -285,9 +282,10 @@ GvaStatusTypes ScreenGva::Update() {
   }
 
   // Draw the onscreen KEYBOARD
-  if (widget_list_[widget::KWidgetTypeKeyboard]->GetVisible()) {
-    widget_list_[widget::KWidgetTypeKeyboard]->Draw();
-  }
+  widget_list_[widget::KWidgetTypeKeyboard]->Draw();
+
+  // Drivers Aids
+  widget_list_[widget::kWidgetTypeDriverDial]->Draw();
 
   // Setup and Draw the status bar, one row table
   if (screen_->status_bar->visible) {
@@ -321,19 +319,14 @@ GvaStatusTypes ScreenGva::Update() {
   // Setup and Draw the alarms
   if (widget_list_[widget::KWidgetTypeTable]->GetVisible()) {
     auto table_widget = (WidgetTable *)GetWidget(widget::KWidgetTypeTable);
-    if (screen_->labels != LabelModeEnum::kLabelAll) {
-      table_widget->SetWidth(kMinimumWidth - 40);
-      table_widget->SetX(20);
-    } else {
-      table_widget->SetX(110);
-      table_widget->SetWidth(420);
-    }
+
     table_widget->Draw();
   }
 
   // Draw PPI (Plan Position Indicator)
   widget_list_[widget::KWidgetTypeCompass]->Draw();
 
+  // Draw the control labels at the bottom of the screen
   if (screen_->control->visible_) {
     auto widget = (WidgetBottomLabels *)GetWidget(widget::KWidgetTypeBottomLabels);
     widget->SetLabels(&screen_->control->labels_);
@@ -345,7 +338,7 @@ GvaStatusTypes ScreenGva::Update() {
     WidgetTable message_box_table(*(RendererGva *)this, GetTouch(),
                                   ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
     message_box_table.SetX((gva::kMinimumWidth / 2) - 150);
-    message_box_table.SetY(260);
+    message_box_table.SetY(220);
     message_box_table.SetWidth(300);
     message_box_table.SetBackgroundColour(ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
 
@@ -359,7 +352,7 @@ GvaStatusTypes ScreenGva::Update() {
 
     message_box_table.Draw();
 
-    DrawIcon(screen_->message.icon, 320 - 150 + 300 - 17, 270, 11, 11);
+    DrawIcon(screen_->message.icon, 320 - 150 + 300 - 17, 210, 11, 11);
   }
 
   //

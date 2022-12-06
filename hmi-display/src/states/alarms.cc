@@ -111,6 +111,8 @@ void StateAlarms::entry() {
   }
 };
 
+void StateAlarms::exit() {}
+
 void StateAlarms::react(EventKeySA const &) { transit<StateSA>(); };
 
 void StateAlarms::react(EventKeyWPN const &) { transit<StateWPN>(); };

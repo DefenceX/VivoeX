@@ -131,8 +131,9 @@
 
 #include "src/gva.h"
 #include "src/view_gva.h"
-#include "widgets/alarm_indicator.h"
-#include "widgets/compass.h"
+#include "src/widgets/alarm_indicator.h"
+#include "src/widgets/compass.h"
+#include "src/widgets/table/table.h"
 
 namespace gva {
 
@@ -150,8 +151,14 @@ void Hmi::Reset() {
   screen_.canvas.bufferType = SurfaceType::kSurfaceNone;
   screen_render_->GetWidget(widget::KWidgetTypeTable)->SetVisible(false);
   screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetVisible(false);
-  screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetY(360 + 28);
-  screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetX(161);
+  if (screen_.currentFunction == GvaFunctionEnum::kDriver) {
+    screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetY(190);
+    screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetX(120);
+
+  } else {
+    screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetY(190);
+    screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetX(330);
+  }
   screen_.control->visible_ = true;
   screen_.control->SetDisabled(4);  // Up Arrow
   screen_.control->SetDisabled(5);  // Down Arrow
@@ -173,9 +180,17 @@ void Hmi::Labels(LabelModeEnum labels) {
       screen_.control->visible_ = true;
       screen_.function_top->visible = true;
       screen_.status_bar->visible = true;
-      screen_.status_bar->y = 446;
-      screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetY(360 + 28);
-      screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetX(161);
+      screen_.status_bar->y = 15;
+      if (screen_.currentFunction == GvaFunctionEnum::kDriver) {
+        screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetY(190);
+        screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetX(120);
+
+      } else {
+        screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetY(190);
+        screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetX(330);
+      }
+      screen_render_->GetWidget(widget::KWidgetTypeTable)->SetWidth(420);
+      screen_render_->GetWidget(widget::KWidgetTypeTable)->SetX(110);
       break;
     case LabelModeEnum::kLabelStatusOnly:
       screen_.function_left.visible = false;
@@ -183,9 +198,11 @@ void Hmi::Labels(LabelModeEnum labels) {
       screen_.control->visible_ = false;
       screen_.function_top->visible = false;
       screen_.status_bar->visible = true;
-      screen_.status_bar->y = 459;
-      screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetY(360 + 42);
-      screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetX(161 - 106);
+      screen_.status_bar->y = 2;
+      screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetY(160);
+      screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetX(120);
+      screen_render_->GetWidget(widget::KWidgetTypeTable)->SetWidth(kMinimumWidth - 40);
+      screen_render_->GetWidget(widget::KWidgetTypeTable)->SetX(20);
       break;
     case LabelModeEnum::kLabelMinimal:
       screen_.function_left.visible = false;
@@ -194,6 +211,8 @@ void Hmi::Labels(LabelModeEnum labels) {
       screen_.function_top->visible = false;
       screen_.status_bar->visible = false;
       screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetVisible(false);
+      screen_render_->GetWidget(widget::KWidgetTypeTable)->SetWidth(kMinimumWidth - 40);
+      screen_render_->GetWidget(widget::KWidgetTypeTable)->SetX(20);
       break;
   }
 };

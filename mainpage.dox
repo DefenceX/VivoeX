@@ -195,6 +195,12 @@ A table example example can be seen below gva::WidgetMode, add rows and cells as
 \image html table_01.png  "Table, example message box" 
 \image html table_02.png  "Table, example alarms table" 
 
+\subsubsection speed Drivers speedometer
+A table example example can be seen below gva::WidgetMode, add rows and cells as required these can be colour coded and highlighted for interactive table.
+\image html driver_01.png  "Speed at 10 Km/h" 
+\image html driver_02.png  "Speed at 60 Km/h" 
+\image html driver_03.png  "Speed at 40 Mph" 
+
 \section tools Tooling
 
 \subsection test-hmi Testing widgets

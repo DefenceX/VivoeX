@@ -129,7 +129,7 @@ class DefaultSettings {
   ///
   /// \return FunctionKeys
   ///
-  static FunctionKeys GetDefaultFunctionKeyDriverLeft();
+  static FunctionKeys GetDefaultFunctionKeyDriverRight();
 
   ///
   /// \brief Get the Default Function Key Communications Left object

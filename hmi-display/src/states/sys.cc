@@ -85,10 +85,6 @@ void StateSYS::entry() {
 
     screen_.status_bar->labels[3].state = LabelStates::kLabelEnabledSelected;
     screen_.function_top->labels[3].state = LabelStates::kLabelEnabledSelected;
-    screen_.canvas.visible = true;
-    std::string filename = ConfigData::GetInstance()->GetImagePath();
-    filename.append("/FrontCenter.png");
-    SetCanvasPng(filename.c_str());
 
     HmiHelper::TableSystem(table);
   }

@@ -56,7 +56,7 @@ void WidgetTable::DrawTable() {
       GetRenderer()->Save();
       GetRenderer()->SetColourForeground(outline_colour_);
       GetRenderer()->SetColourBackground(row.GetBackgroundColour());
-      GetRenderer()->DrawRectangle(offset, (GetY() - (row_count * height)), cell_width, height, true);
+      GetRenderer()->DrawRectangle(offset, (GetY() + (row_count * height)), cell_width, height, true);
       GetRenderer()->Restore();
 
       uint32_t w = GetRenderer()->GetTextWidth(column.GetText(), 12);
@@ -73,7 +73,7 @@ void WidgetTable::DrawTable() {
           pos = offset + 4;
           break;
       }
-      GetRenderer()->DrawText(pos, (GetY() - (row_count * height)) + 5, column.GetText());
+      GetRenderer()->DrawText(pos, (GetY() + ((row_count + 1) * height)) - 5, column.GetText());
       offset += cell_width;
     }
     row_count++;
@@ -81,7 +81,7 @@ void WidgetTable::DrawTable() {
   // Highlight the selected row
   if (current_row_) {
     GetRenderer()->DrawColor(highlight_colour_);
-    GetRenderer()->DrawRectangle(GetX(), (GetY() - (current_row_ * height)), GetWidth(), height, false);
+    GetRenderer()->DrawRectangle(GetX(), (GetY() + (current_row_ * height)), GetWidth(), height, false);
   }
 }
 

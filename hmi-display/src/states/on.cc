@@ -62,8 +62,8 @@ void StateOn::entry() {
                        gva::DefaultSettings::GetDefaultFunctionKeySystemsRight());
   // Driver (DRV), no labels on right so defaults used
   manager_->AddNewView(GvaFunctionEnum::kDriver, &top_, &bottom_,
-                       gva::DefaultSettings::GetDefaultFunctionKeyDriverLeft(),
-                       gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden());
+                       gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden(),
+                       gva::DefaultSettings::GetDefaultFunctionKeyDriverRight());
   // Special To Role (STR), not used so all defaults
   manager_->AddNewView(GvaFunctionEnum::KSpecialToRole, &top_, &bottom_,
                        gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden(),
@@ -87,12 +87,13 @@ void StateOn::entry() {
   screen_render_ = new ScreenGva(&screen_, view_.width, view_.height);
 
   // Configure the widgets
-  ((WidgetPlanPositionIndicator *)screen_render_->GetWidget(widget::KWidgetTypeCompass))->SetBearingSight(33);
-  screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetX(161);
-  screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetY(360 + 28);
+  ((WidgetPlanPositionIndicator *)screen_render_->GetWidget(widget::KWidgetTypeCompass))->SetBearingSight(0);
+  screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetY(190);
+  screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetX(330);
   screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetVisible(true);
   screen_render_->GetWidget(widget::KWidgetTypeAlarmIndicator)->SetVisible(true);
-  screen_render_->GetWidget(widget::KWidgetTypeAlarmIndicator)->SetY(422);
+  screen_render_->GetWidget(widget::KWidgetTypeAlarmIndicator)->SetY(58);
+  screen_render_->GetWidget(widget::KWidgetTypeBottomLabels)->SetY(480 - 20);
 
   WidgetAlarmIndicator *ai = (WidgetAlarmIndicator *)screen_render_->GetWidget(widget::KWidgetTypeAlarmIndicator);
   ai->SetType(GvaAlarmType::kAlarmCaution);

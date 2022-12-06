@@ -101,9 +101,6 @@ class WidgetPlanPositionIndicator : public WidgetX {
   ///
   void SetMode(widget::ModeEnum mode) { mode_ = mode; }
 
-  void SetX(uint32_t x) override { x_ = x * 2; }
-  void SetY(uint32_t y) override { y_ = y - (100); }
-
  private:
   const double scale_ = 0.5;
   int16_t bearing_ = 0;

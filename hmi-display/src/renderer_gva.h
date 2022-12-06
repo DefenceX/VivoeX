@@ -117,8 +117,6 @@ class TouchGva {
     // Adjust for resized windows
     x = x / static_cast<float>(Renderer::GetWidth() / static_cast<float>(kMinimumWidth));
     y = y / static_cast<float>(Renderer::GetHeight() / static_cast<float>(kMinimumHeight));
-    // Invert now adjusted for size
-    y = kMinimumHeight - y;
 
     for (auto i = hotspots_.begin(); i != hotspots_.end(); ++i) {
       if ((x > i->GetX()) && (x < (i->GetX() + i->GetWidth())) && (y > i->GetY()) &&

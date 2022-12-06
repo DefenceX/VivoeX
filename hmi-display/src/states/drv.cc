@@ -24,6 +24,8 @@
 
 #include "drv.h"
 
+#include "src/widgets/driver.h"
+
 namespace gva {
 
 GvaKeyEnum Hmi::KeyDRV(GvaKeyEnum keypress) {
@@ -63,10 +65,21 @@ void StateDRV::entry() {
     lastState_ = GvaFunctionEnum::kDriver;
     if (screen_.labels != LabelModeEnum::kLabelMinimal)
       screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetVisible(true);
+
+    screen_render_->GetWidget(widget::kWidgetTypeDriverDial)->SetVisible(true);
+    screen_render_->GetWidget(widget::kWidgetTypeDriverDial)->SetX(320);
+    screen_render_->GetWidget(widget::kWidgetTypeDriverDial)->SetY(750);
+    WidgetDriverDial *dial = (WidgetDriverDial *)screen_render_->GetWidget(widget::kWidgetTypeDriverDial);
+    dial->SetValue(0);  // Why not zero is so boring
     screen_.status_bar->visible = true;
     screen_.function_top->SetEnabled(4);
   }
 };
+
+void StateDRV::exit() {
+  // Switch the dials off now not needed in other states
+  screen_render_->GetWidget(widget::kWidgetTypeDriverDial)->SetVisible(false);
+}
 
 void StateDRV::react(EventKeyPowerOn const &) { transit<StateOff>(); };
 

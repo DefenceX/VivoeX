@@ -27,15 +27,28 @@
 
 namespace gva::widget {
 
+///
+/// \brief The various types of keyboard input (see WidgetKeyboard)
+///
+///
 enum class KeyboardModeType { kKeyboardLower = 0, kKeyboardUpper, kKeyboardNumbers };
 
+///
+/// \brief Table (see WidgetTable) cell alignment
+///
+///
 enum class CellAlignType { kAlignLeft = 0, kAlignCentre, kAlignRight };
 
+///
+/// \brief The line weight for boxes and tables
+///
+///
 enum class WeightType { kWeightNormal = 0, kWeightBold, kWeightItalic };
 
-//
-// Widgets
-//
+///
+/// \brief The different types of widget currently available for display
+///
+///
 enum WidgetEnum {
   KWidgetTypeCompass,
   KWidgetTypeKeyboard,
@@ -45,8 +58,14 @@ enum WidgetEnum {
   KWidgetTypeLeftLabels,
   KWidgetTypeRightLabels,
   KWidgetTypeMode,
-  KWidgetTypeTable
+  KWidgetTypeTable,
+  kWidgetTypeDriverDial
 };
+
+///
+/// \brief The Plan Position Indicator modes, different visual styles
+///
+///
 enum class ModeEnum {
   kPpiClassicTankWithSight,
   kPpiClassicTankWithoutSight,
@@ -56,6 +75,16 @@ enum class ModeEnum {
   kPpiModernTankWithoutSights
 };
 
+///
+/// \brief The different dial types
+///
+///
+enum class DialType { kDialSpeedKph, kDialSpeedMph, kDialSpeedRpm };
+
+///
+/// \brief All available types of icon
+///
+///
 enum class IconType {
   kIconNone = 0,
   kIconUpArrow,
@@ -79,6 +108,10 @@ enum class IconType {
   kIconCentre
 };
 
+///
+/// \brief Generic colour structure without alpha value
+///
+///
 struct GvaColourType {
   int red;
   int green;

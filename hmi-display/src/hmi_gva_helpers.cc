@@ -33,7 +33,7 @@ void HmiHelper::TableLicences(WidgetTable *table) {
   table->SetVisible(true);
 
   table->SetX(110);
-  table->SetY(390);
+  table->SetY(71);
   table->SetWidth(420);
 
   table->AddRow(widget::WeightType::kWeightBold);
@@ -72,7 +72,7 @@ void HmiHelper::TableSystem(WidgetTable *table) {
   table->SetBackgroundColour(ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
 
   table->SetX(110);
-  table->SetY(390);
+  table->SetY(71);
   table->SetWidth(420);
 
   table->AddRow(widget::WeightType::kWeightBold);
@@ -112,7 +112,7 @@ void HmiHelper::TableAlarms(WidgetTable *table) {
   table->SetBackgroundColour(ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
 
   table->SetX(110);
-  table->SetY(423);
+  table->SetY(46);
   table->SetWidth(420);
 
   table->AddRow(widget::WeightType::kWeightBold);

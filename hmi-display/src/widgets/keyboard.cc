@@ -32,11 +32,15 @@ WidgetKeyboard::WidgetKeyboard(const RendererGva& renderer) : WidgetX(renderer, 
   SetVisible(false);
 }
 
-void WidgetKeyboard::Draw() { DrawKeyboard(mode_); }
+void WidgetKeyboard::Draw() {
+  if (GetVisible()) {
+    DrawKeyboard(mode_);
+  }
+}
 
 void WidgetKeyboard::DrawKeyboard(const widget::KeyboardModeType mode) {
   uint32_t i = 0;
-  uint32_t yLocation = 30 + 25;
+  uint32_t yLocation = 265;
   uint32_t bSize = 33;
   uint32_t padding = 5;
   uint32_t fontSize = 14;
@@ -70,18 +74,18 @@ void WidgetKeyboard::DrawKeyboard(const widget::KeyboardModeType mode) {
   GetRenderer()->DrawColor(HMI_WHITE);
   for (i = 0; i < 10; i++) {
     keyText = keyboard[0][i];
-    GetRenderer()->DrawButton(keyText, fontSize, 125 + (i * (bSize + 5)), yLocation + padding + (bSize + 5) * 3, bSize);
+    GetRenderer()->DrawButton(keyText, fontSize, 125 + (i * (bSize + 5)), yLocation + padding + (bSize + 5) * 0, bSize);
   }
   for (i = 0; i < 9; i++) {
     keyText = keyboard[1][i];
-    GetRenderer()->DrawButton(keyText, fontSize, 140 + (i * (bSize + 5)), yLocation + padding + (bSize + 5) * 2, bSize);
+    GetRenderer()->DrawButton(keyText, fontSize, 140 + (i * (bSize + 5)), yLocation + padding + (bSize + 5) * 1, bSize);
   }
   for (i = 0; i < 8; i++) {
     keyText = keyboard[2][i];
-    GetRenderer()->DrawButton(keyText, fontSize, 160 + (i * (bSize + 5)), yLocation + padding + (bSize + 5) * 1, bSize);
+    GetRenderer()->DrawButton(keyText, fontSize, 160 + (i * (bSize + 5)), yLocation + padding + (bSize + 5) * 2, bSize);
   }
   GetRenderer()->DrawIcon(widget::IconType::kIconRightArrow, 426 + bSize / 2,
-                          yLocation + padding + (bSize + 5) + bSize / 2, 8, 10);
+                          yLocation + padding + (bSize + 5) * 2 + bSize / 2, 8, 10);
   GetRenderer()->SetColourBackground(HMI_DARK_GREY);
   GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
   GetRenderer()->SetColourForeground(HMI_WHITE);
@@ -89,15 +93,18 @@ void WidgetKeyboard::DrawKeyboard(const widget::KeyboardModeType mode) {
   //
   // Space Bar and Mode
   //
-  GetRenderer()->DrawButton("123", fontSize, 144, yLocation + 5, bSize + 5, bSize, widget::CellAlignType::kAlignRight);
-  GetRenderer()->DrawButton("SPACE", fontSize, 185, yLocation + 5, bSize + 202, bSize,
+  GetRenderer()->DrawButton("123", fontSize, 144, yLocation + padding + (bSize + 5) * 3, bSize + 5, bSize,
+                            widget::CellAlignType::kAlignRight);
+  GetRenderer()->DrawButton("SPACE", fontSize, 185, yLocation + padding + (bSize + 5) * 3, bSize + 202, bSize,
                             widget::CellAlignType::kAlignCentre);
-  GetRenderer()->DrawButton("", fontSize, 426, yLocation + 5, bSize, bSize, widget::CellAlignType::kAlignRight);
-  GetRenderer()->DrawIcon(widget::IconType::kIconUpArrow, 426 + bSize / 2, yLocation + 5 + bSize / 2 + 2, 12, 11);
+  GetRenderer()->DrawButton("", fontSize, 426, yLocation + padding + (bSize + 5) * 3, bSize, bSize,
+                            widget::CellAlignType::kAlignRight);
+  GetRenderer()->DrawIcon(widget::IconType::kIconUpArrow, 426 + bSize / 2, yLocation + 135, 12, 11);
   GetRenderer()->SetColourBackground(HMI_DARK_GREY);
   GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
   GetRenderer()->SetColourForeground(HMI_WHITE);
-  GetRenderer()->DrawButton("Mode", fontSize, 463, yLocation + 20, 50, 50, widget::CellAlignType::kAlignRight);
+  GetRenderer()->DrawButton("Mode", fontSize, 463, yLocation + padding + (bSize + 5) * 3 - 30, 50, 50,
+                            widget::CellAlignType::kAlignRight);
 }
 
 void WidgetKeyboard::SetMode(const widget::KeyboardModeType mode) { mode_ = mode; }

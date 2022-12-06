@@ -38,11 +38,7 @@ void WidgetSideLabels::Draw() {
 }
 
 void WidgetSideLabels::Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::string text,
-                            uint32_t text_colour) {
-  char copy[256];
-  char delim[] = ".";
-  char* ptr = NULL;
-
+                            uint32_t text_colour, bool toggle_on) {
   if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::kLabelRounded) {
     GetRenderer()->DrawRoundedRectangle(x, y, width, height, 6, true);
   } else {
@@ -73,18 +69,21 @@ void WidgetSideLabels::Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t hei
     if (text.substr(5, 20) == "minus")
       GetRenderer()->DrawIcon(widget::IconType::kIconMinus, x + width / 2, y + height / 2, 20, 20);
   } else {
-    strncpy(copy, text.c_str(), 40);
-    ptr = strtok(copy, delim);
-    if (ptr != NULL) {
-      uint32_t width = GetRenderer()->GetTextWidth(ptr, 14);
-      GetRenderer()->DrawText(x + (98 - width) / 2, y + 30, ptr);
-      ptr = strtok(NULL, delim);
-      if (ptr != NULL) {
-        width = GetRenderer()->GetTextWidth(ptr, 14);
-        GetRenderer()->DrawText(x + (100 - width) / 2, y + 10, ptr);
-      }
+    if (text.find('.') != std::string::npos) {
+      std::string first_line = text.substr(0, text.find('.'));
+      uint32_t width = GetRenderer()->GetTextWidth(first_line, 14);
+      GetRenderer()->DrawText(x + (98 - width) / 2, y + 20, first_line);
+      std::string second_line = text.substr(text.find('.') + 1);
+      width = GetRenderer()->GetTextWidth(second_line, 14);
+      GetRenderer()->DrawText(x + (98 - width) / 2, y + 40, second_line);
     } else {
-      GetRenderer()->DrawText(x + 4, y + 30, text);
+      uint32_t width = GetRenderer()->GetTextWidth(text, 14);
+      if (toggle_on) {
+        GetRenderer()->DrawText(x + (98 - width) / 2, y + 17, text);
+
+      } else {
+        GetRenderer()->DrawText(x + (98 - width) / 2, y + 30, text);
+      }
     }
   }
 
@@ -93,32 +92,33 @@ void WidgetSideLabels::Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t hei
 }
 
 void WidgetSideLabels::Toggle(const std::string& label1, const std::string& label2) {
+  int ypos = 25;
   GetRenderer()->SetColourForeground(HMI_DARK_GREEN2);
   GetRenderer()->SetColourBackground(HMI_YELLOW);
 
   if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::kLabelRounded) {
-    GetRenderer()->DrawRoundedRectangle(GetX() + 5, GetY() + 5, 40, 20, 4, true);
+    GetRenderer()->DrawRoundedRectangle(GetX() + 5, GetY() + ypos, 40, 20, 4, true);
   } else {
-    GetRenderer()->DrawRectangle(GetX() + 5, GetY() + 5, 40, 20, true);
+    GetRenderer()->DrawRectangle(GetX() + 5, GetY() + ypos, 40, 20, true);
   }
   GetRenderer()->DrawColor(HMI_BLACK);
-  GetRenderer()->DrawText(GetX() + 12, GetY() + 9, label1);
+  GetRenderer()->DrawText(GetX() + 12, GetY() + ypos + 15, label1);
   GetRenderer()->SetColourBackground(HMI_GREY);
   GetRenderer()->SetColourForeground(HMI_DARK_GREY);
 
   if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::kLabelRounded) {
-    GetRenderer()->DrawRoundedRectangle(GetX() + 50, GetY() + 5, 45, 20, 4, true);
+    GetRenderer()->DrawRoundedRectangle(GetX() + 50, GetY() + ypos, 45, 20, 4, true);
   } else {
-    GetRenderer()->DrawRectangle(GetX() + 50, GetY() + 5, 45, 20, true);
+    GetRenderer()->DrawRectangle(GetX() + 50, GetY() + ypos, 45, 20, true);
   }
   GetRenderer()->DrawColor(HMI_BLACK);
-  GetRenderer()->DrawText(GetX() + 56, GetY() + 9, label2);
+  GetRenderer()->DrawText(GetX() + 56, GetY() + ypos + 15, label2);
 }
 
 // On the left and right of the screen
 void WidgetSideLabels::DrawFunctionLabels() {
   uint32_t i = 0;
-  uint32_t offset = kMinimumHeight - 88;
+  uint32_t offset = 38;
 
   GetRenderer()->SetLineType(CAIRO_LINE_JOIN_ROUND);
   GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightNormal,
@@ -131,10 +131,9 @@ void WidgetSideLabels::DrawFunctionLabels() {
   for (auto label : *labels_) {
     if (label.state != LabelStates::kLabelHidden) {
       SetStateLabel(label.state);
-
-      Draw(GetX(), offset - (i * 72), 100, 50, label.text, GetStateTextColour(label.state));
+      Draw(GetX(), offset + (i * 72), 100, 50, label.text, GetStateTextColour(label.state), label.toggleActive);
       if (label.state != LabelStates::kLabelDisabled) {
-        touch_->Add(group, (uint32_t)(firstKey + i), GetX(), offset - (i * 72), 100, 50);
+        touch_->Add(group, (uint32_t)(firstKey + i), GetX(), offset + (i * 72), 100, 50);
       }
       if (label.toggleActive) Toggle(label.toggleText1, label.toggleText2);
     }

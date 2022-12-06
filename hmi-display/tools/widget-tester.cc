@@ -64,6 +64,7 @@
 #include "src/widgets/alarm_indicator.h"
 #include "src/widgets/bottom_labels.h"
 #include "src/widgets/compass.h"
+#include "src/widgets/driver.h"
 #include "src/widgets/keyboard.h"
 #include "src/widgets/mode.h"
 #include "src/widgets/side_labels.h"
@@ -88,6 +89,7 @@ static gva::WidgetSideLabels left(renderer, &touch);
 static gva::WidgetSideLabels right(renderer, &touch);
 static gva::WidgetMode mode(renderer);
 static gva::WidgetTable table(renderer, &touch, gva::ConfigData::GetInstance()->GetThemeBackground());
+static gva::WidgetDriverDial driver_speed(renderer);
 
 static void do_drawing(cairo_t *, int width, int h);
 
@@ -157,28 +159,28 @@ static void do_drawing(cairo_t *cr, int width, int height) {
 
   switch (counter) {
     case 0:
-      cairo_translate(cr, width / 2, -height / 2);
+      cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicTankWithSight, 0, 0, 0, 90, 10);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_01.png").c_str());
       break;
     case 1:
-      cairo_translate(cr, width / 2, -height / 2);
+      cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicTankWithSight, 0, 0, 350, 180, 20);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_02.png").c_str());
       break;
     case 2:
-      cairo_translate(cr, width / 2, -height / 2);
+      cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicTankWithSight, 0, 0, 340, 270, 30);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_03.png").c_str());
       break;
     case 3:
-      cairo_translate(cr, width / 2, -height / 2);
+      cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicTankWithSight, 0, 0, 330, 0, 40);
       renderer.Draw();
@@ -186,35 +188,35 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       break;
     case 4:
       // Next PPI
-      cairo_translate(cr, width / 2, -height / 2);
+      cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicTankWithoutSight, 0, 0, 320, 90, 0);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_05.png").c_str());
       break;
     case 5:
-      cairo_translate(cr, width / 2, -height / 2);
+      cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicArrowWithSight, 0, 0, 0, 90, 10);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_06.png").c_str());
       break;
     case 6:
-      cairo_translate(cr, width / 2, -height / 2);
+      cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicArrowWithSight, 0, 0, 350, 180, 20);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_07.png").c_str());
       break;
     case 7:
-      cairo_translate(cr, width / 2, -height / 2);
+      cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicArrowWithSight, 0, 0, 340, 270, 30);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_08.png").c_str());
       break;
     case 8:
-      cairo_translate(cr, width / 2, -height / 2);
+      cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicArrowWithSight, 0, 0, 330, 0, 40);
       renderer.Draw();
@@ -222,35 +224,35 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       break;
     case 9:
       // Next PPI
-      cairo_translate(cr, width / 2, -height / 2);
+      cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicArrowWithoutSight, 0, 0, 320, 90, 0);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_10.png").c_str());
       break;
     case 10:
-      cairo_translate(cr, width / 2, -height / 2);
+      cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       ppi.DrawPPI(gva::widget::ModeEnum::kPpiModernTankWithSights, 0, 0, 0, 90, 10);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_11.png").c_str());
       break;
     case 11:
-      cairo_translate(cr, width / 2, -height / 2);
+      cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       ppi.DrawPPI(gva::widget::ModeEnum::kPpiModernTankWithSights, 0, 0, 350, 180, 20);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_12.png").c_str());
       break;
     case 12:
-      cairo_translate(cr, width / 2, -height / 2);
+      cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       ppi.DrawPPI(gva::widget::ModeEnum::kPpiModernTankWithSights, 0, 0, 340, 270, 30);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_13.png").c_str());
       break;
     case 13:
-      cairo_translate(cr, width / 2, -height / 2);
+      cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       ppi.DrawPPI(gva::widget::ModeEnum::kPpiModernTankWithSights, 0, 0, 330, 0, 40);
       renderer.Draw();
@@ -258,7 +260,7 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       break;
     case 14:
       // Next PPI
-      cairo_translate(cr, width / 2, -height / 2);
+      cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       ppi.DrawPPI(gva::widget::ModeEnum::kPpiModernTankWithoutSights, 0, 0, 320, 90, 0);
       renderer.Draw();
@@ -381,7 +383,7 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       break;
     case 24:
       // Mode Indicator
-      mode.SetMode("Software Testing ModInit");
+      mode.SetMode("Software Testing Mode");
       mode.Draw();
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/mode_01.png").c_str());
@@ -412,9 +414,37 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       table.Draw();
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/table_02.png").c_str());
-
     } break;
-
+    case 27: {
+      cairo_translate(cr, width / 2, height / 2);
+      cairo_scale(cr, 2, 2);
+      driver_speed.SetMode(gva::widget::DialType::kDialSpeedKph);
+      driver_speed.SetVisible(true);
+      driver_speed.SetValue(10);
+      driver_speed.Draw();
+      renderer.Draw();
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/driver_01.png").c_str());
+    } break;
+    case 28: {
+      cairo_translate(cr, width / 2, height / 2);
+      cairo_scale(cr, 2, 2);
+      driver_speed.SetMode(gva::widget::DialType::kDialSpeedKph);
+      driver_speed.SetVisible(true);
+      driver_speed.SetValue(60);
+      driver_speed.Draw();
+      renderer.Draw();
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/driver_02.png").c_str());
+    } break;
+    case 29: {
+      cairo_translate(cr, width / 2, height / 2);
+      cairo_scale(cr, 2, 2);
+      driver_speed.SetMode(gva::widget::DialType::kDialSpeedMph);
+      driver_speed.SetVisible(true);
+      driver_speed.SetValue(40);
+      driver_speed.Draw();
+      renderer.Draw();
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/driver_03.png").c_str());
+    } break;
     default:
       counter = 9999;  // Cause loop to end and terminate
       break;
@@ -481,7 +511,10 @@ int main(int argc, char *argv[]) {
         std::cout << "       22: Labels for bottom of screen, control " << std::endl;
         std::cout << "       23: Labels for side of screen, used for both left and right hand sides " << std::endl;
         std::cout << "       24: Operator mode, visual indication of the non operational mode/s" << std::endl;
-        std::cout << "       25: Table example, sample alarms/s" << std::endl;
+        std::cout << "       25: Table example, example message box/s" << std::endl;
+        std::cout << "       26: Table example, sample alarms/s" << std::endl;
+        std::cout << "       27: Drivers speed dial/s 10Kph" << std::endl;
+        std::cout << "       28: Drivers speed dial/s 60Kph" << std::endl;
         return 0;
       case 't':
         timeout = atoi(optarg);
