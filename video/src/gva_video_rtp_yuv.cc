@@ -30,16 +30,15 @@ namespace gva {
 GvaVideoRtpYuv::GvaVideoRtpYuv(std::string_view ip, uint32_t port, uint32_t height, uint32_t width)
     : GvaVideoSource(height, width), ip_(ip), port_(port), frame_counter_(0) {}
 
-GvaVideoRtpYuv::GvaVideoRtpYuv(std::string_view ip, uint32_t port) : GvaVideoSource(kMinimumHeight, kMinimumWidth) {
-  ip_ = ip;
-  port_ = port;
+GvaVideoRtpYuv::GvaVideoRtpYuv(std::string_view ip, uint32_t port)
+    : GvaVideoSource(kMinimumHeight, kMinimumWidth), ip_(ip), port_(port) {
   stream_ = std::make_unique<RtpStream>(kMinimumHeight, kMinimumWidth);
-  const char* ipaddr = ip_.c_str();
+  const char* ipaddr = ip_.data();
   stream_->RtpStreamIn(ipaddr, port_);
   stream_->Open();
 }
 
-const uint32_t GvaVideoRtpYuv::GvaReceiveFrame(char* buffer, VideoFormat format) {
+uint32_t GvaVideoRtpYuv::GvaReceiveFrame(char* buffer, VideoFormat format) {
   char* frame_buffer;
   stream_->Receive((void**)&frame_buffer, 5);
   switch (format) {
@@ -57,6 +56,6 @@ const uint32_t GvaVideoRtpYuv::GvaReceiveFrame(char* buffer, VideoFormat format)
   return 0;
 }
 
-const uint32_t GvaVideoRtpYuv::GvaTransmitFrame(char* buffer, VideoFormat format) { return -1; };
+uint32_t GvaVideoRtpYuv::GvaTransmitFrame(char* buffer, VideoFormat format) { return -1; };
 
 }  // namespace gva

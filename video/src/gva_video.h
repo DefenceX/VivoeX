@@ -44,7 +44,7 @@ class GvaVideoSource {
   /// \param format
   /// \return uint32_t
   ///
-  virtual const uint32_t GvaReceiveFrame(char *buffer, VideoFormat format) = 0;
+  virtual uint32_t GvaReceiveFrame(char *buffer, VideoFormat format) = 0;
 
   ///
   /// \brief Transmit one frame of video
@@ -53,7 +53,7 @@ class GvaVideoSource {
   /// \param format
   /// \return uint32_t
   ///
-  virtual const uint32_t GvaTransmitFrame(char *buffer, VideoFormat format) = 0;
+  virtual uint32_t GvaTransmitFrame(char *buffer, VideoFormat format) = 0;
 
   ///
   /// \brief Get the Width object

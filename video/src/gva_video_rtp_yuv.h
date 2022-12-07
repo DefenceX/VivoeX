@@ -44,11 +44,11 @@ class GvaVideoRtpYuv : public GvaVideoSource {
   ~GvaVideoRtpYuv() final = default;
 
   // Implementation of pure virtual base class functions
-  const uint32_t GvaReceiveFrame(char *buffer, VideoFormat format) final;
-  const uint32_t GvaTransmitFrame(char *buffer, VideoFormat format) final;
+  uint32_t GvaReceiveFrame(char *buffer, VideoFormat format) final;
+  uint32_t GvaTransmitFrame(char *buffer, VideoFormat format) final;
 
  private:
-  std::string ip_;
+  std::string_view ip_;
   uint32_t port_;
   uint32_t frame_counter_;
   std::unique_ptr<RtpStream> stream_;
