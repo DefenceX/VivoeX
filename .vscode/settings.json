@@ -205,15 +205,21 @@
         "stop_token": "cpp",
         "*.inc": "cpp",
         "filesystem": "cpp",
-        "complex": "cpp"
+        "complex": "cpp",
+        "any": "cpp",
+        "forward_list": "cpp",
+        "variant": "cpp"
     },
     "cSpell.words": [
+        "alarmson",
         "defencex",
         "mgrs",
         "northp",
+        "osmscout",
         "rightarrow",
         "rotateleft",
-        "rotateright"
+        "rotateright",
+        "workarea"
     ],
     "sonarlint.connectedMode.project": {
         "connectionId": "defencex",

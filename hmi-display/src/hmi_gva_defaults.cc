@@ -346,12 +346,12 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeyCommunicationsLeft() {
 
 FunctionKeys DefaultSettings::GetDefaultFunctionKeyBattlefieldManagementSystemLeft() {
   FunctionKeys keys;
+  LabelStates state;
   keys.visible = true;
-#if (ENABLE_OSMSCOUT)
-  LabelStates state = LabelStates::kLabelEnabled;
-#else
-  LabelStates state = LabelStates::kLabelDisabled;
-#endif
+  if (kOsmScout)
+    state = LabelStates::kLabelEnabled;
+  else
+    state = LabelStates::kLabelDisabled;
   keys.labels[0].state = state;
   keys.labels[0].text = "Mission";
   keys.labels[0].toggleActive = false;
@@ -375,12 +375,12 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeyBattlefieldManagementSystemLe
 
 FunctionKeys DefaultSettings::GetDefaultFunctionKeyBattlefieldManagementSystemRight() {
   FunctionKeys keys;
+  LabelStates state;
   keys.visible = true;
-#if (ENABLE_OSMSCOUT)
-  LabelStates state = LabelStates::kLabelEnabled;
-#else
-  LabelStates state = LabelStates::kLabelDisabled;
-#endif
+  if (kOsmScout)
+    state = LabelStates::kLabelEnabled;
+  else
+    state = LabelStates::kLabelDisabled;
   keys.labels[0].state = LabelStates::kLabelHidden;
   keys.labels[0].text = "Unused";
   keys.labels[0].toggleActive = false;

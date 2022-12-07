@@ -14,11 +14,9 @@ include(scripts/cmake/geographic.cmake)
 
 include_directories(${CMAKE_SOURCE_DIR}/hmi-display)
 
-if (ENABLE_OSMSCOUT)
-    # lots of warnings and all warnings as errors
-    Message(STATUS "Building OSM Scout into BMS")
-    add_compile_options(-DENABLE_OSMSCOUT)
-endif()
+# lots of warnings and all warnings as errors
+Message(STATUS "Building OSM Scout into BMS")
+add_compile_options(-DENABLE_OSMSCOUT)
 
 execute_process(COMMAND ../update.sh)
 # add_subdirectory(dds)
@@ -37,37 +35,35 @@ add_custom_target(libosmscout)
 add_custom_target(libnmea)
 else (HMI_ONLY)
 
-if (ENABLE_OSMSCOUT)
-	if (${CMAKE_SYSTEM_NAME} MATCHES "MSYS")
-		message("libosmscout not currently supported under MSYS2...")
-	else()
-	# ------------------------------------------------------------------------------
-	# libosmscout
-	# ------------------------------------------------------------------------------
-	set(OSMSCOUT_BUILD_TEST OFF CACHE BOOL "Disable build of test library")
-	list(APPEND CMAKE_MODULE_PATH ../libosmscout/cmake)
+if (${CMAKE_SYSTEM_NAME} MATCHES "MSYS")
+    message("libosmscout not currently supported under MSYS2...")
+else()
+# ------------------------------------------------------------------------------
+# libosmscout
+# ------------------------------------------------------------------------------
+set(OSMSCOUT_BUILD_TEST OFF CACHE BOOL "Disable build of test library")
+list(APPEND CMAKE_MODULE_PATH ../libosmscout/cmake)
 
-	ExternalProject_Add(
-	    libosmscout
-	    GIT_REPOSITORY      https://github.com/Framstag/libosmscout
-#	    GIT_TAG             1.1.0
-	    GIT_SHALLOW         1
-	    CMAKE_ARGS          "-DCMAKE_BUILD_TYPE=Release -DOSMSCOUT_BUILD_DOC_API=Off -DOSMSCOUT_BUILD_TESTS=Off -DOSMSCOUT_BUILD_GPX=Off -DOSMSCOUT_BUILD_MAP_AGG=Off -DOSMSCOUT_BUILD_MAP_SVG=Off -DOSMSCOUT_BUILD_MAP_OPENGL=Off -DOSMSCOUT_BUILD_MAP_QT=Off -D=OSMSCOUT_BUILD_CLIENT_QT=Off -DOSMSCOUT_BUILD_MAP_SVG=Off -DOSMSCOUT_BUILD_WEBPAGE=Off"
-	    PREFIX              ${CMAKE_BINARY_DIR}/external/libosmscout/prefix
-	    TMP_DIR             ${CMAKE_BINARY_DIR}/external/libosmscout/tmp
-	    STAMP_DIR           ${CMAKE_BINARY_DIR}/external/libosmscout/stamp
-	    DOWNLOAD_DIR        ${CMAKE_BINARY_DIR}/external/libosmscout/download
-	    SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/libosmscout/src
-	    BINARY_DIR          ${CMAKE_BINARY_DIR}/external/libosmscout/build
-	    CONFIGURE_COMMAND   cmake ../src -DOSMSCOUT_BUILD_DOC_API=OFF -DOSMSCOUT_BUILD_TESTS=OFF -DOSMSCOUT_BUILD_TOOL_OSMSCOUT2=OFF -DOSMSCOUT_BUILD_GPX=OFF -DOSMSCOUT_BUILD_MAP_AGG=OFF -DOSMSCOUT_BUILD_MAP_SVG=OFF -DOSMSCOUT_BUILD_MAP_OPENGL=OFF -DOSMSCOUT_BUILD_MAP_QT=OFF -DOSMSCOUT_BUILD_CLIENT_QT=OFF -DOSMSCOUT_BUILD_TOOL_STYLEEDITOR=OFF -DOSMSCOUT_BUILD_MAP_SVG=OFF -DOSMSCOUT_BUILD_WEBPAGE=OFF
-	    BUILD_COMMAND       ${MAKE}
-	    SOURCE_SUBDIR       "../src"
-	    INSTALL_COMMAND     ""
-	    TEST_COMMAND        ""
-	    UPDATE_DISCONNECTED 1
-	    BUILD_ALWAYS        0
-	)
-	endif()
+ExternalProject_Add(
+    libosmscout
+    GIT_REPOSITORY      https://github.com/Framstag/libosmscout
+    # GIT_TAG             1.1.0
+    GIT_SHALLOW         1
+    CMAKE_ARGS          "-DCMAKE_BUILD_TYPE=Release -DOSMSCOUT_BUILD_DOC_API=Off -DOSMSCOUT_BUILD_TESTS=Off -DOSMSCOUT_BUILD_GPX=Off -DOSMSCOUT_BUILD_MAP_AGG=Off -DOSMSCOUT_BUILD_MAP_SVG=Off -DOSMSCOUT_BUILD_MAP_OPENGL=Off -DOSMSCOUT_BUILD_MAP_QT=Off -D=OSMSCOUT_BUILD_CLIENT_QT=Off -DOSMSCOUT_BUILD_MAP_SVG=Off -DOSMSCOUT_BUILD_WEBPAGE=Off"
+    PREFIX              ${CMAKE_BINARY_DIR}/external/libosmscout/prefix
+    TMP_DIR             ${CMAKE_BINARY_DIR}/external/libosmscout/tmp
+    STAMP_DIR           ${CMAKE_BINARY_DIR}/external/libosmscout/stamp
+    DOWNLOAD_DIR        ${CMAKE_BINARY_DIR}/external/libosmscout/download
+    SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/libosmscout/src
+    BINARY_DIR          ${CMAKE_BINARY_DIR}/external/libosmscout/build
+    CONFIGURE_COMMAND   cmake ../src -DOSMSCOUT_BUILD_DOC_API=OFF -DOSMSCOUT_BUILD_TESTS=OFF -DOSMSCOUT_BUILD_TOOL_OSMSCOUT2=OFF -DOSMSCOUT_BUILD_GPX=OFF -DOSMSCOUT_BUILD_MAP_AGG=OFF -DOSMSCOUT_BUILD_MAP_SVG=OFF -DOSMSCOUT_BUILD_MAP_OPENGL=OFF -DOSMSCOUT_BUILD_MAP_QT=OFF -DOSMSCOUT_BUILD_CLIENT_QT=OFF -DOSMSCOUT_BUILD_TOOL_STYLEEDITOR=OFF -DOSMSCOUT_BUILD_MAP_SVG=OFF -DOSMSCOUT_BUILD_WEBPAGE=OFF
+    BUILD_COMMAND       ${MAKE}
+    SOURCE_SUBDIR       "../src"
+    INSTALL_COMMAND     cd ${CMAKE_BINARY_DIR}/external/libosmscout/build && make DESTDIR=${CMAKE_BINARY_DIR}/external/install install
+    TEST_COMMAND        ""
+    UPDATE_DISCONNECTED 1
+    BUILD_ALWAYS        0
+)
 endif()
 
 # ------------------------------------------------------------------------------
@@ -109,28 +105,6 @@ ExternalProject_Add(
     UPDATE_DISCONNECTED 1
     BUILD_ALWAYS        0
 )
-
-# # ------------------------------------------------------------------------------
-# # Catch
-# # ------------------------------------------------------------------------------
-# list(APPEND CATCH_CMAKE_ARGS
-#     "-DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}"
-# )
-
-# ExternalProject_Add(
-#     catch
-#     GIT_REPOSITORY      https://github.com/Bareflank/catch.git
-#     GIT_TAG             v1.2
-#     GIT_SHALLOW         1
-#     CMAKE_ARGS          ${CATCH_CMAKE_ARGS}
-#     PREFIX              ${CMAKE_BINARY_DIR}/external/catch/prefix
-#     TMP_DIR             ${CMAKE_BINARY_DIR}/external/catch/tmp
-#     STAMP_DIR           ${CMAKE_BINARY_DIR}/external/catch/stamp
-#     DOWNLOAD_DIR        ${CMAKE_BINARY_DIR}/external/catch/download
-#     SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/catch/src
-#     BINARY_DIR          ${CMAKE_BINARY_DIR}/external/catch/build
-#     UPDATE_DISCONNECTED 1
-# )
 endif (HMI_ONLY)
 
 # Install DDS

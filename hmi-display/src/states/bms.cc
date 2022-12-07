@@ -24,6 +24,8 @@
 
 #include "bms.h"
 
+#include "src/widgets/widget_types.h"
+
 namespace gva {
 
 double conv(int zoom) {
@@ -53,69 +55,72 @@ double conv(int zoom) {
     case 625:
       return 0.2;
   }
+  return 0;
 }
 
 GvaKeyEnum Hmi::KeyBMS(GvaKeyEnum keypress) {
   screen_.function_right.visible = true;
   KeySide(keypress);
   Key(keypress);
-#ifdef ENABLE_OSMSCOUT
-  bool update = true;
-  int zoom_level = configuration.GetZoom();
-  switch (keypress) {
-    case GvaKeyEnum::kKeyF3:
-      // Shift UP
-      configuration.SetTestLat(configuration.GetTestLat() + conv(zoom_level));
-      break;
-    case GvaKeyEnum::kKeyF4:
-      // Shift DOWN
-      configuration.SetTestLat(configuration.GetTestLat() - conv(zoom_level));
-      break;
-    case GvaKeyEnum::kKeyF5:
-      // Zoom +
-      configuration.SetZoom(zoom_level * 2);
-      break;
-    case GvaKeyEnum::kKeyF9:
-      // Shift LEFT
-      configuration.SetTestLon(configuration.GetTestLon() - conv(zoom_level));
-      break;
-    case GvaKeyEnum::kKeyF10:
-      // Shift RIGHT
-      configuration.SetTestLon(configuration.GetTestLon() + conv(zoom_level));
-      break;
-    case GvaKeyEnum::kKeyF11:
-      // Zoom -
-      configuration.SetZoom(zoom_level / 2);
-      break;
-    case GvaKeyEnum::kKeyF1:
-    case GvaKeyEnum::kKeyF2:
-    case GvaKeyEnum::kKeyF6:
-    case GvaKeyEnum::kKeyF7:  ///
-    case GvaKeyEnum::kKeyF8:
-    case GvaKeyEnum::kKeyF12:
-      screen_.message.visible = true;
-      screen_.message.icon = ICON_INFO;
-      screen_.mes state definitionsage.brief.text = "Function key";
-      screen_.message.detail.text = "Operation not implemented !";
-    default:
-      update = false;
-      break;
-  }
+  if (kOsmScout) {
+    bool update = true;
+    int zoom_level = ConfigData::GetInstance()->GetZoom();
+    switch (keypress) {
+      case GvaKeyEnum::kKeyF3:
+        // Shift UP
+        ConfigData::GetInstance()->SetTestLat(ConfigData::GetInstance()->GetTestLat() + conv(zoom_level));
+        break;
+      case GvaKeyEnum::kKeyF4:
+        // Shift DOWN
+        ConfigData::GetInstance()->SetTestLat(ConfigData::GetInstance()->GetTestLat() - conv(zoom_level));
+        break;
+      case GvaKeyEnum::kKeyF5:
+        // Zoom +
+        ConfigData::GetInstance()->SetZoom(zoom_level * 2);
+        break;
+      case GvaKeyEnum::kKeyF9:
+        // Shift LEFT
+        ConfigData::GetInstance()->SetTestLon(ConfigData::GetInstance()->GetTestLon() - conv(zoom_level));
+        break;
+      case GvaKeyEnum::kKeyF10:
+        // Shift RIGHT
+        ConfigData::GetInstance()->SetTestLon(ConfigData::GetInstance()->GetTestLon() + conv(zoom_level));
+        break;
+      case GvaKeyEnum::kKeyF11:
+        // Zoom -
+        ConfigData::GetInstance()->SetZoom(zoom_level / 2);
+        break;
+      case GvaKeyEnum::kKeyF1:
+      case GvaKeyEnum::kKeyF2:
+      case GvaKeyEnum::kKeyF6:
+      case GvaKeyEnum::kKeyF7:  ///
+      case GvaKeyEnum::kKeyF8:
+      case GvaKeyEnum::kKeyF12:
+        screen_.message.visible = true;
+        screen_.message.icon = widget::IconType::kIconInfo;
+        screen_.message.brief.text = "Function key";
+        screen_.message.detail.text = "Operation not implemented !";
+      default:
+        update = false;
+        break;
+    }
 
-  if (update) {
-    char tmp[100];
-    sprintf(tmp, "[BMS] Zoom level %d lat %f, %f", configuration.GetZoom(), configuration.GetTestLat(),
-            ((double)configuration.GetZoom() / 10000000) * ((double)configuration.GetZoom() / 10000));
-    loglog(tmp, LOG_INFO);
-    map_->SetWidth((double)scregvaen_render_->GetWidth() / kMinimumWidth);
-    map_->SetHeight((double)screen_render_->GetHeight() / kMinimumHeight);
-    sprintf(tmp, "[BMS] res %d x %d", screen_render_->GetWidth(), screen_render_->GetHeight());
-    loglog(tmp, LOG_INFO);
-    map_->Project(configuration.GetZoom(), configuration.GetTestLon(), configuration.GetTestLat(),
-                  state definition & screen_.canvas.surface);
-    screen_.canvas.bufferType = SURFACE_CAIRO;
+    if (update) {
+      char tmp[100];
+      sprintf(tmp, "[BMS] Zoom level %d lat %f, %f", ConfigData::GetInstance()->GetZoom(),
+              ConfigData::GetInstance()->GetTestLat(),
+              ((double)ConfigData::GetInstance()->GetZoom() / 10000000) *
+                  ((double)ConfigData::GetInstance()->GetZoom() / 10000));
+      logGva::log(tmp, DebugLevel::kLogInfo);
+      map_->SetWidth((double)screen_render_->GetWidth() / kMinimumWidth);
+      map_->SetHeight((double)screen_render_->GetHeight() / kMinimumHeight);
+      sprintf(tmp, "[BMS] res %d x %d", screen_render_->GetWidth(), screen_render_->GetHeight());
+      logGva::log(tmp, DebugLevel::kLogInfo);
+      map_->Project(ConfigData::GetInstance()->GetZoom(), ConfigData::GetInstance()->GetTestLon(),
+                    ConfigData::GetInstance()->GetTestLat(), &screen_.canvas.surface);
+      screen_.canvas.bufferType = SurfaceType::kSurfaceCairo;
+    }
   }
-#endif
   return keypress;
 }
 
@@ -130,13 +135,13 @@ void StateBMS::entry() {
     SetCanvasPng(filename.c_str());
     screen_.function_top->SetEnabled(7);
     screen_.canvas.visible = true;
-#ifdef ENABLE_OSMSCOUT
-    map_->SetWidth((double)screen_render_->GetWidth() / kMinimumWidth);
-    map_->SetHeight((double)screen_render_->GetHeight() / kMinimumHeight);
-    map_->Project(configuration.GetZoom(), configuration.GetTestLon(), configuration.GetTestLat(),
-                  &screen_.canvas.surface);
-    screen_.canvas.bufferType = SURFACE_CAIRO;
-#endif
+    if (kOsmScout) {
+      map_->SetWidth((double)screen_render_->GetWidth() / kMinimumWidth);
+      map_->SetHeight((double)screen_render_->GetHeight() / kMinimumHeight);
+      map_->Project(ConfigData::GetInstance()->GetZoom(), ConfigData::GetInstance()->GetTestLon(),
+                    ConfigData::GetInstance()->GetTestLat(), &screen_.canvas.surface);
+      screen_.canvas.bufferType = SurfaceType::kSurfaceCairo;
+    }
   }
 };
 

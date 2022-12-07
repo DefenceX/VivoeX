@@ -30,13 +30,13 @@ void StateOn::entry() {
   /* 4:3 aspect ratio @ lowest resolution */
   view_ = {kMinimumWidth, kMinimumHeight, 24};
 
-  if (!manager_) manager_ = new ViewGvaManager(&status_);
+  if (!manager_) manager_ = std::make_shared<ViewGvaManager>(std::make_shared<StatusBar>(status_));
 
-#ifdef ENABLE_OSMSCOUT
-  // Render a map for BMS
-  map_ = new rendererMap("/opt/osmscout/maps/australia-latest/", "/opt/osmscout/stylesheets/standard.oss", MIN_WIDTH,
-                         kMinimumHeight);
-#endif
+  if (kOsmScout) {
+    // Render a map for BMS
+    map_ = std::make_unique<rendererMap>("/opt/osmscout/maps/australia-latest/",
+                                         "/opt/osmscout/stylesheets/standard.oss", kMinimumWidth, kMinimumHeight);
+  }
   top_ = DefaultSettings::GetDefaultFunctionSelect();
   bottom_ = DefaultSettings::GetDefaultCommonTaskKeys();
   status_ = DefaultSettings::GetDefaultStatusBar();
@@ -84,18 +84,20 @@ void StateOn::entry() {
   manager_->SetScreen(&screen_, GvaFunctionEnum::kSystems);
 
   // Create the screen render now
-  screen_render_ = new ScreenGva(&screen_, view_.width, view_.height);
+  screen_render_ = std::make_shared<ScreenGva>(&screen_, view_.width, view_.height);
 
   // Configure the widgets
-  ((WidgetPlanPositionIndicator *)screen_render_->GetWidget(widget::KWidgetTypeCompass))->SetBearingSight(0);
-  screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetY(190);
-  screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetX(330);
-  screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetVisible(true);
-  screen_render_->GetWidget(widget::KWidgetTypeAlarmIndicator)->SetVisible(true);
-  screen_render_->GetWidget(widget::KWidgetTypeAlarmIndicator)->SetY(58);
-  screen_render_->GetWidget(widget::KWidgetTypeBottomLabels)->SetY(480 - 20);
+  ((WidgetPlanPositionIndicator *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass))
+      ->SetBearingSight(0);
+  screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetY(190);
+  screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetX(330);
+  screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetVisible(true);
+  screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeAlarmIndicator)->SetVisible(true);
+  screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeAlarmIndicator)->SetY(58);
+  screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeBottomLabels)->SetY(480 - 20);
 
-  WidgetAlarmIndicator *ai = (WidgetAlarmIndicator *)screen_render_->GetWidget(widget::KWidgetTypeAlarmIndicator);
+  WidgetAlarmIndicator *ai =
+      (WidgetAlarmIndicator *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeAlarmIndicator);
   ai->SetType(GvaAlarmType::kAlarmCaution);
   ai->SetText("Engine over temperature");
   // As there is an alarm set the Ack control to enabled

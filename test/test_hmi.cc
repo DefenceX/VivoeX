@@ -17,24 +17,61 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ///
-/// \brief Tests for HMI elements
+/// \brief Tests for logger
 ///
-/// \file test_hmi.cc
+/// \file test_log.cc
 ///
 
-#define CATCH_CONFIG_MAIN
-#include <X11/Xatom.h>
-#include <X11/Xlib.h>
 #include <unistd.h>
 
+#include <cstdlib>
+#include <fstream>
 #include <iostream>
+#include <string>
 
-#include "eventsGva.hpp"
-#include "gva.hpp"
-#include "hmiGva.hpp"
+#include "events_gva.h"
+#include "gtest/gtest.h"
+#include "gva.h"
+#include "log_gva.h"
 
-using namespace gva;
+namespace gva {
 
-static eventsGva *events;
+// The fixture for testing class HmiTest.
+class HmiTest : public ::testing::Test {
+ protected:
+  // You can remove any or all of the following functions if their bodies would
+  // be empty.
 
-TEST_F("HMI Test", "Constructor test") { int i = 0; }
+  HmiTest() {
+    // You can do set-up work for each test here.
+  }
+
+  ~HmiTest() override {
+    // You can do clean-up work that doesn't throw exceptions here.
+  }
+
+  // If the constructor and destructor are not enough for setting up
+  // and cleaning up each test, you can define the following methods:
+
+  void SetUp() override {
+    // Code here will be called immediately after the constructor (right
+    // before each test).
+  }
+
+  void TearDown() override {
+    // Code here will be called immediately after each test (right
+    // before the destructor).
+  }
+
+  // Class members declared here can be used by all tests in the test suite
+  // for HmiTest.
+};
+
+TEST_F(HmiTest, CheckTests) { int i = 0; }
+
+}  // namespace gva
+
+int main(int argc, char **argv) {
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

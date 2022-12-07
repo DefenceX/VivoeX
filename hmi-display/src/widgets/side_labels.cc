@@ -29,7 +29,7 @@
 namespace gva {
 
 WidgetSideLabels::WidgetSideLabels(const RendererGva& renderer, TouchGva* touch)
-    : WidgetX(renderer, widget::KWidgetTypeCompass), touch_(touch) {}
+    : WidgetX(renderer, widget::WidgetEnum::KWidgetTypeCompass), touch_(touch) {}
 
 void WidgetSideLabels::Draw() {
   if (GetVisible()) {

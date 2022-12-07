@@ -137,7 +137,7 @@
 
 namespace gva {
 
-void Hmi::SetCanvasPng(const std::string file) {
+void Hmi::SetCanvasPng(const std::string &file) {
   Hmi::GetScreen()->canvas.filename = file.c_str();
   Hmi::GetScreen()->canvas.bufferType = SurfaceType::kSurfaceFile;
   Hmi::GetScreen()->canvas.buffer = 0;
@@ -149,14 +149,14 @@ void Hmi::Reset() {
   screen_.function_top->ResetAllEnabled();
   screen_.canvas.visible = false;
   screen_.canvas.bufferType = SurfaceType::kSurfaceNone;
-  screen_render_->GetWidget(widget::KWidgetTypeTable)->SetVisible(false);
-  screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetVisible(false);
+  screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetVisible(false);
+  screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetVisible(false);
   if (screen_.currentFunction == GvaFunctionEnum::kDriver) {
-    screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetY(190);
-    screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetX(120);
+    screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetY(190);
+    screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetX(120);
   } else {
-    screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetY(190);
-    screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetX(330);
+    screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetY(190);
+    screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetX(330);
   }
   screen_.control->visible_ = true;
   screen_.control->SetDisabled(4);  // Up Arrow
@@ -173,7 +173,7 @@ void Hmi::Labels(LabelModeEnum labels) {
       if ((screen_.currentFunction == GvaFunctionEnum::kSituationalAwareness) ||
           (screen_.currentFunction == GvaFunctionEnum::kWeapon) ||
           (screen_.currentFunction == GvaFunctionEnum::kDriver))
-        screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetVisible(true);
+        screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetVisible(true);
       screen_.function_left.visible = true;
       screen_.function_right.visible = true;
       screen_.control->visible_ = true;
@@ -181,15 +181,15 @@ void Hmi::Labels(LabelModeEnum labels) {
       screen_.status_bar->visible = true;
       screen_.status_bar->y = 15;
       if (screen_.currentFunction == GvaFunctionEnum::kDriver) {
-        screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetY(190);
-        screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetX(120);
+        screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetY(190);
+        screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetX(120);
 
       } else {
-        screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetY(190);
-        screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetX(330);
+        screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetY(190);
+        screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetX(330);
       }
-      screen_render_->GetWidget(widget::KWidgetTypeTable)->SetWidth(420);
-      screen_render_->GetWidget(widget::KWidgetTypeTable)->SetX(110);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetWidth(420);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetX(110);
       break;
     case LabelModeEnum::kLabelStatusOnly:
       screen_.function_left.visible = false;
@@ -198,10 +198,10 @@ void Hmi::Labels(LabelModeEnum labels) {
       screen_.function_top->visible = false;
       screen_.status_bar->visible = true;
       screen_.status_bar->y = 2;
-      screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetY(160);
-      screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetX(120);
-      screen_render_->GetWidget(widget::KWidgetTypeTable)->SetWidth(kMinimumWidth - 40);
-      screen_render_->GetWidget(widget::KWidgetTypeTable)->SetX(20);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetY(160);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetX(120);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetWidth(kMinimumWidth - 40);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetX(20);
       break;
     case LabelModeEnum::kLabelMinimal:
       screen_.function_left.visible = false;
@@ -209,9 +209,9 @@ void Hmi::Labels(LabelModeEnum labels) {
       screen_.control->visible_ = false;
       screen_.function_top->visible = false;
       screen_.status_bar->visible = false;
-      screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetVisible(false);
-      screen_render_->GetWidget(widget::KWidgetTypeTable)->SetWidth(kMinimumWidth - 40);
-      screen_render_->GetWidget(widget::KWidgetTypeTable)->SetX(20);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetVisible(false);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetWidth(kMinimumWidth - 40);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetX(20);
       break;
   }
 };
@@ -295,7 +295,7 @@ GvaKeyEnum Hmi::Key(GvaKeyEnum keypress) {
       screen_.control->ResetAllEnabled();
       // Clear alarms here till LDM
       screen_.control->SetDisabled(3);
-      screen_render_->GetWidget(widget::KWidgetTypeAlarmIndicator)->SetVisible(false);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeAlarmIndicator)->SetVisible(false);
       break;
     case GvaKeyEnum::kKeyF17:  // Up Arrow
       screen_.control->SetEnabledSelected(4);
@@ -332,15 +332,15 @@ GvaKeyEnum Hmi::Key(GvaKeyEnum keypress) {
   return keypress;
 }
 
-ViewGvaManager *Hmi::manager_;
+std::shared_ptr<ViewGvaManager> Hmi::manager_;
 ResolutionType Hmi::view_;
 StatusBar Hmi::status_;
 FunctionSelect Hmi::top_;
 CommonTaskKeys Hmi::bottom_;
 Canvas Hmi::canvas_;
 Screen Hmi::screen_;
-ScreenGva *Hmi::screen_render_;
-rendererMap *Hmi::map_;
+std::shared_ptr<ScreenGva> Hmi::screen_render_;
+std::unique_ptr<rendererMap> Hmi::map_;
 GvaFunctionEnum Hmi::lastState_;
 bool Hmi::alarmson_ = false;
 

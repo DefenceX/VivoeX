@@ -30,8 +30,6 @@
 
 #include "src/debug.h"
 
-#define MAX_HANDLES 10
-
 #define HMI_AMBER 255, 153, 0
 #define HMI_WHITE 255, 255, 255
 #define HMI_RED 255, 0, 0
@@ -53,22 +51,22 @@
 
 namespace gva {
 
-typedef struct {
+struct ColourType {
   uint32_t red;
   uint32_t green;
   uint32_t blue;
-} ColourType;
+};
 
-typedef struct {
+struct PointType {
   int32_t x;
   int32_t y;
-} PointType;
+};
 
-typedef struct {
+struct ResolutionType {
   uint32_t width;
   uint32_t height;
   uint32_t depth;
-} ResolutionType;
+};
 
 struct RgbUnpackedType {
   uint32_t r;
@@ -81,7 +79,7 @@ class RendererCairo;
 class Renderer {
  public:
   Renderer(uint32_t width, uint32_t height);
-  ~Renderer() = default;
+  virtual ~Renderer() = default;
   virtual void SetPixel(uint32_t x, uint32_t y) = 0;
   virtual void SetColour(uint8_t red, uint8_t green, uint8_t blue) = 0;
   virtual void SetColourForeground(uint8_t red, uint8_t green, uint8_t blue) = 0;
@@ -99,10 +97,10 @@ class Renderer {
     uint64_t packed = (r << 16) | (g << 8) | b;
     return packed;
   }
-  uint32_t UnpackRed(uint32_t rgb) { return (rgb & 0xff0000) >> 16; }
-  uint32_t UnpackGreen(uint32_t rgb) { return (rgb & 0xff00) >> 8; }
-  uint32_t UnpackBlue(uint32_t rgb) { return rgb & 0xff; }
-  RgbUnpackedType UnpackRgb(uint64_t rgb) {
+  uint32_t UnpackRed(uint32_t rgb) const { return (rgb & 0xff0000) >> 16; }
+  uint32_t UnpackGreen(uint32_t rgb) const { return (rgb & 0xff00) >> 8; }
+  uint32_t UnpackBlue(uint32_t rgb) const { return rgb & 0xff; }
+  RgbUnpackedType UnpackRgb(uint64_t rgb) const {
     RgbUnpackedType colour;
     colour.r = (rgb & 0x0000000000ff0000) >> 16;
     colour.g = (rgb & 0x000000000000ff00) >> 8;
@@ -115,7 +113,7 @@ class Renderer {
   static uint32_t width_;
 
  private:
-  ColourType forground_colour_;
+  ColourType foreground_colour_;
   ColourType background_colour_;
   friend class rendererSdl;
   friend class RendererCairo;

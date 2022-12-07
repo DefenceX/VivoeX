@@ -116,8 +116,6 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
   auto *io = static_cast<gva::EventsGva *>(arg);
   gva::EventGvaType event;
   bool update = true;
-  static int c = 0;
-  static uint32_t count = 0;
   const gva::HandleType *render = static_cast<gva::HandleType *>(user_data);
 
   if ((options_.videoEnabled) && (gva::hmi::GetScreen()->currentFunction == gva::GvaFunctionEnum::kDriver)) {
@@ -138,6 +136,8 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
 
   io->NextGvaEvent(&event);
   switch (event.type_) {
+    default:
+      break;
     case gva::EventEnumType::kKeyEventPressed:
       gva::logGva::log("[GVA] Key press event being processed value=" + std::to_string(int(event.key_)),
                        gva::DebugLevel::kLogInfo);
@@ -237,9 +237,10 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
 
     case gva::kKeyEventReleased: {
       auto *compass = static_cast<gva::WidgetPlanPositionIndicator *>(
-          gva::hmi::GetRendrer()->GetWidget(gva::widget::KWidgetTypeCompass));
+          gva::hmi::GetRendrer()->GetWidget(gva::widget::WidgetEnum::KWidgetTypeCompass));
 
-      auto keyboard = (gva::WidgetKeyboard *)gva::hmi::GetRendrer()->GetWidget(gva::widget::KWidgetTypeKeyboard);
+      auto keyboard =
+          (gva::WidgetKeyboard *)gva::hmi::GetRendrer()->GetWidget(gva::widget::WidgetEnum::KWidgetTypeKeyboard);
 
       gva::logGva::log("[GVA] Key release event being processed value=" + std::to_string(int(event.key_)),
                        gva::DebugLevel::kLogInfo);
@@ -398,7 +399,11 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
         case gva::GvaKeyEnum::kKeyFullscreen:
           // f toggle fullscreen
           Fullscreen(const_cast<gva::HandleType *>(render));
-          gva::hmi::GetRendrer()->GetTouch()->SetResolution(gdk_screen_width(), gdk_screen_height());
+          {
+            GdkRectangle workarea;
+            gdk_monitor_get_workarea(gdk_display_get_primary_monitor(gdk_display_get_default()), &workarea);
+            gva::hmi::GetRendrer()->GetTouch()->SetResolution(workarea.width, workarea.height);
+          }
           break;
         case gva::GvaKeyEnum::kKeyKeyboard:
           // k toggle keyboard
@@ -436,7 +441,7 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
           break;
       }
       if (update) gva::hmi::GetRendrer()->Update();
-
+      break;
     }  // Key Released
 
     break;

@@ -29,7 +29,7 @@
 namespace gva {
 
 WidgetTable::WidgetTable(const RendererGva& renderer, TouchGva* touch, uint32_t background_colour)
-    : WidgetX(renderer, widget::KWidgetTypeTable), touch_(touch), background_colour_(background_colour) {}
+    : WidgetX(renderer, widget::WidgetEnum::KWidgetTypeTable), touch_(touch), background_colour_(background_colour) {}
 
 void WidgetTable::Draw() { DrawTable(); }
 

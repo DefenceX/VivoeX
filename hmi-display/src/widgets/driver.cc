@@ -33,7 +33,8 @@
 
 namespace gva {
 
-WidgetDriverDial::WidgetDriverDial(const RendererGva& renderer) : WidgetX(renderer, widget::KWidgetTypeCompass) {
+WidgetDriverDial::WidgetDriverDial(const RendererGva& renderer)
+    : WidgetX(renderer, widget::WidgetEnum::KWidgetTypeCompass) {
   SetVisible(false);
 }
 

@@ -49,11 +49,12 @@
 /// \param opt HMI application options
 ///
 int32_t GetOpt(int argc, char *argv[], GvaApplication::Options *opt) {
-  uint32_t c = 0;
+  int c = 0;
 
   const gva::ConfigData *configuration = gva::ConfigData::GetInstance();
 
-  while ((c = getopt(argc, argv, "hvwclf::")) != -1) switch (c) {
+  while ((c = getopt(argc, argv, "hvwclf::")) != -1) {
+    switch (c) {
       case 'v':
         std::cout << "Version " << gva::kSemVerMajor << "." << gva::kSemVerMinor << "." << gva::kSemVerPatch
                   << std::endl;
@@ -89,6 +90,7 @@ int32_t GetOpt(int argc, char *argv[], GvaApplication::Options *opt) {
       default:
         abort();
     }
+  }
   return -1;
 };
 

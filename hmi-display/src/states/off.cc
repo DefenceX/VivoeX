@@ -25,12 +25,7 @@
 
 namespace gva {
 
-void StateOff::entry() {
-  if (screen_render_) free(screen_render_);
-  if (manager_) free(manager_);
-  screen_render_ = 0;
-  manager_ = 0;
-};
+void StateOff::entry(){};
 
 void StateOff::react(EventKeyPowerOn const &) { transit<StateOn>(); };
 

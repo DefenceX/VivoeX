@@ -28,7 +28,9 @@
 
 namespace gva {
 
-WidgetMode::WidgetMode(const RendererGva& renderer) : WidgetX(renderer, widget::KWidgetTypeMode) { SetVisible(false); }
+WidgetMode::WidgetMode(const RendererGva& renderer) : WidgetX(renderer, widget::WidgetEnum::KWidgetTypeMode) {
+  SetVisible(false);
+}
 
 void WidgetMode::Draw() {
   uint32_t y = kMinimumHeight - (kMinimumHeight * 0.12);

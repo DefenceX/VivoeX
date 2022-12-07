@@ -26,18 +26,15 @@
 #define HMI_DISPLAY_SRC_RENDERER_MAP_H_
 
 #include <cairo.h>
+#include <osmscout/Database.h>
+#include <osmscoutmap/MapService.h>
+#include <osmscoutmapcairo/MapPainterCairo.h>
 
 #include <iostream>
 #include <list>
 #include <string>
 
 #include "src/gva.h"
-
-#ifdef ENABLE_OSMSCOUT
-#include <osmscout/Database.h>
-#include <osmscout/MapPainterCairo.h>
-#include <osmscout/MapService.h>
-#endif
 
 namespace gva {
 
@@ -54,18 +51,16 @@ class rendererMap {
   int height_;
   std::string map_;
   std::string style_;
-#ifdef ENABLE_OSMSCOUT
   osmscout::MapServiceRef mapService_;
   osmscout::StyleConfigRef styleConfig_;
   osmscout::DatabaseParameter databaseParameter_;
   osmscout::DatabaseRef database_;
-  osmscout::MercatorProjection #include<list> projection_;
+  osmscout::MercatorProjection projection_;
   osmscout::MapParameter DrawParameter_;
   osmscout::AreaSearchParameter searchParameter_;
   osmscout::MapData data_;
   std::list<osmscout::TileRef> tiles_;
   osmscout::MapPainterCairo *painter_;
-#endif
   cairo_surface_t *surface_;
   cairo_t *cairo_;
 };

@@ -25,6 +25,7 @@
 #ifndef HMI_DISPLAY_SRC_VIEW_GVA_H_
 #define HMI_DISPLAY_SRC_VIEW_GVA_H_
 #include <functional>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -32,46 +33,40 @@
 #include "src/gva.h"
 #include "src/screen_gva.h"
 
-#define MAX_LABEL 50
-
 namespace gva {
 
 struct ToggleInfo {
-  bool visable;
+  bool visible;
   bool right_active;
-  char right_label[MAX_LABEL];
+  std::string right_label;
   bool left_active;
-  char left_label[MAX_LABEL];
+  std::string left_label;
 };
 
-class labelAction {
+class LabelAction {
  public:
   void Bind(std::function<int(int parentId, GvaKeyEnum key)> fn) {
     privateCallback = std::bind(fn, std::placeholders::_1, std::placeholders::_2);
   }
   ToggleInfo toggle_;
-
- private:
   std::function<int(int parentId, GvaKeyEnum key)> privateCallback;  // Callback
 };
 
 class ViewGva {
  public:
   ViewGva(GvaFunctionEnum function, FunctionSelect *top, CommonTaskKeys *bottom, FunctionKeys left, FunctionKeys right)
-      : function_(function), function_top_(top), common_bottom_(bottom), function_left_(left), function_right_(right) {
-    valid_ = true;
-  }
-  bool Valid() { return valid_; }
+      : function_(function), function_top_(top), common_bottom_(bottom), function_left_(left), function_right_(right) {}
+  bool Valid() const { return valid_; }
   void Release() { valid_ = false; }
-  void AddToggle(GvaKeyEnum key, bool rightActive, char *rightText, bool leftActive, char *leftText) {}
+  void AddToggle(GvaKeyEnum key, bool rightActive, char *rightText, bool leftActive, char *leftText) const {}
   FunctionSelect *GetTop() { return function_top_; }
   CommonTaskKeys *GetBottom() { return common_bottom_; }
   FunctionKeys *GetLeft() { return &function_left_; }
   FunctionKeys *GetRight() { return &function_right_; }
-  GvaFunctionEnum GetFunction() { return function_; }
+  GvaFunctionEnum GetFunction() const { return function_; }
 
  private:
-  bool valid_ = false;
+  bool valid_ = true;
   GvaFunctionEnum function_;
   // Screen top
   FunctionSelect *function_top_;
@@ -79,26 +74,24 @@ class ViewGva {
   CommonTaskKeys *common_bottom_;
   // Screen left
   FunctionKeys function_left_;
-  labelAction *function_left_action_[6] = {0};
+  std::array<LabelAction, 6> function_left_action_;
   // Screen right
   FunctionKeys function_right_;
-  labelAction *function_right_action_[6] = {0};
+  std::array<LabelAction, 6> function_right_action_;
 };
-
-typedef ViewGva ViewGva;
 
 class ViewGvaManager {
  public:
-  explicit ViewGvaManager(StatusBar *StatusBar);
+  explicit ViewGvaManager(const std::shared_ptr<StatusBar> status_bar);
   void AddNewView(GvaFunctionEnum function, FunctionSelect *top, CommonTaskKeys *bottom, FunctionKeys left,
                   FunctionKeys right);
-  void SetScreen(Screen *screen, GvaFunctionEnum function);
+  void SetScreen(Screen *screen, GvaFunctionEnum function) const;
   ViewGva *GetView(GvaFunctionEnum function);
 
  private:
   std::vector<ViewGva> views_;
-  StatusBar *status_bar_;
-  int idLast_;
+  const std::shared_ptr<StatusBar> &status_bar_;
+  int idLast_ = 0;
   int id_ = 0;
 };
 

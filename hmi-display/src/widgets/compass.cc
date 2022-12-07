@@ -34,7 +34,7 @@
 namespace gva {
 
 WidgetPlanPositionIndicator::WidgetPlanPositionIndicator(const RendererGva& renderer)
-    : WidgetX(renderer, widget::KWidgetTypeCompass) {
+    : WidgetX(renderer, widget::WidgetEnum::KWidgetTypeCompass) {
   mode_ = ConfigData::GetInstance()->GetPpiMode();
 }
 

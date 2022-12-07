@@ -51,22 +51,28 @@
 namespace gva {
 
 GvaKeyEnum Hmi::KeyAlarms(GvaKeyEnum keypress) {
-  WidgetTable *table = (WidgetTable *)screen_render_->GetWidget(widget::KWidgetTypeTable);
+  WidgetTable *table = (WidgetTable *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable);
 
   switch (keypress) {
     case GvaKeyEnum::kKeyF17:  // Down Arrow
       table->SetPreviousRow();
+      return keypress;
       break;
     case GvaKeyEnum::kKeyF18:  // Up Arrow
       table->SetNextRow();
+      return keypress;
+      break;
+    default:  // Do nothing with other keys
+      return GvaKeyEnum::kKeyUnknown;
       break;
   }
+  return GvaKeyEnum::kKeyUnknown;
 };
 
 void StateAlarms::entry() {
   // Check to see if alarms was requested from hidden state, if so go back to last menu.
   if (screen_.control->labels_[1].state_ != LabelStates::kLabelHidden) {
-    WidgetTable *table = (WidgetTable *)screen_render_->GetWidget(widget::KWidgetTypeTable);
+    auto *table = (WidgetTable *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable);
 
     if (alarmson_) {
       alarmson_ = false;
@@ -95,6 +101,8 @@ void StateAlarms::entry() {
         case GvaFunctionEnum::kBattlefieldManagementSystem:
           transit<StateBMS>();
           return;
+        default:
+          return;  // Nothing more to do
       }
     }
     Reset();

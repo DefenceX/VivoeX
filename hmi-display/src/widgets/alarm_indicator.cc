@@ -29,7 +29,7 @@
 namespace gva {
 
 WidgetAlarmIndicator::WidgetAlarmIndicator(const RendererGva& renderer, TouchGva* touch)
-    : WidgetX(renderer, widget::KWidgetTypeAlarmIndicator), touch_(touch) {}
+    : WidgetX(renderer, widget::WidgetEnum::KWidgetTypeAlarmIndicator), touch_(touch) {}
 
 void WidgetAlarmIndicator::Draw() {
   if (GetVisible()) {

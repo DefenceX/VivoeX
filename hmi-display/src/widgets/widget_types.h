@@ -49,7 +49,7 @@ enum class WeightType { kWeightNormal = 0, kWeightBold, kWeightItalic };
 /// \brief The different types of widget currently available for display
 ///
 ///
-enum WidgetEnum {
+enum class WidgetEnum {
   KWidgetTypeCompass,
   KWidgetTypeKeyboard,
   KWidgetTypeAlarmIndicator,

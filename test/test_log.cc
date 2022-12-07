@@ -29,16 +29,13 @@
 #include <iostream>
 #include <string>
 
-#include "events_gva.h"
 #include "gtest/gtest.h"
 #include "gva.h"
 #include "log_gva.h"
 
 namespace gva {
 
-static EventsGva *events;
-
-// The fixture for testing class Foo.
+// The fixture for testing class LogTest.
 class LogTest : public ::testing::Test {
  protected:
   // You can remove any or all of the following functions if their bodies would

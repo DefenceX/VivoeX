@@ -98,16 +98,17 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
   TouchGva *touch = GetTouch();
 
   // Here we need to add all the possible screen widgets to the widget list, at this point they are uninitialised
-  widget_list_[widget::KWidgetTypeCompass] = std::make_shared<WidgetPlanPositionIndicator>(*renderer);
-  widget_list_[widget::KWidgetTypeKeyboard] = std::make_shared<WidgetKeyboard>(*renderer);
-  widget_list_[widget::kWidgetTypeDriverDial] = std::make_shared<WidgetDriverDial>(*renderer);
-  widget_list_[widget::KWidgetTypeAlarmIndicator] = std::make_shared<WidgetAlarmIndicator>(*renderer, touch);
-  widget_list_[widget::KWidgetTypeTopLabels] = std::make_shared<WidgetTopLabels>(*renderer, touch);
-  widget_list_[widget::KWidgetTypeBottomLabels] = std::make_shared<WidgetBottomLabels>(*renderer, touch);
-  widget_list_[widget::KWidgetTypeLeftLabels] = std::make_shared<WidgetSideLabels>(*renderer, touch);
-  widget_list_[widget::KWidgetTypeRightLabels] = std::make_shared<WidgetSideLabels>(*renderer, touch);
-  widget_list_[widget::KWidgetTypeRightLabels] = std::make_shared<WidgetSideLabels>(*renderer, touch);
-  widget_list_[widget::KWidgetTypeTable] =
+  widget_list_[widget::WidgetEnum::KWidgetTypeCompass] = std::make_shared<WidgetPlanPositionIndicator>(*renderer);
+  widget_list_[widget::WidgetEnum::KWidgetTypeKeyboard] = std::make_shared<WidgetKeyboard>(*renderer);
+  widget_list_[widget::WidgetEnum::kWidgetTypeDriverDial] = std::make_shared<WidgetDriverDial>(*renderer);
+  widget_list_[widget::WidgetEnum::KWidgetTypeAlarmIndicator] =
+      std::make_shared<WidgetAlarmIndicator>(*renderer, touch);
+  widget_list_[widget::WidgetEnum::KWidgetTypeTopLabels] = std::make_shared<WidgetTopLabels>(*renderer, touch);
+  widget_list_[widget::WidgetEnum::KWidgetTypeBottomLabels] = std::make_shared<WidgetBottomLabels>(*renderer, touch);
+  widget_list_[widget::WidgetEnum::KWidgetTypeLeftLabels] = std::make_shared<WidgetSideLabels>(*renderer, touch);
+  widget_list_[widget::WidgetEnum::KWidgetTypeRightLabels] = std::make_shared<WidgetSideLabels>(*renderer, touch);
+  widget_list_[widget::WidgetEnum::KWidgetTypeRightLabels] = std::make_shared<WidgetSideLabels>(*renderer, touch);
+  widget_list_[widget::WidgetEnum::KWidgetTypeTable] =
       std::make_shared<WidgetTable>(*renderer, touch, ConfigData::GetInstance()->GetThemeBackground());
 }
 
@@ -126,8 +127,8 @@ void *ClockUpdate(void *arg) {
   time_t t;
   struct tm *tm;
   char c;
+  char tmp[MAX_NMEA + 2] = {0};
   char buffer[MAX_NMEA] = {0};
-  char tmp[MAX_NMEA] = {0};
 
   while (a->active) {
     uint32_t i, ii = 0;
@@ -152,10 +153,10 @@ void *ClockUpdate(void *arg) {
         if (i == MAX_NMEA) break;
       }
       buffer[i - 1] = 0;
-      sprintf(tmp, "GPS NMEA %s", buffer);
-      logGva::log(tmp, DebugLevel::kLogInfo);
+      std::string tmp_buffer = buffer;
+      logGva::log("GPS NMEA " + tmp_buffer, DebugLevel::kLogInfo);
 
-      sprintf(tmp, "%s\r\n", buffer);
+      snprintf(tmp, sizeof(tmp), "%s\r\n", buffer);
       a->info->lon = a->location->lon;
       a->info->lat = a->location->lat;
       nmea_parse(a->parser, tmp, (uint32_t)strlen(tmp), a->info);
@@ -187,11 +188,12 @@ void *ClockUpdate(void *arg) {
         } break;
       }
     }
-    usleep(1000000);
+    nanosleep((const struct timespec[]){{0, 1000000000L}}, NULL);
   }
+  return nullptr;
 }
 
-void ScreenGva::StartClock(StatusBar *barData) {
+void ScreenGva::StartClock(const std::shared_ptr<StatusBar> &barData) {
   pthread_t clock_thread_;
   args_.active = true;
   args_.parser = &parser_;
@@ -254,14 +256,14 @@ GvaStatusTypes ScreenGva::Update() {
 
   // Draw the LEFT bezel labels
   if (screen_->function_left.visible) {
-    auto widget = (WidgetSideLabels *)GetWidget(widget::KWidgetTypeLeftLabels);
+    auto widget = (WidgetSideLabels *)GetWidget(widget::WidgetEnum::KWidgetTypeLeftLabels);
     widget->SetLabels(&screen_->function_left.labels);
     widget->Draw();
   }
 
   // Draw the RIGHT bezel labels
   if (screen_->function_right.visible) {
-    auto widget = (WidgetSideLabels *)GetWidget(widget::KWidgetTypeRightLabels);
+    auto widget = (WidgetSideLabels *)GetWidget(widget::WidgetEnum::KWidgetTypeRightLabels);
     widget->SetLabels(&screen_->function_right.labels);
     widget->SetX(kMinimumWidth - 100 - 1);
     widget->Draw();
@@ -269,7 +271,7 @@ GvaStatusTypes ScreenGva::Update() {
 
   // Draw the TOP bezel labels
   if (screen_->function_top->visible) {
-    auto widget = (WidgetTopLabels *)GetWidget(widget::KWidgetTypeTopLabels);
+    auto widget = (WidgetTopLabels *)GetWidget(widget::WidgetEnum::KWidgetTypeTopLabels);
     widget->SetY(2);
     widget->SetLabels(&screen_->function_top->labels);
     widget->Draw();
@@ -277,15 +279,15 @@ GvaStatusTypes ScreenGva::Update() {
 
   // Draw the maintenance mode indicator
   if (screen_->info.mode == ScreenMode::kModeMaintinance) {
-    auto widget = (WidgetMode *)GetWidget(widget::KWidgetTypeMode);
+    auto widget = (WidgetMode *)GetWidget(widget::WidgetEnum::KWidgetTypeMode);
     widget->Draw();
   }
 
   // Draw the onscreen KEYBOARD
-  widget_list_[widget::KWidgetTypeKeyboard]->Draw();
+  widget_list_[widget::WidgetEnum::KWidgetTypeKeyboard]->Draw();
 
   // Drivers Aids
-  widget_list_[widget::kWidgetTypeDriverDial]->Draw();
+  widget_list_[widget::WidgetEnum::kWidgetTypeDriverDial]->Draw();
 
   // Setup and Draw the status bar, one row table
   if (screen_->status_bar->visible) {
@@ -312,23 +314,23 @@ GvaStatusTypes ScreenGva::Update() {
   }
 
   // TODO : Draw the alarms if any (Mock up)
-  if (widget_list_[widget::KWidgetTypeAlarmIndicator]->GetVisible()) {
-    widget_list_[widget::KWidgetTypeAlarmIndicator]->Draw();
+  if (widget_list_[widget::WidgetEnum::KWidgetTypeAlarmIndicator]->GetVisible()) {
+    widget_list_[widget::WidgetEnum::KWidgetTypeAlarmIndicator]->Draw();
   }
 
   // Setup and Draw the alarms
-  if (widget_list_[widget::KWidgetTypeTable]->GetVisible()) {
-    auto table_widget = (WidgetTable *)GetWidget(widget::KWidgetTypeTable);
+  if (widget_list_[widget::WidgetEnum::KWidgetTypeTable]->GetVisible()) {
+    auto table_widget = (WidgetTable *)GetWidget(widget::WidgetEnum::KWidgetTypeTable);
 
     table_widget->Draw();
   }
 
   // Draw PPI (Plan Position Indicator)
-  widget_list_[widget::KWidgetTypeCompass]->Draw();
+  widget_list_[widget::WidgetEnum::KWidgetTypeCompass]->Draw();
 
   // Draw the control labels at the bottom of the screen
   if (screen_->control->visible_) {
-    auto widget = (WidgetBottomLabels *)GetWidget(widget::KWidgetTypeBottomLabels);
+    auto widget = (WidgetBottomLabels *)GetWidget(widget::WidgetEnum::KWidgetTypeBottomLabels);
     widget->SetLabels(&screen_->control->labels_);
     widget->Draw();
   }
@@ -360,6 +362,8 @@ GvaStatusTypes ScreenGva::Update() {
   //
   Draw();
   last_screen_ = *screen_;
+
+  return GvaStatusTypes::kGvaSuccess;
 }
 
 WidgetX *ScreenGva::GetWidget(widget::WidgetEnum widget) { return widget_list_[widget].get(); }

@@ -30,8 +30,17 @@ set(SOURCE_FILES widget-tester.cc
     ${PROTO_SRCS}
 )
 
-include_directories(${CMAKE_BINARY_DIR}/external/libnmea/src/include)
+include_directories(
+    ${CMAKE_BINARY_DIR}/external/libnmea/src/include
+    ${CMAKE_BINARY_DIR}/external/install/usr/local/include/
+    ${CMAKE_BINARY_DIR}/external/libnmea/build/src
+)
+
 link_directories(${CMAKE_BINARY_DIR}/external/libnmea/build/src)
+link_directories(${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout-map-cairo)
+link_directories(${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout)
+link_directories(${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout-map)
+
 link_libraries(-lstdc++fs)
 
 add_executable(widget-tester ${SOURCE_FILES})

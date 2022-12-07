@@ -28,7 +28,8 @@
 
 namespace gva {
 
-WidgetKeyboard::WidgetKeyboard(const RendererGva& renderer) : WidgetX(renderer, widget::KWidgetTypeKeyboard) {
+WidgetKeyboard::WidgetKeyboard(const RendererGva& renderer)
+    : WidgetX(renderer, widget::WidgetEnum::KWidgetTypeKeyboard) {
   SetVisible(false);
 }
 

@@ -25,16 +25,14 @@
 #ifndef HMI_DISPLAY_SRC_STATES_BASE_HMI_H_
 #define HMI_DISPLAY_SRC_STATES_BASE_HMI_H_
 
+#include <memory>
 #include <string>
 
-#include "src/tinyfsm.h"
-// #include "src/config_reader.h"
 #include "src/gva.h"
-// #include "src/hmi_gva_defaults.h"
-// #include "src/hmi_gva_helpers.h"
 #include "src/renderer_map.h"
 #include "src/screen_gva.h"
 #include "src/states/base_hmi.h"
+#include "src/tinyfsm.h"
 #include "src/view_gva.h"
 
 namespace gva {
@@ -81,15 +79,15 @@ struct Hmi : tinyfsm::Fsm<Hmi> {
   // alternative: enforce entry actions in all States (pure virtual)
   // virtual void entry(void) = 0;
  protected:
-  static ViewGvaManager *manager_;
+  static std::shared_ptr<ViewGvaManager> manager_;
   static ResolutionType view_;
   static StatusBar status_;
   static FunctionSelect top_;
   static CommonTaskKeys bottom_;
   static Canvas canvas_;
   static Screen screen_;
-  static ScreenGva *screen_render_;
-  static rendererMap *map_;
+  static std::shared_ptr<ScreenGva> screen_render_;
+  static std::unique_ptr<rendererMap> map_;
   static GvaFunctionEnum lastState_;
   static bool alarmson_;
 
@@ -106,9 +104,9 @@ struct Hmi : tinyfsm::Fsm<Hmi> {
   static GvaKeyEnum KeyBMS(GvaKeyEnum key);
   static GvaKeyEnum KeyAlarms(GvaKeyEnum key);
   static void Reset();
-  static void SetCanvasPng(std::string file);
-  static ScreenGva *GetRendrer() { return screen_render_; }
-  static Screen *GetScreen() { return &screen_; }
+  static void SetCanvasPng(const std::string &file);
+  static std::shared_ptr<ScreenGva> GetRendrer() { return screen_render_; }
+  static std::unique_ptr<Screen> GetScreen() { return std::make_unique<Screen>(screen_); }
   static void Labels(LabelModeEnum labels);
 };
 

@@ -27,17 +27,16 @@
 #include "screen_gva.h"
 
 namespace gva {
-ViewGvaManager::ViewGvaManager(StatusBar *status_bar) : status_bar_(status_bar) { idLast_ = 0; }
+
+ViewGvaManager::ViewGvaManager(const std::shared_ptr<StatusBar> status_bar) : status_bar_(status_bar) {}
 
 void ViewGvaManager::AddNewView(GvaFunctionEnum function, FunctionSelect *top, CommonTaskKeys *bottom,
                                 FunctionKeys left, FunctionKeys right) {
-  ViewGva view(function, top, bottom, left, right);
-  views_.push_back(view);
+  views_.push_back(ViewGva(function, top, bottom, left, right));
   return;
 }
 
-void ViewGvaManager::SetScreen(Screen *screen, GvaFunctionEnum function) {
-  int i = 0;
+void ViewGvaManager::SetScreen(Screen *screen, GvaFunctionEnum function) const {
   for (auto view : views_) {
     if (view.GetFunction() == function) {
       screen->status_bar = status_bar_;
@@ -51,12 +50,12 @@ void ViewGvaManager::SetScreen(Screen *screen, GvaFunctionEnum function) {
 }
 
 ViewGva *ViewGvaManager::GetView(GvaFunctionEnum function) {
-  int i = 0;
   Screen screen = {0};
-  for (auto view : views_) {
+  for (auto &view : views_) {
     if (view.GetFunction() == function) {
       return &view;
     }
   }
+  return nullptr;
 }
-};  // namespace gva
+}  // namespace gva

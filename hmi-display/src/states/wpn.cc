@@ -67,7 +67,7 @@ void StateWPN::entry() {
     screen_.function_top->SetEnabled(1);
 
     if (screen_.labels != LabelModeEnum::kLabelMinimal)
-      screen_render_->GetWidget(widget::KWidgetTypeCompass)->SetVisible(true);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetVisible(true);
     screen_.canvas.visible = true;
     filename = ConfigData::GetInstance()->GetImagePath();
     filename.append("/FrontCenter.png");

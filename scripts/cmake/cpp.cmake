@@ -11,7 +11,7 @@ if($ENV{CI})
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
 else()
   message(STATUS "Running locally so optimised CFLAGS for checking")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wno-dev ")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror")
 endif()
 
 if(ENABLE_COVERAGE)
