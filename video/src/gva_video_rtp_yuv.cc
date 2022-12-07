@@ -28,7 +28,7 @@
 namespace gva {
 
 GvaVideoRtpYuv::GvaVideoRtpYuv(std::string_view ip, uint32_t port, uint32_t height, uint32_t width)
-    : GvaVideoSource(height, width), ip_(ip), port_(port), frame_counter_(0) {}
+    : GvaVideoSource(height, width), ip_(ip), port_(port) {}
 
 GvaVideoRtpYuv::GvaVideoRtpYuv(std::string_view ip, uint32_t port)
     : GvaVideoSource(kMinimumHeight, kMinimumWidth), ip_(ip), port_(port) {

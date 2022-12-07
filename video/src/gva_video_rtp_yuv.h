@@ -50,7 +50,7 @@ class GvaVideoRtpYuv : public GvaVideoSource {
  private:
   std::string_view ip_;
   uint32_t port_;
-  uint32_t frame_counter_;
+  uint32_t frame_counter_ = 0;
   std::unique_ptr<RtpStream> stream_;
 };
 
