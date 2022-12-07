@@ -5,7 +5,7 @@ ExternalProject_Add(
     GIT_SHALLOW         5
     GIT_TAG             main
     GIT_CONFIG          fetch.recurseSubmodules=true
-    CONFIGURE_COMMAND   bash -c "mkdir build && cd build && cmake .."
+    CONFIGURE_COMMAND   bash -c "mkdir -p build && cd build && cmake .."
     PREFIX              ${CMAKE_BINARY_DIR}/external/geographiclib/prefix
     TMP_DIR             ${CMAKE_BINARY_DIR}/external/geographiclib/tmp
     STAMP_DIR           ${CMAKE_BINARY_DIR}/external/geographiclib/stamp

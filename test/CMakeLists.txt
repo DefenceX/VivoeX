@@ -41,5 +41,7 @@ target_include_directories(
   ${CMAKE_BINARY_DIR}/hmi-display/config
 )
 
+add_dependencies(test_log config-proto)
+
 include(GoogleTest)
 gtest_discover_tests(test_log)
