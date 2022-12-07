@@ -35,6 +35,8 @@ class GvaVideoSource {
  public:
   GvaVideoSource(uint32_t height, uint32_t width);
 
+  virtual ~GvaVideoSource() = default;
+
   ///
   /// \brief Receive one frame of video
   ///
@@ -58,14 +60,14 @@ class GvaVideoSource {
   ///
   /// \return const uint32_t
   ///
-  const uint32_t GetWidth() { return width_; }
+  uint32_t GetWidth() const { return width_; }
 
   ///
   /// \brief Get the Height object
   ///
   /// \return const uint32_t
   ///
-  const uint32_t GetHeight() { return height_; }
+  uint32_t GetHeight() const { return height_; }
 
  private:
   uint32_t height_;
