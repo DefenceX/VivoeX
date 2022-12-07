@@ -27,12 +27,10 @@
 
 namespace gva {
 
-GvaVideoRtpYuv::GvaVideoRtpYuv(const std::string& ip, uint32_t port, uint32_t height, uint32_t width)
-    : GvaVideoSource(height, width), ip_(ip), port_(port) {
-  frame_counter_ = 0;
-}
+GvaVideoRtpYuv::GvaVideoRtpYuv(std::string_view ip, uint32_t port, uint32_t height, uint32_t width)
+    : GvaVideoSource(height, width), ip_(ip), port_(port), frame_counter_(0) {}
 
-GvaVideoRtpYuv::GvaVideoRtpYuv(const std::string& ip, uint32_t port) : GvaVideoSource(kMinimumHeight, kMinimumWidth) {
+GvaVideoRtpYuv::GvaVideoRtpYuv(std::string_view ip, uint32_t port) : GvaVideoSource(kMinimumHeight, kMinimumWidth) {
   ip_ = ip;
   port_ = port;
   stream_ = std::make_unique<RtpStream>(kMinimumHeight, kMinimumWidth);
@@ -40,8 +38,6 @@ GvaVideoRtpYuv::GvaVideoRtpYuv(const std::string& ip, uint32_t port) : GvaVideoS
   stream_->RtpStreamIn(ipaddr, port_);
   stream_->Open();
 }
-
-GvaVideoRtpYuv::~GvaVideoRtpYuv() {}
 
 const uint32_t GvaVideoRtpYuv::GvaReceiveFrame(char* buffer, VideoFormat format) {
   char* frame_buffer;

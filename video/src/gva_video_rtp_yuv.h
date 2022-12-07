@@ -27,6 +27,7 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 
 #include "gva_video.h"   // NOLINT
 #include "rtp_stream.h"  // NOLINT
@@ -38,13 +39,13 @@ namespace gva {
 //
 class GvaVideoRtpYuv : public GvaVideoSource {
  public:
-  GvaVideoRtpYuv(const std::string &ip, uint32_t port, uint32_t height, uint32_t width);
-  GvaVideoRtpYuv(const std::string &ip, uint32_t port);
-  ~GvaVideoRtpYuv();
+  GvaVideoRtpYuv(std::string_view ip, uint32_t port, uint32_t height, uint32_t width);
+  GvaVideoRtpYuv(std::string_view ip, uint32_t port);
+  ~GvaVideoRtpYuv() final = default;
 
   // Implementation of pure virtual base class functions
-  const uint32_t GvaReceiveFrame(char *buffer, VideoFormat format) override;
-  const uint32_t GvaTransmitFrame(char *buffer, VideoFormat format);
+  const uint32_t GvaReceiveFrame(char *buffer, VideoFormat format) final;
+  const uint32_t GvaTransmitFrame(char *buffer, VideoFormat format) final;
 
  private:
   std::string ip_;
