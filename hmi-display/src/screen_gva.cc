@@ -41,6 +41,7 @@
 
 #include "common/debug.h"
 #include "common/log_gva.h"
+#include "src/gva.h"
 #include "src/gva_functions_common.h"
 #include "widgets/alarm_indicator.h"
 #include "widgets/bottom_labels.h"
@@ -89,7 +90,7 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
   //
   // Start the Real Time Clock
   //
-  StartClock(screen_->status_bar);
+  StartClock(*screen_->status_bar);
 
   // WidgetTo
   //  Setup the required widgets
@@ -193,14 +194,14 @@ void *ClockUpdate(void *arg) {
   return nullptr;
 }
 
-void ScreenGva::StartClock(const std::shared_ptr<StatusBar> &barData) {
+void ScreenGva::StartClock(const StatusBar &barData) {
   pthread_t clock_thread_;
   args_.active = true;
   args_.parser = &parser_;
   args_.info = &info_;
   args_.gps = &gps_;
   args_.screen = this;
-  args_.location = &barData->location;
+  args_.location = const_cast<LocationType *>(&barData.location);
   args_.info->lon = DUMMY_LON;
   args_.info->lat = DUMMY_LAT;
 

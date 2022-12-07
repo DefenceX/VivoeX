@@ -626,14 +626,16 @@ void RendererCairo::DrawTextCentre(uint32_t x, const std::string text, uint32_t 
 
 uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, void *buffer, std::string file) {
   bool found_in_cache = false;
-  uint32_t i = 0;
 
-  image_list_[image_tail_].name = file;
+  image_type new_image;
+  image_type *cache_image;
+  new_image.name = file;
 
-  for (i = 0; i < cache_image_tail_; i++) {
-    if (cache_image_list_[i].name == file) {
+  for (auto &image : cache_image_list_) {
+    if (image.name == file) {
       // Found in cache
       found_in_cache = true;
+      cache_image = &image;
       break;
     }
   }
@@ -645,8 +647,8 @@ uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, void *buffer, std::st
 
   if (found_in_cache) {
     // Copy from cache
-    image_list_[image_tail_].image = cache_image_list_[i].image;
-    image_list_[image_tail_].from_cache = true;
+    new_image.image = cache_image->image;
+    new_image.from_cache = true;
   } else {
     // Add to cache
     cairo_surface_t *surf = cairo_image_surface_create_from_png(file.c_str());
@@ -661,17 +663,18 @@ uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, void *buffer, std::st
       cairo_surface_set_device_scale(surf, (double)width / kMinimumWidth, (double)height / kMinimumHeight);
     }
 
-    cache_image_list_[cache_image_tail_].image = surf;
-    cache_image_list_[cache_image_tail_].name = file;
-    image_list_[image_tail_].from_cache = true;
-    image_list_[image_tail_].image = cache_image_list_[cache_image_tail_++].image;
+    cache_image->image = surf;
+    cache_image->name = file;
+    new_image.from_cache = true;
+    new_image.image = cache_image->image;
+    image_list_.push_back(new_image);
   }
 
   Command command;
   command.command = kCommandImageTexture;
   command.points[0].x = x;
   command.points[0].y = y;
-  command.arg1 = image_tail_++;
+  command.arg1 = image_list_.size();
   draw_commands_.push_back(command);
   return 0;
 }

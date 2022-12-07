@@ -33,12 +33,6 @@
 
 namespace gva {
 
-uint32_t GvaRow::addCell(GvaCell newcell, uint32_t width) {
-  widths_[cells_] = width;
-  cell_[cells_++] = newcell;
-  return cells_;
-};
-
 RendererGva::RendererGva(uint32_t width, uint32_t height) : RendererCairo(height, width) {
   config_ = gva::ConfigData::GetInstance();
   touch_.SetResolution(width, height);

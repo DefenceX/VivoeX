@@ -28,7 +28,7 @@
 
 namespace gva {
 
-ViewGvaManager::ViewGvaManager(const std::shared_ptr<StatusBar> status_bar) : status_bar_(status_bar) {}
+ViewGvaManager::ViewGvaManager(StatusBar *status_bar) : status_bar_(status_bar) {}
 
 void ViewGvaManager::AddNewView(GvaFunctionEnum function, FunctionSelect *top, CommonTaskKeys *bottom,
                                 FunctionKeys left, FunctionKeys right) {

@@ -39,9 +39,6 @@ struct gtkType {
   uint32_t width;
 };
 
-#define MAX_COMMANDS 1000
-#define MAX_IMAGES 100
-
 class HandleType {
  public:
   uint32_t handle;

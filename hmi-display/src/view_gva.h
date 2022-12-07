@@ -58,7 +58,6 @@ class ViewGva {
       : function_(function), function_top_(top), common_bottom_(bottom), function_left_(left), function_right_(right) {}
   bool Valid() const { return valid_; }
   void Release() { valid_ = false; }
-  void AddToggle(GvaKeyEnum key, bool rightActive, char *rightText, bool leftActive, char *leftText) const {}
   FunctionSelect *GetTop() { return function_top_; }
   CommonTaskKeys *GetBottom() { return common_bottom_; }
   FunctionKeys *GetLeft() { return &function_left_; }
@@ -82,7 +81,7 @@ class ViewGva {
 
 class ViewGvaManager {
  public:
-  explicit ViewGvaManager(const std::shared_ptr<StatusBar> status_bar);
+  explicit ViewGvaManager(StatusBar *status_bar);
   void AddNewView(GvaFunctionEnum function, FunctionSelect *top, CommonTaskKeys *bottom, FunctionKeys left,
                   FunctionKeys right);
   void SetScreen(Screen *screen, GvaFunctionEnum function) const;
@@ -90,7 +89,7 @@ class ViewGvaManager {
 
  private:
   std::vector<ViewGva> views_;
-  const std::shared_ptr<StatusBar> &status_bar_;
+  StatusBar *status_bar_;
   int idLast_ = 0;
   int id_ = 0;
 };

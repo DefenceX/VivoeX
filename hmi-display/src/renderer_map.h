@@ -43,8 +43,8 @@ class rendererMap {
   rendererMap(std::string map, std::string style, int width, int height);
   ~rendererMap();
   GvaStatusTypes Project(double zoom, double lon, double lat, cairo_surface_t **surface);
-  void SetHeight(int height) { height_ = height_; }
-  void SetWidth(int width) { width_ = width_; }
+  void SetHeight(int height) { height_ = height; }
+  void SetWidth(int width) { width_ = width; }
 
  private:
   int width_;

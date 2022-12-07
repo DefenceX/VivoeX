@@ -208,7 +208,8 @@
         "complex": "cpp",
         "any": "cpp",
         "forward_list": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "future": "cpp"
     },
     "cSpell.words": [
         "alarmson",

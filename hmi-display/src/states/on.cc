@@ -30,7 +30,7 @@ void StateOn::entry() {
   /* 4:3 aspect ratio @ lowest resolution */
   view_ = {kMinimumWidth, kMinimumHeight, 24};
 
-  if (!manager_) manager_ = std::make_shared<ViewGvaManager>(std::make_shared<StatusBar>(status_));
+  if (!manager_) manager_ = std::make_shared<ViewGvaManager>(&status_);
 
   if (kOsmScout) {
     // Render a map for BMS

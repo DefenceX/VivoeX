@@ -34,23 +34,19 @@
 #include "src/renderer_cairo.h"
 #include "src/widgets/widget_types.h"
 
-#define MAX_ROWS 50
-#define MAX_CELLS 10
-#define MAX_TEXT 80
-
 namespace gva {
 
 class RenderBase {
  public:
   RenderBase() = default;
-  RenderBase(uint32_t x, uint32_t y) : m_x(x), m_y(y), m_width(0), m_height(0) {}
-  RenderBase(uint32_t x, uint32_t y, uint32_t width) : m_x(x), m_y(y), m_width(width), m_height(0) {}
+  RenderBase(uint32_t x, uint32_t y) : m_x(x), m_y(y) {}
+  RenderBase(uint32_t x, uint32_t y, uint32_t width) : m_x(x), m_y(y), m_width(width) {}
   RenderBase(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
       : m_x(x), m_y(y), m_width(width), m_height(height) {}
-  uint32_t GetX() { return m_x; }
-  uint32_t GetY() { return m_y; }
-  uint32_t GetWidth() { return m_width; }
-  uint32_t GetHeight() { return m_height; }
+  uint32_t GetX() const { return m_x; }
+  uint32_t GetY() const { return m_y; }
+  uint32_t GetWidth() const { return m_width; }
+  uint32_t GetHeight() const { return m_height; }
 
  private:
   uint32_t m_x = 0;
@@ -69,26 +65,16 @@ class GvaCell {
   widget::WeightType weight;
 };
 
-class GvaRow : public RenderBase {
- public:
-  GvaRow() = default;
-  GvaRow(uint32_t x, uint32_t y) : RenderBase(x, y) {}
-  uint32_t addCell(GvaCell newcell, uint32_t width);
-  GvaCell cell_[MAX_CELLS];
-  uint32_t widths_[MAX_CELLS];
-  uint32_t cells_ = 0;
-};
-
 class Hotspot : public RenderBase {
  public:
   Hotspot(GvaFunctionGroupEnum groupId, uint32_t x, uint32_t y) : RenderBase(x, y), group_id_(groupId), binding_(0) {}
   Hotspot(GvaFunctionGroupEnum groupId, uint32_t binding, uint32_t x, uint32_t y, uint32_t width, uint32_t height)
       : RenderBase(x, y, width, height), group_id_(groupId), binding_(binding) {}
-  GvaFunctionGroupEnum GetGroupId() { return group_id_; }
-  uint32_t GetBinding() { return binding_; }
+  GvaFunctionGroupEnum GetGroupId() const { return group_id_; }
+  uint32_t GetBinding() const { return binding_; }
 
  private:
-  GvaFunctionGroupEnum group_id_;  // Group hostpots together
+  GvaFunctionGroupEnum group_id_;  // Group hotspots together
   uint32_t binding_;               // Bind a value or a key to this Hotspot
 };
 
@@ -113,7 +99,7 @@ class TouchGva {
     y_ = y;
   }
   void Reset() { hotspots_.clear(); }
-  bool Check(GvaFunctionGroupEnum groupId, uint32_t *binding, uint32_t x, uint32_t y) {
+  bool Check(GvaFunctionGroupEnum groupId, uint32_t *binding, uint32_t x, uint32_t y) const {
     // Adjust for resized windows
     x = x / static_cast<float>(Renderer::GetWidth() / static_cast<float>(kMinimumWidth));
     y = y / static_cast<float>(Renderer::GetHeight() / static_cast<float>(kMinimumHeight));
@@ -221,8 +207,6 @@ class RendererGva : public RendererCairo {
 
  private:
   TouchGva touch_;
-
- private:
   void SetStateLabel(LabelStates state, ConfigData *config);
   void SetStateText(LabelStates state, ConfigData *config);
   ConfigData *config_ = nullptr;
@@ -232,12 +216,9 @@ class WidgetBase {
  public:
   explicit WidgetBase(RendererGva &renderer) : renderer_(renderer) {}
   void Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::string text, uint32_t text_colour);
-  uint32_t GetX() { return x_; }
-  uint32_t GetY() { return y_; }
-
+  uint32_t GetX() const { return x_; }
+  uint32_t GetY() const { return y_; }
   RendererGva &renderer_;
-
- private:
   uint32_t x_;
   uint32_t y_;
 };

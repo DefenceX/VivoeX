@@ -81,7 +81,7 @@ struct Screen {
   Canvas canvas;
   FunctionSelect *function_top;
   CommonTaskKeys *control;
-  std::shared_ptr<StatusBar> status_bar;
+  StatusBar *status_bar;
   FunctionKeys function_left;
   FunctionKeys function_right;
   Label label;
@@ -134,7 +134,7 @@ class ScreenGva : public RendererGva {
   ///
   /// \param barData
   ///
-  void StartClock(const std::shared_ptr<StatusBar> &barData);
+  void StartClock(const StatusBar &barData);
 
   ///
   /// \brief Get the Widget object

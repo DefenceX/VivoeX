@@ -515,13 +515,13 @@ class RendererCairo : public Renderer {
   //
   // Image List
   //
-  image_type image_list_[MAX_IMAGES];
+  std::vector<image_type> image_list_;
   uint32_t image_tail_ = 0;
 
   //
   // Image Cache
   //
-  image_type cache_image_list_[MAX_IMAGES];
+  std::vector<image_type> cache_image_list_;
   uint32_t cache_image_tail_ = 0;
 
   static gboolean DrawCb(GtkWidget *Widget, cairo_t *cr, gpointer data);
