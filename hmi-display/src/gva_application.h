@@ -47,7 +47,7 @@ class GvaApplication {
   struct Options {
     bool videoEnabled;
     bool windowEnabled;
-    char config[256];
+    std::string config;
   };
 
   ///
@@ -56,19 +56,19 @@ class GvaApplication {
   /// \param ipaddr The stream IP address for raw RTP video
   /// \param port The port for the above RTP stream
   ///
-  GvaApplication(const Options options, const std::string &ipaddr, const uint32_t port);
+  GvaApplication(const Options &options, const std::string &ipaddr, const uint32_t port);
 
   ///
   /// \brief Destroy the Gva Application object
   ///
   ///
-  ~GvaApplication();
+  ~GvaApplication() = default;
 
   ///
   /// \brief Execute the main processing loop, blocking call
   ///
   ///
-  void Exec();
+  void Exec() const;
 
   ///
   /// \brief Update the canvas and re-render the screen

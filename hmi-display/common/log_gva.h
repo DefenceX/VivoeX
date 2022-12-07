@@ -25,13 +25,12 @@
 #ifndef HMI_DISPLAY_COMMON_LOG_GVA_H_
 #define HMI_DISPLAY_COMMON_LOG_GVA_H_
 
-#define LOG_GVA_H
 #include <iostream>
 #include <string>
 
 namespace gva {
 
-enum { LOG_DEBUG = 0, LOG_INFO, LOG_WARNING, LOG_ERROR };
+enum class DebugLevel { kLogDebug = 0, kLogInfo, kLogWarning, kLogError };
 
 ///
 /// \brief A simple, light weight logging function for debug purposes
@@ -45,7 +44,7 @@ class logGva {
   /// \param message Message description
   /// \param type Severity
   ///
-  static void log(const std::string message, uint16_t type);
+  static void log(const std::string& message, const DebugLevel type);
 
   ///
   /// \brief Log a message with its severity
@@ -53,7 +52,7 @@ class logGva {
   /// \param message Message description
   /// \param type Severity
   ///
-  static void log(const char* message, uint16_t type);
+  static void log(const char* message, const DebugLevel type);
 
   ///
   /// \brief Finalise the log

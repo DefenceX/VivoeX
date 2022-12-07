@@ -51,7 +51,7 @@
 int32_t GetOpt(int argc, char *argv[], GvaApplication::Options *opt) {
   uint32_t c = 0;
 
-  gva::ConfigData *configuration = gva::ConfigData::GetInstance();
+  const gva::ConfigData *configuration = gva::ConfigData::GetInstance();
 
   while ((c = getopt(argc, argv, "hvwclf::")) != -1) switch (c) {
       case 'v':
@@ -62,7 +62,7 @@ int32_t GetOpt(int argc, char *argv[], GvaApplication::Options *opt) {
         opt->windowEnabled = true;
         return -1;
       case 'c':
-        strcpy(opt->config, optarg);
+        opt->config = optarg;
         return -1;
       case 'l':
         printf("-l selected");
@@ -92,7 +92,6 @@ int32_t GetOpt(int argc, char *argv[], GvaApplication::Options *opt) {
   return -1;
 };
 
-// printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
 int main(int argc, char *argv[]) {
   std::string ipaddr = "127.0.0.1";
   uint32_t port = 5004;
@@ -108,5 +107,5 @@ int main(int argc, char *argv[]) {
   // Blocking call to the application constructor
   app.Exec();
 
-  gva::logGva::log("Exiting hmi_display...\n", gva::LOG_INFO);
+  gva::logGva::log("Exiting hmi_display...\n", gva::DebugLevel::kLogInfo);
 }

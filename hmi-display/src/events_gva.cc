@@ -56,7 +56,7 @@ gboolean EventsGva::ButtonPressEventCb(GtkWidget* Widget, GdkEventButton* event,
     gvaEvent.key_ = (GvaKeyEnum)binding;
     eventqueue_.push_back(gvaEvent);
 
-    logGva::log("[GVA] Button press event " + std::to_string(event->button), LOG_INFO);
+    logGva::log("[GVA] Button press event " + std::to_string(event->button), DebugLevel::kLogInfo);
   }
 
   // We've handled the event, stop processing
@@ -82,7 +82,7 @@ gboolean EventsGva::ButtonReleaseEventCb(GtkWidget* Widget, GdkEventButton* even
       gvaEvent.key_ = GvaKeyEnum::kKeyUnknown;
       eventqueue_.push_back(gvaEvent);
     }
-    logGva::log("[GVA] Button release event " + std::to_string(event->button), LOG_INFO);
+    logGva::log("[GVA] Button release event " + std::to_string(event->button), DebugLevel::kLogInfo);
   }
 
   // We've handled the event, stop processing
@@ -104,7 +104,7 @@ gboolean EventsGva::CreateKeyEvent(GtkWidget* Widget, GdkEventKey* event, EventE
   std::string state = (EventEnumType::kKeyEventPressed == type) ? "(Pressed) " : "(Released) ";
   logGva::log("[GVA] Key press event " + state + std::to_string(event->keyval) + " (prev " +
                   std::to_string(previous_key_) + ")",
-              LOG_INFO);
+              DebugLevel::kLogInfo);
   switch (previous_key_) {
     case 0xffe3:  // Top keys
       switch (event->keyval) {
@@ -340,7 +340,7 @@ gboolean EventsGva::CreateKeyEvent(GtkWidget* Widget, GdkEventKey* event, EventE
       break;
 
     default:
-      gva::logGva::log("[GVA] KeyPress not defined " + std::to_string(int(gvaEvent.key_)), gva::LOG_INFO);
+      gva::logGva::log("[GVA] KeyPress not defined " + std::to_string(int(gvaEvent.key_)), DebugLevel::kLogInfo);
       previous_key_ = event->keyval;
       return TRUE;
   }

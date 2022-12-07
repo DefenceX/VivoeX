@@ -45,7 +45,7 @@ ConfigDataBase::ConfigDataBase() {
   message.append(std::filesystem::current_path());
   message.append("/");
   message.append(config_file_);
-  logGva::log(message, LOG_INFO);
+  logGva::log(message, DebugLevel::kLogInfo);
   current_config_ = std::make_unique<config::Gva>();
   {
     // Read the existing configuration file.
@@ -55,13 +55,13 @@ ConfigDataBase::ConfigDataBase() {
       message.append(std::filesystem::current_path());
       message.append("/");
       message.append(config_file_);
-      logGva::log(message, LOG_INFO);
+      logGva::log(message, DebugLevel::kLogInfo);
       current_config_->set_name("Test HMI configuration.");
       // Doesn't write defaults unless they have been set once
       current_config_->set_height(current_config_->height());
       current_config_->set_width(current_config_->width());
     } else if (!current_config_->ParseFromIstream(&input)) {
-      logGva::log("Failed to parse config file.", LOG_INFO);
+      logGva::log("Failed to parse config file.", DebugLevel::kLogInfo);
       return;
     }
   }
@@ -69,14 +69,14 @@ ConfigDataBase::ConfigDataBase() {
     // Write the new config back to disk.
     std::fstream output(config_file_, std::fstream::out | std::fstream::trunc | std::fstream::binary);
     if (!current_config_->SerializeToOstream(&output)) {
-      logGva::log("Failed to write config file.", LOG_INFO);
+      logGva::log("Failed to write config file.", DebugLevel::kLogInfo);
       return;
     }
   }
 }
 
 ConfigDataBase::~ConfigDataBase() {
-  logGva::log("Closing config reader.", LOG_INFO);
+  logGva::log("Closing config reader.", DebugLevel::kLogInfo);
   WriteData();
 }
 
@@ -93,11 +93,11 @@ void ConfigDataBase::WriteData() const {
   // Write the config back to disk.
   std::fstream output(config_file_, std::fstream::out | std::fstream::trunc | std::fstream::binary);
   if (!current_config_->SerializeToOstream(&output)) {
-    logGva::log("Failed to update config file.", LOG_INFO);
+    logGva::log("Failed to update config file.", DebugLevel::kLogInfo);
     return;
   }
   // Log
-  logGva::log("Updated configuration file", LOG_INFO);
+  logGva::log("Updated configuration file", DebugLevel::kLogInfo);
   // Optional:  Delete all global objects allocated by libprotobuf.
   google::protobuf::ShutdownProtobufLibrary();
 }

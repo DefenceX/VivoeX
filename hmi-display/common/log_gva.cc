@@ -33,38 +33,41 @@ namespace gva {
 
 FILE* logGva::m_errorfd;
 
-void logGva::log(const std::string message, const uint16_t type) { log(message.c_str(), type); }
+void logGva::log(const std::string& message, const DebugLevel type) { log(message.c_str(), type); }
 
-void logGva::log(const char* message, const uint16_t type) {
+void logGva::log(const char* message, const DebugLevel type) {
   struct sysinfo info;
-  char msgType[4] = "???";
+  std::string msgType = "???";
 
   sysinfo(&info);
   switch (type) {
-    case LOG_DEBUG:
-      strcpy(msgType, "DBG");
+    case gva::DebugLevel::kLogDebug:
+      msgType = "DBG";
       break;
-    case LOG_INFO:
-      strcpy(msgType, "INF");
+    case gva::DebugLevel::kLogInfo:
+      msgType = "INF";
       break;
-    case LOG_WARNING:
-      strcpy(msgType, "WAR");
+    case gva::DebugLevel::kLogWarning:
+      msgType = "WAR";
       break;
-    case LOG_ERROR:
-      strcpy(msgType, "ERR");
+    case gva::DebugLevel::kLogError:
+      msgType = "ERR";
+      break;
+    default:
+      msgType = "UNKNOWN";
       break;
   }
 
 #if !DEBUG
   /** Discard debug message if DEBUG not enabled */
-  if (type == LOG_DEBUG) return;
+  if (type == gva::DebugLevel::kLogDebug) return;
 #endif
   if (!m_errorfd) {
     m_errorfd = fopen("/var/log/gva.log", "w");
   }
-  fprintf(m_errorfd, "[%ld] *%s* %s\n", info.uptime, msgType, message);
+  fprintf(m_errorfd, "[%ld] *%s* %s\n", info.uptime, msgType.c_str(), message);
   fflush(m_errorfd);
-  if (type == LOG_ERROR) {
+  if (type == gva::DebugLevel::kLogError) {
     std::cout << message << std::endl;
   }
 }

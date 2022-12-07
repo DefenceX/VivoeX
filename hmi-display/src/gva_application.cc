@@ -26,13 +26,14 @@
 
 #include <memory>
 
+#include "common/log_gva.h"
 #include "src/widgets/keyboard.h"
 #include "src/widgets/widget.h"
 
 GvaApplication::Options GvaApplication::options_ = {};
 std::unique_ptr<gva::GvaVideoRtpYuv> GvaApplication::rtp_stream1_ = nullptr;
 
-GvaApplication::GvaApplication(const Options options, const std::string &ipaddr, const uint32_t port) {
+GvaApplication::GvaApplication(const Options &options, const std::string &ipaddr, const uint32_t port) {
   options_ = options;
 
   rtp_stream1_ = std::make_unique<gva::GvaVideoRtpYuv>(ipaddr, port);
@@ -58,10 +59,11 @@ GvaApplication::GvaApplication(const Options options, const std::string &ipaddr,
   if (options_.videoEnabled == true) {
     gva::logGva::log(
         "Resolution " + std::to_string(rtp_stream1_->GetHeight()) + "x" + std::to_string(rtp_stream1_->GetWidth()),
-        gva::LOG_INFO);
-    rtp_buffer_ = reinterpret_cast<char *>(malloc(rtp_stream1_->GetHeight() * rtp_stream1_->GetWidth() * 4));
+        gva::DebugLevel::kLogInfo);
+    rtp_buffer_ = static_cast<char *>(malloc(rtp_stream1_->GetHeight() * rtp_stream1_->GetWidth() * 4));
 
-    gva::logGva::log("GVA Incoming RTP stream initalized " + ipaddr + ":" + std::to_string(port), gva::LOG_INFO);
+    gva::logGva::log("GVA Incoming RTP stream initalized " + ipaddr + ":" + std::to_string(port),
+                     gva::DebugLevel::kLogInfo);
   }
 }
 
@@ -69,7 +71,7 @@ GvaApplication::GvaApplication(const Options options, const std::string &ipaddr,
 /// \brief Execute the application, blocking as this will run the event loop in the main thread
 ///
 ///
-void GvaApplication::Exec() {
+void GvaApplication::Exec() const {
   //
   // Start the render and event loop
   //
@@ -78,12 +80,6 @@ void GvaApplication::Exec() {
   // Free the config reader (writes data back to disk)
   gva::ConfigData::GetInstance()->WriteData();
 }
-
-///
-/// \brief Destroy the Gva Application:: Gva Application object
-///
-///
-GvaApplication::~GvaApplication() {}
 
 ///
 /// \brief Dispatch key events
@@ -107,7 +103,7 @@ void GvaApplication::Fullscreen(gva::HandleType *render) {
                      : gtk_window_fullscreen(GTK_WINDOW(render->win.win));
   render->fullscreen = render->fullscreen ? false : true;
   gva::ConfigData::GetInstance()->SetFullscreen(render->fullscreen);
-  gva::logGva::log("Toggle fullscreen", gva::LOG_INFO);
+  gva::logGva::log("Toggle fullscreen", gva::DebugLevel::kLogInfo);
 }
 
 ///
@@ -117,35 +113,34 @@ void GvaApplication::Fullscreen(gva::HandleType *render) {
 /// \param user_data Renderer handle
 ///
 void GvaApplication::Update(void *arg, gpointer user_data) {
-  gva::EventsGva *io = static_cast<gva::EventsGva *>(arg);
+  auto *io = static_cast<gva::EventsGva *>(arg);
   gva::EventGvaType event;
   bool update = true;
   static int c = 0;
   static uint32_t count = 0;
-  gva::HandleType *render = static_cast<gva::HandleType *>(user_data);
+  const gva::HandleType *render = static_cast<gva::HandleType *>(user_data);
 
-  if (options_.videoEnabled) {
-    // Get the live video frame if Driver (DRV)
-    if (gva::hmi::GetScreen()->currentFunction == gva::GvaFunctionEnum::kDriver) {
-      gva::hmi::GetScreen()->canvas.bufferType = gva::SurfaceType::kSurfaceCairo;
-      gva::hmi::GetScreen()->canvas.surface =
-          cairo_image_surface_create(CAIRO_FORMAT_ARGB32, gva::kMinimumWidth, gva::kMinimumHeight);
-      char *test = reinterpret_cast<char *>(cairo_image_surface_get_data(gva::hmi::GetScreen()->canvas.surface));
-      rtp_stream1_->GvaReceiveFrame(test, gva::VideoFormat::kFormatRgbaColour);
-      cairo_surface_mark_dirty(gva::hmi::GetScreen()->canvas.surface);
+  if ((options_.videoEnabled) && (gva::hmi::GetScreen()->currentFunction == gva::GvaFunctionEnum::kDriver)) {
+    gva::hmi::GetScreen()->canvas.bufferType = gva::SurfaceType::kSurfaceCairo;
+    gva::hmi::GetScreen()->canvas.surface =
+        cairo_image_surface_create(CAIRO_FORMAT_ARGB32, gva::kMinimumWidth, gva::kMinimumHeight);
+    char *test = reinterpret_cast<char *>(cairo_image_surface_get_data(gva::hmi::GetScreen()->canvas.surface));
+    rtp_stream1_->GvaReceiveFrame(test, gva::VideoFormat::kFormatRgbaColour);
+    cairo_surface_mark_dirty(gva::hmi::GetScreen()->canvas.surface);
 
-      // @todo hmi_display: Add RTP HMI streaming output to display.
-      // @body The HMI window is only a preview. Add RTP output and headless
-      // mode.
-    }
+    // @todo hmi_display: Add RTP HMI streaming output to display.
+    // @body The HMI window is only a preview. Add RTP output and headless
+    // mode.
   }
+
   // Time to update the screen
   gva::hmi::GetRendrer()->Update();
 
   io->NextGvaEvent(&event);
   switch (event.type_) {
     case gva::EventEnumType::kKeyEventPressed:
-      gva::logGva::log("[GVA] Key press event being processed value=" + std::to_string(int(event.key_)), gva::LOG_INFO);
+      gva::logGva::log("[GVA] Key press event being processed value=" + std::to_string(int(event.key_)),
+                       gva::DebugLevel::kLogInfo);
 
       switch (event.key_) {
         case gva::GvaKeyEnum::KKeySituationalAwareness:
@@ -241,13 +236,13 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
       break;
 
     case gva::kKeyEventReleased: {
-      gva::WidgetPlanPositionIndicator *compass = static_cast<gva::WidgetPlanPositionIndicator *>(
+      auto *compass = static_cast<gva::WidgetPlanPositionIndicator *>(
           gva::hmi::GetRendrer()->GetWidget(gva::widget::KWidgetTypeCompass));
 
       auto keyboard = (gva::WidgetKeyboard *)gva::hmi::GetRendrer()->GetWidget(gva::widget::KWidgetTypeKeyboard);
 
       gva::logGva::log("[GVA] Key release event being processed value=" + std::to_string(int(event.key_)),
-                       gva::LOG_INFO);
+                       gva::DebugLevel::kLogInfo);
 
       switch (event.key_) {
         case gva::GvaKeyEnum::kKeyEscape:
@@ -308,7 +303,7 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
           {
             gva::EventKeyCOM com;
 
-            gva::hmi::dispatch(gva::EventKeyCOM());
+            gva::hmi::dispatch(com);
           }
           break;
         case gva::GvaKeyEnum::kKeyBattlefieldManagementSystem:
@@ -402,7 +397,7 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
           break;
         case gva::GvaKeyEnum::kKeyFullscreen:
           // f toggle fullscreen
-          Fullscreen(render);
+          Fullscreen(const_cast<gva::HandleType *>(render));
           gva::hmi::GetRendrer()->GetTouch()->SetResolution(gdk_screen_width(), gdk_screen_height());
           break;
         case gva::GvaKeyEnum::kKeyKeyboard:
@@ -429,7 +424,8 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
         } break;
         case gva::GvaKeyEnum::kKeyUnknown:  // Drop through to default
         default:
-          gva::logGva::log("[GVA] Key release not defined " + std::to_string(int(event.key_)), gva::LOG_INFO);
+          gva::logGva::log("[GVA] Key release not defined " + std::to_string(int(event.key_)),
+                           gva::DebugLevel::kLogInfo);
           // When we have wondered off a hotspot we need to reset and changing labels.
           gva::hmi::GetScreen()->function_left.ResetAllEnabledSelectedChanging();
           gva::hmi::GetScreen()->function_right.ResetAllEnabledSelectedChanging();

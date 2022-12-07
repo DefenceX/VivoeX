@@ -32,6 +32,7 @@
 
 #include <iostream>
 
+#include "common/log_gva.h"
 #include "events_gva.h"
 
 namespace gva {
@@ -650,7 +651,7 @@ uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, void *buffer, std::st
     // Add to cache
     cairo_surface_t *surf = cairo_image_surface_create_from_png(file.c_str());
     if (cairo_surface_status(surf) != CAIRO_STATUS_SUCCESS) {
-      logGva::log("Could not load file " + file + ", not found!", LOG_ERROR);
+      logGva::log("Could not load file " + file + ", not found!", DebugLevel::kLogInfo);
       return -1;
     }
     int width = cairo_image_surface_get_width(surf);

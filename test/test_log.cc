@@ -71,15 +71,15 @@ class LogTest : public ::testing::Test {
 
 TEST_F(LogTest, LoggingTests) {
   std::string test1 = "This is a string test";
-  logGva::log(test1, LOG_DEBUG);
-  logGva::log(test1, LOG_INFO);
-  logGva::log(test1, LOG_ERROR);
-  logGva::log(test1, LOG_WARNING);
-  char test2[] = "This is a char* test";
-  logGva::log(test2, LOG_DEBUG);
-  logGva::log(test2, LOG_INFO);
-  logGva::log(test2, LOG_ERROR);
-  logGva::log(test2, LOG_WARNING);
+  logGva::log(test1, gva::DebugLevel::kLogDebug);
+  logGva::log(test1, gva::DebugLevel::kLogInfo);
+  logGva::log(test1, gva::DebugLevel::kLogError);
+  logGva::log(test1, gva::DebugLevel::kLogWarning);
+  char test2[] = "This is a char* test";  // NOLINT
+  logGva::log(test2, gva::DebugLevel::kLogDebug);
+  logGva::log(test2, gva::DebugLevel::kLogInfo);
+  logGva::log(test2, gva::DebugLevel::kLogError);
+  logGva::log(test2, gva::DebugLevel::kLogWarning);
   logGva::finish();
 }
 // Tests that Foo does Xyz.

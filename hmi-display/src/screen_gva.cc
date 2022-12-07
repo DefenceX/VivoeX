@@ -64,7 +64,7 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
   config_ = gva::ConfigData::GetInstance();
 
   sprintf(tmp, "GVA screen initalised (%dx%d)", width_, height_);
-  logGva::log(tmp, LOG_INFO);
+  logGva::log(tmp, DebugLevel::kLogInfo);
 
   // Initalise the pasert for NMEA
   nmea_zero_INFO(&info_);
@@ -74,9 +74,9 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
   gps_ = open(screen->info.gpsDevice.c_str(), O_RDWR | O_NONBLOCK | O_NDELAY);
 
   if (gps_ > 0) {
-    logGva::log("GPS Opened " + screen->info.gpsDevice, LOG_INFO);
+    logGva::log("GPS Opened " + screen->info.gpsDevice, DebugLevel::kLogInfo);
   } else {
-    logGva::log("GPS Error Opening device " + screen->info.gpsDevice, LOG_ERROR);
+    logGva::log("GPS Error Opening device " + screen->info.gpsDevice, DebugLevel::kLogError);
   }
   tcgetattr(gps_, &settings);
 
@@ -116,8 +116,8 @@ ScreenGva::~ScreenGva() {
   pthread_join(clock_thread_, 0);
   nmea_parser_destroy(&parser_);
   close(gps_);
-  if (gps_) logGva::log("GPS closed", LOG_INFO);
-  logGva::log("GVA screen finalized.", LOG_INFO);
+  if (gps_) logGva::log("GPS closed", DebugLevel::kLogInfo);
+  logGva::log("GVA screen finalized.", DebugLevel::kLogInfo);
   logGva::finish();
 }
 
@@ -153,7 +153,7 @@ void *ClockUpdate(void *arg) {
       }
       buffer[i - 1] = 0;
       sprintf(tmp, "GPS NMEA %s", buffer);
-      logGva::log(tmp, LOG_INFO);
+      logGva::log(tmp, DebugLevel::kLogInfo);
 
       sprintf(tmp, "%s\r\n", buffer);
       a->info->lon = a->location->lon;
@@ -204,10 +204,10 @@ void ScreenGva::StartClock(StatusBar *barData) {
 
   /* Launch clock thread */
   if (pthread_create(&clock_thread_, NULL, ClockUpdate, (void *)&args_)) {
-    logGva::log("Error creating thread", LOG_ERROR);
+    logGva::log("Error creating thread", DebugLevel::kLogError);
     return;
   }
-  logGva::log("Clock thread started", LOG_INFO);
+  logGva::log("Clock thread started", DebugLevel::kLogInfo);
 }
 
 GvaStatusTypes ScreenGva::Update() {
@@ -247,7 +247,7 @@ GvaStatusTypes ScreenGva::Update() {
     // Refresh display
     //
     Draw();
-    logGva::log("Blackout Requested", LOG_INFO);
+    logGva::log("Blackout Requested", DebugLevel::kLogInfo);
     last_screen_ = *screen_;
     return GvaStatusTypes::kGvaSuccess;
   }

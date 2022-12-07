@@ -119,7 +119,7 @@ void WidgetTable::AddCell(std::string text, uint32_t width, widget::CellAlignTyp
     CellType cell(text, width, background_colour, foreground_colour_, outline_colour_, highlight_colour_, align);
     rows_.back().GetCells()->push_back(cell);
   } else {
-    logGva::log("[GVA] No rows could be found when adding new cell.", LOG_ERROR);
+    logGva::log("[GVA] No rows could be found when adding new cell.", DebugLevel::kLogError);
   }
 }
 
