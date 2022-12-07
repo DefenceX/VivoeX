@@ -21,8 +21,11 @@
 ///
 /// \file gva_video_rtp_yuv.h
 ///
+
 #ifndef VIDEO_SRC_GVA_VIDEO_RTP_YUV_H_
 #define VIDEO_SRC_GVA_VIDEO_RTP_YUV_H_
+
+#include <memory>
 #include <string>
 
 #include "gva_video.h"   // NOLINT
@@ -47,7 +50,7 @@ class GvaVideoRtpYuv : public GvaVideoSource {
   std::string ip_;
   uint32_t port_;
   uint32_t frame_counter_;
-  RtpStream *stream_;
+  std::unique_ptr<RtpStream> stream_;
 };
 
 }  // namespace gva

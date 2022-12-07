@@ -20,6 +20,7 @@
 #include "src/gva_video_rtp_yuv.h"
 
 #include <iostream>
+#include <memory>
 #include <string>
 
 #include "src/gva.h"
@@ -34,17 +35,17 @@ GvaVideoRtpYuv::GvaVideoRtpYuv(const std::string& ip, uint32_t port, uint32_t he
 GvaVideoRtpYuv::GvaVideoRtpYuv(const std::string& ip, uint32_t port) : GvaVideoSource(kMinimumHeight, kMinimumWidth) {
   ip_ = ip;
   port_ = port;
-  stream_ = new RtpStream(kMinimumHeight, kMinimumWidth);
-  char* ipaddr = const_cast<char*>(ip_.c_str());
+  stream_ = std::make_unique<RtpStream>(kMinimumHeight, kMinimumWidth);
+  const char* ipaddr = ip_.c_str();
   stream_->RtpStreamIn(ipaddr, port_);
   stream_->Open();
 }
 
-GvaVideoRtpYuv::~GvaVideoRtpYuv() { free(stream_); }
+GvaVideoRtpYuv::~GvaVideoRtpYuv() {}
 
 const uint32_t GvaVideoRtpYuv::GvaReceiveFrame(char* buffer, VideoFormat format) {
   char* frame_buffer;
-  stream_->Recieve((void**)&frame_buffer, 5);
+  stream_->Receive((void**)&frame_buffer, 5);
   switch (format) {
     case VideoFormat::kFormatYuyvColour:
       memcpy(buffer, frame_buffer, GetWidth() * GetHeight() * 2);

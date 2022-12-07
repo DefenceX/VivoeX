@@ -90,7 +90,7 @@ GvaKeyEnum Hmi::KeyBMS(GvaKeyEnum keypress) {
     case GvaKeyEnum::kKeyF1:
     case GvaKeyEnum::kKeyF2:
     case GvaKeyEnum::kKeyF6:
-    case GvaKeyEnum::kKeyF7:
+    case GvaKeyEnum::kKeyF7:  ///
     case GvaKeyEnum::kKeyF8:
     case GvaKeyEnum::kKeyF12:
       screen_.message.visible = true;

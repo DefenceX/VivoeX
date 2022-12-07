@@ -29,9 +29,13 @@
 #include "src/widgets/keyboard.h"
 #include "src/widgets/widget.h"
 
+GvaApplication::Options GvaApplication::options_ = {};
+std::unique_ptr<gva::GvaVideoRtpYuv> GvaApplication::rtp_stream1_ = nullptr;
+
 GvaApplication::GvaApplication(const Options options, const std::string &ipaddr, const uint32_t port) {
   options_ = options;
-  char tmp[256];
+
+  rtp_stream1_ = std::make_unique<gva::GvaVideoRtpYuv>(ipaddr, port);
 
   // instantiate events
   gva::EventKeyPowerOn on;
@@ -52,15 +56,19 @@ GvaApplication::GvaApplication(const Options options, const std::string &ipaddr,
   // @todo hmi_display: Fix issue with stream blocking execution on RTP input
   // @body The RTP stream blocks for a whole frame slowing down the HMI.
   if (options_.videoEnabled == true) {
-    rtp_stream1_ = new gva::GvaVideoRtpYuv(ipaddr, port);
-    snprintf(tmp, strlen(tmp), "Resolution %dx%d", rtp_stream1_->GetHeight(), rtp_stream1_->GetWidth());
-    gva::logGva::log(tmp, gva::LOG_INFO);
+    gva::logGva::log(
+        "Resolution " + std::to_string(rtp_stream1_->GetHeight()) + "x" + std::to_string(rtp_stream1_->GetWidth()),
+        gva::LOG_INFO);
     rtp_buffer_ = reinterpret_cast<char *>(malloc(rtp_stream1_->GetHeight() * rtp_stream1_->GetWidth() * 4));
-    snprintf(tmp, strlen(tmp), "GVA Incoming RTP stream initalized %s:%d", ipaddr, port);
-    gva::logGva::log(tmp, gva::LOG_INFO);
+
+    gva::logGva::log("GVA Incoming RTP stream initalized " + ipaddr + ":" + std::to_string(port), gva::LOG_INFO);
   }
 }
 
+///
+/// \brief Execute the application, blocking as this will run the event loop in the main thread
+///
+///
 void GvaApplication::Exec() {
   //
   // Start the render and event loop
@@ -71,12 +79,11 @@ void GvaApplication::Exec() {
   gva::ConfigData::GetInstance()->WriteData();
 }
 
-GvaApplication::~GvaApplication() {
-  //
-  // Clean up code goes here
-  //
-  free(rtp_stream1_);
-}
+///
+/// \brief Destroy the Gva Application:: Gva Application object
+///
+///
+GvaApplication::~GvaApplication() {}
 
 ///
 /// \brief Dispatch key events
@@ -102,9 +109,6 @@ void GvaApplication::Fullscreen(gva::HandleType *render) {
   gva::ConfigData::GetInstance()->SetFullscreen(render->fullscreen);
   gva::logGva::log("Toggle fullscreen", gva::LOG_INFO);
 }
-
-gva::GvaVideoRtpYuv *GvaApplication::rtp_stream1_ = nullptr;
-GvaApplication::Options GvaApplication::options_ = {};
 
 ///
 /// \brief Renderer callback to update screen
@@ -135,7 +139,7 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
       // mode.
     }
   }
-
+  // Time to update the screen
   gva::hmi::GetRendrer()->Update();
 
   io->NextGvaEvent(&event);

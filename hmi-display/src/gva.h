@@ -66,7 +66,7 @@ enum class LineType {
 ///
 class StateBase {
  public:
-  bool IsActive(LabelStates* state) {
+  bool IsActive(const LabelStates* state) const {
     return ((*state != LabelStates::kLabelDisabled) && (*state != LabelStates::kLabelHidden));
   }
 
@@ -81,24 +81,20 @@ class StateBase {
     }
   }
   void ResetEnabled(LabelStates* state) const {
-    if ((*state != LabelStates::kLabelDisabled) && (*state != LabelStates::kLabelHidden)) {
-      if ((*state == LabelStates::kLabelEnabledSelected) || (*state == LabelStates::kLabelEnabledSelectedChanging)) {
-        *state = LabelStates::kLabelEnabled;
-      }
+    if ((*state == LabelStates::kLabelEnabledSelected) || (*state == LabelStates::kLabelEnabledSelectedChanging)) {
+      *state = LabelStates::kLabelEnabled;
     }
   }
+
   void ResetEnabledSelected(LabelStates* state) const {
-    if ((*state != LabelStates::kLabelDisabled) && (*state != LabelStates::kLabelHidden)) {
-      if (*state == LabelStates::kLabelEnabledSelected) {
-        *state = LabelStates::kLabelEnabled;
-      }
+    if (*state == LabelStates::kLabelEnabledSelected) {
+      *state = LabelStates::kLabelEnabled;
     }
   }
+
   void ResetEnabledSelectedChanging(LabelStates* state) const {
-    if ((*state != LabelStates::kLabelDisabled) && (*state != LabelStates::kLabelHidden)) {
-      if (*state == LabelStates::kLabelEnabledSelectedChanging) {
-        *state = LabelStates::kLabelEnabled;
-      }
+    if (*state == LabelStates::kLabelEnabledSelectedChanging) {
+      *state = LabelStates::kLabelEnabled;
     }
   }
 };

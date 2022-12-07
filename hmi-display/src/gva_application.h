@@ -78,7 +78,8 @@ class GvaApplication {
   ///
   static void Update(void *arg, gpointer user_data);
 
-  static gva::GvaVideoRtpYuv *rtp_stream1_;
+  static Options options_;
+  static std::unique_ptr<gva::GvaVideoRtpYuv> rtp_stream1_;
 
  private:
   ///
@@ -94,7 +95,6 @@ class GvaApplication {
   ///
   static void Dispatch(gva::GvaKeyEnum key);
 
-  static Options options_;
   char *rtp_buffer_;
   std::shared_ptr<gva::EventsGva> io_;
   gva::EventsGva *io_test_;
