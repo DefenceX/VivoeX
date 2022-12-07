@@ -24,7 +24,6 @@
 
 #include <unistd.h>
 
-#include <catch/catch.hpp>
 #include <iostream>
 #include <string>
 
@@ -82,6 +81,7 @@ TEST_F(LogTest, LoggingTests) {
   logGva::log(test2, LOG_WARNING);
   logGva::log(test2, LOG_ERROR);
   logGva::finish();
+  make test
 }
 // Tests that Foo does Xyz.
 TEST_F(LogTest, DoesXyz) {
