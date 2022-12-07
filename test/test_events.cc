@@ -22,10 +22,8 @@
 /// \file test_events.cc
 ///
 
-#define CATCH_CONFIG_MAIN
 #include <unistd.h>
 
-#include <catch/catch.hpp>
 #include <iostream>
 
 #include "events_gva.h"
@@ -36,20 +34,20 @@ using namespace gva;
 
 static EventsGva *events = 0;
 
-TEST_CASE("eventsGva Constructor1", "Constructor test") {
+TEST_F("eventsGva Constructor1", "Constructor test") {
   events = new EventsGva(hmi::GetRendrer()->GetWindow(), hmi::GetRendrer()->GetTouch());
 
   REQUIRE(events != 0);
 }
 
-TEST_CASE("eventsGva", "flush") {
+TEST_F("eventsGva", "flush") {
   //  events->flush();
 
   REQUIRE(events != 0);
   free(events);
 }
 
-TEST_CASE("eventsGva Constructor2", "Constructor test2") {
+TEST_F("eventsGva Constructor2", "Constructor test2") {
   // instantiate events
   EventKeyPowerOn on;
 

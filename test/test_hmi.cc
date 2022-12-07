@@ -27,7 +27,6 @@
 #include <X11/Xlib.h>
 #include <unistd.h>
 
-#include <catch/catch.hpp>
 #include <iostream>
 
 #include "eventsGva.hpp"
@@ -38,7 +37,4 @@ using namespace gva;
 
 static eventsGva *events;
 
-TEST_CASE("HMI Test", "Constructor test") {
-  int i = 0;
-  REQUIRE(i == 0);
-}
+TEST_F("HMI Test", "Constructor test") { int i = 0; }

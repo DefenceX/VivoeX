@@ -24,6 +24,8 @@
 
 #include <unistd.h>
 
+#include <cstdlib>
+#include <fstream>
 #include <iostream>
 #include <string>
 
@@ -64,28 +66,38 @@ class LogTest : public ::testing::Test {
   }
 
   // Class members declared here can be used by all tests in the test suite
-  // for Foo.
+  // for LogTest.
 };
 
 TEST_F(LogTest, LoggingTests) {
   std::string test1 = "This is a string test";
-  logGva::log(test1, LOG_INFO);
   logGva::log(test1, LOG_DEBUG);
+  logGva::log(test1, LOG_INFO);
   logGva::log(test1, LOG_ERROR);
   logGva::log(test1, LOG_WARNING);
-  logGva::log(test1, LOG_ERROR);
   char test2[] = "This is a char* test";
-  logGva::log(test2, LOG_INFO);
   logGva::log(test2, LOG_DEBUG);
+  logGva::log(test2, LOG_INFO);
   logGva::log(test2, LOG_ERROR);
   logGva::log(test2, LOG_WARNING);
-  logGva::log(test2, LOG_ERROR);
   logGva::finish();
-  make test
 }
 // Tests that Foo does Xyz.
-TEST_F(LogTest, DoesXyz) {
-  // Exercises the Xyz feature of Foo.
+TEST_F(LogTest, CeckingLogs) {
+  int counter = 0;
+  // open the file if present, in read mode.
+  std::ifstream fs("/var/log/gva.log");
+  if (fs.is_open()) {
+    std::string line;
+
+    for (std::string line; getline(fs, line);) {
+      counter++;
+    }
+  } else {
+    FAIL() << "Could not open log file.";
+  }
+  // We dont expect LOG_DEBUG messages if code not compiled with DEBUG
+  EXPECT_EQ(counter, 6);
 }
 
 }  // namespace gva
