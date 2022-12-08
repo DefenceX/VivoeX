@@ -105,8 +105,8 @@ struct Hmi : tinyfsm::Fsm<Hmi> {
   static GvaKeyEnum KeyAlarms(GvaKeyEnum key);
   static void Reset();
   static void SetCanvasPng(const std::string &file);
-  static std::shared_ptr<ScreenGva> GetRendrer() { return screen_render_; }
-  static std::unique_ptr<Screen> GetScreen() { return std::make_unique<Screen>(screen_); }
+  static ScreenGva *GetRendrer() { return screen_render_.get(); }
+  static Screen *GetScreen() { return &screen_; }
   static void Labels(LabelModeEnum labels);
 };
 

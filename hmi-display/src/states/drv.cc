@@ -24,7 +24,7 @@
 
 #include "drv.h"
 
-#include "src/widgets/driver.h"
+#include "src/widgets/driver/speedometer.h"
 
 namespace gva {
 
@@ -69,7 +69,8 @@ void StateDRV::entry() {
     screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDriverDial)->SetVisible(true);
     screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDriverDial)->SetX(320);
     screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDriverDial)->SetY(750);
-    WidgetDriverDial *dial = (WidgetDriverDial *)screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDriverDial);
+    WidgetDriverSpeedometer *dial =
+        (WidgetDriverSpeedometer *)screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDriverDial);
     dial->SetValue(0);  // Why not zero is so boring
     screen_.status_bar->visible = true;
     screen_.function_top->SetEnabled(4);

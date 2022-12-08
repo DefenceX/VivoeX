@@ -40,7 +40,7 @@ set(SOURCES main.cc
 			src/events_gva.cc 
 			src/widgets/widget.cc
 			src/widgets/keyboard.cc
-			src/widgets/driver.cc
+			src/widgets/driver/speedometer.cc
 			src/widgets/table/table.cc
 			src/widgets/table/cell_type.cc
 			src/widgets/table/row_type.cc

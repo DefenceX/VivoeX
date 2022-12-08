@@ -22,7 +22,7 @@
 /// \file compass.cc
 ///
 
-#include "src/widgets/driver.h"
+#include "src/widgets/driver/speedometer.h"
 
 #include <float.h>
 #include <math.h>
@@ -33,12 +33,12 @@
 
 namespace gva {
 
-WidgetDriverDial::WidgetDriverDial(const RendererGva& renderer)
+WidgetDriverSpeedometer::WidgetDriverSpeedometer(const RendererGva& renderer)
     : WidgetX(renderer, widget::WidgetEnum::KWidgetTypeCompass) {
   SetVisible(false);
 }
 
-void WidgetDriverDial::Draw() {
+void WidgetDriverSpeedometer::Draw() {
   double_t radius = 100;
   double_t d = 0;
   const uint32_t font_size = 14;

@@ -46,7 +46,6 @@ RendererCairo::RendererCairo(uint32_t width, uint32_t height) : Renderer(width, 
   foreground_colour_ = {255, 255, 255};
   background_colour_ = {0, 0, 0};
   texture_ = 0;
-  image_tail_ = 0;
   config_ = gva::ConfigData::GetInstance();
   render_.size.width = gva::kMinimumWidth;
   render_.size.height = gva::kMinimumHeight;
@@ -259,14 +258,14 @@ void RendererCairo::Draw() {
         cairo_set_line_join(cr, (cairo_line_join_t)currentCmd.arg1);
         break;
       case kCommandImageTexture:
-        cairo_set_source_surface(cr, image_list_[currentCmd.arg1].image, currentCmd.points[0].x,
+        cairo_set_source_surface(cr, image_list_[currentCmd.arg1 - 1].image, currentCmd.points[0].x,
                                  currentCmd.points[0].y);
         cairo_paint(cr);
         // // Only free the image if it wasn't from cache. i.e. video
         // if (!image_list_[currentCmd.arg1].from_cache) cairo_surface_destroy(image_list_[currentCmd.arg1].image);
         // break;
       case kCommandImageTexturePersist:
-        cairo_set_source_surface(cr, image_list_[currentCmd.arg1].image, currentCmd.points[0].x,
+        cairo_set_source_surface(cr, image_list_[currentCmd.arg1 - 1].image, currentCmd.points[0].x,
                                  currentCmd.points[0].y);
         cairo_paint(cr);
         break;
@@ -647,6 +646,7 @@ uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, void *buffer, std::st
 
   if (found_in_cache) {
     // Copy from cache
+    new_image.name = cache_image->name;
     new_image.image = cache_image->image;
     new_image.from_cache = true;
   } else {
@@ -663,12 +663,13 @@ uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, void *buffer, std::st
       cairo_surface_set_device_scale(surf, (double)width / kMinimumWidth, (double)height / kMinimumHeight);
     }
 
-    cache_image->image = surf;
-    cache_image->name = file;
+    // Add the image to the cache
+    new_image.image = surf;
+    new_image.name = file;
     new_image.from_cache = true;
-    new_image.image = cache_image->image;
-    image_list_.push_back(new_image);
+    cache_image_list_.push_back(new_image);
   }
+  image_list_.push_back(new_image);
 
   Command command;
   command.command = kCommandImageTexture;
@@ -680,27 +681,32 @@ uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, void *buffer, std::st
 }
 
 uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, void *buffer) {
-  image_list_[image_tail_].image =
+  image_type new_image;
+  new_image.image =
       cairo_image_surface_create_for_data(reinterpret_cast<unsigned char *>(buffer), CAIRO_FORMAT_ARGB32, width_,
                                           height_, cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, width_));
-
+  image_list_.push_back(new_image);
   Command command;
   command.command = kCommandImageTexture;
   command.points[0].x = x;
   command.points[0].y = y;
-  command.arg1 = image_tail_++;
+  command.arg1 = image_list_.size();
   draw_commands_.push_back(command);
   return 0;
 }
 
 uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, cairo_surface_t *surface) {
-  image_list_[image_tail_].image = surface;
+  image_type new_image;
+
+  new_image.name = "not specified";
+  new_image.image = surface;
+  image_list_.push_back(new_image);
 
   Command command;
   command.command = kCommandImageTexturePersist;
   command.points[0].x = x;
   command.points[0].y = y;
-  command.arg1 = image_tail_++;
+  command.arg1 = image_list_.size();
   draw_commands_.push_back(command);
   return 0;
 }

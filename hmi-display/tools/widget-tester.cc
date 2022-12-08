@@ -64,7 +64,7 @@
 #include "src/widgets/alarm_indicator.h"
 #include "src/widgets/bottom_labels.h"
 #include "src/widgets/compass.h"
-#include "src/widgets/driver.h"
+#include "src/widgets/driver/speedometer.h"
 #include "src/widgets/keyboard.h"
 #include "src/widgets/mode.h"
 #include "src/widgets/side_labels.h"
@@ -89,7 +89,7 @@ static gva::WidgetSideLabels left(renderer, &touch);
 static gva::WidgetSideLabels right(renderer, &touch);
 static gva::WidgetMode mode(renderer);
 static gva::WidgetTable table(renderer, &touch, gva::ConfigData::GetInstance()->GetThemeBackground());
-static gva::WidgetDriverDial driver_speed(renderer);
+static gva::WidgetDriverSpeedometer driver_speed(renderer);
 
 static void do_drawing(cairo_t *, int width, int h);
 

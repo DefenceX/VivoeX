@@ -443,7 +443,7 @@ class RendererCairo : public Renderer {
   ///
   void Reset() {
     draw_commands_.clear();
-    image_tail_ = 0;
+    image_list_.clear();
   }
 
   ///
@@ -516,14 +516,11 @@ class RendererCairo : public Renderer {
   // Image List
   //
   std::vector<image_type> image_list_;
-  uint32_t image_tail_ = 0;
 
   //
   // Image Cache
   //
   std::vector<image_type> cache_image_list_;
-  uint32_t cache_image_tail_ = 0;
-
   static gboolean DrawCb(GtkWidget *Widget, cairo_t *cr, gpointer data);
   static gboolean ConfigureEventCb(GtkWidget *Widget, GdkEventConfigure *event, gpointer data);
   static void Activate(GtkApplication *app, gpointer user_data);

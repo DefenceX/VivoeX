@@ -16,7 +16,7 @@ set(SOURCE_FILES widget-tester.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/widget.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/compass.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/keyboard.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/driver.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/driver/speedometer.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/alarm_indicator.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/top_labels.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/bottom_labels.cc
@@ -37,10 +37,14 @@ include_directories(
 )
 
 link_directories(${CMAKE_BINARY_DIR}/external/libnmea/build/src)
+
+# OSMScout
+include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/src/libosmscout/include)
+include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/src/libosmscout-map/include)
+include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/src/libosmscout-map-cairo/include)
 link_directories(${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout-map-cairo)
 link_directories(${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout)
 link_directories(${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout-map)
-
 link_libraries(-lstdc++fs)
 
 add_executable(widget-tester ${SOURCE_FILES})

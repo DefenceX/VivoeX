@@ -19,10 +19,10 @@
 ///
 /// \brief This is the drivers dials, these are RPM and speed primarilly
 ///
-/// \file driver.h
+/// \file speedometer.h
 ///
-#ifndef HMI_DISPLAY_SRC_WIDGETS_DRIVER_H_
-#define HMI_DISPLAY_SRC_WIDGETS_DRIVER_H_
+#ifndef HMI_DISPLAY_SRC_WIDGETS_DRIVER_SPEEDOMETER_H_
+#define HMI_DISPLAY_SRC_WIDGETS_DRIVER_SPEEDOMETER_H_
 
 #include <cstdint>
 
@@ -31,14 +31,14 @@
 
 namespace gva {
 
-class WidgetDriverDial : public WidgetX {
+class WidgetDriverSpeedometer : public WidgetX {
  public:
   ///
   /// \brief Construct a new Widget Plan Position Indicator object
   ///
   /// \param renderer
   ///
-  explicit WidgetDriverDial(const RendererGva& renderer);
+  explicit WidgetDriverSpeedometer(const RendererGva& renderer);
 
   ///
   /// \brief The base overloaded Draw fuctions to draw this widget type
@@ -77,4 +77,4 @@ class WidgetDriverDial : public WidgetX {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_WIDGETS_DRIVER_H_
+#endif  // HMI_DISPLAY_SRC_WIDGETS_DRIVER_SPEEDOMETER_H_
