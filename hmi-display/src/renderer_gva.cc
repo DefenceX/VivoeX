@@ -167,6 +167,43 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
       DrawPenRaw(0, +7);
       ClosePath(true);
       break;
+    case widget::IconType::kIconWaterfallSight:
+      break;
+    case widget::IconType::kIconWCrossSight:
+      SetLineThickness(3, LineType::kLineSolid, LineCapEnd::kLineCapSquare);
+      Scale(0.4, 0.4);
+      // Cross hair
+      // Virtical above
+      MovePenRaw(0, -10);
+      DrawPenRaw(0, -15);
+      MovePenRaw(0, -25);
+      DrawPenRaw(0, -35);
+      // Horizontal right
+      MovePenRaw(-10, 0);
+      DrawPenRaw(-30, 0);
+      MovePenRaw(-30, -10);
+      DrawPenRaw(-50, -10);
+      MovePenRaw(-30, +10);
+      DrawPenRaw(-50, +10);
+      MovePenRaw(-70, 0);
+      DrawPenRaw(-90, 0);
+      // Virtical below
+      MovePenRaw(0, +10);
+      DrawPenRaw(0, +15);
+      MovePenRaw(0, +25);
+      DrawPenRaw(0, +35);
+      // Horizontal left
+      MovePenRaw(+10, 0);
+      DrawPenRaw(+30, 0);
+      MovePenRaw(+30, +10);
+      DrawPenRaw(+50, +10);
+      MovePenRaw(+30, -10);
+      DrawPenRaw(+50, -10);
+      MovePenRaw(+70, 0);
+      DrawPenRaw(+90, 0);
+
+      ClosePath(true);
+      break;
     case widget::IconType::kIconNone:
     case widget::IconType::kIconEnter:
     case widget::IconType::kIconLocation:

@@ -68,6 +68,10 @@ void WidgetSideLabels::Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t hei
       GetRenderer()->DrawIcon(widget::IconType::kIconPlus, x + width / 2, y + height / 2, 20, 20);
     if (text.substr(5, 20) == "minus")
       GetRenderer()->DrawIcon(widget::IconType::kIconMinus, x + width / 2, y + height / 2, 20, 20);
+    if (text.substr(5, 20) == "waterfall")
+      GetRenderer()->DrawIcon(widget::IconType::kIconWaterfallSight, x + width / 2, y + height / 2, 20, 20);
+    if (text.substr(5, 20) == "cross")
+      GetRenderer()->DrawIcon(widget::IconType::kIconWCrossSight, x + width / 2, y + height / 2, 20, 20);
   } else {
     if (text.find('.') != std::string::npos) {
       std::string first_line = text.substr(0, text.find('.'));

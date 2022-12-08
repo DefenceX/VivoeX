@@ -43,14 +43,14 @@ install(FILES ${CMAKE_BINARY_DIR}/external/libnmea/build/src/libnmealib.so
               ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libGeographicLib.so
               ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libGeographicLib.so.23
               ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libGeographicLib.so.23.0.1
-              ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/llibosmscout_import.so 
-              ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/llibosmscout_import.so.1.1.1
-              ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/llibosmscout_map_cairo.so
-              ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/llibosmscout_map_cairo.so.1.1.1
-              ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/llibosmscout_map.so
-              ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/llibosmscout_map.so.1.1.1
-              ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/llibosmscout.so
-              ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/llibosmscout.so.1.1.1
+              ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libosmscout_import.so 
+              ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libosmscout_import.so.1.1.1
+              ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libosmscout_map_cairo.so
+              ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libosmscout_map_cairo.so.1.1.1
+              ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libosmscout_map.so
+              ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libosmscout_map.so.1.1.1
+              ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libosmscout.so
+              ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libosmscout.so.1.1.1
               ${DDS_LIBS}
         DESTINATION "/opt/gva/libs" PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE GROUP_WRITE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_WRITE WORLD_EXECUTE)
 

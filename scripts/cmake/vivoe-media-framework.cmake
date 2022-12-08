@@ -13,7 +13,8 @@ ExternalProject_Add(
     DOWNLOAD_DIR        ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/download
     SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/src
     BINARY_DIR          ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build
-    INSTALL_COMMAND     ""
+    BUILD_COMMAND       bash -c "make $(nproc)"
+    INSTALL_COMMAND     bash -c "make DESTDIR=${CMAKE_BINARY_DIR}/external/install install"
     UPDATE_DISCONNECTED 1
     BUILD_ALWAYS        0
 )

@@ -106,7 +106,9 @@ enum class IconType {
   kIconWarning,
   kIconError,
   kIconInfo,
-  kIconCentre
+  kIconCentre,
+  kIconWaterfallSight,
+  kIconWCrossSight
 };
 
 ///

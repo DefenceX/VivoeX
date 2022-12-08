@@ -36,6 +36,8 @@ GvaKeyEnum Hmi::KeyWPN(GvaKeyEnum keypress) {
 
   switch (keypress) {
     case GvaKeyEnum::kKeyF1:
+    case GvaKeyEnum::kKeyF6:  // Enable Waterfall sight
+    case GvaKeyEnum::kKeyF7:  // Enable Cross hair sight
       // This is the only active screen at this time
       screen_.message.visible = false;
       break;
@@ -43,8 +45,6 @@ GvaKeyEnum Hmi::KeyWPN(GvaKeyEnum keypress) {
     case GvaKeyEnum::kKeyF3:
     case GvaKeyEnum::kKeyF4:
     case GvaKeyEnum::kKeyF5:
-    case GvaKeyEnum::kKeyF6:
-    case GvaKeyEnum::kKeyF7:
     case GvaKeyEnum::kKeyF8:
     case GvaKeyEnum::kKeyF9:
     case GvaKeyEnum::kKeyF10:
