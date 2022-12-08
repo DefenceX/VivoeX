@@ -7,7 +7,7 @@ permissions:
   pull-requests: read
 
 jobs:
-  build-ubuntu-cyclone:
+  build-debian-cyclone:
     runs-on: self-hosted
 
     # Map a step output to a job output
@@ -57,19 +57,19 @@ jobs:
             build/CMakeFiles/CMakeOutput.log
           retention-days: 30
 
-  install-ubuntu-cyclone:
+  install-debian-cyclone:
     runs-on: self-hosted
-    needs: [build-ubuntu-cyclone]
+    needs: [build-debian-cyclone]
     if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
 
     steps:
       - name: Read package name
-        run: echo ${{needs.build-ubuntu-cyclone.outputs.package_name}}
+        run: echo ${{needs.build-debian-cyclone.outputs.package_name}}
 
       - name: Download .deb to install
         uses: actions/download-artifact@v3
         with:
-          name: ${{needs.build-ubuntu-cyclone.outputs.package_name}}
+          name: ${{needs.build-debian-cyclone.outputs.package_name}}
 
       - name: Install package
         run: ls -hal && sudo apt-get install ./*.deb -y
