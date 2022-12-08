@@ -59,7 +59,6 @@ class ConfigDataBase {
 
   std::unique_ptr<config::Gva> current_config_;
 
- private:
   std::string config_file_ = "config.pb";
 };
 

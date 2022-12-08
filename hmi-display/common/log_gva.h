@@ -47,14 +47,6 @@ class logGva {
   static void log(const std::string& message, const DebugLevel type);
 
   ///
-  /// \brief Log a message with its severity
-  ///
-  /// \param message Message description
-  /// \param type Severity
-  ///
-  static void log(const char* message, const DebugLevel type);
-
-  ///
   /// \brief Finalise the log
   ///
   ///

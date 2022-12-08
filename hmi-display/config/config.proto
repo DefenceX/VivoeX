@@ -227,8 +227,8 @@ message Gva {
   // optional double test_lat = 12 [default = 152.875558];
 
   // Puckapunyal, QLD
-  optional double test_lon = 11 [default = -36.9551];
-  optional double test_lat = 12 [default = 144.89585];
+  optional double test_lon = 11 [default = 144.89585];
+  optional double test_lat = 12 [default = -36.9551];
 
 
   // The default GPS NMEA device to use

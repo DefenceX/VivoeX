@@ -68,7 +68,15 @@ TEST_F(LogTest, LoggingTests) {
   logGva::log(test1, gva::DebugLevel::kLogInfo);
   logGva::log(test1, gva::DebugLevel::kLogError);
   logGva::log(test1, gva::DebugLevel::kLogWarning);
-  char test2[] = "This is a char* test";  // NOLINT
+  std::string test2 =
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam augue quam, vulputate ac pretium vitae, hendrerit "
+      "vitae nibh. Sed nec augue diam. Aenean pretium sodales turpis, at interdum ipsum ornare non. Nam vulputate "
+      "neque nulla, condimentum feugiat metus aliquam nec. Nulla vitae ante et mi dapibus lobortis. Aenean consectetur "
+      "suscipit nisi, in lobortis turpis ullamcorper placerat. Maecenas tincidunt, urna nec fermentum sodales, tellus "
+      "felis dapibus metus, ac tincidunt erat tellus at sem. Vivamus dignissim tempor lectus cursus mattis. "
+      "Suspendisse quis urna in felis ultricies congue ut quis nisi. Suspendisse pharetra finibus odio, eu condimentum "
+      "magna cursus vel. Nullam dui justo, pulvinar vitae auctor vitae, tincidunt ut enim. Aliquam pellentesque ligula "
+      "ipsum, sed posuere massa fermentum vitae.";
   logGva::log(test2, gva::DebugLevel::kLogDebug);
   logGva::log(test2, gva::DebugLevel::kLogInfo);
   logGva::log(test2, gva::DebugLevel::kLogError);

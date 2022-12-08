@@ -33,9 +33,7 @@ namespace gva {
 
 FILE* logGva::m_errorfd;
 
-void logGva::log(const std::string& message, const DebugLevel type) { log(message.c_str(), type); }
-
-void logGva::log(const char* message, const DebugLevel type) {
+void logGva::log(const std::string& message, const DebugLevel type) {
   struct sysinfo info;
   std::string msgType = "???";
 
@@ -59,13 +57,13 @@ void logGva::log(const char* message, const DebugLevel type) {
   }
 
 #if !DEBUG
-  /** Discard debug message if DEBUG not enabled */
+  // Discard debug message if DEBUG not enabled
   if (type == gva::DebugLevel::kLogDebug) return;
 #endif
   if (!m_errorfd) {
     m_errorfd = fopen("/var/log/gva.log", "w");
   }
-  fprintf(m_errorfd, "[%ld] *%s* %s\n", info.uptime, msgType.c_str(), message);
+  fprintf(m_errorfd, "[%ld] *%s* %s\n", info.uptime, msgType.c_str(), message.c_str());
   fflush(m_errorfd);
   if (type == gva::DebugLevel::kLogError) {
     std::cout << message << std::endl;
