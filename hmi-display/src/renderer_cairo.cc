@@ -623,7 +623,7 @@ void RendererCairo::DrawLabel(uint32_t x, uint32_t y, const std::string text) {
 
 void RendererCairo::DrawTextCentre(uint32_t x, const std::string text, uint32_t size) { DrawText(x, 200, text); }
 
-uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, void *buffer, std::string file) {
+uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, unsigned char *buffer, std::string file) {
   bool found_in_cache = false;
 
   image_type new_image;
@@ -680,7 +680,7 @@ uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, void *buffer, std::st
   return 0;
 }
 
-uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, void *buffer) {
+uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, unsigned char *buffer) {
   image_type new_image;
   new_image.image =
       cairo_image_surface_create_for_data(reinterpret_cast<unsigned char *>(buffer), CAIRO_FORMAT_ARGB32, width_,

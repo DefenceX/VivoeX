@@ -42,13 +42,9 @@ class HmiTest : public ::testing::Test {
   // You can remove any or all of the following functions if their bodies would
   // be empty.
 
-  HmiTest() {
-    // You can do set-up work for each test here.
-  }
+  HmiTest() = default;  // You can do set-up work for each test here.
 
-  ~HmiTest() override {
-    // You can do clean-up work that doesn't throw exceptions here.
-  }
+  ~HmiTest() override = default;  // You can do clean-up work that doesn't throw exceptions here.
 
   // If the constructor and destructor are not enough for setting up
   // and cleaning up each test, you can define the following methods:

@@ -92,7 +92,7 @@ class Renderer {
   virtual void DrawCircle(uint32_t x, uint32_t y, uint32_t radius, bool fill) = 0;
   virtual void DrawRectangle(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, bool fill) = 0;
   virtual uint32_t DrawColor(uint8_t r, uint8_t g, uint8_t b) = 0;
-  virtual uint32_t TextureRGB(uint32_t x, uint32_t y, void *buffer, std::string file) = 0;
+  virtual uint32_t TextureRGB(uint32_t x, uint32_t y, unsigned char* buffer, std::string file) = 0;
   static uint64_t PackRgb(uint8_t r, uint8_t g, uint8_t b) {
     uint64_t packed = (r << 16) | (g << 8) | b;
     return packed;

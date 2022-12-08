@@ -57,7 +57,6 @@ class ConfigDataBase {
   ///
   void WriteData() const;
 
- protected:
   std::unique_ptr<config::Gva> current_config_;
 
  private:

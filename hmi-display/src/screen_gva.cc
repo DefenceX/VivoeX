@@ -204,8 +204,8 @@ void ScreenGva::StartClock(const StatusBar &barData) {
   args_.gps = &gps_;
   args_.screen = this;
   args_.location = const_cast<LocationType *>(&barData.location);
-  args_.info->lon = DUMMY_LON;
-  args_.info->lat = DUMMY_LAT;
+  args_.info->lon = ConfigData::GetInstance()->GetTestLon();
+  args_.info->lat = ConfigData::GetInstance()->GetTestLat();
 
   /* Launch clock thread */
   if (pthread_create(&clock_thread_, NULL, ClockUpdate, (void *)&args_)) {
@@ -216,7 +216,7 @@ void ScreenGva::StartClock(const StatusBar &barData) {
 }
 
 GvaStatusTypes ScreenGva::Update() {
-  char *texture = 0;
+  unsigned char *texture = 0;
 
   // Reset the Drawing context, must be Reset before reDrawing the screen
   Reset();

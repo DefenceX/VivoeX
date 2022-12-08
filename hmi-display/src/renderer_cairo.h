@@ -407,7 +407,7 @@ class RendererCairo : public Renderer {
   /// \param file
   /// \return uint32_t
   ///
-  uint32_t TextureRGB(uint32_t x, uint32_t y, void *buffer, std::string file) override;
+  uint32_t TextureRGB(uint32_t x, uint32_t y, unsigned char *buffer, std::string file) override;
 
   ///
   /// \brief
@@ -417,7 +417,7 @@ class RendererCairo : public Renderer {
   /// \param buffer
   /// \return uint32_t
   ///
-  uint32_t TextureRGB(uint32_t x, uint32_t y, void *buffer);
+  uint32_t TextureRGB(uint32_t x, uint32_t y, unsigned char *buffer);
 
   ///
   /// \brief

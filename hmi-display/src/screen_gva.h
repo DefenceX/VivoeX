@@ -44,7 +44,7 @@ struct Canvas {
   bool visible;
   SurfaceType bufferType;
   std::string filename;
-  char *buffer;
+  unsigned char *buffer;
   cairo_surface_t *surface;
 };
 
