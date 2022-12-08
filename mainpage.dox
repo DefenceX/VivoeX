@@ -141,24 +141,24 @@ $ IMAGE_PATH=build/images/doxygen SEM_VERSION=<semantic_version> GIT_HASH=<hash>
 There are built in graphical elements that can be animated and extended to meet your requirements some of these are shown below.
 \subsubsection ppiclassictank Plan Position Indicator (PPI), Classic Tank
 The PPI comes in servral modes, see gva::WidgetPlanPositionIndicator.
-\image html widget_ppi_01.png  "Classic tank PPI, Sight East" 
-\image html widget_ppi_02.png  "Classic tank PPI, Sight South" 
-\image html widget_ppi_03.png  "Classic tank PPI, Sight West" 
-\image html widget_ppi_04.png  "Classic tank PPI, Sight North" 
+\image html widget_ppi_01.png  "Classic tank PPI, Sight North" 
+\image html widget_ppi_02.png  "Classic tank PPI, Sight East" 
+\image html widget_ppi_03.png  "Classic tank PPI, Sight South" 
+\image html widget_ppi_04.png  "Classic tank PPI, Sight West" 
 \image html widget_ppi_05.png  "Classic tank PPI without Site" 
 
 \subsubsection ppiclassicarrow Plan Position Indicator (PPI), Classic Arrow
-\image html widget_ppi_06.png  "Classic arrow PPI, Sight East" 
-\image html widget_ppi_07.png  "Classic arrow PPI, Sight South" 
-\image html widget_ppi_08.png  "Classic arrow PPI, Sight West" 
-\image html widget_ppi_09.png  "Classic arrow PPI, Sight North" 
+\image html widget_ppi_06.png  "Classic arrow PPI, Sight North" 
+\image html widget_ppi_07.png  "Classic arrow PPI, Sight East" 
+\image html widget_ppi_08.png  "Classic arrow PPI, Sight South" 
+\image html widget_ppi_09.png  "Classic arrow PPI, Sight West" 
 \image html widget_ppi_10.png  "Classic arrow PPI without Site" 
 
 \subsubsection ppimodern Plan Position Indicator (PPI), Modern
-\image html widget_ppi_11.png  "Modern PPI, Sight East" 
-\image html widget_ppi_12.png  "Modern PPI, Sight South" 
-\image html widget_ppi_13.png  "Modern PPI, Sight West" 
-\image html widget_ppi_14.png  "Modern PPI, Sight North" 
+\image html widget_ppi_11.png  "Modern PPI, Sight North" 
+\image html widget_ppi_12.png  "Modern PPI, Sight East" 
+\image html widget_ppi_13.png  "Modern PPI, Sight South" 
+\image html widget_ppi_14.png  "Modern PPI, Sight West" 
 \image html widget_ppi_15.png  "Modern PPI without Site" 
 
 \subsubsection keyboard On screen keyboard
