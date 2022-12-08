@@ -55,7 +55,7 @@
             "program": "${workspaceFolder}/build/bin/widget-tester",
             "args": [
                 "-i",
-                "25"
+                "1"
             ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",

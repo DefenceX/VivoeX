@@ -47,7 +47,6 @@ void WidgetPlanPositionIndicator::Draw() {
 void WidgetPlanPositionIndicator::DrawModern(uint32_t x, uint32_t y, uint32_t degrees, uint32_t sightAzimuth,
                                              uint32_t weaponAzimuth, bool sight) const {
   double_t radius = 100;
-  double_t d = degrees;  // Degrees north
 
   GetRenderer()->Save();
   GetRenderer()->Scale(scale_, scale_);
@@ -65,31 +64,33 @@ void WidgetPlanPositionIndicator::DrawModern(uint32_t x, uint32_t y, uint32_t de
   float step = (M_PI * 2) / 12;
   int64_t c = 0;
 
-  d = degrees;
-  for (d = DegreesToRadians(degrees) - 6; d <= DegreesToRadians(degrees) + (M_PI * 2); d += step) {
+  for (double d = DegreesToRadians(degrees) - 6; d <= DegreesToRadians(degrees) + (M_PI * 2); d += step) {
     c++;
     GetRenderer()->MovePen(x + (radius - 20) * cos(d), y - (radius - 20) * sin(d));
     GetRenderer()->DrawPen(x + (radius)*cos(d), y - (radius)*sin(d), true);
   }
 
-  // Draw Text markers
-  d = DegreesToRadians(degrees);
-  double_t pos = 10;
   uint32_t font_size = 14;
-  uint32_t adjust_x = x - 4;
-  uint32_t adjust_y = y + 5;
-
   GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightNormal,
                              ConfigData::GetInstance()->GetThemeFont(), font_size);
 
-  GetRenderer()->DrawText((uint32_t)(adjust_x - 3 + (radius - pos) * cos(d + (M_PI * 2))),
-                          (uint32_t)(adjust_y - 2 - (radius - pos) * sin(d + (M_PI * 2))), "N");
-  GetRenderer()->DrawText((uint32_t)(adjust_x - 3 + (radius - pos) * cos(d + (M_PI))),
-                          (uint32_t)(adjust_y - 2 - (radius - pos) * sin(d + (M_PI))), "S");
-  GetRenderer()->DrawText((uint32_t)(adjust_x - 3 + (radius - pos) * cos(d + (M_PI / 2))),
-                          (uint32_t)(adjust_y - 2 - (radius - pos) * sin(d + (M_PI / 2))), "W");
-  GetRenderer()->DrawText((uint32_t)(adjust_x - 3 + (radius - pos) * cos(d + (M_PI + M_PI / 2))),
-                          (uint32_t)(adjust_y - 2 - (radius - pos) * sin(d + (M_PI + M_PI / 2))), "E");
+  // Draw Text markers
+  int64_t pos = 10;
+  uint32_t adjust_x = x - 6;
+  uint32_t adjust_y = y + 4;
+  step = (M_PI * 2) / 4;
+  c = 0;
+  std::array<std::string, 4> compass_points = {"S", "W", "N", "E"};
+
+  for (uint16_t d = 0; d < 360; d += RadiansToDegrees(step)) {
+    uint32_t render_degrees = d + degrees;
+
+    GetRenderer()->DrawText((uint32_t)(adjust_x + (radius - pos) * sin(DegreesToRadians(render_degrees))),
+                            (uint32_t)(adjust_y + (radius - pos) * cos(DegreesToRadians(render_degrees))),
+                            compass_points[c]);
+    c++;
+  }
+
   // Vehicle outline
   GetRenderer()->SetLineType(CAIRO_LINE_JOIN_MITER);
   GetRenderer()->Save();
@@ -145,28 +146,26 @@ void WidgetPlanPositionIndicator::DrawModern(uint32_t x, uint32_t y, uint32_t de
 }
 
 void WidgetPlanPositionIndicator::DrawPPI(widget::ModeEnum mode, uint32_t x, uint32_t y, uint32_t degrees,
-                                          uint32_t sightAzimuth, uint32_t weaponAzimuth) {
+                                          uint32_t sight_azimuth, uint32_t weapon_azimuth) {
   double_t radius = 100;
   double_t angle = 45;
   double_t d = 0;
   const uint32_t font_size = 14;
 
   // Degrees north
-  degrees += 90;
-  degrees = (degrees >= 360) ? degrees - 360 : degrees;
-  sightAzimuth -= 90;
-  sightAzimuth = (sightAzimuth >= 360) ? sightAzimuth - 360 : sightAzimuth;
+  uint32_t render_sight_azimuth = sight_azimuth;
+  render_sight_azimuth = (render_sight_azimuth >= 360) ? render_sight_azimuth - 360 : render_sight_azimuth;
 
   // Set the font for all compass/s
   GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightNormal,
                              gva::ConfigData::GetInstance()->GetThemeFont(), font_size);
 
   if (mode == widget::ModeEnum::kPpiModernTankWithSights) {
-    DrawModern(0, 0, degrees, sightAzimuth, 10, true);
+    DrawModern(0, 0, degrees, sight_azimuth, 10, true);
     return;
   }
   if (mode == widget::ModeEnum::kPpiModernTankWithoutSights) {
-    DrawModern(0, 0, degrees, sightAzimuth, 10, false);
+    DrawModern(0, 0, degrees, sight_azimuth, 10, false);
     return;
   }
 
@@ -223,24 +222,27 @@ void WidgetPlanPositionIndicator::DrawPPI(widget::ModeEnum mode, uint32_t x, uin
       break;
   }
 
-  d = DegreesToRadians(degrees);
-  double_t pos = 12;
-  uint32_t adjust_x = -4;
-  uint32_t adjust_y = +4;
+  // Draw Text markers
+  int64_t pos = 9;
+  int32_t adjust_x = -5;
+  int32_t adjust_y = +4;
+  double step = (M_PI * 2) / 4;
+  int64_t c = 0;
+  std::array<std::string, 4> compass_points = {"S", "W", "N", "E"};
 
-  GetRenderer()->DrawText((uint32_t)(adjust_x - 3 + (radius - pos) * cos(d + (M_PI * 2))),
-                          (uint32_t)(adjust_y - 2 - (radius - pos) * sin(d + (M_PI * 2))), "N");
-  GetRenderer()->DrawText((uint32_t)(adjust_x - 3 + (radius - pos) * cos(d + (M_PI))),
-                          (uint32_t)(adjust_y - 2 - (radius - pos) * sin(d + (M_PI))), "S");
-  GetRenderer()->DrawText((uint32_t)(adjust_x - 3 + (radius - pos) * cos(d + (M_PI / 2))),
-                          (uint32_t)(adjust_y - 2 - (radius - pos) * sin(d + (M_PI / 2))), "W");
-  GetRenderer()->DrawText((uint32_t)(adjust_x - 3 + (radius - pos) * cos(d + (M_PI + M_PI / 2))),
-                          (uint32_t)(adjust_y - 2 - (radius - pos) * sin(d + (M_PI + M_PI / 2))), "E");
+  for (d = 0; d < 360; d += RadiansToDegrees(step)) {
+    uint32_t render_degrees = d + degrees;
+
+    GetRenderer()->DrawText((uint32_t)(adjust_x - (radius - pos) * sin(DegreesToRadians(render_degrees))),
+                            (uint32_t)(adjust_y + (radius - pos) * cos(DegreesToRadians(render_degrees))),
+                            compass_points[c]);
+    c++;
+  }
 
   GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
-  double step = (M_PI * 2) / 32;
+  step = (M_PI * 2) / 32;
   int64_t p = 24;
-  int64_t c = 0;
+  c = 0;
 
   d = degrees;
   for (d = DegreesToRadians(degrees); d <= DegreesToRadians(degrees) + (M_PI * 2); d += step) {
@@ -252,6 +254,10 @@ void WidgetPlanPositionIndicator::DrawPPI(widget::ModeEnum mode, uint32_t x, uin
 
   // Heading (Goes under sight)
   GetRenderer()->Save();
+
+  GetRenderer()->MovePen(0, 0);
+  GetRenderer()->Rotate(DegreesToRadians(weapon_azimuth));
+
   GetRenderer()->SetColourBackground(HMI_CYAN);
   if ((mode == widget::ModeEnum::kPpiClassicArrowWithSight) ||
       (mode == widget::ModeEnum::kPpiClassicArrowWithoutSight)) {
@@ -261,7 +267,7 @@ void WidgetPlanPositionIndicator::DrawPPI(widget::ModeEnum mode, uint32_t x, uin
   } else {
     GetRenderer()->SetColourForeground(HMI_CYAN);
     GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
-    GetRenderer()->DrawRectangle(-2, -16 - 57, 4, 57, true);
+    GetRenderer()->DrawRectangle(-1, -73, 3, 57, true);
   }
   GetRenderer()->Restore();
 
@@ -274,18 +280,18 @@ void WidgetPlanPositionIndicator::DrawPPI(widget::ModeEnum mode, uint32_t x, uin
     {
       int64_t x2, y2;
 
-      x2 = PlotCircleX(0, radius - 10, sightAzimuth);
-      y2 = PlotCircleY(0, radius - 10, sightAzimuth);
+      x2 = PlotCircleX(0, radius - 10, render_sight_azimuth);
+      y2 = PlotCircleY(0, radius - 10, render_sight_azimuth);
       GetRenderer()->MovePen(0, 0);
       GetRenderer()->DrawPen(x2, y2, true);
       GetRenderer()->SetLineThickness(1, LineType::kLineDashed);
-      x2 = PlotCircleX(0, radius - 10, (sightAzimuth - (angle / 2)));
-      y2 = PlotCircleY(0, radius - 10, (sightAzimuth - (angle / 2)));
+      x2 = PlotCircleX(0, radius - 10, (render_sight_azimuth - (angle / 2)));
+      y2 = PlotCircleY(0, radius - 10, (render_sight_azimuth - (angle / 2)));
       GetRenderer()->MovePen(0, 0);
       GetRenderer()->DrawPen(x2, y2, true);
       GetRenderer()->SetLineThickness(1, LineType::kLineDashed);
-      x2 = PlotCircleX(0, radius - 10, (sightAzimuth + (angle / 2)));
-      y2 = PlotCircleY(0, radius - 10, (sightAzimuth + (angle / 2)));
+      x2 = PlotCircleX(0, radius - 10, (render_sight_azimuth + (angle / 2)));
+      y2 = PlotCircleY(0, radius - 10, (render_sight_azimuth + (angle / 2)));
       GetRenderer()->MovePen(0, 0);
       GetRenderer()->DrawPen(x2, y2, true);
     }

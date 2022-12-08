@@ -77,7 +77,7 @@ class WidgetPlanPositionIndicator : public WidgetX {
   /// \brief Set the Bearing Sight object
   ///
   /// \param bearing
-  /// : WidgetX(renderer, KWidgetTypeAlarmIndicator) {}
+  ///
   void SetBearingSight(int16_t bearing_sight) { bearing_sight_ = bearing_sight; }
 
   ///

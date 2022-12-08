@@ -68,6 +68,24 @@ double_t RadiansToDegrees(double_t angle_radians);
 ///
 float ToDegrees(float lon_lat);
 
+///
+/// \brief Add a value to degrees and wrap if needed
+///
+/// \param degrees The value to be added to
+/// \param minus The value to subtract
+/// \return uint32_t The new value
+///
+uint32_t DegreesSubtract(uint32_t degrees, uint32_t minus);
+
+///
+/// \brief Subtract a value from degrees and wrap if needed
+///
+/// \param degrees The inital value
+/// \param add The value to add
+/// \return uint32_t The new value
+///
+uint32_t DegreesAdd(uint32_t degrees, uint32_t add);
+
 }  // namespace gva
 
 #endif  // HMI_DISPLAY_SRC_GVA_FUNCTIONS_COMMON_H_

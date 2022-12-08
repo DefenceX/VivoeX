@@ -161,28 +161,28 @@ static void do_drawing(cairo_t *cr, int width, int height) {
     case 0:
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
-      ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicTankWithSight, 0, 0, 0, 90, 10);
+      ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicTankWithSight, 0, 0, 0, 0, 10);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_01.png").c_str());
       break;
     case 1:
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
-      ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicTankWithSight, 0, 0, 350, 180, 20);
+      ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicTankWithSight, 0, 0, 350, 90, 20);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_02.png").c_str());
       break;
     case 2:
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
-      ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicTankWithSight, 0, 0, 340, 270, 30);
+      ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicTankWithSight, 0, 0, 340, 180, 30);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_03.png").c_str());
       break;
     case 3:
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
-      ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicTankWithSight, 0, 0, 330, 0, 40);
+      ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicTankWithSight, 0, 0, 330, 270, 40);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_04.png").c_str());
       break;
@@ -190,35 +190,35 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       // Next PPI
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
-      ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicTankWithoutSight, 0, 0, 320, 90, 0);
+      ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicTankWithoutSight, 0, 0, 320, 0, 50);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_05.png").c_str());
       break;
     case 5:
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
-      ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicArrowWithSight, 0, 0, 0, 90, 10);
+      ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicArrowWithSight, 0, 0, 0, 0, 10);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_06.png").c_str());
       break;
     case 6:
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
-      ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicArrowWithSight, 0, 0, 350, 180, 20);
+      ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicArrowWithSight, 0, 0, 350, 90, 20);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_07.png").c_str());
       break;
     case 7:
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
-      ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicArrowWithSight, 0, 0, 340, 270, 30);
+      ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicArrowWithSight, 0, 0, 340, 180, 30);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_08.png").c_str());
       break;
     case 8:
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
-      ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicArrowWithSight, 0, 0, 330, 0, 40);
+      ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicArrowWithSight, 0, 0, 330, 270, 40);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_09.png").c_str());
       break;
@@ -226,35 +226,35 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       // Next PPI
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
-      ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicArrowWithoutSight, 0, 0, 320, 90, 0);
+      ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicArrowWithoutSight, 0, 0, 320, 0, 50);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_10.png").c_str());
       break;
     case 10:
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
-      ppi.DrawPPI(gva::widget::ModeEnum::kPpiModernTankWithSights, 0, 0, 0, 90, 10);
+      ppi.DrawPPI(gva::widget::ModeEnum::kPpiModernTankWithSights, 0, 0, 0, 0, 10);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_11.png").c_str());
       break;
     case 11:
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
-      ppi.DrawPPI(gva::widget::ModeEnum::kPpiModernTankWithSights, 0, 0, 350, 180, 20);
+      ppi.DrawPPI(gva::widget::ModeEnum::kPpiModernTankWithSights, 0, 0, 350, 90, 20);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_12.png").c_str());
       break;
     case 12:
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
-      ppi.DrawPPI(gva::widget::ModeEnum::kPpiModernTankWithSights, 0, 0, 340, 270, 30);
+      ppi.DrawPPI(gva::widget::ModeEnum::kPpiModernTankWithSights, 0, 0, 340, 180, 30);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_13.png").c_str());
       break;
     case 13:
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
-      ppi.DrawPPI(gva::widget::ModeEnum::kPpiModernTankWithSights, 0, 0, 330, 0, 40);
+      ppi.DrawPPI(gva::widget::ModeEnum::kPpiModernTankWithSights, 0, 0, 330, 270, 40);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_14.png").c_str());
       break;
@@ -262,7 +262,7 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       // Next PPI
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
-      ppi.DrawPPI(gva::widget::ModeEnum::kPpiModernTankWithoutSights, 0, 0, 320, 90, 0);
+      ppi.DrawPPI(gva::widget::ModeEnum::kPpiModernTankWithoutSights, 0, 0, 320, 270, 0);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_15.png").c_str());
       break;

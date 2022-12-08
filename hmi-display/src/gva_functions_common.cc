@@ -27,11 +27,11 @@
 namespace gva {
 
 double_t PlotCircleX(uint16_t x, double_t radius, double_t degree) {
-  return x + radius * cos(((M_PI * 2) / 360) * degree);
+  return x + radius * sin(((M_PI * 2) / 360) * degree);
 }
 
 double_t PlotCircleY(uint16_t y, double_t radius, double_t degree) {
-  return y - radius * sin(((M_PI * 2) / 360) * degree);
+  return y - radius * cos(((M_PI * 2) / 360) * degree);
 }
 
 double_t DegreesToRadians(double_t angle_degrees) { return (angle_degrees * M_PI / 180.0); }
@@ -42,6 +42,18 @@ float ToDegrees(float lon_lat) {
   float d = lon_lat / 100;
   float m = lon_lat - d * 100;
   return d + m / (float)60;
+}
+
+uint32_t DegreesSubtract(uint32_t degrees, uint32_t minus) {
+  int32_t new_value = degrees - minus;
+  if (new_value < 0) new_value += 360;
+  return new_value;
+}
+
+uint32_t DegreesAdd(uint32_t degrees, uint32_t add) {
+  int32_t new_value = degrees + add;
+  if (new_value > 360) new_value -= 360;
+  return new_value;
 }
 
 }  // namespace gva

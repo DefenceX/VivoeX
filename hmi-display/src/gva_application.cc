@@ -27,6 +27,7 @@
 #include <memory>
 
 #include "common/log_gva.h"
+#include "src/gva_functions_common.h"
 #include "src/widgets/keyboard.h"
 #include "src/widgets/widget.h"
 
@@ -410,16 +411,16 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
           { keyboard->SetVisible(keyboard->GetVisible() ? false : true); }
           break;
         case gva::GvaKeyEnum::kKeyPlus:
-          compass->SetBearing(compass->GetBearing() + 2);
+          compass->SetBearing(gva::DegreesAdd(compass->GetBearing(), 2));
           break;
         case gva::GvaKeyEnum::kKeyRightArrow:
-          compass->SetBearingSight(compass->GetBearingSight() + 2);
+          compass->SetBearingSight(gva::DegreesAdd(compass->GetBearingSight(), 2));
           break;
         case gva::GvaKeyEnum::kKeyMinus:
-          compass->SetBearing(compass->GetBearing() - 2);
+          compass->SetBearing(gva::DegreesSubtract(compass->GetBearing(), 2));
           break;
         case gva::GvaKeyEnum::kKeyLeftArrow:
-          compass->SetBearingSight(compass->GetBearingSight() - 2);
+          compass->SetBearingSight(gva::DegreesSubtract(compass->GetBearingSight(), 2));
           break;
         case gva::GvaKeyEnum::kKeyNextLabel: {
           Dispatch(event.key_);
