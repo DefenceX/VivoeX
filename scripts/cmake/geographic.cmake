@@ -21,5 +21,5 @@ ExternalProject_Add(
     BUILD_ALWAYS        0
 )
 
-set(GEOGRAPHIC_INCLUDES ${CMAKE_BINARY_DIR}/external/install/usr/local/include)
+set(GEOGRAPHIC_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/external/install/usr/local/include)
 set(GEOGRAPHIC_LIBARAIES GeographicLib)

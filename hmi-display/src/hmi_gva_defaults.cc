@@ -200,11 +200,11 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeysWeaponsLeft() {
 FunctionKeys DefaultSettings::GetDefaultFunctionKeysWeaponsRight() {
   FunctionKeys keys;
   keys.visible = true;
-  keys.labels[0].state = LabelStates::kLabelHidden;
-  keys.labels[0].text = "Unused";
+  keys.labels[0].state = LabelStates::kLabelEnabledSelected;
+  keys.labels[0].text = "icon:waterfall";
   keys.labels[0].toggleActive = false;
-  keys.labels[1].state = LabelStates::kLabelHidden;
-  keys.labels[1].text = "Unused";
+  keys.labels[1].state = LabelStates::kLabelEnabled;
+  keys.labels[1].text = "icon:cross";
   keys.labels[1].toggleActive = false;
   keys.labels[2].state = LabelStates::kLabelHidden;
   keys.labels[2].text = "Unused";
