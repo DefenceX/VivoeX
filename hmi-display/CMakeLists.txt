@@ -14,19 +14,14 @@ add_subdirectory(tools)
 
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/hmi-display)
 
 include_directories(${CMAKE_BINARY_DIR}/external/vivoe-media-framework/src)
 include_directories(${CMAKE_BINARY_DIR}/external/libnmea/src/include)
-# OSMScout
-include_directories(${CMAKE_BINARY_DIR}/external/install/usr/local/include/)
-link_directories(${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout-map-cairo)
-link_directories(${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout)
-link_directories(${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout-map)
+include_directories(${OSMSCOUT_INCLUDES})
 
 link_directories(${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build)
 link_directories(${CMAKE_BINARY_DIR}/external/libnmea/build/src)
-
-message ("Platform " ${CMAKE_SYSTEM_NAME} " : " ${CMAKE_SYSTEM} ${MSYS} ${MSYS2}) 
 
 set(SOURCES main.cc 
 			src/gva_application.cc
@@ -73,7 +68,7 @@ set(SOURCES main.cc
 link_libraries(-lstdc++fs)
 add_executable(hmi-display ${PROTO_SRCS} ${SOURCES})
 add_dependencies(hmi-display geographiclib hmi-video config-proto ${DDS_STACK} libosmscout)
-set(OSMSCOUT_LIBS osmscout osmscout_map osmscout_map_cairo)
+set(OSMSCOUT_LIBS ${OSMSCOUT_LIBARAIES})
 
 target_link_libraries (hmi-display ${GEOGRAPHIC_LIBRARIES} GeographicLib config-proto ${OSMSCOUT_LIBS} ${Protobuf_LIBRARIES} ${GTK_LIBRARIES3} stdc++fs)
 
