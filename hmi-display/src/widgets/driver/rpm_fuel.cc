@@ -91,9 +91,12 @@ void WidgetDriverRpmFuel::Draw() {
   step = (M_PI * 2) / 120;
   for (d = DegreesToRadians(degrees) + (M_PI * 1.25); d >= DegreesToRadians(-45); d -= step) {
     p = c % 10 ? 8 : 14;
-    if (c > 69) {
+    if ((c > 69) && (p != 14)) {
       GetRenderer()->SetColourForeground(HMI_RED);
       GetRenderer()->DrawColor(HMI_RED);
+    } else {
+      GetRenderer()->SetColourForeground(HMI_WHITE);
+      GetRenderer()->DrawColor(HMI_WHITE);
     }
     c++;
     GetRenderer()->MovePen((uint32_t)(+(radius - p) * cos(d)), (uint32_t)(-(radius - p) * sin(d)));

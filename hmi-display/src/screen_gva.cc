@@ -358,7 +358,7 @@ GvaStatusTypes ScreenGva::Update() {
 
     message_box_table.Draw();
 
-    DrawIcon(screen_->message.icon, 320 - 150 + 300 - 17, 210, 11, 11);
+    DrawIcon(screen_->message.icon, 320 - 150 + 300 - 17, 229, 11, 11);
   }
 
   //

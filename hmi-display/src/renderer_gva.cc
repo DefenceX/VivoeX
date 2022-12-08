@@ -154,17 +154,17 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
       if (icon == widget::IconType::kIconError) SetColourBackground(HMI_RED);
       if (icon == widget::IconType::kIconWarning) SetColourBackground(HMI_ORANGE);
       Scale(sx, sy);
-      MovePenRaw(-10, -10);
-      DrawPenRaw(0, +10);
-      DrawPenRaw(+10, -10);
-      DrawPenRaw(-10, -10);
+      MovePenRaw(-10, +10);
+      DrawPenRaw(0, -10);
+      DrawPenRaw(+10, +10);
+      DrawPenRaw(-10, +10);
       ClosePath(true);
       DrawColor(HMI_WHITE);
-      MovePenRaw(0, +3);
-      DrawPenRaw(0, -3);
+      MovePenRaw(0, -3);
+      DrawPenRaw(0, +3);
       ClosePath(true);
-      MovePenRaw(0, -6);
-      DrawPenRaw(0, -7);
+      MovePenRaw(0, +6);
+      DrawPenRaw(0, +7);
       ClosePath(true);
       break;
     case widget::IconType::kIconNone:

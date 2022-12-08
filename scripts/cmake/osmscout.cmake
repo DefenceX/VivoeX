@@ -30,5 +30,5 @@ BUILD_ALWAYS        0
 )
 endif()
 
-set(OSMSCOUT_INCLUDES ${CMAKE_BINARY_DIR}/external/install/usr/local/include)
+set(OSMSCOUT_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/external/install/usr/local/include)
 set(OSMSCOUT_LIBARAIES osmscout_import osmscout_map_cairo osmscout_map osmscout)

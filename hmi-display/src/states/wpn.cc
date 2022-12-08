@@ -36,6 +36,9 @@ GvaKeyEnum Hmi::KeyWPN(GvaKeyEnum keypress) {
 
   switch (keypress) {
     case GvaKeyEnum::kKeyF1:
+      // This is the only active screen at this time
+      screen_.message.visible = false;
+      break;
     case GvaKeyEnum::kKeyF2:
     case GvaKeyEnum::kKeyF3:
     case GvaKeyEnum::kKeyF4:

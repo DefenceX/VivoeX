@@ -88,6 +88,7 @@ void StateDRV::entry() {
 void StateDRV::exit() {
   // Switch the dials off now not needed in other states
   screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDialSpeedometer)->SetVisible(false);
+  screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeDialRpmFuel)->SetVisible(false);
 }
 
 void StateDRV::react(EventKeyPowerOn const &) { transit<StateOff>(); };
