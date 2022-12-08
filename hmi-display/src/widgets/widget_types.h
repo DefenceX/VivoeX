@@ -59,7 +59,8 @@ enum class WidgetEnum {
   KWidgetTypeRightLabels,
   KWidgetTypeMode,
   KWidgetTypeTable,
-  kWidgetTypeDriverDial
+  kWidgetTypeDialSpeedometer,
+  KWidgetTypeDialRpmFuel
 };
 
 ///
@@ -79,7 +80,7 @@ enum class ModeEnum {
 /// \brief The different dial types
 ///
 ///
-enum class DialType { kDialSpeedKph, kDialSpeedMph, kDialSpeedRpm };
+enum class DialType { kDialSpeedKph, kDialSpeedMph };
 
 ///
 /// \brief All available types of icon

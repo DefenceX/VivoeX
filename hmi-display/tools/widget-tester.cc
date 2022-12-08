@@ -64,6 +64,7 @@
 #include "src/widgets/alarm_indicator.h"
 #include "src/widgets/bottom_labels.h"
 #include "src/widgets/compass.h"
+#include "src/widgets/driver/rpm_fuel.h"
 #include "src/widgets/driver/speedometer.h"
 #include "src/widgets/keyboard.h"
 #include "src/widgets/mode.h"
@@ -76,7 +77,6 @@ const uint32_t kScreenHeight = 480;
 const uint32_t kScreenWidth = 640;
 
 std::string path;
-
 static gva::RendererGva renderer(kScreenWidth, kScreenHeight);
 static gva::TouchGva touch;  // Dummy to get the interactive widgets to render
 static gva::WidgetFunctionKeyToggle key(renderer);
@@ -90,6 +90,7 @@ static gva::WidgetSideLabels right(renderer, &touch);
 static gva::WidgetMode mode(renderer);
 static gva::WidgetTable table(renderer, &touch, gva::ConfigData::GetInstance()->GetThemeBackground());
 static gva::WidgetDriverSpeedometer driver_speed(renderer);
+static gva::WidgetDriverRpmFuel driver_rpm(renderer);
 
 static void do_drawing(cairo_t *, int width, int h);
 
@@ -430,7 +431,7 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       cairo_scale(cr, 2, 2);
       driver_speed.SetMode(gva::widget::DialType::kDialSpeedKph);
       driver_speed.SetVisible(true);
-      driver_speed.SetValue(60);
+      driver_speed.SetValue(40);
       driver_speed.Draw();
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/driver_02.png").c_str());
@@ -440,10 +441,28 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       cairo_scale(cr, 2, 2);
       driver_speed.SetMode(gva::widget::DialType::kDialSpeedMph);
       driver_speed.SetVisible(true);
-      driver_speed.SetValue(40);
+      driver_speed.SetValue(100);
       driver_speed.Draw();
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/driver_03.png").c_str());
+    } break;
+    case 30: {
+      cairo_translate(cr, width / 2, height / 2);
+      cairo_scale(cr, 2, 2);
+      driver_rpm.SetVisible(true);
+      driver_rpm.SetValue(0);
+      driver_rpm.Draw();
+      renderer.Draw();
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/rpm_01.png").c_str());
+    } break;
+    case 31: {
+      cairo_translate(cr, width / 2, height / 2);
+      cairo_scale(cr, 2, 2);
+      driver_rpm.SetVisible(true);
+      driver_rpm.SetValue(4000);
+      driver_rpm.Draw();
+      renderer.Draw();
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/rpm_02.png").c_str());
     } break;
     default:
       counter = 9999;  // Cause loop to end and terminate
@@ -514,7 +533,10 @@ int main(int argc, char *argv[]) {
         std::cout << "       25: Table example, example message box/s" << std::endl;
         std::cout << "       26: Table example, sample alarms/s" << std::endl;
         std::cout << "       27: Drivers speed dial/s 10Kph" << std::endl;
-        std::cout << "       28: Drivers speed dial/s 60Kph" << std::endl;
+        std::cout << "       28: Drivers speed dial/s 40Kph" << std::endl;
+        std::cout << "       29: Drivers speed dial/s 100Kph" << std::endl;
+        std::cout << "       30: RPM 0" << std::endl;
+        std::cout << "       31: RPM 4000" << std::endl;
         return 0;
       case 't':
         timeout = atoi(optarg);

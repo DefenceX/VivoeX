@@ -19,10 +19,10 @@
 ///
 /// \brief The vehicle compass widget
 ///
-/// \file speedometer.cc
+/// \file rpm_fuel.cc
 ///
 
-#include "src/widgets/driver/speedometer.h"
+#include "src/widgets/driver/rpm_fuel.h"
 
 #include <float.h>
 #include <math.h>
@@ -33,12 +33,12 @@
 
 namespace gva {
 
-WidgetDriverSpeedometer::WidgetDriverSpeedometer(const RendererGva& renderer)
-    : WidgetX(renderer, widget::WidgetEnum::kWidgetTypeDialSpeedometer) {
+WidgetDriverRpmFuel::WidgetDriverRpmFuel(const RendererGva& renderer)
+    : WidgetX(renderer, widget::WidgetEnum::KWidgetTypeDialRpmFuel) {
   SetVisible(false);
 }
 
-void WidgetDriverSpeedometer::Draw() {
+void WidgetDriverRpmFuel::Draw() {
   double_t radius = 100;
   double_t d = 0;
   const uint32_t font_size = 14;
@@ -71,38 +71,39 @@ void WidgetDriverSpeedometer::Draw() {
   int64_t p = 28;
   uint32_t adjust_x = -8;
   uint32_t adjust_y = +4;
-  double step = (M_PI * 2) / 16;
+  double step = (M_PI * 2) / 12;
   int64_t c = 0;
   for (d = DegreesToRadians(degrees) + (M_PI * 1.25); d >= DegreesToRadians(-45); d -= step) {
     if (c * 10 > 99) adjust_x = 0 - 15;
     GetRenderer()->DrawText((uint32_t)(adjust_x + (radius - p) * cos(d)), (uint32_t)(adjust_y - (radius - p) * sin(d)),
-                            std::to_string(c * 10));
+                            std::to_string(c));
     c++;
   }
-  // Digital speed
-  if (mode_ == widget::DialType::kDialSpeedKph) {
-    GetRenderer()->DrawText(-30, 40, std::to_string(value_) + " Km/h");
-  }
 
-  if (mode_ == widget::DialType::kDialSpeedMph) {
-    GetRenderer()->DrawText(-30, 40, std::to_string(value_) + " Mph");
-  }
+  // Gears
+  GetRenderer()->DrawText(-16, 60, "RPM");
+  GetRenderer()->DrawText(-20, 40, "Drive");
 
   GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
 
   c = 0;
   d = degrees;
-  step = (M_PI * 2) / 64;
+  step = (M_PI * 2) / 120;
   for (d = DegreesToRadians(degrees) + (M_PI * 1.25); d >= DegreesToRadians(-45); d -= step) {
-    p = c % 4 ? 10 : 15;
+    p = c % 10 ? 8 : 14;
+    if (c > 69) {
+      GetRenderer()->SetColourForeground(HMI_RED);
+      GetRenderer()->DrawColor(HMI_RED);
+    }
     c++;
     GetRenderer()->MovePen((uint32_t)(+(radius - p) * cos(d)), (uint32_t)(-(radius - p) * sin(d)));
     GetRenderer()->DrawPen((uint32_t)(+(radius)*cos(d)), (uint32_t)(-(radius)*sin(d)), true);
   }
+  GetRenderer()->SetColourForeground(HMI_WHITE);
 
-  // Heading (Goes under sight)
+  // Dial
   GetRenderer()->MovePen(0, 0);
-  GetRenderer()->Rotate(DegreesToRadians(45 + (value_ * 2.23)));
+  GetRenderer()->Rotate(DegreesToRadians(45 + (value_ * 0.03)));
 
   GetRenderer()->SetColourBackground(HMI_CYAN);
   GetRenderer()->SetColourForeground(HMI_BLACK);

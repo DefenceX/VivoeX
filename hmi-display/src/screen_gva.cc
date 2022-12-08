@@ -46,6 +46,7 @@
 #include "widgets/alarm_indicator.h"
 #include "widgets/bottom_labels.h"
 #include "widgets/compass.h"
+#include "widgets/driver/rpm_fuel.h"
 #include "widgets/driver/speedometer.h"
 #include "widgets/keyboard.h"
 #include "widgets/mode.h"
@@ -101,7 +102,8 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
   // Here we need to add all the possible screen widgets to the widget list, at this point they are uninitialised
   widget_list_[widget::WidgetEnum::KWidgetTypeCompass] = std::make_shared<WidgetPlanPositionIndicator>(*renderer);
   widget_list_[widget::WidgetEnum::KWidgetTypeKeyboard] = std::make_shared<WidgetKeyboard>(*renderer);
-  widget_list_[widget::WidgetEnum::kWidgetTypeDriverDial] = std::make_shared<WidgetDriverSpeedometer>(*renderer);
+  widget_list_[widget::WidgetEnum::kWidgetTypeDialSpeedometer] = std::make_shared<WidgetDriverSpeedometer>(*renderer);
+  widget_list_[widget::WidgetEnum::KWidgetTypeDialRpmFuel] = std::make_shared<WidgetDriverRpmFuel>(*renderer);
   widget_list_[widget::WidgetEnum::KWidgetTypeAlarmIndicator] =
       std::make_shared<WidgetAlarmIndicator>(*renderer, touch);
   widget_list_[widget::WidgetEnum::KWidgetTypeTopLabels] = std::make_shared<WidgetTopLabels>(*renderer, touch);
@@ -288,7 +290,8 @@ GvaStatusTypes ScreenGva::Update() {
   widget_list_[widget::WidgetEnum::KWidgetTypeKeyboard]->Draw();
 
   // Drivers Aids
-  widget_list_[widget::WidgetEnum::kWidgetTypeDriverDial]->Draw();
+  widget_list_[widget::WidgetEnum::kWidgetTypeDialSpeedometer]->Draw();
+  widget_list_[widget::WidgetEnum::KWidgetTypeDialRpmFuel]->Draw();
 
   // Setup and Draw the status bar, one row table
   if (screen_->status_bar->visible) {

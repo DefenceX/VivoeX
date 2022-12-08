@@ -18,9 +18,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_BINARY_DIR}/external/vivoe-media-framework/src)
 include_directories(${CMAKE_BINARY_DIR}/external/libnmea/src/include)
 # OSMScout
-include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/src/libosmscout/include)
-include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/src/libosmscout-map/include)
-include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/src/libosmscout-map-cairo/include)
+include_directories(${CMAKE_BINARY_DIR}/external/install/usr/local/include/)
 link_directories(${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout-map-cairo)
 link_directories(${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout)
 link_directories(${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout-map)
@@ -40,6 +38,7 @@ set(SOURCES main.cc
 			src/events_gva.cc 
 			src/widgets/widget.cc
 			src/widgets/keyboard.cc
+			src/widgets/driver/rpm_fuel.cc
 			src/widgets/driver/speedometer.cc
 			src/widgets/table/table.cc
 			src/widgets/table/cell_type.cc

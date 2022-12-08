@@ -24,6 +24,7 @@
 
 #include "drv.h"
 
+#include "src/widgets/driver/rpm_fuel.h"
 #include "src/widgets/driver/speedometer.h"
 
 namespace gva {
@@ -66,12 +67,19 @@ void StateDRV::entry() {
     if (screen_.labels != LabelModeEnum::kLabelMinimal)
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetVisible(true);
 
-    screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDriverDial)->SetVisible(true);
-    screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDriverDial)->SetX(320);
-    screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDriverDial)->SetY(750);
+    screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDialSpeedometer)->SetVisible(true);
+    screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDialSpeedometer)->SetX(320);
+    screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDialSpeedometer)->SetY(750);
     WidgetDriverSpeedometer *dial =
-        (WidgetDriverSpeedometer *)screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDriverDial);
-    dial->SetValue(0);  // Why not zero is so boring
+        (WidgetDriverSpeedometer *)screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDialSpeedometer);
+    dial->SetValue(0);
+
+    screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeDialRpmFuel)->SetVisible(true);
+    screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeDialRpmFuel)->SetX(950);
+    screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeDialRpmFuel)->SetY(750);
+    WidgetDriverRpmFuel *rpm =
+        (WidgetDriverRpmFuel *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeDialRpmFuel);
+    rpm->SetValue(0);
     screen_.status_bar->visible = true;
     screen_.function_top->SetEnabled(4);
   }
@@ -79,7 +87,7 @@ void StateDRV::entry() {
 
 void StateDRV::exit() {
   // Switch the dials off now not needed in other states
-  screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDriverDial)->SetVisible(false);
+  screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDialSpeedometer)->SetVisible(false);
 }
 
 void StateDRV::react(EventKeyPowerOn const &) { transit<StateOff>(); };

@@ -24,6 +24,7 @@
    - \ref mode
    - \ref table
    - \ref speed
+   - \ref rpm
 
 - \ref tools
    - \ref test-hmi
@@ -43,7 +44,7 @@ $ /opt/gva/hmi-display
 For help you can list the options using:
 \code
 $ /opt/gva/hmi-display -h
-hmi_display (By defencex.com.au)...
+hmi_display (By defencex.com.au)...rpm
  -c : XML config fileexecute
  -h : help
  -w : Show HMI window, for debug when no GVA display present
@@ -192,16 +193,20 @@ that the operator is informed when the system is not operable due to maintinance
 \image html mode_01.png  "Opertator mode" 
 
 \subsubsection table Tables
-A table example example can be seen below gva::WidgetMode, add rows and cells as required these can be colour coded and highlighted for interactive table.
+A table example example can be seen below gva::WidgetTable, add rows and cells as required these can be colour coded and highlighted for interactive table.
 \image html table_01.png  "Table, example message box" 
 \image html table_02.png  "Table, example alarms table" 
 
 \subsubsection speed Drivers speedometer
-The driver has some special widgets for operating the vehicle the speedometer gva::WidgetDriverDial is overlaid over the drivers camera.
+The driver has some special widgets for operating the vehicle the speedometer gva::WidgetDriverSpeedometer is overlaid over the drivers camera.
 \image html driver_01.png  "Speed at 10 Km/h" 
 \image html driver_02.png  "Speed at 60 Km/h" 
 \image html driver_03.png  "Speed at 40 Mph" 
 
+\subsubsection rpm Drivers RPM and Fuel gauge
+The driver has some special widgets for operating the vehicle the RPM and Fuel gauage gva::WidgetDriverRpmFuel is overlaid over the drivers camera.
+\image html rpm_01.png  "RPM 0" 
+\image html rpm_02.png  "RPM 4000" 
 \section tools Tooling
 
 \subsection test-hmi Testing widgets

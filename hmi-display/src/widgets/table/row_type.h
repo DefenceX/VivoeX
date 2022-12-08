@@ -28,6 +28,9 @@
 #include <string>
 #include <vector>
 
+#include "src/widgets/table/cell_type.h"
+#include "src/widgets/widget_types.h"
+
 namespace gva {
 
 ///
@@ -47,13 +50,11 @@ class RowType {
   ///
   /// \brief Get the Foreground Colour
   ///
-  /// \brief Get the Background Colour
-  ///
   /// \return uint32_t
   ///
   uint32_t GetForegroundColour() const;
 
-  /// table_
+  ///
   ///  \brief Get the Background Colour
   ///
   ///  \return uint32_t
