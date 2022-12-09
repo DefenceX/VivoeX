@@ -106,17 +106,25 @@ int ConfigData::GetZoom() const { return current_config_->zoom(); }
 
 void ConfigData::SetZoom(int zoom) const { current_config_->set_zoom(zoom); }
 
-double ConfigData::GetTestLon() const { return current_config_->test_lon(); }
+double ConfigData::GetTestLon() const { return current_config_->osm().test_lon(); }
 
-void ConfigData::SetTestLon(double lon) const { current_config_->set_test_lon(lon); }
+void ConfigData::SetTestLon(double lon) const { current_config_->mutable_osm()->set_test_lon(lon); }
 
-double ConfigData::GetTestLat() const { return current_config_->test_lat(); }
+double ConfigData::GetTestLat() const { return current_config_->osm().test_lat(); }
 
-void ConfigData::SetTestLat(double lat) const { current_config_->set_test_lat(lat); }
+void ConfigData::SetTestLat(double lat) const { current_config_->mutable_osm()->set_test_lat(lat); }
 
 bool ConfigData::GetFullscreen() const { return current_config_->fullscreen(); }
 
 void ConfigData::SetFullscreen(bool fullscreen) const { current_config_->set_fullscreen(fullscreen); }
+
+bool ConfigData::GetMapEnabled() const { return current_config_->osm().enabled(); }
+
+void ConfigData::SetMapEnabled(bool enabled) const { current_config_->mutable_osm()->set_enabled(enabled); }
+
+std::string ConfigData::GetMapPath() const { return current_config_->osm().map_path(); }
+
+std::string ConfigData::GetStylesheetPath() const { return current_config_->osm().map_stylesheet_path(); }
 
 uint32_t ConfigDataTheme::GetThemeBackground() const { return (uint32_t)current_config_->theme().theme_background(); }
 

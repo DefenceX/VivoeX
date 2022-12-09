@@ -51,7 +51,8 @@ class HandleType {
 };
 
 enum Draw_type {
-  kCommandCircle = 0,
+  kCommandUndefined = 0,
+  kCommandCircle,
   kCommandArc,
   kCommandColourBackground,
   kCommandColourForeground,

@@ -50,3 +50,28 @@ then
     ximagesink
 fi
 
+if [ "$OPTION" == "4" ]
+then
+  file=$(ls ./videos/*.mp4)
+  printf "Playing file $file\n"
+  gst-launch-1.0 -v filesrc location=$file ! \
+    decodebin ! \
+    videoconvert ! \
+    xvimagesink
+fi
+
+if [ "$OPTION" == "5" ]
+then
+  file=$(ls ./videos/*.mp4)
+  printf "Playing file $file\n"
+
+  gst-launch-1.0 -v filesrc location=$file ! \
+    decodebin ! \
+    videoconvert ! \
+    videoscale ! \
+    videorate ! \
+    video/x-raw, format=UYVY, width=$WIDTH, height=$HEIGHT, framerate=28/1 ! \
+    queue ! \
+    rtpvrawpay ! \
+    udpsink host=127.0.0.1 port=$PORT 
+fi

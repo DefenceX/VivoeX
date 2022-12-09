@@ -94,7 +94,7 @@ void HmiHelper::TableSystem(WidgetTable *table) {
   table->AddCell("Error", 20, Renderer::PackRgb(HMI_RED));
 
   table->AddRow();
-  table->AddCell("UK Maps, /opt/osmscout/maps/australia-latest", 80);
+  table->AddCell("UK Maps, " + ConfigData::GetInstance()->GetMapPath(), 80);
   table->AddCell("Ok", 20);
 
   table->AddRow();

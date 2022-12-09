@@ -340,7 +340,7 @@ CommonTaskKeys Hmi::bottom_;
 Canvas Hmi::canvas_;
 Screen Hmi::screen_;
 std::shared_ptr<ScreenGva> Hmi::screen_render_;
-std::unique_ptr<rendererMap> Hmi::map_;
+std::shared_ptr<rendererMap> Hmi::map_;
 GvaFunctionEnum Hmi::lastState_;
 bool Hmi::alarmson_ = false;
 

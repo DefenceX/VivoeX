@@ -54,6 +54,8 @@ double conv(int zoom) {
       return 0.112;
     case 625:
       return 0.2;
+    default:  // Dont modify value
+      break;
   }
   return 0;
 }
@@ -106,16 +108,17 @@ GvaKeyEnum Hmi::KeyBMS(GvaKeyEnum keypress) {
     }
 
     if (update) {
-      char tmp[100];
-      sprintf(tmp, "[BMS] Zoom level %d lat %f, %f", ConfigData::GetInstance()->GetZoom(),
-              ConfigData::GetInstance()->GetTestLat(),
-              ((double)ConfigData::GetInstance()->GetZoom() / 10000000) *
-                  ((double)ConfigData::GetInstance()->GetZoom() / 10000));
-      logGva::log(tmp, DebugLevel::kLogInfo);
-      map_->SetWidth((double)screen_render_->GetWidth() / kMinimumWidth);
-      map_->SetHeight((double)screen_render_->GetHeight() / kMinimumHeight);
-      sprintf(tmp, "[BMS] res %d x %d", screen_render_->GetWidth(), screen_render_->GetHeight());
-      logGva::log(tmp, DebugLevel::kLogInfo);
+      logGva::log("[BMS] Zoom level " + std::to_string(ConfigData::GetInstance()->GetZoom()) + " " +
+                      std::to_string(ConfigData::GetInstance()->GetTestLat()) + " " +
+                      std::to_string(((double)ConfigData::GetInstance()->GetZoom() / 10000000) *
+                                     ((double)ConfigData::GetInstance()->GetZoom() / 10000)) +
+                      " ",
+                  DebugLevel::kLogInfo);
+      map_->SetWidth(kMinimumWidth);
+      map_->SetHeight(kMinimumHeight);
+      logGva::log(
+          "[BMS] res " + std::to_string(screen_render_->GetWidth()) + "x" + std::to_string(screen_render_->GetHeight()),
+          DebugLevel::kLogInfo);
       map_->Project(ConfigData::GetInstance()->GetZoom(), ConfigData::GetInstance()->GetTestLon(),
                     ConfigData::GetInstance()->GetTestLat(), &screen_.canvas.surface);
       screen_.canvas.bufferType = SurfaceType::kSurfaceCairo;
@@ -129,23 +132,24 @@ void StateBMS::entry() {
     manager_->SetScreen(&screen_, GvaFunctionEnum::kBattlefieldManagementSystem);
     Reset();
     lastState_ = GvaFunctionEnum::kBattlefieldManagementSystem;
-    std::string filename = ConfigData::GetInstance()->GetImagePath();
-    screen_.canvas.visible = true;
-    filename.append("/DefenceX.png");
-    SetCanvasPng(filename.c_str());
     screen_.function_top->SetEnabled(7);
     screen_.canvas.visible = true;
     if (kOsmScout) {
-      map_->SetWidth((double)screen_render_->GetWidth() / kMinimumWidth);
-      map_->SetHeight((double)screen_render_->GetHeight() / kMinimumHeight);
+      map_->SetWidth(kMinimumWidth);
+      map_->SetHeight(kMinimumHeight);
       map_->Project(ConfigData::GetInstance()->GetZoom(), ConfigData::GetInstance()->GetTestLon(),
                     ConfigData::GetInstance()->GetTestLat(), &screen_.canvas.surface);
       screen_.canvas.bufferType = SurfaceType::kSurfaceCairo;
+    } else {
+      // Display the DefenceX logo
+      std::string filename = ConfigData::GetInstance()->GetImagePath();
+      filename.append("/DefenceX.png");
+      SetCanvasPng(filename.c_str());
     }
   }
 };
 
-void StateBMS::exit() {}
+void StateBMS::exit() { return; }  // Nothing to do on exit
 
 void StateBMS::react(EventKeyPowerOn const &) { transit<StateOff>(); };
 

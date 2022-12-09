@@ -627,7 +627,7 @@ uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, unsigned char *buffer
   bool found_in_cache = false;
 
   image_type new_image;
-  image_type *cache_image;
+  image_type *cache_image = nullptr;
   new_image.name = file;
 
   for (auto &image : cache_image_list_) {

@@ -34,8 +34,8 @@ void StateOn::entry() {
 
   if (kOsmScout) {
     // Render a map for BMS
-    map_ = std::make_unique<rendererMap>("/opt/osmscout/maps/australia-latest/",
-                                         "/opt/osmscout/stylesheets/standard.oss", kMinimumWidth, kMinimumHeight);
+    map_ = std::make_shared<rendererMap>(ConfigData::GetInstance()->GetMapPath(),
+                                         ConfigData::GetInstance()->GetStylesheetPath(), kMinimumWidth, kMinimumHeight);
   }
   top_ = DefaultSettings::GetDefaultFunctionSelect();
   bottom_ = DefaultSettings::GetDefaultCommonTaskKeys();

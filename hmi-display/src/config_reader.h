@@ -350,6 +350,34 @@ class ConfigData : public ConfigDataTheme {
   void SetFullscreen(bool fullscreen) const;
 
   ///
+  /// \brief Get the Map Enabled object
+  ///
+  /// \return true
+  /// \return false
+  ///
+  bool GetMapEnabled() const;
+
+  ///
+  /// \brief Set the Map Enabled object
+  ///
+  ///
+  void SetMapEnabled(bool enabled) const;
+
+  ///
+  /// \brief Get the Map Path for the installed OSMScout maps
+  ///
+  /// \return std::string
+  ///
+  std::string GetMapPath() const;
+
+  ///
+  /// \brief Get the Stylesheet Path for the OSMScout stylesheets
+  ///
+  /// \return std::string
+  ///
+  std::string GetStylesheetPath() const;
+
+  ///
   /// \brief Get the Log Path object
   ///
   /// \return std::string

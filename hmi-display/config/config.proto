@@ -198,49 +198,63 @@ message File {
   required string images_path = 4 [default = "/opt/gva/hmi/images"];
 }
 
+message OsmScout {
+  required bool enabled = 1;
+
+  // Map Options
+  // optional string map_path = 2 [default = "/opt/osmscout/maps/england-latest/"];
+  optional string map_path = 2 [default = "/opt/osmscout/maps/australia-latest/"];
+  optional string map_stylesheet_path = 3 [default = "/opt/osmscout/stylesheets/standard.oss"];
+
+  // Big Ben   
+  // optional double test_lon = 4 [default = -0.124240];
+  // optional double test_lat = 5 [default = 51.500655];
+
+  // London Excel (DSEI)
+  // optional double test_lon = 4 [default = 0.029900];
+  // optional double test_lat = 5 [default = 51.508684];
+
+  // Redbank, QLD
+  // optional double test_lon = 4 [default = -27.581882];
+  // optional double test_lat = 5 [default = 152.875558];
+
+  // Puckapunyal, QLD
+  // optional double test_lon = 4 [default = 144.89585];
+  // optional double test_lat = 5 [default = -36.9551];
+
+  // Fortitude Valley, QLD
+  // optional double test_lon = 4 [default = 153.03434];
+  // optional double test_lat = 5 [default = -27.45814];
+
+  // Southbank, QLD
+  optional double test_lon = 4 [default = 153.02259];
+  optional double test_lat = 5 [default = -27.47440];
+}
+
 message Gva {
   required string name = 1;
   optional int32 height = 3 [default = 480];
   optional int32 width = 4 [default = 640];
   optional bool fullscreen = 5 [default = false];
-
-  // Map Options
-//  optional string map_path = 6 [default = "/opt/osmscout/maps/england-latest/"];
-  optional string map_path = 6 [default = "/opt/osmscout/maps/australia-latest/"];
-  optional string map_stylesheet_path = 7 [default = "/opt/osmscout/stylesheets/standard.oss"];
   
   // GPS options
-  optional bool live = 8;
-  optional int32 zoom = 9 [default = 20000];
-  optional string device = 10;
-    
-  // Big Ben    ENABLE_OSMSCOUT
-  // optional double test_lon = 11 [default = -0.124240];
-  // optional double test_lat = 12 [default = 51.500655];
-
-  // London Excel (DSEI)
-  // optional double test_lon = 11 [default = 0.029900];
-  // optional double test_lat = 12 [default = 51.508684];
-
-  // Redbank, QLD
-  // optional double test_lon = 11 [default = -27.581882];
-  // optional double test_lat = 12 [default = 152.875558];
-
-  // Puckapunyal, QLD
-  optional double test_lon = 11 [default = 144.89585];
-  optional double test_lat = 12 [default = -36.9551];
-
+  optional bool live = 6;
+  optional int32 zoom = 7 [default = 20000];
+  optional string device = 8;
 
   // The default GPS NMEA device to use
-  optional string gps_device = 13 [default = "/dev/ttyUSB0"];
+  optional string gps_device = 9 [default = "/dev/ttyUSB0"];
 
   // ODB Options
-  optional string odb_device = 14 [default = "/dev/ttyUSB1"];    
+  optional string odb_device = 10 [default = "/dev/ttyUSB1"];    
+
+  // Map Options
+  required OsmScout osm = 11;
+
+  optional ThemeDefault theme = 12;
+  // optional ThemeModernBlue theme = 12;
   
-  optional ThemeDefault theme = 15;
-  // optional ThemeModernBlue theme = 15;
-  
-  optional File file = 16;
+  optional File file = 13;
   
   message BezelKeyset {
     required int32 act = 1;

@@ -40,35 +40,34 @@ namespace gva {
 
 rendererMap::rendererMap(std::string map, std::string style, int width, int height)
     : width_(width), height_(height), map_(map), style_(style) {
-  if (kOsmScout) {
-    database_ = (osmscout::DatabaseRef)(new osmscout::Database(databaseParameter_));
-    mapService_ = (osmscout::MapServiceRef)(new osmscout::MapService(database_));
+  database_ = (osmscout::DatabaseRef)(new osmscout::Database(databaseParameter_));
+  mapService_ = (osmscout::MapServiceRef)(new osmscout::MapService(database_));
+  printf("rendererMap() %dx%d  \n", width_, height_);
 
-    if (!database_->Open(map_.c_str())) {
-      logGva::log("Cannot open libosmscout database", DebugLevel::kLogError);
-    }
-
-    styleConfig_ = (osmscout::StyleConfigRef) new osmscout::StyleConfig(database_->GetTypeConfig());
-
-    if (!styleConfig_->Load(style_)) {
-      logGva::log("Cannot open libosmscout style", DebugLevel::kLogError);
-    }
-
-    surface_ = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width_, height_);
-    if (surface_ != nullptr) {
-      cairo_ = cairo_create(surface_);
-      logGva::log("Created libosmscout cairo surface", DebugLevel::kLogInfo);
-    } else {
-      logGva::log("Cannot create libosmscout cairo surface", DebugLevel::kLogError);
-    }
-
-    DrawParameter_.SetFontSize(3.0);
-    DrawParameter_.SetLabelLineMinCharCount(15);
-    DrawParameter_.SetLabelLineMaxCharCount(30);
-    DrawParameter_.SetLabelLineFitToArea(true);
-    DrawParameter_.SetLabelLineFitToWidth(std::min(projection_.GetWidth(), projection_.GetHeight()));
-    painter_ = new osmscout::MapPainterCairo(styleConfig_);
+  if (!database_->Open(map_.c_str())) {
+    logGva::log("Cannot open libosmscout database", DebugLevel::kLogError);
   }
+
+  styleConfig_ = (osmscout::StyleConfigRef) new osmscout::StyleConfig(database_->GetTypeConfig());
+
+  if (!styleConfig_->Load(style_)) {
+    logGva::log("Cannot open libosmscout style", DebugLevel::kLogError);
+  }
+
+  surface_ = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width_, height_);
+  if (surface_ != nullptr) {
+    cairo_ = cairo_create(surface_);
+    logGva::log("Created libosmscout cairo surface", DebugLevel::kLogInfo);
+  } else {
+    logGva::log("Cannot create libosmscout cairo surface", DebugLevel::kLogError);
+  }
+
+  DrawParameter_.SetFontSize(3.0);
+  DrawParameter_.SetLabelLineMinCharCount(15);
+  DrawParameter_.SetLabelLineMaxCharCount(30);
+  DrawParameter_.SetLabelLineFitToArea(true);
+  DrawParameter_.SetLabelLineFitToWidth(std::min(projection_.GetWidth(), projection_.GetHeight()));
+  painter_ = new osmscout::MapPainterCairo(styleConfig_);
 };
 
 rendererMap::~rendererMap() {
@@ -86,16 +85,15 @@ GvaStatusTypes rendererMap::Project(double zoom, double lon, double lat, cairo_s
       DrawParameter.SetIconMode(osmscout::MapParameter::FixedSizePixmap);
       DrawParameter.SetIconPaths(paths);
       */
-      if (kOsmScout) {
-        projection_.Set(osmscout::GeoCoord(lat, lon), osmscout::Magnification(zoom), DPI, width_, height_);
+      printf("%dx%d %f %f \n", width_, height_, lat, lon);
+      projection_.Set(osmscout::GeoCoord(lat, lon), osmscout::Magnification(zoom), DPI, width_, height_);
 
-        mapService_->LookupTiles(projection_, tiles_);
-        mapService_->LoadMissingTileData(searchParameter_, *styleConfig_, tiles_);
-        mapService_->AddTileDataToMapData(tiles_, data_);
+      mapService_->LookupTiles(projection_, tiles_);
+      mapService_->LoadMissingTileData(searchParameter_, *styleConfig_, tiles_);
+      mapService_->AddTileDataToMapData(tiles_, data_);
 
-        if (painter_->DrawMap(projection_, DrawParameter_, data_, cairo_)) {
-          // Map rendered
-        }
+      if (painter_->DrawMap(projection_, DrawParameter_, data_, cairo_)) {
+        // Map rendered
       }
     }
   } else {

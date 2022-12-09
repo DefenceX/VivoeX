@@ -214,12 +214,14 @@
     "cSpell.words": [
         "alarmson",
         "defencex",
+        "libosmscout",
         "mgrs",
         "northp",
         "osmscout",
         "rightarrow",
         "rotateleft",
         "rotateright",
+        "tinyfsm",
         "workarea"
     ],
     "sonarlint.connectedMode.project": {

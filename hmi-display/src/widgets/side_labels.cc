@@ -59,7 +59,7 @@ void WidgetSideLabels::Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t hei
     if (text.substr(5, 20) == "rightarrow")
       GetRenderer()->DrawIcon(widget::IconType::kIconRightArrow, x + width / 2, y + height / 2, 20, 20);
     if (text.substr(5, 20) == "leftarrow")
-      GetRenderer()->DrawIcon(widget::IconType::kIconRightArrow, x + width / 2, y + height / 2, 20, 20);
+      GetRenderer()->DrawIcon(widget::IconType::kIconLeftArrow, x + width / 2, y + height / 2, 20, 20);
     if (text.substr(5, 20) == "rotateleft")
       GetRenderer()->DrawIcon(widget::IconType::kIconRotateLeft, x + width / 2, y + height / 2, 20, 20);
     if (text.substr(5, 20) == "rotateright")

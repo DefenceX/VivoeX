@@ -402,8 +402,14 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
           Fullscreen(const_cast<gva::HandleType *>(render));
           {
             GdkRectangle workarea;
-            gdk_monitor_get_workarea(gdk_display_get_primary_monitor(gdk_display_get_default()), &workarea);
-            gva::hmi::GetRendrer()->GetTouch()->SetResolution(workarea.width, workarea.height);
+            GdkMonitor *monitor = gdk_display_get_primary_monitor(gdk_display_get_default());
+            if (monitor) {
+              gdk_monitor_get_workarea(monitor, &workarea);
+              gva::hmi::GetRendrer()->GetTouch()->SetResolution(workarea.width, workarea.height);
+            } else {
+              gva::logGva::log("gdk_monitor_get_workarea failed when switching to full screen.",
+                               gva::DebugLevel::kLogError);
+            }
           }
           break;
         case gva::GvaKeyEnum::kKeyKeyboard:

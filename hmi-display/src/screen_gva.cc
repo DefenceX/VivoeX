@@ -144,20 +144,24 @@ void *ClockUpdate(void *arg) {
     if (*a->gps > 0) {
       i = 0;
       tcflush(*a->gps, TCIOFLUSH);
-      read(*a->gps, &buffer[0], 1);
-
-      memset(buffer, 0, MAX_NMEA);
-      while (buffer[0] != '$') read(*a->gps, &buffer[0], 1);
-      while (buffer[i++] != '\n') {
-        ii = read(*a->gps, &c, 1);
-        if (ii == 1) {
-          buffer[i] = c;
+      auto size = read(*a->gps, &buffer[0], 1);
+      if (size != 0) {
+        memset(buffer, 0, MAX_NMEA);
+        while (buffer[0] != '$') {
+          auto size = read(*a->gps, &buffer[0], 1);
+          if (size == 0) break;
         }
-        if (i == MAX_NMEA) break;
+        while (buffer[i++] != '\n') {
+          ii = read(*a->gps, &c, 1);
+          if (ii == 1) {
+            buffer[i] = c;
+          }
+          if (i == MAX_NMEA) break;
+        }
+        buffer[i - 1] = 0;
+        std::string tmp_buffer = buffer;
+        logGva::log("GPS NMEA " + tmp_buffer, DebugLevel::kLogInfo);
       }
-      buffer[i - 1] = 0;
-      std::string tmp_buffer = buffer;
-      logGva::log("GPS NMEA " + tmp_buffer, DebugLevel::kLogInfo);
 
       snprintf(tmp, sizeof(tmp), "%s\r\n", buffer);
       a->info->lon = a->location->lon;

@@ -43,20 +43,20 @@
 namespace gva {
 
 struct Command {
-  Draw_type command;
-  double height;
-  double width;
+  Draw_type command = Draw_type::kCommandUndefined;
+  double height = 0;
+  double width = 0;
   std::array<PointType, 3> points;
-  double radius;
-  double angle1;
-  double angle2;
-  ColourType colour;
-  int32_t arg1;
-  int32_t arg2;
-  int32_t arg3;
-  int32_t arg4;
-  std::string text;
-  bool fill;
+  double radius = 0;
+  double angle1 = 0;
+  double angle2 = 0;
+  ColourType colour = {HMI_WHITE};
+  int32_t arg1 = 0;
+  int32_t arg2 = 0;
+  int32_t arg3 = 0;
+  int32_t arg4 = 0;
+  std::string text = "";
+  bool fill = false;
 };
 
 struct image_type {
@@ -478,7 +478,7 @@ class RendererCairo : public Renderer {
   ///
   /// \return uint32_t
   ///
-  uint32_t GetHeight() {
+  uint32_t GetHeight() const {
     gint h, w;
     gtk_widget_get_size_request(render_.win.draw, &w, &h);
     return static_cast<int>(w);
@@ -489,7 +489,7 @@ class RendererCairo : public Renderer {
   ///
   /// \return uint32_t
   ///
-  uint32_t GetWidth() {
+  uint32_t GetWidth() const {
     gint h, w;
     gtk_widget_get_size_request(render_.win.draw, &w, &h);
     return static_cast<int>(h);
