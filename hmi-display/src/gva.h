@@ -37,7 +37,6 @@ static const uint32_t kSemVerMinor = 3;
 static const uint32_t kSemVerPatch = 1427;
 static const uint32_t kMinimumHeight = 480;
 static const uint32_t kMinimumWidth = 640;
-static const bool kOsmScout = true;
 
 enum class LocationEnum { kLocationFormatLongLat = 0, kLocationFormatMgrs };
 

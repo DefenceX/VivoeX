@@ -73,7 +73,7 @@ rendererMap::rendererMap(std::string map, std::string style, int width, int heig
 rendererMap::~rendererMap() {
   cairo_destroy(cairo_);
   cairo_surface_destroy(surface_);
-  if (kOsmScout) free(painter_);
+  if (ConfigData::GetInstance()->GetMapEnabled()) free(painter_);
 };
 
 GvaStatusTypes rendererMap::Project(double zoom, double lon, double lat, cairo_surface_t **surface) {

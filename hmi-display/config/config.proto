@@ -199,7 +199,7 @@ message File {
 }
 
 message OsmScout {
-  required bool enabled = 1;
+  required bool enabled = 1  [default = true];
 
   // Map Options
   // optional string map_path = 2 [default = "/opt/osmscout/maps/england-latest/"];
@@ -249,7 +249,7 @@ message Gva {
   optional string odb_device = 10 [default = "/dev/ttyUSB1"];    
 
   // Map Options
-  required OsmScout osm = 11;
+  optional OsmScout osm = 11;
 
   optional ThemeDefault theme = 12;
   // optional ThemeModernBlue theme = 12;

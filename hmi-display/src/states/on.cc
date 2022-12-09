@@ -24,6 +24,8 @@
 
 #include "on.h"
 
+#include <filesystem>
+
 namespace gva {
 
 void StateOn::entry() {
@@ -32,7 +34,12 @@ void StateOn::entry() {
 
   if (!manager_) manager_ = std::make_shared<ViewGvaManager>(&status_);
 
-  if (kOsmScout) {
+  if (!std::filesystem::is_directory(ConfigData::GetInstance()->GetMapPath())) {
+    logGva::log("Could not find map data " + ConfigData::GetInstance()->GetMapPath(), DebugLevel::kLogError);
+    ConfigData::GetInstance()->SetMapEnabled(false);
+  }
+
+  if (ConfigData::GetInstance()->GetMapEnabled()) {
     // Render a map for BMS
     map_ = std::make_shared<rendererMap>(ConfigData::GetInstance()->GetMapPath(),
                                          ConfigData::GetInstance()->GetStylesheetPath(), kMinimumWidth, kMinimumHeight);

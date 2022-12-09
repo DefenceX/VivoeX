@@ -64,7 +64,7 @@ GvaKeyEnum Hmi::KeyBMS(GvaKeyEnum keypress) {
   screen_.function_right.visible = true;
   KeySide(keypress);
   Key(keypress);
-  if (kOsmScout) {
+  if (ConfigData::GetInstance()->GetMapEnabled()) {
     bool update = true;
     int zoom_level = ConfigData::GetInstance()->GetZoom();
     switch (keypress) {
@@ -134,7 +134,7 @@ void StateBMS::entry() {
     lastState_ = GvaFunctionEnum::kBattlefieldManagementSystem;
     screen_.function_top->SetEnabled(7);
     screen_.canvas.visible = true;
-    if (kOsmScout) {
+    if (ConfigData::GetInstance()->GetMapEnabled()) {
       map_->SetWidth(kMinimumWidth);
       map_->SetHeight(kMinimumHeight);
       map_->Project(ConfigData::GetInstance()->GetZoom(), ConfigData::GetInstance()->GetTestLon(),

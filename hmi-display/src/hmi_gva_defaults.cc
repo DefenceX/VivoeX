@@ -348,7 +348,7 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeyBattlefieldManagementSystemLe
   FunctionKeys keys;
   LabelStates state;
   keys.visible = true;
-  if (kOsmScout)
+  if (ConfigData::GetInstance()->GetMapEnabled())
     state = LabelStates::kLabelEnabled;
   else
     state = LabelStates::kLabelDisabled;
@@ -377,7 +377,7 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeyBattlefieldManagementSystemRi
   FunctionKeys keys;
   LabelStates state;
   keys.visible = true;
-  if (kOsmScout)
+  if (ConfigData::GetInstance()->GetMapEnabled())
     state = LabelStates::kLabelEnabled;
   else
     state = LabelStates::kLabelDisabled;
