@@ -137,7 +137,7 @@ For CAN messages can be read via the ELM 327 compatible USB dongle such as this 
 # Offline Maps
 If a valid GPS source is present then an offline map will be available rendered by [libosmscout](https://wiki.openstreetmap.org/wiki/Libosmscout). This feature is currently being developed. OpenStreetMap database is required plus some additional processing prior to use. An regularly updated collection of global maps can be downloaded from [Geofabrik](https://download.geofabrik.de/). Entire world comes in at 77Gb before processing.
 
-![GVA Dataflow](images/Screenshot-OSMScout-Map.png)<br>
+![GVA Dataflow](images/screen/ScreenshotBms.png)<br>
 **Example of the Battle Management System (BMS) screen**
 
 You can render maps using servers provided by [Google Colaboratory](https://colab.research.google.com/notebooks/welcome.ipynb) using my [juypter notebook](https://gist.github.com/ross-newman/8634f69e98ac2aded46552e7b0768dbb) for processing the data and depositing the results on to a Google Drive account. 

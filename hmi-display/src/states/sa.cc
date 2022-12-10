@@ -36,13 +36,17 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
   KeySide(keypress);
   Key(keypress);
 
-  compass->SetMode(widget::ModeEnum::kPpiClassicArrowWithSight);
+  compass->SetMode(ConfigData::GetInstance()->GetPpiMode());
+
   switch (keypress) {
     case GvaKeyEnum::kKeyF2:
       filename = path;
       filename.append("/Quad.png");
       SetCanvasPng(filename);
-      compass->SetMode(widget::ModeEnum::kPpiClassicArrowWithoutSight);
+      if (ConfigData::GetInstance()->GetPpiMode() == widget::ModeEnum::kPpiClassicArrowWithSight)
+        compass->SetMode(widget::ModeEnum::kPpiClassicArrowWithoutSight);
+      if (ConfigData::GetInstance()->GetPpiMode() == widget::ModeEnum::kPpiClassicTankWithSight)
+        compass->SetMode(widget::ModeEnum::kPpiClassicTankWithoutSight);
       break;
     case GvaKeyEnum::kKeyF4:
       filename = path;

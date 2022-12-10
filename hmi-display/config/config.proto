@@ -181,7 +181,7 @@ message ThemeModernBlue {
   optional PpiStyle widget_ppi_style = 20 [default = kPpiModernTankWithSights];
 
   // Line Thickness
-  optional int32 theme_label_border_thickness = 21 [default = 2];
+  optional int32 theme_label_border_thickness = 21 [default = 1];
   optional int32 theme_table_border_thickness = 22 [default = 1];
   optional Colour theme_status_background = 23 [default = kColourBlack];
   optional Colour theme_status_border = 24 [default = kColourBlack];
