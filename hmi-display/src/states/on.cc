@@ -37,6 +37,8 @@ void StateOn::entry() {
   if (!std::filesystem::is_directory(ConfigData::GetInstance()->GetMapPath())) {
     logGva::log("Could not find map data " + ConfigData::GetInstance()->GetMapPath(), DebugLevel::kLogError);
     ConfigData::GetInstance()->SetMapEnabled(false);
+  } else {
+    ConfigData::GetInstance()->SetMapEnabled(true);
   }
 
   if (ConfigData::GetInstance()->GetMapEnabled()) {
