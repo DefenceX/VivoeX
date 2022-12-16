@@ -84,7 +84,6 @@ typename _state_instance<S>::value_type _state_instance<S>::value;
 template <typename F>
 class Fsm {
  public:
-  /// \brief Finite state machine type templated class
   using fsmtype = Fsm<F>;
   /// \brief Current state pointer
   using state_ptr_t = F *;

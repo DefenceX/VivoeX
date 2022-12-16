@@ -17,12 +17,14 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-///
-/// \file log_gva.h
-///
+//
+// \file log_gva.h
+//
 
 #ifndef HMI_DISPLAY_COMMON_LOG_GVA_H_
 #define HMI_DISPLAY_COMMON_LOG_GVA_H_
+
+#include <syslog.h>
 
 #include <iostream>
 #include <string>
@@ -31,12 +33,17 @@ namespace gva {
 
 enum class DebugLevel { kLogDebug = 0, kLogInfo, kLogWarning, kLogError };
 
-///
-/// \brief A simple, light weight logging function for debug purposes
+//
 ///
 ///
 class logGva {
  public:
+  ///
+  /// \brief Destroy the log Gva object
+  ///
+  ///
+  ~logGva();
+
   ///
   /// \brief Log a message with its severity
   ///

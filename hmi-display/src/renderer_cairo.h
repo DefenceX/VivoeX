@@ -1,26 +1,25 @@
-///
-/// MIT License
-///
-/// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
-///
-/// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
-/// associated documentation files (the 'Software'), to deal in the Software without restriction,
-/// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-/// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-/// subject to the following conditions:
-///
-/// The above copyright notice and this permission notice shall be included in all copies or substantial
-/// portions of the Software.
-/// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-/// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-/// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-/// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-/// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-///
-/// \brief The Cairo renderer for drawing on the screen. See https://www.cairographics.org/
-///
-/// \file renderer_cairo.h
-///
+//
+// MIT License
+//
+// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+// associated documentation files (the 'Software'), to deal in the Software without restriction,
+// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+// subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial
+// portions of the Software.
+// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
+//
+// \file renderer_cairo.h
+//
 
 #ifndef HMI_DISPLAY_SRC_RENDERER_CAIRO_H_
 #define HMI_DISPLAY_SRC_RENDERER_CAIRO_H_
@@ -43,7 +42,7 @@
 namespace gva {
 
 struct Command {
-  Draw_type command = Draw_type::kCommandUndefined;
+  DrawType command = DrawType::kCommandUndefined;
   double height = 0;
   double width = 0;
   std::array<PointType, 3> points;
@@ -73,12 +72,11 @@ class RendererCairo : public Renderer {
  public:
   static HandleType render_;
   RendererCairo(uint32_t width, uint32_t height);
-  ~RendererCairo();
+  ~RendererCairo() override;
   uint32_t Init(uint32_t width, uint32_t height);
   uint32_t Init(uint32_t width, uint32_t height, bool fullscreen, CallbackType cb, void *arg);
   // Pure Virtual functions
-  ///
-  /// \brief Set the Pixel object
+  //
   ///
   /// \param x
   /// \param y
@@ -479,9 +477,10 @@ class RendererCairo : public Renderer {
   /// \return uint32_t
   ///
   uint32_t GetHeight() const {
-    gint h, w;
+    gint h;
+    gint w;
     gtk_widget_get_size_request(render_.win.draw, &w, &h);
-    return static_cast<int>(w);
+    return w;
   }
 
   ///

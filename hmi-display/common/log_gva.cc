@@ -34,6 +34,8 @@ FILE* logGva::m_errorfd_;
 bool logGva::logfile_notfound_ = false;
 std::string logGva::logfile_ = "/var/log/gva.log";
 
+logGva::~logGva() { closelog(); }
+
 void logGva::log(const std::string& message, const DebugLevel type) {
   struct sysinfo info;
   std::string msgType = "???";
@@ -60,6 +62,7 @@ void logGva::log(const std::string& message, const DebugLevel type) {
 #if !DEBUG
   // Discard debug message if DEBUG not enabled
   if (type == gva::DebugLevel::kLogDebug) return;
+  setlogmask(LOG_UPTO(LOG_NOTICE));
 #endif
 
   if (logfile_notfound_) {
@@ -80,12 +83,15 @@ void logGva::log(const std::string& message, const DebugLevel type) {
 
   if (!m_errorfd_) {
     m_errorfd_ = fopen(logfile_.c_str(), "w");
+    openlog("vivoe-lite", LOG_CONS | LOG_PID | LOG_NDELAY, LOG_LOCAL1);
   }
   if (m_errorfd_ != NULL) {
     fprintf(m_errorfd_, "[%ld] *%s* %s\n", info.uptime, msgType.c_str(), message.c_str());
     fflush(m_errorfd_);
     if (type == gva::DebugLevel::kLogError) {
       std::cout << message << std::endl;
+      // Also add to syslog if error
+      syslog(LOG_ERR, "%s", message.c_str());
     }
   } else {
     logfile_notfound_ = true;

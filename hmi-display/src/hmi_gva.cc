@@ -16,8 +16,7 @@
 // NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-///
-/// \brief HMI Manager is the state machine that drives all the screens as defines within the system, below is a diagram
+//
 /// of a simple example of a system with one screen per functional area.
 ///
 /// \file hmi_gva.cc

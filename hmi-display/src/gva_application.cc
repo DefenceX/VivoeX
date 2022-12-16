@@ -1,26 +1,25 @@
-///
-/// MIT License
-///
-/// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
-///
-/// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
-/// associated documentation files (the 'Software'), to deal in the Software without restriction,
-/// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-/// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-/// subject to the following conditions:
-///
-/// The above copyright notice and this permission notice shall be included in all copies or substantial
-/// portions of the Software.
-/// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-/// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-/// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-/// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-/// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-///
-/// \brief GVA application class
-///
-/// \file gva_application.cc
-///
+//
+// MIT License
+//
+// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+// associated documentation files (the 'Software'), to deal in the Software without restriction,
+// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+// subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial
+// portions of the Software.
+// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
+//
+// \file gva_application.cc
+//
 
 #include "gva_application.h"
 
@@ -68,8 +67,7 @@ GvaApplication::GvaApplication(const Options &options, const std::string &ipaddr
   }
 }
 
-///
-/// \brief Execute the application, blocking as this will run the event loop in the main thread
+//
 ///
 ///
 void GvaApplication::Exec() const {
@@ -236,7 +234,7 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
       if (update) gva::hmi::GetRendrer()->Update();
       break;
 
-    case gva::kKeyEventReleased: {
+    case gva::EventEnumType::kKeyEventReleased: {
       auto *compass = static_cast<gva::WidgetPlanPositionIndicator *>(
           gva::hmi::GetRendrer()->GetWidget(gva::widget::WidgetEnum::KWidgetTypeCompass));
 
@@ -405,9 +403,13 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
             GdkMonitor *monitor = gdk_display_get_primary_monitor(gdk_display_get_default());
             if (monitor) {
               gdk_monitor_get_workarea(monitor, &workarea);
+              gva::logGva::log(
+                  "Switching resolution to " + std::to_string(workarea.width) + "x" + std::to_string(workarea.height),
+                  gva::DebugLevel::kLogInfo);
+
               gva::hmi::GetRendrer()->GetTouch()->SetResolution(workarea.width, workarea.height);
             } else {
-              gva::logGva::log("gdk_monitor_get_workarea failed when switching to full screen.",
+              gva::logGva::log("gdk_monitor_get_workarea failed when switching to fullscreen.",
                                gva::DebugLevel::kLogError);
             }
           }
@@ -452,18 +454,18 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
     }  // Key Released
 
     break;
-    case gva::kResizeEvent: {
-      printf("[GVA] WindowResize: %d x %d\n", event.resize_.width, event.resize_.height);
+    case gva::EventEnumType::kResizeEvent: {
+      printf("[GVA] WindowResize: %d x %d", event.resize_.width, event.resize_.height);
       if (event.resize_.width != gva::hmi::GetRendrer()->GetWidth() ||
           event.resize_.height != gva::hmi::GetRendrer()->GetHeight()) {
-        printf("[GVA] WindowResize: %d x %d\n", event.resize_.width, event.resize_.height);
+        printf("[GVA] WindowResize: %d x %d", event.resize_.width, event.resize_.height);
         gva::hmi::GetRendrer()->SetWidth(event.resize_.width);
         gva::hmi::GetRendrer()->SetHeight(event.resize_.height);
         gva::hmi::GetRendrer()->Update();
         gva::hmi::GetRendrer()->GetTouch()->SetResolution(event.resize_.width, event.resize_.height);
       }
     } break;
-    case gva::kRedrawEvent: {
+    case gva::EventEnumType::kRedrawEvent: {
       gva::hmi::GetRendrer()->Update();
     } break;
   }

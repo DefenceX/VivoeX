@@ -16,8 +16,7 @@
 // NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-///
-/// \brief This is a test application for generating widget .png files and testing of widgets. You can call this program
+//
 /// from the command line using the following to get help:
 ///
 /// \code
@@ -286,28 +285,28 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_keyboard_03.png").c_str());
       break;
     case 18:
-      // Alarms Indicator
+      // Alarms Indicator Advisory
       alarmx.SetText("Software tester status advisory example message");
       alarmx.SetType(gva::GvaAlarmType::kAlarmAdvisory);
       alarmx.Draw();
       renderer.Draw();
-      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/alarm_02.png").c_str());
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/alarm_01.png").c_str());
       break;
     case 19:
-      // Alarms Indicator
+      // Alarms Indicator Warnings
       alarmx.SetText("Software tester status warning example message");
       alarmx.SetType(gva::GvaAlarmType::kAlarmWarnings);
       alarmx.Draw();
       renderer.Draw();
-      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/alarm_03.png").c_str());
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/alarm_02.png").c_str());
       break;
     case 20:
-      // Alarms Indicator
+      // Alarms Indicator Caution
       alarmx.SetText("Software tester status caution example message");
       alarmx.SetType(gva::GvaAlarmType::kAlarmCaution);
       alarmx.Draw();
       renderer.Draw();
-      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/alarm_01.png").c_str());
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/alarm_03.png").c_str());
       break;
     case 21:
       // Top

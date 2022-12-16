@@ -1,23 +1,22 @@
-///
-/// MIT License
-///
-/// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
-///
-/// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
-/// associated documentation files (the 'Software'), to deal in the Software without restriction,
-/// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-/// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-/// subject to the following conditions:
-///
-/// The above copyright notice and this permission notice shall be included in all copies or substantial
-/// portions of the Software.
-/// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-/// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-/// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-/// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-/// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-///
-/// \brief The Cairo renderer for drawing on the screen. See https://www.cairographics.org/
+//
+// MIT License
+//
+// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+// associated documentation files (the 'Software'), to deal in the Software without restriction,
+// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+// subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial
+// portions of the Software.
+// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
 ///
 /// \file renderer_cairo.cc
 ///
@@ -72,7 +71,7 @@ void RendererCairo::Draw() {
 
   for (auto currentCmd : draw_commands_) {
     switch (currentCmd.command) {
-      case kCommandCircle:
+      case DrawType::kCommandCircle:
         cairo_save(cr);
         cairo_new_path(cr);
         cairo_translate(cr, (int)currentCmd.points[0].x, (int)currentCmd.points[0].y);
@@ -90,39 +89,39 @@ void RendererCairo::Draw() {
         }
         cairo_restore(cr);
         break;
-      case kCommandArc:
+      case DrawType::kCommandArc:
         cairo_new_path(cr);
         cairo_arc(cr, currentCmd.points[0].x, currentCmd.points[0].y, currentCmd.radius, currentCmd.angle1,
                   currentCmd.angle2);
         cairo_stroke(cr);
         break;
-      case kCommandColourBackground:
+      case DrawType::kCommandColourBackground:
         background_colour_.red = currentCmd.arg1;
         background_colour_.green = currentCmd.arg2;
         background_colour_.blue = currentCmd.arg3;
         break;
-      case kCommandColourForeground:
+      case DrawType::kCommandColourForeground:
         foreground_colour_.red = currentCmd.arg1;
         foreground_colour_.green = currentCmd.arg2;
         foreground_colour_.blue = currentCmd.arg3;
         break;
-      case kCommandPenMove:
+      case DrawType::kCommandPenMove:
         if (currentCmd.arg1) cairo_new_path(cr);
         cairo_move_to(cr, currentCmd.points[0].x, currentCmd.points[0].y);
         break;
-      case kCommandPenDraw:
+      case DrawType::kCommandPenDraw:
         cairo_line_to(cr, currentCmd.points[0].x, currentCmd.points[0].y);
         if (currentCmd.arg1 > 0) {
           cairo_close_path(cr);
           cairo_stroke(cr);
         }
         break;
-      case kCommandPenLine:
+      case DrawType::kCommandPenLine:
         cairo_move_to(cr, currentCmd.points[0].x, currentCmd.points[0].y);
         cairo_line_to(cr, currentCmd.points[1].x, currentCmd.points[1].y);
         cairo_stroke(cr);
         break;
-      case kCommandPenRectangle:
+      case DrawType::kCommandPenRectangle:
         cairo_new_path(cr);
         cairo_move_to(cr, currentCmd.points[0].x, currentCmd.points[0].y);
         cairo_rel_line_to(cr, currentCmd.points[1].x - currentCmd.points[0].x, 0);
@@ -143,7 +142,7 @@ void RendererCairo::Draw() {
         }
 #endif
         break;
-      case kCommandPenRoundedRectangle: {
+      case DrawType::kCommandPenRoundedRectangle: {
         double width = currentCmd.arg1;
         double height = currentCmd.arg2;
         double corner_radius = (double)currentCmd.arg3; /* and corner curvature radius */
@@ -168,7 +167,7 @@ void RendererCairo::Draw() {
           cairo_stroke(cr);
         }
         break;
-      case kCommandPenTriangle:
+      case DrawType::kCommandPenTriangle:
         cairo_new_path(cr);
         cairo_move_to(cr, currentCmd.points[0].x, currentCmd.points[0].y);
         cairo_rel_line_to(cr, currentCmd.points[1].x - currentCmd.points[0].x,
@@ -188,11 +187,11 @@ void RendererCairo::Draw() {
           cairo_stroke(cr);
         }
         break;
-      case kCommandPenColour:
+      case DrawType::kCommandPenColour:
         cairo_set_source_rgb(cr, intToFloat(currentCmd.colour.red), intToFloat(currentCmd.colour.green),
                              intToFloat(currentCmd.colour.blue));
         break;
-      case kCommandPenThickness:
+      case DrawType::kCommandPenThickness:
         cairo_set_line_width(cr, (cairo_line_join_t)currentCmd.arg1);
         {
           cairo_line_cap_t cap = CAIRO_LINE_CAP_SQUARE;
@@ -226,24 +225,24 @@ void RendererCairo::Draw() {
             break;
         }
         break;
-      case kCommandSave:
+      case DrawType::kCommandSave:
         cairo_save(cr);
         break;
-      case kCommandRestore:
+      case DrawType::kCommandRestore:
         cairo_restore(cr);
         break;
-      case kCommandScale:
+      case DrawType::kCommandScale:
         cairo_scale(cr, currentCmd.width, currentCmd.height);
         break;
-      case kCommandTranslate:
+      case DrawType::kCommandTranslate:
         cairo_translate(cr, currentCmd.arg1, currentCmd.arg2);
         break;
-      case kCommandRotate:
+      case DrawType::kCommandRotate:
 
         cairo_rotate(cr, currentCmd.width);
 
         break;
-      case kCommandClosePath:
+      case DrawType::kCommandClosePath:
         cairo_close_path(cr);
         if (currentCmd.arg1 > 0) {
           cairo_set_source_rgb(cr, intToFloat(background_colour_.red), intToFloat(background_colour_.green),
@@ -254,34 +253,34 @@ void RendererCairo::Draw() {
           cairo_stroke(cr);
         }
         break;
-      case kCommandLineJoin:
+      case DrawType::kCommandLineJoin:
         cairo_set_line_join(cr, (cairo_line_join_t)currentCmd.arg1);
         break;
-      case kCommandImageTexture:
+      case DrawType::kCommandImageTexture:
         cairo_set_source_surface(cr, image_list_[currentCmd.arg1 - 1].image, currentCmd.points[0].x,
                                  currentCmd.points[0].y);
         cairo_paint(cr);
         // // Only free the image if it wasn't from cache. i.e. video
         // if (!image_list_[currentCmd.arg1].from_cache) cairo_surface_destroy(image_list_[currentCmd.arg1].image);
         // break;
-      case kCommandImageTexturePersist:
+      case DrawType::kCommandImageTexturePersist:
         cairo_set_source_surface(cr, image_list_[currentCmd.arg1 - 1].image, currentCmd.points[0].x,
                                  currentCmd.points[0].y);
         cairo_paint(cr);
         break;
-      case kCommandTextFont:
+      case DrawType::kCommandTextFont:
         cairo_select_font_face(cr, currentCmd.text.c_str(), (cairo_font_slant_t)currentCmd.arg1,
                                (cairo_font_weight_t)currentCmd.arg2);
         cairo_set_font_size(cr, currentCmd.width);
 
         break;
-      case kCommandPush:
+      case DrawType::kCommandPush:
         cairo_push_group(cr);
         break;
-      case kCommandPop:
+      case DrawType::kCommandPop:
         cairo_pop_group_to_source(cr);
         break;
-      case kCommandText: {
+      case DrawType::kCommandText: {
         cairo_move_to(cr, currentCmd.points[0].x, currentCmd.points[0].y);
         cairo_show_text(cr, currentCmd.text.c_str());
       } break;
@@ -343,7 +342,7 @@ void RendererCairo::SetColour(uint32_t rgb) { SetColour((rgb & 0xff0000) >> 16, 
 
 void RendererCairo::SetColourForeground(uint8_t red, uint8_t green, uint8_t blue) {
   Command command;
-  command.command = kCommandColourForeground;
+  command.command = DrawType::kCommandColourForeground;
   command.arg1 = red;
   command.arg2 = green;
   command.arg3 = blue;
@@ -356,7 +355,7 @@ void RendererCairo::SetColourForeground(uint32_t rgb) {
 
 void RendererCairo::SetColourBackground(uint8_t red, uint8_t green, uint8_t blue) {
   Command command;
-  command.command = kCommandColourBackground;
+  command.command = DrawType::kCommandColourBackground;
   command.arg1 = red;
   command.arg2 = green;
   command.arg3 = blue;
@@ -369,14 +368,14 @@ void RendererCairo::SetColourBackground(uint32_t rgb) {
 
 void RendererCairo::SetLineType(uint32_t type) {
   Command command;
-  command.command = kCommandLineJoin;
+  command.command = DrawType::kCommandLineJoin;
   command.arg1 = type;
   draw_commands_.push_back(command);
 }
 
 void RendererCairo::SetLineThickness(uint32_t thickness, LineType fill, LineCapEnd end) {
   Command command;
-  command.command = kCommandPenThickness;
+  command.command = DrawType::kCommandPenThickness;
   command.arg1 = thickness;
   command.arg2 = int(fill);
   command.arg3 = int(end);
@@ -389,7 +388,7 @@ void RendererCairo::SetLineThickness(uint32_t thickness, LineType fill) {
 
 uint32_t RendererCairo::MovePen(int32_t x, int32_t y) {
   Command command;
-  command.command = kCommandPenMove;
+  command.command = DrawType::kCommandPenMove;
   command.points[0].x = x;
   command.points[0].y = y;
   command.arg1 = 1;  // 1 indicatesnew path
@@ -399,7 +398,7 @@ uint32_t RendererCairo::MovePen(int32_t x, int32_t y) {
 
 uint32_t RendererCairo::MovePenRaw(int32_t x, int32_t y) {
   Command command;
-  command.command = kCommandPenMove;
+  command.command = DrawType::kCommandPenMove;
   command.points[0].x = x;
   command.points[0].y = y;
   command.arg1 = 0;  // 0 indicates no new path
@@ -409,7 +408,7 @@ uint32_t RendererCairo::MovePenRaw(int32_t x, int32_t y) {
 
 uint32_t RendererCairo::DrawPen(uint32_t x, uint32_t y, bool close) {
   Command command;
-  command.command = kCommandPenDraw;
+  command.command = DrawType::kCommandPenDraw;
   command.points[0].x = x;
   command.points[0].y = y;
   command.arg1 = close ? 1 : 0;
@@ -421,7 +420,7 @@ uint32_t RendererCairo::DrawPenRaw(int32_t x, int32_t y) {
   //  y = render_.size.height - y;
   //  x = render_.size.width - x;
   Command command;
-  command.command = kCommandPenDraw;
+  command.command = DrawType::kCommandPenDraw;
   command.points[0].x = x;
   command.points[0].y = y;
   command.arg1 = 0;
@@ -431,19 +430,19 @@ uint32_t RendererCairo::DrawPenRaw(int32_t x, int32_t y) {
 
 void RendererCairo::Save() {
   Command command;
-  command.command = kCommandSave;
+  command.command = DrawType::kCommandSave;
   draw_commands_.push_back(command);
 }
 
 void RendererCairo::Restore() {
   Command command;
-  command.command = kCommandRestore;
+  command.command = DrawType::kCommandRestore;
   draw_commands_.push_back(command);
 }
 
 void RendererCairo::Scale(double x, double y) {
   Command command;
-  command.command = kCommandScale;
+  command.command = DrawType::kCommandScale;
   command.width = x;
   command.height = y;
   draw_commands_.push_back(command);
@@ -451,7 +450,7 @@ void RendererCairo::Scale(double x, double y) {
 
 void RendererCairo::Translate(uint32_t x, uint32_t y) {
   Command command;
-  command.command = kCommandTranslate;
+  command.command = DrawType::kCommandTranslate;
   command.arg1 = x;
   command.arg2 = y;
   draw_commands_.push_back(command);
@@ -459,14 +458,14 @@ void RendererCairo::Translate(uint32_t x, uint32_t y) {
 
 void RendererCairo::Rotate(double radians) {
   Command command;
-  command.command = kCommandRotate;
+  command.command = DrawType::kCommandRotate;
   command.width = radians;
   draw_commands_.push_back(command);
 }
 
 uint32_t RendererCairo::ClosePath(bool fill) {
   Command command;
-  command.command = kCommandClosePath;
+  command.command = DrawType::kCommandClosePath;
   command.arg1 = fill ? 1 : 0;
   draw_commands_.push_back(command);
   return 0;
@@ -474,7 +473,7 @@ uint32_t RendererCairo::ClosePath(bool fill) {
 
 uint32_t RendererCairo::DrawLine(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2) {
   Command command;
-  command.command = kCommandPenLine;
+  command.command = DrawType::kCommandPenLine;
   command.points[0].x = x1;
   command.points[0].y = y1;
   draw_commands_.push_back(command);
@@ -483,7 +482,7 @@ uint32_t RendererCairo::DrawLine(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t
 
 void RendererCairo::DrawCircle(uint32_t x, uint32_t y, uint32_t radius, bool fill) {
   Command command;
-  command.command = kCommandCircle;
+  command.command = DrawType::kCommandCircle;
   command.points[0].x = x;
   command.points[0].y = y;
   command.radius = radius;
@@ -495,7 +494,7 @@ void RendererCairo::DrawCircle(uint32_t x, uint32_t y, uint32_t radius, bool fil
 
 void RendererCairo::DrawArcRaw(uint32_t x, uint32_t y, uint32_t radius, uint32_t angle1, uint32_t angle2) {
   Command command;
-  command.command = kCommandArc;
+  command.command = DrawType::kCommandArc;
   command.points[0].x = x;
   command.points[0].y = y;
   command.radius = radius;
@@ -509,7 +508,7 @@ void RendererCairo::DrawRectangle(uint32_t x, uint32_t y, uint32_t width, uint32
   height += y;
 
   Command command;
-  command.command = kCommandPenRectangle;
+  command.command = DrawType::kCommandPenRectangle;
   command.points[0].x = x;
   command.points[0].y = y;
   command.points[1].x = width;
@@ -521,7 +520,7 @@ void RendererCairo::DrawRectangle(uint32_t x, uint32_t y, uint32_t width, uint32
 void RendererCairo::DrawRoundedRectangle(uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t courner,
                                          bool fill) {
   Command command;
-  command.command = kCommandPenRoundedRectangle;
+  command.command = DrawType::kCommandPenRoundedRectangle;
   command.points[0].x = x;
   command.points[0].y = y;
   command.arg1 = width;
@@ -534,7 +533,7 @@ void RendererCairo::DrawRoundedRectangle(uint32_t x, uint32_t y, uint32_t width,
 void RendererCairo::DrawTriangle(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint32_t x3, uint32_t y3,
                                  bool fill) {
   Command command;
-  command.command = kCommandPenTriangle;
+  command.command = DrawType::kCommandPenTriangle;
   command.points[0].x = x1;
   command.points[0].y = y1;
   command.points[1].x = x2;
@@ -547,7 +546,7 @@ void RendererCairo::DrawTriangle(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t
 
 uint32_t RendererCairo::DrawColor(uint8_t r, uint8_t g, uint8_t b) {
   Command command;
-  command.command = kCommandPenColour;
+  command.command = DrawType::kCommandPenColour;
   command.colour.red = r;
   command.colour.green = g;
   command.colour.blue = b;
@@ -562,7 +561,7 @@ uint32_t RendererCairo::DrawColor(uint32_t rgb) {
 
 void RendererCairo::SetTextFont(uint32_t slope, widget::WeightType weight, const std::string fontName, double size) {
   Command command;
-  command.command = kCommandTextFont;
+  command.command = DrawType::kCommandTextFont;
   command.arg1 = slope;
   command.arg2 = int(weight);
   command.width = size;
@@ -572,13 +571,13 @@ void RendererCairo::SetTextFont(uint32_t slope, widget::WeightType weight, const
 
 void RendererCairo::Push() {
   Command command;
-  command.command = kCommandPush;
+  command.command = DrawType::kCommandPush;
   draw_commands_.push_back(command);
 }
 
 void RendererCairo::Pop() {
   Command command;
-  command.command = kCommandPop;
+  command.command = DrawType::kCommandPop;
   draw_commands_.push_back(command);
 }
 
@@ -603,7 +602,7 @@ uint32_t RendererCairo::GetTextHeight(const std::string str, uint32_t fontSize) 
 
 void RendererCairo::DrawText(uint32_t x, uint32_t y, const std::string text) {
   Command command;
-  command.command = kCommandText;
+  command.command = DrawType::kCommandText;
   command.points[0].x = x;
   command.points[0].y = y;
   command.text = text;
@@ -614,7 +613,7 @@ void RendererCairo::DrawLabel(uint32_t x, uint32_t y, const std::string text) {
   y = render_.size.height - y;
 
   Command command;
-  command.command = kCommandText;
+  command.command = DrawType::kCommandText;
   command.points[0].x = x;
   command.points[0].y = y;
   command.text = text;
@@ -672,7 +671,7 @@ uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, unsigned char *buffer
   image_list_.push_back(new_image);
 
   Command command;
-  command.command = kCommandImageTexture;
+  command.command = DrawType::kCommandImageTexture;
   command.points[0].x = x;
   command.points[0].y = y;
   command.arg1 = image_list_.size();
@@ -687,7 +686,7 @@ uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, unsigned char *buffer
                                           height_, cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, width_));
   image_list_.push_back(new_image);
   Command command;
-  command.command = kCommandImageTexture;
+  command.command = DrawType::kCommandImageTexture;
   command.points[0].x = x;
   command.points[0].y = y;
   command.arg1 = image_list_.size();
@@ -703,7 +702,7 @@ uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, cairo_surface_t *surf
   image_list_.push_back(new_image);
 
   Command command;
-  command.command = kCommandImageTexturePersist;
+  command.command = DrawType::kCommandImageTexturePersist;
   command.points[0].x = x;
   command.points[0].y = y;
   command.arg1 = image_list_.size();

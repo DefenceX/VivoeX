@@ -1,4 +1,4 @@
-///
+//
 // MIT License
 //
 // Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
@@ -17,8 +17,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-///
-/// \brief Alarms state definition
+//
 ///
 /// \file alarms.cc
 ///
