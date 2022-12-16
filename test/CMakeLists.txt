@@ -6,7 +6,8 @@ pkg_check_modules(CAIRO REQUIRED cairo)
 pkg_check_modules(PANGO REQUIRED pango)
 pkg_check_modules(SWSCALE REQUIRED libswscale)
 
-set(CMAKE_CXX_FLAGS --coverage) 
+set(CMAKE_CXX_FLAGS --coverage)
+
 set(
   TEST_INCLUDES
   ${GTK3_INCLUDE_DIRS} 
@@ -43,9 +44,11 @@ add_executable(
 
 target_link_libraries(
   test_log
-  GTest::gtest_main
+  ${GTEST_LIBARAIES}
   ${TEST_LIBS}
 )
+
+target_link_directories(test_log PRIVATE ${GTEST_LIBRARY_DIRS})
 
 target_include_directories(
   test_log PUBLIC
@@ -62,15 +65,19 @@ add_executable(
 
 target_link_libraries(
   test_hmi
-  GTest::gtest_main
+  ${GTEST_LIBARAIES}
   ${TEST_LIBS}
 )
+
+target_link_directories(test_hmi PRIVATE ${GTEST_LIBRARY_DIRS})
 
 target_include_directories(test_hmi PUBLIC
   ${TEST_INCLUDES}
 )
 
-add_dependencies(test_hmi config-proto)
+add_dependencies(test_hmi config-proto googletest)
 
 include(GoogleTest)
-gtest_discover_tests(test_log)
+
+gtest_discover_tests(test_hmi WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+gtest_discover_tests(test_log WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})

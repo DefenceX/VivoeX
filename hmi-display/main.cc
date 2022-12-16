@@ -59,14 +59,14 @@ int32_t GetOpt(int argc, char *argv[], GvaApplication::Options *opt) {
                   << std::endl;
         return 0;
       case 'w':
-        opt->windowEnabled = true;
+        opt->windowEnabled_ = true;
         return -1;
       case 'c':
         opt->config = optarg;
         return -1;
       case 'l':
         printf("-l selected");
-        opt->videoEnabled = true;
+        opt->videoEnabled_ = true;
         break;
       case 'f':
         configuration->SetFullscreen(true);

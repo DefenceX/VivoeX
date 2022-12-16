@@ -41,7 +41,6 @@ rendererMap::rendererMap(std::string map, std::string style, int width, int heig
     : width_(width), height_(height), map_(map), style_(style) {
   database_ = (osmscout::DatabaseRef)(new osmscout::Database(databaseParameter_));
   mapService_ = (osmscout::MapServiceRef)(new osmscout::MapService(database_));
-  printf("rendererMap() %dx%d  \n", width_, height_);
 
   if (!database_->Open(map_.c_str())) {
     logGva::log("Cannot open libosmscout database", DebugLevel::kLogError);

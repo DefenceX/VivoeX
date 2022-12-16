@@ -99,7 +99,7 @@ ExternalProject_Add(
     ${DDS_STACK}
     GIT_REPOSITORY      https://github.com/eclipse-cyclonedds/cyclonedds
     GIT_TAG             "0.10.2"
-    GIT_SHALLOW         5
+    GIT_SHALLOW         1
     GIT_CONFIG          fetch.recurseSubmodules=true
     CMAKE_ARGS          -DCMAKE_INSTALL_MESSAGE=LAZY
     PREFIX              ${CMAKE_BINARY_DIR}/external/cyclonedds/prefix

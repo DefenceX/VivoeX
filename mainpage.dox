@@ -28,6 +28,7 @@
 
 - \ref tools
    - \ref test-hmi
+   - \ref osm
 - \ref screen
   - \ref screen1
   - \ref screen2
@@ -240,6 +241,41 @@ Widgets can then be rendered and viewed using the widget-tester.cc console progr
 
 \image html classgva_1_1WidgetX__inherit__graph.png "Diagram showing current widgets in the SDK" 
 
+\subsection osm Open Street Map (OSM) file generation
+To simplify the processing of maps for some countries a bash script is provided in the scripts/maps folder called 
+\a scripts/maps/process_maps.sh. Currently three countries are processed with this script and these are:
+
+- England
+- Germany
+- Australia
+
+Please feel free to modify the script to process the country/s you require. For convinience processed map archives are 
+avaliable from the defencex.com.au website in the downloads area. These are updated on an adhock bases for testing purposes.
+
+Once you have created your maps you will need to poit the config file at the map install location. Please edit and rebuild the 
+\a config.proto file to point to you install location (osm.map_path). 
+
+Find you maps over on http://www.geofabrik.de/
+
+OSMScout import guide https://libosmscout.sourceforge.net/tutorials/importing/
+
+The default install locations for maps is under \a /opt below shows the sugested layout:
+\code
+.
+└── opt
+   ├── gva
+   │   ├── hmi
+   │   │   └── images
+   │   └── libs
+   └── osmscout
+      ├── maps
+      │   ├── australia-latest 
+      │   ├── england-latest 
+      │   └── germany-latest 
+      └── stylesheets
+         └── include
+\endcode
+
 \section screen Screenshots
 \subsection screen1 SA Screen with no labels
 \image html images/screen/ScreenshotSaFrontMin.png  "SA Screen (Minimised)" 
@@ -267,5 +303,7 @@ Widgets can then be rendered and viewed using the widget-tester.cc console progr
 
 \subsection screen9 Drivers Modern Systems screen using theme
 \image html images/screen/ScreenshotThemeModernSys.png  "Theme high contrast, Systems (SYS) Overview" 
+
+
 
 

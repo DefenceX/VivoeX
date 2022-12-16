@@ -44,8 +44,8 @@ class GvaApplication {
  public:
   /// \brief Application options
   struct Options {
-    bool videoEnabled;
-    bool windowEnabled;
+    bool videoEnabled_;
+    bool windowEnabled_;
     std::string config;
   };
 

@@ -56,7 +56,7 @@ GvaApplication::GvaApplication(const Options &options, const std::string &ipaddr
   // Setup video sources (default size will be 640 x 480 unless specified)
   // @todo hmi_display: Fix issue with stream blocking execution on RTP input
   // @body The RTP stream blocks for a whole frame slowing down the HMI.
-  if (options_.videoEnabled == true) {
+  if (options_.videoEnabled_ == true) {
     gva::logGva::log(
         "Resolution " + std::to_string(rtp_stream1_->GetHeight()) + "x" + std::to_string(rtp_stream1_->GetWidth()),
         gva::DebugLevel::kLogInfo);
@@ -117,7 +117,7 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
   bool update = true;
   const gva::HandleType *render = static_cast<gva::HandleType *>(user_data);
 
-  if ((options_.videoEnabled) && (gva::hmi::GetScreen()->currentFunction == gva::GvaFunctionEnum::kDriver)) {
+  if ((options_.videoEnabled_) && (gva::hmi::GetScreen()->currentFunction == gva::GvaFunctionEnum::kDriver)) {
     gva::hmi::GetScreen()->canvas.bufferType = gva::SurfaceType::kSurfaceCairo;
     gva::hmi::GetScreen()->canvas.surface =
         cairo_image_surface_create(CAIRO_FORMAT_ARGB32, gva::kMinimumWidth, gva::kMinimumHeight);
