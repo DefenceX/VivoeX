@@ -60,7 +60,7 @@ class RendererGva : public RendererCairo {
   /// \brief Destroy the Renderer Gva object
   ///
   ///
-  ~RendererGva() = default;
+  ~RendererGva() override = default;
 
   ///
   /// \brief Draw all the labels on the screen
