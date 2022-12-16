@@ -77,28 +77,179 @@ class RendererCairo;
 
 class Renderer {
  public:
+  ///
+  /// \brief Construct a new Renderer object
+  ///
+  /// \param width
+  /// \param height
+  ///
   Renderer(uint32_t width, uint32_t height);
+
+  ///
+  /// \brief Destroy the Renderer object
+  ///
+  ///
   virtual ~Renderer() = default;
+
+  ///
+  /// \brief Set the Pixel attribute
+  ///
+  /// \param x
+  /// \param y
+  ///
   virtual void SetPixel(uint32_t x, uint32_t y) = 0;
+
+  ///
+  /// \brief Set the Colour attribute
+  ///
+  /// \param red
+  /// \param green
+  /// \param blue
+  ///
   virtual void SetColour(uint8_t red, uint8_t green, uint8_t blue) = 0;
+
+  ///
+  /// \brief Set the Colour Foreground attribute
+  ///
+  /// \param red
+  /// \param green
+  /// \param blue
+  ///
   virtual void SetColourForeground(uint8_t red, uint8_t green, uint8_t blue) = 0;
+
+  ///
+  /// \brief Set the Colour Background attribute
+  ///
+  /// \param red
+  /// \param green
+  /// \param blue
+  ///
   virtual void SetColourBackground(uint8_t red, uint8_t green, uint8_t blue) = 0;
+
+  ///
+  /// \brief Get the Width attribute
+  ///
+  /// \return uint32_t
+  ///
   static uint32_t GetWidth() { return width_; }
+
+  ///
+  /// \brief Get the Height attribute
+  ///
+  /// \return uint32_t
+  ///
   static uint32_t GetHeight() { return height_; }
+
+  ///
+  /// \brief Set the Width attribute
+  ///
+  /// \param width
+  ///
   static void SetWidth(uint32_t width) { width_ = width; }
+
+  ///
+  /// \brief Set the Height attribute
+  ///
+  /// \param height
+  ///
   static void SetHeight(uint32_t height) { height_ = height; }
+
+  ///
+  /// \brief Draw a straight line
+  ///
+  /// \param x1
+  /// \param y1
+  /// \param x2
+  /// \param y2
+  /// \return uint32_t
+  ///
   virtual uint32_t DrawLine(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2) = 0;
+
+  ///
+  /// \brief Draw a circle, set filled to true to have solid circle
+  ///
+  /// \param x
+  /// \param y
+  /// \param radius
+  /// \param fill
+  ///
   virtual void DrawCircle(uint32_t x, uint32_t y, uint32_t radius, bool fill) = 0;
+
+  ///
+  /// \brief Draw a rectangle, set filled to true to have solid rectangle
+  ///
+  /// \param x1
+  /// \param y1
+  /// \param x2
+  /// \param y2
+  /// \param fill
+  ///
   virtual void DrawRectangle(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, bool fill) = 0;
+
+  ///
+  /// \brief Set the draw colour
+  ///
+  /// \param r
+  /// \param g
+  /// \param b
+  /// \return uint32_t
+  ///
   virtual uint32_t DrawColor(uint8_t r, uint8_t g, uint8_t b) = 0;
+
+  ///
+  /// \brief Set the background texture to and RGB buffer (No Alpha channel)
+  ///
+  /// \param x
+  /// \param y
+  /// \param buffer
+  /// \param file
+  /// \return uint32_t
+  ///
   virtual uint32_t TextureRGB(uint32_t x, uint32_t y, unsigned char* buffer, std::string file) = 0;
+
+  ///
+  /// \brief Pack three red, green, blue values
+  ///
+  /// \param r
+  /// \param g
+  /// \param b
+  /// \return uint64_t
+  ///
   static uint64_t PackRgb(uint8_t r, uint8_t g, uint8_t b) {
     uint64_t packed = (r << 16) | (g << 8) | b;
     return packed;
   }
+
+  ///
+  /// \brief Unpack a red value
+  ///
+  /// \param rgb
+  /// \return uint32_t
+  ///
   uint32_t UnpackRed(uint32_t rgb) const { return (rgb & 0xff0000) >> 16; }
+
+  ///
+  /// \brief Unpack a green value
+  ///
+  /// \param rgb
+  /// \return uint32_t
+  ///
   uint32_t UnpackGreen(uint32_t rgb) const { return (rgb & 0xff00) >> 8; }
+
+  ///
+  /// \brief Unpack a blue value
+  ///
+  /// \param rgb
+  /// \return uint32_t
+  ///
   uint32_t UnpackBlue(uint32_t rgb) const { return rgb & 0xff; }
+
+  ///
+  /// \brief Unpack red, green and blue values
+  ///
+  /// \param rgb
+  /// \return RgbUnpackedType
+  ///
   RgbUnpackedType UnpackRgb(uint64_t rgb) const {
     RgbUnpackedType colour;
     colour.r = (rgb & 0x0000000000ff0000) >> 16;

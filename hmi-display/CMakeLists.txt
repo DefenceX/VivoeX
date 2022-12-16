@@ -27,6 +27,7 @@ set(SOURCES main.cc
 			src/renderer.cc 
 			src/renderer_cairo.cc 
 			src/renderer_gva.cc 
+			src/touch_gva.cc 
 			src/screen_gva.cc 
 			src/events_gva.cc 
 			src/widgets/widget.cc

@@ -31,28 +31,10 @@
 #include "src/config_reader.h"
 #include "src/gva.h"
 #include "src/renderer_cairo.h"
+#include "src/touch_gva.h"
 #include "src/widgets/widget_types.h"
 
 namespace gva {
-
-class RenderBase {
- public:
-  RenderBase() = default;
-  RenderBase(uint32_t x, uint32_t y) : m_x(x), m_y(y) {}
-  RenderBase(uint32_t x, uint32_t y, uint32_t width) : m_x(x), m_y(y), m_width(width) {}
-  RenderBase(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
-      : m_x(x), m_y(y), m_width(width), m_height(height) {}
-  uint32_t GetX() const { return m_x; }
-  uint32_t GetY() const { return m_y; }
-  uint32_t GetWidth() const { return m_width; }
-  uint32_t GetHeight() const { return m_height; }
-
- private:
-  uint32_t m_x = 0;
-  uint32_t m_y = 0;
-  uint32_t m_width = 0;
-  uint32_t m_height = 0;
-};
 
 class GvaCell {
  public:
@@ -64,65 +46,26 @@ class GvaCell {
   widget::WeightType weight;
 };
 
-class Hotspot : public RenderBase {
- public:
-  Hotspot(GvaFunctionGroupEnum groupId, uint32_t x, uint32_t y) : RenderBase(x, y), group_id_(groupId), binding_(0) {}
-  Hotspot(GvaFunctionGroupEnum groupId, uint32_t binding, uint32_t x, uint32_t y, uint32_t width, uint32_t height)
-      : RenderBase(x, y, width, height), group_id_(groupId), binding_(binding) {}
-  GvaFunctionGroupEnum GetGroupId() const { return group_id_; }
-  uint32_t GetBinding() const { return binding_; }
-
- private:
-  GvaFunctionGroupEnum group_id_;  // Group hotspots together
-  uint32_t binding_;               // Bind a value or a key to this Hotspot
-};
-
-class TouchGva {
- public:
-  GvaStatusTypes Add(GvaFunctionGroupEnum groupId, uint32_t x, uint32_t y) {
-    hotspots_.push_back(Hotspot(groupId, x, y));
-    return GvaStatusTypes::kGvaSuccess;
-  }
-  GvaStatusTypes Add(GvaFunctionGroupEnum groupId, uint32_t binding, uint32_t x, uint32_t y, uint32_t width,
-                     uint32_t height) {
-    hotspots_.push_back(Hotspot(groupId, binding, x, y, width, height));
-    return GvaStatusTypes::kGvaSuccess;
-  }
-  GvaStatusTypes AddAbsolute(GvaFunctionGroupEnum groupId, uint32_t binding, uint32_t x, uint32_t y, uint32_t xx,
-                             uint32_t yy) {
-    hotspots_.push_back(Hotspot(groupId, binding, x, y, xx - x, yy - y));
-    return GvaStatusTypes::kGvaSuccess;
-  }
-  void SetResolution(uint32_t x, uint32_t y) {
-    x_ = x;
-    y_ = y;
-  }
-  void Reset() { hotspots_.clear(); }
-  bool Check(GvaFunctionGroupEnum groupId, uint32_t *binding, uint32_t x, uint32_t y) const {
-    // Adjust for resized windows
-    x = x / static_cast<float>(Renderer::GetWidth() / static_cast<float>(kMinimumWidth));
-    y = y / static_cast<float>(Renderer::GetHeight() / static_cast<float>(kMinimumHeight));
-
-    for (auto i = hotspots_.begin(); i != hotspots_.end(); ++i) {
-      if ((x > i->GetX()) && (x < (i->GetX() + i->GetWidth())) && (y > i->GetY()) &&
-          (y < (i->GetY() + i->GetHeight())) && (i->GetGroupId() == groupId)) {
-        *binding = i->GetBinding();
-        return true;
-      }
-    }
-    return false;
-  }
-
- public:
-  uint32_t x_;
-  uint32_t y_;
-  std::vector<Hotspot> hotspots_;
-};
-
 class RendererGva : public RendererCairo {
  public:
+  ///
+  /// \brief Construct a new Renderer Gva object
+  ///
+  ///
   RendererGva() = delete;
+
+  ///
+  /// \brief Construct a new Renderer Gva object
+  ///
+  /// \param width
+  /// \param height
+  ///
   RendererGva(uint32_t width, uint32_t height);
+
+  ///
+  /// \brief Destroy the Renderer Gva object
+  ///
+  ///
   ~RendererGva() = default;
 
   ///
@@ -206,16 +149,58 @@ class RendererGva : public RendererCairo {
 
  private:
   TouchGva touch_;
+
+  ///
+  /// \brief Set the State Label attribute
+  ///
+  /// \param state
+  /// \param config
+  ///
   void SetStateLabel(LabelStates state, ConfigData *config);
+
+  ///
+  /// \brief Set the State Text attribute
+  ///
+  /// \param state
+  /// \param config
+  ///
   void SetStateText(LabelStates state, ConfigData *config);
   ConfigData *config_ = nullptr;
 };
 
 class WidgetBase {
  public:
+  ///
+  /// \brief Construct a new Widget Base object
+  ///
+  /// \param renderer
+  ///
   explicit WidgetBase(RendererGva &renderer) : renderer_(renderer) {}
+
+  ///
+  /// \brief
+  ///
+  /// \param x
+  /// \param y
+  /// \param width
+  /// \param height
+  /// \param text
+  /// \param text_colour
+  ///
   void Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::string text, uint32_t text_colour);
+
+  ///
+  /// \brief Get the X pixel attribute
+  ///
+  /// \return uint32_t
+  ///
   uint32_t GetX() const { return x_; }
+
+  ///
+  /// \brief Get the Y pixel attribute
+  ///
+  /// \return uint32_t
+  ///
   uint32_t GetY() const { return y_; }
   RendererGva &renderer_;
   uint32_t x_;
@@ -224,7 +209,19 @@ class WidgetBase {
 
 class WidgetFunctionKeyToggle : public WidgetBase {
  public:
+  ///
+  /// \brief Construct a new Widget Function Key Toggle object
+  ///
+  /// \param renderer
+  ///
   explicit WidgetFunctionKeyToggle(RendererGva &renderer) : WidgetBase(renderer) {}
+
+  ///
+  /// \brief Set the toggle states
+  ///
+  /// \param label1 The first toggle state text
+  /// \param label2 The second toggle state text
+  ///
   void Toggle(const std::string &label1, const std::string &label2);
 };
 

@@ -23,7 +23,7 @@ for file in files_grabbed:
             f.seek(0)
             for l in f:
                 # print(counter, l)
-                if (counter >= num):
+                if (counter >= num-1):
                     updated_header = updated_header + l
                 counter+=1
             print(updated_header)

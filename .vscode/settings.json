@@ -16,11 +16,11 @@
     // The first line of the comment that gets generated. If empty it won't get generated at all.
     "doxdocgen.c.firstLine": "///",
     // Smart text snippet for getters.
-    "doxdocgen.c.getterText": "Get the {name} object",
+    "doxdocgen.c.getterText": "Get the {name} attribute",
     // The last line of the comment that gets generated. If empty it won't get generated at all.
     "doxdocgen.c.lastLine": "///",
     // Smart text snippet for setters.
-    "doxdocgen.c.setterText": "Set the {name} object",
+    "doxdocgen.c.setterText": "Set the {name} attribute",
     // Doxygen comment trigger. This character sequence triggers generation of Doxygen comments.
     "doxdocgen.c.triggerSequence": "///",
     // Smart text snippet for constructors.

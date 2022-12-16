@@ -31,6 +31,7 @@
 #include "src/config_reader.h"
 #include "src/gva.h"
 #include "src/screen_gva.h"
+#include "src/touch_gva.h"
 
 namespace gva {
 
