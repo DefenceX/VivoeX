@@ -71,8 +71,6 @@ void logGva::log(const std::string& message, const DebugLevel type) {
       case gva::DebugLevel::kLogInfo:
         std::cout << message << std::endl;
         break;
-      case gva::DebugLevel::kLogWarning:
-      case gva::DebugLevel::kLogError:
       default:
         std::cerr << "[" + std::to_string(info.uptime) + "]" + "*" + msgType.c_str() + "* " + message.c_str()
                   << std::endl;
@@ -85,7 +83,7 @@ void logGva::log(const std::string& message, const DebugLevel type) {
     m_errorfd_ = fopen(logfile_.c_str(), "w");
     openlog("vivoe-lite", LOG_CONS | LOG_PID | LOG_NDELAY, LOG_LOCAL1);
   }
-  if (m_errorfd_ != NULL) {
+  if (m_errorfd_ != nullptr) {
     fprintf(m_errorfd_, "[%ld] *%s* %s\n", info.uptime, msgType.c_str(), message.c_str());
     fflush(m_errorfd_);
     if (type == gva::DebugLevel::kLogError) {

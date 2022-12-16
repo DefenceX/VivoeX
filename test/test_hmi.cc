@@ -63,7 +63,7 @@ class HmiTest : public ::testing::Test {
   // for HmiTest.
 };
 
-TEST_F(HmiTest, CheckTests) { int i = 0; }
+TEST_F(HmiTest, CheckTests) { return; }
 
 }  // namespace gva
 

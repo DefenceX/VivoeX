@@ -78,11 +78,11 @@ void RendererCairo::Draw() {
         cairo_arc(cr, 0, 0, currentCmd.radius, 0, 2 * M_PI);
         cairo_close_path(cr);
         if (currentCmd.fill) {
-          cairo_set_source_rgb(cr, intToFloat(background_colour_.red), intToFloat(background_colour_.green),
-                               intToFloat(background_colour_.blue));
+          cairo_set_source_rgb(cr, IntToFloat(background_colour_.red), IntToFloat(background_colour_.green),
+                               IntToFloat(background_colour_.blue));
           cairo_fill_preserve(cr);
-          cairo_set_source_rgb(cr, intToFloat(foreground_colour_.red), intToFloat(foreground_colour_.green),
-                               intToFloat(foreground_colour_.blue));
+          cairo_set_source_rgb(cr, IntToFloat(foreground_colour_.red), IntToFloat(foreground_colour_.green),
+                               IntToFloat(foreground_colour_.blue));
           cairo_stroke(cr);
         } else {
           cairo_stroke(cr);
@@ -131,11 +131,11 @@ void RendererCairo::Draw() {
         cairo_close_path(cr);
 #if 1
         if (currentCmd.fill) {
-          cairo_set_source_rgb(cr, intToFloat(background_colour_.red), intToFloat(background_colour_.green),
-                               intToFloat(background_colour_.blue));
+          cairo_set_source_rgb(cr, IntToFloat(background_colour_.red), IntToFloat(background_colour_.green),
+                               IntToFloat(background_colour_.blue));
           cairo_fill_preserve(cr);
-          cairo_set_source_rgb(cr, intToFloat(foreground_colour_.red), intToFloat(foreground_colour_.green),
-                               intToFloat(foreground_colour_.blue));
+          cairo_set_source_rgb(cr, IntToFloat(foreground_colour_.red), IntToFloat(foreground_colour_.green),
+                               IntToFloat(foreground_colour_.blue));
           cairo_stroke(cr);
         } else {
           cairo_stroke(cr);
@@ -159,11 +159,11 @@ void RendererCairo::Draw() {
         cairo_close_path(cr);
       }
         if (currentCmd.fill) {
-          cairo_set_source_rgb(cr, intToFloat(background_colour_.red), intToFloat(background_colour_.green),
-                               intToFloat(background_colour_.blue));
+          cairo_set_source_rgb(cr, IntToFloat(background_colour_.red), IntToFloat(background_colour_.green),
+                               IntToFloat(background_colour_.blue));
           cairo_fill_preserve(cr);
-          cairo_set_source_rgb(cr, intToFloat(foreground_colour_.red), intToFloat(foreground_colour_.green),
-                               intToFloat(foreground_colour_.blue));
+          cairo_set_source_rgb(cr, IntToFloat(foreground_colour_.red), IntToFloat(foreground_colour_.green),
+                               IntToFloat(foreground_colour_.blue));
           cairo_stroke(cr);
         }
         break;
@@ -177,19 +177,19 @@ void RendererCairo::Draw() {
         cairo_close_path(cr);
 
         if (currentCmd.fill) {
-          cairo_set_source_rgb(cr, intToFloat(background_colour_.red), intToFloat(background_colour_.green),
-                               intToFloat(background_colour_.blue));
+          cairo_set_source_rgb(cr, IntToFloat(background_colour_.red), IntToFloat(background_colour_.green),
+                               IntToFloat(background_colour_.blue));
           cairo_fill_preserve(cr);
-          cairo_set_source_rgb(cr, intToFloat(foreground_colour_.red), intToFloat(foreground_colour_.green),
-                               intToFloat(foreground_colour_.blue));
+          cairo_set_source_rgb(cr, IntToFloat(foreground_colour_.red), IntToFloat(foreground_colour_.green),
+                               IntToFloat(foreground_colour_.blue));
           cairo_stroke(cr);
         } else {
           cairo_stroke(cr);
         }
         break;
       case DrawType::kCommandPenColour:
-        cairo_set_source_rgb(cr, intToFloat(currentCmd.colour.red), intToFloat(currentCmd.colour.green),
-                             intToFloat(currentCmd.colour.blue));
+        cairo_set_source_rgb(cr, IntToFloat(currentCmd.colour.red), IntToFloat(currentCmd.colour.green),
+                             IntToFloat(currentCmd.colour.blue));
         break;
       case DrawType::kCommandPenThickness:
         cairo_set_line_width(cr, (cairo_line_join_t)currentCmd.arg1);
@@ -245,11 +245,11 @@ void RendererCairo::Draw() {
       case DrawType::kCommandClosePath:
         cairo_close_path(cr);
         if (currentCmd.arg1 > 0) {
-          cairo_set_source_rgb(cr, intToFloat(background_colour_.red), intToFloat(background_colour_.green),
-                               intToFloat(background_colour_.blue));
+          cairo_set_source_rgb(cr, IntToFloat(background_colour_.red), IntToFloat(background_colour_.green),
+                               IntToFloat(background_colour_.blue));
           cairo_fill_preserve(cr);
-          cairo_set_source_rgb(cr, intToFloat(foreground_colour_.red), intToFloat(foreground_colour_.green),
-                               intToFloat(foreground_colour_.blue));
+          cairo_set_source_rgb(cr, IntToFloat(foreground_colour_.red), IntToFloat(foreground_colour_.green),
+                               IntToFloat(foreground_colour_.blue));
           cairo_stroke(cr);
         }
         break;

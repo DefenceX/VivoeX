@@ -38,6 +38,10 @@ enum class DebugLevel { kLogDebug = 0, kLogInfo, kLogWarning, kLogError };
 ///
 class logGva {
  public:
+  logGva() = default;
+  logGva(logGva const &) = delete;
+  logGva &operator=(logGva const &) = delete;
+
   ///
   /// \brief Destroy the log Gva object
   ///
@@ -50,7 +54,7 @@ class logGva {
   /// \param message Message description
   /// \param type Severity
   ///
-  static void log(const std::string& message, const DebugLevel type);
+  static void log(const std::string &message, const DebugLevel type);
 
   ///
   /// \brief Finalise the log
@@ -59,7 +63,7 @@ class logGva {
   static void finish();
 
  private:
-  static FILE* m_errorfd_;
+  static FILE *m_errorfd_;
   static bool logfile_notfound_;
   static std::string logfile_;
 };

@@ -71,10 +71,42 @@ typedef void (*CallbackType)(void *io, gpointer data);
 class RendererCairo : public Renderer {
  public:
   static HandleType render_;
+
+  ///
+  /// \brief Construct a new Renderer Cairo object
+  ///
+  /// \param width
+  /// \param height
+  ///
   RendererCairo(uint32_t width, uint32_t height);
+
+  ///
+  /// \brief Destroy the Renderer Cairo object
+  ///
+  ///
   ~RendererCairo() override;
+
+  ///
+  /// \brief Initalise the renderer with simple display parameters
+  ///
+  /// \param width Canvas width in pixels
+  /// \param height Canvas height in pixels
+  /// \return uint32_t
+  ///
   uint32_t Init(uint32_t width, uint32_t height);
+
+  ///
+  /// \brief Initalise the renderer with display parameters
+  ///
+  /// \param width
+  /// \param height
+  /// \param fullscreen
+  /// \param cb
+  /// \param arg
+  /// \return uint32_t
+  ///
   uint32_t Init(uint32_t width, uint32_t height, bool fullscreen, CallbackType cb, void *arg);
+
   // Pure Virtual functions
   //
   ///
@@ -456,7 +488,7 @@ class RendererCairo : public Renderer {
   ///
   /// \param height
   ///
-  void SetHeight(uint32_t height) {
+  void SetHeight(uint32_t height) const {
     height_ = height;
     gtk_widget_set_size_request(render_.win.draw, (gint)width_, (gint)height_);
   }
@@ -466,7 +498,7 @@ class RendererCairo : public Renderer {
   ///
   /// \param width
   ///
-  void SetWidth(uint32_t width) {
+  void SetWidth(uint32_t width) const {
     width_ = width;
     gtk_widget_set_size_request(render_.win.draw, (gint)width_, (gint)height_);
   }
@@ -489,9 +521,10 @@ class RendererCairo : public Renderer {
   /// \return uint32_t
   ///
   uint32_t GetWidth() const {
-    gint h, w;
+    gint h;
+    gint w;
     gtk_widget_get_size_request(render_.win.draw, &w, &h);
-    return static_cast<int>(h);
+    return h;
   }
 
  private:
@@ -500,11 +533,13 @@ class RendererCairo : public Renderer {
   double scale_;
   gtkType root_;
 
-  //
-  // Helper Functions
-  //
-  // double intToFloat(int c) { return (double)1 / 255 * c; }
-  double intToFloat(int c) { return static_cast<double>(1) / 255 * c; }
+  ///
+  /// \brief Convert a standard integer to a double for use with the cairo colour system
+  ///
+  /// \param c The integer value to convert
+  /// \return double
+  ///
+  double IntToFloat(int c) const { return static_cast<double>(1) / 255 * c; }
 
   //
   // Render List

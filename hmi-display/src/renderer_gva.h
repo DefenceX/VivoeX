@@ -51,12 +51,6 @@ class RendererGva : public RendererCairo {
   ///
   /// \brief Construct a new Renderer Gva object
   ///
-  ///
-  RendererGva() = delete;
-
-  ///
-  /// \brief Construct a new Renderer Gva object
-  ///
   /// \param width
   /// \param height
   ///
@@ -208,14 +202,9 @@ class WidgetBase {
 };
 
 class WidgetFunctionKeyToggle : public WidgetBase {
- public:
-  ///
-  /// \brief Construct a new Widget Function Key Toggle object
-  ///
-  /// \param renderer
-  ///
-  explicit WidgetFunctionKeyToggle(RendererGva &renderer) : WidgetBase(renderer) {}
+  using WidgetBase::WidgetBase;
 
+ public:
   ///
   /// \brief Set the toggle states
   ///
