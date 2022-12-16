@@ -42,7 +42,7 @@ install(FILES ${CMAKE_BINARY_DIR}/external/libnmea/build/src/libnmealib.so
               ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libvivoe-media.so.1
               ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libGeographicLib.so
               ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libGeographicLib.so.23
-              ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libGeographicLib.so.23.0.1
+              ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libGeographicLib.so.23.1.0
               ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libosmscout_import.so 
               ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libosmscout_import.so.1.1.1
               ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libosmscout_map_cairo.so

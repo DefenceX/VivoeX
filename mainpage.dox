@@ -276,6 +276,12 @@ The default install locations for maps is under \a /opt below shows the sugested
          └── include
 \endcode
 
+To achieve this configuration with the <a href="https://defencex.com.au/downloads.php">archived</a> maps run the following commands as superuser:
+\code
+$ tar -xf stylesheet.tar.gz --directory /opt/osmscout
+$ tar -xf australia-latest.tar.gz --directory /opt/osmscout/maps
+\endcode
+
 \section screen Screenshots
 \subsection screen1 SA Screen with no labels
 \image html images/screen/ScreenshotSaFrontMin.png  "SA Screen (Minimised)" 
