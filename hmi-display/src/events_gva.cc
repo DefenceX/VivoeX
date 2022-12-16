@@ -32,6 +32,8 @@ namespace gva {
 static uint32_t previous_key_;
 static TouchGva* touch_;
 
+std::vector<EventGvaType> EventsGva::eventqueue_;
+
 EventsGva::EventsGva(gtkType* window, TouchGva* touch) {
   window_ = window;
   touch_ = touch;

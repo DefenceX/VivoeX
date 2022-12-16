@@ -62,8 +62,6 @@ class EventGvaType {
   ResolutionType resize_;
 };
 
-static std::vector<EventGvaType> eventqueue_;
-
 class EventsGva {
  public:
   //
@@ -111,6 +109,8 @@ class EventsGva {
   /// \return gtkType*
   ///
   gtkType *GetWindow() { return window_; }
+
+  static std::vector<EventGvaType> eventqueue_;
 
  private:
   static gboolean CreateKeyEvent(GtkWidget *Widget, GdkEventKey *event, EventEnumType type);

@@ -85,11 +85,8 @@ TEST_F(LogTest, LoggingTests) {
 // Tests that Foo does Xyz.
 TEST_F(LogTest, CeckingLogs) {
   int counter = 0;
-  // open the file if present, in read mode.
-  std::ifstream fs("/var/log/gva.log");
-  if (fs.is_open()) {
-    std::string line;
 
+  if (std::ifstream fs("/var/log/gva.log"); fs.is_open()) {
     for (std::string line; getline(fs, line);) {
       counter++;
     }

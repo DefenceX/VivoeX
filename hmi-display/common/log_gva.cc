@@ -34,8 +34,6 @@ FILE* logGva::m_errorfd_;
 bool logGva::logfile_notfound_ = false;
 std::string logGva::logfile_ = "/var/log/gva.log";
 
-logGva::~logGva() { closelog(); }
-
 void logGva::log(const std::string& message, const DebugLevel type) {
   struct sysinfo info;
   std::string msgType = "???";
@@ -97,6 +95,9 @@ void logGva::log(const std::string& message, const DebugLevel type) {
   }
 }
 
-void logGva::finish() { fclose(m_errorfd_); }
+void logGva::finish() {
+  closelog();
+  fclose(m_errorfd_);
+}
 
 }  // namespace gva

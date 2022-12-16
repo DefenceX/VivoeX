@@ -38,15 +38,30 @@ enum class DebugLevel { kLogDebug = 0, kLogInfo, kLogWarning, kLogError };
 ///
 class logGva {
  public:
-  logGva() = default;
+  ///
+  /// \brief Construct a new log Gva object
+  ///
+  ///
+  logGva() = delete;
+
+  ///
+  /// \brief Construct a new log Gva object
+  ///
+  ///
   logGva(logGva const &) = delete;
+
+  ///
+  /// \brief = Operator
+  ///
+  /// \return logGva&
+  ///
   logGva &operator=(logGva const &) = delete;
 
   ///
   /// \brief Destroy the log Gva object
   ///
   ///
-  ~logGva();
+  ~logGva() = delete;
 
   ///
   /// \brief Log a message with its severity

@@ -216,7 +216,11 @@ class Renderer {
   /// \return uint64_t
   ///
   static uint64_t PackRgb(uint8_t r, uint8_t g, uint8_t b) {
-    uint64_t packed = (r << 16) | (g << 8) | b;
+    auto red = (uint64_t)r;
+    auto green = (uint64_t)g;
+    auto blue = (uint64_t)b;
+
+    uint64_t packed = (red << 16) | (green << 8) | blue;
     return packed;
   }
 
