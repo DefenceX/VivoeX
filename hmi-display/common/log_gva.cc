@@ -1,23 +1,22 @@
-///
-/// MIT License
-///
-/// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
-///
-/// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
-/// associated documentation files (the 'Software'), to deal in the Software without restriction,
-/// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-/// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-/// subject to the following conditions:
-///
-/// The above copyright notice and this permission notice shall be included in all copies or substantial
-/// portions of the Software.
-/// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-/// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-/// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-/// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-/// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-///
-/// \brief A simple GVA logging module
+//
+// MIT License
+//
+// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+// associated documentation files (the 'Software'), to deal in the Software without restriction,
+// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+// subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial
+// portions of the Software.
+// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
 ///
 /// \file log_gva.cc
 ///
@@ -31,7 +30,9 @@
 
 namespace gva {
 
-FILE* logGva::m_errorfd;
+FILE* logGva::m_errorfd_;
+bool logGva::logfile_notfound_ = false;
+std::string logGva::logfile_ = "/var/log/gva.log";
 
 void logGva::log(const std::string& message, const DebugLevel type) {
   struct sysinfo info;
@@ -60,16 +61,38 @@ void logGva::log(const std::string& message, const DebugLevel type) {
   // Discard debug message if DEBUG not enabled
   if (type == gva::DebugLevel::kLogDebug) return;
 #endif
-  if (!m_errorfd) {
-    m_errorfd = fopen("/var/log/gva.log", "w");
+
+  if (logfile_notfound_) {
+    switch (type) {
+      case gva::DebugLevel::kLogDebug:
+      case gva::DebugLevel::kLogInfo:
+        std::cout << message << std::endl;
+        break;
+      case gva::DebugLevel::kLogWarning:
+      case gva::DebugLevel::kLogError:
+      default:
+        std::cerr << "[" + std::to_string(info.uptime) + "]" + "*" + msgType.c_str() + "* " + message.c_str()
+                  << std::endl;
+        break;
+    }
+    return;
   }
-  fprintf(m_errorfd, "[%ld] *%s* %s\n", info.uptime, msgType.c_str(), message.c_str());
-  fflush(m_errorfd);
-  if (type == gva::DebugLevel::kLogError) {
-    std::cout << message << std::endl;
+
+  if (!m_errorfd_) {
+    m_errorfd_ = fopen(logfile_.c_str(), "w");
+  }
+  if (m_errorfd_ != NULL) {
+    fprintf(m_errorfd_, "[%ld] *%s* %s\n", info.uptime, msgType.c_str(), message.c_str());
+    fflush(m_errorfd_);
+    if (type == gva::DebugLevel::kLogError) {
+      std::cout << message << std::endl;
+    }
+  } else {
+    logfile_notfound_ = true;
+    std::cerr << "Log file " + logfile_ + " was not found, redirecting all error messages to std::out" << std::endl;
   }
 }
 
-void logGva::finish() { fclose(m_errorfd); }
+void logGva::finish() { fclose(m_errorfd_); }
 
 }  // namespace gva
