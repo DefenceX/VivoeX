@@ -1,7 +1,3 @@
-
-
-
-
 add_custom_target(dot
     COMMAND ${CMAKE_COMMAND} "--graphviz=cmake.dot" .
     COMMAND dot -Tpng cmake.dot -o images/doxygen/cmake.png

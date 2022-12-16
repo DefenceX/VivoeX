@@ -130,29 +130,33 @@ class WidgetTable : public WidgetX {
   ///
   /// \return uint32_t
   ///
-  uint32_t GetBackgroundColour() { return background_colour_; }
+  uint32_t GetBackgroundColour();
 
   ///
   /// \brief Set the Background Colour attribute
   ///
   /// \param background_colour
   ///
-  void SetBackgroundColour(uint32_t background_colour) { background_colour_ = background_colour; }
+  void SetBackgroundColour(uint32_t background_colour);
 
   ///
   /// \brief Set the Current selected row, will be highlighted in the theme colours
   ///
   /// \param row
   ///
-  void SetCurrentRow(uint32_t row) { current_row_ = row; }
+  void SetCurrentRow(uint32_t row);
 
-  void SetNextRow() {
-    if (current_row_ < rows_.size() - 2) current_row_++;
-  }
+  ///
+  /// \brief Set the Next Row attribute
+  ///
+  ///
+  void SetNextRow();
 
-  void SetPreviousRow() {
-    if (current_row_ > 1) current_row_--;
-  }
+  ///
+  /// \brief Set the Previous Row attribute
+  ///
+  ///
+  void SetPreviousRow();
 
   ///
   /// \brief Get the Current selected highlighted row
@@ -160,14 +164,14 @@ class WidgetTable : public WidgetX {
   /// \param row
   /// \return uint32_t
   ///
-  uint32_t GetCurrentRow() const { return current_row_; }
+  uint32_t GetCurrentRow() const;
 
   ///
   /// \brief Get the Rows vector
   ///
   /// \return std::vector<RowType>&
   ///
-  std::vector<RowType> &GetRows() { return rows_; }
+  std::vector<RowType> &GetRows();
 
  private:
   std::vector<RowType> rows_;

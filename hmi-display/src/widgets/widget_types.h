@@ -115,8 +115,11 @@ enum class IconType {
 ///
 ///
 struct GvaColourType {
+  ///  Red intensity value
   int red;
+  /// Green intensity value
   int green;
+  /// Blue intensity value
   int blue;
 };
 

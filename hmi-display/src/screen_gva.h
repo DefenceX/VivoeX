@@ -72,8 +72,11 @@ struct Message {
 
 struct Screen {
   struct {
+    /// \brief A textual description of this screen
     std::string name;
+    /// \brief The current ScreenMode
     ScreenMode mode;
+    /// \brief The tty device connected to GPS
     std::string gpsDevice;
   } info;
 

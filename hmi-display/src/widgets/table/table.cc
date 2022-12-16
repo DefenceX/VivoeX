@@ -128,4 +128,22 @@ void WidgetTable::Reset() {
   rows_.clear();
 }
 
+uint32_t WidgetTable::GetBackgroundColour() { return background_colour_; }
+
+void WidgetTable::SetBackgroundColour(uint32_t background_colour) { background_colour_ = background_colour; }
+
+void WidgetTable::SetCurrentRow(uint32_t row) { current_row_ = row; }
+
+void WidgetTable::SetNextRow() {
+  if (current_row_ < rows_.size() - 2) current_row_++;
+}
+
+void WidgetTable::SetPreviousRow() {
+  if (current_row_ > 1) current_row_--;
+}
+
+uint32_t WidgetTable::GetCurrentRow() const { return current_row_; }
+
+std::vector<RowType>& WidgetTable::GetRows() { return rows_; }
+
 }  // namespace gva
