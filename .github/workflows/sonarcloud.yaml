@@ -46,5 +46,5 @@ jobs:
           sonar-scanner \
           --define sonar.cfamily.build-wrapper-output="${{ env.BUILD_WRAPPER_OUT_DIR }}" \
           --define sonar.coverageReportPaths=coverage.xml \
-          --define sonar.cfamily.cache.enabled=false
+          --define sonar.cfamily.cache.enabled=false \
           --define sonar.python.version=3
