@@ -22,4 +22,5 @@ ExternalProject_Add(
 
 set(GTEST_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/external/install/usr/local/include)
 set(GTEST_LIBARAIES gmock_main gmock gtest)
-set(GTEST_LIBRARY_DIRS ${CMAKE_BINARY_DIR}/external/install/usr/local/lib)
+# Ubuntu=/usr/local/lib CentOS=/usr/local/lib64, we just set paths for both
+set(GTEST_LIBRARY_DIRS ${CMAKE_BINARY_DIR}/external/install/usr/local/lib ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64)
