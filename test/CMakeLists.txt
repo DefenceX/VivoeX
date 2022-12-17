@@ -56,7 +56,7 @@ target_include_directories(
   ${GTEST_INCLUDE_DIRS}
 )
 
-add_dependencies(test_log config-proto)
+add_dependencies(test_log config-proto googletest)
 
 ## test-hmi
 add_executable(
