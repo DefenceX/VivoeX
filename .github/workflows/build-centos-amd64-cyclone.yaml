@@ -30,7 +30,9 @@ jobs:
           source /opt/rh/gcc-toolset-9/enable && \
           c++ --version && \
           dnf localinstall --nogpgcheck https://download1.rpmfusion.org/free/el/rpmfusion-free-release-8.noarch.rpm -y && \
-          dnf config-manager --set-enabled powertools -y
+          dnf config-manager --set-enabled powertools -y && \
+          dnf -y install gcc-toolset-9-gcc gcc-toolset-9-gcc-c++ && \
+          source /opt/rh/gcc-toolset-9/enable
 
       - name: Dnf Install
         run: |
