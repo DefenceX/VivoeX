@@ -41,6 +41,8 @@ jobs:
 
       - name: CMake and Build
         run: |
+          source /opt/rh/gcc-toolset-9/enable && \
+          gcc -v && \
           PATH=$PATH:${HOME}/.local/bin && \
           mkdir build && cd build && \
           cmake .. -DDDS=CYCLONE-CE .. && \
