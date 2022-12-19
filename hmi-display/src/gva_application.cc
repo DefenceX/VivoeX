@@ -250,6 +250,9 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
           if (render->surface) cairo_surface_destroy(render->surface);
           g_application_quit(G_APPLICATION(render->win.app));
           break;
+        case gva::GvaKeyEnum::kKeyBlackout:
+          Dispatch(event.key_);
+          break;
         case gva::GvaKeyEnum::kKeySituationalAwareness:
           // 1 maps to F1
           {
@@ -436,7 +439,6 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
         case gva::GvaKeyEnum::kKeyPreviousLabel: {
           Dispatch(event.key_);
         } break;
-        case gva::GvaKeyEnum::kKeyUnknown:  // Drop through to default
         default:
           gva::logGva::log("[GVA] Key release not defined " + std::to_string(int(event.key_)),
                            gva::DebugLevel::kLogInfo);

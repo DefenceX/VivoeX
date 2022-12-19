@@ -112,6 +112,9 @@ gboolean EventsGva::CreateKeyEvent(GtkWidget* Widget, GdkEventKey* event, EventE
     // exit on ESC key press
     gvaEvent.key_ = GvaKeyEnum::kKeyEscape;
   }
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyBlackout)) {
+    gvaEvent.key_ = GvaKeyEnum::kKeyBlackout;
+  }
   if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeySituationalAwareness)) {
     gvaEvent.key_ = GvaKeyEnum::kKeySituationalAwareness;
   }
@@ -204,14 +207,16 @@ gboolean EventsGva::CreateKeyEvent(GtkWidget* Widget, GdkEventKey* event, EventE
   if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF20)) {
     gvaEvent.key_ = GvaKeyEnum::kKeyF20;
   }
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyUpArrow)) {
+    gvaEvent.key_ = GvaKeyEnum::kKeyF18;
+  }
+  if (event->keyval == ConfigData::GetInstance([GVA] Up 0xff52)->GetKeyBinding(GvaKeyEnum::kKeyDownArrow)) {
+    gvaEvent.key_ = GvaKeyEnum::kKeyF17;
+  }
   if ((event->keyval == 'm') || (event->keyval == 'M')) {
     // m toggle fullscreen
     gvaEvent.key_ = GvaKeyEnum::kKeyFullscreen;
   }
-  // if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyBlackout)) {
-  //   // b toggle blackout F11
-  //   gvaEvent.key_ = GvaKeyEnum::kKeyF11;
-  // }
   if ((event->keyval == 75) || (event->keyval == 107)) {
     // k toggle keyboard
     gvaEvent.key_ = GvaKeyEnum::kKeyKeyboard;

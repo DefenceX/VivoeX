@@ -262,6 +262,8 @@ enum Key {
   kKeyF18 = 26; 
   kKeyF19 = 27; 
   kKeyF20 = 28;
+  kKeyUpArrow = 29;
+  kKeyDownArrow = 30;
 }
 
 message KeyBinding {

@@ -37,6 +37,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <vector>
 
 #include "common/debug.h"
 #include "common/log_gva.h"
@@ -56,16 +57,12 @@
 
 namespace gva {
 
-ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : RendererGva(width, height) {
-  screen_ = screen;
-
-  char tmp[100];
+ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : RendererGva(width, height), screen_(screen) {
   struct termios settings;
 
   config_ = gva::ConfigData::GetInstance();
 
-  sprintf(tmp, "GVA screen initalised (%dx%d)", width_, height_);
-  logGva::log(tmp, DebugLevel::kLogInfo);
+  logGva::log("GVA screen initalised (" + std::to_string(width_) + "x" + std::to_string(height_), DebugLevel::kLogInfo);
 
   // Initalise the pasert for NMEA
   nmea_zero_INFO(&info_);
@@ -143,8 +140,8 @@ void *ClockUpdate(void *arg) {
     if (*a->gps > 0) {
       i = 0;
       tcflush(*a->gps, TCIOFLUSH);
-      auto size = read(*a->gps, &buffer[0], 1);
-      if (size != 0) {
+
+      if (auto size = read(*a->gps, &buffer[0], 1); size != 0) {
         memset(buffer, 0, MAX_NMEA);
         while (buffer[0] != '$') {
           auto size = read(*a->gps, &buffer[0], 1);
@@ -219,38 +216,39 @@ void ScreenGva::StartClock(const StatusBar &barData) {
 }
 
 GvaStatusTypes ScreenGva::Update() {
-  unsigned char *texture = 0;
+  unsigned char *texture = nullptr;
 
   // Reset the Drawing context, must be Reset before reDrawing the screen
   Reset();
   GetTouch()->Reset();
 
   // Draw the background canvas first
-  switch (screen_->canvas.bufferType) {
-    case SurfaceType::kSurfaceCairo:
-      TextureRGB(0, 0, screen_->canvas.surface);
-      break;
-    case SurfaceType::kSurfaceFile:
-      TextureRGB(0, 0, screen_->canvas.buffer);
-      TextureRGB(0, 0, texture, screen_->canvas.filename);
-      break;
-    default:
-    case SurfaceType::kSurfaceNone:
-      // Set background green
-      SetColourForeground(config_->GetThemeBackground());
-      SetColourBackground(config_->GetThemeBackground());
-      DrawRectangle(0, 0, width_, height_, true);
-      break;
-    case SurfaceType::kSurfaceBlackout:
-      // Set background black
-      SetColourForeground(HMI_BLACK);
-      SetColourBackground(HMI_BLACK);
-      DrawRectangle(0, 0, width_, height_, true);
-      break;
+  if (screen_->canvas.blackout) {
+    // Set background black
+    SetColourForeground(HMI_BLACK);
+    SetColourBackground(HMI_BLACK);
+    DrawRectangle(0, 0, width_, height_, true);
+  } else {
+    switch (screen_->canvas.bufferType) {
+      case SurfaceType::kSurfaceCairo:
+        TextureRGB(0, 0, screen_->canvas.surface);
+        break;
+      case SurfaceType::kSurfaceFile:
+        TextureRGB(0, 0, screen_->canvas.buffer);
+        TextureRGB(0, 0, texture, screen_->canvas.filename);
+        break;
+      case SurfaceType::kSurfaceNone:
+      default:
+        // Set background green
+        SetColourForeground(config_->GetThemeBackground());
+        SetColourBackground(config_->GetThemeBackground());
+        DrawRectangle(0, 0, width_, height_, true);
+        break;
+    }
   }
 
   // If BLACKOUT then nothing to render
-  if (screen_->info.mode == ScreenMode::kModeBlackout) {
+  if (screen_->canvas.blackout) {
     //
     // Refresh display
     //
@@ -302,7 +300,7 @@ GvaStatusTypes ScreenGva::Update() {
                                  ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
     uint32_t i = 0;
     // Setup and Draw the status bar, one row table
-    uint32_t widths[7] = {23, 8, 37, 8, 8, 8, 8};
+    std::array<uint32_t, 7> widths = {23, 8, 37, 8, 8, 8, 8};
     status_bar_table.SetVisible(true);
     status_bar_table.SetX(1);
     status_bar_table.SetY(screen_->status_bar->y);

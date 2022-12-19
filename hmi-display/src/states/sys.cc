@@ -59,9 +59,9 @@ GvaKeyEnum Hmi::KeySYS(GvaKeyEnum keypress) {
           (screen_.info.mode == ScreenMode::kModeBlackout) ? ScreenMode::kModeOperational : ScreenMode::kModeBlackout;
       screen_.canvas.visible = true;
       if (screen_.info.mode == ScreenMode::kModeBlackout)
-        screen_.canvas.bufferType = SurfaceType::kSurfaceBlackout;
+        screen_.canvas.blackout = true;
       else
-        screen_.canvas.bufferType = SurfaceType::kSurfaceFile;
+        screen_.canvas.blackout = false;
       break;
     case GvaKeyEnum::kKeyF12:
       // Exit

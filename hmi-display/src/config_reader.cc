@@ -68,23 +68,26 @@ ConfigDataBase::ConfigDataBase() {
   // Add arrays here if any.
   current_config_->bindings().empty();
 
-  std::array<config::Key, 29> keys = {
-      config::kKeyBLK, config::kKeySA,  config::kKeyWPN, config::kKeyDEF, config::kKeySYS, config::kKeyDRV,
-      config::kKeySTR, config::kKeyCOM, config::kKeyBMS, config::kKeyF1,  config::kKeyF2,  config::kKeyF3,
-      config::kKeyF4,  config::kKeyF5,  config::kKeyF6,  config::kKeyF7,  config::kKeyF8,  config::kKeyF9,
-      config::kKeyF10, config::kKeyF11, config::kKeyF12, config::kKeyF13, config::kKeyF14, config::kKeyF15,
-      config::kKeyF16, config::kKeyF17, config::kKeyF18, config::kKeyF19, config::kKeyF20};
+  std::array<config::Key, 31> keys = {
+      config::kKeyBLK,      config::kKeySA,  config::kKeyWPN, config::kKeyDEF, config::kKeySYS, config::kKeyDRV,
+      config::kKeySTR,      config::kKeyCOM, config::kKeyBMS, config::kKeyF1,  config::kKeyF2,  config::kKeyF3,
+      config::kKeyF4,       config::kKeyF5,  config::kKeyF6,  config::kKeyF7,  config::kKeyF8,  config::kKeyF9,
+      config::kKeyF10,      config::kKeyF11, config::kKeyF12, config::kKeyF13, config::kKeyF14, config::kKeyF15,
+      config::kKeyF16,      config::kKeyF17, config::kKeyF18, config::kKeyF19, config::kKeyF20, config::kKeyUpArrow,
+      config::kKeyDownArrow};
 
   // These are the default display bindings
   // std::array<uint32_t, 29> default_bind = {
   // 'b',    '1',    '2',    '3',    '4',    '5',    '6',    '7', '8', 0xffbe, 0xffbf, 0xffc0, 0xffc1, 0xffc2,
-  // 0xffc3, 0xffc4, 0xffc5, 0xffc6, 0xffc7, 0xffc8, 0xffc9, 'a', 's', 'd',    'f',    'g',    'h',    'j'};
+  // 0xffc3, 0xffc4, 0xffc5, 0xffc6, 0xffc7, 0xffc8, 0xffc9, 'a', 's', 'd',    'f',    'g',    'h',    'j', 0xff52,
+  // 0xff54};
 
   // These are the APC display bindings
-  std::array<uint32_t, 29> apc_bind = {'q',    'w',    'e',    'r',    't',    'y',    'u',    'i',    'o',    0xffbe,
-                                       0xffbf, 0xffc0, 0xffc1, 0xffc2, 0xffc3, 0xffc4, 0xffc5, 0xffc6, 0xffc7, 0xffc8,
-                                       0xffc9, 'a',    's',    'd',    'f',    'g',    'h',    'j'};
-  for (int c = 0; c < 29; c++) {
+  std::array<uint32_t, 31> apc_bind = {'q',    'w',    'e',    'r',    't',    'y',    'u',    'i',
+                                       'o',    0xffbe, 0xffbf, 0xffc0, 0xffc1, 0xffc2, 0xffc3, 0xffc4,
+                                       0xffc5, 0xffc6, 0xffc7, 0xffc8, 0xffc9, 'a',    's',    'd',
+                                       'f',    'g',    'h',    'j',    0xff0d, 0xff54, 0xff52};
+  for (std::size_t c = 0; c < keys.size(); c++) {
     auto bindings = current_config_->add_bindings();
     bindings->set_bind(apc_bind[c]);
     bindings->set_key(keys[c]);
@@ -363,6 +366,10 @@ uint32_t ConfigData::GetKeyBinding(GvaKeyEnum key) const {
       return LookupKey(config::Key::kKeyF19);
     case GvaKeyEnum::kKeyF20:
       return LookupKey(config::Key::kKeyF20);
+    case GvaKeyEnum::kKeyUpArrow:
+      return LookupKey(config::Key::kKeyUpArrow);
+    case GvaKeyEnum::kKeyDownArrow:
+      return LookupKey(config::Key::kKeyDownArrow);
     default:
       return 0;
   }

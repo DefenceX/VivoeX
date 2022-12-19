@@ -316,7 +316,7 @@ struct StatusBar {
   std::array<Labels, 7> labels;
 };
 
-enum class SurfaceType { kSurfaceNone = 0, kSurfaceFile, kSurfaceBufferRgb24, kSurfaceCairo, kSurfaceBlackout };
+enum class SurfaceType { kSurfaceNone = 0, kSurfaceFile, kSurfaceBufferRgb24, kSurfaceCairo };
 
 ///
 /// \brief This is where you define all your screens, these are just the defaults

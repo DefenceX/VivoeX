@@ -278,6 +278,9 @@ void Hmi::KeySide(GvaKeyEnum key) {
 GvaKeyEnum Hmi::Key(GvaKeyEnum keypress) {
   KeySide(keypress);
   switch (keypress) {
+    case GvaKeyEnum::kKeyBlackout:
+      screen_.canvas.blackout = screen_.canvas.blackout ? false : true;
+      break;
     case GvaKeyEnum::kKeyF13:
       screen_.control->SetEnabledSelected(0);
       screen_.control->ResetAllEnabled();

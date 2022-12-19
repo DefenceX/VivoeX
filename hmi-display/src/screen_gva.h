@@ -46,6 +46,7 @@ struct Canvas {
   std::string filename;
   unsigned char *buffer;
   cairo_surface_t *surface;
+  bool blackout = false;
 };
 
 struct Label {
@@ -149,16 +150,16 @@ class ScreenGva : public RendererGva {
 
  private:
   char *PosDegrees(float lon, float lat);
-  Screen *screen_;
+  Screen *screen_ = nullptr;
   std::map<widget::WidgetEnum, std::shared_ptr<WidgetX>> widget_list_;
   args args_;
-  int gps_;
+  int gps_ = 0;
   uint32_t hndl_;
   Screen last_screen_;
   pthread_t clock_thread_;
   nmeaINFO info_;
   nmeaPARSER parser_;
-  ConfigData *config_;
+  ConfigData *config_ = nullptr;
 };
 
 }  // namespace gva
