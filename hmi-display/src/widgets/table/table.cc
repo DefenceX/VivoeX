@@ -54,7 +54,13 @@ void WidgetTable::DrawTable() {
 
       GetRenderer()->Save();
       GetRenderer()->SetColourForeground(outline_colour_);
-      GetRenderer()->SetColourBackground(row.GetBackgroundColour());
+
+      if (column.GetBackgroundColour()) {
+        GetRenderer()->SetColourBackground(column.GetBackgroundColour());
+      } else {
+        GetRenderer()->SetColourBackground(row.GetBackgroundColour());
+      }
+
       GetRenderer()->DrawRectangle(offset, (GetY() + (row_count * height)), cell_width, height, true);
       GetRenderer()->Restore();
 
@@ -106,7 +112,7 @@ void WidgetTable::AddRow(widget::WeightType font_weight) {
 void WidgetTable::AddCell(std::string text, uint32_t width) { AddCell(text, width, widget::CellAlignType::kAlignLeft); }
 
 void WidgetTable::AddCell(std::string text, uint32_t width, widget::CellAlignType align) {
-  AddCell(text, width, align, ConfigData::GetInstance()->GetTableBackground());
+  AddCell(text, width, align, 0);
 }
 
 void WidgetTable::AddCell(std::string text, uint32_t width, uint32_t background_colour) {

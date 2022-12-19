@@ -398,11 +398,18 @@ class ConfigData : public ConfigDataTheme {
   std::string GetImagePath() const;
 
   ///
-  /// \brief Get the Gps Device object
+  /// \brief Get the Gps Device path to virtual port
   ///
   /// \return std::string
   ///
   std::string GetGpsDevice() const;
+
+  ///
+  /// \brief Get the Odb Device path to virtual port
+  ///
+  /// \return std::string
+  ///
+  std::string GetOdbDevice() const;
 
   ///
   /// \brief Get the Key Binding attribute

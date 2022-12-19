@@ -21,6 +21,7 @@
 /// \file hmi_gva_helpers.cc
 ///
 
+#include <filesystem>
 #include <sstream>
 
 #include "hmi_gva.h"
@@ -85,12 +86,20 @@ void HmiHelper::TableSystem(WidgetTable *table) {
   table->AddCell("Ok", 20);
 
   table->AddRow();
-  table->AddCell("GPS Source, /dev/ttyUSB0", 80);
-  table->AddCell("Error", 20, Renderer::PackRgb(HMI_RED));
+  table->AddCell("GPS Source, " + ConfigData::GetInstance()->GetOdbDevice(), 80);
+  if (std::filesystem::exists(ConfigData::GetInstance()->GetGpsDevice())) {
+    table->AddCell("OK", 20, Renderer::PackRgb(HMI_RED));
+  } else {
+    table->AddCell("Error", 20, Renderer::PackRgb(HMI_RED));
+  }
 
   table->AddRow();
-  table->AddCell("ODB Source, /dev/ttyUSB1", 80);
-  table->AddCell("Error", 20, Renderer::PackRgb(HMI_RED));
+  table->AddCell("ODB Source, " + ConfigData::GetInstance()->GetGpsDevice(), 80);
+  if (std::filesystem::exists(ConfigData::GetInstance()->GetGpsDevice())) {
+    table->AddCell("OK", 20, Renderer::PackRgb(HMI_RED));
+  } else {
+    table->AddCell("Error", 20, Renderer::PackRgb(HMI_RED));
+  }
 
   table->AddRow();
   table->AddCell("UK Maps, " + ConfigData::GetInstance()->GetMapPath(), 80);

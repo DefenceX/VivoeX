@@ -305,6 +305,7 @@ std::string ConfigData::GetLogFilename() const { return current_config_->file().
 std::string ConfigData::GetImagePath() const { return current_config_->file().images_path(); }
 
 std::string ConfigData::GetGpsDevice() const { return current_config_->gps_device(); }
+std::string ConfigData::GetOdbDevice() const { return current_config_->odb_device(); }
 
 uint32_t ConfigData::GetKeyBinding(GvaKeyEnum key) const {
   switch (key) {
