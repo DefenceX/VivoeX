@@ -7,7 +7,6 @@ ExternalProject_Add(
     GIT_TAG             v1.12.0
     GIT_SHALLOW         5
     CMAKE_ARGS          -DCMAKE_UNITY_BUILD=NO
-    CONFIGURE_COMMAND   cmake ../src ..
     PREFIX              ${CMAKE_BINARY_DIR}/external/googletest/prefix
     TMP_DIR             ${CMAKE_BINARY_DIR}/external/googletest/tmp
     STAMP_DIR           ${CMAKE_BINARY_DIR}/external/googletest/stamp
