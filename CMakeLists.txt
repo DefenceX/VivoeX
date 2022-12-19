@@ -28,6 +28,9 @@ add_subdirectory(hmi-display)
 #set(IMAGE_PATH ${CMAKE_SOURCE_DIR}/images/uk)
 set(IMAGE_PATH ${CMAKE_SOURCE_DIR}/images/au)
 
+# Install DDS
+file(GLOB_RECURSE DDS_LIBS ${CMAKE_BINARY_DIR}/external/install/usr/local/libcyclone*.so*)
+message (STATUS ">>> " ${DDS_LIBS})
 # Install binaries with external libs
 file(WRITE ${CMAKE_BINARY_DIR}/gva.log "")
 install(FILES ${CMAKE_BINARY_DIR}/gva.log DESTINATION "/var/log" PERMISSIONS OWNER_WRITE OWNER_READ GROUP_WRITE GROUP_READ WORLD_READ WORLD_WRITE)
@@ -48,9 +51,7 @@ install(FILES ${CMAKE_BINARY_DIR}/external/libnmea/build/src/libnmealib.so
               ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libosmscout_map.so.1.1.1
               ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libosmscout.so
               ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libosmscout.so.1.1.1
-              ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libcycloneddsidl.so
-              ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libcycloneddsidl.so.0
-              ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libcycloneddsidl.so.0.10.2
+              ${DDS_LIBS}
         DESTINATION "/opt/gva/libs" PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE GROUP_WRITE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_WRITE WORLD_EXECUTE)
 
 # Images for dummy camera feeds
