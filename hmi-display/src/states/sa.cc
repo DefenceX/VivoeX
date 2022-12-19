@@ -84,7 +84,8 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
       compass->SetBearingSight(270);
       break;
     case GvaKeyEnum::kKeyF1:
-    case GvaKeyEnum::kKeyF3:
+    case GvaK    printf("[GVA] Key 0x%x\n", event->keyval);
+eyEnum::kKeyF3:
     case GvaKeyEnum::kKeyF7:
     case GvaKeyEnum::kKeyF8:
     case GvaKeyEnum::kKeyF9:

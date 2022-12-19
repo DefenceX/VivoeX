@@ -210,7 +210,7 @@ gboolean EventsGva::CreateKeyEvent(GtkWidget* Widget, GdkEventKey* event, EventE
   if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyUpArrow)) {
     gvaEvent.key_ = GvaKeyEnum::kKeyF18;
   }
-  if (event->keyval == ConfigData::GetInstance([GVA] Up 0xff52)->GetKeyBinding(GvaKeyEnum::kKeyDownArrow)) {
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyDownArrow)) {
     gvaEvent.key_ = GvaKeyEnum::kKeyF17;
   }
   if ((event->keyval == 'm') || (event->keyval == 'M')) {
