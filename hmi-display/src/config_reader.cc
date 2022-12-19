@@ -66,6 +66,8 @@ ConfigDataBase::ConfigDataBase() {
   }
 
   // Add arrays here if any.
+  current_config_->bindings().empty();
+
   std::array<config::Key, 29> keys = {
       config::kKeyBLK, config::kKeySA,  config::kKeyWPN, config::kKeyDEF, config::kKeySYS, config::kKeyDRV,
       config::kKeySTR, config::kKeyCOM, config::kKeyBMS, config::kKeyF1,  config::kKeyF2,  config::kKeyF3,
@@ -73,14 +75,16 @@ ConfigDataBase::ConfigDataBase() {
       config::kKeyF10, config::kKeyF11, config::kKeyF12, config::kKeyF13, config::kKeyF14, config::kKeyF15,
       config::kKeyF16, config::kKeyF17, config::kKeyF18, config::kKeyF19, config::kKeyF20};
 
-  // // These are the default display bindings
-  // std::array<uint32_t, 29> default_bind = {'b', '1', '2', '3', '4', '5', '6', '7', '8', 0,   0,   0,   0,   0,
-  //                                          0,   0,   0,   0,   0,   0,   0,   'a', 's', 'd', 'f', 'g', 'h', 'j'};
+  // These are the default display bindings
+  // std::array<uint32_t, 29> default_bind = {
+  // 'b',    '1',    '2',    '3',    '4',    '5',    '6',    '7', '8', 0xffbe, 0xffbf, 0xffc0, 0xffc1, 0xffc2,
+  // 0xffc3, 0xffc4, 0xffc5, 0xffc6, 0xffc7, 0xffc8, 0xffc9, 'a', 's', 'd',    'f',    'g',    'h',    'j'};
+
   // These are the APC display bindings
   std::array<uint32_t, 29> apc_bind = {'q',    'w',    'e',    'r',    't',    'y',    'u',    'i',    'o',    0xffbe,
                                        0xffbf, 0xffc0, 0xffc1, 0xffc2, 0xffc3, 0xffc4, 0xffc5, 0xffc6, 0xffc7, 0xffc8,
                                        0xffc9, 'a',    's',    'd',    'f',    'g',    'h',    'j'};
-  for (int c = 0; c < 28; c++) {
+  for (int c = 0; c < 29; c++) {
     auto bindings = current_config_->add_bindings();
     bindings->set_bind(apc_bind[c]);
     bindings->set_key(keys[c]);
@@ -299,7 +303,7 @@ std::string ConfigData::GetImagePath() const { return current_config_->file().im
 
 std::string ConfigData::GetGpsDevice() const { return current_config_->gps_device(); }
 
-uint8_t ConfigData::GetKeyBinding(GvaKeyEnum key) const {
+uint32_t ConfigData::GetKeyBinding(GvaKeyEnum key) const {
   switch (key) {
     case GvaKeyEnum::kKeyBlackout:
       return LookupKey(config::Key::kKeyBLK);
@@ -362,7 +366,6 @@ uint8_t ConfigData::GetKeyBinding(GvaKeyEnum key) const {
     default:
       return 0;
   }
-
   return 0;
 }
 
@@ -370,6 +373,7 @@ uint32_t ConfigData::LookupKey(config::Key key) const {
   for (int i = 0; i < current_config_->bindings_size(); i++) {
     if (current_config_->bindings(i).key() == key) return current_config_->bindings(i).bind();
   }
+  logGva::log("Key binding not found " + std::to_string(key), DebugLevel::kLogInfo);
   return 0;
 }
 

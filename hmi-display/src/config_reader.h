@@ -409,7 +409,7 @@ class ConfigData : public ConfigDataTheme {
   ///
   /// \return uint32_t
   ///
-  uint8_t GetKeyBinding(GvaKeyEnum key) const;
+  uint32_t GetKeyBinding(GvaKeyEnum key) const;
 
  protected:
   ///
@@ -418,6 +418,12 @@ class ConfigData : public ConfigDataTheme {
   ///
   ConfigData() = default;
 
+  ///
+  /// \brief Lookup the actual key binding value from the config data
+  ///
+  /// \param key
+  /// \return uint32_t
+  ///
   uint32_t LookupKey(config::Key key) const;
 
   static ConfigData* config_;

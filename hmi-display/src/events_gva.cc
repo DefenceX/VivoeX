@@ -97,56 +97,15 @@ gboolean EventsGva::KeyReleaseEventCb(GtkWidget* Widget, GdkEventKey* event) {
   return CreateKeyEvent(Widget, event, EventEnumType::kKeyEventReleased);
 }
 
-GvaKeyEnum ProcessTopKeys(uint32_t keyval) {
-  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeySituationalAwareness))
-    return GvaKeyEnum::kKeySituationalAwareness;
-  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyWeapon))
-    return GvaKeyEnum::kKeySituationalAwareness;
-  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF15)) return GvaKeyEnum::kKeyWeapon;
-  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF16)) return GvaKeyEnum::kKeyDefensiveSystems;
-  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF17)) return GvaKeyEnum::kKeySystems;
-  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF18)) return GvaKeyEnum::kKeyDriver;
-  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF19)) return GvaKeyEnum::kKeySpecialToRole;
-  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF20)) return GvaKeyEnum::kKeyCommunications;
-  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF20))
-    return GvaKeyEnum::kKeyBattlefieldManagementSystem;
-  return GvaKeyEnum::kKeyUnknown;
-}
-
-GvaKeyEnum ProcessBottonKeys(uint32_t keyval) {
-  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF13)) return GvaKeyEnum::kKeyF13;
-  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF14)) return GvaKeyEnum::kKeyF14;
-  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF15)) return GvaKeyEnum::kKeyF15;
-  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF16)) return GvaKeyEnum::kKeyF16;
-  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF17)) return GvaKeyEnum::kKeyF17;
-  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF18)) return GvaKeyEnum::kKeyF18;
-  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF19)) return GvaKeyEnum::kKeyF19;
-  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF20)) return GvaKeyEnum::kKeyF20;
-  return GvaKeyEnum::kKeyUnknown;
-}
-
 gboolean EventsGva::CreateKeyEvent(GtkWidget* Widget, GdkEventKey* event, EventEnumType type) {
   EventGvaType gvaEvent;
   gvaEvent.type_ = type;
+  gvaEvent.key_ = GvaKeyEnum::kKeyUnknown;
 
   std::string state = (EventEnumType::kKeyEventPressed == type) ? "(Pressed) " : "(Released) ";
   logGva::log("[GVA] Key press event " + state + std::to_string(event->keyval) + " (prev " +
                   std::to_string(previous_key_) + ")",
               DebugLevel::kLogInfo);
-  switch (previous_key_) {
-    case 0xffe3:  // Top keys
-      gvaEvent.key_ = ProcessTopKeys(event->keyval);
-      printf("[GVA] Top event 0x%x\n", event->keyval);
-      previous_key_ = event->keyval;
-      if (gvaEvent.type_ != EventEnumType::kNoEvent) eventqueue_.push_back(gvaEvent);
-      return TRUE;
-    case 0xffe9:  // Bottom keys
-      gvaEvent.key_ = ProcessBottonKeys(event->keyval);
-      printf("[GVA] Bottom event 0x%x\n", event->keyval);
-      previous_key_ = event->keyval;
-      if (gvaEvent.type_ != EventEnumType::kNoEvent) eventqueue_.push_back(gvaEvent);
-      return TRUE;
-  }
 
   // The event was handled, and the emission should stop
   if (event->keyval == 65307) {
@@ -154,13 +113,13 @@ gboolean EventsGva::CreateKeyEvent(GtkWidget* Widget, GdkEventKey* event, EventE
     gvaEvent.key_ = GvaKeyEnum::kKeyEscape;
   }
   if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeySituationalAwareness)) {
-    // 1 maps to SA
     gvaEvent.key_ = GvaKeyEnum::kKeySituationalAwareness;
   }
   if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyWeapon)) {
     // 2 maps to WPN
     gvaEvent.key_ = GvaKeyEnum::kKeyWeapon;
   }
+  // 1 maps to SA
   if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyDefensiveSystems)) {
     // 3 maps to DEF
     gvaEvent.key_ = GvaKeyEnum::kKeyDefensiveSystems;
@@ -221,14 +180,38 @@ gboolean EventsGva::CreateKeyEvent(GtkWidget* Widget, GdkEventKey* event, EventE
   if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF12)) {
     gvaEvent.key_ = GvaKeyEnum::kKeyF12;
   }
-  if ((event->keyval == 70) || (event->keyval == 102)) {
-    // f toggle fullscreen TODO: Does not work
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF13)) {
+    gvaEvent.key_ = GvaKeyEnum::kKeyF13;
+  }
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF14)) {
+    gvaEvent.key_ = GvaKeyEnum::kKeyF14;
+  }
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF15)) {
+    gvaEvent.key_ = GvaKeyEnum::kKeyF15;
+  }
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF16)) {
+    gvaEvent.key_ = GvaKeyEnum::kKeyF16;
+  }
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF17)) {
+    gvaEvent.key_ = GvaKeyEnum::kKeyF17;
+  }
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF18)) {
+    gvaEvent.key_ = GvaKeyEnum::kKeyF18;
+  }
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF19)) {
+    gvaEvent.key_ = GvaKeyEnum::kKeyF19;
+  }
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF20)) {
+    gvaEvent.key_ = GvaKeyEnum::kKeyF20;
+  }
+  if ((event->keyval == 'm') || (event->keyval == 'M')) {
+    // m toggle fullscreen
     gvaEvent.key_ = GvaKeyEnum::kKeyFullscreen;
   }
-  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyBlackout)) {
-    // b toggle blackout F11
-    gvaEvent.key_ = GvaKeyEnum::kKeyF11;
-  }
+  // if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyBlackout)) {
+  //   // b toggle blackout F11
+  //   gvaEvent.key_ = GvaKeyEnum::kKeyF11;
+  // }
   if ((event->keyval == 75) || (event->keyval == 107)) {
     // k toggle keyboard
     gvaEvent.key_ = GvaKeyEnum::kKeyKeyboard;
@@ -240,10 +223,6 @@ gboolean EventsGva::CreateKeyEvent(GtkWidget* Widget, GdkEventKey* event, EventE
   if (event->keyval == 65407) {
     // num_lock keyboard
     gvaEvent.key_ = GvaKeyEnum::kKeyF18;
-  }
-  if ((event->keyval == 76) || (event->keyval == 108)) {
-    // l or L show / hide labels
-    gvaEvent.key_ = GvaKeyEnum::kKeyF19;
   }
   if (event->keyval == 43) {
     //+ keyboard
@@ -261,10 +240,6 @@ gboolean EventsGva::CreateKeyEvent(GtkWidget* Widget, GdkEventKey* event, EventE
     //< show / hide labels
     gvaEvent.key_ = GvaKeyEnum::kKeyLeftArrow;
   }
-  if ((event->keyval == 'a') || (event->keyval == 'A')) {
-    //[a|A] Move to previous label
-    gvaEvent.key_ = GvaKeyEnum::kKeyF14;
-  }
   if ((event->keyval == 'p') || (event->keyval == 'P')) {
     //[p|P] Move to previous label
     gvaEvent.key_ = GvaKeyEnum::kKeyPreviousLabel;
@@ -273,8 +248,10 @@ gboolean EventsGva::CreateKeyEvent(GtkWidget* Widget, GdkEventKey* event, EventE
     //[n|N] Move to next label
     gvaEvent.key_ = GvaKeyEnum::kKeyNextLabel;
   }
+  if (event->keyval != 0) {
+    if (gvaEvent.type_ != EventEnumType::kNoEvent) eventqueue_.push_back(gvaEvent);
+  }
 
-  if (gvaEvent.type_ != EventEnumType::kNoEvent) eventqueue_.push_back(gvaEvent);
   return TRUE;
 }
 

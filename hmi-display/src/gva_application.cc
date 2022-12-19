@@ -375,7 +375,7 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
             keyboard->SetMode((keyboard->GetMode() == gva::widget::KeyboardModeType::kKeyboardUpper)
                                   ? gva::widget::KeyboardModeType::kKeyboardLower
                                   : gva::widget::KeyboardModeType::kKeyboardUpper);
-            Dispatch(gva::GvaKeyEnum::kKeyF17);
+            Dispatch(event.key_);
           }
           break;
         case gva::GvaKeyEnum::kKeyF18:
@@ -396,7 +396,7 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
           Dispatch(event.key_);
           break;
         case gva::GvaKeyEnum::kKeyFullscreen:
-          // f toggle fullscreen
+          // m|M toggle fullscreen
           Fullscreen(const_cast<gva::HandleType *>(render));
           {
             GdkRectangle workarea;
