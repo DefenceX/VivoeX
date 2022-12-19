@@ -34,8 +34,7 @@ static TouchGva* touch_;
 
 std::vector<EventGvaType> EventsGva::eventqueue_;
 
-EventsGva::EventsGva(gtkType* window, TouchGva* touch) {
-  window_ = window;
+EventsGva::EventsGva(gtkType* window, TouchGva* touch) : window_(window) {
   touch_ = touch;
   previous_key_ = 0;
 }
@@ -98,6 +97,34 @@ gboolean EventsGva::KeyReleaseEventCb(GtkWidget* Widget, GdkEventKey* event) {
   return CreateKeyEvent(Widget, event, EventEnumType::kKeyEventReleased);
 }
 
+GvaKeyEnum ProcessTopKeys(uint32_t keyval) {
+  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeySituationalAwareness))
+    return GvaKeyEnum::kKeySituationalAwareness;
+  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyWeapon))
+    return GvaKeyEnum::kKeySituationalAwareness;
+  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF15)) return GvaKeyEnum::kKeyWeapon;
+  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF16)) return GvaKeyEnum::kKeyDefensiveSystems;
+  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF17)) return GvaKeyEnum::kKeySystems;
+  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF18)) return GvaKeyEnum::kKeyDriver;
+  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF19)) return GvaKeyEnum::kKeySpecialToRole;
+  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF20)) return GvaKeyEnum::kKeyCommunications;
+  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF20))
+    return GvaKeyEnum::kKeyBattlefieldManagementSystem;
+  return GvaKeyEnum::kKeyUnknown;
+}
+
+GvaKeyEnum ProcessBottonKeys(uint32_t keyval) {
+  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF13)) return GvaKeyEnum::kKeyF13;
+  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF14)) return GvaKeyEnum::kKeyF14;
+  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF15)) return GvaKeyEnum::kKeyF15;
+  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF16)) return GvaKeyEnum::kKeyF16;
+  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF17)) return GvaKeyEnum::kKeyF17;
+  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF18)) return GvaKeyEnum::kKeyF18;
+  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF19)) return GvaKeyEnum::kKeyF19;
+  if (keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF20)) return GvaKeyEnum::kKeyF20;
+  return GvaKeyEnum::kKeyUnknown;
+}
+
 gboolean EventsGva::CreateKeyEvent(GtkWidget* Widget, GdkEventKey* event, EventEnumType type) {
   EventGvaType gvaEvent;
   gvaEvent.type_ = type;
@@ -108,85 +135,13 @@ gboolean EventsGva::CreateKeyEvent(GtkWidget* Widget, GdkEventKey* event, EventE
               DebugLevel::kLogInfo);
   switch (previous_key_) {
     case 0xffe3:  // Top keys
-      switch (event->keyval) {
-        default:
-          break;  // all other keys are ignored
-        case 0xffbe:
-          // 1 maps to SA
-          gvaEvent.key_ = GvaKeyEnum::KKeySituationalAwareness;
-          break;
-        case 0xffbf:
-          // 2 maps to WPN
-          gvaEvent.key_ = GvaKeyEnum::kKeyWeapon;
-          break;
-        case 0xffc0:
-          // 3 maps to DEF
-          gvaEvent.key_ = GvaKeyEnum::kKeyDefensiveSystems;
-          break;
-        case 0xffc1:
-          // 4 maps to SYS
-          gvaEvent.key_ = GvaKeyEnum::kKeySystems;
-          break;
-        case 0xffc2:
-          // 5 maps to DRV
-          gvaEvent.key_ = GvaKeyEnum::kKeyDriver;
-          break;
-        case 0xffc3:
-          // 6 maps to STR
-          gvaEvent.key_ = GvaKeyEnum::kKeySpecialToRole;
-          break;
-        case 0xffc4:
-          // 7 maps to >>>COM
-          gvaEvent.key_ = GvaKeyEnum::kKeyCommunications;
-          break;
-        case 0xffc5:
-          // 8 maps to BMS
-          gvaEvent.key_ = GvaKeyEnum::kKeyBattlefieldManagementSystem;
-          break;
-      }
+      gvaEvent.key_ = ProcessTopKeys(event->keyval);
       printf("[GVA] Top event 0x%x\n", event->keyval);
       previous_key_ = event->keyval;
       if (gvaEvent.type_ != EventEnumType::kNoEvent) eventqueue_.push_back(gvaEvent);
       return TRUE;
-      break;
     case 0xffe9:  // Bottom keys
-      switch (event->keyval) {
-        case 97:
-        case 0xffbe:
-          // a maps to F13
-          gvaEvent.key_ = GvaKeyEnum::kKeyF13;
-          break;
-        case 0xffbf:
-          // a maps to F14 (ALARMS)
-          gvaEvent.key_ = GvaKeyEnum::kKeyF14;
-          break;
-        case 0xffc0:
-          // Enter maps to F15
-          gvaEvent.key_ = GvaKeyEnum::kKeyF15;
-          break;
-        case 0xffc1:
-          // Enter maps to F16
-          gvaEvent.key_ = GvaKeyEnum::kKeyF16;
-          break;
-        case 0xffc2:
-          // Enter maps to F17
-          gvaEvent.key_ = GvaKeyEnum::kKeyF17;
-          break;
-        case 0xffc3:
-          // Enter maps to F18
-          gvaEvent.key_ = GvaKeyEnum::kKeyF18;
-          break;
-        case 0xffc4:
-          // Enter maps to F19
-          gvaEvent.key_ = GvaKeyEnum::kKeyF19;
-          break;
-        case 0xffc5:
-          // Enter maps to F20
-          gvaEvent.key_ = GvaKeyEnum::kKeyF20;
-          break;
-        default:
-          break;  // All other keypresses are ignored
-      }
+      gvaEvent.key_ = ProcessBottonKeys(event->keyval);
       printf("[GVA] Bottom event 0x%x\n", event->keyval);
       previous_key_ = event->keyval;
       if (gvaEvent.type_ != EventEnumType::kNoEvent) eventqueue_.push_back(gvaEvent);
@@ -194,156 +149,131 @@ gboolean EventsGva::CreateKeyEvent(GtkWidget* Widget, GdkEventKey* event, EventE
   }
 
   // The event was handled, and the emission should stop
-  switch (event->keyval) {
-    case 65307:
-      // exit on ESC key press
-      gvaEvent.key_ = GvaKeyEnum::kKeyEscape;
-      break;
-    case 49:
-      // 1 maps to SA
-      gvaEvent.key_ = GvaKeyEnum::KKeySituationalAwareness;
-      break;
-    case 50:
-      // 2 maps to WPN
-      gvaEvent.key_ = GvaKeyEnum::kKeyWeapon;
-      break;
-    case 51:
-      // 3 maps to DEF
-      gvaEvent.key_ = GvaKeyEnum::kKeyDefensiveSystems;
-      break;
-    case 52:
-      // 4 maps to SYS
-      gvaEvent.key_ = GvaKeyEnum::kKeySystems;
-      break;
-    case 53:
-      // 5 maps to DRV
-      gvaEvent.key_ = GvaKeyEnum::kKeyDriver;
-      break;
-    case 54:
-      // 6 maps to STR
-      gvaEvent.key_ = GvaKeyEnum::kKeySpecialToRole;
-      break;
-    case 55:
-      // 7 maps to COM
-      gvaEvent.key_ = GvaKeyEnum::kKeyCommunications;
-      break;
-    case 56:
-      // 8 maps to BMS
-      gvaEvent.key_ = GvaKeyEnum::kKeyBattlefieldManagementSystem;
-      break;
-    case 0xffbe:
-      // F1
-      gvaEvent.key_ = GvaKeyEnum::kKeyF1;
-      break;
-    case 0xffbf:
-      // F2
-      gvaEvent.key_ = GvaKeyEnum::kKeyF2;
-      break;
-    case 0xffc0:
-      // F3
-      gvaEvent.key_ = GvaKeyEnum::kKeyF3;
-      break;
-    case 0xffc1:
-      // F4
-      gvaEvent.key_ = GvaKeyEnum::kKeyF4;
-      break;
-    case 0xffc2:
-      // F5
-      gvaEvent.key_ = GvaKeyEnum::kKeyF5;
-      break;
-    case 0xffc3:
-      // F6
-      gvaEvent.key_ = GvaKeyEnum::kKeyF6;
-      break;
-    case 0xffc4:
-      // F7
-      gvaEvent.key_ = GvaKeyEnum::kKeyF7;
-      break;
-    case 0xffc5:
-      // F8
-      gvaEvent.key_ = GvaKeyEnum::kKeyF8;
-      break;
-    case 0xffc6:
-      // F9
-      gvaEvent.key_ = GvaKeyEnum::kKeyF9;
-      break;
-    case 0xffc7:
-      // F10
-      gvaEvent.key_ = GvaKeyEnum::kKeyF10;
-      break;
-    case 0xffc8:
-      // F11
-      gvaEvent.key_ = GvaKeyEnum::kKeyF11;
-      break;
-    case 0xffc9:
-      // F12
-      gvaEvent.key_ = GvaKeyEnum::kKeyF12;
-      break;
-      //      case 65:
-    case 70:
-    case 102:
-      // f toggle fullscreen TODO: Does not work
-      gvaEvent.key_ = GvaKeyEnum::kKeyFullscreen;
-      break;
-    case 0x62:
-      // b toggle blackout F11
-      gvaEvent.key_ = GvaKeyEnum::kKeyF11;
-      break;
-    case 75:
-    case 107:
-      // k toggle keyboard
-      gvaEvent.key_ = GvaKeyEnum::kKeyKeyboard;
-      break;
-    case 65509:
-      // caps_lock keyboard
-      gvaEvent.key_ = GvaKeyEnum::kKeyF17;
-      break;
-    case 65407:
-      // num_lock keyboard
-      gvaEvent.key_ = GvaKeyEnum::kKeyF18;
-      break;
-    case 76:
-    case 108:
-      // l or L show / hide labels
-      gvaEvent.key_ = GvaKeyEnum::kKeyF19;
-      break;
-    case 43:
-      //+ keyboard
-      gvaEvent.key_ = GvaKeyEnum::kKeyPlus;
-      break;
-    case 95:
-      //- show / hide labels
-      gvaEvent.key_ = GvaKeyEnum::kKeyMinus;
-      break;
-    case 62:
-      //> keyboard
-      gvaEvent.key_ = GvaKeyEnum::kKeyRightArrow;
-      break;
-    case 60:
-      //< show / hide labels
-      gvaEvent.key_ = GvaKeyEnum::kKeyLeftArrow;
-      break;
-    case 0x41:
-    case 0x61:
-      //[a|A] Move to previous label
-      gvaEvent.key_ = GvaKeyEnum::kKeyF14;
-      break;
-    case 0x50:
-    case 0x70:
-      //[p|P] Move to previous label
-      gvaEvent.key_ = GvaKeyEnum::kKeyPreviousLabel;
-      break;
-    case 0x4e:
-    case 0x6e:
-      //[n|N] Move to next label
-      gvaEvent.key_ = GvaKeyEnum::kKeyNextLabel;
-      break;
-
-    default:
-      gva::logGva::log("[GVA] KeyPress not defined " + std::to_string(int(gvaEvent.key_)), DebugLevel::kLogInfo);
-      previous_key_ = event->keyval;
-      return TRUE;
+  if (event->keyval == 65307) {
+    // exit on ESC key press
+    gvaEvent.key_ = GvaKeyEnum::kKeyEscape;
   }
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeySituationalAwareness)) {
+    // 1 maps to SA
+    gvaEvent.key_ = GvaKeyEnum::kKeySituationalAwareness;
+  }
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyWeapon)) {
+    // 2 maps to WPN
+    gvaEvent.key_ = GvaKeyEnum::kKeyWeapon;
+  }
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyDefensiveSystems)) {
+    // 3 maps to DEF
+    gvaEvent.key_ = GvaKeyEnum::kKeyDefensiveSystems;
+  }
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeySystems)) {
+    // 4 maps to SYS
+    gvaEvent.key_ = GvaKeyEnum::kKeySystems;
+  }
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyDriver)) {
+    // 5 maps to DRV
+    gvaEvent.key_ = GvaKeyEnum::kKeyDriver;
+  }
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeySpecialToRole)) {
+    // 6 maps to STR
+    gvaEvent.key_ = GvaKeyEnum::kKeySpecialToRole;
+  }
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyCommunications)) {
+    // 7 maps to COM
+    gvaEvent.key_ = GvaKeyEnum::kKeyCommunications;
+  }
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyBattlefieldManagementSystem)) {
+    // 8 maps to BMS
+    gvaEvent.key_ = GvaKeyEnum::kKeyBattlefieldManagementSystem;
+  }
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF1)) {
+    gvaEvent.key_ = GvaKeyEnum::kKeyF1;
+  }
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF2)) {
+    gvaEvent.key_ = GvaKeyEnum::kKeyF2;
+  }
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF3)) {
+    gvaEvent.key_ = GvaKeyEnum::kKeyF3;
+  }
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF4)) {
+    gvaEvent.key_ = GvaKeyEnum::kKeyF4;
+  }
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF5)) {
+    gvaEvent.key_ = GvaKeyEnum::kKeyF5;
+  }
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF6)) {
+    gvaEvent.key_ = GvaKeyEnum::kKeyF6;
+  }
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF7)) {
+    gvaEvent.key_ = GvaKeyEnum::kKeyF7;
+  }
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF8)) {
+    gvaEvent.key_ = GvaKeyEnum::kKeyF8;
+  }
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF9)) {
+    gvaEvent.key_ = GvaKeyEnum::kKeyF9;
+  }
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF10)) {
+    gvaEvent.key_ = GvaKeyEnum::kKeyF10;
+  }
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF11)) {
+    gvaEvent.key_ = GvaKeyEnum::kKeyF11;
+  }
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF12)) {
+    gvaEvent.key_ = GvaKeyEnum::kKeyF12;
+  }
+  if ((event->keyval == 70) || (event->keyval == 102)) {
+    // f toggle fullscreen TODO: Does not work
+    gvaEvent.key_ = GvaKeyEnum::kKeyFullscreen;
+  }
+  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyBlackout)) {
+    // b toggle blackout F11
+    gvaEvent.key_ = GvaKeyEnum::kKeyF11;
+  }
+  if ((event->keyval == 75) || (event->keyval == 107)) {
+    // k toggle keyboard
+    gvaEvent.key_ = GvaKeyEnum::kKeyKeyboard;
+  }
+  if (event->keyval == 65509) {
+    // caps_lock keyboard
+    gvaEvent.key_ = GvaKeyEnum::kKeyF17;
+  }
+  if (event->keyval == 65407) {
+    // num_lock keyboard
+    gvaEvent.key_ = GvaKeyEnum::kKeyF18;
+  }
+  if ((event->keyval == 76) || (event->keyval == 108)) {
+    // l or L show / hide labels
+    gvaEvent.key_ = GvaKeyEnum::kKeyF19;
+  }
+  if (event->keyval == 43) {
+    //+ keyboard
+    gvaEvent.key_ = GvaKeyEnum::kKeyPlus;
+  }
+  if (event->keyval == 95) {
+    //- show / hide labels
+    gvaEvent.key_ = GvaKeyEnum::kKeyMinus;
+  }
+  if (event->keyval == 62) {
+    //> keyboard
+    gvaEvent.key_ = GvaKeyEnum::kKeyRightArrow;
+  }
+  if (event->keyval == 60) {
+    //< show / hide labels
+    gvaEvent.key_ = GvaKeyEnum::kKeyLeftArrow;
+  }
+  if ((event->keyval == 'a') || (event->keyval == 'A')) {
+    //[a|A] Move to previous label
+    gvaEvent.key_ = GvaKeyEnum::kKeyF14;
+  }
+  if ((event->keyval == 'p') || (event->keyval == 'P')) {
+    //[p|P] Move to previous label
+    gvaEvent.key_ = GvaKeyEnum::kKeyPreviousLabel;
+  }
+  if ((event->keyval == 'n') || (event->keyval == 'N')) {
+    //[n|N] Move to next label
+    gvaEvent.key_ = GvaKeyEnum::kKeyNextLabel;
+  }
+
   if (gvaEvent.type_ != EventEnumType::kNoEvent) eventqueue_.push_back(gvaEvent);
   return TRUE;
 }

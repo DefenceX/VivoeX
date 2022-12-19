@@ -33,7 +33,7 @@ namespace gva {
 
 static const uint32_t kSemVerMajor = 0;
 static const uint32_t kSemVerMinor = 3;
-static const uint32_t kSemVerPatch = 1538;
+static const uint32_t kSemVerPatch = 1539;
 static const uint32_t kMinimumHeight = 480;
 static const uint32_t kMinimumWidth = 640;
 
@@ -352,7 +352,7 @@ enum class GvaFunctionGroupEnum { kTop, kBottom, kLeft, kRight, kAlarmTable, kKe
 ///
 enum class GvaKeyEnum {
   kKeyUnknown = 0,
-  KKeySituationalAwareness,
+  kKeySituationalAwareness,
   kKeyWeapon,
   kKeyDefensiveSystems,
   kKeySystems,

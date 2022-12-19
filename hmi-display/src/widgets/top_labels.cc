@@ -56,7 +56,7 @@ void WidgetTopLabels::DrawTopLabels(uint32_t y, const std::array<FunctionSelect:
       } else {
         GetRenderer()->DrawRectangle((i * width) + offset, y, width - 10, 10, true);
       }
-      touch_->AddAbsolute(GvaFunctionGroupEnum::kTop, int(GvaKeyEnum::KKeySituationalAwareness) + i,
+      touch_->AddAbsolute(GvaFunctionGroupEnum::kTop, int(GvaKeyEnum::kKeySituationalAwareness) + i,
                           (i * width) + offset, y, (i * width) + width - spacing + offset, y + 10);
     }
     i++;

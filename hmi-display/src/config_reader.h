@@ -404,12 +404,21 @@ class ConfigData : public ConfigDataTheme {
   ///
   std::string GetGpsDevice() const;
 
+  ///
+  /// \brief Get the Key Binding attribute
+  ///
+  /// \return uint32_t
+  ///
+  uint8_t GetKeyBinding(GvaKeyEnum key) const;
+
  protected:
   ///
   /// \brief Construct a new Config Data object
   ///
   ///
   ConfigData() = default;
+
+  uint32_t LookupKey(config::Key key) const;
 
   static ConfigData* config_;
 };

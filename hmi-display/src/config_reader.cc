@@ -64,6 +64,28 @@ ConfigDataBase::ConfigDataBase() {
       return;
     }
   }
+
+  // Add arrays here if any.
+  std::array<config::Key, 29> keys = {
+      config::kKeyBLK, config::kKeySA,  config::kKeyWPN, config::kKeyDEF, config::kKeySYS, config::kKeyDRV,
+      config::kKeySTR, config::kKeyCOM, config::kKeyBMS, config::kKeyF1,  config::kKeyF2,  config::kKeyF3,
+      config::kKeyF4,  config::kKeyF5,  config::kKeyF6,  config::kKeyF7,  config::kKeyF8,  config::kKeyF9,
+      config::kKeyF10, config::kKeyF11, config::kKeyF12, config::kKeyF13, config::kKeyF14, config::kKeyF15,
+      config::kKeyF16, config::kKeyF17, config::kKeyF18, config::kKeyF19, config::kKeyF20};
+
+  // // These are the default display bindings
+  // std::array<uint32_t, 29> default_bind = {'b', '1', '2', '3', '4', '5', '6', '7', '8', 0,   0,   0,   0,   0,
+  //                                          0,   0,   0,   0,   0,   0,   0,   'a', 's', 'd', 'f', 'g', 'h', 'j'};
+  // These are the APC display bindings
+  std::array<uint32_t, 29> apc_bind = {'q',    'w',    'e',    'r',    't',    'y',    'u',    'i',    'o',    0xffbe,
+                                       0xffbf, 0xffc0, 0xffc1, 0xffc2, 0xffc3, 0xffc4, 0xffc5, 0xffc6, 0xffc7, 0xffc8,
+                                       0xffc9, 'a',    's',    'd',    'f',    'g',    'h',    'j'};
+  for (int c = 0; c < 28; c++) {
+    auto bindings = current_config_->add_bindings();
+    bindings->set_bind(apc_bind[c]);
+    bindings->set_key(keys[c]);
+  }
+
   {
     // Write the new config back to disk.
     std::fstream output(config_file_, std::fstream::out | std::fstream::trunc | std::fstream::binary);
@@ -81,7 +103,7 @@ ConfigDataBase::~ConfigDataBase() {
 
 ConfigData* ConfigData::GetInstance() {
   //  This is a safer way to create an instance. instance = new Singleton is
-  //  dangerous in case two instance threads wants to access at the same time
+  //  dangerous in case GvaKeyEnum::two instance threads wants to access at the same time
   if (config_ == nullptr) {
     config_ = new ConfigData();  // NOLINT, this is needed for singleton creation
   }
@@ -276,5 +298,79 @@ std::string ConfigData::GetLogFilename() const { return current_config_->file().
 std::string ConfigData::GetImagePath() const { return current_config_->file().images_path(); }
 
 std::string ConfigData::GetGpsDevice() const { return current_config_->gps_device(); }
+
+uint8_t ConfigData::GetKeyBinding(GvaKeyEnum key) const {
+  switch (key) {
+    case GvaKeyEnum::kKeyBlackout:
+      return LookupKey(config::Key::kKeyBLK);
+    case GvaKeyEnum::kKeySituationalAwareness:
+      return LookupKey(config::Key::kKeySA);
+    case GvaKeyEnum::kKeyWeapon:
+      return LookupKey(config::Key::kKeyWPN);
+    case GvaKeyEnum::kKeyDefensiveSystems:
+      return LookupKey(config::Key::kKeyDEF);
+    case GvaKeyEnum::kKeySystems:
+      return LookupKey(config::Key::kKeySYS);
+    case GvaKeyEnum::kKeyDriver:
+      return LookupKey(config::Key::kKeyDRV);
+    case GvaKeyEnum::kKeySpecialToRole:
+      return LookupKey(config::Key::kKeySTR);
+    case GvaKeyEnum::kKeyCommunications:
+      return LookupKey(config::Key::kKeyCOM);
+    case GvaKeyEnum::kKeyBattlefieldManagementSystem:
+      return LookupKey(config::Key::kKeyBMS);
+    case GvaKeyEnum::kKeyF1:
+      return LookupKey(config::Key::kKeyF1);
+    case GvaKeyEnum::kKeyF2:
+      return LookupKey(config::Key::kKeyF2);
+    case GvaKeyEnum::kKeyF3:
+      return LookupKey(config::Key::kKeyF3);
+    case GvaKeyEnum::kKeyF4:
+      return LookupKey(config::Key::kKeyF4);
+    case GvaKeyEnum::kKeyF5:
+      return LookupKey(config::Key::kKeyF5);
+    case GvaKeyEnum::kKeyF6:
+      return LookupKey(config::Key::kKeyF6);
+    case GvaKeyEnum::kKeyF7:
+      return LookupKey(config::Key::kKeyF7);
+    case GvaKeyEnum::kKeyF8:
+      return LookupKey(config::Key::kKeyF8);
+    case GvaKeyEnum::kKeyF9:
+      return LookupKey(config::Key::kKeyF9);
+    case GvaKeyEnum::kKeyF10:
+      return LookupKey(config::Key::kKeyF10);
+    case GvaKeyEnum::kKeyF11:
+      return LookupKey(config::Key::kKeyF11);
+    case GvaKeyEnum::kKeyF12:
+      return LookupKey(config::Key::kKeyF12);
+    case GvaKeyEnum::kKeyF13:
+      return LookupKey(config::Key::kKeyF13);
+    case GvaKeyEnum::kKeyF14:
+      return LookupKey(config::Key::kKeyF14);
+    case GvaKeyEnum::kKeyF15:
+      return LookupKey(config::Key::kKeyF15);
+    case GvaKeyEnum::kKeyF16:
+      return LookupKey(config::Key::kKeyF16);
+    case GvaKeyEnum::kKeyF17:
+      return LookupKey(config::Key::kKeyF17);
+    case GvaKeyEnum::kKeyF18:
+      return LookupKey(config::Key::kKeyF18);
+    case GvaKeyEnum::kKeyF19:
+      return LookupKey(config::Key::kKeyF19);
+    case GvaKeyEnum::kKeyF20:
+      return LookupKey(config::Key::kKeyF20);
+    default:
+      return 0;
+  }
+
+  return 0;
+}
+
+uint32_t ConfigData::LookupKey(config::Key key) const {
+  for (int i = 0; i < current_config_->bindings_size(); i++) {
+    if (current_config_->bindings(i).key() == key) return current_config_->bindings(i).bind();
+  }
+  return 0;
+}
 
 }  // namespace gva

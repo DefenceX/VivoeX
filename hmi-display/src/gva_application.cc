@@ -142,7 +142,7 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
                        gva::DebugLevel::kLogInfo);
 
       switch (event.key_) {
-        case gva::GvaKeyEnum::KKeySituationalAwareness:
+        case gva::GvaKeyEnum::kKeySituationalAwareness:
           gva::hmi::GetScreen()->function_top->SetEnabledEnabledChanging(0);
           break;
         case gva::GvaKeyEnum::kKeyWeapon:
@@ -250,7 +250,7 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
           if (render->surface) cairo_surface_destroy(render->surface);
           g_application_quit(G_APPLICATION(render->win.app));
           break;
-        case gva::GvaKeyEnum::KKeySituationalAwareness:
+        case gva::GvaKeyEnum::kKeySituationalAwareness:
           // 1 maps to F1
           {
             gva::EventKeySA sa;

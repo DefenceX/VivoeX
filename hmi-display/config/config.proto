@@ -231,6 +231,48 @@ message OsmScout {
   optional double test_lat = 5 [default = -27.47440];
 }
 
+// Keys that can be bound
+enum Key {
+  kKeyBLK = 0;
+  kKeySA = 1;
+  kKeyWPN = 2;
+  kKeyDEF = 3; 
+  kKeySYS = 4; 
+  kKeyDRV = 5; 
+  kKeySTR = 6; 
+  kKeyCOM = 7; 
+  kKeyBMS = 8; 
+  kKeyF1 = 9;
+  kKeyF2 = 10; 
+  kKeyF3 = 11; 
+  kKeyF4 = 12; 
+  kKeyF5 = 13; 
+  kKeyF6 = 14; 
+  kKeyF7 = 15; 
+  kKeyF8 = 16; 
+  kKeyF9 = 17; 
+  kKeyF10 = 18;
+  kKeyF11 = 19; 
+  kKeyF12 = 20; 
+  kKeyF13 = 21; 
+  kKeyF14 = 22; 
+  kKeyF15 = 23; 
+  kKeyF16 = 24; 
+  kKeyF17 = 25; 
+  kKeyF18 = 26; 
+  kKeyF19 = 27; 
+  kKeyF20 = 28;
+}
+
+message KeyBinding {
+  optional Key key = 1;
+  optional int32 Bind = 2;
+}
+
+message KeyBindingsApc {
+  optional KeyBinding bind = 2; 
+}
+
 message Gva {
   required string name = 1;
   optional int32 height = 3 [default = 480];
@@ -256,11 +298,9 @@ message Gva {
   
   optional File file = 13;
   
-  message BezelKeyset {
-    required int32 act = 1;
-    required int32 hidden = 2;
-  }
-  
+  // Display key bindings
+  repeated KeyBinding bindings = 14;  
+  optional string display_type = 15;
 
 }
 

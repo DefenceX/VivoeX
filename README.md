@@ -34,8 +34,10 @@ dnf update -y
 dnf install cmake gcc-c++ cairo-devel doxygen libXext-devel ffmpeg-devel protobuf-devel protobuf-compiler gtk3-devel -y
 dnf -y install gcc-toolset-9-gcc gcc-toolset-9-gcc-c++
 source /opt/rh/gcc-toolset-9/enable
+export CI=YES
 
 ```
+> NOTE: The export CI=YES is required as there is an issue compiling against Gtk3 on CentOS8 when strict warnings are enabled (default when running locally). To get around the issue our CI does not treat warnings as errors so setting this allows you to build with less checking.
 Additional packages for building documentation:
 ```
 dnf install doxygen plantuml ImageMagick -y
