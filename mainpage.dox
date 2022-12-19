@@ -55,7 +55,6 @@ For help you can list the options using:
 \code
 $ /opt/gva/hmi-display -h
 hmi_display (By defencex.com.au)...rpm
- -c : XML config fileexecute
  -h : help
  -w : Show HMI window, for debug when no GVA display present
  -v : Version

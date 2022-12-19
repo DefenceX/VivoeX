@@ -221,6 +221,7 @@
         "rightarrow",
         "rotateleft",
         "rotateright",
+        "RTPS",
         "tinyfsm",
         "workarea"
     ],

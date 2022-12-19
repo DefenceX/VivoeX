@@ -82,26 +82,33 @@ Touch screen inputs and bezel key inputs are sent back to the HMI to update the 
 
 ### HMI Controls
 
-To build the HMI clone the code and run cmake. Automated builds are handled by travis-ci.
+To build the HMI clone the code and run cmake. Automated builds are handled by Github Actions
 
 The following keys can be used to interact with the display:
 * \+ Rotate PPI clockwise
 * \- Rotate PPI anti-clockwise
 * \> Rotate Sight anti-clockwise
 * < Rotate Sight anti-clockwise
-* [1-8] Function SA,WPN...
+* F1-F12 Bezel buttons for F1-F12 on GVA Display
+* q Blackout
+* w Function SA
+* e Function WPN
+* r Function DEF
+* t Function SYS
+* y Function DRV
+* u Function STR  
+* i Function COM
+* o Function BMS
+* m|M Minimize and Maximize(fullscreen) window
 * ESC Quit
-* L Toggle labels
-* A Alarms
-* B Blackout
-* [p|P] Previous Function
-* [n|N] Next Function
 * K Keyboard
   * CAPS-LOCK toggle upper case
   * NUM-LOCK toggle special chars
 
+> NOTE The default key bindings provide compatibility with APC Technologies GVA-104501 display
+
 ## DDS
-Support for FastRTPS is being tested currently and provides RTPS communication as prescribed by the GVA standards. Messages are derived from IDL that is _not_ part of the LDM. There are two DDS protocols on Github that look like good candidates opensource projects implementing GVA.
+Support for FastRTPS is being tested currently and provides RTPS communication as prescribed by the GVA standards. Messages are derived from IDL that is _not_ part of the LDM. There are two DDS protocols on Github that look like good candidates open source projects implementing GVA.
 * https://github.com/eProsima/Fast-RTPS
 * https://github.com/ADLINK-IST/opensplice
 

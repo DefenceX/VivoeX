@@ -144,6 +144,7 @@ void Hmi::SetCanvasPng(const std::string &file) {
 
 void Hmi::Reset() {
   screen_.status_bar->visible = true;
+  screen_.labels = LabelModeEnum::kLabelAll;
   Labels(screen_.labels);
   screen_.function_top->ResetAllEnabled();
   screen_.canvas.visible = false;
