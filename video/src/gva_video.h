@@ -27,16 +27,15 @@
 
 #include <string>
 
-#define VIDEO_DEFAULT_HEIGHT 480
-#define VIDEO_DEFAULT_WIDTH 640
-
 namespace gva {
 
-enum VideoFormat { RGBA_COLOUR = 0, RGB24_COLOUR, YUYV_COLOUR };
+enum class VideoFormat { kFormatRgbaColour = 0, kFormatRgb24Colour, kFormatYuyvColour };
 
 class GvaVideoSource {
  public:
   GvaVideoSource(uint32_t height, uint32_t width);
+
+  virtual ~GvaVideoSource() = default;
 
   ///
   /// \brief Receive one frame of video
@@ -45,7 +44,7 @@ class GvaVideoSource {
   /// \param format
   /// \return uint32_t
   ///
-  virtual const uint32_t GvaReceiveFrame(char *buffer, VideoFormat format) = 0;
+  virtual uint32_t GvaReceiveFrame(char *buffer, VideoFormat format) = 0;
 
   ///
   /// \brief Transmit one frame of video
@@ -54,21 +53,21 @@ class GvaVideoSource {
   /// \param format
   /// \return uint32_t
   ///
-  virtual const uint32_t GvaTransmitFrame(char *buffer, VideoFormat format) = 0;
+  virtual uint32_t GvaTransmitFrame(char *buffer, VideoFormat format) = 0;
 
   ///
   /// \brief Get the Width object
   ///
   /// \return const uint32_t
   ///
-  const uint32_t GetWidth() { return width_; }
+  uint32_t GetWidth() const { return width_; }
 
   ///
   /// \brief Get the Height object
   ///
   /// \return const uint32_t
   ///
-  const uint32_t GetHeight() { return height_; }
+  uint32_t GetHeight() const { return height_; }
 
  private:
   uint32_t height_;

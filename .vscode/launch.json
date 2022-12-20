@@ -47,6 +47,30 @@
             ],
             "preLaunchTask": "",
             "miDebuggerPath": "/usr/bin/gdb"
-        }
+        },
+        {
+            "name": "widget-tester (with -i <id>)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/bin/widget-tester",
+            "args": [
+                "-i",
+                "1"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "",
+            "miDebuggerPath": "/usr/bin/gdb"
+        },
     ]
 }

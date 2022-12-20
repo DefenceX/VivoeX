@@ -1,23 +1,22 @@
-///
-/// MIT License
-///
-/// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
-///
-/// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
-/// associated documentation files (the 'Software'), to deal in the Software without restriction,
-/// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-/// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-/// subject to the following conditions:
-///
-/// The above copyright notice and this permission notice shall be included in all copies or substantial
-/// portions of the Software.
-/// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-/// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-/// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-/// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-/// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-///
-/// \brief Communications (COM)  state definition
+//
+// MIT License
+//
+// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+// associated documentation files (the 'Software'), to deal in the Software without restriction,
+// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+// subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial
+// portions of the Software.
+// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
 ///
 /// \file com.cc
 ///
@@ -47,7 +46,7 @@ GvaKeyEnum Hmi::KeyCOM(GvaKeyEnum keypress) {
     case GvaKeyEnum::kKeyF11:
     case GvaKeyEnum::kKeyF12:
       screen_.message.visible = true;
-      screen_.message.icon = kIconError;
+      screen_.message.icon = widget::IconType::kIconError;
       screen_.message.brief.text = "Function key";
       screen_.message.detail.text = "Operation not implemented !";
       break;
@@ -59,11 +58,10 @@ GvaKeyEnum Hmi::KeyCOM(GvaKeyEnum keypress) {
 
 void StateCOM::entry() {
   if (screen_.function_top->labels[6].state != LabelStates::kLabelHidden) {
+    Reset();
     manager_->SetScreen(&screen_, GvaFunctionEnum::kCommunications);
     lastState_ = GvaFunctionEnum::kCommunications;
-    Reset();
-
-    screen_.function_top->labels[6].state = LabelStates::kLabelEnabledSelected;
+    screen_.function_top->SetEnabled(6);
   }
 };
 

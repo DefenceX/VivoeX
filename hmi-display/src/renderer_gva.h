@@ -1,23 +1,22 @@
-///
-/// MIT License
-///
-/// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
-///
-/// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
-/// associated documentation files (the 'Software'), to deal in the Software without restriction,
-/// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-/// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-/// subject to the following conditions:
-///
-/// The above copyright notice and this permission notice shall be included in all copies or substantial
-/// portions of the Software.
-/// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-/// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-/// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-/// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-/// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-///
-/// \brief The Generic Vehicle Architecture (GVA) renderer for complex objects and widgets.
+//
+// MIT License
+//
+// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+// associated documentation files (the 'Software'), to deal in the Software without restriction,
+// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+// subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial
+// portions of the Software.
+// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
 ///
 /// \file renderer_gva.h
 ///
@@ -32,130 +31,36 @@
 #include "src/config_reader.h"
 #include "src/gva.h"
 #include "src/renderer_cairo.h"
+#include "src/touch_gva.h"
 #include "src/widgets/widget_types.h"
 
-#define MAX_ROWS 50
-#define MAX_CELLS 10
-#define MAX_TEXT 80
-
 namespace gva {
-
-class RenderBase {
- public:
-  RenderBase() = default;
-  RenderBase(uint32_t x, uint32_t y) : m_x(x), m_y(y), m_width(0), m_height(0) {}
-  RenderBase(uint32_t x, uint32_t y, uint32_t width) : m_x(x), m_y(y), m_width(width), m_height(0) {}
-  RenderBase(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
-      : m_x(x), m_y(y), m_width(width), m_height(height) {}
-  uint32_t GetX() { return m_x; }
-  uint32_t GetY() { return m_y; }
-  uint32_t GetWidth() { return m_width; }
-  uint32_t GetHeight() { return m_height; }
-
- private:
-  uint32_t m_x = 0;
-  uint32_t m_y = 0;
-  uint32_t m_width = 0;
-  uint32_t m_height = 0;
-};
 
 class GvaCell {
  public:
   std::string text;
-  CellAlignType align;
-  GvaColourType foreground;
-  GvaColourType background;
-  GvaColourType textcolour;
-  WeightType weight;
-};
-
-class GvaRow : public RenderBase {
- public:
-  GvaRow() = default;
-  GvaRow(uint32_t x, uint32_t y) : RenderBase(x, y) {}
-  uint32_t addCell(GvaCell newcell, uint32_t width);
-  GvaCell cell_[MAX_CELLS];
-  uint32_t widths_[MAX_CELLS];
-  uint32_t cells_ = 0;
-};
-
-class GvaTable : public RenderBase {
- public:
-  GvaTable(uint32_t x, uint32_t y, uint32_t width) : RenderBase(x, y, width) {}
-  uint32_t AddRow(GvaRow newrow) {
-    row_[rows_++] = newrow;
-    return rows_;
-  }
-  void SetFontName(std::string name) { fontname_ = name; }
-  void SetBorderThickness(uint32_t thickness) { border_ = thickness; }
-  uint32_t rows_ = 0;
-  uint32_t border_ = gva::ConfigData::GetInstance()->GetThemeTableBorderThickness();
-  GvaRow row_[MAX_ROWS];
-  std::string fontname_ = "Courier";
-};
-
-class Hotspot : public RenderBase {
- public:
-  Hotspot(GvaFunctionGroupEnum groupId, uint32_t x, uint32_t y) : group_id_(groupId), binding_(0), RenderBase(x, y) {}
-  Hotspot(GvaFunctionGroupEnum groupId, uint32_t binding, uint32_t x, uint32_t y, uint32_t width, uint32_t height)
-      : group_id_(groupId), binding_(binding), RenderBase(x, y, width, height) {}
-  GvaFunctionGroupEnum GetGroupId() { return group_id_; }
-  uint32_t GetBinding() { return binding_; }
-
- private:
-  GvaFunctionGroupEnum group_id_;  // Group hostpots together
-  uint32_t binding_;               // Bind a value or a key to this Hotspot
-};
-
-class TouchGva {
- public:
-  GvaStatusTypes Add(GvaFunctionGroupEnum groupId, uint32_t x, uint32_t y) {
-    hotspots_.push_back(Hotspot(groupId, x, y));
-    return GvaStatusTypes::kGvaSuccess;
-  }
-  GvaStatusTypes Add(GvaFunctionGroupEnum groupId, uint32_t binding, uint32_t x, uint32_t y, uint32_t width,
-                     uint32_t height) {
-    hotspots_.push_back(Hotspot(groupId, binding, x, y, width, height));
-    return GvaStatusTypes::kGvaSuccess;
-  }
-  GvaStatusTypes AddAbsolute(GvaFunctionGroupEnum groupId, uint32_t binding, uint32_t x, uint32_t y, uint32_t xx,
-                             uint32_t yy) {
-    hotspots_.push_back(Hotspot(groupId, binding, x, y, xx - x, yy - y));
-    return GvaStatusTypes::kGvaSuccess;
-  }
-  void SetResolution(uint32_t x, uint32_t y) {
-    x_ = x;
-    y_ = y;
-  }
-  void Reset() { hotspots_.clear(); }
-  bool Check(GvaFunctionGroupEnum groupId, uint32_t *binding, uint32_t x, uint32_t y) {
-    // Adjust for resized windows
-    x = x / static_cast<float>(Renderer::GetWidth() / static_cast<float>(DEFAULT_WIDTH));
-    y = y / static_cast<float>(Renderer::GetHeight() / static_cast<float>(DEFAULT_HEIGHT));
-    // Invert now adjusted for size
-    y = MIN_HEIGHT - y;
-
-    for (auto i = hotspots_.begin(); i != hotspots_.end(); ++i) {
-      if ((x > i->GetX()) && (x < (i->GetX() + i->GetWidth())) && (y > i->GetY()) &&
-          (y < (i->GetY() + i->GetHeight())) && (i->GetGroupId() == groupId)) {
-        *binding = i->GetBinding();
-        return true;
-      }
-    }
-    return false;
-  }
-
- public:
-  uint32_t x_;
-  uint32_t y_;
-  std::vector<Hotspot> hotspots_;
+  widget::CellAlignType align;
+  widget::GvaColourType foreground;
+  widget::GvaColourType background;
+  widget::GvaColourType textcolour;
+  widget::WeightType weight;
 };
 
 class RendererGva : public RendererCairo {
  public:
-  RendererGva() = delete;
+  ///
+  /// \brief Construct a new Renderer Gva object
+  ///
+  /// \param width
+  /// \param height
+  ///
   RendererGva(uint32_t width, uint32_t height);
-  ~RendererGva() = default;
+
+  ///
+  /// \brief Destroy the Renderer Gva object
+  ///
+  ///
+  ~RendererGva() override = default;
 
   ///
   /// \brief Draw all the labels on the screen
@@ -201,20 +106,7 @@ class RendererGva : public RendererCairo {
   /// \param width Width of the icon
   /// \param height Height of the icon
   ///
-  void DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width, uint32_t height);
-
-  ///
-  /// \brief Draw a table
-  ///
-  /// \param table The table values
-  ///
-  void DrawTable(GvaTable *table);
-
-  ///
-  /// \brief Draw the operational mode
-  ///
-  ///
-  void DrawMode();
+  void DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32_t width, uint32_t height);
 
   ///
   /// \brief Draw keyboard buttons
@@ -240,7 +132,7 @@ class RendererGva : public RendererCairo {
   /// \param align Alignment
   ///
   void DrawButton(const std::string keytext, uint32_t fontSize, uint32_t x, uint32_t y, uint32_t height, uint32_t width,
-                  CellAlignType align);
+                  widget::CellAlignType align);
 
   ///
   /// \brief Get the Touch object
@@ -252,29 +144,73 @@ class RendererGva : public RendererCairo {
  private:
   TouchGva touch_;
 
- private:
+  ///
+  /// \brief Set the State Label attribute
+  ///
+  /// \param state
+  /// \param config
+  ///
   void SetStateLabel(LabelStates state, ConfigData *config);
+
+  ///
+  /// \brief Set the State Text attribute
+  ///
+  /// \param state
+  /// \param config
+  ///
   void SetStateText(LabelStates state, ConfigData *config);
   ConfigData *config_ = nullptr;
 };
 
 class WidgetBase {
  public:
+  ///
+  /// \brief Construct a new Widget Base object
+  ///
+  /// \param renderer
+  ///
   explicit WidgetBase(RendererGva &renderer) : renderer_(renderer) {}
+
+  ///
+  /// \brief
+  ///
+  /// \param x
+  /// \param y
+  /// \param width
+  /// \param height
+  /// \param text
+  /// \param text_colour
+  ///
   void Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::string text, uint32_t text_colour);
-  uint32_t GetX() { return x_; }
-  uint32_t GetY() { return y_; }
 
+  ///
+  /// \brief Get the X pixel attribute
+  ///
+  /// \return uint32_t
+  ///
+  uint32_t GetX() const { return x_; }
+
+  ///
+  /// \brief Get the Y pixel attribute
+  ///
+  /// \return uint32_t
+  ///
+  uint32_t GetY() const { return y_; }
   RendererGva &renderer_;
-
- private:
   uint32_t x_;
   uint32_t y_;
 };
 
 class WidgetFunctionKeyToggle : public WidgetBase {
+  using WidgetBase::WidgetBase;
+
  public:
-  explicit WidgetFunctionKeyToggle(RendererGva &renderer) : WidgetBase(renderer) {}
+  ///
+  /// \brief Set the toggle states
+  ///
+  /// \param label1 The first toggle state text
+  /// \param label2 The second toggle state text
+  ///
   void Toggle(const std::string &label1, const std::string &label2);
 };
 

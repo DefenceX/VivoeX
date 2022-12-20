@@ -1,10 +1,13 @@
-[![Action cyclone](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-centos-cyclone.yaml/badge.svg)](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-centos-cyclone.yaml)
-[![Action cyclone](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-ubuntu-cyclone.yaml/badge.svg)](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-ubuntu-cyclone.yaml)
-[![Action opensplice](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-ubuntu-opensplice.yaml/badge.svg)](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-ubuntu-opensplice.yaml)
+[![Action cyclone](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-ubuntu-amd64-cyclone.yaml/badge.svg)](https://github.com/DefenceX/vivoe-lite/actions/workflows/build-ubuntu-amd64-cyclone.yaml)
+[![Action cyclone](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-centos-amd64-cyclone.yaml/badge.svg)](https://github.com/DefenceX/vivoe-lite/actions/workflows/build-centos-amd64-cyclone.yaml)
+[![Action cyclone](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-debian-arm64-cyclone.yaml/badge.svg)](https://github.com/DefenceX/vivoe-lite/actions/workflows/build-debian-arm64-cyclone.yaml)
 [![Action doxygen](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-doxygen.yaml/badge.svg)](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-doxygen.yaml)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=DefenceX_vivoe-lite&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=DefenceX_vivoe-lite)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=DefenceX_vivoe-lite&metric=coverage)](https://sonarcloud.io/summary/new_code?id=DefenceX_vivoe-lite)
+![Action codeql](https://github.com/DefenceX/vivoe-lite/actions/workflows/codeql.yml/badge.svg)
+![Action codacy](https://github.com/DefenceX/vivoe-lite/actions/workflows/codacy.yml/badge.svg)
 [![License](https://img.shields.io/badge/licence-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/2927/badge)](https://bestpractices.coreinfrastructure.org/projects/2927)
-[![codecov](https://codecov.io/gh/ross-newman/vivoe-lite/branch/master/graph/badge.svg)](https://codecov.io/gh/ross-newman/vivoe-lite)
 ![Version](https://defencex.github.io/vivoe-lite/version.svg)
 [![ZenHub](https://dxssrr2j0sq4w.cloudfront.net/3.2.0/img/external/zenhub-badge.png)](https://app.zenhub.com/workspaces/vivoe-lite-63683e4ded511f5aebcb4638)
 # vivoe-lite
@@ -16,11 +19,15 @@
 # Dependencies
 This VIVOE (Vetronics Infrastructure for Video Over Ethernet) environment is currently tested on Ubuntu 22.04 LTS. Please ensure you have the following packages installed prior to building the application:
 ```
+<<<<<<< HEAD
 apt install libcairo2-dev libxt-dev cpplint python-is-python3 libxext-dev libswscale-dev libprotobuf-dev protobuf-compiler cmake g++ libgtk-3-dev --no-install-recommends
+=======
+apt install libcairo2-dev cpplint python-is-python3 libxext-dev libswscale-dev libprotobuf-dev protobuf-compiler cmake g++ libgtk-3-dev --no-install-recommends
+>>>>>>> 595d9055f5b993006449340f0e1cae44b79381d1
 ```
 Additional packages for building documentation:
 ```
-apt install doxygen plantuml -y
+apt install doxygen plantuml imagemagick -y
 ```
 We also want to support CentOS try, some extra setup:
 ```
@@ -28,12 +35,16 @@ dnf install epel-release -y
 dnf config-manager --set-enabled powertools -y
 dnf localinstall --nogpgcheck https://download1.rpmfusion.org/free/el/rpmfusion-free-release-8.noarch.rpm -y
 dnf update -y
-dnf install cmake gcc-c++ cairo-devel libXt-devel doxygen libXext-devel ffmpeg-libs protobuf-devel protobuf-compiler GeographicLib-devel gtk3-devel -y
+dnf install cmake gcc-c++ cairo-devel doxygen libXext-devel ffmpeg-devel protobuf-devel protobuf-compiler gtk3-devel -y
+dnf -y install gcc-toolset-9-gcc gcc-toolset-9-gcc-c++
+source /opt/rh/gcc-toolset-9/enable
+export CI=YES
 
 ```
+> NOTE: The export CI=YES is required as there is an issue compiling against Gtk3 on CentOS8 when strict warnings are enabled (default when running locally). To get around the issue our CI does not treat warnings as errors so setting this allows you to build with less checking.
 Additional packages for building documentation:
 ```
-dnf install doxygen plantuml -y
+dnf install doxygen plantuml ImageMagick -y
 ```
 
 # Build
@@ -75,26 +86,33 @@ Touch screen inputs and bezel key inputs are sent back to the HMI to update the 
 
 ### HMI Controls
 
-To build the HMI clone the code and run cmake. Automated builds are handled by travis-ci.
+To build the HMI clone the code and run cmake. Automated builds are handled by Github Actions
 
 The following keys can be used to interact with the display:
 * \+ Rotate PPI clockwise
 * \- Rotate PPI anti-clockwise
 * \> Rotate Sight anti-clockwise
 * < Rotate Sight anti-clockwise
-* [1-8] Function SA,WPN...
+* F1-F12 Bezel buttons for F1-F12 on GVA Display
+* q Blackout
+* w Function SA
+* e Function WPN
+* r Function DEF
+* t Function SYS
+* y Function DRV
+* u Function STR  
+* i Function COM
+* o Function BMS
+* m|M Minimize and Maximize(fullscreen) window
 * ESC Quit
-* L Toggle labels
-* A Alarms
-* B Blackout
-* [p|P] Previous Function
-* [n|N] Next Function
 * K Keyboard
   * CAPS-LOCK toggle upper case
   * NUM-LOCK toggle special chars
 
+> NOTE The default key bindings provide compatibility with APC Technologies GVA-104501 display
+
 ## DDS
-Support for FastRTPS is being tested currently and provides RTPS communication as prescribed by the GVA standards. Messages are derived from IDL that is _not_ part of the LDM. There are two DDS protocols on Github that look like good candidates opensource projects implementing GVA.
+Support for FastRTPS is being tested currently and provides RTPS communication as prescribed by the GVA standards. Messages are derived from IDL that is _not_ part of the LDM. There are two DDS protocols on Github that look like good candidates open source projects implementing GVA.
 * https://github.com/eProsima/Fast-RTPS
 * https://github.com/ADLINK-IST/opensplice
 
@@ -134,7 +152,7 @@ For CAN messages can be read via the ELM 327 compatible USB dongle such as this 
 # Offline Maps
 If a valid GPS source is present then an offline map will be available rendered by [libosmscout](https://wiki.openstreetmap.org/wiki/Libosmscout). This feature is currently being developed. OpenStreetMap database is required plus some additional processing prior to use. An regularly updated collection of global maps can be downloaded from [Geofabrik](https://download.geofabrik.de/). Entire world comes in at 77Gb before processing.
 
-![GVA Dataflow](images/Screenshot-OSMScout-Map.png)<br>
+![GVA Dataflow](images/screen/ScreenshotBms.png)<br>
 **Example of the Battle Management System (BMS) screen**
 
 You can render maps using servers provided by [Google Colaboratory](https://colab.research.google.com/notebooks/welcome.ipynb) using my [juypter notebook](https://gist.github.com/ross-newman/8634f69e98ac2aded46552e7b0768dbb) for processing the data and depositing the results on to a Google Drive account. 

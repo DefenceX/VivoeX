@@ -1,23 +1,22 @@
-///
-/// MIT License
-///
-/// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
-///
-/// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
-/// associated documentation files (the 'Software'), to deal in the Software without restriction,
-/// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-/// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-/// subject to the following conditions:
-///
-/// The above copyright notice and this permission notice shall be included in all copies or substantial
-/// portions of the Software.
-/// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-/// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-/// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-/// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-/// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-///
-/// \brief System (SYS) state definition
+//
+// MIT License
+//
+// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+// associated documentation files (the 'Software'), to deal in the Software without restriction,
+// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+// subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial
+// portions of the Software.
+// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
 ///
 /// \file sys.cc
 ///
@@ -29,16 +28,17 @@ namespace gva {
 GvaKeyEnum Hmi::KeySYS(GvaKeyEnum keypress) {
   screen_.function_left.visible = true;
   screen_.function_right.visible = true;
+  WidgetTable *table = (WidgetTable *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable);
 
   KeySide(keypress);
   Key(keypress);
 
   switch (keypress) {
     case GvaKeyEnum::kKeyF1:
-      HmiHelper::TableSystem(&screen_.table);
+      HmiHelper::TableSystem(table);
       break;
     case GvaKeyEnum::kKeyF5:
-      HmiHelper::TableLicences(&screen_.table);
+      HmiHelper::TableLicences(table);
       break;
     case GvaKeyEnum::kKeyF2:
     case GvaKeyEnum::kKeyF3:
@@ -49,7 +49,7 @@ GvaKeyEnum Hmi::KeySYS(GvaKeyEnum keypress) {
     case GvaKeyEnum::kKeyF9:
     case GvaKeyEnum::kKeyF10:
       screen_.message.visible = true;
-      screen_.message.icon = kIconError;
+      screen_.message.icon = widget::IconType::kIconError;
       screen_.message.brief.text = "Function key";
       screen_.message.detail.text = "Operation not implemented!";
       break;
@@ -59,9 +59,9 @@ GvaKeyEnum Hmi::KeySYS(GvaKeyEnum keypress) {
           (screen_.info.mode == ScreenMode::kModeBlackout) ? ScreenMode::kModeOperational : ScreenMode::kModeBlackout;
       screen_.canvas.visible = true;
       if (screen_.info.mode == ScreenMode::kModeBlackout)
-        screen_.canvas.bufferType = SurfaceType::kSurfaceBlackout;
+        screen_.canvas.blackout = true;
       else
-        screen_.canvas.bufferType = SurfaceType::kSurfaceFile;
+        screen_.canvas.blackout = false;
       break;
     case GvaKeyEnum::kKeyF12:
       // Exit
@@ -76,21 +76,16 @@ GvaKeyEnum Hmi::KeySYS(GvaKeyEnum keypress) {
 
 void StateSYS::entry() {
   if (screen_.function_top->labels[3].state != LabelStates::kLabelHidden) {
-    std::string filename;
+    WidgetTable *table = (WidgetTable *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable);
+    Reset();
     manager_->SetScreen(&screen_, GvaFunctionEnum::kSystems);
     lastState_ = GvaFunctionEnum::kSystems;
-    Reset();
+    screen_.function_top->SetEnabled(3);
 
     screen_.status_bar->labels[3].state = LabelStates::kLabelEnabledSelected;
     screen_.function_top->labels[3].state = LabelStates::kLabelEnabledSelected;
-    screen_.canvas.visible = true;
-    filename = ConfigData::GetInstance()->GetImagePath();
-    filename.append("/FrontCenter.png");
-    SetCanvasPng(filename.c_str());
 
-    HmiHelper::TableSystem(&screen_.table);
-
-    screen_.function_top->labels[3].state = LabelStates::kLabelEnabledSelected;
+    HmiHelper::TableSystem(table);
   }
 };
 

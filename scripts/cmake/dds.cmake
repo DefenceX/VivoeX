@@ -99,7 +99,7 @@ ExternalProject_Add(
     ${DDS_STACK}
     GIT_REPOSITORY      https://github.com/eclipse-cyclonedds/cyclonedds
     GIT_TAG             "0.10.2"
-    GIT_SHALLOW         5
+    GIT_SHALLOW         1
     GIT_CONFIG          fetch.recurseSubmodules=true
     CMAKE_ARGS          -DCMAKE_INSTALL_MESSAGE=LAZY
     PREFIX              ${CMAKE_BINARY_DIR}/external/cyclonedds/prefix
@@ -178,7 +178,7 @@ ExternalProject_Add(
     GIT_REPOSITORY      https://github.com/DefenceX/opensplice
     GIT_SHALLOW         5
     GIT_CONFIG          fetch.recurseSubmodules=true
-    CONFIGURE_COMMAND   bash -c "cd ${CMAKE_BINARY_DIR}/external/opensplice/src && source ./configure x86_64.linux-release"
+    CONFIGURE_COMMAND   bash -c "cd ${CMAKE_BINARY_DIR}/external/opensplice/src && export GSOAPHOME=/usr/share/gsoap && source ./configure x86_64.linux-release"
     PREFIX              ${CMAKE_BINARY_DIR}/external/opensplice/prefix
     TMP_DIR             ${CMAKE_BINARY_DIR}/external/opensplice/tmp
     STAMP_DIR           ${CMAKE_BINARY_DIR}/external/opensplice/stamp
@@ -187,7 +187,7 @@ ExternalProject_Add(
     INSTALL_DIR         ${CMAKE_BINARY_DIR}/external/opensplice/install
     SOURCE_SUBDIR       ""
     BUILD_IN_SOURCE     TRUE
-    BUILD_COMMAND       bash -c "cd ${CMAKE_BINARY_DIR}/external/opensplice/src && source ./configure x86_64.linux-release && make CFLAGS=-Wno-error -j $(nproc)"
+    BUILD_COMMAND       bash -c "cd ${CMAKE_BINARY_DIR}/external/opensplice/src && source ./configure x86_64.linux-release && make $(nproc) CFLAGS='-Wno-error -fPIC'"
     INSTALL_COMMAND     bash -c "cd ${CMAKE_BINARY_DIR}/external/opensplice/src && source ./configure x86_64.linux-release && make DESTDIR=${CMAKE_BINARY_DIR}/external/install install"
     TEST_COMMAND        ""
     UPDATE_DISCONNECTED 1

@@ -1,23 +1,22 @@
-///
-/// MIT License
-///
-/// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
-///
-/// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
-/// associated documentation files (the 'Software'), to deal in the Software without restriction,
-/// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-/// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-/// subject to the following conditions:
-///
-/// The above copyright notice and this permission notice shall be included in all copies or substantial
-/// portions of the Software.
-/// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-/// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-/// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-/// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-/// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-///
-/// \brief
+//
+// MIT License
+//
+// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+// associated documentation files (the 'Software'), to deal in the Software without restriction,
+// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+// subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial
+// portions of the Software.
+// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
 ///
 /// \file main.cc
 ///
@@ -49,23 +48,25 @@
 /// \param opt HMI application options
 ///
 int32_t GetOpt(int argc, char *argv[], GvaApplication::Options *opt) {
-  uint32_t c = 0;
+  int c = 0;
 
-  gva::ConfigData *configuration = gva::ConfigData::GetInstance();
+  const gva::ConfigData *configuration = gva::ConfigData::GetInstance();
 
-  while ((c = getopt(argc, argv, "hvwclf::")) != -1) switch (c) {
+  while ((c = getopt(argc, argv, "hvwclf::")) != -1) {
+    switch (c) {
       case 'v':
-        std::cout << "Version " << MAJOR << "." << MINOR << "." << PATCH << std::endl;
+        std::cout << "Version " << gva::kSemVerMajor << "." << gva::kSemVerMinor << "." << gva::kSemVerPatch
+                  << std::endl;
         return 0;
       case 'w':
-        opt->windowEnabled = true;
+        opt->windowEnabled_ = true;
         return -1;
       case 'c':
-        strcpy(opt->config, optarg);
+        opt->config = optarg;
         return -1;
       case 'l':
         printf("-l selected");
-        opt->videoEnabled = true;
+        opt->videoEnabled_ = true;
         break;
       case 'f':
         configuration->SetFullscreen(true);
@@ -88,10 +89,10 @@ int32_t GetOpt(int argc, char *argv[], GvaApplication::Options *opt) {
       default:
         abort();
     }
+  }
   return -1;
 };
 
-// printf("File %s:%d, %s()\n", __FILE__, __LINE__, __FUNCTION__);
 int main(int argc, char *argv[]) {
   std::string ipaddr = "127.0.0.1";
   uint32_t port = 5004;
@@ -107,5 +108,5 @@ int main(int argc, char *argv[]) {
   // Blocking call to the application constructor
   app.Exec();
 
-  gva::logGva::log("Exiting hmi_display...\n", gva::LOG_INFO);
+  gva::logGva::log("Exiting hmi_display...\n", gva::DebugLevel::kLogInfo);
 }

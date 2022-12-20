@@ -1,23 +1,22 @@
-///
-/// MIT License
-///
-/// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
-///
-/// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
-/// associated documentation files (the 'Software'), to deal in the Software without restriction,
-/// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-/// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-/// subject to the following conditions:
-///
-/// The above copyright notice and this permission notice shall be included in all copies or substantial
-/// portions of the Software.
-/// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-/// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-/// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-/// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-/// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-///
-/// \brief GVA application class to handle the GTK application startup and shutdown.
+//
+// MIT License
+//
+// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+// associated documentation files (the 'Software'), to deal in the Software without restriction,
+// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+// subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial
+// portions of the Software.
+// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
 ///
 /// \file gva_application.h
 ///
@@ -45,9 +44,9 @@ class GvaApplication {
  public:
   /// \brief Application options
   struct Options {
-    bool videoEnabled;
-    bool windowEnabled;
-    char config[256];
+    bool videoEnabled_;
+    bool windowEnabled_;
+    std::string config;
   };
 
   ///
@@ -56,19 +55,19 @@ class GvaApplication {
   /// \param ipaddr The stream IP address for raw RTP video
   /// \param port The port for the above RTP stream
   ///
-  GvaApplication(const Options options, const std::string &ipaddr, const uint32_t port);
+  GvaApplication(const Options &options, const std::string &ipaddr, const uint32_t port);
 
   ///
   /// \brief Destroy the Gva Application object
   ///
   ///
-  ~GvaApplication();
+  ~GvaApplication() = default;
 
   ///
   /// \brief Execute the main processing loop, blocking call
   ///
   ///
-  void Exec();
+  void Exec() const;
 
   ///
   /// \brief Update the canvas and re-render the screen
@@ -78,7 +77,8 @@ class GvaApplication {
   ///
   static void Update(void *arg, gpointer user_data);
 
-  static gva::GvaVideoRtpYuv *rtp_stream1_;
+  static Options options_;
+  static std::unique_ptr<gva::GvaVideoRtpYuv> rtp_stream1_;
 
  private:
   ///
@@ -94,7 +94,6 @@ class GvaApplication {
   ///
   static void Dispatch(gva::GvaKeyEnum key);
 
-  static Options options_;
   char *rtp_buffer_;
   std::shared_ptr<gva::EventsGva> io_;
   gva::EventsGva *io_test_;

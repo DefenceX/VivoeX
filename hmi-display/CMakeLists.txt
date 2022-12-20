@@ -9,42 +9,17 @@ pkg_check_modules(SWSCALE REQUIRED libswscale)
 add_subdirectory(src/widgets)
 add_subdirectory(common)
 add_subdirectory(config)
-add_subdirectory(test)
+add_subdirectory(tools)
 #add_subdirectory(dds)
-
-if(ENABLE_COVERAGE)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g ")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ftest-coverage")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
-endif()
 
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/hmi-display)
 include_directories(${CMAKE_BINARY_DIR}/external/vivoe-media-framework/src)
 include_directories(${CMAKE_BINARY_DIR}/external/libnmea/src/include)
-if (ENABLE_OSMSCOUT)
-	include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/src/libosmscout/include)
-	include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/src/libosmscout-map/include)
-	include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/src/libosmscout-map-cairo/include)
-	include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout/include)
-	include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout-map/include)
-	include_directories(${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout-map-cairo/include)
-	include_directories(${PROJECT_SOURCE_DIR}/../libosmscout/libosmscout/include)
-	include_directories(${PROJECT_SOURCE_DIR}/../libosmscout/libosmscout-map/include)
-	include_directories(${PROJECT_SOURCE_DIR}/../libosmscout/libosmscout-map-cairo/include)
-	link_directories(${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout-map-cairo)
-	link_directories(${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout)
-	link_directories(${CMAKE_BINARY_DIR}/external/libosmscout/build/libosmscout-map)
-endif()
-link_directories(${CMAKE_BINARY_DIR}/external/Fast-DDS/build/thirdparty/fastcdr/src/cpp)
-link_directories(${CMAKE_BINARY_DIR}/external/Fast-DDS/build/src/cpp)
+
 link_directories(${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build)
 link_directories(${CMAKE_BINARY_DIR}/external/libnmea/build/src)
-
-message ("Platform " ${CMAKE_SYSTEM_NAME} " : " ${CMAKE_SYSTEM} ${MSYS} ${MSYS2}) 
 
 set(SOURCES main.cc 
 			src/gva_application.cc
@@ -52,11 +27,16 @@ set(SOURCES main.cc
 			src/renderer.cc 
 			src/renderer_cairo.cc 
 			src/renderer_gva.cc 
+			src/touch_gva.cc 
 			src/screen_gva.cc 
 			src/events_gva.cc 
 			src/widgets/widget.cc
 			src/widgets/keyboard.cc
-			src/widgets/table.cc
+			src/widgets/driver/rpm_fuel.cc
+			src/widgets/driver/speedometer.cc
+			src/widgets/table/table.cc
+			src/widgets/table/cell_type.cc
+			src/widgets/table/row_type.cc
 			src/widgets/compass.cc
 			src/widgets/top_labels.cc
 			src/widgets/bottom_labels.cc
@@ -84,21 +64,19 @@ set(SOURCES main.cc
 			src/states/alarms.cc
 			)
 
+link_libraries(-lstdc++fs)
 add_executable(hmi-display ${PROTO_SRCS} ${SOURCES})
-if (ENABLE_OSMSCOUT)
-	add_dependencies(hmi-display config-proto hmi-video libosmscout)
-        set(OSMSCOUT_LIBS osmscout osmscout_map osmscout_map_cairo)
-else()
-	add_dependencies(hmi-display hmi-video config-proto ${DDS_STACK})
-endif()
-target_link_libraries (hmi-display Geographic config-proto ${OSMSCOUT_LIBS} ${Protobuf_LIBRARIES} stdc++fs)
+add_dependencies(hmi-display libosmscout geographiclib hmi-video config-proto ${DDS_STACK} libosmscout)
+set(OSMSCOUT_LIBS ${OSMSCOUT_LIBARAIES})
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std=c++11")
+target_link_libraries (hmi-display ${GEOGRAPHIC_LIBRARIES} GeographicLib config-proto ${OSMSCOUT_LIBS} ${Protobuf_LIBRARIES} ${GTK_LIBRARIES3} stdc++fs)
 
-link_directories(${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build ${CMAKE_BINARY_DIR}/external/libnmea/build/src)
+link_directories(${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build ${CMAKE_BINARY_DIR}/external/libnmea/build/src ${CMAKE_BINARY_DIR}/external/install/usr/local/lib)
 target_link_libraries(hmi-display png pthread hmi-video vivoe-media nmealib config-proto ${CAIRO_LIBRARIES} ${PANGO_LIBRARIES} ${SWSCALE_LIBRARIES} ${GTK3_LIBRARIES})
-target_include_directories(hmi-display PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_BINARY_DIR}/hmi-display/config ${CMAKE_CURRENT_SOURCE_DIR}/widgets ${CMAKE_CURRENT_SOURCE_DIR}/common ${CMAKE_BINARY_DIR}/hmi_display ${CAIRO_INCLUDE_DIRS} ${PANGO_INCLUDE_DIRS} ${SWSCALE_INCLUDE_DIRS} ${GTK3_INCLUDE_DIRS} common dds dds/location display)
+target_link_directories(hmi-display BEFORE PRIVATE ${CMAKE_BINARY_DIR}/external/install/usr/local/lib)
+target_include_directories(hmi-display PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${OSMSCOUT_INCLUDE_DIRS} ${GEOGRAPHIC_INCLUDE_DIRS} ${CMAKE_BINARY_DIR}/hmi-display/config ${CMAKE_CURRENT_SOURCE_DIR}/widgets ${CMAKE_CURRENT_SOURCE_DIR}/common ${CMAKE_BINARY_DIR}/hmi_display ${CAIRO_INCLUDE_DIRS} ${PANGO_INCLUDE_DIRS} ${SWSCALE_INCLUDE_DIRS} ${GTK3_INCLUDE_DIRS} common dds dds/location display)
 target_compile_options(hmi-display PUBLIC ${CAIRO_CFLAGS_OTHER} ${GTK3_CFLAGS_OTHER})
+set_target_properties(hmi-display PROPERTIES UNITY_BUILD ON)
 
 install(TARGETS hmi-display DESTINATION /opt/gva/hmi)
 

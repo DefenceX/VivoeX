@@ -1,23 +1,22 @@
-///
-/// MIT License
-///
-/// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
-///
-/// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
-/// associated documentation files (the 'Software'), to deal in the Software without restriction,
-/// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-/// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-/// subject to the following conditions:
-///
-/// The above copyright notice and this permission notice shall be included in all copies or substantial
-/// portions of the Software.
-/// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-/// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-/// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-/// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-/// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-///
-/// \brief Config file reader
+//
+// MIT License
+//
+// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+// associated documentation files (the 'Software'), to deal in the Software without restriction,
+// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+// subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial
+// portions of the Software.
+// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
 ///
 /// \file config_reader.h
 ///
@@ -30,6 +29,7 @@
 
 #include "config.pb.h"  // NOLINT
 #include "src/gva.h"
+#include "src/widgets/widget_types.h"
 
 namespace gva {
 
@@ -54,12 +54,10 @@ class ConfigDataBase {
   ///
   /// \brief Write contents of protobuf
   ///
-  void WriteData();
+  void WriteData() const;
 
- protected:
   std::unique_ptr<config::Gva> current_config_;
 
- private:
   std::string config_file_ = "config.pb";
 };
 
@@ -197,6 +195,13 @@ class ConfigDataTheme : public ConfigDataBase {
   /// \return LineType
   ///
   LineType GetThemeLabelLineDisabled() const;
+
+  ///
+  /// \brief Get the Ppi Mode object
+  ///
+  /// \return ModeEnum
+  ///
+  widget::ModeEnum GetPpiMode() const;
 
   ///
   /// \brief Get the Theme Label Border Thickness object
@@ -344,6 +349,34 @@ class ConfigData : public ConfigDataTheme {
   void SetFullscreen(bool fullscreen) const;
 
   ///
+  /// \brief Get the Map Enabled object
+  ///
+  /// \return true
+  /// \return false
+  ///
+  bool GetMapEnabled() const;
+
+  ///
+  /// \brief Set the Map Enabled object
+  ///
+  ///
+  void SetMapEnabled(bool enabled) const;
+
+  ///
+  /// \brief Get the Map Path for the installed OSMScout maps
+  ///
+  /// \return std::string
+  ///
+  std::string GetMapPath() const;
+
+  ///
+  /// \brief Get the Stylesheet Path for the OSMScout stylesheets
+  ///
+  /// \return std::string
+  ///
+  std::string GetStylesheetPath() const;
+
+  ///
   /// \brief Get the Log Path object
   ///
   /// \return std::string
@@ -365,11 +398,25 @@ class ConfigData : public ConfigDataTheme {
   std::string GetImagePath() const;
 
   ///
-  /// \brief Get the Gps Device object
+  /// \brief Get the Gps Device path to virtual port
   ///
   /// \return std::string
   ///
   std::string GetGpsDevice() const;
+
+  ///
+  /// \brief Get the Odb Device path to virtual port
+  ///
+  /// \return std::string
+  ///
+  std::string GetOdbDevice() const;
+
+  ///
+  /// \brief Get the Key Binding attribute
+  ///
+  /// \return uint32_t
+  ///
+  uint32_t GetKeyBinding(GvaKeyEnum key) const;
 
  protected:
   ///
@@ -377,6 +424,14 @@ class ConfigData : public ConfigDataTheme {
   ///
   ///
   ConfigData() = default;
+
+  ///
+  /// \brief Lookup the actual key binding value from the config data
+  ///
+  /// \param key
+  /// \return uint32_t
+  ///
+  uint32_t LookupKey(config::Key key) const;
 
   static ConfigData* config_;
 };

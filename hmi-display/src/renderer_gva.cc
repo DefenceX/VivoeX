@@ -1,23 +1,22 @@
-///
-/// MIT License
-///
-/// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
-///
-/// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
-/// associated documentation files (the 'Software'), to deal in the Software without restriction,
-/// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-/// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-/// subject to the following conditions:
-///
-/// The above copyright notice and this permission notice shall be included in all copies or substantial
-/// portions of the Software.
-/// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-/// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-/// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-/// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-/// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-///
-/// \brief The Generic Vehicle Architecture (GVA) renderer for complex objects and widgets.
+//
+// MIT License
+//
+// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+// associated documentation files (the 'Software'), to deal in the Software without restriction,
+// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+// subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial
+// portions of the Software.
+// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
 ///
 /// \file renderer_gva.cc
 ///
@@ -26,25 +25,23 @@
 
 #include <math.h> /* sqrt */
 
+#include <array>
+
 #include "debug.h"
 #include "screen_gva.h"
 
 namespace gva {
-
-uint32_t GvaRow::addCell(GvaCell newcell, uint32_t width) {
-  widths_[cells_] = width;
-  cell_[cells_++] = newcell;
-  return cells_;
-};
 
 RendererGva::RendererGva(uint32_t width, uint32_t height) : RendererCairo(height, width) {
   config_ = gva::ConfigData::GetInstance();
   touch_.SetResolution(width, height);
 }
 
-void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
-  double sx, sy;
-  int32_t arrow[8][2] = {{-5, -10}, {-4, -10}, {-4, 0}, {-8, 0}, {0, +10}, {8, 0}, {+4, 0}, {+4, -10}};
+void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
+  double sx;
+  double sy;
+  std::array arrow{std::array{-4, -10}, std::array{-4, 0}, std::array{-8, 0},  std::array{0, +10},
+                   std::array{8, 0},    std::array{+4, 0}, std::array{+4, -10}};
 
   sx = (width / (double)13);
   sy = (height / (double)15);
@@ -56,70 +53,72 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
   SetLineThickness(1, LineType::kLineSolid);
 
   Translate(x, y);
+  Rotate(M_PI);
 
   switch (icon) {
-    case kIconDownArrow:
+    case widget::IconType::kIconDownArrow:
       Rotate(M_PI);
-    case kIconUpArrow:
+    case widget::IconType::kIconUpArrow:
       Scale(sx, sy);
       MovePenRaw(arrow[0][0], arrow[0][1]);
-      for (uint16_t i = 1; i < 8; i++) {
-        DrawPenRaw(arrow[i][0], arrow[i][1]);
+      for (auto point : arrow) {
+        DrawPenRaw(point[0], point[1]);
       }
       ClosePath(true);
       break;
-    case kIconDownArrowOutline:
+    case widget::IconType::kIconDownArrowOutline:
       Rotate(M_PI);
-    case kIconUpArrowOutline:
+    case widget::IconType::kIconUpArrowOutline:
       Scale(sx, sy);
       MovePenRaw(arrow[0][0], arrow[0][1]);
-      for (uint16_t i = 1; i < 8; i++) {
-        DrawPenRaw(arrow[i][0], arrow[i][1]);
+      for (auto point : arrow) {
+        DrawPenRaw(point[0], point[1]);
       }
       ClosePath(true);
       break;
-    case ICON_RIGHT_ARROW:
+    case widget::IconType::kIconRightArrow:
       Rotate(M_PI);
-    case kIconRightArrorw:
+    case widget::IconType::kIconLeftArrow:
       Rotate(M_PI * 1.5);
       Scale(sx, sy);
       MovePenRaw(arrow[0][0], arrow[0][1]);
-      for (uint16_t i = 1; i < 8; i++) {
-        DrawPenRaw(arrow[i][0], arrow[i][1]);
+      for (auto point : arrow) {
+        DrawPenRaw(point[0], point[1]);
       }
       ClosePath(true);
       break;
-    case kIconRightArrowOutline:
+    case widget::IconType::kIconRightArrowOutline:
       Rotate(M_PI);
-    case kIconLeftArrorwOutline:
+    case widget::IconType::kIconLeftArrowOutline:
       Rotate(M_PI * 1.5);
       Scale(sx, sy);
       MovePenRaw(arrow[0][0], arrow[0][1]);
-      for (uint16_t i = 1; i < 8; i++) {
-        DrawPenRaw(arrow[i][0], arrow[i][1]);
+      for (auto point : arrow) {
+        DrawPenRaw(point[0], point[1]);
       }
       ClosePath(true);
       break;
-    case kIconPowerOff:
-      SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
+    case widget::IconType::kIconPowerOff:
+      SetLineThickness(2, LineType::kLineSolid, LineCapEnd::kLineCapRound);
       Scale(sx, sy);
       DrawArcRaw(0, 0, 8, 290, 250);
       MovePenRaw(0, -4);
       DrawPenRaw(0, -10);
       ClosePath(true);
       break;
-    case kIconRotateLeft:
-      SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
+    case widget::IconType::kIconRotateLeft:
+      SetLineThickness(2, LineType::kLineSolid, LineCapEnd::kLineCapRound);
       Scale(sx, sy);
       DrawArcRaw(0, 0, 8, 315, 225);
       MovePenRaw(5, -6);
       DrawPenRaw(5, -1);
       MovePenRaw(5, -6);
-      DrawPenRaw(9, -6);
+      Rotate(M_PI);
+
       ClosePath(true);
       break;
-    case kIconRotateRight:
-      SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
+    case widget::IconType::kIconRotateRight:
+      SetLineThickness(2, LineType::kLineSolid, LineCapEnd::kLineCapRound);
       Scale(sx, sy);
       DrawArcRaw(0, 0, 8, 315, 225);
       MovePenRaw(-5, -6);
@@ -128,8 +127,8 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       DrawPenRaw(-9, -6);
       ClosePath(true);
       break;
-    case kIconPlus:
-      SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
+    case widget::IconType::kIconPlus:
+      SetLineThickness(2, LineType::kLineSolid, LineCapEnd::kLineCapRound);
       Scale(sx, sy);
       MovePenRaw(-10, 0);
       DrawPenRaw(10, 0);
@@ -137,108 +136,101 @@ void RendererGva::DrawIcon(IconType icon, uint32_t x, uint32_t y, uint32_t width
       DrawPenRaw(0, 10);
       ClosePath(true);
       break;
-    case kIconMinus:
-      SetLineThickness(2, LineType::kLineSolid, LINE_CAP_ROUND);
+    case widget::IconType::kIconMinus:
+      SetLineThickness(2, LineType::kLineSolid, LineCapEnd::kLineCapRound);
       Scale(sx, sy);
       MovePenRaw(-10, 0);
       DrawPenRaw(10, 0);
       ClosePath(true);
       break;
-    case kIconError:
-    case kIconInfo:
-    case kIconWarning:
+    case widget::IconType::kIconError:
+    case widget::IconType::kIconInfo:
+    case widget::IconType::kIconWarning:
+      Rotate(M_PI);
+
       SetLineThickness(2, LineType::kLineSolid);
-      if (icon == kIconError) SetColourBackground(HMI_GREEN);
-      if (icon == kIconError) SetColourBackground(HMI_RED);
-      if (icon == kIconWarning) SetColourBackground(HMI_ORANGE);
+      if (icon == widget::IconType::kIconError) SetColourBackground(HMI_GREEN);
+      if (icon == widget::IconType::kIconError) SetColourBackground(HMI_RED);
+      if (icon == widget::IconType::kIconWarning) SetColourBackground(HMI_ORANGE);
       Scale(sx, sy);
-      MovePenRaw(-10, -10);
-      DrawPenRaw(0, +10);
-      DrawPenRaw(+10, -10);
-      DrawPenRaw(-10, -10);
+      MovePenRaw(-10, +10);
+      DrawPenRaw(0, -10);
+      DrawPenRaw(+10, +10);
+      DrawPenRaw(-10, +10);
       ClosePath(true);
       DrawColor(HMI_WHITE);
-      MovePenRaw(0, +3);
-      DrawPenRaw(0, -3);
+      MovePenRaw(0, -3);
+      DrawPenRaw(0, +3);
       ClosePath(true);
-      MovePenRaw(0, -6);
-      DrawPenRaw(0, -7);
+      MovePenRaw(0, +6);
+      DrawPenRaw(0, +7);
       ClosePath(true);
+      break;
+    case widget::IconType::kIconWaterfallSight:
+      break;
+    case widget::IconType::kIconWCrossSight:
+      SetLineThickness(3, LineType::kLineSolid, LineCapEnd::kLineCapSquare);
+      Scale(0.4, 0.4);
+      // Cross hair
+      // Virtical above
+      MovePenRaw(0, -10);
+      DrawPenRaw(0, -15);
+      MovePenRaw(0, -25);
+      DrawPenRaw(0, -35);
+      // Horizontal right
+      MovePenRaw(-10, 0);
+      DrawPenRaw(-30, 0);
+      MovePenRaw(-30, -10);
+      DrawPenRaw(-50, -10);
+      MovePenRaw(-30, +10);
+      DrawPenRaw(-50, +10);
+      MovePenRaw(-70, 0);
+      DrawPenRaw(-90, 0);
+      // Virtical below
+      MovePenRaw(0, +10);
+      DrawPenRaw(0, +15);
+      MovePenRaw(0, +25);
+      DrawPenRaw(0, +35);
+      // Horizontal left
+      MovePenRaw(+10, 0);
+      DrawPenRaw(+30, 0);
+      MovePenRaw(+30, +10);
+      DrawPenRaw(+50, +10);
+      MovePenRaw(+30, -10);
+      DrawPenRaw(+50, -10);
+      MovePenRaw(+70, 0);
+      DrawPenRaw(+90, 0);
+
+      ClosePath(true);
+      break;
+    case widget::IconType::kIconNone:
+    case widget::IconType::kIconEnter:
+    case widget::IconType::kIconLocation:
+    case widget::IconType::kIconCentre:
+    default:
+      // These have not been implemented yet
       break;
   }
   Restore();
 }
 
-void RendererGva::DrawTable(GvaTable *table) {
-  uint32_t height = 19;
-  uint32_t row = 0;
-  uint32_t column = 0;
-  uint32_t columns;
-
-  SetLineThickness(config_->GetThemeTableBorderThickness(), LineType::kLineSolid);
-  SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightBold, table->fontname_);
-  SetColourBackground(gva::ConfigData::GetInstance()->GetThemeBackground());
-
-  for (row = 0; row < table->rows_; row++) {
-    uint32_t offset = table->GetX();
-
-    for (column = 0; column < table->row_[row].cells_; column++) {
-      uint32_t pos = 0;
-      uint32_t tmp = table->row_[row].widths_[column] * ((double)table->GetWidth() / 100);
-
-      SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, table->row_[row].cell_[column].weight, table->fontname_);
-
-      SetColourForeground(table->row_[row].cell_[column].foreground.red,
-                          table->row_[row].cell_[column].foreground.green,
-                          table->row_[row].cell_[column].foreground.blue);
-      SetColourBackground(table->row_[row].cell_[column].background.red,
-                          table->row_[row].cell_[column].background.green,
-                          table->row_[row].cell_[column].background.blue);
-      DrawRectangle(offset, table->GetY() - (height * row), tmp, height, true);
-
-      DrawColor(table->row_[row].cell_[column].textcolour.red, table->row_[row].cell_[column].textcolour.green,
-                table->row_[row].cell_[column].textcolour.blue);
-
-      uint32_t w = GetTextWidth(table->row_[row].cell_[column].text, 12);
-      uint32_t h = GetTextHeight(table->row_[row].cell_[column].text, 12);
-
-      switch (table->row_[row].cell_[column].align) {
-        case CellAlignType::kAlignCentre:
-          pos = offset + (tmp / 2 - w / 2);
-          break;
-        case CellAlignType::kAlignRight:
-          pos = offset + (tmp - w - 4);
-          break;
-        case CellAlignType::kAlignLeft:
-        default:
-          pos = offset + 4;
-          break;
-      }
-      SetTextFontSize(12);
-      DrawText(pos, table->GetY() - (height * row) + 5, table->row_[row].cell_[column].text);
-      offset += tmp;
-    }
-  }
-}
-
 void RendererGva::DrawButton(const std::string keyText, uint32_t fontSize, uint32_t x, uint32_t y, uint32_t size) {
-  DrawButton(keyText, fontSize, x, y, size, size, CellAlignType::kAlignLeft);
+  DrawButton(keyText, fontSize, x, y, size, size, widget::CellAlignType::kAlignLeft);
 }
 
 void RendererGva::DrawButton(const std::string keyText, uint32_t fontSize, uint32_t x, uint32_t y, uint32_t width,
-                             uint32_t height, CellAlignType align) {
+                             uint32_t height, widget::CellAlignType align) {
   uint32_t textX = 6;
 
   SetColourForeground(HMI_GREY);
   DrawRoundedRectangle(x, y, width, height, 6, true);
   SetColourForeground(HMI_WHITE);
-  SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, WeightType::kWeightBold, config_->GetThemeFont());
+  SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightBold, config_->GetThemeFont(), fontSize);
   uint32_t textHeight = GetTextHeight("qh", fontSize);
   uint32_t textWidth = GetTextWidth(keyText, fontSize);
 
   DrawColor(HMI_WHITE);
-  if (align == CellAlignType::kAlignCentre) textX = (width / 2) - (textWidth / 2);
-  SetTextFontSize(fontSize);
+  if (align == widget::CellAlignType::kAlignCentre) textX = (width / 2) - (textWidth / 2);
   DrawText(x + textX, y + (height - textHeight - 4), keyText);
 };
 

@@ -16,8 +16,7 @@
 // NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-///
-/// \brief HMI Manager is the state machine that drives all the screens as defines within the system, below is a diagram
+//
 /// of a simple example of a system with one screen per functional area.
 ///
 /// \file hmi_gva.cc
@@ -131,12 +130,13 @@
 
 #include "src/gva.h"
 #include "src/view_gva.h"
-#include "widgets/alarm_indicator.h"
-#include "widgets/compass.h"
+#include "src/widgets/alarm_indicator.h"
+#include "src/widgets/compass.h"
+#include "src/widgets/table/table.h"
 
 namespace gva {
 
-void Hmi::SetCanvasPng(const std::string file) {
+void Hmi::SetCanvasPng(const std::string &file) {
   Hmi::GetScreen()->canvas.filename = file.c_str();
   Hmi::GetScreen()->canvas.bufferType = SurfaceType::kSurfaceFile;
   Hmi::GetScreen()->canvas.buffer = 0;
@@ -144,17 +144,24 @@ void Hmi::SetCanvasPng(const std::string file) {
 
 void Hmi::Reset() {
   screen_.status_bar->visible = true;
-  screen_.function_top->Reset();
-  screen_.function_left.Reset();
-  screen_.function_right.Reset();
+  screen_.labels = LabelModeEnum::kLabelAll;
   Labels(screen_.labels);
+  screen_.function_top->ResetAllEnabled();
   screen_.canvas.visible = false;
   screen_.canvas.bufferType = SurfaceType::kSurfaceNone;
-  screen_render_->GetWidget(KWidgetTypeCompass)->SetVisible(false);
-  screen_render_->GetWidget(KWidgetTypeCompass)->SetY(360 + 28);
-  screen_render_->GetWidget(KWidgetTypeCompass)->SetX(161);
-  screen_.table.visible_ = false;
+  screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetVisible(false);
+  screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetVisible(false);
+  if (screen_.currentFunction == GvaFunctionEnum::kDriver) {
+    screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetY(190);
+    screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetX(120);
+  } else {
+    screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetY(190);
+    screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetX(330);
+  }
   screen_.control->visible_ = true;
+  screen_.control->SetDisabled(4);  // Up Arrow
+  screen_.control->SetDisabled(5);  // Down Arrow
+  screen_.control->SetDisabled(7);  // Enter
   screen_.message.visible = false;
   screen_.info.mode = ScreenMode::kModeOperational;
   alarmson_ = false;
@@ -166,17 +173,23 @@ void Hmi::Labels(LabelModeEnum labels) {
       if ((screen_.currentFunction == GvaFunctionEnum::kSituationalAwareness) ||
           (screen_.currentFunction == GvaFunctionEnum::kWeapon) ||
           (screen_.currentFunction == GvaFunctionEnum::kDriver))
-        screen_render_->GetWidget(KWidgetTypeCompass)->SetVisible(true);
+        screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetVisible(true);
       screen_.function_left.visible = true;
       screen_.function_right.visible = true;
       screen_.control->visible_ = true;
       screen_.function_top->visible = true;
       screen_.status_bar->visible = true;
-      screen_.status_bar->y = 446;
-      screen_render_->GetWidget(KWidgetTypeAlarmIndicator)->SetVisible(true);
-      screen_render_->GetWidget(KWidgetTypeCompass)->SetY(360 + 28);
-      screen_render_->GetWidget(KWidgetTypeCompass)->SetX(161);
-      screen_render_->GetWidget(KWidgetTypeAlarmIndicator)->SetY(423);
+      screen_.status_bar->y = 15;
+      if (screen_.currentFunction == GvaFunctionEnum::kDriver) {
+        screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetY(190);
+        screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetX(120);
+
+      } else {
+        screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetY(190);
+        screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetX(330);
+      }
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetWidth(420);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetX(110);
       break;
     case LabelModeEnum::kLabelStatusOnly:
       screen_.function_left.visible = false;
@@ -184,11 +197,11 @@ void Hmi::Labels(LabelModeEnum labels) {
       screen_.control->visible_ = false;
       screen_.function_top->visible = false;
       screen_.status_bar->visible = true;
-      screen_.status_bar->y = 459;
-      screen_render_->GetWidget(KWidgetTypeAlarmIndicator)->SetVisible(true);
-      screen_render_->GetWidget(KWidgetTypeAlarmIndicator)->SetY(423);
-      screen_render_->GetWidget(KWidgetTypeCompass)->SetY(360 + 42);
-      screen_render_->GetWidget(KWidgetTypeCompass)->SetX(161 - 106);
+      screen_.status_bar->y = 2;
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetY(160);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetX(120);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetWidth(kMinimumWidth - 40);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetX(20);
       break;
     case LabelModeEnum::kLabelMinimal:
       screen_.function_left.visible = false;
@@ -196,62 +209,68 @@ void Hmi::Labels(LabelModeEnum labels) {
       screen_.control->visible_ = false;
       screen_.function_top->visible = false;
       screen_.status_bar->visible = false;
-      screen_render_->GetWidget(KWidgetTypeAlarmIndicator)->SetVisible(false);
-      screen_render_->GetWidget(KWidgetTypeCompass)->SetVisible(false);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetVisible(false);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetWidth(kMinimumWidth - 40);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetX(20);
       break;
   }
 };
 
 void Hmi::KeySide(GvaKeyEnum key) {
-  // Clear any onscreen messages
+  // Clear any on screen messages
   screen_.message.visible = false;
 
-  // Reset the active label/s
-  screen_.function_left.visible = true;
-  for (auto &label : screen_.function_left.labels) {
-    if (label.state == LabelStates::kLabelEnabledSelected) label.state = LabelStates::kLabelEnabled;
-  }
-  screen_.function_right.visible = true;
-  for (auto &label : screen_.function_right.labels) {
-    if (label.state == LabelStates::kLabelEnabledSelected) label.state = LabelStates::kLabelEnabled;
-  }
-
+  // Manage the changing of functional areas
   switch (key) {
     case GvaKeyEnum::kKeyF1:
-      screen_.function_left.labels[0].state = LabelStates::kLabelEnabledSelected;
+      screen_.function_right.ResetAllEnabled();
+      screen_.function_left.SetEnabled(0);
       break;
     case GvaKeyEnum::kKeyF2:
-      screen_.function_left.labels[1].state = LabelStates::kLabelEnabledSelected;
+      screen_.function_right.ResetAllEnabled();
+      screen_.function_left.SetEnabled(1);
       break;
     case GvaKeyEnum::kKeyF3:
-      screen_.function_left.labels[2].state = LabelStates::kLabelEnabledSelected;
+      screen_.function_right.ResetAllEnabled();
+      screen_.function_left.SetEnabled(2);
       break;
     case GvaKeyEnum::kKeyF4:
-      screen_.function_left.labels[3].state = LabelStates::kLabelEnabledSelected;
+      screen_.function_right.ResetAllEnabled();
+      screen_.function_left.SetEnabled(3);
       break;
     case GvaKeyEnum::kKeyF5:
-      screen_.function_left.labels[4].state = LabelStates::kLabelEnabledSelected;
+      screen_.function_right.ResetAllEnabled();
+      screen_.function_left.SetEnabled(4);
       break;
     case GvaKeyEnum::kKeyF6:
-      screen_.function_left.labels[5].state = LabelStates::kLabelEnabledSelected;
+      screen_.function_right.ResetAllEnabled();
+      screen_.function_left.SetEnabled(5);
       break;
     case GvaKeyEnum::kKeyF7:
-      screen_.function_right.labels[0].state = LabelStates::kLabelEnabledSelected;
+      screen_.function_right.SetEnabled(0);
+      screen_.function_left.ResetAllEnabled();
       break;
     case GvaKeyEnum::kKeyF8:
-      screen_.function_right.labels[1].state = LabelStates::kLabelEnabledSelected;
+      screen_.function_right.SetEnabled(1);
+      screen_.function_left.ResetAllEnabled();
       break;
     case GvaKeyEnum::kKeyF9:
-      screen_.function_right.labels[2].state = LabelStates::kLabelEnabledSelected;
+      screen_.function_right.SetEnabled(2);
+      screen_.function_left.ResetAllEnabled();
       break;
     case GvaKeyEnum::kKeyF10:
-      screen_.function_right.labels[3].state = LabelStates::kLabelEnabledSelected;
+      screen_.function_right.SetEnabled(3);
+      screen_.function_left.ResetAllEnabled();
       break;
     case GvaKeyEnum::kKeyF11:
-      screen_.function_right.labels[4].state = LabelStates::kLabelEnabledSelected;
+      screen_.function_right.SetEnabled(4);
+      screen_.function_left.ResetAllEnabled();
       break;
     case GvaKeyEnum::kKeyF12:
-      screen_.function_right.labels[5].state = LabelStates::kLabelEnabledSelected;
+      screen_.function_right.SetEnabled(5);
+      screen_.function_left.ResetAllEnabled();
+      break;
+    default:
       break;
   }
 }
@@ -259,27 +278,39 @@ void Hmi::KeySide(GvaKeyEnum key) {
 GvaKeyEnum Hmi::Key(GvaKeyEnum keypress) {
   KeySide(keypress);
   switch (keypress) {
+    case GvaKeyEnum::kKeyBlackout:
+      screen_.canvas.blackout = screen_.canvas.blackout ? false : true;
+      break;
     case GvaKeyEnum::kKeyF13:
-      screen_.control->labels_[0].state_ = LabelStates::kLabelEnabled;
+      screen_.control->SetEnabledSelected(0);
+      screen_.control->ResetAllEnabled();
       break;
     case GvaKeyEnum::kKeyF14:
-      if (screen_.currentFunction == GvaFunctionEnum::kAlarmsX)
-        screen_.control->labels_[1].state_ = LabelStates::kLabelEnabled;
+      screen_.control->SetEnabledSelected(1);
+      screen_.control->ResetAllEnabled();
       break;
     case GvaKeyEnum::kKeyF15:
-      screen_.control->labels_[2].state_ = LabelStates::kLabelEnabled;
+      screen_.control->SetEnabledSelected(2);
+      screen_.control->ResetAllEnabled();
       break;
-    case GvaKeyEnum::kKeyF16:
-      screen_.control->labels_[3].state_ = LabelStates::kLabelEnabled;
+    case GvaKeyEnum::kKeyF16:  // Ack
+      screen_.control->SetEnabledSelected(3);
+      screen_.control->ResetAllEnabled();
+      // Clear alarms here till LDM
+      screen_.control->SetDisabled(3);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeAlarmIndicator)->SetVisible(false);
       break;
-    case GvaKeyEnum::kKeyF17:
-      screen_.control->labels_[4].state_ = LabelStates::kLabelEnabled;
+    case GvaKeyEnum::kKeyF17:  // Up Arrow
+      screen_.control->SetEnabledSelected(4);
+      screen_.control->ResetAllEnabled();
       break;
-    case GvaKeyEnum::kKeyF18:
-      screen_.control->labels_[5].state_ = LabelStates::kLabelEnabled;
+    case GvaKeyEnum::kKeyF18:  // Down Arrow
+      screen_.control->SetEnabledSelected(5);
+      screen_.control->ResetAllEnabled();
       break;
     case GvaKeyEnum::kKeyF19:
-      screen_.control->labels_[6].state_ = LabelStates::kLabelEnabled;
+      screen_.control->SetEnabledSelected(6);
+      screen_.control->ResetAllEnabled();
       switch (screen_.labels) {
         case LabelModeEnum::kLabelAll:
           screen_.labels = LabelModeEnum::kLabelStatusOnly;
@@ -294,7 +325,8 @@ GvaKeyEnum Hmi::Key(GvaKeyEnum keypress) {
       Labels(screen_.labels);
       break;
     case GvaKeyEnum::kKeyF20:
-      screen_.control->labels_[7].state_ = LabelStates::kLabelEnabled;
+      screen_.control->SetEnabledSelected(7);
+      screen_.control->ResetAllEnabled();
       screen_.message.visible = false;
       break;
     default:
@@ -303,25 +335,15 @@ GvaKeyEnum Hmi::Key(GvaKeyEnum keypress) {
   return keypress;
 }
 
-void Hmi::ResetState(LabelStates *state) {
-  switch (screen_.function_top->labels[7].state) {
-    case LabelStates::kLabelEnabledSelectedChanging:
-    case LabelStates::kLabelEnabledSelected:
-      *state = LabelStates::kLabelEnabled;
-      break;
-  }
-}
-
-ViewGvaManager *Hmi::manager_;
+std::shared_ptr<ViewGvaManager> Hmi::manager_;
 ResolutionType Hmi::view_;
 StatusBar Hmi::status_;
 FunctionSelect Hmi::top_;
 CommonTaskKeys Hmi::bottom_;
 Canvas Hmi::canvas_;
-TableWidget Hmi::alarms_;
 Screen Hmi::screen_;
-ScreenGva *Hmi::screen_render_;
-rendererMap *Hmi::map_;
+std::shared_ptr<ScreenGva> Hmi::screen_render_;
+std::shared_ptr<rendererMap> Hmi::map_;
 GvaFunctionEnum Hmi::lastState_;
 bool Hmi::alarmson_ = false;
 

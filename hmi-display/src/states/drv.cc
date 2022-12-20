@@ -1,28 +1,30 @@
-///
-/// MIT License
-///
-/// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
-///
-/// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
-/// associated documentation files (the 'Software'), to deal in the Software without restriction,
-/// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-/// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-/// subject to the following conditions:
-///
-/// The above copyright notice and this permission notice shall be included in all copies or substantial
-/// portions of the Software.
-/// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-/// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-/// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-/// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-/// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-///
-/// \brief Driver (DRV) state definition
+//
+// MIT License
+//
+// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+// associated documentation files (the 'Software'), to deal in the Software without restriction,
+// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+// subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial
+// portions of the Software.
+// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
 ///
 /// \file drv.cc
 ///
 
 #include "drv.h"
+
+#include "src/widgets/driver/rpm_fuel.h"
+#include "src/widgets/driver/speedometer.h"
 
 namespace gva {
 
@@ -46,7 +48,7 @@ GvaKeyEnum Hmi::KeyDRV(GvaKeyEnum keypress) {
     case GvaKeyEnum::kKeyF11:
     case GvaKeyEnum::kKeyF12:
       screen_.message.visible = true;
-      screen_.message.icon = kIconError;
+      screen_.message.icon = widget::IconType::kIconError;
       screen_.message.brief.text = "Function key";
       screen_.message.detail.text = "Operation not implemented!";
       break;
@@ -59,14 +61,34 @@ GvaKeyEnum Hmi::KeyDRV(GvaKeyEnum keypress) {
 void StateDRV::entry() {
   if (screen_.function_top->labels[4].state != LabelStates::kLabelHidden) {
     manager_->SetScreen(&screen_, GvaFunctionEnum::kDriver);
-    lastState_ = GvaFunctionEnum::kDriver;
     Reset();
+    lastState_ = GvaFunctionEnum::kDriver;
+    if (screen_.labels != LabelModeEnum::kLabelMinimal)
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetVisible(true);
 
-    if (screen_.labels != LabelModeEnum::kLabelMinimal) screen_render_->GetWidget(KWidgetTypeCompass)->SetVisible(true);
+    screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDialSpeedometer)->SetVisible(true);
+    screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDialSpeedometer)->SetX(320);
+    screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDialSpeedometer)->SetY(750);
+    WidgetDriverSpeedometer *dial =
+        (WidgetDriverSpeedometer *)screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDialSpeedometer);
+    dial->SetValue(10);
+
+    screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeDialRpmFuel)->SetVisible(true);
+    screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeDialRpmFuel)->SetX(950);
+    screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeDialRpmFuel)->SetY(750);
+    WidgetDriverRpmFuel *rpm =
+        (WidgetDriverRpmFuel *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeDialRpmFuel);
+    rpm->SetValue(1200);
     screen_.status_bar->visible = true;
-    screen_.function_top->labels[4].state = LabelStates::kLabelEnabledSelected;
+    screen_.function_top->SetEnabled(4);
   }
 };
+
+void StateDRV::exit() {
+  // Switch the dials off now not needed in other states
+  screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDialSpeedometer)->SetVisible(false);
+  screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeDialRpmFuel)->SetVisible(false);
+}
 
 void StateDRV::react(EventKeyPowerOn const &) { transit<StateOff>(); };
 

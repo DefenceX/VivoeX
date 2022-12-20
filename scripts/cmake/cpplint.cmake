@@ -62,11 +62,8 @@ set(CPPLINT_PROJECT_ROOT ${PROJECT_SOURCE_DIR} CACHE STRING "Project ROOT direct
 # find cpplint.py script
 set(CPPLINT cpplint)
 
-
-
 # common target to concatenate all cpplint.py targets
-add_custom_target(${CPPLINT_TARGET} ALL)
-
+add_custom_target(${CPPLINT_TARGET})
 
 # use cpplint.py to check source code files inside DIR directory
 function(cpplint_add_subdirectory DIR)

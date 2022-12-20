@@ -1,42 +1,50 @@
-///
-/// MIT License
-///
-/// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
-///
-/// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
-/// associated documentation files (the 'Software'), to deal in the Software without restriction,
-/// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-/// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-/// subject to the following conditions:
-///
-/// The above copyright notice and this permission notice shall be included in all copies or substantial
-/// portions of the Software.
-/// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-/// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-/// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-/// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-/// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-///
-/// \brief Power on state definition
+//
+// MIT License
+//
+// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+// associated documentation files (the 'Software'), to deal in the Software without restriction,
+// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+// subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial
+// portions of the Software.
+// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
 ///
 /// \file on.cc
 ///
 
 #include "on.h"
 
+#include <filesystem>
+
 namespace gva {
 
 void StateOn::entry() {
   /* 4:3 aspect ratio @ lowest resolution */
-  view_ = {MIN_WIDTH, MIN_HEIGHT, 24};
+  view_ = {kMinimumWidth, kMinimumHeight, 24};
 
-  if (!manager_) manager_ = new ViewGvaManager(&status_);
+  if (!manager_) manager_ = std::make_shared<ViewGvaManager>(&status_);
 
-#ifdef ENABLE_OSMSCOUT
-  // Render a map for BMS
-  map_ = new rendererMap("/opt/osmscout/maps/australia-latest/", "/opt/osmscout/stylesheets/standard.oss", MIN_WIDTH,
-                         MIN_HEIGHT);
-#endif
+  if (!std::filesystem::is_directory(ConfigData::GetInstance()->GetMapPath())) {
+    logGva::log("Could not find map data " + ConfigData::GetInstance()->GetMapPath(), DebugLevel::kLogError);
+    ConfigData::GetInstance()->SetMapEnabled(false);
+  } else {
+    ConfigData::GetInstance()->SetMapEnabled(true);
+  }
+
+  if (ConfigData::GetInstance()->GetMapEnabled()) {
+    // Render a map for BMS
+    map_ = std::make_shared<rendererMap>(ConfigData::GetInstance()->GetMapPath(),
+                                         ConfigData::GetInstance()->GetStylesheetPath(), kMinimumWidth, kMinimumHeight);
+  }
   top_ = DefaultSettings::GetDefaultFunctionSelect();
   bottom_ = DefaultSettings::GetDefaultCommonTaskKeys();
   status_ = DefaultSettings::GetDefaultStatusBar();
@@ -62,8 +70,8 @@ void StateOn::entry() {
                        gva::DefaultSettings::GetDefaultFunctionKeySystemsRight());
   // Driver (DRV), no labels on right so defaults used
   manager_->AddNewView(GvaFunctionEnum::kDriver, &top_, &bottom_,
-                       gva::DefaultSettings::GetDefaultFunctionKeyDriverLeft(),
-                       gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden());
+                       gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden(),
+                       gva::DefaultSettings::GetDefaultFunctionKeyDriverRight());
   // Special To Role (STR), not used so all defaults
   manager_->AddNewView(GvaFunctionEnum::KSpecialToRole, &top_, &bottom_,
                        gva::DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden(),
@@ -84,24 +92,27 @@ void StateOn::entry() {
   manager_->SetScreen(&screen_, GvaFunctionEnum::kSystems);
 
   // Create the screen render now
-  screen_render_ = new ScreenGva(&screen_, view_.width, view_.height);
+  screen_render_ = std::make_shared<ScreenGva>(&screen_, view_.width, view_.height);
 
   // Configure the widgets
-  ((WidgetPlanPositionIndicator *)screen_render_->GetWidget(KWidgetTypeCompass))->SetBearingSight(33);
-  screen_render_->GetWidget(KWidgetTypeCompass)->SetX(161);
-  screen_render_->GetWidget(KWidgetTypeCompass)->SetY(360 + 28);
-  screen_render_->GetWidget(KWidgetTypeCompass)->SetVisible(true);
-  screen_render_->GetWidget(KWidgetTypeAlarmIndicator)->SetVisible(true);
-  screen_render_->GetWidget(KWidgetTypeAlarmIndicator)->SetY(422);
+  ((WidgetPlanPositionIndicator *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass))
+      ->SetBearingSight(0);
+  screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetY(190);
+  screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetX(330);
+  screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetVisible(true);
+  screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeAlarmIndicator)->SetVisible(true);
+  screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeAlarmIndicator)->SetY(58);
+  screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeBottomLabels)->SetY(480 - 20);
 
-  WidgetAlarmIndicator *ai = (WidgetAlarmIndicator *)screen_render_->GetWidget(KWidgetTypeAlarmIndicator);
+  WidgetAlarmIndicator *ai =
+      (WidgetAlarmIndicator *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeAlarmIndicator);
   ai->SetType(GvaAlarmType::kAlarmCaution);
   ai->SetText("Engine over temperature");
+  // As there is an alarm set the Ack control to enabled
+  screen_.control->ForceEnabledSelected(3);
 
   screen_.canvas = canvas_;
   screen_.canvas.visible = true;
-  screen_.table = alarms_;
-  screen_.table.visible_ = false;
   screen_.labels = LabelModeEnum::kLabelAll;
   std::string filename = ConfigData::GetInstance()->GetImagePath();
   filename.append("/FRONT_CENTRE.png");

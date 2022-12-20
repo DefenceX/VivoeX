@@ -7,8 +7,10 @@
                 "/usr/include/cairo",
                 "${workspaceFolder}",
                 "${workspaceFolder}/hmi-display",
+                "${workspaceFolder}/build/external/libnmea/src",
                 "${workspaceFolder}/hmi-display/common",
                 "${workspaceFolder}/hmi-display/src/widgets",
+                "${workspaceFolder}/hmi-display/src/widgets/table",
                 "/usr/include/gtk-3.0",
                 "/usr/include/glib-2.0",
                 "/usr/lib/x86_64-linux-gnu/glib-2.0/include",
@@ -16,7 +18,8 @@
                 "/usr/include/harfbuzz",
                 "/usr/include/gdk-pixbuf-2.0",
                 "/usr/include/atk-1.0",
-                "${workspaceFolder}/hmi-display"
+                "${workspaceFolder}/hmi-display",
+                "${workspaceFolder}/build/external/install/usr/local/include"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/g++",

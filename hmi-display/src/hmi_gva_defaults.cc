@@ -1,23 +1,22 @@
-///
-/// MIT License
-///
-/// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
-///
-/// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
-/// associated documentation files (the 'Software'), to deal in the Software without restriction,
-/// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-/// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-/// subject to the following conditions:
-///
-/// The above copyright notice and this permission notice shall be included in all copies or substantial
-/// portions of the Software.
-/// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-/// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-/// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-/// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-/// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-///
-/// \brief The default settings for on screen widgets
+//
+// MIT License
+//
+// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+// associated documentation files (the 'Software'), to deal in the Software without restriction,
+// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+// subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial
+// portions of the Software.
+// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
 ///
 /// \file hmi_gva_defaults.cc
 ///
@@ -54,7 +53,7 @@ CommonTaskKeys DefaultSettings::GetDefaultCommonTaskKeys() {
   common_task_keys.labels_[5].text_ = "";
   common_task_keys.labels_[6].state_ = LabelStates::kLabelEnabled;
   common_task_keys.labels_[6].text_ = "Labels";
-  common_task_keys.labels_[7].state_ = LabelStates::kLabelEnabled;
+  common_task_keys.labels_[7].state_ = LabelStates::kLabelDisabled;
   common_task_keys.labels_[7].text_ = "Enter";
   return common_task_keys;
 }
@@ -76,7 +75,7 @@ FunctionSelect DefaultSettings::GetDefaultFunctionSelect() {
 StatusBar DefaultSettings::GetDefaultStatusBar() {
   StatusBar status_bar;
   status_bar.visible = true;
-  status_bar.x = DEFAULT_HEIGHT - 11;
+  status_bar.x = kMinimumHeight - 11;
   status_bar.y = 0;
   status_bar.location.locationFormat = LocationEnum::kLocationFormatMgrs;
   status_bar.location.lon = gva::ConfigData::GetInstance()->GetTestLon();
@@ -128,7 +127,7 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden() {
 FunctionKeys DefaultSettings::GetDefaultFunctionKeysSituationalAwarenessLeft() {
   FunctionKeys keys;
   keys.visible = true;
-  keys.labels[0].state = LabelStates::kLabelEnabledSelected;
+  keys.labels[0].state = LabelStates::kLabelDisabled;
   keys.labels[0].text = "Remote.Wpn Sight";
   keys.labels[0].toggleActive = false;
   keys.labels[1].state = LabelStates::kLabelEnabled;
@@ -140,7 +139,7 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeysSituationalAwarenessLeft() {
   keys.labels[3].state = LabelStates::kLabelEnabled;
   keys.labels[3].text = "Front right";
   keys.labels[3].toggleActive = false;
-  keys.labels[4].state = LabelStates::kLabelEnabled;
+  keys.labels[4].state = LabelStates::kLabelEnabledSelected;
   keys.labels[4].text = "Front";
   keys.labels[4].toggleActive = false;
   keys.labels[5].state = LabelStates::kLabelEnabled;
@@ -200,11 +199,11 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeysWeaponsLeft() {
 FunctionKeys DefaultSettings::GetDefaultFunctionKeysWeaponsRight() {
   FunctionKeys keys;
   keys.visible = true;
-  keys.labels[0].state = LabelStates::kLabelHidden;
-  keys.labels[0].text = "Unused";
+  keys.labels[0].state = LabelStates::kLabelEnabled;
+  keys.labels[0].text = "icon:waterfall";
   keys.labels[0].toggleActive = false;
-  keys.labels[1].state = LabelStates::kLabelHidden;
-  keys.labels[1].text = "Unused";
+  keys.labels[1].state = LabelStates::kLabelEnabled;
+  keys.labels[1].text = "icon:cross";
   keys.labels[1].toggleActive = false;
   keys.labels[2].state = LabelStates::kLabelHidden;
   keys.labels[2].text = "Unused";
@@ -254,7 +253,7 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeySystemsRight() {
   keys.visible = true;
   keys.labels[0].text = "Commander.Health";
   keys.labels[0].toggleActive = false;
-  keys.labels[1].state = LabelStates::kLabelEnabled;
+  keys.labels[1].state = LabelStates::kLabelDisabled;
   keys.labels[1].text = "Gunner.Health";
   keys.labels[1].toggleActive = false;
   keys.labels[2].state = LabelStates::kLabelDisabled;
@@ -263,7 +262,7 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeySystemsRight() {
   keys.labels[3].state = LabelStates::kLabelDisabled;
   keys.labels[3].text = "Roll.Allocation";
   keys.labels[3].toggleActive = false;
-  keys.labels[4].state = LabelStates::kLabelDisabled;
+  keys.labels[4].state = LabelStates::kLabelEnabled;
   keys.labels[4].text = "Blackout";
   keys.labels[4].toggleActive = false;
   keys.labels[5].state = LabelStates::kLabelEnabled;
@@ -278,7 +277,7 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeySystemsLeft() {
   keys.labels[0].state = LabelStates::kLabelEnabledSelected;
   keys.labels[0].text = "Overview";
   keys.labels[0].toggleActive = false;
-  keys.labels[1].state = LabelStates::kLabelEnabled;
+  keys.labels[1].state = LabelStates::kLabelDisabled;
   keys.labels[1].text = "Automotive";
   keys.labels[1].toggleActive = false;
   keys.labels[2].state = LabelStates::kLabelDisabled;
@@ -287,7 +286,7 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeySystemsLeft() {
   keys.labels[2].state = LabelStates::kLabelDisabled;
   keys.labels[3].text = "System";
   keys.labels[3].toggleActive = false;
-  keys.labels[4].state = LabelStates::kLabelDisabled;
+  keys.labels[4].state = LabelStates::kLabelEnabled;
   keys.labels[4].text = "Licences";
   keys.labels[4].toggleActive = false;
   keys.labels[5].state = LabelStates::kLabelDisabled;
@@ -296,7 +295,7 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeySystemsLeft() {
   return keys;
 }
 
-FunctionKeys DefaultSettings::GetDefaultFunctionKeyDriverLeft() {
+FunctionKeys DefaultSettings::GetDefaultFunctionKeyDriverRight() {
   FunctionKeys keys;
   keys.visible = true;
   keys.labels[0].state = LabelStates::kLabelEnabledSelected;
@@ -346,12 +345,12 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeyCommunicationsLeft() {
 
 FunctionKeys DefaultSettings::GetDefaultFunctionKeyBattlefieldManagementSystemLeft() {
   FunctionKeys keys;
+  LabelStates state;
   keys.visible = true;
-#if (ENABLE_OSMSCOUT)
-  LabelStates state = LabelStates::kLabelEnabled;
-#else
-  LabelStates state = LabelStates::kLabelDisabled;
-#endif
+  if (ConfigData::GetInstance()->GetMapEnabled())
+    state = LabelStates::kLabelEnabled;
+  else
+    state = LabelStates::kLabelDisabled;
   keys.labels[0].state = state;
   keys.labels[0].text = "Mission";
   keys.labels[0].toggleActive = false;
@@ -359,35 +358,35 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeyBattlefieldManagementSystemLe
   keys.labels[1].text = "Unused";
   keys.labels[1].toggleActive = false;
   keys.labels[2].state = state;
-  keys.labels[2].text = "Shift.up";
+  keys.labels[2].text = "icon:uparrow";
   keys.labels[2].toggleActive = false;
   keys.labels[3].state = state;
-  keys.labels[3].text = "Shift.down";
+  keys.labels[3].text = "icon:downarrow";
   keys.labels[3].toggleActive = false;
   keys.labels[4].state = state;
-  keys.labels[4].text = "Zoom +";
+  keys.labels[4].text = "icon:plus";
   keys.labels[4].toggleActive = false;
   keys.labels[5].state = state;
-  keys.labels[5].text = "Rotate.>>";
+  keys.labels[5].text = "icon:rotateleft";
   keys.labels[5].toggleActive = false;
   return keys;
 }
 
 FunctionKeys DefaultSettings::GetDefaultFunctionKeyBattlefieldManagementSystemRight() {
   FunctionKeys keys;
+  LabelStates state;
   keys.visible = true;
-#if (ENABLE_OSMSCOUT)
-  LabelStates state = LabelStates::kLabelEnabled;
-#else
-  LabelStates state = LabelStates::kLabelDisabled;
-#endif
-  keys.labels[0].state = state;
+  if (ConfigData::GetInstance()->GetMapEnabled())
+    state = LabelStates::kLabelEnabled;
+  else
+    state = LabelStates::kLabelDisabled;
+  keys.labels[0].state = LabelStates::kLabelHidden;
   keys.labels[0].text = "Unused";
   keys.labels[0].toggleActive = false;
   keys.labels[1].state = LabelStates::kLabelHidden;
   keys.labels[1].text = "Unused";
   keys.labels[1].toggleActive = false;
-  keys.labels[2].state = LabelStates::kLabelHidden;
+  keys.labels[2].state = state;
   keys.labels[2].text = "icon:leftarrow";
   keys.labels[2].toggleActive = false;
   keys.labels[3].state = state;

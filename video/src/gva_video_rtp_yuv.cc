@@ -20,38 +20,35 @@
 #include "src/gva_video_rtp_yuv.h"
 
 #include <iostream>
+#include <memory>
 #include <string>
+
+#include "src/gva.h"
 
 namespace gva {
 
-GvaVideoRtpYuv::GvaVideoRtpYuv(const std::string& ip, uint32_t port, uint32_t height, uint32_t width)
-    : GvaVideoSource(height, width), ip_(ip), port_(port) {
-  frame_counter_ = 0;
-}
+GvaVideoRtpYuv::GvaVideoRtpYuv(std::string_view ip, uint32_t port, uint32_t height, uint32_t width)
+    : GvaVideoSource(height, width), ip_(ip), port_(port) {}
 
-GvaVideoRtpYuv::GvaVideoRtpYuv(const std::string& ip, uint32_t port)
-    : GvaVideoSource(VIDEO_DEFAULT_HEIGHT, VIDEO_DEFAULT_WIDTH) {
-  ip_ = ip;
-  port_ = port;
-  stream_ = new RtpStream(VIDEO_DEFAULT_HEIGHT, VIDEO_DEFAULT_WIDTH);
-  char* ipaddr = const_cast<char*>(ip_.c_str());
+GvaVideoRtpYuv::GvaVideoRtpYuv(std::string_view ip, uint32_t port)
+    : GvaVideoSource(kMinimumHeight, kMinimumWidth), ip_(ip), port_(port) {
+  stream_ = std::make_unique<RtpStream>(kMinimumHeight, kMinimumWidth);
+  const char* ipaddr = ip_.data();
   stream_->RtpStreamIn(ipaddr, port_);
   stream_->Open();
 }
 
-GvaVideoRtpYuv::~GvaVideoRtpYuv() { free(stream_); }
-
-const uint32_t GvaVideoRtpYuv::GvaReceiveFrame(char* buffer, VideoFormat format) {
+uint32_t GvaVideoRtpYuv::GvaReceiveFrame(char* buffer, VideoFormat format) {
   char* frame_buffer;
-  stream_->Recieve((void**)&frame_buffer, 5);
+  stream_->Receive((void**)&frame_buffer, 5);
   switch (format) {
-    case YUYV_COLOUR:
+    case VideoFormat::kFormatYuyvColour:
       memcpy(buffer, frame_buffer, GetWidth() * GetHeight() * 2);
       break;
-    case RGBA_COLOUR:
+    case VideoFormat::kFormatRgbaColour:
       yuvtorgba(GetHeight(), GetWidth(), frame_buffer, buffer);
       break;
-    case RGB24_COLOUR:
+    case VideoFormat::kFormatRgb24Colour:
       yuvtorgb(GetHeight(), GetWidth(), frame_buffer, buffer);
       break;
   }
@@ -59,6 +56,6 @@ const uint32_t GvaVideoRtpYuv::GvaReceiveFrame(char* buffer, VideoFormat format)
   return 0;
 }
 
-const uint32_t GvaVideoRtpYuv::GvaTransmitFrame(char* buffer, VideoFormat format) { return -1; };
+uint32_t GvaVideoRtpYuv::GvaTransmitFrame(char* buffer, VideoFormat format) { return -1; };
 
 }  // namespace gva

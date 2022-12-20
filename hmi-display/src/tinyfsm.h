@@ -84,7 +84,7 @@ typename _state_instance<S>::value_type _state_instance<S>::value;
 template <typename F>
 class Fsm {
  public:
-  /// \brief Finite state machine type templated class
+  /// \brief Templated FSM
   using fsmtype = Fsm<F>;
   /// \brief Current state pointer
   using state_ptr_t = F *;
@@ -201,6 +201,7 @@ template <>
 struct FsmList<> {
   /// \brief Set the inital state
   static void set_initial_state() {}
+  /// \brief Enter state function
   static void enter() {}
   /// \brief Dispatch FSM
   template <typename E>

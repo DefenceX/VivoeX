@@ -26,16 +26,27 @@ jobs:
           sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-* && \
           dnf update -y && \
           dnf install epel-release -y && dnf update -y && \
+          dnf -y install gcc-toolset-9-gcc gcc-toolset-9-gcc-c++ && \
+          source /opt/rh/gcc-toolset-9/enable && \
+          c++ --version && \
           dnf localinstall --nogpgcheck https://download1.rpmfusion.org/free/el/rpmfusion-free-release-8.noarch.rpm -y && \
-          dnf config-manager --set-enabled powertools -y
+          dnf config-manager --set-enabled powertools -y && \
+          dnf -y install gcc-toolset-9-gcc gcc-toolset-9-gcc-c++ && \
+          source /opt/rh/gcc-toolset-9/enable
 
       - name: Dnf Install
         run: |
-          dnf install git cmake gcc-c++ python2-pip rpm-build cairo-devel libXt-devel doxygen libxml2-devel ncurses-devel libXext-devel ffmpeg-devel protobuf-devel protobuf-compiler GeographicLib-devel gtk3-devel -y && \
+          dnf install git cmake gcc-c++ python2-pip rpm-build cairo-devel libXt-devel doxygen graphviz ImageMagick libxml2-devel ncurses-devel libXext-devel ffmpeg-devel protobuf-devel protobuf-compiler GeographicLib-devel gtk3-devel -y && \
           pip2 install cpplint --user
 
       - name: CMake and Build
-        run: PATH=$PATH:${HOME}/.local/bin && mkdir build && cd build && cmake .. -DDDS=CYCLONE-CE .. && make -j $(nproc)
+        run: |
+          source /opt/rh/gcc-toolset-9/enable && \
+          gcc -v && \
+          PATH=$PATH:${HOME}/.local/bin && \
+          mkdir build && cd build && \
+          cmake .. -DDDS=CYCLONE-CE .. && \
+          make -j $(nproc)
 
       - name: Package for CentOS (.rpm)
         id: package

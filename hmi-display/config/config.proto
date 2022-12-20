@@ -1,21 +1,25 @@
+//
+// MIT License
+//
+// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+// associated documentation files (the 'Software'), to deal in the Software without restriction,
+// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+// subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial
+// portions of the Software.
+// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ///
-/// MIT License
+/// \brief This is the configuration data
 ///
-/// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
-///
-/// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
-/// associated documentation files (the 'Software'), to deal in the Software without restriction,
-/// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-/// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-/// subject to the following conditions:
-///
-/// The above copyright notice and this permission notice shall be included in all copies or substantial
-/// portions of the Software.
-/// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-/// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-/// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-/// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-/// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+/// \file config.proto
 ///
 
 syntax = "proto2";
@@ -24,153 +28,167 @@ package config;
 
 // Theme RGB colours
 enum Colour {
-  COLOUR_AMBER = 0xFF9900;
-  COLOUR_WHITE = 0xFFFFFF;
-  COLOUR_RED = 0xFF0000;
-  COLOUR_GREY = 0x7F7F7F;
-  COLOUR_MEDIUM_GREY = 0x606060;
-  COLOUR_DARK_GREY = 0x404040;
-  COLOUR_GREEN = 0x00FF00;
-  COLOUR_DARK_GREEN = 0x007F00;
-  COLOUR_DARK_GREEN2 = 0x004B00;
-  COLOUR_BLUE = 0x0000FF;
-  COLOUR_CYAN = 0x00FFFF;
-  COLOUR_DARK_BLUE = 0x336699;
-  COLOUR_LIGHT_BLUE = 0x3232FF;
-  COLOUR_BLACK = 0x000000;
-  COLOUR_YELLOW = 0xFFFF00;
-  COLOUR_ORANGE = 0xFFA500;
-  COLOUR_MODERN_BLUE_LIGHT = 0x007EC2;
-  COLOUR_MODERN_BLUE_DARK = 0x14405B;
+  kColourAmber = 0xFF9900;
+  kColourWhite = 0xFFFFFF;
+  kColourRed = 0xFF0000;
+  kColourGrey = 0x7F7F7F;
+  kColourMediumGrey = 0x606060;
+  kColourDarkGrey = 0x404040;
+  kColourGreen = 0x00FF00;
+  kColourDarkGreen = 0x007F00;
+  kColourDarkGreen2 = 0x004B00;
+  kColourBlue = 0x0000FF;
+  kColourCyan = 0x00FFFF;
+  kColourDarkBlue = 0x336699;
+  kColourLightBlue = 0x3232FF;
+  kColourBlack = 0x000000;
+  kColourYellow = 0xFFFF00;
+  kColourOrange = 0xFFA500;
+  kColourModernBlueLight = 0x007EC2;
+  kColourModernBlueDark = 0x14405B;
 }
 
 // Label style
 enum LabelStyle {
-  LABEL_SQUARE = 0;
-  LABEL_ROUNDED = 1;
+  kLabelSquare = 0;
+  kLabelRounded = 1;
 }
 
 // Line style
 enum LineStyle {
-  LABEL_SOLID = 0;
-  LABEL_DASHED = 1;
-  LABEL_DOTTED = 2;
+  kLineSolid = 0;
+  kLineDashed = 1;
+  kLineDotted = 2;
 }
 
-message ThemeDefault {
-  optional Colour theme_background = 1 [default = COLOUR_GREEN];
-  optional Colour table_background = 2 [default = COLOUR_DARK_GREEN];
+// PPI style
+enum PpiStyle {
+  kPpiClassicTankWithSight = 1;
+  kPpiClassicTankWithoutSight = 2;
+  kPpiClassicArrowWithSight = 3;
+  kPpiClassicArrowWithoutSight = 4;
+  kPpiModernTankWithSights = 5;
+  kPpiModernTankWithoutSights = 6;
+}
 
-  optional LabelStyle theme_label_style = 3 [default = LABEL_ROUNDED];
+
+message ThemeDefault {
+  optional Colour theme_background = 1 [default = kColourGreen];
+  optional Colour table_background = 2 [default = kColourDarkGreen];
+
+  optional LabelStyle theme_label_style = 3 [default = kLabelRounded];
   // Background label colour
-  optional Colour theme_label_background_enabled_selected_changing = 4 [default = COLOUR_YELLOW];
-  optional Colour theme_label_background_enabled_selected = 5 [default = COLOUR_DARK_GREEN];
-  optional Colour theme_label_background_enabled = 6 [default = COLOUR_DARK_GREEN];
-  optional Colour theme_label_background_disabled = 7 [default = COLOUR_GREY];
+  optional Colour theme_label_background_enabled_selected_changing = 4 [default = kColourYellow];
+  optional Colour theme_label_background_enabled_selected = 5 [default = kColourDarkGreen];
+  optional Colour theme_label_background_enabled = 6 [default = kColourDarkGreen];
+  optional Colour theme_label_background_disabled = 7 [default = kColourGrey];
   // Text Colour
-  optional Colour theme_label_text_enabled_selected_changing = 8 [default = COLOUR_WHITE];
-  optional Colour theme_label_text_enabled_selected = 9 [default = COLOUR_WHITE];
-  optional Colour theme_label_text_enabled = 10 [default = COLOUR_WHITE];
-  optional Colour theme_label_text_disabled = 11 [default = COLOUR_WHITE];
+  optional Colour theme_label_text_enabled_selected_changing = 8 [default = kColourWhite];
+  optional Colour theme_label_text_enabled_selected = 9 [default = kColourWhite];
+  optional Colour theme_label_text_enabled = 10 [default = kColourWhite];
+  optional Colour theme_label_text_disabled = 11 [default = kColourWhite];
   // Line Colour
-  optional Colour theme_label_border_enabled_selected_changing = 12 [default = COLOUR_DARK_GREEN2];
-  optional Colour theme_label_border_enabled_selected = 13 [default = COLOUR_YELLOW];
-  optional Colour theme_label_border_enabled = 14 [default = COLOUR_DARK_GREEN2];
-  optional Colour theme_label_border_disabled = 15 [default = COLOUR_DARK_GREY];
+  optional Colour theme_label_border_enabled_selected_changing = 12 [default = kColourDarkGreen2];
+  optional Colour theme_label_border_enabled_selected = 13 [default = kColourYellow];
+  optional Colour theme_label_border_enabled = 14 [default = kColourDarkGreen2];
+  optional Colour theme_label_border_disabled = 15 [default = kColourDarkGrey];
   // Line Style
-  optional LineStyle theme_label_line_enabled_selected_changing = 16 [default = LABEL_SOLID];
-  optional LineStyle theme_label_line_enabled_selected = 17 [default = LABEL_SOLID];
-  optional LineStyle theme_label_line_enabled = 18 [default = LABEL_SOLID];
-  optional LineStyle theme_label_line_disabled = 19 [default = LABEL_SOLID];
+  optional LineStyle theme_label_line_enabled_selected_changing = 16 [default = kLineSolid];
+  optional LineStyle theme_label_line_enabled_selected = 17 [default = kLineSolid];
+  optional LineStyle theme_label_line_enabled = 18 [default = kLineSolid];
+  optional LineStyle theme_label_line_disabled = 19 [default = kLineSolid];
 
   // General
+  optional PpiStyle widget_ppi_style = 20 [default = kPpiClassicArrowWithSight];
 
   // Line Thickness
-  optional int32 theme_label_border_thickness = 20 [default = 1];
-  optional int32 theme_table_border_thickness = 21 [default = 1];
-  optional Colour theme_status_background = 22 [default = COLOUR_DARK_GREEN];
-  optional Colour theme_status_border = 23 [default = COLOUR_DARK_GREEN];
-  optional Colour theme_status_text = 24 [default = COLOUR_WHITE];
-  optional Colour theme_alert = 25 [default = COLOUR_AMBER];
-  optional Colour theme_critical = 26 [default = COLOUR_RED];
-  optional string theme_font = 27 [default = "DejaVu Sans Mono Book"];
+  optional int32 theme_label_border_thickness = 21 [default = 1];
+  optional int32 theme_table_border_thickness = 22 [default = 1];
+  optional Colour theme_status_background = 23 [default = kColourDarkGreen];
+  optional Colour theme_status_border = 24 [default = kColourDarkGreen];
+  optional Colour theme_status_text = 25 [default = kColourWhite];
+  optional Colour theme_alert = 26 [default = kColourAmber];
+  optional Colour theme_critical = 27 [default = kColourRed];
+  optional string theme_font = 28 [default = "DejaVu Sans Mono Book"];
 }
 
 message ThemeHighContrast {
-  optional Colour theme_background = 1 [default = COLOUR_BLACK];
-  optional Colour table_background = 2 [default = COLOUR_BLACK];
+  optional Colour theme_background = 1 [default = kColourBlack];
+  optional Colour table_background = 2 [default = kColourBlack];
 
-  optional LabelStyle theme_label_style = 3 [default = LABEL_ROUNDED];
+  optional LabelStyle theme_label_style = 3 [default = kLabelRounded];
   // Background label colour
-  optional Colour theme_label_background_enabled_selected_changing = 4 [default = COLOUR_BLACK];
-  optional Colour theme_label_background_enabled_selected = 5 [default = COLOUR_BLACK];
-  optional Colour theme_label_background_enabled = 6 [default = COLOUR_BLACK];
-  optional Colour theme_label_background_disabled = 7 [default = COLOUR_GREY];
+  optional Colour theme_label_background_enabled_selected_changing = 4 [default = kColourBlack];
+  optional Colour theme_label_background_enabled_selected = 5 [default = kColourBlack];
+  optional Colour theme_label_background_enabled = 6 [default = kColourBlack];
+  optional Colour theme_label_background_disabled = 7 [default = kColourGrey];
   // Text Colour
-  optional Colour theme_label_text_enabled_selected_changing = 8 [default = COLOUR_WHITE];
-  optional Colour theme_label_text_enabled_selected = 9 [default = COLOUR_WHITE];
-  optional Colour theme_label_text_enabled = 10 [default = COLOUR_WHITE];
-  optional Colour theme_label_text_disabled = 11 [default = COLOUR_BLACK];
+  optional Colour theme_label_text_enabled_selected_changing = 8 [default = kColourWhite];
+  optional Colour theme_label_text_enabled_selected = 9 [default = kColourWhite];
+  optional Colour theme_label_text_enabled = 10 [default = kColourWhite];
+  optional Colour theme_label_text_disabled = 11 [default = kColourBlack];
   // Line Colour
-  optional Colour theme_label_border_enabled_selected_changing = 12 [default = COLOUR_GREY];
-  optional Colour theme_label_border_enabled_selected = 13 [default = COLOUR_GREY];
-  optional Colour theme_label_border_enabled = 14 [default = COLOUR_WHITE];
-  optional Colour theme_label_border_disabled = 15 [default = COLOUR_DARK_GREY];
+  optional Colour theme_label_border_enabled_selected_changing = 12 [default = kColourGrey];
+  optional Colour theme_label_border_enabled_selected = 13 [default = kColourGrey];
+  optional Colour theme_label_border_enabled = 14 [default = kColourWhite];
+  optional Colour theme_label_border_disabled = 15 [default = kColourDarkGrey];
   // Line Style
-  optional LineStyle theme_label_line_enabled_selected_changing = 16 [default = LABEL_SOLID];
-  optional LineStyle theme_label_line_enabled_selected = 17 [default = LABEL_SOLID];
-  optional LineStyle theme_label_line_enabled = 18 [default = LABEL_SOLID];
-  optional LineStyle theme_label_line_disabled = 19 [default = LABEL_DASHED];
+  optional LineStyle theme_label_line_enabled_selected_changing = 16 [default = kLineSolid];
+  optional LineStyle theme_label_line_enabled_selected = 17 [default = kLineSolid];
+  optional LineStyle theme_label_line_enabled = 18 [default = kLineSolid];
+  optional LineStyle theme_label_line_disabled = 19 [default = kLineDashed];
 
   // General
+  optional PpiStyle widget_ppi_style = 20 [default = kPpiClassicTankWithSight];
 
   // Line Thickness
-  optional int32 theme_label_border_thickness = 20 [default = 1];
-  optional int32 theme_table_border_thickness = 21 [default = 1];
-  optional Colour theme_status_background = 22 [default = COLOUR_BLACK];
-  optional Colour theme_status_border = 23 [default = COLOUR_BLACK];
-  optional Colour theme_status_text = 24 [default = COLOUR_WHITE];
-  optional Colour theme_alert = 25 [default = COLOUR_AMBER];
-  optional Colour theme_critical = 26 [default = COLOUR_RED];
-  optional string theme_font = 27 [default = "Courier 10 Pitch"];
+  optional int32 theme_label_border_thickness = 21 [default = 1];
+  optional int32 theme_table_border_thickness = 22 [default = 1];
+  optional Colour theme_status_background = 23 [default = kColourBlack];
+  optional Colour theme_status_border = 24 [default = kColourBlack];
+  optional Colour theme_status_text = 25 [default = kColourWhite];
+  optional Colour theme_alert = 26 [default = kColourAmber];
+  optional Colour theme_critical = 27 [default = kColourRed];
+  optional string theme_font = 28 [default = "Courier 10 Pitch"];
 }
 
 message ThemeModernBlue {
-  optional Colour theme_background = 1 [default = COLOUR_BLACK];
-  optional Colour table_background = 2 [default = COLOUR_BLACK];
-  optional LabelStyle theme_label_style = 3 [default = LABEL_ROUNDED];
+  optional Colour theme_background = 1 [default = kColourBlack];
+  optional Colour table_background = 2 [default = kColourBlack];
+  optional LabelStyle theme_label_style = 3 [default = kLabelRounded];
   // Background label colour
-  optional Colour theme_label_background_enabled_selected_changing= 4 [default = COLOUR_MODERN_BLUE_LIGHT];
-  optional Colour theme_label_background_enabled_selected= 5 [default = COLOUR_MODERN_BLUE_DARK];
-  optional Colour theme_label_background_enabled = 6 [default = COLOUR_BLACK];
-  optional Colour theme_label_background_disabled = 7 [default = COLOUR_BLACK];
+  optional Colour theme_label_background_enabled_selected_changing= 4 [default = kColourModernBlueLight];
+  optional Colour theme_label_background_enabled_selected= 5 [default = kColourModernBlueDark];
+  optional Colour theme_label_background_enabled = 6 [default = kColourBlack];
+  optional Colour theme_label_background_disabled = 7 [default = kColourBlack];
   // Text Colour
-  optional Colour theme_label_text_enabled_selected_changing = 8 [default = COLOUR_WHITE];
-  optional Colour theme_label_text_enabled_selected = 9 [default = COLOUR_WHITE];
-  optional Colour theme_label_text_enabled = 10 [default = COLOUR_WHITE];
-  optional Colour theme_label_text_disabled = 11 [default = COLOUR_GREY];
+  optional Colour theme_label_text_enabled_selected_changing = 8 [default = kColourWhite];
+  optional Colour theme_label_text_enabled_selected = 9 [default = kColourWhite];
+  optional Colour theme_label_text_enabled = 10 [default = kColourWhite];
+  optional Colour theme_label_text_disabled = 11 [default = kColourGrey];
   // Line Colour
-  optional Colour theme_label_border_enabled_selected_changing = 12 [default = COLOUR_MODERN_BLUE_DARK];
-  optional Colour theme_label_border_enabled_selected = 13 [default = COLOUR_MODERN_BLUE_LIGHT];
-  optional Colour theme_label_border_enabled = 14 [default = COLOUR_GREY];
-  optional Colour theme_label_border_disabled = 15 [default = COLOUR_GREY];
+  optional Colour theme_label_border_enabled_selected_changing = 12 [default = kColourModernBlueDark];
+  optional Colour theme_label_border_enabled_selected = 13 [default = kColourModernBlueLight];
+  optional Colour theme_label_border_enabled = 14 [default = kColourGrey];
+  optional Colour theme_label_border_disabled = 15 [default = kColourGrey];
   // Line Style
-  optional LineStyle theme_label_line_enabled_selected_changing = 16 [default = LABEL_SOLID];
-  optional LineStyle theme_label_line_enabled_selected = 17 [default = LABEL_SOLID];
-  optional LineStyle theme_label_line_enabled = 18 [default = LABEL_SOLID];
-  optional LineStyle theme_label_line_disabled = 19 [default = LABEL_DASHED];
+  optional LineStyle theme_label_line_enabled_selected_changing = 16 [default = kLineSolid];
+  optional LineStyle theme_label_line_enabled_selected = 17 [default = kLineSolid];
+  optional LineStyle theme_label_line_enabled = 18 [default = kLineSolid];
+  optional LineStyle theme_label_line_disabled = 19 [default = kLineDashed];
 
   // General
+  optional PpiStyle widget_ppi_style = 20 [default = kPpiModernTankWithSights];
 
   // Line Thickness
-  optional int32 theme_label_border_thickness = 20 [default = 2];
-  optional int32 theme_table_border_thickness = 21 [default = 1];
-  optional Colour theme_status_background = 22 [default = COLOUR_BLACK];
-  optional Colour theme_status_border = 23 [default = COLOUR_BLACK];
-  optional Colour theme_status_text = 24 [default = COLOUR_WHITE];
-  optional Colour theme_alert = 25 [default = COLOUR_AMBER];
-  optional Colour theme_critical = 26 [default = COLOUR_RED];
-  optional string theme_font = 27 [default = "Courier 10 Pitch"];
+  optional int32 theme_label_border_thickness = 21 [default = 1];
+  optional int32 theme_table_border_thickness = 22 [default = 1];
+  optional Colour theme_status_background = 23 [default = kColourBlack];
+  optional Colour theme_status_border = 24 [default = kColourBlack];
+  optional Colour theme_status_text = 25 [default = kColourWhite];
+  optional Colour theme_alert = 26 [default = kColourAmber];
+  optional Colour theme_critical = 27 [default = kColourRed];
+  optional string theme_font = 28 [default = "Courier 10 Pitch"];
 }
 
 message File {
@@ -180,55 +198,111 @@ message File {
   required string images_path = 4 [default = "/opt/gva/hmi/images"];
 }
 
+message OsmScout {
+  required bool enabled = 1  [default = true];
+
+  // Map Options
+  // optional string map_path = 2 [default = "/opt/osmscout/maps/england-latest/"];
+  optional string map_path = 2 [default = "/opt/osmscout/maps/australia-latest/"];
+  optional string map_stylesheet_path = 3 [default = "/opt/osmscout/stylesheets/standard.oss"];
+
+  // Big Ben   
+  // optional double test_lon = 4 [default = -0.124240];
+  // optional double test_lat = 5 [default = 51.500655];
+
+  // London Excel (DSEI)
+  // optional double test_lon = 4 [default = 0.029900];
+  // optional double test_lat = 5 [default = 51.508684];
+
+  // Redbank, QLD
+  // optional double test_lon = 4 [default = -27.581882];
+  // optional double test_lat = 5 [default = 152.875558];
+
+  // Puckapunyal, QLD
+  // optional double test_lon = 4 [default = 144.89585];
+  // optional double test_lat = 5 [default = -36.9551];
+
+  // Fortitude Valley, QLD
+  // optional double test_lon = 4 [default = 153.03434];
+  // optional double test_lat = 5 [default = -27.45814];
+
+  // Southbank, QLD
+  optional double test_lon = 4 [default = 153.02259];
+  optional double test_lat = 5 [default = -27.47440];
+}
+
+// Keys that can be bound
+enum Key {
+  kKeyBLK = 0;
+  kKeySA = 1;
+  kKeyWPN = 2;
+  kKeyDEF = 3; 
+  kKeySYS = 4; 
+  kKeyDRV = 5; 
+  kKeySTR = 6; 
+  kKeyCOM = 7; 
+  kKeyBMS = 8; 
+  kKeyF1 = 9;
+  kKeyF2 = 10; 
+  kKeyF3 = 11; 
+  kKeyF4 = 12; 
+  kKeyF5 = 13; 
+  kKeyF6 = 14; 
+  kKeyF7 = 15; 
+  kKeyF8 = 16; 
+  kKeyF9 = 17; 
+  kKeyF10 = 18;
+  kKeyF11 = 19; 
+  kKeyF12 = 20; 
+  kKeyF13 = 21; 
+  kKeyF14 = 22; 
+  kKeyF15 = 23; 
+  kKeyF16 = 24; 
+  kKeyF17 = 25; 
+  kKeyF18 = 26; 
+  kKeyF19 = 27; 
+  kKeyF20 = 28;
+  kKeyUpArrow = 29;
+  kKeyDownArrow = 30;
+}
+
+message KeyBinding {
+  optional Key key = 1;
+  optional int32 Bind = 2;
+}
+
+message KeyBindingsApc {
+  optional KeyBinding bind = 2; 
+}
+
 message Gva {
   required string name = 1;
   optional int32 height = 3 [default = 480];
   optional int32 width = 4 [default = 640];
   optional bool fullscreen = 5 [default = false];
-
-  // Map Options
-//  optional string map_path = 6 [default = "/opt/osmscout/maps/england-latest/"];
-  optional string map_path = 6 [default = "/opt/osmscout/maps/australia-latest/"];
-  optional string map_stylesheet_path = 7 [default = "/opt/osmscout/stylesheets/standard.oss"];
   
   // GPS options
-  optional bool live = 8;
-  optional int32 zoom = 9 [default = 20000];
-  optional string device = 10;
-    
-  // Big Ben    ENABLE_OSMSCOUT
-  // optional double test_lon = 11 [default = -0.124240];
-  // optional double test_lat = 12 [default = 51.500655];
+  optional bool live = 6;
+  optional int32 zoom = 7 [default = 20000];
+  optional string device = 8;
 
-  // London Excel (DSEI)
-  // optional double test_lon = 11 [default = 0.029900];
-  // optional double test_lat = 12 [default = 51.508684];
-
-  // Redbank, QLD
-  // optional double test_lon = 11 [default = -27.581882];
-  // optional double test_lat = 12 [default = 152.875558];
-
-  // Puckapunyal, QLD
-  optional double test_lon = 11 [default = -36.9551];
-  optional double test_lat = 12 [default = 144.89585];
-
-
-
-  optional string gps_device = 13 [default = "/dev/ttyUSB0"];
+  // The default GPS NMEA device to use
+  optional string gps_device = 9 [default = "/dev/ttyUSB0"];
 
   // ODB Options
-  optional string odb_device = 14 [default = "/dev/ttyUSB1"];    
+  optional string odb_device = 10 [default = "/dev/ttyUSB1"];    
+
+  // Map Options
+  optional OsmScout osm = 11;
+
+  optional ThemeDefault theme = 12;
+  // optional ThemeModernBlue theme = 12;
   
-  optional ThemeDefault theme = 15;
-  // optional ThemeModernBlue theme = 15;
+  optional File file = 13;
   
-  optional File file = 16;
-  
-  message BezelKeyset {
-    required int32 act = 1;
-    required int32 hidden = 2;
-  }
-  
+  // Display key bindings
+  repeated KeyBinding bindings = 14;  
+  optional string display_type = 15;
 
 }
 

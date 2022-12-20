@@ -21,9 +21,13 @@
 ///
 /// \file gva_video_rtp_yuv.h
 ///
+
 #ifndef VIDEO_SRC_GVA_VIDEO_RTP_YUV_H_
 #define VIDEO_SRC_GVA_VIDEO_RTP_YUV_H_
+
+#include <memory>
 #include <string>
+#include <string_view>
 
 #include "gva_video.h"   // NOLINT
 #include "rtp_stream.h"  // NOLINT
@@ -35,19 +39,19 @@ namespace gva {
 //
 class GvaVideoRtpYuv : public GvaVideoSource {
  public:
-  GvaVideoRtpYuv(const std::string &ip, uint32_t port, uint32_t height, uint32_t width);
-  GvaVideoRtpYuv(const std::string &ip, uint32_t port);
-  ~GvaVideoRtpYuv();
+  GvaVideoRtpYuv(std::string_view ip, uint32_t port, uint32_t height, uint32_t width);
+  GvaVideoRtpYuv(std::string_view ip, uint32_t port);
+  ~GvaVideoRtpYuv() final = default;
 
   // Implementation of pure virtual base class functions
-  const uint32_t GvaReceiveFrame(char *buffer, VideoFormat format) override;
-  const uint32_t GvaTransmitFrame(char *buffer, VideoFormat format);
+  uint32_t GvaReceiveFrame(char *buffer, VideoFormat format) final;
+  uint32_t GvaTransmitFrame(char *buffer, VideoFormat format) final;
 
  private:
-  std::string ip_;
+  std::string_view ip_;
   uint32_t port_;
-  uint32_t frame_counter_;
-  RtpStream *stream_;
+  uint32_t frame_counter_ = 0;
+  std::unique_ptr<RtpStream> stream_;
 };
 
 }  // namespace gva

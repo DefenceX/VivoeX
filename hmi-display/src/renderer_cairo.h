@@ -1,26 +1,25 @@
-///
-/// MIT License
-///
-/// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
-///
-/// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
-/// associated documentation files (the 'Software'), to deal in the Software without restriction,
-/// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-/// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-/// subject to the following conditions:
-///
-/// The above copyright notice and this permission notice shall be included in all copies or substantial
-/// portions of the Software.
-/// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-/// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-/// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-/// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-/// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-///
-/// \brief The Cairo renderer for drawing on the screen. See https://www.cairographics.org/
-///
-/// \file renderer_cairo.h
-///
+//
+// MIT License
+//
+// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+// associated documentation files (the 'Software'), to deal in the Software without restriction,
+// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+// subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial
+// portions of the Software.
+// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
+//
+// \file renderer_cairo.h
+//
 
 #ifndef HMI_DISPLAY_SRC_RENDERER_CAIRO_H_
 #define HMI_DISPLAY_SRC_RENDERER_CAIRO_H_
@@ -43,42 +42,73 @@
 namespace gva {
 
 struct Command {
-  Draw_type command;
-  double height;
-  double width;
-  PointType points[3];
-  double radius;
-  double angle1;
-  double angle2;
-  ColourType colour;
-  int32_t arg1;
-  int32_t arg2;
-  int32_t arg3;
-  int32_t arg4;
-  char text[80];
-  bool fill;
+  DrawType command = DrawType::kCommandUndefined;
+  double height = 0;
+  double width = 0;
+  std::array<PointType, 3> points;
+  double radius = 0;
+  double angle1 = 0;
+  double angle2 = 0;
+  ColourType colour = {HMI_WHITE};
+  int32_t arg1 = 0;
+  int32_t arg2 = 0;
+  int32_t arg3 = 0;
+  int32_t arg4 = 0;
+  std::string text = "";
+  bool fill = false;
 };
 
 struct image_type {
-  char name[255];
+  std::string name;
   cairo_surface_t *image;
   bool from_cache;
 };
 
-typedef enum { LINE_CAP_BUTT, LINE_CAP_ROUND, LINE_CAP_SQUARE } LineCapEnd;
+enum class LineCapEnd { kLineCapButt, kLineCapRound, kLineCapSquare };
 
 typedef void (*CallbackType)(void *io, gpointer data);
 
 class RendererCairo : public Renderer {
  public:
   static HandleType render_;
-  RendererCairo(uint32_t width, uint32_t height);
-  ~RendererCairo();
-  uint32_t Init(uint32_t width, uint32_t height);
-  uint32_t Init(uint32_t width, uint32_t height, bool fullscreen, CallbackType cb, void *arg);
-  // Pure Virtual functions
+
   ///
-  /// \brief Set the Pixel object
+  /// \brief Construct a new Renderer Cairo object
+  ///
+  /// \param width
+  /// \param height
+  ///
+  RendererCairo(uint32_t width, uint32_t height);
+
+  ///
+  /// \brief Destroy the Renderer Cairo object
+  ///
+  ///
+  ~RendererCairo() override;
+
+  ///
+  /// \brief Initalise the renderer with simple display parameters
+  ///
+  /// \param width Canvas width in pixels
+  /// \param height Canvas height in pixels
+  /// \return uint32_t
+  ///
+  uint32_t Init(uint32_t width, uint32_t height);
+
+  ///
+  /// \brief Initalise the renderer with display parameters
+  ///
+  /// \param width
+  /// \param height
+  /// \param fullscreen
+  /// \param cb
+  /// \param arg
+  /// \return uint32_t
+  ///
+  uint32_t Init(uint32_t width, uint32_t height, bool fullscreen, CallbackType cb, void *arg);
+
+  // Pure Virtual functions
+  //
   ///
   /// \param x
   /// \param y
@@ -339,14 +369,7 @@ class RendererCairo : public Renderer {
   /// \param weight
   /// \param fontName
   ///
-  void SetTextFont(uint32_t slope, WeightType weight, std::string fontName);
-
-  ///
-  /// \brief Set the Text Font Size object
-  ///
-  /// \param size
-  ///
-  void SetTextFontSize(double size);
+  void SetTextFont(uint32_t slope, widget::WeightType weight, std::string fontName, double size);
 
   ///
   /// \brief
@@ -414,7 +437,7 @@ class RendererCairo : public Renderer {
   /// \param file
   /// \return uint32_t
   ///
-  uint32_t TextureRGB(uint32_t x, uint32_t y, void *buffer, std::string file) override;
+  uint32_t TextureRGB(uint32_t x, uint32_t y, unsigned char *buffer, std::string file) override;
 
   ///
   /// \brief
@@ -424,7 +447,7 @@ class RendererCairo : public Renderer {
   /// \param buffer
   /// \return uint32_t
   ///
-  uint32_t TextureRGB(uint32_t x, uint32_t y, void *buffer);
+  uint32_t TextureRGB(uint32_t x, uint32_t y, unsigned char *buffer);
 
   ///
   /// \brief
@@ -450,7 +473,7 @@ class RendererCairo : public Renderer {
   ///
   void Reset() {
     draw_commands_.clear();
-    image_tail_ = 0;
+    image_list_.clear();
   }
 
   ///
@@ -465,7 +488,7 @@ class RendererCairo : public Renderer {
   ///
   /// \param height
   ///
-  void SetHeight(uint32_t height) {
+  void SetHeight(uint32_t height) const {
     height_ = height;
     gtk_widget_set_size_request(render_.win.draw, (gint)width_, (gint)height_);
   }
@@ -475,7 +498,7 @@ class RendererCairo : public Renderer {
   ///
   /// \param width
   ///
-  void SetWidth(uint32_t width) {
+  void SetWidth(uint32_t width) const {
     width_ = width;
     gtk_widget_set_size_request(render_.win.draw, (gint)width_, (gint)height_);
   }
@@ -485,10 +508,11 @@ class RendererCairo : public Renderer {
   ///
   /// \return uint32_t
   ///
-  uint32_t GetHeight() {
-    gint h, w;
+  uint32_t GetHeight() const {
+    gint h;
+    gint w;
     gtk_widget_get_size_request(render_.win.draw, &w, &h);
-    return static_cast<int>(w);
+    return w;
   }
 
   ///
@@ -496,10 +520,11 @@ class RendererCairo : public Renderer {
   ///
   /// \return uint32_t
   ///
-  uint32_t GetWidth() {
-    gint h, w;
+  uint32_t GetWidth() const {
+    gint h;
+    gint w;
     gtk_widget_get_size_request(render_.win.draw, &w, &h);
-    return static_cast<int>(h);
+    return h;
   }
 
  private:
@@ -508,11 +533,13 @@ class RendererCairo : public Renderer {
   double scale_;
   gtkType root_;
 
-  //
-  // Helper Functions
-  //
-  // double intToFloat(int c) { return (double)1 / 255 * c; }
-  double intToFloat(int c) { return static_cast<double>(1) / 255 * c; }
+  ///
+  /// \brief Convert a standard integer to a double for use with the cairo colour system
+  ///
+  /// \param c The integer value to convert
+  /// \return double
+  ///
+  double IntToFloat(int c) const { return static_cast<double>(1) / 255 * c; }
 
   //
   // Render List
@@ -522,15 +549,12 @@ class RendererCairo : public Renderer {
   //
   // Image List
   //
-  image_type image_list_[MAX_IMAGES];
-  uint32_t image_tail_ = 0;
+  std::vector<image_type> image_list_;
 
   //
   // Image Cache
   //
-  image_type cache_image_list_[MAX_IMAGES];
-  uint32_t cache_image_tail_ = 0;
-
+  std::vector<image_type> cache_image_list_;
   static gboolean DrawCb(GtkWidget *Widget, cairo_t *cr, gpointer data);
   static gboolean ConfigureEventCb(GtkWidget *Widget, GdkEventConfigure *event, gpointer data);
   static void Activate(GtkApplication *app, gpointer user_data);

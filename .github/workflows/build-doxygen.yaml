@@ -27,19 +27,20 @@ jobs:
       - name: Apt Update
         run: sudo apt-get update
       - name: Apt Install
-        run: sudo apt-get --no-install-recommends install doxygen graphviz wget plantuml imagemagick
+        run: sudo apt-get --no-install-recommends install doxygen graphviz wget plantuml
       - name: Doxygen
         run: |
+          export DISPLAY=':0' && \
           export MAJOR=$(sed -n '1p' < version) && \
           export MINOR=$(sed -n '2p' < version) && \
           export PATCH=$(sed -n '3p' < version) && \
-          export GIT_HASH=$(git rev-parse --short HEAD) %% \
-          echo "Current version ${SEM_VERSION} with #${GIT_HASH}" && \
-          mkdir build && \
-          cd build && \
-          cd cmake .. && \
-          make doxygen && \
-          wget https://img.shields.io/badge/version-${SEM_VERSION}-blue.svg -O ../docs/version.svg
+          export SEM_VERSION=${MAJOR}.${MINOR}.${PATCH} && \
+          export GIT_HASH=$(git rev-parse --short HEAD) && \
+          export IMAGE_DIR=./images/doxygen && \
+          ls -hal ${IMAGE_DIR} && \
+          echo "Current version ${SEM_VERSION} with #${GIT_HASH} and path ${IMAGE_DIR}" && \
+          doxygen && \
+          wget https://img.shields.io/badge/version-${SEM_VERSION}-blue.svg -O docs/version.svg
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact

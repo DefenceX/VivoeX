@@ -1,23 +1,22 @@
-///
-/// MIT License
-///
-/// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
-///
-/// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
-/// associated documentation files (the 'Software'), to deal in the Software without restriction,
-/// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-/// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-/// subject to the following conditions:
-///
-/// The above copyright notice and this permission notice shall be included in all copies or substantial
-/// portions of the Software.
-/// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-/// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-/// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-/// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-/// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-///
-/// \brief The Keyboard widget
+//
+// MIT License
+//
+// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+// associated documentation files (the 'Software'), to deal in the Software without restriction,
+// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+// subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial
+// portions of the Software.
+// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
 ///
 /// \file keyboard.h
 ///
@@ -29,6 +28,7 @@
 
 #include "src/renderer_cairo_types.h"
 #include "src/widgets/widget.h"
+#include "src/widgets/widget_types.h"
 
 namespace gva {
 
@@ -58,24 +58,24 @@ class WidgetKeyboard : public WidgetX {
   ///
   /// \param mode
   ///
-  void DrawKeyboard(const KeyboardModeType mode);
+  void DrawKeyboard(const widget::KeyboardModeType mode);
 
   ///
   /// \brief Set the Mode object
   ///
   /// void SetMode(KeyboardModeType mode) { mode_ = mode; }
 
-  void SetMode(const KeyboardModeType mode);
+  void SetMode(const widget::KeyboardModeType mode);
 
   ///
   /// \brief Get the Mode object
   ///
   /// \return KeyboardModeType
   ///
-  KeyboardModeType GetMode() const;
+  widget::KeyboardModeType GetMode() const;
 
  private:
-  KeyboardModeType mode_ = KeyboardModeType::kKeyboardUpper;
+  widget::KeyboardModeType mode_ = widget::KeyboardModeType::kKeyboardUpper;
   const std::vector<std::vector<char>> upperKeys_ = {{'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'},
                                                      {'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', '-'},
                                                      {'Z', 'X', 'C', 'V', 'B', 'N', 'M', ' ', '-', '-'}};

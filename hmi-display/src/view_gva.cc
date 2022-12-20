@@ -1,23 +1,22 @@
-///
-/// MIT License
-///
-/// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
-///
-/// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
-/// associated documentation files (the 'Software'), to deal in the Software without restriction,
-/// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-/// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-/// subject to the following conditions:
-///
-/// The above copyright notice and this permission notice shall be included in all copies or substantial
-/// portions of the Software.
-/// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-/// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-/// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-/// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-/// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-///
-/// \brief A view manager to handle the setup of new views and switching of views
+//
+// MIT License
+//
+// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+// associated documentation files (the 'Software'), to deal in the Software without restriction,
+// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+// subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial
+// portions of the Software.
+// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
 ///
 /// \file view_gva.cc
 ///
@@ -27,17 +26,16 @@
 #include "screen_gva.h"
 
 namespace gva {
-ViewGvaManager::ViewGvaManager(StatusBar *status_bar) : status_bar_(status_bar) { idLast_ = 0; }
+
+ViewGvaManager::ViewGvaManager(StatusBar *status_bar) : status_bar_(status_bar) {}
 
 void ViewGvaManager::AddNewView(GvaFunctionEnum function, FunctionSelect *top, CommonTaskKeys *bottom,
                                 FunctionKeys left, FunctionKeys right) {
-  ViewGva view(function, top, bottom, left, right);
-  views_.push_back(view);
+  views_.push_back(ViewGva(function, top, bottom, left, right));
   return;
 }
 
-void ViewGvaManager::SetScreen(Screen *screen, GvaFunctionEnum function) {
-  int i = 0;
+void ViewGvaManager::SetScreen(Screen *screen, GvaFunctionEnum function) const {
   for (auto view : views_) {
     if (view.GetFunction() == function) {
       screen->status_bar = status_bar_;
@@ -51,12 +49,12 @@ void ViewGvaManager::SetScreen(Screen *screen, GvaFunctionEnum function) {
 }
 
 ViewGva *ViewGvaManager::GetView(GvaFunctionEnum function) {
-  int i = 0;
   Screen screen = {0};
-  for (auto view : views_) {
+  for (auto &view : views_) {
     if (view.GetFunction() == function) {
       return &view;
     }
   }
+  return nullptr;
 }
-};  // namespace gva
+}  // namespace gva

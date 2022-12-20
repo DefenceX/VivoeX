@@ -1,11 +1,13 @@
-name: "Build Ubuntu ARM64 : Cyclone"
+name: "Build Debian ARM64 : Cyclone"
+
+on: workflow_dispatch
 
 permissions:
   contents: read
   pull-requests: read
 
 jobs:
-  build-ubuntu-cyclone:
+  build-debian-cyclone:
     runs-on: self-hosted
 
     # Map a step output to a job output
@@ -18,10 +20,11 @@ jobs:
 
       - name: Apt Install
         run: |
-          sudo apt-get --no-install-recommends install catch cpplint rpm libgtk-3-dev valgrind libcairo2-dev \
-            libpango1.0-dev libxt-dev libxml2-dev ncurses-dev libxext-dev libswscale-dev libprotobuf-c-dev \
+          sudo apt-get --no-install-recommends install libgtk-3-dev valgrind libcairo2-dev \
+            libpango1.0-dev libxt-dev libxext-dev libswscale-dev libprotobuf-c-dev \
             geographiclib-doc libgeographic-dev libgeographic-dev libprotobuf23 libprotobuf-dev \
-            protobuf-compiler autoconf automake libtool curl make g++ unzip lsb-release
+            protobuf-compiler autoconf automake libtool curl make g++ unzip lsb-release graphviz imagemagick -y && \
+            pip install cpplint --user
 
       - name: CMake and Build
         run: mkdir build && cd build && cmake .. -DDDS=CYCLONE-CE .. && make -j $(nproc)
@@ -29,9 +32,6 @@ jobs:
       - name: Package for Debian (.deb)
         id: package
         run: cd build && cpack -V -G DEB && echo "DEB_PACKAGE=$(ls *.deb)" >> $GITHUB_ENV && echo "DEB_PACKAGE=$(ls *.deb)" >> $GITHUB_OUTPUT
-
-      # - name: CTestDEB_PACKAGE
-      #   run: xvfb-run --server-args="-screen 0 1024x768x24" ctest -T memcheck
 
       - name: Post
         run: cd .. && bash <(curl -s https://codecov.io/bash)
@@ -57,22 +57,24 @@ jobs:
             build/CMakeFiles/CMakeOutput.log
           retention-days: 30
 
-  install-ubuntu-cyclone:
-    runs-on: ubuntu-22.04
-    needs: [build-ubuntu-cyclone]
+  install-debian-cyclone:
+    runs-on: self-hosted
+    needs: [build-debian-cyclone]
     if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
 
     steps:
       - name: Read package name
-        run: echo ${{needs.build-ubuntu-cyclone.outputs.package_name}}
+        run: echo ${{needs.build-debian-cyclone.outputs.package_name}}
 
       - name: Download .deb to install
         uses: actions/download-artifact@v3
         with:
-          name: ${{needs.build-ubuntu-cyclone.outputs.package_name}}
+          name: ${{needs.build-debian-cyclone.outputs.package_name}}
 
       - name: Install package
         run: ls -hal && sudo apt-get install ./*.deb -y
 
       - name: Run binary
-        run: /opt/gva/hmi/hmi-display -h
+        run: |
+          sudo ldconfig && \
+          /opt/gva/hmi/hmi-display -h
