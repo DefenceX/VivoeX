@@ -97,6 +97,13 @@ gboolean EventsGva::KeyReleaseEventCb(GtkWidget* Widget, GdkEventKey* event) {
   return CreateKeyEvent(Widget, event, EventEnumType::kKeyEventReleased);
 }
 
+void EventsGva::CreateRefreshEvent() {
+  EventGvaType gvaEvent;
+  gvaEvent.type_ = EventEnumType::kWidgetUpdate;
+  gvaEvent.key_ = GvaKeyEnum::kKeyUnknown;
+  eventqueue_.push_back(gvaEvent);
+}
+
 gboolean EventsGva::CreateKeyEvent(GtkWidget* Widget, GdkEventKey* event, EventEnumType type) {
   EventGvaType gvaEvent;
   gvaEvent.type_ = type;

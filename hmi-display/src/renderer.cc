@@ -21,7 +21,9 @@
 /// \file renderer.cc
 ///
 
-#include "renderer.h"
+#include "src/renderer.h"
+
+#include "src/gva.h"
 
 namespace gva {
 

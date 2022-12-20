@@ -87,6 +87,7 @@ ConfigDataBase::ConfigDataBase() {
                                        'o',    0xffbe, 0xffbf, 0xffc0, 0xffc1, 0xffc2, 0xffc3, 0xffc4,
                                        0xffc5, 0xffc6, 0xffc7, 0xffc8, 0xffc9, 'a',    's',    'd',
                                        'f',    'g',    'h',    'j',    0xff0d, 0xff54, 0xff52};
+
   for (std::size_t c = 0; c < keys.size(); c++) {
     auto bindings = current_config_->add_bindings();
     bindings->set_bind(apc_bind[c]);

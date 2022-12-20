@@ -27,11 +27,14 @@
 
 #include "common/log_gva.h"
 #include "src/gva_functions_common.h"
+#include "src/trace.h"
 #include "src/widgets/keyboard.h"
 #include "src/widgets/widget.h"
 
 GvaApplication::Options GvaApplication::options_ = {};
 std::unique_ptr<gva::GvaVideoRtpYuv> GvaApplication::rtp_stream1_ = nullptr;
+uint32_t GvaApplication::update_counter_ = 0;
+bool GvaApplication::first_execution_ = true;
 
 GvaApplication::GvaApplication(const Options &options, const std::string &ipaddr, const uint32_t port) {
   options_ = options;
@@ -67,6 +70,12 @@ GvaApplication::GvaApplication(const Options &options, const std::string &ipaddr
   }
 }
 
+GvaApplication::~GvaApplication() {
+  if (options_.videoEnabled_ == true) {
+    free(rtp_buffer_);
+  }
+};
+
 //
 ///
 ///
@@ -74,6 +83,8 @@ void GvaApplication::Exec() const {
   //
   // Start the render and event loop
   //
+
+  // Draw the first screen, then the callback (Update) will refresh as required
   gva::hmi::GetRendrer()->Init(640, 480, gva::ConfigData::GetInstance()->GetFullscreen(), Update,
                                reinterpret_cast<void *>(io_.get()));
   // Free the config reader (writes data back to disk)
@@ -117,11 +128,13 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
   bool update = true;
   const gva::HandleType *render = static_cast<gva::HandleType *>(user_data);
 
+  tracepoint(vivoe_lite, app_callback, update_counter_);
+
   if ((options_.videoEnabled_) && (gva::hmi::GetScreen()->currentFunction == gva::GvaFunctionEnum::kDriver)) {
     gva::hmi::GetScreen()->canvas.bufferType = gva::SurfaceType::kSurfaceCairo;
     gva::hmi::GetScreen()->canvas.surface =
         cairo_image_surface_create(CAIRO_FORMAT_ARGB32, gva::kMinimumWidth, gva::kMinimumHeight);
-    char *test = reinterpret_cast<char *>(cairo_image_surface_get_data(gva::hmi::GetScreen()->canvas.surface));
+    auto test = (char *)(cairo_image_surface_get_data(gva::hmi::GetScreen()->canvas.surface));
     rtp_stream1_->GvaReceiveFrame(test, gva::VideoFormat::kFormatRgbaColour);
     cairo_surface_mark_dirty(gva::hmi::GetScreen()->canvas.surface);
 
@@ -130,10 +143,21 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
     // mode.
   }
 
-  // Time to update the screen
-  gva::hmi::GetRendrer()->Update();
-
   io->NextGvaEvent(&event);
+
+  // Time to update the screen
+  if ((first_execution_) || (event.type_ == gva::EventEnumType::kWidgetUpdate)) {
+    gva::hmi::GetRendrer()->Update();
+    first_execution_ = false;
+    return;
+  }
+
+  // No events found to nothing to do here, just return
+  if (event.type_ == gva::EventEnumType::kNoEvent) {
+    printf("[GVA] No Event\n");
+    return;
+  }
+
   switch (event.type_) {
     default:
       break;
@@ -231,7 +255,6 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
           update = false;
           break;
       }
-      if (update) gva::hmi::GetRendrer()->Update();
       break;
 
     case gva::EventEnumType::kKeyEventReleased: {
@@ -451,7 +474,6 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
           update = false;
           break;
       }
-      if (update) gva::hmi::GetRendrer()->Update();
       break;
     }  // Key Released
 
@@ -463,13 +485,21 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
         printf("[GVA] WindowResize: %d x %d", event.resize_.width, event.resize_.height);
         gva::hmi::GetRendrer()->SetWidth(event.resize_.width);
         gva::hmi::GetRendrer()->SetHeight(event.resize_.height);
-        gva::hmi::GetRendrer()->Update();
         gva::hmi::GetRendrer()->GetTouch()->SetResolution(event.resize_.width, event.resize_.height);
+        update = true;
       }
     } break;
     case gva::EventEnumType::kRedrawEvent: {
-      gva::hmi::GetRendrer()->Update();
+      update = true;
     } break;
+  }
+
+  // Only update if a change was detected
+  if (update) {
+    printf("[GVA] Update\n");
+    gva::hmi::GetRendrer()->Update();
+    update_counter_++;
+    tracepoint(vivoe_lite, app_callback, update_counter_);
   }
 
 }  // namespace gva

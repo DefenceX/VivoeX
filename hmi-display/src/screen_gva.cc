@@ -64,7 +64,7 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
 
   logGva::log("GVA screen initalised (" + std::to_string(width_) + "x" + std::to_string(height_), DebugLevel::kLogInfo);
 
-  // Initalise the pasert for NMEA
+  // Initialise the pasert for NMEA
   nmea_zero_INFO(&info_);
   nmea_parser_init(&parser_);
 
@@ -122,7 +122,7 @@ ScreenGva::~ScreenGva() {
 }
 
 void *ClockUpdate(void *arg) {
-  args *a = (args *)arg;
+  ClockArgs *a = (ClockArgs *)arg;
   time_t t;
   struct tm *tm;
   char c;
@@ -191,13 +191,14 @@ void *ClockUpdate(void *arg) {
         } break;
       }
     }
-    nanosleep((const struct timespec[]){{0, 1000000000L}}, NULL);
-  }
+    gva::EventsGva::CreateRefreshEvent();
+    nanosleep((const struct timespec[]){{0, 1000000000L}}, nullptr);
+  }  // End thread loop
+
   return nullptr;
 }
 
 void ScreenGva::StartClock(const StatusBar &barData) {
-  pthread_t clock_thread_;
   args_.active = true;
   args_.parser = &parser_;
   args_.info = &info_;
@@ -208,7 +209,7 @@ void ScreenGva::StartClock(const StatusBar &barData) {
   args_.info->lat = ConfigData::GetInstance()->GetTestLat();
 
   /* Launch clock thread */
-  if (pthread_create(&clock_thread_, NULL, ClockUpdate, (void *)&args_)) {
+  if (pthread_create(&clock_thread_, nullptr, ClockUpdate, (void *)&args_)) {
     logGva::log("Error creating thread", DebugLevel::kLogError);
     return;
   }
@@ -298,7 +299,7 @@ GvaStatusTypes ScreenGva::Update() {
   if (screen_->status_bar->visible) {
     WidgetTable status_bar_table(*(RendererGva *)this, GetTouch(),
                                  ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
-    uint32_t i = 0;
+
     // Setup and Draw the status bar, one row table
     std::array<uint32_t, 7> widths = {23, 8, 37, 8, 8, 8, 8};
     status_bar_table.SetVisible(true);
@@ -312,7 +313,7 @@ GvaStatusTypes ScreenGva::Update() {
     screen_->status_bar->labels[0].text = args_.clockString;
     screen_->status_bar->labels[1].text = args_.locationFormat;
     screen_->status_bar->labels[2].text = args_.locationString;
-    for (i = 0; i < 7; i++) {
+    for (uint32_t i = 0; i < 7; i++) {
       status_bar_table.AddCell(screen_->status_bar->labels[i].text, widths[i], widget::CellAlignType::kAlignLeft);
     }
     status_bar_table.Draw();

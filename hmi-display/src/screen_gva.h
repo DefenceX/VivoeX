@@ -97,7 +97,7 @@ class ScreenGva;
 //
 // These are used by the clock thread to update the time and refresh the screen
 //
-struct args {
+struct ClockArgs {
   std::string clockString;
   std::string locationFormat;
   std::string locationString;
@@ -134,7 +134,7 @@ class ScreenGva : public RendererGva {
   GvaStatusTypes Update();
 
   ///
-  /// \brief Start the clock threa #include <vector>d running to update the clock (pthread started)
+  /// \brief Start the clock thread running to update the clock (pthread started)
   ///
   /// \param barData
   ///
@@ -152,7 +152,7 @@ class ScreenGva : public RendererGva {
   char *PosDegrees(float lon, float lat);
   Screen *screen_ = nullptr;
   std::map<widget::WidgetEnum, std::shared_ptr<WidgetX>> widget_list_;
-  args args_;
+  ClockArgs args_;
   int gps_ = 0;
   uint32_t hndl_;
   Screen last_screen_;

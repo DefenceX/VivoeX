@@ -61,7 +61,7 @@ class GvaApplication {
   /// \brief Destroy the Gva Application object
   ///
   ///
-  ~GvaApplication() = default;
+  ~GvaApplication();
 
   ///
   /// \brief Execute the main processing loop, blocking call
@@ -97,6 +97,8 @@ class GvaApplication {
   char *rtp_buffer_;
   std::shared_ptr<gva::EventsGva> io_;
   gva::EventsGva *io_test_;
+  static uint32_t update_counter_;
+  static bool first_execution_;
 };
 
 #endif  // HMI_DISPLAY_SRC_GVA_APPLICATION_H_

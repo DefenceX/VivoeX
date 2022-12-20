@@ -2,8 +2,8 @@ include(FindPkgConfig)
 project(hmi-display)
 
 pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
-pkg_check_modules(CAIRO REQUIRED cairo)
-pkg_check_modules(PANGO REQUIRED pango)
+# pkg_check_modules(CAIRO REQUIRED cairo)
+# pkg_check_modules(PANGO REQUIRED pango)
 pkg_check_modules(SWSCALE REQUIRED libswscale)
 
 add_subdirectory(src/widgets)
@@ -22,6 +22,7 @@ link_directories(${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build)
 link_directories(${CMAKE_BINARY_DIR}/external/libnmea/build/src)
 
 set(SOURCES main.cc 
+			src/trace.cc
 			src/gva_application.cc
 			src/gva_functions_common.cc
 			src/renderer.cc 
@@ -69,14 +70,14 @@ add_executable(hmi-display ${PROTO_SRCS} ${SOURCES})
 add_dependencies(hmi-display libosmscout geographiclib hmi-video config-proto ${DDS_STACK} libosmscout)
 set(OSMSCOUT_LIBS ${OSMSCOUT_LIBARAIES})
 
-target_link_libraries (hmi-display ${GEOGRAPHIC_LIBRARIES} GeographicLib config-proto ${OSMSCOUT_LIBS} ${Protobuf_LIBRARIES} ${GTK_LIBRARIES3} stdc++fs)
+target_link_libraries (hmi-display ${GEOGRAPHIC_LIBRARIES} GeographicLib config-proto ${OSMSCOUT_LIBS} ${Protobuf_LIBRARIES} ${GTK_LIBRARIES3} stdc++fs lttng-ust lttng-ust-common dl)
 
 link_directories(${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build ${CMAKE_BINARY_DIR}/external/libnmea/build/src ${CMAKE_BINARY_DIR}/external/install/usr/local/lib)
 target_link_libraries(hmi-display png pthread hmi-video vivoe-media nmealib config-proto ${CAIRO_LIBRARIES} ${PANGO_LIBRARIES} ${SWSCALE_LIBRARIES} ${GTK3_LIBRARIES})
 target_link_directories(hmi-display BEFORE PRIVATE ${CMAKE_BINARY_DIR}/external/install/usr/local/lib)
 target_include_directories(hmi-display PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${OSMSCOUT_INCLUDE_DIRS} ${GEOGRAPHIC_INCLUDE_DIRS} ${CMAKE_BINARY_DIR}/hmi-display/config ${CMAKE_CURRENT_SOURCE_DIR}/widgets ${CMAKE_CURRENT_SOURCE_DIR}/common ${CMAKE_BINARY_DIR}/hmi_display ${CAIRO_INCLUDE_DIRS} ${PANGO_INCLUDE_DIRS} ${SWSCALE_INCLUDE_DIRS} ${GTK3_INCLUDE_DIRS} common dds dds/location display)
 target_compile_options(hmi-display PUBLIC ${CAIRO_CFLAGS_OTHER} ${GTK3_CFLAGS_OTHER})
-set_target_properties(hmi-display PROPERTIES UNITY_BUILD ON)
+set_target_properties(hmi-display PROPERTIES UNITY_BUILD OFF)
 
 install(TARGETS hmi-display DESTINATION /opt/gva/hmi)
 

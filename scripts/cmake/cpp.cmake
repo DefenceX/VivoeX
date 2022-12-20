@@ -13,3 +13,10 @@ else()
   message(STATUS "Running locally so optimised CFLAGS for checking")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lstdc++fs -Wall -Werror")
 endif()
+
+option(TRACE "Build with trace" OFF)
+
+if(TRACE)
+  message(STATUS "Tracing of functions enabled for lttng")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -finstrument-functions") 
+endif()

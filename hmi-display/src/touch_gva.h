@@ -27,8 +27,8 @@
 
 #include <vector>
 
+#include "src/gva.h"
 #include "src/renderer_base.h"
-#include "src/renderer_gva.h"
 
 namespace gva {
 

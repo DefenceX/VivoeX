@@ -32,6 +32,7 @@
 
 #include "gva.h"
 #include "log_gva.h"
+#include "src/config_reader.h"
 
 #define DPI 96.0
 

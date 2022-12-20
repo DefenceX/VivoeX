@@ -39,7 +39,8 @@ enum class EventEnumType {
   kTouchEvent,
   kDdsEvent,
   kResizeEvent,
-  kRedrawEvent
+  kRedrawEvent,
+  kWidgetUpdate
 };
 
 struct TouchType {
@@ -112,7 +113,21 @@ class EventsGva {
 
   static std::vector<EventGvaType> eventqueue_;
 
+  ///
+  /// \brief Create a refresh event because a widget was updated and queue it
+  ///
+  ///
+  static void CreateRefreshEvent();
+
  private:
+  ///
+  /// \brief Create a Key Event and queue it
+  ///
+  /// \param Widget
+  /// \param event
+  /// \param type
+  /// \return gboolean
+  ///
   static gboolean CreateKeyEvent(GtkWidget *Widget, GdkEventKey *event, EventEnumType type);
   gtkType *window_;
 };

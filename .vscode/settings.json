@@ -224,6 +224,7 @@
         "rotateright",
         "RTPS",
         "tinyfsm",
+        "vivoe",
         "workarea"
     ],
     "sonarlint.connectedMode.project": {
