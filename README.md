@@ -19,7 +19,11 @@
 # Dependencies
 This VIVOE (Vetronics Infrastructure for Video Over Ethernet) environment is currently tested on Ubuntu 22.04 LTS. Please ensure you have the following packages installed prior to building the application:
 ```
+<<<<<<< HEAD
+apt install libcairo2-dev libxt-dev cpplint python-is-python3 libxext-dev libswscale-dev libprotobuf-dev protobuf-compiler cmake g++ libgtk-3-dev --no-install-recommends
+=======
 apt install libcairo2-dev cpplint python-is-python3 libxext-dev libswscale-dev libprotobuf-dev protobuf-compiler cmake g++ libgtk-3-dev --no-install-recommends
+>>>>>>> 595d9055f5b993006449340f0e1cae44b79381d1
 ```
 Additional packages for building documentation:
 ```
