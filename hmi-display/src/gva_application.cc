@@ -154,7 +154,6 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
 
   // No events found to nothing to do here, just return
   if (event.type_ == gva::EventEnumType::kNoEvent) {
-    printf("[GVA] No Event\n");
     return;
   }
 
@@ -496,7 +495,6 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
 
   // Only update if a change was detected
   if (update) {
-    printf("[GVA] Update\n");
     gva::hmi::GetRendrer()->Update();
     update_counter_++;
     tracepoint(vivoe_lite, app_callback, update_counter_);

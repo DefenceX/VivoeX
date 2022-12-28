@@ -2,8 +2,6 @@ enable_testing()
 
 find_package(Protobuf REQUIRED)
 pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
-# pkg_check_modules(CAIRO REQUIRED cairo)
-# pkg_check_modules(PANGO REQUIRED pango)
 pkg_check_modules(SWSCALE REQUIRED libswscale)
 
 set(CMAKE_CXX_FLAGS --coverage)
@@ -23,9 +21,11 @@ set(
   ${CMAKE_SOURCE_DIR}/hmi-display/src/common
   ${CMAKE_BINARY_DIR}/hmi-display/config
 )
+
 set(
   TEST_LIBS 
   ${GTK3_LIBRARIES}
+  ${PANGO_LIBRARIES}
 )
 
 ## test_log
@@ -48,7 +48,7 @@ target_link_libraries(
   ${TEST_LIBS}
 )
 
-target_link_directories(test_log PRIVATE ${GTEST_LIBRARY_DIRS})
+target_link_directories(test_log PRIVATE ${GTEST_LIBRARY_DIRS} ${PANGO_LIBARARY_DIRS})
 
 target_include_directories(
   test_log PUBLIC

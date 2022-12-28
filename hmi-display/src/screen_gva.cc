@@ -192,7 +192,9 @@ void *ClockUpdate(void *arg) {
       }
     }
     gva::EventsGva::CreateRefreshEvent();
-    nanosleep((const struct timespec[]){{0, 1000000000L}}, nullptr);
+
+    struct timespec reqDelay = {1, 0};
+    nanosleep(&reqDelay, (struct timespec *)NULL);
   }  // End thread loop
 
   return nullptr;

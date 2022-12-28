@@ -88,7 +88,7 @@ void HmiHelper::TableSystem(WidgetTable *table) {
   table->AddRow();
   table->AddCell("GPS Source, " + ConfigData::GetInstance()->GetOdbDevice(), 80);
   if (std::filesystem::exists(ConfigData::GetInstance()->GetGpsDevice())) {
-    table->AddCell("OK", 20, Renderer::PackRgb(HMI_RED));
+    table->AddCell("OK", 20);
   } else {
     table->AddCell("Error", 20, Renderer::PackRgb(HMI_RED));
   }
@@ -96,14 +96,18 @@ void HmiHelper::TableSystem(WidgetTable *table) {
   table->AddRow();
   table->AddCell("ODB Source, " + ConfigData::GetInstance()->GetGpsDevice(), 80);
   if (std::filesystem::exists(ConfigData::GetInstance()->GetGpsDevice())) {
-    table->AddCell("OK", 20, Renderer::PackRgb(HMI_RED));
+    table->AddCell("OK", 20);
   } else {
     table->AddCell("Error", 20, Renderer::PackRgb(HMI_RED));
   }
 
   table->AddRow();
   table->AddCell("UK Maps, " + ConfigData::GetInstance()->GetMapPath(), 80);
-  table->AddCell("Ok", 20);
+  if (std::filesystem::exists(ConfigData::GetInstance()->GetMapPath())) {
+    table->AddCell("OK", 20);
+  } else {
+    table->AddCell("Error", 20, Renderer::PackRgb(HMI_RED));
+  }
 
   table->AddRow();
   table->AddCell("Timesource GPS Lock", 80);
