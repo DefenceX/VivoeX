@@ -53,8 +53,8 @@ install(FILES ${CMAKE_BINARY_DIR}/external/libnmea/build/src/libnmealib.so
               ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libosmscout.so
               ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libosmscout.so.1.1.1
               # ${CMAKE_BINARY_DIR}/external/install/opt/cairo/lib/lib/
-              ${CMAKE_BINARY_DIR}/external/install/lib/${ARCH}-linux-gnu/libpango-1.0.so
-              ${CMAKE_BINARY_DIR}/external/install/lib/${ARCH}-linux-gnu/libpangocairo-1.0.so
+              # ${CMAKE_BINARY_DIR}/external/install/lib/${ARCH}-linux-gnu/libpango-1.0.so
+              # ${CMAKE_BINARY_DIR}/external/install/lib/${ARCH}-linux-gnu/libpangocairo-1.0.so
               ${DDS_LIBS}
         DESTINATION "/opt/gva/libs" PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE GROUP_WRITE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_WRITE WORLD_EXECUTE)
 
