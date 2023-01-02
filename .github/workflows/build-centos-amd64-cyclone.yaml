@@ -36,7 +36,9 @@ jobs:
 
       - name: Dnf Install
         run: |
-          dnf install git cmake gcc-c++ python2-pip rpm-build cairo-devel libXt-devel doxygen graphviz ImageMagick libxml2-devel ncurses-devel libXext-devel ffmpeg-devel protobuf-devel protobuf-compiler GeographicLib-devel gtk3-devel -y && \
+          dnf install git cmake gcc-c++ python2-pip rpm-build cairo-devel libXt-devel doxygen graphviz ImageMagick \
+          libxml2-devel ncurses-devel libXext-devel ffmpeg-devel protobuf-devel protobuf-compiler GeographicLib-devel \
+          lttng-ust-devel gtk3-devel -y && \
           pip2 install cpplint --user
 
       - name: CMake and Build
