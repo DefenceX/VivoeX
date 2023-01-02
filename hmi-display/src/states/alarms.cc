@@ -31,6 +31,10 @@ GvaKeyEnum Hmi::KeyAlarms(GvaKeyEnum keypress) {
       (WidgetTableDynamic *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic);
 
   switch (keypress) {
+    case GvaKeyEnum::kKeyF1:  // F1
+      table->SetHideOverride(true);
+      return keypress;
+      break;
     case GvaKeyEnum::kKeyF17:  // Down Arrow
       table->SetPreviousRow();
       return keypress;

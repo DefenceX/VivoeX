@@ -122,6 +122,14 @@ class WidgetTableDynamic : public WidgetTable {
   ///
   void SetHideOverride(bool hide);
 
+  ///
+  /// \brief Get the Hide Override attribute
+  ///
+  /// \return true if overridden alarms are hidden
+  /// \return false otherwise
+  ///
+  bool GetHideOverride() const;
+
  private:
   uint32_t background_colour_;
   uint32_t foreground_colour_ = Renderer::PackRgb(HMI_WHITE);

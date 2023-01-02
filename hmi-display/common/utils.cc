@@ -31,9 +31,9 @@
 namespace gva {
 
 void SetBrightness(double brightness) {
-  const int max = 24000;
+  const uint32_t max = 24000;
   int fd = 0;
-  uint32_t value = brightness * max;
+  auto value = (uint32_t)(brightness * max);
   fd = open("/sys/class/backlight/intel_backlight/brightness", O_WRONLY);
   if (fd == -1) {
     logGva::log("Cant open /sys/class/backlight/intel_backlight/brightness, try running with sudo",
@@ -42,8 +42,8 @@ void SetBrightness(double brightness) {
     return;
   }
 
-  std::string str_value = std::to_string(value);
-  if (write(fd, str_value.c_str(), str_value.length()) != (int)str_value.length()) {
+  if (std::string str_value = std::to_string(value);
+      write(fd, str_value.c_str(), str_value.length()) != (int)str_value.length()) {
     logGva::log("Cant write /sys/class/backlight/intel_backlight/brightness", gva::DebugLevel::kLogError);
   }
   close(fd);

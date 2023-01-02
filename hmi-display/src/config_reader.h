@@ -267,6 +267,8 @@ class ConfigData : public ConfigDataTheme {
   ///
   explicit ConfigData(const ConfigData& other) = delete;
 
+  ~ConfigData() = delete;
+
   ///
   /// \brief Singletons should not be assignable.
   ///
@@ -423,7 +425,7 @@ class ConfigData : public ConfigDataTheme {
   ///
   /// \return long
   ///
-  double GetBrightness();
+  double GetBrightness() const;
 
   ///
   /// \brief Set the Brightness attribute

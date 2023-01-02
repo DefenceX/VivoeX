@@ -150,8 +150,8 @@ void ClockUpdate(ClockArgs *a) {
   t = time(NULL);
   tm = localtime(&t);
   char clock[1000];
-  sprintf(clock, "%02d/%02d/%02d %02d:%02d:%02d", tm->tm_mday, tm->tm_mon + 1, tm->tm_year + 1900, tm->tm_hour,
-          tm->tm_min, tm->tm_sec);
+  snprintf(clock, sizeof(clock), "%02d/%02d/%02d %02d:%02d:%02d", tm->tm_mday, tm->tm_mon + 1, tm->tm_year + 1900,
+           tm->tm_hour, tm->tm_min, tm->tm_sec);
   a->clockString = clock;
   if (*a->gps > 0) {
     i = 0;

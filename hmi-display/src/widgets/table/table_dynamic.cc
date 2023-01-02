@@ -23,6 +23,7 @@
 
 #include "src/widgets/table/table_dynamic.h"
 
+#include "src/events_gva.h"
 #include "src/screen_gva.h"
 
 namespace gva {
@@ -41,7 +42,23 @@ void WidgetTableDynamic::AddRow(uint32_t foreground_colour, uint32_t background_
 }
 
 void WidgetTableDynamic::Draw() {
-  SetRows(dynamic_rows_);
+  int count = 0;
+  if (hide_override_) {
+    dynamic_rows_filtered_.clear();
+    for (auto row : dynamic_rows_) {
+      auto cells = *row.GetCells();
+      printf("%d\n", count++);
+      if (cells.size() >= 3) {
+        gva::CellType cell = cells[3];
+        if (cell.GetText().find("OVR") == std::string::npos) {
+          dynamic_rows_filtered_.push_back(row);
+        }
+      }
+    }
+    SetRows(dynamic_rows_filtered_);
+  } else {
+    SetRows(dynamic_rows_);
+  }
   WidgetTable::Draw();
 }
 
@@ -79,6 +96,14 @@ void WidgetTableDynamic::AddCell(const std::string text, uint32_t width, widget:
   }
 }
 
-void WidgetTableDynamic::SetHideOverride(bool hide) { hide_override_ = hide; }
+void WidgetTableDynamic::SetHideOverride(bool hide) {
+  if (hide != hide_override_) {
+    hide_override_ = hide;
+    // Force repaint of the screen
+    gva::EventsGva::CreateRefreshEvent();
+  }
+}
+
+bool WidgetTableDynamic::GetHideOverride() const { return hide_override_; }
 
 }  // namespace gva
