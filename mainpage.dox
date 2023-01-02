@@ -40,6 +40,8 @@
   - \ref screen6
   - \ref screen7
   - \ref screen8
+  - \ref screen9
+  - \ref screen10
 
 This documentation was created from git hash <a href="https://github.com/DefenceX/vivoe-lite">#$(GIT_HASH)</a>
 
@@ -334,13 +336,16 @@ $ tar -xf australia-latest.tar.gz --directory /opt/osmscout/maps
 \subsection screen6 Keyboard example with Alarms
 \image html images/screen/ScreenshotAlarmsKeyboard.png  "Keyboard example with Alarms" 
 
-\subsection screen7 OSMScount standing in for a BMS (Battlefield Management System)
+\subsection screen7 Drivers display
+\image html images/screen/ScreenshotDrv.png  "Driver with instruments overlaid" 
+
+\subsection screen8 OSMScount standing in for a BMS (Battlefield Management System)
 \image html images/screen/ScreenshotBms.png  "Battlefield Management System" 
 
-\subsection screen8 Drivers Modern SA screen using theme, custum PPI
+\subsection screen9 Drivers Modern SA screen using theme, custum PPI
 \image html images/screen/ScreenshotThemeModern.png  "Theme high contrast (SA) (user defined with different PPI)" 
 
-\subsection screen9 Drivers Modern Systems screen using theme
+\subsection screen10 Drivers Modern Systems screen using theme
 \image html images/screen/ScreenshotThemeModernSys.png  "Theme high contrast, Systems (SYS) Overview" 
 
 

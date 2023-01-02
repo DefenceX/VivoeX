@@ -215,12 +215,12 @@ class Renderer {
   /// \param b
   /// \return uint64_t
   ///
-  static uint64_t PackRgb(uint8_t r, uint8_t g, uint8_t b) {
-    auto red = (uint64_t)r;
-    auto green = (uint64_t)g;
-    auto blue = (uint64_t)b;
+  static uint32_t PackRgb(uint8_t r, uint8_t g, uint8_t b) {
+    auto red = (uint32_t)r;
+    auto green = (uint32_t)g;
+    auto blue = (uint32_t)b;
 
-    uint64_t packed = (red << 16) | (green << 8) | blue;
+    uint32_t packed = (red << 16) | (green << 8) | blue;
     return packed;
   }
 

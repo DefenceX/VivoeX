@@ -86,7 +86,7 @@ void WidgetTable::DrawTable() {
   // Highlight the selected row
   if (current_row_) {
     GetRenderer()->DrawColor(highlight_colour_);
-    GetRenderer()->DrawRectangle(GetX(), (GetY() + (current_row_ * height)), GetWidth(), height, false);
+    GetRenderer()->DrawRectangle(GetX(), (GetY() + (current_row_ * height)), GetWidth() - 1, height, false);
   }
 }
 
@@ -109,17 +109,20 @@ void WidgetTable::AddRow(widget::WeightType font_weight) {
          Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_YELLOW), font_weight);
 }
 
-void WidgetTable::AddCell(std::string text, uint32_t width) { AddCell(text, width, widget::CellAlignType::kAlignLeft); }
+void WidgetTable::AddCell(const std::string text, uint32_t width) {
+  AddCell(text, width, widget::CellAlignType::kAlignLeft);
+}
 
-void WidgetTable::AddCell(std::string text, uint32_t width, widget::CellAlignType align) {
+void WidgetTable::AddCell(const std::string text, uint32_t width, widget::CellAlignType align) {
   AddCell(text, width, align, 0);
 }
 
-void WidgetTable::AddCell(std::string text, uint32_t width, uint32_t background_colour) {
+void WidgetTable::AddCell(const std::string text, uint32_t width, uint32_t background_colour) {
   AddCell(text, width, widget::CellAlignType::kAlignLeft, background_colour);
 }
 
-void WidgetTable::AddCell(std::string text, uint32_t width, widget::CellAlignType align, uint32_t background_colour) {
+void WidgetTable::AddCell(const std::string text, uint32_t width, widget::CellAlignType align,
+                          uint32_t background_colour) {
   if (rows_.size()) {
     CellType cell(text, width, background_colour, foreground_colour_, outline_colour_, highlight_colour_, align);
     rows_.back().GetCells()->push_back(cell);
@@ -130,11 +133,10 @@ void WidgetTable::AddCell(std::string text, uint32_t width, widget::CellAlignTyp
 
 void WidgetTable::Reset() {
   current_row_ = 0;
-  SetVisible(false);
   rows_.clear();
 }
 
-uint32_t WidgetTable::GetBackgroundColour() { return background_colour_; }
+uint32_t WidgetTable::GetBackgroundColour() const { return background_colour_; }
 
 void WidgetTable::SetBackgroundColour(uint32_t background_colour) { background_colour_ = background_colour; }
 
@@ -151,5 +153,10 @@ void WidgetTable::SetPreviousRow() {
 uint32_t WidgetTable::GetCurrentRow() const { return current_row_; }
 
 std::vector<RowType>& WidgetTable::GetRows() { return rows_; }
+
+void WidgetTable::SetRows(const std::vector<RowType>& rows) {
+  rows_.clear();
+  rows_ = rows;
+}
 
 }  // namespace gva

@@ -27,7 +27,8 @@
 namespace gva {
 
 GvaKeyEnum Hmi::KeyAlarms(GvaKeyEnum keypress) {
-  WidgetTable *table = (WidgetTable *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable);
+  WidgetTableDynamic *table =
+      (WidgetTableDynamic *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic);
 
   switch (keypress) {
     case GvaKeyEnum::kKeyF17:  // Down Arrow
@@ -48,7 +49,7 @@ GvaKeyEnum Hmi::KeyAlarms(GvaKeyEnum keypress) {
 void StateAlarms::entry() {
   // Check to see if alarms was requested from hidden state, if so go back to last menu.
   if (screen_.control->labels_[1].state_ != LabelStates::kLabelHidden) {
-    auto *table = (WidgetTable *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable);
+    auto *table = (WidgetTableDynamic *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic);
 
     if (alarmson_) {
       alarmson_ = false;
@@ -84,7 +85,6 @@ void StateAlarms::entry() {
     Reset();
     alarmson_ = true;
     manager_->SetScreen(&screen_, GvaFunctionEnum::kAlarmsX);
-    HmiHelper::TableAlarms(table);
     table->SetVisible(true);
 
     // Update the controls
@@ -95,7 +95,10 @@ void StateAlarms::entry() {
   }
 };
 
-void StateAlarms::exit() {}
+void StateAlarms::exit() {
+  auto *table = (WidgetTableDynamic *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic);
+  table->SetVisible(false);
+}
 
 void StateAlarms::react(EventKeySA const &) { transit<StateSA>(); };
 

@@ -102,6 +102,7 @@ void StateOn::entry() {
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetY(190);
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetX(330);
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetVisible(true);
+  screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic)->SetVisible(false);
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeAlarmIndicator)->SetVisible(true);
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeAlarmIndicator)->SetY(58);
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeBottomLabels)->SetY(480 - 20);

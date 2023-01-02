@@ -36,6 +36,7 @@ set(SOURCES main.cc
 			src/widgets/driver/rpm_fuel.cc
 			src/widgets/driver/speedometer.cc
 			src/widgets/table/table.cc
+			src/widgets/table/table_dynamic.cc
 			src/widgets/table/cell_type.cc
 			src/widgets/table/row_type.cc
 			src/widgets/compass.cc
@@ -71,7 +72,7 @@ add_executable(hmi-display ${PROTO_SRCS} ${SOURCES})
 add_dependencies(hmi-display libosmscout geographiclib hmi-video config-proto ${DDS_STACK} libosmscout)
 set(OSMSCOUT_LIBS ${OSMSCOUT_LIBARAIES})
 
-target_link_libraries (hmi-display ${GEOGRAPHIC_LIBRARIES} GeographicLib config-proto ${OSMSCOUT_LIBS} ${Protobuf_LIBRARIES} ${GTK_LIBRARIES3} stdc++fs lttng-ust lttng-ust-common dl)
+target_link_libraries (hmi-display ${GEOGRAPHIC_LIBRARIES} GeographicLib config-proto ${OSMSCOUT_LIBS} ${Protobuf_LIBRARIES} ${GTK_LIBRARIES3} stdc++fs lttng-ust dl)
 
 link_directories(${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build ${CMAKE_BINARY_DIR}/external/libnmea/build/src ${CMAKE_BINARY_DIR}/external/install/usr/local/lib)
 target_link_libraries(hmi-display png pthread Xrandr X11 hmi-video vivoe-media nmealib config-proto ${CAIRO_LIBRARIES} ${PANGO_LIBRARIES} ${SWSCALE_LIBRARIES} ${GTK3_LIBRARIES})
