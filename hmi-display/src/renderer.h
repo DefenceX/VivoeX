@@ -51,9 +51,9 @@
 namespace gva {
 
 struct ColourType {
-  uint32_t red;
-  uint32_t green;
-  uint32_t blue;
+  uint32_t red = 0;
+  uint32_t green = 0;
+  uint32_t blue = 0;
 };
 
 struct PointType {
@@ -62,15 +62,15 @@ struct PointType {
 };
 
 struct ResolutionType {
-  uint32_t width;
-  uint32_t height;
-  uint32_t depth;
+  uint32_t width = 0;
+  uint32_t height = 0;
+  uint32_t depth = 0;
 };
 
 struct RgbUnpackedType {
-  uint32_t r;
-  uint32_t g;
-  uint32_t b;
+  uint32_t r = 0;
+  uint32_t g = 0;
+  uint32_t b = 0;
 };
 
 class RendererCairo;

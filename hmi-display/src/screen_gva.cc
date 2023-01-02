@@ -178,7 +178,7 @@ void ClockUpdate(ClockArgs *a) {
     snprintf(tmp, sizeof(tmp), "%s\r\n", buffer);
     a->info->lon = a->location->lon;
     a->info->lat = a->location->lat;
-    nmea_parse(a->parser, tmp, (uint32_t)strlen(tmp), a->info);
+    nmea_parse(a->parser, tmp, sizeof(tmp), a->info);
     a->info->lat = ToDegrees(a->info->lat);
     a->info->lon = ToDegrees(a->info->lon);
   }

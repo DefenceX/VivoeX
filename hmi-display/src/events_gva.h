@@ -44,21 +44,21 @@ enum class EventEnumType {
 };
 
 struct TouchType {
-  int x;
-  int y;
+  int x = 0;
+  int y = 0;
 };
 
 class EventGvaType {
  public:
-  EventGvaType() { type_ = EventEnumType::kNoEvent; }
+  EventGvaType() = default;
   EventGvaType(int x, int y) {
     touch_.x = x;
     touch_.y = y;
     type_ = EventEnumType::kTouchEvent;
   }
   explicit EventGvaType(GvaKeyEnum key) : key_(key) { type_ = EventEnumType::kNoEvent; }
-  EventEnumType type_;
-  GvaKeyEnum key_;
+  EventEnumType type_ = EventEnumType::kNoEvent;
+  GvaKeyEnum key_ = GvaKeyEnum::kKeyUnknown;
   TouchType touch_;
   ResolutionType resize_;
 };

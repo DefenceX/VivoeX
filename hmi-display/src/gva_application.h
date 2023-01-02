@@ -44,8 +44,8 @@ class GvaApplication {
  public:
   /// \brief Application options
   struct Options {
-    bool videoEnabled_;
-    bool windowEnabled_;
+    bool videoEnabled_ = false;
+    bool windowEnabled_ = false;
     std::string config;
   };
 
@@ -96,7 +96,7 @@ class GvaApplication {
 
   char *rtp_buffer_;
   std::shared_ptr<gva::EventsGva> io_;
-  gva::EventsGva *io_test_;
+  gva::EventsGva *io_test_ = nullptr;
   static uint32_t update_counter_;
   static bool first_execution_;
 };
