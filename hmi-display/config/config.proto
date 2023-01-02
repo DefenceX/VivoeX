@@ -264,6 +264,8 @@ enum Key {
   kKeyF20 = 28;
   kKeyUpArrow = 29;
   kKeyDownArrow = 30;
+  kKeyRightArrow = 31;
+  kKeyLeftArrow = 32;
 }
 
 message KeyBinding {
@@ -303,6 +305,7 @@ message Gva {
   // Display key bindings
   repeated KeyBinding bindings = 14;  
   optional string display_type = 15;
+  optional double brightness = 16  [default = 1.0]; 
 
 }
 

@@ -33,7 +33,7 @@ namespace gva {
 
 static const uint32_t kSemVerMajor = 0;
 static const uint32_t kSemVerMinor = 3;
-static const uint32_t kSemVerPatch = 1666;
+static const uint32_t kSemVerPatch = 1675;
 static const uint32_t kMinimumHeight = 480;
 static const uint32_t kMinimumWidth = 640;
 
@@ -393,8 +393,10 @@ enum class GvaKeyEnum {
   kKeyMinus,
   kKeyUpArrow,
   kKeyDownArrow,
-  kKeyRightArrow,
   kKeyLeftArrow,
+  kKeyRightArrow,
+  kKeyGreaterThan,
+  kKeyLessThen,
   kKeyKeyboard,
   kKeyPreviousLabel,
   kKeyNextLabel

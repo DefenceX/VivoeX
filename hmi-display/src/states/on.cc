@@ -25,6 +25,8 @@
 
 #include <filesystem>
 
+#include "common/utils.h"
+
 namespace gva {
 
 void StateOn::entry() {
@@ -117,6 +119,9 @@ void StateOn::entry() {
   std::string filename = ConfigData::GetInstance()->GetImagePath();
   filename.append("/FRONT_CENTRE.png");
   SetCanvasPng(filename.c_str());
+
+  // Set brightness
+  gva::SetBrightness(gva::ConfigData::GetInstance()->GetBrightness());
 
   transit<StateSYS>();
 };

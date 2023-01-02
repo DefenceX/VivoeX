@@ -11,6 +11,7 @@
    - \ref build
    - \ref install
    - \ref developers
+     - \ref hardware
      - \ref trace
 - \ref docs
 - \ref widgets
@@ -134,6 +135,15 @@ good understanding of the CMake build system before station to add code into thi
 The project to broken down into modules and submodules these can be seen in the diagram below:
 
 \image html cmake.png  "CMake dependancies"
+
+\subsubsection hardware Hardware
+If you are usings the software control for screen brigtness then please ensure that the file ***/sys/class/backlight/intel_backlight/brightness*** is setup to control the backlight. Brightness functions will only work if the application is run with superuser permissions, if run as normal user then the brightness will not work and an error will be logged.
+
+To manually set the brightness from the command line run:
+\code
+$ echo 24000 > /sys/class/backlight/intel_backlight/brightness
+\endcode
+Sets the brightness to 100%.
 
 \subsubsection trace Tracing
 To get a detailed view of whats going on in the code you can enable Linux Test Trace (See https://lttng.org/). This is enabled using the CMake macro shown below:

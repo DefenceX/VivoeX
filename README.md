@@ -104,6 +104,10 @@ The following keys can be used to interact with the display:
 * K Keyboard
   * CAPS-LOCK toggle upper case
   * NUM-LOCK toggle special chars
+* Up Arrow (control table highlight / screen specific)
+* Down Arrow (control table highlight / screen specific)
+* Right Arrow, brightness up 5%
+* Left Arrow, brightness down 5%
 
 > NOTE The default key bindings provide compatibility with APC Technologies GVA-104501 display
 

@@ -26,6 +26,7 @@
 #include <memory>
 
 #include "common/log_gva.h"
+#include "common/utils.h"
 #include "src/gva_functions_common.h"
 #include "src/trace.h"
 #include "src/widgets/keyboard.h"
@@ -446,15 +447,29 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
         case gva::GvaKeyEnum::kKeyPlus:
           compass->SetBearing(gva::DegreesAdd(compass->GetBearing(), 2));
           break;
-        case gva::GvaKeyEnum::kKeyRightArrow:
+        case gva::GvaKeyEnum::kKeyGreaterThan:
           compass->SetBearingSight(gva::DegreesAdd(compass->GetBearingSight(), 2));
           break;
         case gva::GvaKeyEnum::kKeyMinus:
           compass->SetBearing(gva::DegreesSubtract(compass->GetBearing(), 2));
           break;
-        case gva::GvaKeyEnum::kKeyLeftArrow:
+        case gva::GvaKeyEnum::kKeyLessThen:
           compass->SetBearingSight(gva::DegreesSubtract(compass->GetBearingSight(), 2));
           break;
+        case gva::GvaKeyEnum::kKeyRightArrow: {
+          double brightness = gva::ConfigData::GetInstance()->GetBrightness();
+          brightness = brightness + 0.05;
+          if (brightness > 1) brightness = 1;
+          gva::SetBrightness(brightness);
+          gva::ConfigData::GetInstance()->SetBrightness(brightness);
+        } break;
+        case gva::GvaKeyEnum::kKeyLeftArrow: {
+          double brightness = gva::ConfigData::GetInstance()->GetBrightness();
+          brightness = brightness - 0.05;
+          if (brightness <= 0) brightness = 0;
+          gva::SetBrightness(brightness);
+          gva::ConfigData::GetInstance()->SetBrightness(brightness);
+        } break;
         case gva::GvaKeyEnum::kKeyNextLabel: {
           Dispatch(event.key_);
         } break;

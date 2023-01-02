@@ -246,12 +246,21 @@ gboolean EventsGva::CreateKeyEvent(GtkWidget* Widget, GdkEventKey* event, EventE
   }
   if (event->keyval == 62) {
     //> keyboard
-    gvaEvent.key_ = GvaKeyEnum::kKeyRightArrow;
+    gvaEvent.key_ = GvaKeyEnum::kKeyGreaterThan;
   }
   if (event->keyval == 60) {
     //< show / hide labels
+    gvaEvent.key_ = GvaKeyEnum::kKeyLessThen;
+  }
+  if (event->keyval == 65363) {
+    // Right arrow
+    gvaEvent.key_ = GvaKeyEnum::kKeyRightArrow;
+  }
+  if (event->keyval == 65361) {
+    // Left arrow
     gvaEvent.key_ = GvaKeyEnum::kKeyLeftArrow;
   }
+
   if ((event->keyval == 'p') || (event->keyval == 'P')) {
     //[p|P] Move to previous label
     gvaEvent.key_ = GvaKeyEnum::kKeyPreviousLabel;

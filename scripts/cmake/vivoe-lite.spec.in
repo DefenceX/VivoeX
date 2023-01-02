@@ -7,7 +7,7 @@ License:        GPL
 Group:          Development/Tools/Other
 Vendor:         @CPACK_PACKAGE_VENDOR@
 Prefix:         @CPACK_PACKAGING_INSTALL_PREFIX@
-Requires:       glibc-static, cairo-devel, libXext-devel, ffmpeg-libs, protobuf, protobuf-devel, protobuf-compiler, gtk3-devel
+Requires:       glibc-static, cairo-devel, libXext-devel, ffmpeg-libs, protobuf, gtk3-devel, liblttng-ust1
 Provides:       libnmealib.so()(64bit), libvivoe-media.so.1()(64bit) libGeographicLib.so()(64bit) libosmscout_import.so()(64bit) libosmscout_map_cairo.so()(64bit) libosmscout_map.so()(64bit) libosmscout.so()(64bit)  
 
 %define _rpmdir @CMAKE_CURRENT_BINARY_DIR@/_CPack_Packages/Linux/RPM

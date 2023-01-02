@@ -418,6 +418,20 @@ class ConfigData : public ConfigDataTheme {
   ///
   uint32_t GetKeyBinding(GvaKeyEnum key) const;
 
+  ///
+  /// \brief Get the Brightness attribute
+  ///
+  /// \return long
+  ///
+  double GetBrightness();
+
+  ///
+  /// \brief Set the Brightness attribute
+  ///
+  /// \param brightness
+  ///
+  void SetBrightness(double brightness);
+
  protected:
   ///
   /// \brief Construct a new Config Data object
