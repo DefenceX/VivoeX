@@ -47,6 +47,12 @@ class RowType {
   RowType &operator=(const RowType &a);
 
   ///
+  /// \brief Sorting is based on priority then time
+  ///
+  ///
+  bool operator<(RowType &a) const;
+
+  ///
   /// \brief Get the Foreground Colour
   ///
   /// \return uint32_t

@@ -130,6 +130,21 @@ class WidgetTableDynamic : public WidgetTable {
   ///
   bool GetHideOverride() const;
 
+  ///
+  /// \brief Set the Sorted attribute
+  ///
+  /// \param sort
+  ///
+  void SetSorted(bool sort);
+
+  ///
+  /// \brief Get the Sorted attribute
+  ///
+  /// \return true
+  /// \return false
+  ///
+  bool GetSorted() const;
+
  private:
   uint32_t background_colour_;
   uint32_t foreground_colour_ = Renderer::PackRgb(HMI_WHITE);

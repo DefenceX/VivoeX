@@ -61,7 +61,7 @@ class GvaApplication {
   /// \brief Destroy the Gva Application object
   ///
   ///
-  ~GvaApplication() = delete;
+  ~GvaApplication() = default;
 
   ///
   /// \brief Execute the main processing loop, blocking call

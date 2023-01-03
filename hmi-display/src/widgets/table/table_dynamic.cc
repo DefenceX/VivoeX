@@ -42,23 +42,29 @@ void WidgetTableDynamic::AddRow(uint32_t foreground_colour, uint32_t background_
 }
 
 void WidgetTableDynamic::Draw() {
-  int count = 0;
+  dynamic_rows_filtered_.clear();
   if (hide_override_) {
-    dynamic_rows_filtered_.clear();
     for (auto row : dynamic_rows_) {
       auto cells = *row.GetCells();
-      printf("%d\n", count++);
       if (cells.size() >= 3) {
         gva::CellType cell = cells[3];
         if (cell.GetText().find("OVR") == std::string::npos) {
           dynamic_rows_filtered_.push_back(row);
         }
+      } else {                                  // short rows
+        dynamic_rows_filtered_.push_back(row);  // Other rows just copy
       }
     }
-    SetRows(dynamic_rows_filtered_);
   } else {
-    SetRows(dynamic_rows_);
+    dynamic_rows_filtered_ = dynamic_rows_;
   }
+
+  // Do any sorting
+  if (sorted_) {
+    std::sort(dynamic_rows_filtered_.begin(), dynamic_rows_filtered_.end());
+  }
+  SetRows(dynamic_rows_filtered_);
+
   WidgetTable::Draw();
 }
 
@@ -105,5 +111,14 @@ void WidgetTableDynamic::SetHideOverride(bool hide) {
 }
 
 bool WidgetTableDynamic::GetHideOverride() const { return hide_override_; }
+
+void WidgetTableDynamic::SetSorted(bool sort) {
+  if (sort != sorted_) {
+    sorted_ = sort;
+    gva::EventsGva::CreateRefreshEvent();
+  }
+}
+
+bool WidgetTableDynamic::GetSorted() const { return sorted_; }
 
 }  // namespace gva

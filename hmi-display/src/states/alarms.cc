@@ -32,7 +32,15 @@ GvaKeyEnum Hmi::KeyAlarms(GvaKeyEnum keypress) {
 
   switch (keypress) {
     case GvaKeyEnum::kKeyF1:  // F1
-      table->SetHideOverride(true);
+      table->SetSorted(true);
+      return keypress;
+      break;
+    case GvaKeyEnum::kKeyF2:  // F2
+      table->SetSorted(false);
+      return keypress;
+      break;
+    case GvaKeyEnum::kKeyF3:  // F3
+      table->GetHideOverride() ? table->SetHideOverride(false) : table->SetHideOverride(true);
       return keypress;
       break;
     case GvaKeyEnum::kKeyF17:  // Down Arrow

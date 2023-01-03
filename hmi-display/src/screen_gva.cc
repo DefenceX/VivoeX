@@ -46,10 +46,9 @@
 #include "src/hmi_gva_helpers.h"
 #include "widgets/widgets.h"
 
-#define MAX_NMEA 1000
+const int kMaxNmea = 1000;
 
 namespace gva {
-
 ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : RendererGva(width, height), screen_(screen) {
   struct termios settings;
 
@@ -131,7 +130,7 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
 
 ScreenGva::~ScreenGva() {
   args_.active = false;
-  pthread_join(clock_thread_, 0);
+  pthread_join(clock_thread_, nullptr);
   nmea_parser_destroy(&parser_);
   close(gps_);
   if (gps_) logGva::log("GPS closed", DebugLevel::kLogInfo);
@@ -141,15 +140,16 @@ ScreenGva::~ScreenGva() {
 
 void ClockUpdate(ClockArgs *a) {
   char c;
-  char tmp[MAX_NMEA + 2] = {0};
-  char buffer[MAX_NMEA] = {0};
+  char tmp[kMaxNmea + 2] = {0};
+  char buffer[kMaxNmea] = {0};
 
   uint32_t i = 0;
   uint32_t ii = 0;
 
   // Get the system time and be thread safe
-  auto unix_epoch_time = (time_t)0;
+  auto unix_epoch_time = (time_t) nullptr;
   struct tm local_time;
+  unix_epoch_time = time(&unix_epoch_time);
   localtime_r(&unix_epoch_time, &local_time);  // Compliant
 
   char clock[1000];
@@ -161,7 +161,7 @@ void ClockUpdate(ClockArgs *a) {
     tcflush(*a->gps, TCIOFLUSH);
 
     if (auto size = read(*a->gps, &buffer[0], 1); size != 0) {
-      memset(buffer, 0, MAX_NMEA);
+      memset(buffer, 0, kMaxNmea);
       while (buffer[0] != '$') {
         auto size = read(*a->gps, &buffer[0], 1);
         if (size == 0) break;
@@ -171,7 +171,7 @@ void ClockUpdate(ClockArgs *a) {
         if (ii == 1) {
           buffer[i] = c;
         }
-        if (i == MAX_NMEA) break;
+        if (i == kMaxNmea) break;
       }
       buffer[i - 1] = 0;
       std::string tmp_buffer = buffer;

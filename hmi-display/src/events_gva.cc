@@ -220,6 +220,20 @@ gboolean EventsGva::CreateKeyEvent(GtkWidget* Widget, GdkEventKey* event, EventE
                   std::to_string(previous_key_) + ")",
               DebugLevel::kLogInfo);
 
+  // Process top keys
+  gvaEvent.key_ = ProcessFunctionEvents(event->keyval);
+  if (gvaEvent.key_ != GvaKeyEnum::kKeyUnknown) {
+    eventqueue_.push_back(gvaEvent);
+    return TRUE;
+  }
+
+  // Process side keys
+  gvaEvent.key_ = ProcessFunctionKeyEvents(event->keyval);
+  if (gvaEvent.key_ != GvaKeyEnum::kKeyUnknown) {
+    eventqueue_.push_back(gvaEvent);
+    return TRUE;
+  }
+
   // The event was handled, and the emission should stop
   if (event->keyval == 65307) {
     // exit on ESC key press
@@ -228,14 +242,6 @@ gboolean EventsGva::CreateKeyEvent(GtkWidget* Widget, GdkEventKey* event, EventE
   if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyBlackout)) {
     gvaEvent.key_ = GvaKeyEnum::kKeyBlackout;
   }
-
-  // Process top keys
-  gvaEvent.key_ = ProcessFunctionEvents(event->keyval);
-  if (gvaEvent.key_ != GvaKeyEnum::kKeyUnknown) return TRUE;
-
-  // Process side keys
-  gvaEvent.key_ = ProcessFunctionKeyEvents(event->keyval);
-  if (gvaEvent.key_ != GvaKeyEnum::kKeyUnknown) return TRUE;
 
   if ((event->keyval == 'm') || (event->keyval == 'M')) {
     // m toggle fullscreen

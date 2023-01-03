@@ -58,10 +58,20 @@ RowType &RowType::operator=(const RowType &a) {
   font_weight_ = a.font_weight_;
   highlighted_ = a.highlighted_;
   alignment_ = a.alignment_;
+  cells_.clear();
   for (auto cell : a.cells_) {
     cells_.push_back(cell);
   };
   return *this;
+}
+
+bool RowType::operator<(RowType &a) const {
+  if ((a.cells_.size() >= 3) && (this->cells_.size() >= 3)) {
+    if ((a.cells_[2].GetText() == "C") && ((this->cells_[2].GetText() == "W") || (this->cells_[2].GetText() == "A")))
+      return true;
+    if ((a.cells_[2].GetText() == "W") && (this->cells_[2].GetText() == "A")) return true;
+  }
+  return false;
 }
 
 uint32_t RowType::GetForegroundColour() const { return foreground_colour_; }
