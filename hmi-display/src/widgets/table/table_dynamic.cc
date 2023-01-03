@@ -47,8 +47,7 @@ void WidgetTableDynamic::Draw() {
     for (auto row : dynamic_rows_) {
       auto cells = *row.GetCells();
       if (cells.size() >= 3) {
-        gva::CellType cell = cells[3];
-        if (cell.GetText().find("OVR") == std::string::npos) {
+        if (gva::CellType cell = cells[3]; cell.GetText().find("OVR") == std::string::npos) {
           dynamic_rows_filtered_.push_back(row);
         }
       } else {                                  // short rows
@@ -60,8 +59,11 @@ void WidgetTableDynamic::Draw() {
   }
 
   // Do any sorting
-  if (sorted_) {
+  if (sorted_ == SortType::kSortDescending) {
     std::sort(dynamic_rows_filtered_.begin(), dynamic_rows_filtered_.end());
+  }
+  if (sorted_ == SortType::kSortAscending) {
+    std::sort(dynamic_rows_filtered_.begin(), dynamic_rows_filtered_.end(), std::greater<>());
   }
   SetRows(dynamic_rows_filtered_);
 
@@ -112,13 +114,34 @@ void WidgetTableDynamic::SetHideOverride(bool hide) {
 
 bool WidgetTableDynamic::GetHideOverride() const { return hide_override_; }
 
-void WidgetTableDynamic::SetSorted(bool sort) {
+void WidgetTableDynamic::SetSorted(SortType sort) {
   if (sort != sorted_) {
     sorted_ = sort;
     gva::EventsGva::CreateRefreshEvent();
   }
 }
 
-bool WidgetTableDynamic::GetSorted() const { return sorted_; }
+WidgetTableDynamic::SortType WidgetTableDynamic::GetSorted() const { return sorted_; }
+
+void WidgetTableDynamic::SetAllHighlighted(bool highlight_all) {
+  bool first_row = true;
+  highlight_all_ = highlight_all;
+
+  // Loop through rows to set or unset highlight attribute
+  for (auto& row : dynamic_rows_) {
+    auto cells = *row.GetCells();
+    if (first_row == false) {
+      if (highlight_all_) {  // First row is the headers and not for highlighting
+        row.SetHighlighted(true);
+      } else {
+        row.SetHighlighted(false);
+      }
+    }  // skip header row
+    first_row = false;
+  }  // end for loop on rows
+  gva::EventsGva::CreateRefreshEvent();
+}
+
+bool WidgetTableDynamic::GetAllHighlighted() const { return highlight_all_; }
 
 }  // namespace gva

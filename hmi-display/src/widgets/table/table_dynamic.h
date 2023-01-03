@@ -38,6 +38,12 @@ namespace gva {
 class WidgetTableDynamic : public WidgetTable {
  public:
   ///
+  /// \brief An enum representing to type of sort
+  ///
+  ///
+  enum class SortType { kSortUnsorted = 0, kSortAscending, kSortDescending };
+
+  ///
   /// \brief Construct a new Widget Keyboard object
   ///
   /// \param renderer
@@ -135,7 +141,7 @@ class WidgetTableDynamic : public WidgetTable {
   ///
   /// \param sort
   ///
-  void SetSorted(bool sort);
+  void SetSorted(SortType sort);
 
   ///
   /// \brief Get the Sorted attribute
@@ -143,7 +149,22 @@ class WidgetTableDynamic : public WidgetTable {
   /// \return true
   /// \return false
   ///
-  bool GetSorted() const;
+  SortType GetSorted() const;
+
+  ///
+  /// \brief Set the All Highlighted attribute
+  ///
+  /// \param highlight_all true if all to be highlighted, false to unset all bar first row
+  ///
+  void SetAllHighlighted(bool highlight_all);
+
+  ///
+  /// \brief Get the All Highlighted attribute
+  ///
+  /// \return true if all currently highlighted
+  /// \return false if only some highlighted
+  ///
+  bool GetAllHighlighted() const;
 
  private:
   uint32_t background_colour_;
@@ -154,8 +175,9 @@ class WidgetTableDynamic : public WidgetTable {
   std::vector<RowType> dynamic_rows_;
   std::vector<RowType> dynamic_rows_filtered_;
 
+  bool highlight_all_ = false;
   bool hide_override_ = false;
-  bool sorted_ = false;
+  SortType sorted_ = SortType::kSortUnsorted;
 };
 
 }  // namespace gva

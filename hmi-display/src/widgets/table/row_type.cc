@@ -23,6 +23,8 @@
 
 #include "src/widgets/table/row_type.h"
 
+#include <algorithm>
+
 #include "src/widgets/widget_types.h"
 
 namespace gva {
@@ -67,9 +69,18 @@ RowType &RowType::operator=(const RowType &a) {
 
 bool RowType::operator<(RowType &a) const {
   if ((a.cells_.size() >= 3) && (this->cells_.size() >= 3)) {
-    if ((a.cells_[2].GetText() == "C") && ((this->cells_[2].GetText() == "W") || (this->cells_[2].GetText() == "A")))
+    if ((a.cells_[2].GetText() == "A") && ((this->cells_[2].GetText() == "W") || (this->cells_[2].GetText() == "C")))
       return true;
-    if ((a.cells_[2].GetText() == "W") && (this->cells_[2].GetText() == "A")) return true;
+    if ((a.cells_[2].GetText() == "B") && (this->cells_[2].GetText() == "C")) return true;
+  }
+  return false;
+}
+
+bool RowType::operator>(RowType &a) const {
+  if ((a.cells_.size() >= 3) && (this->cells_.size() >= 3)) {
+    if ((a.cells_[2].GetText() == "W") && ((this->cells_[2].GetText() == "C") || (this->cells_[2].GetText() == "A")))
+      return true;
+    if ((a.cells_[2].GetText() == "C") && (this->cells_[2].GetText() == "A")) return true;
   }
   return false;
 }
@@ -86,7 +97,7 @@ widget::WeightType RowType::GetFontWeight() const { return font_weight_; }
 
 bool RowType::GetHighlighted() const { return highlighted_; }
 
-void RowType::SetHighlighted(bool value) { highlighted_ = value; }
+void RowType::SetHighlighted(bool highlighted) { highlighted_ = highlighted; }
 
 widget::CellAlignType RowType::GetCellAlignment() const { return alignment_; }
 

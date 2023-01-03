@@ -32,15 +32,36 @@ GvaKeyEnum Hmi::KeyAlarms(GvaKeyEnum keypress) {
 
   switch (keypress) {
     case GvaKeyEnum::kKeyF1:  // F1
-      table->SetSorted(true);
+      if (table->GetSorted() == WidgetTableDynamic::SortType::kSortDescending) {
+        screen_.function_left.labels[0].text = "Sort.Ascending";
+        table->SetSorted(WidgetTableDynamic::SortType::kSortAscending);
+      } else {
+        screen_.function_left.labels[0].text = "Sort.Descending";
+        table->SetSorted(WidgetTableDynamic::SortType::kSortDescending);
+      }
       return keypress;
       break;
     case GvaKeyEnum::kKeyF2:  // F2
-      table->SetSorted(false);
+      table->SetSorted(WidgetTableDynamic::SortType::kSortUnsorted);
       return keypress;
       break;
     case GvaKeyEnum::kKeyF3:  // F3
-      table->GetHideOverride() ? table->SetHideOverride(false) : table->SetHideOverride(true);
+      if (table->GetHideOverride()) {
+        screen_.function_left.labels[2].text = "Hide.Overridden";
+        table->SetHideOverride(false);
+      } else {
+        screen_.function_left.labels[2].text = "Show.Overridden";
+        table->SetHideOverride(true);
+      }
+      return keypress;
+      break;
+    case GvaKeyEnum::kKeyF4:  // F4
+      if (table->GetAllHighlighted()) {
+        table->SetAllHighlighted(false);
+      } else {
+        screen_.function_left.labels[2].text = "Hide.Overridden";
+        table->SetAllHighlighted(true);
+      }
       return keypress;
       break;
     case GvaKeyEnum::kKeyF17:  // Down Arrow

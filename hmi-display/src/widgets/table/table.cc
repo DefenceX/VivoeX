@@ -88,6 +88,15 @@ void WidgetTable::DrawTable() {
     GetRenderer()->DrawColor(highlight_colour_);
     GetRenderer()->DrawRectangle(GetX(), (GetY() + (current_row_ * height)), GetWidth() - 1, height, false);
   }
+
+  // Can have all rows highlighted so check those also
+  int count = 1;
+  for (auto row : rows_) {
+    if ((row.GetHighlighted()) && (row.GetCells()->size() > 3)) {
+      GetRenderer()->DrawColor(row.GetHighlightColour());
+      GetRenderer()->DrawRectangle(GetX(), (GetY() + (count++ * height)), GetWidth() - 1, height, false);
+    }
+  }
 }
 
 void WidgetTable::AddRow(uint32_t foreground_colour, uint32_t background_colour, uint32_t outline_colour,

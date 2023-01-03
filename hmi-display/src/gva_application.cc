@@ -431,6 +431,7 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
               gva::logGva::log("gdk_monitor_get_workarea failed when switching to fullscreen.",
                                gva::DebugLevel::kLogError);
             }
+            gva::EventsGva::CreateRefreshEvent();
           }
           break;
         case gva::GvaKeyEnum::kKeyKeyboard:

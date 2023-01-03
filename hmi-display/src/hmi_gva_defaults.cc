@@ -405,13 +405,13 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeyAlarmsLeft() {
   FunctionKeys keys;
   keys.visible = true;
   keys.labels[0].state = LabelStates::kLabelEnabled;
-  keys.labels[0].text = "Sort";
+  keys.labels[0].text = "Sort.Ascending";
   keys.labels[0].toggleActive = false;
   keys.labels[1].state = LabelStates::kLabelEnabled;
-  keys.labels[1].text = "Order";
+  keys.labels[1].text = "Reset";
   keys.labels[1].toggleActive = false;
   keys.labels[2].state = LabelStates::kLabelEnabled;
-  keys.labels[2].text = "Show.Overridden";
+  keys.labels[2].text = "Hide.Overridden";
   keys.labels[2].toggleActive = false;
   keys.labels[3].state = LabelStates::kLabelEnabled;
   keys.labels[3].text = "Select.All";
