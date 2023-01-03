@@ -45,8 +45,7 @@ ConfigDataBase::ConfigDataBase() {
   current_config_ = std::make_unique<config::Gva>();
 
   // Read the existing configuration file.
-  std::fstream input(config_file_, std::fstream::in | std::fstream::binary);
-  if (!input) {
+  if (std::fstream input(config_file_, std::fstream::in | std::fstream::binary); !input) {
     logGva::log("File not found. Creating a new file " + std::filesystem::current_path().string() + "/" + config_file_,
                 DebugLevel::kLogInfo);
     current_config_->set_name("Test HMI configuration.");
@@ -112,8 +111,8 @@ ConfigData* ConfigData::GetInstance() {
 
 void ConfigDataBase::WriteData() const {
   // Write the config back to disk.
-  std::fstream output(config_file_, std::fstream::out | std::fstream::trunc | std::fstream::binary);
-  if (!current_config_->SerializeToOstream(&output)) {
+  if (std::fstream output(config_file_, std::fstream::out | std::fstream::trunc | std::fstream::binary);
+      !current_config_->SerializeToOstream(&output)) {
     logGva::log("Failed to update config file.", DebugLevel::kLogInfo);
     return;
   }
@@ -209,18 +208,17 @@ LineType ConfigDataTheme::GetThemeLabelLineEnabledSelectedChanging() const {
       return LineType::kLineDashed;
     default:
       return LineType::kLineSolid;
-  };
+  }
 }
 
 LineType ConfigDataTheme::GetThemeLabelLineEnabledSelected() const {
   switch (current_config_->theme().theme_label_line_enabled_selected()) {
-    default:
-    case 0:
-      return LineType::kLineSolid;
     case 1:
       return LineType::kLineDotted;
     case 2:
       return LineType::kLineDashed;
+    default:
+      return LineType::kLineSolid;
   }
 }
 
@@ -232,7 +230,7 @@ LineType ConfigDataTheme::GetThemeLabelLineEnabled() const {
       return LineType::kLineDashed;
     default:
       return LineType::kLineSolid;
-  };
+  }
 }
 
 LineType ConfigDataTheme::GetThemeLabelLineDisabled() const {
@@ -243,7 +241,7 @@ LineType ConfigDataTheme::GetThemeLabelLineDisabled() const {
       return LineType::kLineDotted;
     default:
       return LineType::kLineSolid;
-  };
+  }
 }
 
 widget::ModeEnum ConfigDataTheme::GetPpiMode() const {
@@ -260,7 +258,7 @@ widget::ModeEnum ConfigDataTheme::GetPpiMode() const {
       return widget::ModeEnum::kPpiModernTankWithoutSights;
     default:
       return widget::ModeEnum::kPpiClassicTankWithSight;
-  };
+  }
 }
 
 uint32_t ConfigDataTheme::GetThemeLabelBorderThickness() const {

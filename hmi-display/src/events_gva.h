@@ -121,6 +121,22 @@ class EventsGva {
 
  private:
   ///
+  /// \brief Process the key event and return the enum value
+  ///
+  /// \param key the raw key value
+  /// \return GvaKeyEnum representing the key
+  ///
+  static GvaKeyEnum ProcessFunctionEvents(unsigned int key);
+
+  ///
+  /// \brief Process the key event and return the enum value
+  ///
+  /// \param key the raw key value
+  /// \return GvaKeyEnum representing the key
+  ///
+  static GvaKeyEnum ProcessFunctionKeyEvents(unsigned int key);
+
+  ///
   /// \brief Create a Key Event and queue it
   ///
   /// \param Widget
@@ -130,6 +146,8 @@ class EventsGva {
   ///
   static gboolean CreateKeyEvent(GtkWidget *Widget, GdkEventKey *event, EventEnumType type);
   gtkType *window_;
+  static uint32_t previous_key_;
+  static TouchGva *touch_;
 };
 
 };  // namespace gva

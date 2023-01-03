@@ -140,18 +140,21 @@ ScreenGva::~ScreenGva() {
 }
 
 void ClockUpdate(ClockArgs *a) {
-  time_t t;
-  struct tm *tm;
   char c;
   char tmp[MAX_NMEA + 2] = {0};
   char buffer[MAX_NMEA] = {0};
 
-  uint32_t i, ii = 0;
-  t = time(NULL);
-  tm = localtime(&t);
+  uint32_t i = 0;
+  uint32_t ii = 0;
+
+  // Get the system time and be thread safe
+  auto unix_epoch_time = (time_t)0;
+  struct tm local_time;
+  localtime_r(&unix_epoch_time, &local_time);  // Compliant
+
   char clock[1000];
-  snprintf(clock, sizeof(clock), "%02d/%02d/%02d %02d:%02d:%02d", tm->tm_mday, tm->tm_mon + 1, tm->tm_year + 1900,
-           tm->tm_hour, tm->tm_min, tm->tm_sec);
+  snprintf(clock, sizeof(clock), "%02d/%02d/%02d %02d:%02d:%02d", local_time.tm_mday, local_time.tm_mon + 1,
+           local_time.tm_year + 1900, local_time.tm_hour, local_time.tm_min, local_time.tm_sec);
   a->clockString = clock;
   if (*a->gps > 0) {
     i = 0;

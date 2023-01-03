@@ -61,7 +61,7 @@ class GvaApplication {
   /// \brief Destroy the Gva Application object
   ///
   ///
-  ~GvaApplication();
+  ~GvaApplication() = delete;
 
   ///
   /// \brief Execute the main processing loop, blocking call
@@ -94,7 +94,7 @@ class GvaApplication {
   ///
   static void Dispatch(gva::GvaKeyEnum key);
 
-  char *rtp_buffer_;
+  uint8_t rtp_buffer_[1600 * 1200 * 4];  // This is the maximum size we can receive for RGBA
   std::shared_ptr<gva::EventsGva> io_;
   gva::EventsGva *io_test_ = nullptr;
   static uint32_t update_counter_;

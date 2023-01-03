@@ -64,18 +64,11 @@ GvaApplication::GvaApplication(const Options &options, const std::string &ipaddr
     gva::logGva::log(
         "Resolution " + std::to_string(rtp_stream1_->GetHeight()) + "x" + std::to_string(rtp_stream1_->GetWidth()),
         gva::DebugLevel::kLogInfo);
-    rtp_buffer_ = static_cast<char *>(malloc(rtp_stream1_->GetHeight() * rtp_stream1_->GetWidth() * 4));
 
     gva::logGva::log("GVA Incoming RTP stream initalized " + ipaddr + ":" + std::to_string(port),
                      gva::DebugLevel::kLogInfo);
   }
 }
-
-GvaApplication::~GvaApplication() {
-  if (options_.videoEnabled_ == true) {
-    free(rtp_buffer_);
-  }
-};
 
 //
 ///

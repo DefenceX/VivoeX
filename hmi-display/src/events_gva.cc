@@ -29,8 +29,8 @@
 
 namespace gva {
 
-static uint32_t previous_key_;
-static TouchGva* touch_;
+uint32_t EventsGva::previous_key_;
+TouchGva* EventsGva::touch_;
 
 std::vector<EventGvaType> EventsGva::eventqueue_;
 
@@ -104,6 +104,112 @@ void EventsGva::CreateRefreshEvent() {
   eventqueue_.push_back(gvaEvent);
 }
 
+GvaKeyEnum EventsGva::ProcessFunctionEvents(unsigned int key) {
+  if (key == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeySituationalAwareness)) {
+    // 1 maps to SA
+    return GvaKeyEnum::kKeySituationalAwareness;
+  }
+  if (key == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyWeapon)) {
+    // 2 maps to WPN
+    return GvaKeyEnum::kKeyWeapon;
+  }
+  if (key == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyDefensiveSystems)) {
+    // 3 maps to DEF
+    return GvaKeyEnum::kKeyDefensiveSystems;
+  }
+  if (key == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeySystems)) {
+    // 4 maps to SYS
+    return GvaKeyEnum::kKeySystems;
+  }
+  if (key == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyDriver)) {
+    // 5 maps to DRV
+    return GvaKeyEnum::kKeyDriver;
+  }
+  if (key == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeySpecialToRole)) {
+    // 6 maps to STR
+    return GvaKeyEnum::kKeySpecialToRole;
+  }
+  if (key == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyCommunications)) {
+    // 7 maps to COM
+    return GvaKeyEnum::kKeyCommunications;
+  }
+  if (key == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyBattlefieldManagementSystem)) {
+    // 8 maps to BMS
+    return GvaKeyEnum::kKeyBattlefieldManagementSystem;
+  }
+  return GvaKeyEnum::kKeyUnknown;
+}
+
+GvaKeyEnum EventsGva::ProcessFunctionKeyEvents(unsigned int key) {
+  if (key == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF1)) {
+    return GvaKeyEnum::kKeyF1;
+  }
+  if (key == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF2)) {
+    return GvaKeyEnum::kKeyF2;
+  }
+  if (key == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF3)) {
+    return GvaKeyEnum::kKeyF3;
+  }
+  if (key == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF4)) {
+    return GvaKeyEnum::kKeyF4;
+  }
+  if (key == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF5)) {
+    return GvaKeyEnum::kKeyF5;
+  }
+  if (key == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF6)) {
+    return GvaKeyEnum::kKeyF6;
+  }
+  if (key == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF7)) {
+    return GvaKeyEnum::kKeyF7;
+  }
+  if (key == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF8)) {
+    return GvaKeyEnum::kKeyF8;
+  }
+  if (key == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF9)) {
+    return GvaKeyEnum::kKeyF9;
+  }
+  if (key == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF10)) {
+    return GvaKeyEnum::kKeyF10;
+  }
+  if (key == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF11)) {
+    return GvaKeyEnum::kKeyF11;
+  }
+  if (key == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF12)) {
+    return GvaKeyEnum::kKeyF12;
+  }
+  if (key == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF13)) {
+    return GvaKeyEnum::kKeyF13;
+  }
+  if (key == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF14)) {
+    return GvaKeyEnum::kKeyF14;
+  }
+  if (key == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF15)) {
+    return GvaKeyEnum::kKeyF15;
+  }
+  if (key == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF16)) {
+    return GvaKeyEnum::kKeyF16;
+  }
+  if (key == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF17)) {
+    return GvaKeyEnum::kKeyF17;
+  }
+  if (key == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF18)) {
+    return GvaKeyEnum::kKeyF18;
+  }
+  if (key == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF19)) {
+    return GvaKeyEnum::kKeyF19;
+  }
+  if (key == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF20)) {
+    return GvaKeyEnum::kKeyF20;
+  }
+  if (key == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyUpArrow)) {
+    return GvaKeyEnum::kKeyF18;
+  }
+  if (key == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyDownArrow)) {
+    return GvaKeyEnum::kKeyF17;
+  }
+  return GvaKeyEnum::kKeyUnknown;
+}
+
 gboolean EventsGva::CreateKeyEvent(GtkWidget* Widget, GdkEventKey* event, EventEnumType type) {
   EventGvaType gvaEvent;
   gvaEvent.type_ = type;
@@ -122,104 +228,15 @@ gboolean EventsGva::CreateKeyEvent(GtkWidget* Widget, GdkEventKey* event, EventE
   if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyBlackout)) {
     gvaEvent.key_ = GvaKeyEnum::kKeyBlackout;
   }
-  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeySituationalAwareness)) {
-    gvaEvent.key_ = GvaKeyEnum::kKeySituationalAwareness;
-  }
-  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyWeapon)) {
-    // 2 maps to WPN
-    gvaEvent.key_ = GvaKeyEnum::kKeyWeapon;
-  }
-  // 1 maps to SA
-  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyDefensiveSystems)) {
-    // 3 maps to DEF
-    gvaEvent.key_ = GvaKeyEnum::kKeyDefensiveSystems;
-  }
-  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeySystems)) {
-    // 4 maps to SYS
-    gvaEvent.key_ = GvaKeyEnum::kKeySystems;
-  }
-  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyDriver)) {
-    // 5 maps to DRV
-    gvaEvent.key_ = GvaKeyEnum::kKeyDriver;
-  }
-  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeySpecialToRole)) {
-    // 6 maps to STR
-    gvaEvent.key_ = GvaKeyEnum::kKeySpecialToRole;
-  }
-  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyCommunications)) {
-    // 7 maps to COM
-    gvaEvent.key_ = GvaKeyEnum::kKeyCommunications;
-  }
-  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyBattlefieldManagementSystem)) {
-    // 8 maps to BMS
-    gvaEvent.key_ = GvaKeyEnum::kKeyBattlefieldManagementSystem;
-  }
-  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF1)) {
-    gvaEvent.key_ = GvaKeyEnum::kKeyF1;
-  }
-  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF2)) {
-    gvaEvent.key_ = GvaKeyEnum::kKeyF2;
-  }
-  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF3)) {
-    gvaEvent.key_ = GvaKeyEnum::kKeyF3;
-  }
-  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF4)) {
-    gvaEvent.key_ = GvaKeyEnum::kKeyF4;
-  }
-  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF5)) {
-    gvaEvent.key_ = GvaKeyEnum::kKeyF5;
-  }
-  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF6)) {
-    gvaEvent.key_ = GvaKeyEnum::kKeyF6;
-  }
-  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF7)) {
-    gvaEvent.key_ = GvaKeyEnum::kKeyF7;
-  }
-  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF8)) {
-    gvaEvent.key_ = GvaKeyEnum::kKeyF8;
-  }
-  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF9)) {
-    gvaEvent.key_ = GvaKeyEnum::kKeyF9;
-  }
-  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF10)) {
-    gvaEvent.key_ = GvaKeyEnum::kKeyF10;
-  }
-  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF11)) {
-    gvaEvent.key_ = GvaKeyEnum::kKeyF11;
-  }
-  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF12)) {
-    gvaEvent.key_ = GvaKeyEnum::kKeyF12;
-  }
-  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF13)) {
-    gvaEvent.key_ = GvaKeyEnum::kKeyF13;
-  }
-  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF14)) {
-    gvaEvent.key_ = GvaKeyEnum::kKeyF14;
-  }
-  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF15)) {
-    gvaEvent.key_ = GvaKeyEnum::kKeyF15;
-  }
-  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF16)) {
-    gvaEvent.key_ = GvaKeyEnum::kKeyF16;
-  }
-  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF17)) {
-    gvaEvent.key_ = GvaKeyEnum::kKeyF17;
-  }
-  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF18)) {
-    gvaEvent.key_ = GvaKeyEnum::kKeyF18;
-  }
-  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF19)) {
-    gvaEvent.key_ = GvaKeyEnum::kKeyF19;
-  }
-  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyF20)) {
-    gvaEvent.key_ = GvaKeyEnum::kKeyF20;
-  }
-  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyUpArrow)) {
-    gvaEvent.key_ = GvaKeyEnum::kKeyF18;
-  }
-  if (event->keyval == ConfigData::GetInstance()->GetKeyBinding(GvaKeyEnum::kKeyDownArrow)) {
-    gvaEvent.key_ = GvaKeyEnum::kKeyF17;
-  }
+
+  // Process top keys
+  gvaEvent.key_ = ProcessFunctionEvents(event->keyval);
+  if (gvaEvent.key_ != GvaKeyEnum::kKeyUnknown) return TRUE;
+
+  // Process side keys
+  gvaEvent.key_ = ProcessFunctionKeyEvents(event->keyval);
+  if (gvaEvent.key_ != GvaKeyEnum::kKeyUnknown) return TRUE;
+
   if ((event->keyval == 'm') || (event->keyval == 'M')) {
     // m toggle fullscreen
     gvaEvent.key_ = GvaKeyEnum::kKeyFullscreen;
