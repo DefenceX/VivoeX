@@ -151,6 +151,7 @@ void Hmi::Reset() {
   screen_.canvas.bufferType = SurfaceType::kSurfaceNone;
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetVisible(false);
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetVisible(false);
+  screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeKeyboard)->SetVisible(false);
   if (screen_.currentFunction == GvaFunctionEnum::kDriver) {
     screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetY(190);
     screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetX(120);
@@ -158,7 +159,7 @@ void Hmi::Reset() {
     screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetY(190);
     screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetX(330);
   }
-  screen_.control->visible_ = true;
+  screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTopLabels)->SetVisible(true);
   screen_.control->SetDisabled(4);  // Up Arrow
   screen_.control->SetDisabled(5);  // Down Arrow
   screen_.control->SetDisabled(7);  // Enter
@@ -174,10 +175,10 @@ void Hmi::Labels(LabelModeEnum labels) {
           (screen_.currentFunction == GvaFunctionEnum::kWeapon) ||
           (screen_.currentFunction == GvaFunctionEnum::kDriver))
         screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetVisible(true);
-      screen_.function_left.visible = true;
-      screen_.function_right.visible = true;
-      screen_.control->visible_ = true;
-      screen_.function_top->visible = true;
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeRightLabels)->SetVisible(true);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeLeftLabels)->SetVisible(true);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTopLabels)->SetVisible(true);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeBottomLabels)->SetVisible(true);
       screen_.status_bar->visible = true;
       screen_.status_bar->y = 15;
       if (screen_.currentFunction == GvaFunctionEnum::kDriver) {
@@ -190,11 +191,14 @@ void Hmi::Labels(LabelModeEnum labels) {
       }
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetWidth(420);
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetX(110);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic)->SetWidth(420);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic)->SetX(110);
       break;
     case LabelModeEnum::kLabelStatusOnly:
-      screen_.function_left.visible = false;
-      screen_.function_right.visible = false;
-      screen_.control->visible_ = false;
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeRightLabels)->SetVisible(false);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeLeftLabels)->SetVisible(false);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTopLabels)->SetVisible(false);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeBottomLabels)->SetVisible(false);
       screen_.function_top->visible = false;
       screen_.status_bar->visible = true;
       screen_.status_bar->y = 2;
@@ -202,16 +206,20 @@ void Hmi::Labels(LabelModeEnum labels) {
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetX(120);
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetWidth(kMinimumWidth - 40);
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetX(20);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic)->SetWidth(kMinimumWidth - 40);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic)->SetX(20);
       break;
     case LabelModeEnum::kLabelMinimal:
-      screen_.function_left.visible = false;
-      screen_.function_right.visible = false;
-      screen_.control->visible_ = false;
-      screen_.function_top->visible = false;
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeRightLabels)->SetVisible(false);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeLeftLabels)->SetVisible(false);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTopLabels)->SetVisible(false);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeBottomLabels)->SetVisible(false);
       screen_.status_bar->visible = false;
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetVisible(false);
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetWidth(kMinimumWidth - 40);
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetX(20);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic)->SetWidth(kMinimumWidth - 40);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic)->SetX(20);
       break;
   }
 };

@@ -59,7 +59,7 @@ class rendererMap {
   osmscout::AreaSearchParameter searchParameter_;
   osmscout::MapData data_;
   std::list<osmscout::TileRef> tiles_;
-  osmscout::MapPainterCairo *painter_;
+  std::shared_ptr<osmscout::MapPainterCairo> painter_;
   cairo_surface_t *surface_;
   cairo_t *cairo_;
 };

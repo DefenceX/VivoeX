@@ -34,20 +34,18 @@
 #include "log_gva.h"
 #include "src/config_reader.h"
 
-#define DPI 96.0
-
 namespace gva {
 
 rendererMap::rendererMap(std::string map, std::string style, int width, int height)
     : width_(width), height_(height), map_(map), style_(style) {
-  database_ = (osmscout::DatabaseRef)(new osmscout::Database(databaseParameter_));
-  mapService_ = (osmscout::MapServiceRef)(new osmscout::MapService(database_));
+  database_ = std::make_shared<osmscout::Database>(databaseParameter_);
+  mapService_ = std::make_shared<osmscout::MapService>(database_);
 
   if (!database_->Open(map_.c_str())) {
     logGva::log("Cannot open libosmscout database", DebugLevel::kLogError);
   }
 
-  styleConfig_ = (osmscout::StyleConfigRef) new osmscout::StyleConfig(database_->GetTypeConfig());
+  styleConfig_ = std::make_shared<osmscout::StyleConfig>(database_->GetTypeConfig());
 
   if (!styleConfig_->Load(style_)) {
     logGva::log("Cannot open libosmscout style", DebugLevel::kLogError);
@@ -66,26 +64,19 @@ rendererMap::rendererMap(std::string map, std::string style, int width, int heig
   DrawParameter_.SetLabelLineMaxCharCount(30);
   DrawParameter_.SetLabelLineFitToArea(true);
   DrawParameter_.SetLabelLineFitToWidth(std::min(projection_.GetWidth(), projection_.GetHeight()));
-  painter_ = new osmscout::MapPainterCairo(styleConfig_);
+  painter_ = std::make_shared<osmscout::MapPainterCairo>(styleConfig_);
 };
 
 rendererMap::~rendererMap() {
   cairo_destroy(cairo_);
   cairo_surface_destroy(surface_);
-  if (ConfigData::GetInstance()->GetMapEnabled()) free(painter_);
 };
 
 GvaStatusTypes rendererMap::Project(double zoom, double lon, double lat, cairo_surface_t **surface) {
   if (surface_ != nullptr) {
     if (cairo_ != nullptr) {
-      /*
-      std::list<std::string> paths;
-      paths.push_back("./libosmscout/data/icons/14x14/standard/");
-      DrawParameter.SetIconMode(osmscout::MapParameter::FixedSizePixmap);
-      DrawParameter.SetIconPaths(paths);
-      */
       printf("%dx%d %f %f \n", width_, height_, lat, lon);
-      projection_.Set(osmscout::GeoCoord(lat, lon), osmscout::Magnification(zoom), DPI, width_, height_);
+      projection_.Set(osmscout::GeoCoord(lat, lon), osmscout::Magnification(zoom), 96.0, width_, height_);
 
       mapService_->LookupTiles(projection_, tiles_);
       mapService_->LoadMissingTileData(searchParameter_, *styleConfig_, tiles_);
