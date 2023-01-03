@@ -47,10 +47,10 @@ gboolean EventsGva::ButtonPressEventCb(GtkWidget* Widget, GdkEventButton* event,
   EventGvaType gvaEvent;
   uint32_t binding = 0;
 
-  touch_->Check(GvaFunctionGroupEnum::kTop, &binding, event->x, event->y);
-  if (!binding) touch_->Check(GvaFunctionGroupEnum::kBottom, &binding, event->x, event->y);
-  if (!binding) touch_->Check(GvaFunctionGroupEnum::kRight, &binding, event->x, event->y);
-  if (!binding) touch_->Check(GvaFunctionGroupEnum::kLeft, &binding, event->x, event->y);
+  touch_->Check(GvaFunctionGroupEnum::kTop, &binding, (int)event->x, (int)event->y);
+  if (!binding) touch_->Check(GvaFunctionGroupEnum::kBottom, &binding, (int)event->x, (int)event->y);
+  if (!binding) touch_->Check(GvaFunctionGroupEnum::kRight, &binding, (int)event->x, (int)event->y);
+  if (!binding) touch_->Check(GvaFunctionGroupEnum::kLeft, &binding, (int)event->x, (int)event->y);
   if (binding) {
     gvaEvent.type_ = EventEnumType::kKeyEventPressed;
     gvaEvent.key_ = (GvaKeyEnum)binding;
@@ -68,10 +68,10 @@ gboolean EventsGva::ButtonReleaseEventCb(GtkWidget* Widget, GdkEventButton* even
     EventGvaType gvaEvent;
     uint32_t binding = 0;
 
-    touch_->Check(GvaFunctionGroupEnum::kTop, &binding, event->x, event->y);
-    if (!binding) touch_->Check(GvaFunctionGroupEnum::kBottom, &binding, event->x, event->y);
-    if (!binding) touch_->Check(GvaFunctionGroupEnum::kRight, &binding, event->x, event->y);
-    if (!binding) touch_->Check(GvaFunctionGroupEnum::kLeft, &binding, event->x, event->y);
+    touch_->Check(GvaFunctionGroupEnum::kTop, &binding, (int)event->x, (int)event->y);
+    if (!binding) touch_->Check(GvaFunctionGroupEnum::kBottom, &binding, (int)event->x, (int)event->y);
+    if (!binding) touch_->Check(GvaFunctionGroupEnum::kRight, &binding, (int)event->x, (int)event->y);
+    if (!binding) touch_->Check(GvaFunctionGroupEnum::kLeft, &binding, (int)event->x, (int)event->y);
     if (binding) {
       gvaEvent.type_ = EventEnumType::kKeyEventReleased;
       gvaEvent.key_ = (GvaKeyEnum)binding;
@@ -292,8 +292,8 @@ gboolean EventsGva::CreateKeyEvent(GtkWidget* Widget, GdkEventKey* event, EventE
     //[n|N] Move to next label
     gvaEvent.key_ = GvaKeyEnum::kKeyNextLabel;
   }
-  if (event->keyval != 0) {
-    if (gvaEvent.type_ != EventEnumType::kNoEvent) eventqueue_.push_back(gvaEvent);
+  if ((event->keyval != 0) && (gvaEvent.type_ != EventEnumType::kNoEvent)) {
+    eventqueue_.push_back(gvaEvent);
   }
 
   return TRUE;
