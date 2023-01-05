@@ -85,29 +85,29 @@ Touch screen inputs and bezel key inputs are sent back to the HMI to update the 
 To build the HMI clone the code and run cmake. Automated builds are handled by Github Actions
 
 The following keys can be used to interact with the display:
-* \+ Rotate PPI clockwise
-* \- Rotate PPI anti-clockwise
-* \> Rotate Sight anti-clockwise
-* < Rotate Sight anti-clockwise
-* F1-F12 Bezel buttons for F1-F12 on GVA Display
-* q Blackout
-* w Function SA
-* e Function WPN
-* r Function DEF
-* t Function SYS
-* y Function DRV
-* u Function STR  
-* i Function COM
-* o Function BMS
-* m|M Minimize and Maximize(fullscreen) window
-* ESC Quit
-* K Keyboard
-  * CAPS-LOCK toggle upper case
-  * NUM-LOCK toggle special chars
-* Up Arrow (control table highlight / screen specific)
-* Down Arrow (control table highlight / screen specific)
-* Right Arrow, brightness up 5%
-* Left Arrow, brightness down 5%
+* <kbd>+</kbd> Rotate PPI clockwise
+* <kbd>-</kbd> Rotate PPI anti-clockwise
+* <kbd>></kbd> Rotate Sight anti-clockwise
+* <kbd><</kbd> Rotate Sight anti-clockwise
+* <kbd>F1</kbd>-<kbd>F12</kbd> Bezel buttons for F1-F12 on GVA Display
+* <kbd>q</kbd> Blackout
+* <kbd>w</kbd> Function SA
+* <kbd>e</kbd> Function WPN
+* <kbd>r</kbd> Function DEF
+* <kbd>t</kbd> Function SYS
+* <kbd>y</kbd> Function DRV
+* <kbd>u</kbd> Function STR  
+* <kbd>i</kbd> Function COM
+* <kbd>o</kbd> Function BMS
+* <kbd>m</kbd> | <kbd>M</kbd> Minimize and Maximize(fullscreen) window
+* <kbd>ESC</kbd> Quit
+* <kbd>K</kbd> Keyboard
+  * <kbd>CAPS LOCK</kbd> toggle upper case
+  * <kbd>NUM LOCK</kbd> toggle special chars
+* <kbd>Up</kbd> Arrow (control table highlight / screen specific)
+* <kbd>Down</kbd> Arrow (control table highlight / screen specific)
+* <kbd>Right</kbd> Arrow, brightness up 5%
+* <kbd>Left</kbd> Arrow, brightness down 5%
 
 > NOTE The default key bindings provide compatibility with APC Technologies GVA-104501 display
 
