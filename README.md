@@ -89,7 +89,7 @@ The following keys can be used to interact with the display:
 * <kbd>-</kbd> Rotate PPI anti-clockwise
 * <kbd>></kbd> Rotate Sight anti-clockwise
 * <kbd><</kbd> Rotate Sight anti-clockwise
-* <kbd>F1</kbd>-<kbd>F12</kbd> Bezel buttons for F1-F12 on GVA Display
+* <kbd>F1</kbd> - <kbd>F12</kbd> Bezel buttons for F1-F12 on GVA Display
 * <kbd>q</kbd> Blackout
 * <kbd>w</kbd> Function SA
 * <kbd>e</kbd> Function WPN

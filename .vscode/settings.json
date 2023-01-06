@@ -217,6 +217,7 @@
         "defencex",
         "libosmscout",
         "mgrs",
+        "MITER",
         "nmea",
         "northp",
         "osmscout",
@@ -233,5 +234,6 @@
         "projectKey": "DefenceX_vivoe-lite"
     },
     "sonarlint.output.showAnalyzerLogs": true,
-    "sonarlint.output.showVerboseLogs": true
+    "sonarlint.output.showVerboseLogs": true,
+    "sonarlint.trace.server": "off",
 }

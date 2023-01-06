@@ -416,7 +416,7 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
           break;
         case gva::GvaKeyEnum::kKeyFullscreen:
           // m|M toggle fullscreen
-          Fullscreen((gva::HandleType *)render);
+          Fullscreen(const_cast<gva::HandleType *>(render));
           {
             GdkRectangle workarea;
             GdkMonitor *monitor = gdk_display_get_primary_monitor(gdk_display_get_default());

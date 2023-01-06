@@ -37,13 +37,13 @@ namespace gva {
 /// \param radius
 /// \param degree
 ///
-double_t PlotCircleX(uint16_t x, double_t radius, double_t degree);
+int32_t PlotCircleX(uint16_t x, double_t radius, double_t degree);
 
 ///
 /// \brief
 ///
 ///
-double_t PlotCircleY(uint16_t y, double_t radius, double_t degree);
+int32_t PlotCircleY(uint16_t y, double_t radius, double_t degree);
 
 ///
 /// \brief Convert degrees to radians
@@ -59,7 +59,7 @@ double_t DegreesToRadians(double_t angle_degrees);
 /// \param angle_radians
 /// \return double_t
 ///
-double_t RadiansToDegrees(double_t angle_radians);
+uint16_t RadiansToDegrees(double_t angle_radians);
 
 ///
 /// \brief Convert longitude to degrees
