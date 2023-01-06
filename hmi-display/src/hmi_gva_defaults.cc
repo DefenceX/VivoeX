@@ -78,8 +78,8 @@ StatusBar DefaultSettings::GetDefaultStatusBar() {
   status_bar.x = kMinimumHeight - 11;
   status_bar.y = 0;
   status_bar.location.locationFormat = LocationEnum::kLocationFormatMgrs;
-  status_bar.location.lon = gva::ConfigData::GetInstance()->GetTestLon();
-  status_bar.location.lat = gva::ConfigData::GetInstance()->GetTestLat();
+  status_bar.location.lon = (float)gva::ConfigData::GetInstance()->GetTestLon();
+  status_bar.location.lat = (float)gva::ConfigData::GetInstance()->GetTestLat();
   status_bar.labels[0].text = "00:00:00 01/01/1973";
   status_bar.labels[1].text = "Norm.";
   status_bar.labels[2].text = "Lat:0.000000 Lon:-0.000000";

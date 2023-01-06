@@ -86,7 +86,7 @@ void HmiHelper::TableSystem(WidgetTable *table) {
   table->AddCell("Ok", 20);
 
   table->AddRow();
-  table->AddCell("GPS Source, " + ConfigData::GetInstance()->GetOdbDevice(), 80);
+  table->AddCell("GPS Source, " + ConfigData::GetInstance()->GetGpsDevice(), 80);
   if (std::filesystem::exists(ConfigData::GetInstance()->GetGpsDevice())) {
     table->AddCell("OK", 20);
   } else {
@@ -94,8 +94,8 @@ void HmiHelper::TableSystem(WidgetTable *table) {
   }
 
   table->AddRow();
-  table->AddCell("ODB Source, " + ConfigData::GetInstance()->GetGpsDevice(), 80);
-  if (std::filesystem::exists(ConfigData::GetInstance()->GetGpsDevice())) {
+  table->AddCell("CAN Source, " + ConfigData::GetInstance()->GetOdbDevice(), 80);
+  if (std::filesystem::exists(ConfigData::GetInstance()->GetOdbDevice())) {
     table->AddCell("OK", 20);
   } else {
     table->AddCell("Error", 20, Renderer::PackRgb(HMI_RED));
@@ -167,7 +167,7 @@ void HmiHelper::TableAlarms(WidgetTable *table) {
   table->AddRow(Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_GREY), Renderer::PackRgb(HMI_WHITE),
                 Renderer::PackRgb(HMI_YELLOW), widget::WeightType::kWeightNormal);
   table->AddCell("15/6 19:03", 20);
-  table->AddCell("Gun barrel over tempreture", 50);
+  table->AddCell("Gun barrel over temperature", 50);
   table->AddCell("C", 10);
   table->AddCell("ACK(OVR)", 20, Renderer::PackRgb(HMI_GREY));
 

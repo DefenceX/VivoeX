@@ -39,7 +39,7 @@ static const uint32_t kMinimumWidth = 640;
 
 enum class LocationEnum { kLocationFormatLongLat = 0, kLocationFormatMgrs };
 
-enum class ScreenMode { kModeMaintinance = 0, kModeOperational, kModeBlackout };
+enum class ScreenMode { kModeMaintenance = 0, kModeOperational, kModeBlackout };
 
 enum class LabelModeEnum { kLabelAll, kLabelStatusOnly, kLabelMinimal };
 

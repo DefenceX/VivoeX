@@ -70,6 +70,20 @@ class GvaApplication {
   void Exec() const;
 
   ///
+  /// \brief Create the Key Pressed event
+  ///
+  /// \param key
+  ///
+  static bool SetKeyPressed(gva::GvaKeyEnum key);
+
+  ///
+  /// \brief Create the Key Released event
+  ///
+  /// \param key
+  ///
+  static bool SetKeyReleased(gva::HandleType *, gva::GvaKeyEnum key);
+
+  ///
   /// \brief Update the canvas and re-render the screen
   ///
   /// \param arg
@@ -81,6 +95,44 @@ class GvaApplication {
   static std::unique_ptr<gva::GvaVideoRtpYuv> rtp_stream1_;
 
  private:
+  ///
+  /// \brief Adjust Brightness up by 5%
+  ///
+  ///
+  static void BrightnessUp();
+
+  ///
+  /// \brief Adjust Brightness down by 5%
+  ///
+  ///
+  static void BrightnessDown();
+
+  ///
+  /// \brief Adjust Brightness by given value
+  ///
+  /// \param value
+  ///
+  static void BrightnessAdjust(double value);
+
+  ///
+  /// \brief Process the top bezel keys (only).
+  ///
+  /// \param key
+  /// \return true Top key was detected
+  /// \return false Was not a top bezel key still needs to be processed
+  ///
+  static bool ProcessTopKeys(gva::HandleType *render, gva::GvaKeyEnum key);
+
+  ///
+  /// \brief Process the function bezel keys (only).
+  ///
+  /// \param keyboard
+  /// \param key
+  /// \return true Function key was detected
+  /// \return false Was not a function bezel key still needs to be processed
+  ///
+  static bool ProcessFunctionKeys(gva::WidgetKeyboard *keyboard, gva::GvaKeyEnum key);
+
   ///
   /// \brief Toggle the GTK application to and from fullscreen
   ///
