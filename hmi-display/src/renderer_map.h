@@ -40,7 +40,7 @@ namespace gva {
 class rendererMap {
  public:
   rendererMap(std::string map, std::string style, int width, int height);
-  ~rendererMap();
+  ~rendererMap() = default;
   GvaStatusTypes Project(double zoom, double lon, double lat, cairo_surface_t **surface);
   void SetHeight(int height) { height_ = height; }
   void SetWidth(int width) { width_ = width; }

@@ -139,7 +139,7 @@ namespace gva {
 void Hmi::SetCanvasPng(const std::string &file) {
   Hmi::GetScreen()->canvas.filename = file.c_str();
   Hmi::GetScreen()->canvas.bufferType = SurfaceType::kSurfaceFile;
-  Hmi::GetScreen()->canvas.buffer = 0;
+  Hmi::GetScreen()->canvas.buffer = nullptr;
 }
 
 void Hmi::Reset() {

@@ -26,6 +26,7 @@
 
 #include <cstdint>
 
+#include "math.h"
 #include "src/renderer_cairo_types.h"
 #include "src/widgets/widget.h"
 
@@ -101,7 +102,7 @@ class WidgetPlanPositionIndicator : public WidgetX {
   void SetMode(widget::ModeEnum mode) { mode_ = mode; }
 
  private:
-   ///
+  ///
   /// \brief Draw a classic sight on PPI
   ///
   /// \param radius
