@@ -36,7 +36,7 @@
 
 namespace gva {
 
-rendererMap::rendererMap(std::string map, std::string style, int width, int height)
+rendererMap::rendererMap(std::string_view map, std::string_view style, int width, int height)
     : width_(width), height_(height), map_(map), style_(style) {
   database_ = std::make_shared<osmscout::Database>(databaseParameter_);
   mapService_ = std::make_shared<osmscout::MapService>(database_);
@@ -63,7 +63,7 @@ rendererMap::rendererMap(std::string map, std::string style, int width, int heig
   DrawParameter_.SetLabelLineMinCharCount(15);
   DrawParameter_.SetLabelLineMaxCharCount(30);
   DrawParameter_.SetLabelLineFitToArea(true);
-  DrawParameter_.SetLabelLineFitToWidth(std::min(projection_.GetWidth(), projection_.GetHeight()));
+  DrawParameter_.SetLabelLineFitToWidth((double)std::min(projection_.GetWidth(), projection_.GetHeight()));
   painter_ = std::make_shared<osmscout::MapPainterCairo>(styleConfig_);
 };
 
