@@ -80,10 +80,10 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
   //
   // Start the Real Time Clock
   //
-  StartClock(*screen_->status_bar);
+  StartClock(screen_->status_bar);
 
-  // WidgetTo
-  //  Setup the required widgets
+  //
+  // Setup the required widgets
   //
   RendererGva *renderer = this;
   TouchGva *touch = GetTouch();
@@ -105,25 +105,35 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
   widget_list_[widget::WidgetEnum::KWidgetTypeTableDynamic] =
       std::make_shared<WidgetTableDynamic>(*renderer, touch, ConfigData::GetInstance()->GetThemeBackground());
 
+  //
   // Load some dummy alarms (real alarms come from LDM)
+  //
   auto *table = (WidgetTableDynamic *)GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic);
   HmiHelper::TableAlarms(table);
 
+  //
   // Initialise right labels
+  //
   auto right_labels = (WidgetSideLabels *)GetWidget(widget::WidgetEnum::KWidgetTypeRightLabels);
   right_labels->SetLabels(&screen_->function_right.labels);
   right_labels->SetX(kMinimumWidth - 100 - 1);
 
+  //
   // Initialise left labels
+  //
   auto left_labels = (WidgetSideLabels *)GetWidget(widget::WidgetEnum::KWidgetTypeLeftLabels);
   left_labels->SetLabels(&screen_->function_left.labels);
 
+  //
   // Initialise top labels
+  //
   auto top_labels = (WidgetTopLabels *)GetWidget(widget::WidgetEnum::KWidgetTypeTopLabels);
   top_labels->SetY(2);
   top_labels->SetLabels(&screen_->function_top->labels);
 
+  //
   // Initialise bottom labels
+  //
   auto bottom_labels = (WidgetBottomLabels *)GetWidget(widget::WidgetEnum::KWidgetTypeBottomLabels);
   bottom_labels->SetLabels(&screen_->control->labels_);
 }
@@ -163,11 +173,11 @@ void ClockUpdate(ClockArgs *a) {
     if (auto size = read(*a->gps, &buffer[0], 1); size != 0) {
       memset(buffer, 0, kMaxNmea);
       while (buffer[0] != '$') {
-        auto size = read(*a->gps, &buffer[0], 1);
-        if (size == 0) break;
+        auto size_read = read(*a->gps, &buffer[0], 1);
+        if (size_read == 0) break;
       }
       while (buffer[i++] != '\n') {
-        ii = read(*a->gps, &c, 1);
+        ii = (uint32_t)read(*a->gps, &c, 1);
         if (ii == 1) {
           buffer[i] = c;
         }
@@ -182,8 +192,8 @@ void ClockUpdate(ClockArgs *a) {
     a->info->lon = a->location->lon;
     a->info->lat = a->location->lat;
     nmea_parse(a->parser, tmp, sizeof(tmp), a->info);
-    a->info->lat = ToDegrees(a->info->lat);
-    a->info->lon = ToDegrees(a->info->lon);
+    a->info->lat = ToDegrees((float)a->info->lat);
+    a->info->lon = ToDegrees((float)a->info->lon);
   }
 
   if ((a->info->lon != 0) && (a->info->lat != 0)) {
@@ -214,24 +224,24 @@ void ClockUpdate(ClockArgs *a) {
 }
 
 void *ClockUpdateThread(void *arg) {
-  ClockArgs *a = (ClockArgs *)arg;
+  auto a = (ClockArgs *)arg;
 
   while (a->active) {
     ClockUpdate(a);
     struct timespec reqDelay = {1, 0};
-    nanosleep(&reqDelay, (struct timespec *)NULL);
+    nanosleep(&reqDelay, (struct timespec *)nullptr);
   }  // End thread loop
 
   return nullptr;
 }
 
-void ScreenGva::StartClock(const StatusBar &barData) {
+void ScreenGva::StartClock(StatusBar *barData) {
   args_.active = true;
   args_.parser = &parser_;
   args_.info = &info_;
   args_.gps = &gps_;
   args_.screen = this;
-  args_.location = const_cast<LocationType *>(&barData.location);
+  args_.location = &barData->location;
   args_.info->lon = ConfigData::GetInstance()->GetTestLon();
   args_.info->lat = ConfigData::GetInstance()->GetTestLat();
 

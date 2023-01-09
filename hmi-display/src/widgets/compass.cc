@@ -78,12 +78,12 @@ void WidgetPlanPositionIndicator::DrawModern(uint32_t x, uint32_t y, uint32_t de
   int64_t pos = 10;
   uint32_t adjust_x = -6;
   uint32_t adjust_y = +4;
-  step = (float)(M_PI * 2) / 4;
+  step = (uint32_t)(((float)M_PI * 2) / 4);
   std::array<std::string, 4> compass_points = {"S", "W", "N", "E"};
 
   int32_t c = 0;
   for (uint16_t d = 0; d < 360; d += RadiansToDegrees(step)) {
-    uint32_t render_degrees = d + degrees;
+    auto render_degrees = (uint16_t)(d + degrees);
 
     GetRenderer()->DrawText((uint32_t)(adjust_x + (radius - (double_t)pos) * sin(DegreesToRadians(render_degrees))),
                             (uint32_t)(adjust_y + (radius - (double_t)pos) * cos(DegreesToRadians(render_degrees))),
@@ -261,23 +261,22 @@ void WidgetPlanPositionIndicator::DrawPPI(widget::ModeEnum mode, uint32_t x, uin
   }
 
   GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
-  uint32_t step = 360 / 32;
+  uint16_t step = 360 / 32;
   c = 0;
-  uint32_t p = 0;
+  uint16_t p = 0;
 
-  for (uint32_t d = 0; d < 360; d += step) {
-    double_t r = DegreesToRadians(d + degrees % 30);
+  for (uint16_t d = 0; d < 360; d += step) {
+    double_t r = DegreesToRadians((uint16_t)(d + degrees));
     p = c % 4 ? 28 : 20;
     c++;
-    GetRenderer()->MovePen((uint32_t)((radius - 35) * cos(r)), (uint32_t)((radius - 35) * sin(r)));
-    GetRenderer()->DrawPen((uint32_t)((radius - (double_t)p) * cos(r)), (uint32_t)((radius - (double_t)p) * sin(r)),
-                           true);
+    GetRenderer()->MovePen((int32_t)((radius - 35) * cos(r)), (int32_t)(-(radius - 35) * sin(r)));
+    GetRenderer()->DrawPen((int32_t)((radius - p) * cos(r)), (int32_t)(-(radius - p) * sin(r)), true);
   }
 
   // Heading (Goes under sight)
   GetRenderer()->Save();
   GetRenderer()->MovePen(0, 0);
-  GetRenderer()->Rotate(DegreesToRadians(weapon_azimuth));
+  GetRenderer()->Rotate(DegreesToRadians((uint16_t)weapon_azimuth));
 
   GetRenderer()->SetColourBackground(HMI_CYAN);
   if ((mode == widget::ModeEnum::kPpiClassicArrowWithSight) ||

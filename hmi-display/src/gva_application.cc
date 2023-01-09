@@ -58,8 +58,7 @@ GvaApplication::GvaApplication(const Options &options, const std::string &ipaddr
 
   //
   // Setup video sources (default size will be 640 x 480 unless specified)
-  // @todo hmi_display: Fix issue with stream blocking execution on RTP input
-  // @body The RTP stream blocks for a whole frame slowing down the HMI.
+  //
   if (options_.videoEnabled_ == true) {
     gva::logGva::log(
         "Resolution " + std::to_string(rtp_stream1_->GetHeight()) + "x" + std::to_string(rtp_stream1_->GetWidth()),

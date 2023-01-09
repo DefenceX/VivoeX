@@ -36,6 +36,7 @@
 namespace gva {
 
 struct StateAlarms : Hmi {
+  virtual ~StateAlarms() = default;
   void entry() override;
   void exit() override;
   void react(EventKeySA const &) override;

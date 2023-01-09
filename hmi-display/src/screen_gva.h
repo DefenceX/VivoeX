@@ -120,11 +120,15 @@ class ScreenGva : public RendererGva {
   ///
   ScreenGva(Screen *screen, uint32_t width, uint32_t height);
 
+  ScreenGva &operator=(const ScreenGva &a) = delete;
+
+  ScreenGva(const ScreenGva &Other) = default;
+
   ///
   /// \brief Destroy the Screen Gva object
   ///
   ///
-  ~ScreenGva();
+  ~ScreenGva() final;
 
   ///
   /// \brief Redraw the screen
@@ -136,9 +140,9 @@ class ScreenGva : public RendererGva {
   ///
   /// \brief Start the clock thread running to update the clock (pthread started)
   ///
-  /// \param barData
+  /// \param barData To be used for updating
   ///
-  void StartClock(const StatusBar &barData);
+  void StartClock(StatusBar *barData);
 
   ///
   /// \brief Get the Widget object
