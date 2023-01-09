@@ -40,41 +40,34 @@ ConfigDataBase::ConfigDataBase() {
   // compatible with the version of the headers we compiled against.
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
-  std::string message = "Created new config reader";
-  message.append(std::filesystem::current_path());
-  message.append("/");
-  message.append(config_file_);
-  logGva::log(message, DebugLevel::kLogInfo);
+  logGva::log("Created new config reader" + std::filesystem::current_path().string() + "/" + config_file_,
+              DebugLevel::kLogInfo);
   current_config_ = std::make_unique<config::Gva>();
-  {
-    // Read the existing configuration file.
-    std::fstream input(config_file_, std::fstream::in | std::fstream::binary);
-    if (!input) {
-      message = "File not found. Creating a new file";
-      message.append(std::filesystem::current_path());
-      message.append("/");
-      message.append(config_file_);
-      logGva::log(message, DebugLevel::kLogInfo);
-      current_config_->set_name("Test HMI configuration.");
-      // Doesn't write defaults unless they have been set once
-      current_config_->set_height(current_config_->height());
-      current_config_->set_width(current_config_->width());
-    } else if (!current_config_->ParseFromIstream(&input)) {
-      logGva::log("Failed to parse config file.", DebugLevel::kLogInfo);
-      return;
-    }
+
+  // Read the existing configuration file.
+  if (std::fstream input(config_file_, std::fstream::in | std::fstream::binary); !input) {
+    logGva::log("File not found. Creating a new file " + std::filesystem::current_path().string() + "/" + config_file_,
+                DebugLevel::kLogInfo);
+    current_config_->set_name("Test HMI configuration.");
+    // Doesn't write defaults unless they have been set once
+    current_config_->set_height(current_config_->height());
+    current_config_->set_width(current_config_->width());
+  } else if (!current_config_->ParseFromIstream(&input)) {
+    logGva::log("Failed to parse config file.", DebugLevel::kLogInfo);
+    return;
   }
 
   // Add arrays here if any.
   current_config_->bindings().empty();
 
-  std::array<config::Key, 31> keys = {
-      config::kKeyBLK,      config::kKeySA,  config::kKeyWPN, config::kKeyDEF, config::kKeySYS, config::kKeyDRV,
-      config::kKeySTR,      config::kKeyCOM, config::kKeyBMS, config::kKeyF1,  config::kKeyF2,  config::kKeyF3,
-      config::kKeyF4,       config::kKeyF5,  config::kKeyF6,  config::kKeyF7,  config::kKeyF8,  config::kKeyF9,
-      config::kKeyF10,      config::kKeyF11, config::kKeyF12, config::kKeyF13, config::kKeyF14, config::kKeyF15,
-      config::kKeyF16,      config::kKeyF17, config::kKeyF18, config::kKeyF19, config::kKeyF20, config::kKeyUpArrow,
-      config::kKeyDownArrow};
+  std::array<config::Key, 33> keys = {
+      config::kKeyBLK,       config::kKeySA,         config::kKeyWPN,      config::kKeyDEF, config::kKeySYS,
+      config::kKeyDRV,       config::kKeySTR,        config::kKeyCOM,      config::kKeyBMS, config::kKeyF1,
+      config::kKeyF2,        config::kKeyF3,         config::kKeyF4,       config::kKeyF5,  config::kKeyF6,
+      config::kKeyF7,        config::kKeyF8,         config::kKeyF9,       config::kKeyF10, config::kKeyF11,
+      config::kKeyF12,       config::kKeyF13,        config::kKeyF14,      config::kKeyF15, config::kKeyF16,
+      config::kKeyF17,       config::kKeyF18,        config::kKeyF19,      config::kKeyF20, config::kKeyUpArrow,
+      config::kKeyDownArrow, config::kKeyRightArrow, config::kKeyLeftArrow};
 
   // These are the default display bindings
   // std::array<uint32_t, 29> default_bind = {
@@ -83,23 +76,22 @@ ConfigDataBase::ConfigDataBase() {
   // 0xff54};
 
   // These are the APC display bindings
-  std::array<uint32_t, 31> apc_bind = {'q',    'w',    'e',    'r',    't',    'y',    'u',    'i',
-                                       'o',    0xffbe, 0xffbf, 0xffc0, 0xffc1, 0xffc2, 0xffc3, 0xffc4,
-                                       0xffc5, 0xffc6, 0xffc7, 0xffc8, 0xffc9, 'a',    's',    'd',
-                                       'f',    'g',    'h',    'j',    0xff0d, 0xff54, 0xff52};
+  std::array<uint32_t, 33> apc_bind = {'q',    'w',    'e',    'r',    't',    'y',    'u',    'i',    'o',
+                                       0xffbe, 0xffbf, 0xffc0, 0xffc1, 0xffc2, 0xffc3, 0xffc4, 0xffc5, 0xffc6,
+                                       0xffc7, 0xffc8, 0xffc9, 'a',    's',    'd',    'f',    'g',    'h',
+                                       'j',    0xff0d, 0xff54, 0xff52, 0xff53, 0xff51};
+
   for (std::size_t c = 0; c < keys.size(); c++) {
     auto bindings = current_config_->add_bindings();
     bindings->set_bind(apc_bind[c]);
     bindings->set_key(keys[c]);
   }
 
-  {
-    // Write the new config back to disk.
-    std::fstream output(config_file_, std::fstream::out | std::fstream::trunc | std::fstream::binary);
-    if (!current_config_->SerializeToOstream(&output)) {
-      logGva::log("Failed to write config file.", DebugLevel::kLogInfo);
-      return;
-    }
+  // Write the new config back to disk.
+  if (std::fstream output(config_file_, std::fstream::out | std::fstream::trunc | std::fstream::binary);
+      !current_config_->SerializeToOstream(&output)) {
+    logGva::log("Failed to write config file.", DebugLevel::kLogInfo);
+    return;
   }
 }
 
@@ -119,8 +111,8 @@ ConfigData* ConfigData::GetInstance() {
 
 void ConfigDataBase::WriteData() const {
   // Write the config back to disk.
-  std::fstream output(config_file_, std::fstream::out | std::fstream::trunc | std::fstream::binary);
-  if (!current_config_->SerializeToOstream(&output)) {
+  if (std::fstream output(config_file_, std::fstream::out | std::fstream::trunc | std::fstream::binary);
+      !current_config_->SerializeToOstream(&output)) {
     logGva::log("Failed to update config file.", DebugLevel::kLogInfo);
     return;
   }
@@ -210,57 +202,50 @@ uint32_t ConfigDataTheme::GetThemeLabelBorderDisabled() const {
 
 LineType ConfigDataTheme::GetThemeLabelLineEnabledSelectedChanging() const {
   switch (current_config_->theme().theme_label_line_enabled_selected_changing()) {
-    default:
-    case 0:
-      return LineType::kLineSolid;
     case 1:
       return LineType::kLineDotted;
     case 2:
       return LineType::kLineDashed;
-  };
+    default:
+      return LineType::kLineSolid;
+  }
 }
 
 LineType ConfigDataTheme::GetThemeLabelLineEnabledSelected() const {
   switch (current_config_->theme().theme_label_line_enabled_selected()) {
-    default:
-    case 0:
-      return LineType::kLineSolid;
     case 1:
       return LineType::kLineDotted;
     case 2:
       return LineType::kLineDashed;
-  };
+    default:
+      return LineType::kLineSolid;
+  }
 }
 
 LineType ConfigDataTheme::GetThemeLabelLineEnabled() const {
   switch (current_config_->theme().theme_label_line_enabled()) {
-    default:
-    case 0:
-      return LineType::kLineSolid;
     case 1:
       return LineType::kLineDotted;
     case 2:
       return LineType::kLineDashed;
-  };
+    default:
+      return LineType::kLineSolid;
+  }
 }
 
 LineType ConfigDataTheme::GetThemeLabelLineDisabled() const {
   switch (current_config_->theme().theme_label_line_disabled()) {
-    default:
-    case 0:
-      return LineType::kLineSolid;
     case 1:
       return LineType::kLineDashedLarge;
     case 2:
       return LineType::kLineDotted;
-  };
+    default:
+      return LineType::kLineSolid;
+  }
 }
 
 widget::ModeEnum ConfigDataTheme::GetPpiMode() const {
   switch (current_config_->theme().widget_ppi_style()) {
-    default:
-    case config::PpiStyle::kPpiClassicTankWithSight:
-      return widget::ModeEnum::kPpiClassicTankWithSight;
     case config::PpiStyle::kPpiClassicTankWithoutSight:
       return widget::ModeEnum::kPpiClassicTankWithoutSight;
     case config::PpiStyle::kPpiClassicArrowWithSight:
@@ -271,7 +256,9 @@ widget::ModeEnum ConfigDataTheme::GetPpiMode() const {
       return widget::ModeEnum::kPpiModernTankWithSights;
     case config::PpiStyle::kPpiModernTankWithoutSights:
       return widget::ModeEnum::kPpiModernTankWithoutSights;
-  };
+    default:
+      return widget::ModeEnum::kPpiClassicTankWithSight;
+  }
 }
 
 uint32_t ConfigDataTheme::GetThemeLabelBorderThickness() const {
@@ -309,24 +296,6 @@ std::string ConfigData::GetOdbDevice() const { return current_config_->odb_devic
 
 uint32_t ConfigData::GetKeyBinding(GvaKeyEnum key) const {
   switch (key) {
-    case GvaKeyEnum::kKeyBlackout:
-      return LookupKey(config::Key::kKeyBLK);
-    case GvaKeyEnum::kKeySituationalAwareness:
-      return LookupKey(config::Key::kKeySA);
-    case GvaKeyEnum::kKeyWeapon:
-      return LookupKey(config::Key::kKeyWPN);
-    case GvaKeyEnum::kKeyDefensiveSystems:
-      return LookupKey(config::Key::kKeyDEF);
-    case GvaKeyEnum::kKeySystems:
-      return LookupKey(config::Key::kKeySYS);
-    case GvaKeyEnum::kKeyDriver:
-      return LookupKey(config::Key::kKeyDRV);
-    case GvaKeyEnum::kKeySpecialToRole:
-      return LookupKey(config::Key::kKeySTR);
-    case GvaKeyEnum::kKeyCommunications:
-      return LookupKey(config::Key::kKeyCOM);
-    case GvaKeyEnum::kKeyBattlefieldManagementSystem:
-      return LookupKey(config::Key::kKeyBMS);
     case GvaKeyEnum::kKeyF1:
       return LookupKey(config::Key::kKeyF1);
     case GvaKeyEnum::kKeyF2:
@@ -367,15 +336,42 @@ uint32_t ConfigData::GetKeyBinding(GvaKeyEnum key) const {
       return LookupKey(config::Key::kKeyF19);
     case GvaKeyEnum::kKeyF20:
       return LookupKey(config::Key::kKeyF20);
+    default:
+      break;
+  }
+
+  switch (key) {
+    case GvaKeyEnum::kKeyBlackout:
+      return LookupKey(config::Key::kKeyBLK);
+    case GvaKeyEnum::kKeySituationalAwareness:
+      return LookupKey(config::Key::kKeySA);
+    case GvaKeyEnum::kKeyWeapon:
+      return LookupKey(config::Key::kKeyWPN);
+    case GvaKeyEnum::kKeyDefensiveSystems:
+      return LookupKey(config::Key::kKeyDEF);
+    case GvaKeyEnum::kKeySystems:
+      return LookupKey(config::Key::kKeySYS);
+    case GvaKeyEnum::kKeyDriver:
+      return LookupKey(config::Key::kKeyDRV);
+    case GvaKeyEnum::kKeySpecialToRole:
+      return LookupKey(config::Key::kKeySTR);
+    case GvaKeyEnum::kKeyCommunications:
+      return LookupKey(config::Key::kKeyCOM);
+    case GvaKeyEnum::kKeyBattlefieldManagementSystem:
+      return LookupKey(config::Key::kKeyBMS);
     case GvaKeyEnum::kKeyUpArrow:
       return LookupKey(config::Key::kKeyUpArrow);
     case GvaKeyEnum::kKeyDownArrow:
       return LookupKey(config::Key::kKeyDownArrow);
     default:
-      return 0;
+      break;
   }
   return 0;
 }
+
+double ConfigData::GetBrightness() const { return current_config_->brightness(); }
+
+void ConfigData::SetBrightness(double brightness) { current_config_->set_brightness(brightness); }
 
 uint32_t ConfigData::LookupKey(config::Key key) const {
   for (int i = 0; i < current_config_->bindings_size(); i++) {

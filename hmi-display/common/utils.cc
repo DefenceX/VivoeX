@@ -18,39 +18,35 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 ///
-/// \file alarms.h
+/// \file utils.cc
 ///
-#ifndef HMI_DISPLAY_SRC_STATES_ALARMS_H_
-#define HMI_DISPLAY_SRC_STATES_ALARMS_H_
+
+#include <fcntl.h>
+#include <unistd.h>
 
 #include <iostream>
 
-#include "src/gva.h"
-#include "src/hmi_gva.h"
-#include "src/states/base_hmi.h"
-#include "src/view_gva.h"
-#include "src/widgets/alarm_indicator.h"
-#include "src/widgets/compass.h"
-#include "src/widgets/table/table_dynamic.h"
+#include "log_gva.h"
 
 namespace gva {
 
-struct StateAlarms : Hmi {
-  virtual ~StateAlarms() = default;
-  void entry() override;
-  void exit() override;
-  void react(EventKeySA const &) override;
-  void react(EventKeyWPN const &) override;
-  void react(EventKeyDEF const &) override;
-  void react(EventKeySYS const &) override;
-  void react(EventKeyDRV const &) override;
-  void react(EventKeySTR const &) override;
-  void react(EventKeyCOM const &) override;
-  void react(EventKeyBMS const &) override;
-  void react(EventKeyAlarms const &) override;
-  void react(EventKeyFunction const &e) override;
-};
+void SetBrightness(double brightness) {
+  const uint32_t max = 24000;
+  int fd = 0;
+  auto value = (uint32_t)(brightness * max);
+  fd = open("/sys/class/backlight/intel_backlight/brightness", O_WRONLY);
+  if (fd == -1) {
+    logGva::log("Cant open /sys/class/backlight/intel_backlight/brightness, try running with sudo",
+                gva::DebugLevel::kLogError);
+    close(fd);
+    return;
+  }
+
+  if (std::string str_value = std::to_string(value);
+      write(fd, str_value.c_str(), str_value.length()) != (int)str_value.length()) {
+    logGva::log("Cant write /sys/class/backlight/intel_backlight/brightness", gva::DebugLevel::kLogError);
+  }
+  close(fd);
+}
 
 }  // namespace gva
-
-#endif  // HMI_DISPLAY_SRC_STATES_ALARMS_H_

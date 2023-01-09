@@ -25,17 +25,17 @@
 
 namespace gva {
 
-double_t PlotCircleX(uint16_t x, double_t radius, double_t degree) {
-  return x + radius * sin(((M_PI * 2) / 360) * degree);
+int32_t PlotCircleX(uint16_t x, double_t radius, double_t degree) {
+  return (int32_t)(x + radius * sin(((M_PI * 2) / 360) * degree));
 }
 
-double_t PlotCircleY(uint16_t y, double_t radius, double_t degree) {
-  return y - radius * cos(((M_PI * 2) / 360) * degree);
+int32_t PlotCircleY(uint16_t y, double_t radius, double_t degree) {
+  return (int32_t)(y - radius * cos(((M_PI * 2) / 360) * degree));
 }
 
-double_t DegreesToRadians(double_t angle_degrees) { return (angle_degrees * M_PI / 180.0); }
+double_t DegreesToRadians(uint16_t angle_degrees) { return (angle_degrees * M_PI / 180.0); }
 
-double_t RadiansToDegrees(double_t angle_radians) { return (angle_radians * 180.0 / M_PI); }
+uint16_t RadiansToDegrees(double_t angle_radians) { return (uint16_t)(angle_radians * 180.0 / M_PI); }
 
 float ToDegrees(float lon_lat) {
   float d = lon_lat / 100;
@@ -43,14 +43,14 @@ float ToDegrees(float lon_lat) {
   return d + m / (float)60;
 }
 
-uint32_t DegreesSubtract(uint32_t degrees, uint32_t minus) {
-  int32_t new_value = degrees - minus;
+uint16_t DegreesSubtract(uint16_t degrees, uint16_t minus) {
+  int16_t new_value = degrees - minus;
   if (new_value < 0) new_value += 360;
   return new_value;
 }
 
-uint32_t DegreesAdd(uint32_t degrees, uint32_t add) {
-  int32_t new_value = degrees + add;
+uint16_t DegreesAdd(uint16_t degrees, uint16_t add) {
+  int16_t new_value = degrees + add;
   if (new_value > 360) new_value -= 360;
   return new_value;
 }

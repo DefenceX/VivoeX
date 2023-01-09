@@ -60,6 +60,13 @@ class CellType {
   std::string GetText() const;
 
   ///
+  /// \brief Set the Text attribute
+  ///
+  /// \param text
+  ///
+  void SetText(std::string_view text);
+
+  ///
   /// \brief Get the Foreground Colour object
   ///
   /// \return const uint32_t

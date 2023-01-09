@@ -51,9 +51,9 @@
 namespace gva {
 
 struct ColourType {
-  uint32_t red;
-  uint32_t green;
-  uint32_t blue;
+  uint32_t red = 0;
+  uint32_t green = 0;
+  uint32_t blue = 0;
 };
 
 struct PointType {
@@ -62,15 +62,15 @@ struct PointType {
 };
 
 struct ResolutionType {
-  uint32_t width;
-  uint32_t height;
-  uint32_t depth;
+  uint32_t width = 0;
+  uint32_t height = 0;
+  uint32_t depth = 0;
 };
 
 struct RgbUnpackedType {
-  uint32_t r;
-  uint32_t g;
-  uint32_t b;
+  uint32_t r = 0;
+  uint32_t g = 0;
+  uint32_t b = 0;
 };
 
 class RendererCairo;
@@ -215,12 +215,12 @@ class Renderer {
   /// \param b
   /// \return uint64_t
   ///
-  static uint64_t PackRgb(uint8_t r, uint8_t g, uint8_t b) {
-    auto red = (uint64_t)r;
-    auto green = (uint64_t)g;
-    auto blue = (uint64_t)b;
+  static uint32_t PackRgb(uint8_t r, uint8_t g, uint8_t b) {
+    auto red = (uint32_t)r;
+    auto green = (uint32_t)g;
+    auto blue = (uint32_t)b;
 
-    uint64_t packed = (red << 16) | (green << 8) | blue;
+    uint32_t packed = (red << 16) | (green << 8) | blue;
     return packed;
   }
 

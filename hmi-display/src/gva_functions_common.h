@@ -37,13 +37,13 @@ namespace gva {
 /// \param radius
 /// \param degree
 ///
-double_t PlotCircleX(uint16_t x, double_t radius, double_t degree);
+int32_t PlotCircleX(uint16_t x, double_t radius, double_t degree);
 
 ///
 /// \brief
 ///
 ///
-double_t PlotCircleY(uint16_t y, double_t radius, double_t degree);
+int32_t PlotCircleY(uint16_t y, double_t radius, double_t degree);
 
 ///
 /// \brief Convert degrees to radians
@@ -51,7 +51,7 @@ double_t PlotCircleY(uint16_t y, double_t radius, double_t degree);
 /// \param angle_degrees
 /// \return double_t
 ///
-double_t DegreesToRadians(double_t angle_degrees);
+double_t DegreesToRadians(uint16_t angle_degrees);
 
 ///
 /// \brief Convert radians to degrees
@@ -59,7 +59,7 @@ double_t DegreesToRadians(double_t angle_degrees);
 /// \param angle_radians
 /// \return double_t
 ///
-double_t RadiansToDegrees(double_t angle_radians);
+uint16_t RadiansToDegrees(double_t angle_radians);
 
 ///
 /// \brief Convert longitude to degrees
@@ -74,7 +74,7 @@ float ToDegrees(float lon_lat);
 /// \param minus The value to subtract
 /// \return uint32_t The new value
 ///
-uint32_t DegreesSubtract(uint32_t degrees, uint32_t minus);
+uint16_t DegreesSubtract(uint16_t degrees, uint16_t minus);
 
 ///
 /// \brief Subtract a value from degrees and wrap if needed
@@ -83,7 +83,7 @@ uint32_t DegreesSubtract(uint32_t degrees, uint32_t minus);
 /// \param add The value to add
 /// \return uint32_t The new value
 ///
-uint32_t DegreesAdd(uint32_t degrees, uint32_t add);
+uint16_t DegreesAdd(uint16_t degrees, uint16_t add);
 
 }  // namespace gva
 

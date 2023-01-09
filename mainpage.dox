@@ -11,6 +11,8 @@
    - \ref build
    - \ref install
    - \ref developers
+     - \ref hardware
+     - \ref trace
 - \ref docs
 - \ref widgets
    - \ref ppiclassictank
@@ -38,6 +40,8 @@
   - \ref screen6
   - \ref screen7
   - \ref screen8
+  - \ref screen9
+  - \ref screen10
 
 This documentation was created from git hash <a href="https://github.com/DefenceX/vivoe-lite">#$(GIT_HASH)</a>
 
@@ -133,6 +137,38 @@ good understanding of the CMake build system before station to add code into thi
 The project to broken down into modules and submodules these can be seen in the diagram below:
 
 \image html cmake.png  "CMake dependancies"
+
+\subsubsection hardware Hardware
+If you are usings the software control for screen brigtness then please ensure that the file ***/sys/class/backlight/intel_backlight/brightness*** is setup to control the backlight. Brightness functions will only work if the application is run with superuser permissions, if run as normal user then the brightness will not work and an error will be logged.
+
+To manually set the brightness from the command line run:
+\code
+$ echo 24000 > /sys/class/backlight/intel_backlight/brightness
+\endcode
+Sets the brightness to 100%.
+
+\subsubsection trace Tracing
+To get a detailed view of whats going on in the code you can enable Linux Test Trace (See https://lttng.org/). This is enabled using the CMake macro shown below:
+\code
+$ cmake -DTRACE=ON ..
+\endcode
+Once built you can run with trace using the trace script in /scripts as shown below (from the build directory):
+\code
+$ ../scripts/trace.sh ./bin/hmi-display
+\endcode
+Trace files are now available in the defaullt location (normally $HOME) or in the directory poited to by $LTTNG_HOME/lttng-traces.
+
+The recommeded GUI for viewing traces is trace compass by the Eclipse foundation. Tool can be downloaded here https://www.eclipse.org/tracecompass/
+
+Import the trace and select the trace directory File -> Import. While importing select ***Create Experiment*** and set the log file type to ***Common Trace Format: LTTng UST Trace***. At this point you can click ** Finish** to import.
+
+Once imported you can open the experiment and view the interactive flame graph as shown below:
+
+\image html trace-compass-flame-graph.png  "Flame Graph of code (Renderer section)" 
+
+You may see raw addresses. To resolve the function names click ![trace compass icon](images/screen/trace-compass-map-function-names-icon.png) and point to the binary executable:
+
+\image html trace-compass-map-function-names.png  "Trace View resolve function names from binary file"
 
 \subsection docs Documentation
 You can create this documentation on your own system using doxygen. 
@@ -300,13 +336,16 @@ $ tar -xf australia-latest.tar.gz --directory /opt/osmscout/maps
 \subsection screen6 Keyboard example with Alarms
 \image html images/screen/ScreenshotAlarmsKeyboard.png  "Keyboard example with Alarms" 
 
-\subsection screen7 OSMScount standing in for a BMS (Battlefield Management System)
+\subsection screen7 Drivers display
+\image html images/screen/ScreenshotDrv.png  "Driver with instruments overlaid" 
+
+\subsection screen8 OSMScount standing in for a BMS (Battlefield Management System)
 \image html images/screen/ScreenshotBms.png  "Battlefield Management System" 
 
-\subsection screen8 Drivers Modern SA screen using theme, custum PPI
+\subsection screen9 Drivers Modern SA screen using theme, custum PPI
 \image html images/screen/ScreenshotThemeModern.png  "Theme high contrast (SA) (user defined with different PPI)" 
 
-\subsection screen9 Drivers Modern Systems screen using theme
+\subsection screen10 Drivers Modern Systems screen using theme
 \image html images/screen/ScreenshotThemeModernSys.png  "Theme high contrast, Systems (SYS) Overview" 
 
 

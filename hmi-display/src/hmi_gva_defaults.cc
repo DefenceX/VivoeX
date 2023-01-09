@@ -78,8 +78,8 @@ StatusBar DefaultSettings::GetDefaultStatusBar() {
   status_bar.x = kMinimumHeight - 11;
   status_bar.y = 0;
   status_bar.location.locationFormat = LocationEnum::kLocationFormatMgrs;
-  status_bar.location.lon = gva::ConfigData::GetInstance()->GetTestLon();
-  status_bar.location.lat = gva::ConfigData::GetInstance()->GetTestLat();
+  status_bar.location.lon = (float)gva::ConfigData::GetInstance()->GetTestLon();
+  status_bar.location.lat = (float)gva::ConfigData::GetInstance()->GetTestLat();
   status_bar.labels[0].text = "00:00:00 01/01/1973";
   status_bar.labels[1].text = "Norm.";
   status_bar.labels[2].text = "Lat:0.000000 Lon:-0.000000";
@@ -405,13 +405,13 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeyAlarmsLeft() {
   FunctionKeys keys;
   keys.visible = true;
   keys.labels[0].state = LabelStates::kLabelEnabled;
-  keys.labels[0].text = "Sort";
+  keys.labels[0].text = "Sort.Ascending";
   keys.labels[0].toggleActive = false;
   keys.labels[1].state = LabelStates::kLabelEnabled;
-  keys.labels[1].text = "Order";
+  keys.labels[1].text = "Reset";
   keys.labels[1].toggleActive = false;
   keys.labels[2].state = LabelStates::kLabelEnabled;
-  keys.labels[2].text = "Show.Overridden";
+  keys.labels[2].text = "Hide.Overridden";
   keys.labels[2].toggleActive = false;
   keys.labels[3].state = LabelStates::kLabelEnabled;
   keys.labels[3].text = "Select.All";

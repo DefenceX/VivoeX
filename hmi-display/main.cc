@@ -35,6 +35,7 @@
 #include "src/gva_application.h"
 #include "src/hmi_gva.h"
 #include "src/renderer_map.h"
+#include "src/trace.h"
 #include "src/widgets/alarm_indicator.h"
 #include "src/widgets/compass.h"
 #include "src/widgets/keyboard.h"
@@ -98,6 +99,7 @@ int main(int argc, char *argv[]) {
   uint32_t port = 5004;
 
   std::cout << "hmi_display (By defencex.com.au)..." << std::endl;
+  tracepoint(vivoe_lite, main, 0, (char *)"Hello");
 
   GvaApplication::Options options = {false, false, ""};
 
@@ -107,6 +109,7 @@ int main(int argc, char *argv[]) {
 
   // Blocking call to the application constructor
   app.Exec();
+  tracepoint(vivoe_lite, main, 0, (char *)"World");
 
   gva::logGva::log("Exiting hmi_display...\n", gva::DebugLevel::kLogInfo);
 }

@@ -35,6 +35,7 @@
 namespace gva {
 
 struct StateBMS : Hmi {
+  virtual ~StateBMS() = default;
   void entry() override;
   void exit() override;
   void react(EventKeyPowerOn const &) override;

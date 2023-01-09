@@ -18,20 +18,16 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 ///
-/// \file table.h
+/// \file table_dynamic.h
 ///
-#ifndef HMI_DISPLAY_SRC_WIDGETS_TABLE_TABLE_H_
-#define HMI_DISPLAY_SRC_WIDGETS_TABLE_TABLE_H_
+#ifndef HMI_DISPLAY_SRC_WIDGETS_TABLE_TABLE_DYNAMIC_H_
+#define HMI_DISPLAY_SRC_WIDGETS_TABLE_TABLE_DYNAMIC_H_
 
 #include <memory>
 #include <string>
 #include <vector>
 
-#include "src/renderer_gva.h"
-#include "src/widgets/table/cell_type.h"
-#include "src/widgets/table/row_type.h"
-#include "src/widgets/widget.h"
-#include "src/widgets/widget_types.h"
+#include "src/widgets/table/table.h"
 
 namespace gva {
 
@@ -39,26 +35,32 @@ namespace gva {
 /// \brief A widget representing a table of elements
 ///
 ///
-class WidgetTable : public WidgetX {
+class WidgetTableDynamic : public WidgetTable {
  public:
+  ///
+  /// \brief An enum representing to type of sort
+  ///
+  ///
+  enum class SortType { kSortUnsorted = 0, kSortAscending, kSortDescending };
+
   ///
   /// \brief Construct a new Widget Keyboard object
   ///
   /// \param renderer
   ///
-  explicit WidgetTable(const RendererGva &renderer, TouchGva *touch, uint32_t background_colour);
+  explicit WidgetTableDynamic(const RendererGva &renderer, TouchGva *touch, uint32_t background_colour);
 
   ///
   /// \brief Destroy the Widget Keyboard object
   ///
   ///
-  ~WidgetTable() override = default;
+  ~WidgetTableDynamic() final = default;
 
   ///
   /// \brief The base class override to draw the table once setup
   ///
   ///
-  void Draw() override;
+  void Draw() final;
 
   ///
   /// \brief Add a row to the table
@@ -69,21 +71,21 @@ class WidgetTable : public WidgetX {
   /// \param highlight_colour Highlight colour
   /// \param font_weight The font weight
   ///
-  virtual void AddRow(uint32_t foreground_colour, uint32_t background_colour, uint32_t outline_colour,
-                      uint32_t highlight_colour, widget::WeightType font_weight);
+  void AddRow(uint32_t foreground_colour, uint32_t background_colour, uint32_t outline_colour,
+              uint32_t highlight_colour, widget::WeightType font_weight) final;
 
   ///
   /// \brief Add a row to the table
   ///
   ///
-  virtual void AddRow();
+  void AddRow() final;
 
   ///
   /// \brief Add a row to the table
   ///
   /// \param font_weight The font weight
   ///
-  virtual void AddRow(widget::WeightType font_weight);
+  void AddRow(widget::WeightType font_weight) final;
 
   ///
   /// widgets \brief Add a basic cell
@@ -91,7 +93,7 @@ class WidgetTable : public WidgetX {
   /// \param text The text to be contained in the cell
   /// \param width The width of the cell in pixels
   ///
-  virtual void AddCell(const std::string text, uint32_t width);
+  void AddCell(const std::string text, uint32_t width) final;
 
   ///
   /// \brief Add a new cell with background colour
@@ -100,14 +102,14 @@ class WidgetTable : public WidgetX {
   /// \param width The width of the cell in pixels
   /// \param background_colour Cell background colour
   ///
-  virtual void AddCell(const std::string text, uint32_t width, uint32_t background_colour);
+  void AddCell(const std::string text, uint32_t width, uint32_t background_colour) final;
 
   ///
   /// \brief Add a new cell specifying alignment
   ///
   /// \param text The text to be contained in the cell
   /// \param width The width of the ctable_
-  virtual void AddCell(const std::string text, uint32_t width, widget::CellAlignType align);
+  void AddCell(const std::string text, uint32_t width, widget::CellAlignType align) final;
 
   ///
   /// \brief Add a new cell specifying alignment
@@ -117,80 +119,65 @@ class WidgetTable : public WidgetX {
   /// \param align Alignment CellAlignType::
   /// \param background_colour Cell background colour
   ///
-  virtual void AddCell(const std::string text, uint32_t width, widget::CellAlignType align, uint32_t background_colour);
+  void AddCell(const std::string text, uint32_t width, widget::CellAlignType align, uint32_t background_colour) final;
 
   ///
-  /// \brief Reset the table
+  /// \brief Set the Hide Override attribute
   ///
+  /// \param hide
   ///
-  void Reset();
+  void SetHideOverride(bool hide);
 
   ///
-  /// \brief Get the Background Colour attribute
+  /// \brief Get the Hide Override attribute
   ///
-  /// \return uint32_t
+  /// \return true if overridden alarms are hidden
+  /// \return false otherwise
   ///
-  uint32_t GetBackgroundColour() const;
+  bool GetHideOverride() const;
 
   ///
-  /// \brief Set the Background Colour attribute
+  /// \brief Set the Sorted attribute
   ///
-  /// \param background_colour
+  /// \param sort
   ///
-  void SetBackgroundColour(uint32_t background_colour);
+  void SetSorted(SortType sort);
 
   ///
-  /// \brief Set the Current selected row, will be highlighted in the theme colours
+  /// \brief Get the Sorted attribute
   ///
-  /// \param row
+  /// \return true
+  /// \return false
   ///
-  void SetCurrentRow(uint32_t row);
+  SortType GetSorted() const;
 
   ///
-  /// \brief Set the Next Row attribute
+  /// \brief Set the All Highlighted attribute
   ///
+  /// \param highlight_all true if all to be highlighted, false to unset all bar first row
   ///
-  void SetNextRow();
+  void SetAllHighlighted(bool highlight_all);
 
   ///
-  /// \brief Set the Previous Row attribute
+  /// \brief Get the All Highlighted attribute
   ///
+  /// \return true if all currently highlighted
+  /// \return false if only some highlighted
   ///
-  void SetPreviousRow();
-
-  ///
-  /// \brief Get the Current selected highlighted row
-  ///
-  /// \param row
-  /// \return uint32_t
-  ///
-  uint32_t GetCurrentRow() const;
-
-  ///
-  /// \brief Get the Rows vector
-  ///
-  /// \return std::vector<RowType>&
-  ///
-  std::vector<RowType> &GetRows();
-
-  ///
-  /// \brief Get the all the Rows in supplie vector
-  ///
-  /// \param rows
-  ///
-  void SetRows(const std::vector<RowType> &rows);
+  bool GetAllHighlighted() const;
 
  private:
-  std::vector<RowType> rows_;
-  std::vector<RowType> rows_filtered_;
-  void DrawTable();
-  TouchGva *touch_;
-  uint32_t current_cell_ = 0;
-  uint32_t current_row_ = 0;
   uint32_t background_colour_;
   uint32_t foreground_colour_ = Renderer::PackRgb(HMI_WHITE);
   uint32_t outline_colour_ = ConfigData::GetInstance()->GetThemeLabelBorderEnabled();
   uint32_t highlight_colour_ = ConfigData::GetInstance()->GetThemeLabelBorderEnabledSelected();
+
+  std::vector<RowType> dynamic_rows_;
+  std::vector<RowType> dynamic_rows_filtered_;
+
+  bool highlight_all_ = false;
+  bool hide_override_ = false;
+  SortType sorted_ = SortType::kSortUnsorted;
 };
 
 }  // namespace gva

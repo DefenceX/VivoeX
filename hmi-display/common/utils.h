@@ -18,39 +18,14 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 ///
-/// \file alarms.h
+/// \file utils.h
 ///
-#ifndef HMI_DISPLAY_SRC_STATES_ALARMS_H_
-#define HMI_DISPLAY_SRC_STATES_ALARMS_H_
 
-#include <iostream>
-
-#include "src/gva.h"
-#include "src/hmi_gva.h"
-#include "src/states/base_hmi.h"
-#include "src/view_gva.h"
-#include "src/widgets/alarm_indicator.h"
-#include "src/widgets/compass.h"
-#include "src/widgets/table/table_dynamic.h"
+#ifndef HMI_DISPLAY_COMMON_UTILS_H_
+#define HMI_DISPLAY_COMMON_UTILS_H_
 
 namespace gva {
 
-struct StateAlarms : Hmi {
-  virtual ~StateAlarms() = default;
-  void entry() override;
-  void exit() override;
-  void react(EventKeySA const &) override;
-  void react(EventKeyWPN const &) override;
-  void react(EventKeyDEF const &) override;
-  void react(EventKeySYS const &) override;
-  void react(EventKeyDRV const &) override;
-  void react(EventKeySTR const &) override;
-  void react(EventKeyCOM const &) override;
-  void react(EventKeyBMS const &) override;
-  void react(EventKeyAlarms const &) override;
-  void react(EventKeyFunction const &e) override;
-};
-
-}  // namespace gva
-
-#endif  // HMI_DISPLAY_SRC_STATES_ALARMS_H_
+void SetBrightness(double brightness);
+}
+#endif  // HMI_DISPLAY_COMMON_UTILS_H_

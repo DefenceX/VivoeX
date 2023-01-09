@@ -27,9 +27,43 @@
 namespace gva {
 
 GvaKeyEnum Hmi::KeyAlarms(GvaKeyEnum keypress) {
-  WidgetTable *table = (WidgetTable *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable);
+  WidgetTableDynamic *table =
+      (WidgetTableDynamic *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic);
 
   switch (keypress) {
+    case GvaKeyEnum::kKeyF1:  // F1
+      if (table->GetSorted() == WidgetTableDynamic::SortType::kSortDescending) {
+        screen_.function_left.labels[0].text = "Sort.Ascending";
+        table->SetSorted(WidgetTableDynamic::SortType::kSortAscending);
+      } else {
+        screen_.function_left.labels[0].text = "Sort.Descending";
+        table->SetSorted(WidgetTableDynamic::SortType::kSortDescending);
+      }
+      return keypress;
+      break;
+    case GvaKeyEnum::kKeyF2:  // F2
+      table->SetSorted(WidgetTableDynamic::SortType::kSortUnsorted);
+      return keypress;
+      break;
+    case GvaKeyEnum::kKeyF3:  // F3
+      if (table->GetHideOverride()) {
+        screen_.function_left.labels[2].text = "Hide.Overridden";
+        table->SetHideOverride(false);
+      } else {
+        screen_.function_left.labels[2].text = "Show.Overridden";
+        table->SetHideOverride(true);
+      }
+      return keypress;
+      break;
+    case GvaKeyEnum::kKeyF4:  // F4
+      if (table->GetAllHighlighted()) {
+        table->SetAllHighlighted(false);
+      } else {
+        screen_.function_left.labels[2].text = "Hide.Overridden";
+        table->SetAllHighlighted(true);
+      }
+      return keypress;
+      break;
     case GvaKeyEnum::kKeyF17:  // Down Arrow
       table->SetPreviousRow();
       return keypress;
@@ -48,7 +82,7 @@ GvaKeyEnum Hmi::KeyAlarms(GvaKeyEnum keypress) {
 void StateAlarms::entry() {
   // Check to see if alarms was requested from hidden state, if so go back to last menu.
   if (screen_.control->labels_[1].state_ != LabelStates::kLabelHidden) {
-    auto *table = (WidgetTable *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable);
+    auto *table = (WidgetTableDynamic *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic);
 
     if (alarmson_) {
       alarmson_ = false;
@@ -84,7 +118,6 @@ void StateAlarms::entry() {
     Reset();
     alarmson_ = true;
     manager_->SetScreen(&screen_, GvaFunctionEnum::kAlarmsX);
-    HmiHelper::TableAlarms(table);
     table->SetVisible(true);
 
     // Update the controls
@@ -95,7 +128,10 @@ void StateAlarms::entry() {
   }
 };
 
-void StateAlarms::exit() {}
+void StateAlarms::exit() {
+  auto *table = (WidgetTableDynamic *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic);
+  table->SetVisible(false);
+}
 
 void StateAlarms::react(EventKeySA const &) { transit<StateSA>(); };
 

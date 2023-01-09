@@ -267,6 +267,8 @@ class ConfigData : public ConfigDataTheme {
   ///
   explicit ConfigData(const ConfigData& other) = delete;
 
+  ~ConfigData() = delete;
+
   ///
   /// \brief Singletons should not be assignable.
   ///
@@ -417,6 +419,20 @@ class ConfigData : public ConfigDataTheme {
   /// \return uint32_t
   ///
   uint32_t GetKeyBinding(GvaKeyEnum key) const;
+
+  ///
+  /// \brief Get the Brightness attribute
+  ///
+  /// \return long
+  ///
+  double GetBrightness() const;
+
+  ///
+  /// \brief Set the Brightness attribute
+  ///
+  /// \param brightness
+  ///
+  void SetBrightness(double brightness);
 
  protected:
   ///

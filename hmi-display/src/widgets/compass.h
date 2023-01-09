@@ -26,6 +26,7 @@
 
 #include <cstdint>
 
+#include "math.h"
 #include "src/renderer_cairo_types.h"
 #include "src/widgets/widget.h"
 
@@ -70,28 +71,28 @@ class WidgetPlanPositionIndicator : public WidgetX {
   ///
   /// \param bearing
   ///
-  void SetBearing(int16_t bearing) { bearing_ = bearing; }
+  void SetBearing(uint16_t bearing) { bearing_ = bearing; }
 
   ///
   /// \brief Set the Bearing Sight object
   ///
   /// \param bearing
   ///
-  void SetBearingSight(int16_t bearing_sight) { bearing_sight_ = bearing_sight; }
+  void SetBearingSight(uint16_t bearing_sight) { bearing_sight_ = bearing_sight; }
 
   ///
   /// \brief Get the Bearing object
   ///
-  /// \return int16_t
+  /// \return uint16_t
   ///
-  int16_t GetBearing() const { return bearing_; }
+  uint16_t GetBearing() const { return bearing_; }
 
   ///
   /// \brief Get the Bearing Sight object
   ///
-  /// \return int16_t
+  /// \return uint16_t
   ///
-  int16_t GetBearingSight() const { return bearing_sight_; }
+  uint16_t GetBearingSight() const { return bearing_sight_; }
 
   ///
   /// \brief Set the Mode object
@@ -101,6 +102,14 @@ class WidgetPlanPositionIndicator : public WidgetX {
   void SetMode(widget::ModeEnum mode) { mode_ = mode; }
 
  private:
+  ///
+  /// \brief Draw a classic sight on PPI
+  ///
+  /// \param radius
+  /// \param render_sight_azimuth
+  /// \param angle
+  ///
+  void DrawSight(double_t radius, uint32_t render_sight_azimuth, double_t angle);
   const double scale_ = 0.5;
   int16_t bearing_ = 0;
   int16_t bearing_sight_ = 0;

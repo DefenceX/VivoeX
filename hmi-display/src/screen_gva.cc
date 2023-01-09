@@ -43,28 +43,21 @@
 #include "common/log_gva.h"
 #include "src/gva.h"
 #include "src/gva_functions_common.h"
-#include "widgets/alarm_indicator.h"
-#include "widgets/bottom_labels.h"
-#include "widgets/compass.h"
-#include "widgets/driver/rpm_fuel.h"
-#include "widgets/driver/speedometer.h"
-#include "widgets/keyboard.h"
-#include "widgets/mode.h"
-#include "widgets/side_labels.h"
-#include "widgets/top_labels.h"
+#include "src/hmi_gva_helpers.h"
+#include "widgets/widgets.h"
 
-#define MAX_NMEA 1000
+const int kMaxNmea = 1000;
 
 namespace gva {
-
 ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : RendererGva(width, height), screen_(screen) {
   struct termios settings;
 
   config_ = gva::ConfigData::GetInstance();
 
-  logGva::log("GVA screen initalised (" + std::to_string(width_) + "x" + std::to_string(height_), DebugLevel::kLogInfo);
+  logGva::log("GVA screen initialised (" + std::to_string(width_) + "x" + std::to_string(height_),
+              DebugLevel::kLogInfo);
 
-  // Initalise the pasert for NMEA
+  // Initialise the parser for NEMA
   nmea_zero_INFO(&info_);
   nmea_parser_init(&parser_);
 
@@ -87,10 +80,10 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
   //
   // Start the Real Time Clock
   //
-  StartClock(*screen_->status_bar);
+  StartClock(screen_->status_bar);
 
-  // WidgetTo
-  //  Setup the required widgets
+  //
+  // Setup the required widgets
   //
   RendererGva *renderer = this;
   TouchGva *touch = GetTouch();
@@ -109,11 +102,45 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
   widget_list_[widget::WidgetEnum::KWidgetTypeRightLabels] = std::make_shared<WidgetSideLabels>(*renderer, touch);
   widget_list_[widget::WidgetEnum::KWidgetTypeTable] =
       std::make_shared<WidgetTable>(*renderer, touch, ConfigData::GetInstance()->GetThemeBackground());
+  widget_list_[widget::WidgetEnum::KWidgetTypeTableDynamic] =
+      std::make_shared<WidgetTableDynamic>(*renderer, touch, ConfigData::GetInstance()->GetThemeBackground());
+
+  //
+  // Load some dummy alarms (real alarms come from LDM)
+  //
+  auto *table = (WidgetTableDynamic *)GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic);
+  HmiHelper::TableAlarms(table);
+
+  //
+  // Initialise right labels
+  //
+  auto right_labels = (WidgetSideLabels *)GetWidget(widget::WidgetEnum::KWidgetTypeRightLabels);
+  right_labels->SetLabels(&screen_->function_right.labels);
+  right_labels->SetX(kMinimumWidth - 100 - 1);
+
+  //
+  // Initialise left labels
+  //
+  auto left_labels = (WidgetSideLabels *)GetWidget(widget::WidgetEnum::KWidgetTypeLeftLabels);
+  left_labels->SetLabels(&screen_->function_left.labels);
+
+  //
+  // Initialise top labels
+  //
+  auto top_labels = (WidgetTopLabels *)GetWidget(widget::WidgetEnum::KWidgetTypeTopLabels);
+  top_labels->SetY(2);
+  top_labels->SetLabels(&screen_->function_top->labels);
+
+  //
+  // Initialise bottom labels
+  //
+  auto bottom_labels = (WidgetBottomLabels *)GetWidget(widget::WidgetEnum::KWidgetTypeBottomLabels);
+  bottom_labels->SetLabels(&screen_->control->labels_);
 }
 
 ScreenGva::~ScreenGva() {
   args_.active = false;
-  pthread_join(clock_thread_, 0);
+  pthread_join(clock_thread_, nullptr);
   nmea_parser_destroy(&parser_);
   close(gps_);
   if (gps_) logGva::log("GPS closed", DebugLevel::kLogInfo);
@@ -121,94 +148,105 @@ ScreenGva::~ScreenGva() {
   logGva::finish();
 }
 
-void *ClockUpdate(void *arg) {
-  args *a = (args *)arg;
-  time_t t;
-  struct tm *tm;
+void ClockUpdate(ClockArgs *a) {
   char c;
-  char tmp[MAX_NMEA + 2] = {0};
-  char buffer[MAX_NMEA] = {0};
+  char tmp[kMaxNmea + 2] = {0};
+  char buffer[kMaxNmea] = {0};
+
+  uint32_t i = 0;
+  uint32_t ii = 0;
+
+  // Get the system time and be thread safe
+  auto unix_epoch_time = (time_t) nullptr;
+  struct tm local_time;
+  unix_epoch_time = time(&unix_epoch_time);
+  localtime_r(&unix_epoch_time, &local_time);  // Compliant
+
+  char clock[1000];
+  snprintf(clock, sizeof(clock), "%02d/%02d/%02d %02d:%02d:%02d", local_time.tm_mday, local_time.tm_mon + 1,
+           local_time.tm_year + 1900, local_time.tm_hour, local_time.tm_min, local_time.tm_sec);
+  a->clockString = clock;
+  if (*a->gps > 0) {
+    i = 0;
+    tcflush(*a->gps, TCIOFLUSH);
+
+    if (auto size = read(*a->gps, &buffer[0], 1); size != 0) {
+      memset(buffer, 0, kMaxNmea);
+      while (buffer[0] != '$') {
+        auto size_read = read(*a->gps, &buffer[0], 1);
+        if (size_read == 0) break;
+      }
+      while (buffer[i++] != '\n') {
+        ii = (uint32_t)read(*a->gps, &c, 1);
+        if (ii == 1) {
+          buffer[i] = c;
+        }
+        if (i == kMaxNmea) break;
+      }
+      buffer[i - 1] = 0;
+      std::string tmp_buffer = buffer;
+      logGva::log("GPS NMEA " + tmp_buffer, DebugLevel::kLogInfo);
+    }
+
+    snprintf(tmp, sizeof(tmp), "%s\r\n", buffer);
+    a->info->lon = a->location->lon;
+    a->info->lat = a->location->lat;
+    nmea_parse(a->parser, tmp, sizeof(tmp), a->info);
+    a->info->lat = ToDegrees((float)a->info->lat);
+    a->info->lon = ToDegrees((float)a->info->lon);
+  }
+
+  if ((a->info->lon != 0) && (a->info->lat != 0)) {
+    switch (a->location->locationFormat) {
+      case LocationEnum::kLocationFormatLongLat:
+        a->locationFormat = "LONLAT";
+        {
+          std::stringstream stream;
+          stream << std::fixed << std::setprecision(2) << "Lat:" << a->info->lat << " Lon:" << a->info->lon << " ["
+                 << a->info->sig << "]" << a->info->fix;
+          a->locationString = stream.str();
+        }
+        break;
+      case LocationEnum::kLocationFormatMgrs: {
+        int zone;
+        bool northp;
+        double x;
+        double y;
+        GeographicLib::UTMUPS::Forward(a->info->lat, a->info->lon, zone, northp, x, y);
+        std::string mgrs;
+        GeographicLib::MGRS::Forward(zone, northp, x, y, a->info->lat, 5, mgrs);
+        a->locationFormat = "MGRS";
+        a->locationString = mgrs;
+      } break;
+    }
+  }
+  gva::EventsGva::CreateRefreshEvent();
+}
+
+void *ClockUpdateThread(void *arg) {
+  auto a = (ClockArgs *)arg;
 
   while (a->active) {
-    uint32_t i, ii = 0;
-    t = time(NULL);
-    tm = localtime(&t);
-    char clock[1000];
-    sprintf(clock, "%02d/%02d/%02d %02d:%02d:%02d", tm->tm_mday, tm->tm_mon + 1, tm->tm_year + 1900, tm->tm_hour,
-            tm->tm_min, tm->tm_sec);
-    a->clockString = clock;
-    if (*a->gps > 0) {
-      i = 0;
-      tcflush(*a->gps, TCIOFLUSH);
+    ClockUpdate(a);
+    struct timespec reqDelay = {1, 0};
+    nanosleep(&reqDelay, (struct timespec *)nullptr);
+  }  // End thread loop
 
-      if (auto size = read(*a->gps, &buffer[0], 1); size != 0) {
-        memset(buffer, 0, MAX_NMEA);
-        while (buffer[0] != '$') {
-          auto size = read(*a->gps, &buffer[0], 1);
-          if (size == 0) break;
-        }
-        while (buffer[i++] != '\n') {
-          ii = read(*a->gps, &c, 1);
-          if (ii == 1) {
-            buffer[i] = c;
-          }
-          if (i == MAX_NMEA) break;
-        }
-        buffer[i - 1] = 0;
-        std::string tmp_buffer = buffer;
-        logGva::log("GPS NMEA " + tmp_buffer, DebugLevel::kLogInfo);
-      }
-
-      snprintf(tmp, sizeof(tmp), "%s\r\n", buffer);
-      a->info->lon = a->location->lon;
-      a->info->lat = a->location->lat;
-      nmea_parse(a->parser, tmp, (uint32_t)strlen(tmp), a->info);
-      a->info->lat = ToDegrees(a->info->lat);
-      a->info->lon = ToDegrees(a->info->lon);
-    }
-
-    if (a->info->lon && a->info->lat) {
-      switch (a->location->locationFormat) {
-        case LocationEnum::kLocationFormatLongLat:
-          a->locationFormat = "LONLAT";
-          {
-            std::stringstream stream;
-            stream << std::fixed << std::setprecision(2) << "Lat:" << a->info->lat << " Lon:" << a->info->lon << " ["
-                   << a->info->sig << "]" << a->info->fix;
-            a->locationString = stream.str();
-          }
-          break;
-        case LocationEnum::kLocationFormatMgrs: {
-          int zone;
-          bool northp;
-          double x;
-          double y;
-          GeographicLib::UTMUPS::Forward(a->info->lat, a->info->lon, zone, northp, x, y);
-          std::string mgrs;
-          GeographicLib::MGRS::Forward(zone, northp, x, y, a->info->lat, 5, mgrs);
-          a->locationFormat = "MGRS";
-          a->locationString = mgrs;
-        } break;
-      }
-    }
-    nanosleep((const struct timespec[]){{0, 1000000000L}}, NULL);
-  }
   return nullptr;
 }
 
-void ScreenGva::StartClock(const StatusBar &barData) {
-  pthread_t clock_thread_;
+void ScreenGva::StartClock(StatusBar *barData) {
   args_.active = true;
   args_.parser = &parser_;
   args_.info = &info_;
   args_.gps = &gps_;
   args_.screen = this;
-  args_.location = const_cast<LocationType *>(&barData.location);
+  args_.location = &barData->location;
   args_.info->lon = ConfigData::GetInstance()->GetTestLon();
   args_.info->lat = ConfigData::GetInstance()->GetTestLat();
 
   /* Launch clock thread */
-  if (pthread_create(&clock_thread_, NULL, ClockUpdate, (void *)&args_)) {
+  if (pthread_create(&clock_thread_, nullptr, ClockUpdateThread, (void *)&args_)) {
     logGva::log("Error creating thread", DebugLevel::kLogError);
     return;
   }
@@ -237,7 +275,6 @@ GvaStatusTypes ScreenGva::Update() {
         TextureRGB(0, 0, screen_->canvas.buffer);
         TextureRGB(0, 0, texture, screen_->canvas.filename);
         break;
-      case SurfaceType::kSurfaceNone:
       default:
         // Set background green
         SetColourForeground(config_->GetThemeBackground());
@@ -258,47 +295,11 @@ GvaStatusTypes ScreenGva::Update() {
     return GvaStatusTypes::kGvaSuccess;
   }
 
-  // Draw the LEFT bezel labels
-  if (screen_->function_left.visible) {
-    auto widget = (WidgetSideLabels *)GetWidget(widget::WidgetEnum::KWidgetTypeLeftLabels);
-    widget->SetLabels(&screen_->function_left.labels);
-    widget->Draw();
-  }
-
-  // Draw the RIGHT bezel labels
-  if (screen_->function_right.visible) {
-    auto widget = (WidgetSideLabels *)GetWidget(widget::WidgetEnum::KWidgetTypeRightLabels);
-    widget->SetLabels(&screen_->function_right.labels);
-    widget->SetX(kMinimumWidth - 100 - 1);
-    widget->Draw();
-  }
-
-  // Draw the TOP bezel labels
-  if (screen_->function_top->visible) {
-    auto widget = (WidgetTopLabels *)GetWidget(widget::WidgetEnum::KWidgetTypeTopLabels);
-    widget->SetY(2);
-    widget->SetLabels(&screen_->function_top->labels);
-    widget->Draw();
-  }
-
-  // Draw the maintenance mode indicator
-  if (screen_->info.mode == ScreenMode::kModeMaintinance) {
-    auto widget = (WidgetMode *)GetWidget(widget::WidgetEnum::KWidgetTypeMode);
-    widget->Draw();
-  }
-
-  // Draw the onscreen KEYBOARD
-  widget_list_[widget::WidgetEnum::KWidgetTypeKeyboard]->Draw();
-
-  // Drivers Aids
-  widget_list_[widget::WidgetEnum::kWidgetTypeDialSpeedometer]->Draw();
-  widget_list_[widget::WidgetEnum::KWidgetTypeDialRpmFuel]->Draw();
-
   // Setup and Draw the status bar, one row table
   if (screen_->status_bar->visible) {
     WidgetTable status_bar_table(*(RendererGva *)this, GetTouch(),
                                  ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
-    uint32_t i = 0;
+
     // Setup and Draw the status bar, one row table
     std::array<uint32_t, 7> widths = {23, 8, 37, 8, 8, 8, 8};
     status_bar_table.SetVisible(true);
@@ -312,32 +313,10 @@ GvaStatusTypes ScreenGva::Update() {
     screen_->status_bar->labels[0].text = args_.clockString;
     screen_->status_bar->labels[1].text = args_.locationFormat;
     screen_->status_bar->labels[2].text = args_.locationString;
-    for (i = 0; i < 7; i++) {
+    for (uint32_t i = 0; i < 7; i++) {
       status_bar_table.AddCell(screen_->status_bar->labels[i].text, widths[i], widget::CellAlignType::kAlignLeft);
     }
     status_bar_table.Draw();
-  }
-
-  // TODO : Draw the alarms if any (Mock up)
-  if (widget_list_[widget::WidgetEnum::KWidgetTypeAlarmIndicator]->GetVisible()) {
-    widget_list_[widget::WidgetEnum::KWidgetTypeAlarmIndicator]->Draw();
-  }
-
-  // Setup and Draw the alarms
-  if (widget_list_[widget::WidgetEnum::KWidgetTypeTable]->GetVisible()) {
-    auto table_widget = (WidgetTable *)GetWidget(widget::WidgetEnum::KWidgetTypeTable);
-
-    table_widget->Draw();
-  }
-
-  // Draw PPI (Plan Position Indicator)
-  widget_list_[widget::WidgetEnum::KWidgetTypeCompass]->Draw();
-
-  // Draw the control labels at the bottom of the screen
-  if (screen_->control->visible_) {
-    auto widget = (WidgetBottomLabels *)GetWidget(widget::WidgetEnum::KWidgetTypeBottomLabels);
-    widget->SetLabels(&screen_->control->labels_);
-    widget->Draw();
   }
 
   // Generic message box
@@ -360,6 +339,11 @@ GvaStatusTypes ScreenGva::Update() {
     message_box_table.Draw();
 
     DrawIcon(screen_->message.icon, 320 - 150 + 300 - 17, 229, 11, 11);
+  }
+
+  /// Iterate over all widgets and draw the visible ones
+  for (auto const &[key, val] : widget_list_) {
+    if (val->GetVisible()) val->Draw();
   }
 
   //

@@ -25,6 +25,8 @@
 
 #include <filesystem>
 
+#include "common/utils.h"
+
 namespace gva {
 
 void StateOn::entry() {
@@ -100,6 +102,7 @@ void StateOn::entry() {
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetY(190);
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetX(330);
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetVisible(true);
+  screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic)->SetVisible(false);
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeAlarmIndicator)->SetVisible(true);
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeAlarmIndicator)->SetY(58);
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeBottomLabels)->SetY(480 - 20);
@@ -117,6 +120,9 @@ void StateOn::entry() {
   std::string filename = ConfigData::GetInstance()->GetImagePath();
   filename.append("/FRONT_CENTRE.png");
   SetCanvasPng(filename.c_str());
+
+  // Set brightness
+  gva::SetBrightness(gva::ConfigData::GetInstance()->GetBrightness());
 
   transit<StateSYS>();
 };

@@ -47,6 +47,14 @@ class RowType {
   RowType &operator=(const RowType &a);
 
   ///
+  /// \brief Sorting is based on priority then time
+  ///
+  ///
+  bool operator<(RowType &a) const;
+
+  bool operator>(RowType &a) const;
+
+  ///
   /// \brief Get the Foreground Colour
   ///
   /// \return uint32_t
@@ -117,7 +125,7 @@ class RowType {
   uint32_t outline_colour_ = 0;
   uint32_t highlight_colour_ = 0;
   widget::WeightType font_weight_ = widget::WeightType::kWeightNormal;
-  bool highlighted_ = false;
+  bool highlighted_;
   widget::CellAlignType alignment_ = widget::CellAlignType::kAlignLeft;
 };
 

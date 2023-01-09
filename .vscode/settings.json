@@ -209,25 +209,45 @@
         "any": "cpp",
         "forward_list": "cpp",
         "variant": "cpp",
-        "future": "cpp"
+        "future": "cpp",
+        "cfenv": "cpp"
     },
     "cSpell.words": [
         "alarmson",
+        "CBRN",
         "defencex",
+        "Fadings",
+        "Layouter",
         "libosmscout",
+        "LONLAT",
         "mgrs",
+        "MITER",
+        "NEMA",
         "nmea",
         "northp",
         "osmscout",
+        "Payloader",
+        "Puckapunyal",
+        "Redbank",
         "rightarrow",
         "rotateleft",
         "rotateright",
         "RTPS",
+        "Southbank",
+        "stylesheet",
+        "Teulings",
+        "Timesource",
         "tinyfsm",
+        "UNACK",
+        "unfullscreen",
+        "vivoe",
         "workarea"
     ],
     "sonarlint.connectedMode.project": {
         "connectionId": "defencex",
         "projectKey": "DefenceX_vivoe-lite"
-    }
+    },
+    "sonarlint.output.showAnalyzerLogs": true,
+    "sonarlint.output.showVerboseLogs": true,
+    "sonarlint.trace.server": "off",
 }

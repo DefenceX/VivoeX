@@ -24,6 +24,8 @@
 
 #include "src/touch_gva.h"
 
+#include "src/renderer.h"
+
 namespace gva {
 
 GvaStatusTypes TouchGva::Add(GvaFunctionGroupEnum groupId, uint32_t x, uint32_t y) {

@@ -64,6 +64,8 @@ uint32_t CellType::GetWidth() const { return width_; }
 
 std::string CellType::GetText() const { return text_; }
 
+void CellType::SetText(std::string_view text) { text_ = text; }
+
 uint32_t CellType::GetForegroundColour() const { return foreground_colour_; }
 
 uint32_t CellType::GetBackgroundColour() const { return background_colour_; }

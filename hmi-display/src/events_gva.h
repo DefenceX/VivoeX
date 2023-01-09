@@ -39,25 +39,26 @@ enum class EventEnumType {
   kTouchEvent,
   kDdsEvent,
   kResizeEvent,
-  kRedrawEvent
+  kRedrawEvent,
+  kWidgetUpdate
 };
 
 struct TouchType {
-  int x;
-  int y;
+  int x = 0;
+  int y = 0;
 };
 
 class EventGvaType {
  public:
-  EventGvaType() { type_ = EventEnumType::kNoEvent; }
+  EventGvaType() = default;
   EventGvaType(int x, int y) {
     touch_.x = x;
     touch_.y = y;
     type_ = EventEnumType::kTouchEvent;
   }
   explicit EventGvaType(GvaKeyEnum key) : key_(key) { type_ = EventEnumType::kNoEvent; }
-  EventEnumType type_;
-  GvaKeyEnum key_;
+  EventEnumType type_ = EventEnumType::kNoEvent;
+  GvaKeyEnum key_ = GvaKeyEnum::kKeyUnknown;
   TouchType touch_;
   ResolutionType resize_;
 };
@@ -112,9 +113,41 @@ class EventsGva {
 
   static std::vector<EventGvaType> eventqueue_;
 
+  ///
+  /// \brief Create a refresh event because a widget was updated and queue it
+  ///
+  ///
+  static void CreateRefreshEvent();
+
  private:
+  ///
+  /// \brief Process the key event and return the enum value
+  ///
+  /// \param key the raw key value
+  /// \return GvaKeyEnum representing the key
+  ///
+  static GvaKeyEnum ProcessFunctionEvents(unsigned int key);
+
+  ///
+  /// \brief Process the key event and return the enum value
+  ///
+  /// \param key the raw key value
+  /// \return GvaKeyEnum representing the key
+  ///
+  static GvaKeyEnum ProcessFunctionKeyEvents(unsigned int key);
+
+  ///
+  /// \brief Create a Key Event and queue it
+  ///
+  /// \param Widget
+  /// \param event
+  /// \param type
+  /// \return gboolean
+  ///
   static gboolean CreateKeyEvent(GtkWidget *Widget, GdkEventKey *event, EventEnumType type);
   gtkType *window_;
+  static uint32_t previous_key_;
+  static TouchGva *touch_;
 };
 
 };  // namespace gva
