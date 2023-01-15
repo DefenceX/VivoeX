@@ -28,7 +28,7 @@ jobs:
             libpango1.0-dev libxt-dev libxml2-dev ncurses-dev libxext-dev gtk-doc-tools libswscale-dev libprotobuf-c-dev \
             geographiclib-doc libgeographic-dev libgeographic-dev libprotobuf23 libprotobuf-dev \
             protobuf-compiler autoconf automake libtool curl make g++ unzip lsb-release graphviz \
-            lttng-tools lttng-modules-dkms liblttng-ust-dev liblttng-ctl-dev -y
+            lttng-tools liblttng-ust-dev liblttng-ctl-dev -y
 
       - name: CMake and Build
         run: mkdir build && cd build && cmake .. -DDDS=CYCLONE-CE .. && make -j $(nproc)
