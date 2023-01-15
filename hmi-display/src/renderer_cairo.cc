@@ -323,7 +323,7 @@ uint32_t RendererCairo::Init(uint32_t width, uint32_t height, bool fullscreen, C
   g_signal_connect(render_.win.app, "activate", G_CALLBACK(Activate), NULL);
   g_timeout_add(40, Callback, &render_);
 
-  render_.fullscreen = render_.fullscreen ? fullscreen : fullscreen;
+  render_.fullscreen = fullscreen;
 
   g_application_run(G_APPLICATION(render_.win.app), 0, 0);
   g_object_unref(render_.win.app);
