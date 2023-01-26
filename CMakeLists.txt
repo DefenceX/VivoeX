@@ -15,7 +15,9 @@ include(scripts/cmake/dot.cmake)
 include(scripts/cmake/googletest.cmake)
 include(scripts/cmake/geographic.cmake)
 include(scripts/cmake/osmscout.cmake)
+include(scripts/cmake/lttng.cmake)
 include(scripts/cmake/nema.cmake)
+include(scripts/cmake/protobuf.cmake)
 include(scripts/cmake/vivoe-media-framework.cmake)
 
 ## Update the version number everytime cmake is run, patch number can go up a lot

@@ -13,7 +13,6 @@ ExternalProject_Add(
     DOWNLOAD_DIR        ${CMAKE_BINARY_DIR}/external/googletest/download
     SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/googletest/src
     BINARY_DIR          ${CMAKE_BINARY_DIR}/external/googletest/build
-    BUILD_COMMAND       make $(nproc)
     INSTALL_COMMAND     make DESTDIR=${CMAKE_BINARY_DIR}/external/install install
     UPDATE_DISCONNECTED 1
     BUILD_ALWAYS        0
