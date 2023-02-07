@@ -48,7 +48,7 @@ jobs:
           PATH=$PATH:${HOME}/.local/bin && \
           mkdir build && cd build && \
           cmake .. -DDDS=CYCLONE-CE .. && \
-          make -j $(nproc)
+          make
 
       - name: Package for CentOS (.rpm)
         id: package

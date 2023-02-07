@@ -28,7 +28,7 @@ jobs:
             pip install cpplint --user
 
       - name: CMake and Build
-        run: mkdir build && cd build && cmake .. -DDDS=CYCLONE-CE .. && make -j $(nproc)
+        run: mkdir build && cd build && cmake .. -DDDS=CYCLONE-CE .. && make
 
       - name: Package for Debian (.deb)
         id: package
