@@ -1,6 +1,5 @@
 enable_testing()
 
-find_package(Protobuf REQUIRED)
 pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
 pkg_check_modules(SWSCALE REQUIRED libswscale)
 
@@ -12,7 +11,7 @@ set(
   ${CAIRO_INCLUDE_DIRS} 
   ${PANGO_INCLUDE_DIRS} 
   ${SWSCALE_INCLUDE_DIRS} 
-  ${Protobuf_INCLUDE_DIRS}
+  ${PROTOBUF_INCLUDE_DIRS}
   ${CMAKE_SOURCE_DIR}/hmi-display
   ${CMAKE_SOURCE_DIR}/hmi-display/common
   ${CMAKE_SOURCE_DIR}/hmi-display/src

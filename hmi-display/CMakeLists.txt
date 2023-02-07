@@ -68,11 +68,11 @@ set(SOURCES main.cc
 			)
 
 link_libraries(-lstdc++fs)
-add_executable(hmi-display ${PROTO_SRCS} ${SOURCES})
-add_dependencies(hmi-display protobuf googletest lttngust libosmscout geographiclib hmi-video config-proto ${DDS_STACK} libosmscout)
+add_executable(hmi-display ${SOURCES})
+add_dependencies(hmi-display libprotobuf googletest lttngust libosmscout geographiclib hmi-video config-proto ${DDS_STACK} libosmscout)
 set(OSMSCOUT_LIBS ${OSMSCOUT_LIBARAIES})
 
-target_link_libraries (hmi-display ${GEOGRAPHIC_LIBRARIES} GeographicLib config-proto ${OSMSCOUT_LIBS} ${Protobuf_LIBRARIES} ${GTK_LIBRARIES3} stdc++fs lttng-ust dl)
+target_link_libraries (hmi-display ${GEOGRAPHIC_LIBRARIES} GeographicLib config-proto ${OSMSCOUT_LIBS} ${PROTOBUF_LIBRARIES} ${GTK_LIBRARIES3} stdc++fs lttng-ust dl)
 
 link_directories(${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build ${CMAKE_BINARY_DIR}/external/libnmea/build/src ${CMAKE_BINARY_DIR}/external/install/usr/local/lib)
 target_link_libraries(hmi-display png pthread Xrandr X11 hmi-video vivoe-media nmealib config-proto ${CAIRO_LIBRARIES} ${PANGO_LIBRARIES} ${SWSCALE_LIBRARIES} ${GTK3_LIBRARIES})

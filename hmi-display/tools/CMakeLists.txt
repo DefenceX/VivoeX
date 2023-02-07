@@ -4,7 +4,6 @@ include(FindPkgConfig)
 
 pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
 # pkg_check_modules(CAIRO REQUIRED cairo)
-find_package(Protobuf REQUIRED)
 
 set(SOURCE_FILES widget-tester.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/renderer_gva.cc
@@ -29,7 +28,6 @@ set(SOURCE_FILES widget-tester.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/mode.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/gva_functions_common.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../common/log_gva.cc
-    ${PROTO_SRCS}
 )
 
 include_directories(

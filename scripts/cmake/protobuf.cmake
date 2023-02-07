@@ -1,21 +1,27 @@
+include(ExternalProject)
 
+message (STATUS "Added libprotobuf to external submodules")
 
 # ------------------------------------------------------------------------------
-# protobuf
+# libprotobuf
 # ------------------------------------------------------------------------------
 ExternalProject_Add(
-    protobuf
+    libprotobuf
     GIT_REPOSITORY      https://github.com/protocolbuffers/protobuf
     GIT_SHALLOW         1
-    CMAKE_ARGS          -DCMAKE_UNITY_BUILD=YES
-    GIT_TAG             main
-    PREFIX              ${CMAKE_BINARY_DIR}/external/protobuf/prefix
-    TMP_DIR             ${CMAKE_BINARY_DIR}/external/protobuf/tmp
-    STAMP_DIR           ${CMAKE_BINARY_DIR}/external/protobuf/stamp
-    DOWNLOAD_DIR        ${CMAKE_BINARY_DIR}/external/protobuf/download
-    SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/protobuf/src
-    BINARY_DIR          ${CMAKE_BINARY_DIR}/external/protobuf/build
+    CMAKE_ARGS          -DCMAKE_UNITY_BUILD=NO
+    GIT_TAG             v21.12
+    PREFIX              ${CMAKE_BINARY_DIR}/external/libprotobuf/prefix
+    TMP_DIR             ${CMAKE_BINARY_DIR}/external/libprotobuf/tmp
+    STAMP_DIR           ${CMAKE_BINARY_DIR}/external/libprotobuf/stamp
+    DOWNLOAD_DIR        ${CMAKE_BINARY_DIR}/external/libprotobuf/download
+    SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/libprotobuf/src
+    BINARY_DIR          ${CMAKE_BINARY_DIR}/external/libprotobuf/build
     INSTALL_COMMAND     make DESTDIR=${CMAKE_BINARY_DIR}/external/install install
     UPDATE_DISCONNECTED 1
     BUILD_ALWAYS        0
 )
+
+set(PROTOBUF_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/external/install/usr/include)
+set(PROTOBUF_LIBRARY_DIR ${CMAKE_BINARY_DIR}/external/install/usr/lib)
+set(PROTOBUF_LIBRARY protobuf)
