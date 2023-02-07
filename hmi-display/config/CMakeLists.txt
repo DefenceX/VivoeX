@@ -10,4 +10,6 @@ add_custom_command(
 set(PROTO_SRCS ${CMAKE_BINARY_DIR}/hmi-display/config/config.pb.cc)
 
 add_library(config-proto STATIC ${PROTO_SRCS})
-target_link_libraries(config-proto ${PROTOBUF_LIBRARY} )
+target_link_libraries(config-proto ${PROTOBUF_LIBRARY})
+
+add_dependencies(config-proto libprotobuf)
