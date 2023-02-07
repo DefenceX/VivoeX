@@ -24,7 +24,7 @@ jobs:
             libxt-dev libxext-dev gtk-doc-tools libswscale-dev libprotobuf-c-dev \
             geographiclib-doc libgeographic-dev libgeographic-dev libprotobuf23 libprotobuf-dev \
             protobuf-compiler autoconf automake libtool curl make g++ unzip lsb-release graphviz \
-            imagemagick liblttng-ust-dev liblttng-ctl-dev -y && \
+            imagemagick -y && \
             pip install cpplint --user
 
       - name: CMake and Build

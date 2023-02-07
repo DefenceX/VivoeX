@@ -395,10 +395,10 @@ bool GvaApplication::SetKeyReleased(gva::HandleType *render, gva::GvaKeyEnum key
       compass->SetBearingSight(gva::DegreesSubtract(compass->GetBearingSight(), 2));
       return true;
     case gva::GvaKeyEnum::kKeyRightArrow:
-      BrightnessUp();
+      BrightnessDown();
       return true;
     case gva::GvaKeyEnum::kKeyLeftArrow:
-      BrightnessDown();
+      BrightnessUp();
       return true;
     case gva::GvaKeyEnum::kKeyNextLabel:
     case gva::GvaKeyEnum::kKeyPreviousLabel:
