@@ -1,8 +1,12 @@
 
+include(ExternalProject)
+
+message (STATUS "Added geographiclib to external submodules")
+
 ExternalProject_Add(
     geographiclib
     GIT_REPOSITORY      https://github.com/geographiclib/geographiclib
-    GIT_SHALLOW         5
+    GIT_SHALLOW         1
     GIT_TAG             main
     GIT_CONFIG          fetch.recurseSubmodules=true
     CMAKE_ARGS          -DCMAKE_UNITY_BUILD=YES

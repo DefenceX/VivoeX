@@ -9,7 +9,7 @@ ExternalProject_Add(
     libprotobuf
     GIT_REPOSITORY      https://github.com/protocolbuffers/protobuf
     GIT_SHALLOW         1
-    CMAKE_ARGS          -DCMAKE_UNITY_BUILD=NO
+    CMAKE_ARGS          -DCMAKE_INSTALL_MESSAGE=LAZY -DCMAKE_UNITY_BUILD=NO -Dprotobuf_BUILD_TESTS=OFF 
     GIT_TAG             v21.12
     PREFIX              ${CMAKE_BINARY_DIR}/external/libprotobuf/prefix
     TMP_DIR             ${CMAKE_BINARY_DIR}/external/libprotobuf/tmp
