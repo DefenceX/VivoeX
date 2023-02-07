@@ -69,7 +69,7 @@ set(SOURCES main.cc
 
 link_libraries(-lstdc++fs)
 add_executable(hmi-display ${SOURCES})
-add_dependencies(hmi-display libprotobuf googletest lttngust libosmscout geographiclib hmi-video config-proto ${DDS_STACK} libosmscout)
+add_dependencies(hmi-display libprotobuf googletest libosmscout geographiclib hmi-video config-proto ${DDS_STACK} libosmscout)
 set(OSMSCOUT_LIBS ${OSMSCOUT_LIBARAIES})
 
 target_link_libraries (hmi-display ${GEOGRAPHIC_LIBRARIES} GeographicLib config-proto ${OSMSCOUT_LIBS} ${PROTOBUF_LIBRARIES} ${GTK_LIBRARIES3} stdc++fs lttng-ust dl)

@@ -2,14 +2,22 @@
 [![Action cyclone](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-centos-amd64-cyclone.yaml/badge.svg)](https://github.com/DefenceX/vivoe-lite/actions/workflows/build-centos-amd64-cyclone.yaml)
 [![Action cyclone](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-debian-arm64-cyclone.yaml/badge.svg)](https://github.com/DefenceX/vivoe-lite/actions/workflows/build-debian-arm64-cyclone.yaml)
 [![Action doxygen](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-doxygen.yaml/badge.svg)](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-doxygen.yaml)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=DefenceX_vivoe-lite&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=DefenceX_vivoe-lite)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=DefenceX_vivoe-lite&metric=coverage)](https://sonarcloud.io/summary/new_code?id=DefenceX_vivoe-lite)
+
 ![Action codeql](https://github.com/DefenceX/vivoe-lite/actions/workflows/codeql.yml/badge.svg)
 ![Action codacy](https://github.com/DefenceX/vivoe-lite/actions/workflows/codacy.yml/badge.svg)
 [![License](https://img.shields.io/badge/licence-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/2927/badge)](https://bestpractices.coreinfrastructure.org/projects/2927)
 ![Version](https://defencex.github.io/vivoe-lite/version.svg)
 [![ZenHub](https://dxssrr2j0sq4w.cloudfront.net/3.2.0/img/external/zenhub-badge.png)](https://app.zenhub.com/workspaces/vivoe-lite-63683e4ded511f5aebcb4638)
+
+
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=DefenceX_vivoe-lite&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=DefenceX_vivoe-lite)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=DefenceX_vivoe-lite&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=DefenceX_vivoe-lite)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=DefenceX_vivoe-lite&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=DefenceX_vivoe-lite)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=DefenceX_vivoe-lite&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=DefenceX_vivoe-lite)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=DefenceX_vivoe-lite&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=DefenceX_vivoe-lite)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=DefenceX_vivoe-lite&metric=coverage)](https://sonarcloud.io/summary/new_code?id=DefenceX_vivoe-lite)
+
 # vivoe-lite
 
 ![GVA HMI](images/screen/ScreenshotSaFront.png)
