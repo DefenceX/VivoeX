@@ -24,6 +24,8 @@
 #ifndef HMI_DISPLAY_SRC_GVA_H_
 #define HMI_DISPLAY_SRC_GVA_H_
 
+#include <glog/logging.h>
+
 #include <array>
 #include <string>
 
@@ -33,7 +35,7 @@ namespace gva {
 
 static const uint32_t kSemVerMajor = 0;
 static const uint32_t kSemVerMinor = 3;
-static const uint32_t kSemVerPatch = 1757;
+static const uint32_t kSemVerPatch = 1767;
 static const uint32_t kMinimumHeight = 480;
 static const uint32_t kMinimumWidth = 640;
 

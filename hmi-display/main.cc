@@ -29,7 +29,6 @@
 #include <iostream>
 #include <string>
 
-#include "common/log_gva.h"
 #include "rtp_stream.h"  // NOLINT
 #include "src/events_gva.h"
 #include "src/gva.h"
@@ -110,7 +109,7 @@ int main(int argc, char *argv[]) {
   uint32_t port = 5004;
 
   std::cout << "hmi_display (By defencex.com.au)..." << std::endl;
-  LOG(INFO) << "HMI Display application started";
+  SYSLOG(INFO) << "HMI Display application started";
 
   tracepoint(vivoe_lite, main, 0, (char *)"Hello");
 
@@ -124,6 +123,6 @@ int main(int argc, char *argv[]) {
   app.Exec();
   tracepoint(vivoe_lite, main, 0, (char *)"World");
 
-  LOG(INFO) << "Exiting hmi_display...\n";
+  SYSLOG(INFO) << "Exiting hmi_display...\n";
   google::ShutdownGoogleLogging();
 }

@@ -40,7 +40,6 @@
 #include <vector>
 
 #include "common/debug.h"
-#include "common/log_gva.h"
 #include "src/gva.h"
 #include "src/gva_functions_common.h"
 #include "src/hmi_gva_helpers.h"
@@ -54,8 +53,7 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
 
   config_ = gva::ConfigData::GetInstance();
 
-  logGva::log("GVA screen initialised (" + std::to_string(width_) + "x" + std::to_string(height_),
-              DebugLevel::kLogInfo);
+  LOG(INFO) << "GVA screen initialised (" << std::to_string(width_) << "x" << std::to_string(height_);
 
   // Initialise the parser for NEMA
   nmea_zero_INFO(&info_);
@@ -65,9 +63,9 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
   gps_ = open(screen->info.gpsDevice.c_str(), O_RDWR | O_NONBLOCK | O_NDELAY);
 
   if (gps_ > 0) {
-    logGva::log("GPS Opened " + screen->info.gpsDevice, DebugLevel::kLogInfo);
+    LOG(INFO) << "GPS Opened " + screen->info.gpsDevice;
   } else {
-    logGva::log("GPS Error Opening device " + screen->info.gpsDevice, DebugLevel::kLogError);
+    LOG(ERROR) << "GPS Error Opening device " << screen->info.gpsDevice;
   }
   tcgetattr(gps_, &settings);
 
@@ -143,9 +141,8 @@ ScreenGva::~ScreenGva() {
   pthread_join(clock_thread_, nullptr);
   nmea_parser_destroy(&parser_);
   close(gps_);
-  if (gps_) logGva::log("GPS closed", DebugLevel::kLogInfo);
-  logGva::log("GVA screen finalized.", DebugLevel::kLogInfo);
-  logGva::finish();
+  if (gps_) LOG(INFO) << "GPS closed";
+  LOG(INFO) << "GVA screen finalized.";
 }
 
 void ClockUpdate(ClockArgs *a) {
@@ -185,7 +182,7 @@ void ClockUpdate(ClockArgs *a) {
       }
       buffer[i - 1] = 0;
       std::string tmp_buffer = buffer;
-      logGva::log("GPS NMEA " + tmp_buffer, DebugLevel::kLogInfo);
+      LOG(INFO) << "GPS NMEA " << tmp_buffer;
     }
 
     snprintf(tmp, sizeof(tmp), "%s\r\n", buffer);
@@ -247,10 +244,10 @@ void ScreenGva::StartClock(StatusBar *barData) {
 
   /* Launch clock thread */
   if (pthread_create(&clock_thread_, nullptr, ClockUpdateThread, (void *)&args_)) {
-    logGva::log("Error creating thread", DebugLevel::kLogError);
+    LOG(ERROR) << "Error creating thread";
     return;
   }
-  logGva::log("Clock thread started", DebugLevel::kLogInfo);
+  LOG(INFO) << "Clock thread started";
 }
 
 GvaStatusTypes ScreenGva::Update() {
@@ -290,7 +287,7 @@ GvaStatusTypes ScreenGva::Update() {
     // Refresh display
     //
     Draw();
-    logGva::log("Blackout Requested", DebugLevel::kLogInfo);
+    LOG(INFO) << "Blackout Requested";
     last_screen_ = *screen_;
     return GvaStatusTypes::kGvaSuccess;
   }

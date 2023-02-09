@@ -25,7 +25,6 @@
 
 #include <memory>
 
-#include "common/log_gva.h"
 #include "common/utils.h"
 #include "src/gva_functions_common.h"
 #include "src/trace.h"
@@ -60,12 +59,10 @@ GvaApplication::GvaApplication(const Options &options, const std::string &ipaddr
   // Setup video sources (default size will be 640 x 480 unless specified)
   //
   if (options_.videoEnabled_ == true) {
-    gva::logGva::log(
-        "Resolution " + std::to_string(rtp_stream1_->GetHeight()) + "x" + std::to_string(rtp_stream1_->GetWidth()),
-        gva::DebugLevel::kLogInfo);
+    LOG(INFO) << "Resolution " << std::to_string(rtp_stream1_->GetHeight()) + "x"
+              << std::to_string(rtp_stream1_->GetWidth());
 
-    gva::logGva::log("GVA Incoming RTP stream initalized " + ipaddr + ":" + std::to_string(port),
-                     gva::DebugLevel::kLogInfo);
+    LOG(INFO) << "GVA Incoming RTP stream initalized " << ipaddr << ":" << std::to_string(port);
   }
 }
 
@@ -108,17 +105,15 @@ void GvaApplication::Fullscreen(gva::HandleType *render) {
                      : gtk_window_fullscreen(GTK_WINDOW(render->win.win));
   render->fullscreen = render->fullscreen ? false : true;
   gva::ConfigData::GetInstance()->SetFullscreen(render->fullscreen);
-  gva::logGva::log("Toggle fullscreen", gva::DebugLevel::kLogInfo);
+  LOG(INFO) << "Toggle fullscreen";
 
   if (GdkMonitor *monitor = gdk_display_get_primary_monitor(gdk_display_get_default()); monitor) {
     gdk_monitor_get_workarea(monitor, &workarea);
-    gva::logGva::log(
-        "Switching resolution to " + std::to_string(workarea.width) + "x" + std::to_string(workarea.height),
-        gva::DebugLevel::kLogInfo);
+    LOG(INFO) << "Switching resolution to " + std::to_string(workarea.width) + "x" + std::to_string(workarea.height);
 
     gva::hmi::GetRendrer()->GetTouch()->SetResolution(workarea.width, workarea.height);
   } else {
-    gva::logGva::log("gdk_monitor_get_workarea failed when switching to fullscreen.", gva::DebugLevel::kLogError);
+    LOG(ERROR) << "gdk_monitor_get_workarea failed when switching to fullscreen.";
   }
   gva::EventsGva::CreateRefreshEvent();
 }
@@ -361,8 +356,7 @@ bool GvaApplication::SetKeyReleased(gva::HandleType *render, gva::GvaKeyEnum key
   auto keyboard =
       (gva::WidgetKeyboard *)gva::hmi::GetRendrer()->GetWidget(gva::widget::WidgetEnum::KWidgetTypeKeyboard);
 
-  gva::logGva::log("[GVA] Key release event being processed value=" + std::to_string(int(key)),
-                   gva::DebugLevel::kLogInfo);
+  LOG(INFO) << "[GVA] Key release event being processed value=" << std::to_string(int(key));
 
   gva::EventsGva::CreateRefreshEvent();
 
@@ -405,7 +399,7 @@ bool GvaApplication::SetKeyReleased(gva::HandleType *render, gva::GvaKeyEnum key
       Dispatch(key);
       return true;
     default:
-      gva::logGva::log("[GVA] Key release not defined " + std::to_string(int(key)), gva::DebugLevel::kLogInfo);
+      LOG(INFO) << "[GVA] Key release not defined " + std::to_string(int(key));
       // When we have wondered off a hotspot we need to reset and changing labels.
       gva::hmi::GetScreen()->function_left.ResetAllEnabledSelectedChanging();
       gva::hmi::GetScreen()->function_right.ResetAllEnabledSelectedChanging();
@@ -462,8 +456,7 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
     default:
       break;
     case gva::EventEnumType::kKeyEventPressed:
-      gva::logGva::log("[GVA] Key press event being processed value=" + std::to_string(int(event.key_)),
-                       gva::DebugLevel::kLogInfo);
+      LOG(INFO) << "[GVA] Key press event being processed value=" << std::to_string(int(event.key_));
       update = SetKeyPressed(event.key_);
       break;
     case gva::EventEnumType::kKeyEventReleased:

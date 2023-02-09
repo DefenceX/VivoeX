@@ -46,7 +46,6 @@ set(SOURCES main.cc
 			src/widgets/mode.cc
 			src/widgets/alarm_indicator.cc
 			common/debug.cc 
-			common/log_gva.cc 
 			common/utils.cc 
 			src/hmi_gva.cc 
 			src/hmi_gva_defaults.cc 
@@ -69,7 +68,7 @@ set(SOURCES main.cc
 
 link_libraries(-lstdc++fs)
 add_executable(hmi-display ${SOURCES})
-add_dependencies(hmi-display libprotobuf googletest libosmscout geographiclib hmi-video config-proto ${DDS_STACK} libosmscout)
+add_dependencies(hmi-display libglog libprotobuf googletest libosmscout geographiclib hmi-video config-proto ${DDS_STACK} libosmscout)
 set(OSMSCOUT_LIBS ${OSMSCOUT_LIBARAIES})
 
 target_link_libraries (hmi-display ${GEOGRAPHIC_LIBRARIES} glog GeographicLib config-proto ${OSMSCOUT_LIBS} ${PROTOBUF_LIBRARIES} ${GTK_LIBRARIES3} stdc++fs lttng-ust dl)
@@ -77,7 +76,7 @@ target_link_libraries (hmi-display ${GEOGRAPHIC_LIBRARIES} glog GeographicLib co
 link_directories(${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build ${CMAKE_BINARY_DIR}/external/libnmea/build/src ${CMAKE_BINARY_DIR}/external/install/usr/local/lib)
 target_link_libraries(hmi-display png pthread Xrandr X11 hmi-video vivoe-media nmealib config-proto ${CAIRO_LIBRARIES} ${PANGO_LIBRARIES} ${SWSCALE_LIBRARIES} ${GTK3_LIBRARIES})
 target_link_directories(hmi-display BEFORE PRIVATE ${CMAKE_BINARY_DIR}/external/install/usr/local/lib)
-target_include_directories(hmi-display PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${OSMSCOUT_INCLUDE_DIRS} ${GEOGRAPHIC_INCLUDE_DIRS} ${CMAKE_BINARY_DIR}/hmi-display/config ${CMAKE_CURRENT_SOURCE_DIR}/widgets ${CMAKE_CURRENT_SOURCE_DIR}/common ${CMAKE_BINARY_DIR}/hmi_display ${CAIRO_INCLUDE_DIRS} ${PANGO_INCLUDE_DIRS} ${SWSCALE_INCLUDE_DIRS} ${GTK3_INCLUDE_DIRS} common dds dds/location display)
+target_include_directories(hmi-display PUBLIC ${CMAKE_BINARY_DIR}/external/install/usr/local/include ${CMAKE_SOURCE_DIR} ${OSMSCOUT_INCLUDE_DIRS} ${GEOGRAPHIC_INCLUDE_DIRS} ${CMAKE_BINARY_DIR}/hmi-display/config ${CMAKE_CURRENT_SOURCE_DIR}/widgets ${CMAKE_CURRENT_SOURCE_DIR}/common ${CMAKE_BINARY_DIR}/hmi_display ${CAIRO_INCLUDE_DIRS} ${PANGO_INCLUDE_DIRS} ${SWSCALE_INCLUDE_DIRS} ${GTK3_INCLUDE_DIRS} common dds dds/location display)
 target_compile_options(hmi-display PUBLIC ${CAIRO_CFLAGS_OTHER} ${GTK3_CFLAGS_OTHER})
 set_target_properties(hmi-display PROPERTIES UNITY_BUILD OFF)
 

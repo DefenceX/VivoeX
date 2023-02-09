@@ -29,7 +29,6 @@
 #include <memory>
 #include <string>
 
-#include "common/log_gva.h"
 #include "rtp_stream.h"  // NOLINT
 #include "src/events_gva.h"
 #include "src/gva.h"

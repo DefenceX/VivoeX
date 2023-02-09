@@ -36,7 +36,7 @@ void StateOn::entry() {
   if (!manager_) manager_ = std::make_shared<ViewGvaManager>(&status_);
 
   if (!std::filesystem::is_directory(ConfigData::GetInstance()->GetMapPath())) {
-    logGva::log("Could not find map data " + ConfigData::GetInstance()->GetMapPath(), DebugLevel::kLogError);
+    LOG(ERROR) << "Could not find map data " << ConfigData::GetInstance()->GetMapPath();
     ConfigData::GetInstance()->SetMapEnabled(false);
   } else {
     ConfigData::GetInstance()->SetMapEnabled(true);

@@ -107,17 +107,15 @@ GvaKeyEnum Hmi::KeyBMS(GvaKeyEnum keypress) {
     }
 
     if (update) {
-      logGva::log("[BMS] Zoom level " + std::to_string(ConfigData::GetInstance()->GetZoom()) + " " +
-                      std::to_string(ConfigData::GetInstance()->GetTestLat()) + " " +
-                      std::to_string(((double)ConfigData::GetInstance()->GetZoom() / 10000000) *
-                                     ((double)ConfigData::GetInstance()->GetZoom() / 10000)) +
-                      " ",
-                  DebugLevel::kLogInfo);
+      LOG(INFO) << "[BMS] Zoom level " + std::to_string(ConfigData::GetInstance()->GetZoom()) << " "
+                << std::to_string(ConfigData::GetInstance()->GetTestLat()) << " "
+                << std::to_string(((double)ConfigData::GetInstance()->GetZoom() / 10000000) +
+                                  ((double)ConfigData::GetInstance()->GetZoom() / 10000))
+                << " ";
       map_->SetWidth(kMinimumWidth);
       map_->SetHeight(kMinimumHeight);
-      logGva::log(
-          "[BMS] res " + std::to_string(screen_render_->GetWidth()) + "x" + std::to_string(screen_render_->GetHeight()),
-          DebugLevel::kLogInfo);
+      LOG(INFO) << "[BMS] res " + std::to_string(screen_render_->GetWidth()) << "x"
+                << std::to_string(screen_render_->GetHeight());
       map_->Project(ConfigData::GetInstance()->GetZoom(), ConfigData::GetInstance()->GetTestLon(),
                     ConfigData::GetInstance()->GetTestLat(), &screen_.canvas.surface);
       screen_.canvas.bufferType = SurfaceType::kSurfaceCairo;

@@ -23,7 +23,6 @@
 
 #include "events_gva.h"
 
-#include "common/log_gva.h"
 #include "src/gva.h"
 #include "src/renderer_gva.h"
 
@@ -56,7 +55,7 @@ gboolean EventsGva::ButtonPressEventCb(GtkWidget* Widget, GdkEventButton* event,
     gvaEvent.key_ = (GvaKeyEnum)binding;
     eventqueue_.push_back(gvaEvent);
 
-    logGva::log("[GVA] Button press event " + std::to_string(event->button), DebugLevel::kLogInfo);
+    LOG(INFO) << "[GVA] Button press event " << std::to_string(event->button);
   }
 
   // We've handled the event, stop processing
@@ -82,7 +81,7 @@ gboolean EventsGva::ButtonReleaseEventCb(GtkWidget* Widget, GdkEventButton* even
       gvaEvent.key_ = GvaKeyEnum::kKeyUnknown;
       eventqueue_.push_back(gvaEvent);
     }
-    logGva::log("[GVA] Button release event " + std::to_string(event->button), DebugLevel::kLogInfo);
+    LOG(INFO) << "[GVA] Button release event " << std::to_string(event->button);
   }
 
   // We've handled the event, stop processing
@@ -216,9 +215,8 @@ gboolean EventsGva::CreateKeyEvent(GtkWidget* Widget, GdkEventKey* event, EventE
   gvaEvent.key_ = GvaKeyEnum::kKeyUnknown;
 
   std::string state = (EventEnumType::kKeyEventPressed == type) ? "(Pressed) " : "(Released) ";
-  logGva::log("[GVA] Key press event " + state + std::to_string(event->keyval) + " (prev " +
-                  std::to_string(previous_key_) + ")",
-              DebugLevel::kLogInfo);
+  LOG(INFO) << "[GVA] Key press event " << state << std::to_string(event->keyval) << " (prev "
+            << std::to_string(previous_key_) << ")";
 
   // Process top keys
   gvaEvent.key_ = ProcessFunctionEvents(event->keyval);

@@ -100,7 +100,7 @@ void WidgetTableDynamic::AddCell(const std::string text, uint32_t width, widget:
     CellType cell(text, width, background_colour, foreground_colour_, outline_colour_, highlight_colour_, align);
     dynamic_rows_.back().GetCells()->push_back(cell);
   } else {
-    logGva::log("[GVA] No rows could be found when adding new cell.", DebugLevel::kLogError);
+    LOG(ERROR) << "[GVA] No rows could be found when adding new cell.";
   }
 }
 

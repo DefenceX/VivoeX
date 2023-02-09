@@ -30,7 +30,6 @@
 
 #include "gtest/gtest.h"
 #include "gva.h"
-#include "log_gva.h"
 
 namespace gva {
 
@@ -63,10 +62,9 @@ class LogTest : public ::testing::Test {
 
 TEST_F(LogTest, LoggingTests) {
   std::string test1 = "This is a string test";
-  logGva::log(test1, gva::DebugLevel::kLogDebug);
-  logGva::log(test1, gva::DebugLevel::kLogInfo);
-  logGva::log(test1, gva::DebugLevel::kLogError);
-  logGva::log(test1, gva::DebugLevel::kLogWarning);
+  LOG(WARNING) << test1;
+  LOG(INFO) << test1;
+  LOG(ERROR) << test1;
   std::string test2 =
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam augue quam, vulputate ac pretium vitae, hendrerit "
       "vitae nibh. Sed nec augue diam. Aenean pretium sodales turpis, at interdum ipsum ornare non. Nam vulputate "
@@ -76,14 +74,12 @@ TEST_F(LogTest, LoggingTests) {
       "Suspendisse quis urna in felis ultricies congue ut quis nisi. Suspendisse pharetra finibus odio, eu condimentum "
       "magna cursus vel. Nullam dui justo, pulvinar vitae auctor vitae, tincidunt ut enim. Aliquam pellentesque ligula "
       "ipsum, sed posuere massa fermentum vitae.";
-  logGva::log(test2, gva::DebugLevel::kLogDebug);
-  logGva::log(test2, gva::DebugLevel::kLogInfo);
-  logGva::log(test2, gva::DebugLevel::kLogError);
-  logGva::log(test2, gva::DebugLevel::kLogWarning);
-  logGva::finish();
+  LOG(WARNING) << test2;
+  LOG(INFO) << test2;
+  LOG(ERROR) << test2;
 }
 // Tests that Foo does Xyz.
-TEST_F(LogTest, CeckingLogs) {
+TEST_F(LogTest, CheckingLogs) {
   int counter = 0;
 
   if (std::ifstream fs("/var/log/gva.log"); fs.is_open()) {

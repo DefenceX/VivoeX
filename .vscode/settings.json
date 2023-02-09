@@ -210,7 +210,10 @@
         "forward_list": "cpp",
         "variant": "cpp",
         "future": "cpp",
-        "cfenv": "cpp"
+        "cfenv": "cpp",
+        "csetjmp": "cpp",
+        "csignal": "cpp",
+        "slist": "cpp"
     },
     "cSpell.words": [
         "alarmson",

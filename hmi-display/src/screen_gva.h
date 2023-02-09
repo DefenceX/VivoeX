@@ -31,7 +31,6 @@
 #include <memory>
 #include <string>
 
-#include "common/log_gva.h"
 #include "nmea/nmea.h"
 #include "src/gva.h"
 #include "src/renderer_gva.h"

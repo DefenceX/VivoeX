@@ -31,7 +31,6 @@ set(
 
 set(
   TEST_LOG_SOURCES
-  ${CMAKE_SOURCE_DIR}/hmi-display/common/log_gva.cc
 )
 
 add_executable(
@@ -43,6 +42,7 @@ add_executable(
 
 target_link_libraries(
   test_log
+  glog
   ${GTEST_LIBARAIES}
   ${TEST_LIBS}
 )

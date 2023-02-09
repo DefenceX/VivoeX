@@ -28,7 +28,7 @@
 #include <iostream>
 #include <string>
 
-#include "common/log_gva.h"
+#include "gva.h"
 #include "src/renderer_cairo.h"
 
 namespace gva {
@@ -40,20 +40,19 @@ ConfigDataBase::ConfigDataBase() {
   // compatible with the version of the headers we compiled against.
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
-  logGva::log("Created new config reader" + std::filesystem::current_path().string() + "/" + config_file_,
-              DebugLevel::kLogInfo);
+  LOG(ERROR) << "Created new config reader" << std::filesystem::current_path().string() << "/" << config_file_;
   current_config_ = std::make_unique<config::Gva>();
 
   // Read the existing configuration file.
   if (std::fstream input(config_file_, std::fstream::in | std::fstream::binary); !input) {
-    logGva::log("File not found. Creating a new file " + std::filesystem::current_path().string() + "/" + config_file_,
-                DebugLevel::kLogInfo);
+    LOG(ERROR) << "File not found. Creating a new file " << std::filesystem::current_path().string() << "/"
+               << config_file_;
     current_config_->set_name("Test HMI configuration.");
     // Doesn't write defaults unless they have been set once
     current_config_->set_height(current_config_->height());
     current_config_->set_width(current_config_->width());
   } else if (!current_config_->ParseFromIstream(&input)) {
-    logGva::log("Failed to parse config file.", DebugLevel::kLogInfo);
+    LOG(ERROR) << " Failed to parse config file.";
     return;
   }
 
@@ -90,13 +89,13 @@ ConfigDataBase::ConfigDataBase() {
   // Write the new config back to disk.
   if (std::fstream output(config_file_, std::fstream::out | std::fstream::trunc | std::fstream::binary);
       !current_config_->SerializeToOstream(&output)) {
-    logGva::log("Failed to write config file.", DebugLevel::kLogInfo);
+    LOG(ERROR) << "Failed to write config file.";
     return;
   }
 }
 
 ConfigDataBase::~ConfigDataBase() {
-  logGva::log("Closing config reader.", DebugLevel::kLogInfo);
+  LOG(INFO) << "Closing config reader.";
   WriteData();
 }
 
@@ -113,11 +112,11 @@ void ConfigDataBase::WriteData() const {
   // Write the config back to disk.
   if (std::fstream output(config_file_, std::fstream::out | std::fstream::trunc | std::fstream::binary);
       !current_config_->SerializeToOstream(&output)) {
-    logGva::log("Failed to update config file.", DebugLevel::kLogInfo);
+    LOG(INFO) << "Failed to update config file.";
     return;
   }
   // Log
-  logGva::log("Updated configuration file", DebugLevel::kLogInfo);
+  LOG(INFO) << "Updated configuration file ";
   // Optional:  Delete all global objects allocated by libprotobuf.
   google::protobuf::ShutdownProtobufLibrary();
 }
@@ -377,7 +376,7 @@ uint32_t ConfigData::LookupKey(config::Key key) const {
   for (int i = 0; i < current_config_->bindings_size(); i++) {
     if (current_config_->bindings(i).key() == key) return current_config_->bindings(i).bind();
   }
-  logGva::log("Key binding not found " + std::to_string(key), DebugLevel::kLogInfo);
+  LOG(INFO) << "Key binding not found " << std::to_string(key);
   return 0;
 }
 

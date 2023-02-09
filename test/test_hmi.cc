@@ -31,7 +31,6 @@
 #include "events_gva.h"
 #include "gtest/gtest.h"
 #include "gva.h"
-#include "log_gva.h"
 #include "src/touch_gva.h"
 
 namespace gva {

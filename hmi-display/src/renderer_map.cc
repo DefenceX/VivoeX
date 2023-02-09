@@ -31,7 +31,6 @@
 #include <iostream>
 
 #include "gva.h"
-#include "log_gva.h"
 #include "src/config_reader.h"
 
 namespace gva {
@@ -42,21 +41,21 @@ rendererMap::rendererMap(std::string_view map, std::string_view style, int width
   mapService_ = std::make_shared<osmscout::MapService>(database_);
 
   if (!database_->Open(map_.c_str())) {
-    logGva::log("Cannot open libosmscout database", DebugLevel::kLogError);
+    LOG(ERROR) << "Cannot open libosmscout database";
   }
 
   styleConfig_ = std::make_shared<osmscout::StyleConfig>(database_->GetTypeConfig());
 
   if (!styleConfig_->Load(style_)) {
-    logGva::log("Cannot open libosmscout style", DebugLevel::kLogError);
+    LOG(ERROR) << "Cannot open libosmscout style";
   }
 
   surface_ = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width_, height_);
   if (surface_ != nullptr) {
     cairo_ = cairo_create(surface_);
-    logGva::log("Created libosmscout cairo surface", DebugLevel::kLogInfo);
+    LOG(INFO) << "Created libosmscout cairo surface";
   } else {
-    logGva::log("Cannot create libosmscout cairo surface", DebugLevel::kLogError);
+    LOG(ERROR) << "Cannot create libosmscout cairo surface";
   }
 
   DrawParameter_.SetFontSize(3.0);

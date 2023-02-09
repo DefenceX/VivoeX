@@ -27,7 +27,6 @@ set(SOURCE_FILES widget-tester.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/side_labels.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/mode.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/gva_functions_common.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/../common/log_gva.cc
 )
 
 include_directories(
@@ -44,10 +43,10 @@ include_directories(${CMAKE_SOURCE_DIR}/hmi-display)
 link_libraries(-lstdc++fs)
 
 add_executable(widget-tester ${SOURCE_FILES})
-target_link_libraries(widget-tester nmealib config-proto ${OSMSCOUT_LIBARAIES} ${CAIRO_LIBRARIES} ${GTK3_LIBRARIES} )
+target_link_libraries(widget-tester glog nmealib config-proto ${OSMSCOUT_LIBARAIES} ${CAIRO_LIBRARIES} ${GTK3_LIBRARIES} )
 target_include_directories(widget-tester PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_BINARY_DIR}/hmi-display/config ${CMAKE_CURRENT_SOURCE_DIR}/../hmi-display ${OSMSCOUT_INCLUDE_DIRS} ${CAIRO_INCLUDE_DIRS} ${PANGO_INCLUDE_DIRS} ${GTK3_INCLUDE_DIRS})
 target_compile_options(widget-tester PUBLIC ${CAIRO_CFLAGS_OTHER} ${GTK3_CFLAGS_OTHER})
 set_target_properties(widget-tester PROPERTIES UNITY_BUILD ON)
 
-add_dependencies(widget-tester geographiclib libnmea libosmscout config-proto)
+add_dependencies(widget-tester libglog geographiclib libnmea libosmscout config-proto)
 
