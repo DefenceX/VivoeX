@@ -102,7 +102,7 @@ int main(int argc, char *argv[]) {
     google::ParseCommandLineFlags(&argc, &argv, false);
     google::InitGoogleLogging(argv[0]);
     google::InstallFailureSignalHandler();
-    LOG(ERROR) << "Initialised Google logging";
+    LOG(INFO) << "Initialised Google logging";
   }
 
   std::string ipaddr = "127.0.0.1";
