@@ -21,6 +21,7 @@
 /// \file main.cc
 ///
 
+#include <glog/logging.h>
 #include <unistd.h>
 
 #include <cstddef>
@@ -95,10 +96,22 @@ int32_t GetOpt(int argc, char *argv[], GvaApplication::Options *opt) {
 };
 
 int main(int argc, char *argv[]) {
+  if (!google::IsGoogleLoggingInitialized()) {
+    google::SetVersionString(std::to_string(gva::kSemVerMajor) + "." + std::to_string(gva::kSemVerMinor) + "." +
+                             std::to_string(gva::kSemVerPatch));
+    google::SetUsageMessage("HMI Display application renderer.");
+    google::ParseCommandLineFlags(&argc, &argv, false);
+    google::InitGoogleLogging(argv[0]);
+    google::InstallFailureSignalHandler();
+    LOG(ERROR) << "Initialised Google logging";
+  }
+
   std::string ipaddr = "127.0.0.1";
   uint32_t port = 5004;
 
   std::cout << "hmi_display (By defencex.com.au)..." << std::endl;
+  LOG(INFO) << "HMI Display application started";
+
   tracepoint(vivoe_lite, main, 0, (char *)"Hello");
 
   GvaApplication::Options options = {false, false, ""};
@@ -111,5 +124,6 @@ int main(int argc, char *argv[]) {
   app.Exec();
   tracepoint(vivoe_lite, main, 0, (char *)"World");
 
-  gva::logGva::log("Exiting hmi_display...\n", gva::DebugLevel::kLogInfo);
+  LOG(INFO) << "Exiting hmi_display...\n";
+  google::ShutdownGoogleLogging();
 }

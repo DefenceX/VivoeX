@@ -7,7 +7,6 @@
 ![Action codacy](https://github.com/DefenceX/vivoe-lite/actions/workflows/codacy.yml/badge.svg)
 [![License](https://img.shields.io/badge/licence-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 
-
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=DefenceX_vivoe-lite&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=DefenceX_vivoe-lite)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=DefenceX_vivoe-lite&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=DefenceX_vivoe-lite)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=DefenceX_vivoe-lite&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=DefenceX_vivoe-lite)

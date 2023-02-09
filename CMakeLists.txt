@@ -12,6 +12,8 @@ include(scripts/cmake/cpack.cmake)
 # include(scripts/cmake/pango.cmake)
 include(scripts/cmake/doxygen.cmake)
 include(scripts/cmake/dot.cmake)
+include(scripts/cmake/gflags.cmake)
+include(scripts/cmake/glog.cmake)
 include(scripts/cmake/googletest.cmake)
 include(scripts/cmake/geographic.cmake)
 include(scripts/cmake/osmscout.cmake)
@@ -85,6 +87,10 @@ include(scripts/cmake/cpplint.cmake)
 # add all source code directories
 cpplint_add_subdirectory(hmi-display)
 cpplint_add_subdirectory(video)
+
+# Setup tests
+enable_testing()
+add_test(NAME HMI_Tests COMMAND test_hmi --gtest_output=xml:./test-results/hello_test.xml)
 
 # Uninstall target
 if(NOT TARGET uninstall)
