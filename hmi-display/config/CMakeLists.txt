@@ -4,7 +4,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_BINARY_DIR}/external/ins
 
 add_custom_command(
   OUTPUT ${CMAKE_BINARY_DIR}/hmi-display/config/config.pb.cc
-  COMMAND ${CMAKE_BINARY_DIR}/external/install/usr/local/bin/protoc --cpp_out ${CMAKE_BINARY_DIR}/hmi-display/config -I ${CMAKE_SOURCE_DIR}/vivoe-lite/hmi-display/config ${CMAKE_SOURCE_DIR}/hmi-display/config/config.proto --proto_path ${CMAKE_SOURCE_DIR}/hmi-display/config
+  COMMAND ${PROTOC} --cpp_out ${CMAKE_BINARY_DIR}/hmi-display/config -I ${CMAKE_SOURCE_DIR}/vivoe-lite/hmi-display/config ${CMAKE_SOURCE_DIR}/hmi-display/config/config.proto --proto_path ${CMAKE_SOURCE_DIR}/hmi-display/config
   )
 
 set(PROTO_SRCS ${CMAKE_BINARY_DIR}/hmi-display/config/config.pb.cc)

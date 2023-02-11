@@ -1,5 +1,6 @@
 enable_testing()
 
+include(FindPkgConfig)
 pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
 pkg_check_modules(SWSCALE REQUIRED libswscale)
 

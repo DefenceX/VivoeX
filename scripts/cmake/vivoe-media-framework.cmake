@@ -5,7 +5,7 @@ ExternalProject_Add(
     vivoe_media
     GIT_REPOSITORY      https://github.com/DefenceX/vivoe-media-framework
     GIT_SHALLOW         1
-	GIT_TAG             main
+	GIT_TAG             v0.3.0
 	CMAKE_ARGS          -DCMAKE_INSTALL_PREFIX:PATH=/opt/gva/libs
     PREFIX              ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/prefix
     TMP_DIR             ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/tmp

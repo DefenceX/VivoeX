@@ -7,7 +7,7 @@ ExternalProject_Add(
     geographiclib
     GIT_REPOSITORY      https://github.com/geographiclib/geographiclib
     GIT_SHALLOW         1
-    GIT_TAG             main
+    GIT_TAG             v2.1.2
     GIT_CONFIG          fetch.recurseSubmodules=true
     CMAKE_ARGS          -DCMAKE_UNITY_BUILD=YES
     PREFIX              ${CMAKE_BINARY_DIR}/external/geographiclib/prefix

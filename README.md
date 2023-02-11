@@ -51,20 +51,45 @@ Additional packages for building documentation:
 dnf install doxygen plantuml ImageMagick -y
 ```
 
+# Documentation
+Documentation can be generated using doxygen after cloning or see latest documentation on [Github Pages](https://defencex.github.io/vivoe-lite/).
+
+
 # Build
 This project has a couple of options that can be specified at compile time:
 ```
 cmake -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE=ON -DENABLE_OSMSCOUT=ON -DDDS=CYCLONE-CE ..
 ```
 
+## Building for Windows using MSYS
+```
+cmake -G "MSYS Makefiles" ..
+```
+
+## Libraries
+Table below is a summary of the libraries used in this project:
+
+| External library      | Source                                                         | Version     | Date       |
+| ----------------------|----------------------------------------------------------------|-------------|------------|
+| CycloneDDS (opt)      | https://github.com/eclipse-cyclonedds/cyclonedds               | 0.10.2      | 26/08/2022 |
+| OpenSplice (opt)      | https://github.com/ADLINK-IST/opensplice                       | v6.9.210323 | 23/05/2021 |
+| cairo                 | https://github.com/freedesktop/cairo                           | 2           | latest     |
+| doxygen               | https://www.doxygen.nl/                                        | -           | latest     |
+| geographiclib         | https://github.com/geographiclib/geographiclib                 | v2.1.2      | 14/12/2022 |
+| gflag                 | https://github.com/gflags/gflags                               | v2.2.2      | 12/11/2018 |
+| glog                  | https://github.com/google/glog                                 | v0.6.0      | 05/04/2022 |
+| libosmscout           | https://github.com/Framstag/libosmscout                        | 1.1.0       | 22/11/2018 |
+| lttng-ust             | https://github.com/lttng/lttng-ust                             | v2.13.5     | 01/10/2022 |
+| vivoe-media-framework | https://github.com/DefenceX/vivoe-media-framework              | v0.3.0      | 12/02/2023 |
+| nmealib               | https://nmea.sourceforge.net/                                  | 0.5.3       | 11/03/2008 |
+| pango                 | https://github.com/GNOME/pango                                 | 1.50.12     | 19/11/2022 |
+| protobuf              | https://github.com/protocolbuffers/protobuf                    | v21.12      | 13/12/2022 |
+
 Default DDS stack is currently [CycloneDDS](https://github.com/eclipse-cyclonedds/cyclonedds) (default if not specified) but can also be built with [Opensplice](https://github.com/ADLINK-IST/opensplice) by setting -DDDS=OSPL-CE. 
 
 To enable code coverage reports set ENABLE_COVERAGE. The gdb debugger is avaiable and configured for use with Microsoft Visual Code and the workspace files are part of the repo (recommended for developers).
 
 The BMS function can be configured with Open Street Maps but these need to be compiled and installed onto the system. Its recommended that you run wit these switched off if you do not need this functionality. See below for more information on creating maps for your region / territory.
-
-# Documentation
-Documentation can be generated using doxygen after cloning or see latest documentation on [Github Pages](https://defencex.github.io/vivoe-lite/).
 
 # HMI
 The project includes an reference implementation of the GVA (Generic Vehicle Architecture) like Human Machine Interface (HMI). This is meant as a designed for testing different live video sources and working with streaming protocols and does not implement functionality defined in the GVA Land Data Model (LDM). Its primerially used to demonstrate various video streaming pipelines and control mechanisms for real time video processing. Its primary purpose is for research and development and experimentation with different HMI elements for human factors and sensor integration, test, monitoring and detection of system wide events.
