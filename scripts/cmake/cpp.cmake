@@ -14,7 +14,7 @@ set(MESSAGE_QUIET ON)
 set(CODE_STYLE "{BasedOnStyle: Google, ColumnLimit: 120}")
 
 if (MSYS)
-  set(MSYS_FLAGS "-L/mingw64/lib -static-libstdc++ -D_POSIX_C_SOURCE")
+  set(MSYS_FLAGS "-L/mingw64/lib -mwindows -static-libstdc++ -D_POSIX_C_SOURCE")
 endif()
 
 if($ENV{CI})

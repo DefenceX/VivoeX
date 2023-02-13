@@ -71,13 +71,15 @@ add_executable(hmi-display ${SOURCES})
 add_dependencies(hmi-display libglog libprotobuf googletest libosmscout geographiclib hmi-video config-proto ${DDS_STACK} libosmscout)
 set(OSMSCOUT_LIBS ${OSMSCOUT_LIBARAIES})
 
-target_link_libraries (hmi-display ${GEOGRAPHIC_LIBRARIES} glog gflags_static GeographicLib config-proto ${OSMSCOUT_LIBS} ${PROTOBUF_LIBRARY} ${GTK_LIBRARIES3} stdc++fs)
+target_link_libraries (hmi-display ${GEOGRAPHIC_LIBRARIES} ${WINDOWS_RESOURCE_LIB} glog gflags_static GeographicLib config-proto ${OSMSCOUT_LIBS} ${PROTOBUF_LIBRARY} ${GTK_LIBRARIES3} stdc++fs)
 
 link_directories(${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build ${CMAKE_BINARY_DIR}/external/libnmea/build/src ${CMAKE_BINARY_DIR}/external/install/usr/local/lib)
 target_link_libraries(hmi-display png pthread  hmi-video vivoe-media nmea config-proto ${CAIRO_LIBRARIES} ${PANGO_LIBRARIES} ${SWSCALE_LIBRARIES} ${GTK3_LIBRARIES})
 target_link_directories(hmi-display BEFORE PRIVATE ${CMAKE_BINARY_DIR}/external/install/usr/local/lib)
 
 if (MSYS)
+# Add the resource file
+target_link_libraries(hmi-display ${WINDOWS_RESOURCE})
 # Static link libraries .a
 target_link_directories(hmi-display BEFORE PRIVATE
     "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/protobuf/lib"
