@@ -3,14 +3,14 @@ project(vivoe-lite)
 add_custom_target(vivoe-lite)
 add_dependencies(vivoe-lite hmi-display)
 
-include(scripts/cmake/cpp.cmake) # Always include this first
+include(scripts/cmake/version.cmake) # Always include this first
+include(scripts/cmake/cpp.cmake)     # Always include this second
+include(scripts/cmake/cpack.cmake)
 include(scripts/cmake/CMakeGraphVizOptions.cmake)
-include(scripts/cmake/version.cmake)
 if(NOT MSYS)
   include(scripts/cmake/dds.cmake)
 endif()
 include(scripts/cmake/clang-format.cmake)
-include(scripts/cmake/cpack.cmake)
 # include(scripts/cmake/cairo.cmake)
 # include(scripts/cmake/pango.cmake)
 include(scripts/cmake/doxygen.cmake)

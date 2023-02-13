@@ -3,8 +3,6 @@ include(ExternalProject)
 
 message (STATUS "Added libgflags to external submodules")
 
-set(GFLAGS_USE_TARGET_NAMESPACE ON)
-
 # ------------------------------------------------------------------------------
 # libgflags
 # ------------------------------------------------------------------------------
@@ -22,7 +20,7 @@ ExternalProject_Add(
     BINARY_DIR          ${CMAKE_BINARY_DIR}/external/libgflags/build
     INSTALL_COMMAND     make DESTDIR=${CMAKE_BINARY_DIR}/external/install install 
     UPDATE_DISCONNECTED 0
-    BUILD_ALWAYS        0
+    BUILD_ALWAYS        FALSE
 )
 
 add_dependencies(libgflags googletest)
