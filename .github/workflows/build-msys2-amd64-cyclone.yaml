@@ -11,7 +11,7 @@ permissions:
   pull-requests: read
 
 jobs:
-  build-msys-cyclone:
+  build-msys2-cyclone:
     runs-on: windows-latest
     defaults:
       run:
