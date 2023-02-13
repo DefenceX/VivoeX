@@ -23,14 +23,18 @@ jobs:
           msystem: MINGW64
           update: true
           install: cmake git base-devel mingw-w64-x86_64-toolchain mingw-w64-x86_64-gtk3  mingw-w64-x86_64-gcc mingw-w64-x86_64-ffmpeg mingw-w64-x86_64-nsis
-      - name: CI-Build
-        run: |
-          echo 'Running in MSYS2!' && pwd && ls -al && find /
       - name: CMake and Build
-        run: mkdir build && cd build && cmake -G "Unix Makefiles" .. -DDDS=CYCLONE-CE .. && make
+        run: |
+          echo 'Running in MSYS2!' && \
+          mkdir build && \
+          cd build && \
+          cmake -G "Unix Makefiles" .. -DDDS=CYCLONE-CE .. && \
+          make
       - name: Install
-        run: cd build && make install
+        run: |
+          cd build && make install
       - name: Package
-        run: cd build && cpack
+        run: |
+          cd build && cpack
 
           
