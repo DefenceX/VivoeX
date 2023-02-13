@@ -25,7 +25,9 @@ jobs:
           install: cmake git base-devel mingw-w64-x86_64-toolchain mingw-w64-x86_64-gtk3  mingw-w64-x86_64-gcc mingw-w64-x86_64-ffmpeg mingw-w64-x86_64-nsis
       - name: CI-Build
         run: |
-          echo 'Running in MSYS2!'
+          echo 'Running in MSYS2!' \
+          find / | grep g++ \
+          which g++
       - name: CMake and Build
         run: mkdir build && cd build && cmake -G "Unix Makefiles" .. -DDDS=CYCLONE-CE .. && make
       - name: Install
