@@ -47,7 +47,7 @@ if (MSYS)
   install(FILES "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/GeographicLib/bin/libGeographicLib.dll" DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
   install(FILES "${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libvivoe-media.dll" DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
   install(FILES "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/glog/bin/libglog.dll" DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
-  # install(FILES "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/gflag/bin/libgflag.dll" DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+  install(FILES "${CMAKE_SOURCE_DIR}/scripts/Vivoe Lite.lnk" DESTINATION $ENV{USERPROFILE}/Desktop)
   ## MSYS libs now
   install(FILES 
     C:/msys64/mingw64/bin/libcairo-2.dll
