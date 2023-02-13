@@ -27,7 +27,7 @@ jobs:
         run: |
           echo 'Running in MSYS2!'
       - name: CMake and Build
-        run: mkdir build && cd build && cmake -G "MSYS Makefiles" .. -DDDS=CYCLONE-CE .. && make
+        run: mkdir build && cd build && cmake -G "Unix Makefiles" .. -DDDS=CYCLONE-CE .. && make
       - name: Install
         run: cd build && make install
       - name: Package
