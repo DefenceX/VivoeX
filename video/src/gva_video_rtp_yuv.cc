@@ -46,10 +46,10 @@ uint32_t GvaVideoRtpYuv::GvaReceiveFrame(char* buffer, VideoFormat format) {
       memcpy(buffer, frame_buffer, GetWidth() * GetHeight() * 2);
       break;
     case VideoFormat::kFormatRgbaColour:
-      yuvtorgba(GetHeight(), GetWidth(), frame_buffer, buffer);
+      YuvToRgba(GetHeight(), GetWidth(), frame_buffer, buffer);
       break;
     case VideoFormat::kFormatRgb24Colour:
-      yuvtorgb(GetHeight(), GetWidth(), frame_buffer, buffer);
+      YuvToRgb(GetHeight(), GetWidth(), frame_buffer, buffer);
       break;
   }
   frame_counter_++;

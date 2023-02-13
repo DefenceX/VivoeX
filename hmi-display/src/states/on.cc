@@ -23,6 +23,8 @@
 
 #include "on.h"
 
+#include <glog/logging.h>
+
 #include <filesystem>
 
 #include "common/utils.h"

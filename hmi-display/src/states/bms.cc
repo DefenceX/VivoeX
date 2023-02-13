@@ -23,6 +23,8 @@
 
 #include "bms.h"
 
+#include <glog/logging.h>
+
 #include "src/widgets/widget_types.h"
 
 namespace gva {

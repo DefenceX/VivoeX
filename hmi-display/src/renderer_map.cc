@@ -23,6 +23,7 @@
 
 #include "renderer_map.h"
 
+#include <glog/logging.h>
 #include <osmscout/Database.h>
 #include <osmscoutmap/MapService.h>
 #include <osmscoutmapcairo/MapPainterCairo.h>

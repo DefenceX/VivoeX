@@ -26,11 +26,19 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#if __MINGW64__ || __MINGW32__
+struct termios {
+  uint32_t dummy_struct = 0;
+};
+#else
 #include <termios.h>
+#endif
 #include <time.h>
 #include <unistd.h>
 
-#include <GeographicLib/LambertConformalConic.hpp>
+// #include <GeographicLib/LambertConformalConic.hpp>
+#include <glog/logging.h>
+
 #include <GeographicLib/MGRS.hpp>
 #include <GeographicLib/UTMUPS.hpp>
 #include <iomanip>
@@ -59,6 +67,9 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
   nmea_zero_INFO(&info_);
   nmea_parser_init(&parser_);
 
+#if (__MINGW64__ || __MINGW32__)
+#pragma message "No serial support on MSYS2 yet, GPS disabled"
+#else
   // Open File Descriptor
   gps_ = open(screen->info.gpsDevice.c_str(), O_RDWR | O_NONBLOCK | O_NDELAY);
 
@@ -74,6 +85,7 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
   //
   cfsetospeed(&settings, B4800);        // baud rate
   tcsetattr(gps_, TCSANOW, &settings);  // apply the settings
+#endif
 
   //
   // Start the Real Time Clock
@@ -146,13 +158,6 @@ ScreenGva::~ScreenGva() {
 }
 
 void ClockUpdate(ClockArgs *a) {
-  char c;
-  char tmp[kMaxNmea + 2] = {0};
-  char buffer[kMaxNmea] = {0};
-
-  uint32_t i = 0;
-  uint32_t ii = 0;
-
   // Get the system time and be thread safe
   auto unix_epoch_time = (time_t) nullptr;
   struct tm local_time;
@@ -163,6 +168,15 @@ void ClockUpdate(ClockArgs *a) {
   snprintf(clock, sizeof(clock), "%02d/%02d/%02d %02d:%02d:%02d", local_time.tm_mday, local_time.tm_mon + 1,
            local_time.tm_year + 1900, local_time.tm_hour, local_time.tm_min, local_time.tm_sec);
   a->clockString = clock;
+
+#if (__MINGW64__ || __MINGW32__)
+#else
+  char c;
+  char tmp[kMaxNmea + 2] = {0};
+  uint32_t i = 0;
+  uint32_t ii = 0;
+  char buffer[kMaxNmea] = {0};
+
   if (*a->gps > 0) {
     i = 0;
     tcflush(*a->gps, TCIOFLUSH);
@@ -192,6 +206,7 @@ void ClockUpdate(ClockArgs *a) {
     a->info->lat = ToDegrees((float)a->info->lat);
     a->info->lon = ToDegrees((float)a->info->lon);
   }
+#endif
 
   if ((a->info->lon != 0) && (a->info->lat != 0)) {
     switch (a->location->locationFormat) {

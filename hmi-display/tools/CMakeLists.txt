@@ -43,10 +43,24 @@ include_directories(${CMAKE_SOURCE_DIR}/hmi-display)
 link_libraries(-lstdc++fs)
 
 add_executable(widget-tester ${SOURCE_FILES})
-target_link_libraries(widget-tester glog nmealib config-proto ${OSMSCOUT_LIBARAIES} ${CAIRO_LIBRARIES} ${GTK3_LIBRARIES} )
+target_link_libraries(widget-tester glog nmea config-proto ${OSMSCOUT_LIBARAIES} ${CAIRO_LIBRARIES} ${GTK3_LIBRARIES} )
 target_include_directories(widget-tester PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_BINARY_DIR}/hmi-display/config ${CMAKE_CURRENT_SOURCE_DIR}/../hmi-display ${OSMSCOUT_INCLUDE_DIRS} ${CAIRO_INCLUDE_DIRS} ${PANGO_INCLUDE_DIRS} ${GTK3_INCLUDE_DIRS})
 target_compile_options(widget-tester PUBLIC ${CAIRO_CFLAGS_OTHER} ${GTK3_CFLAGS_OTHER})
 set_target_properties(widget-tester PROPERTIES UNITY_BUILD ON)
+
+if (MSYS)
+# Static link libraries .a
+target_link_directories(widget-tester BEFORE PRIVATE
+"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/gflags/lib"
+"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/glog/lib"
+"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/protobuf/lib"
+"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/libosmscout/lib"
+"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/libosmscout/lib"
+"${CMAKE_BINARY_DIR}/external/libnmea/src/lib"
+"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/libnmea/lib"
+"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/GeographicLib/lib"
+)
+endif()
 
 add_dependencies(widget-tester libglog geographiclib libnmea libosmscout config-proto)
 

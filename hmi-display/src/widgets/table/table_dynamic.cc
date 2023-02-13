@@ -23,6 +23,8 @@
 
 #include "src/widgets/table/table_dynamic.h"
 
+#include <glog/logging.h>
+
 #include "src/events_gva.h"
 #include "src/screen_gva.h"
 

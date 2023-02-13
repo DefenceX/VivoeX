@@ -22,7 +22,10 @@ ExternalProject_Add(
     BUILD_ALWAYS        0
 )
 
-set(GTEST_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/external/install/usr/local/include)
+set(GTEST_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/external/install/usr/local/include "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/googletest-distribution/lib")
 set(GTEST_LIBARAIES gmock_main gmock gtest pthread)
-# Ubuntu=/usr/local/lib CentOS=/usr/local/lib64 UbuntuArm=/usr/local/lib/aarch64-linux-gnu, we just set paths for both
-set(GTEST_LIBRARY_DIRS ${CMAKE_BINARY_DIR}/external/install/usr/local/lib ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64 ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/aarch64-linux-gnu)
+# Ubuntu=/usr/local/lib CentOS=/usr/local/lib64 UbuntuArm=/usr/local/lib/aarch64-linux-gnu, Windows Program Files (x86), we just set paths for both
+set(GTEST_LIBRARY_DIRS 
+  ${CMAKE_BINARY_DIR}/external/install/usr/local/lib 
+  ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64 ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/aarch64-linux-gnu 
+ "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/googletest-distribution/include")

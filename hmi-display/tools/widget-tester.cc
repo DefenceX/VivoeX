@@ -481,7 +481,6 @@ static void do_drawing(cairo_t *cr, int width, int height) {
 ///
 int main(int argc, char *argv[]) {
   int index;
-  int c;
   int id = 0;
   int timeout = 1000;
 
@@ -489,6 +488,10 @@ int main(int argc, char *argv[]) {
   GtkWidget *darea;
 
   opterr = 0;
+
+#if __MINGW64__ || __MINGW32__
+#else
+  int c;
 
   while ((c = getopt(argc, argv, "o:i:ht:")) != -1) switch (c) {
       case 'o':
@@ -551,6 +554,7 @@ int main(int argc, char *argv[]) {
       default:
         abort();
     }
+#endif
 
   for (index = optind; index < argc; index++) printf("Non-option argument %s\n", argv[index]);
 

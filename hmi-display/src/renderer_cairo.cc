@@ -23,6 +23,7 @@
 
 #include "renderer_cairo.h"
 
+#include <glog/logging.h>
 #include <math.h>
 #include <pthread.h>
 #include <stdio.h>
@@ -313,7 +314,7 @@ uint32_t RendererCairo::Init(uint32_t width, uint32_t height, bool fullscreen, C
 
   render_.surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
 
-  render_.win.app = gtk_application_new("org.gtk.vivoe-lite-hmi", G_APPLICATION_FLAGS_NONE);
+  render_.win.app = gtk_application_new("org.gtk.vivoe-lite-hmi", G_APPLICATION_DEFAULT_FLAGS);
 
   //  const gchar *quit_accels[2] = { "F11", NULL };
   //  gtk_application_set_accels_for_action (GTK_APPLICATION (render_.win.app),

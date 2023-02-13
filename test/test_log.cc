@@ -21,6 +21,7 @@
 /// \file test_log.cc
 ///
 
+#include <glog/logging.h>
 #include <unistd.h>
 
 #include <cstdlib>

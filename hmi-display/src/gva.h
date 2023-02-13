@@ -24,8 +24,6 @@
 #ifndef HMI_DISPLAY_SRC_GVA_H_
 #define HMI_DISPLAY_SRC_GVA_H_
 
-#include <glog/logging.h>
-
 #include <array>
 #include <string>
 

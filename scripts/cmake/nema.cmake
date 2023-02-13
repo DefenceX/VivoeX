@@ -18,7 +18,10 @@ ExternalProject_Add(
     BUILD_IN_SOURCE     TRUE
     CONFIGURE_COMMAND   ""
     BUILD_COMMAND       make
-    INSTALL_COMMAND     ""
+    INSTALL_COMMAND     "" 
     UPDATE_DISCONNECTED 1
     BUILD_ALWAYS        0
 )
+
+
+set(NEMA_INCLUDER_DIRS "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/GeographicLib/include")

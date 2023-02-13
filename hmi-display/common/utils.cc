@@ -22,6 +22,7 @@
 ///
 
 #include <fcntl.h>
+#include <glog/logging.h>
 #include <unistd.h>
 
 #include <iostream>

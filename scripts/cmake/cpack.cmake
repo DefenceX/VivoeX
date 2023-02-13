@@ -4,10 +4,16 @@ project (vivoe-lite-packages)
 file(WRITE ${CMAKE_BINARY_DIR}/etc/ld.so.conf.d/vivoe-lite.conf "/opt/gva/libs/\n") 
 file(WRITE ${CMAKE_BINARY_DIR}/etc/profile.d/vivoe-lite.sh "export PATH=$PATH:/opt/gva/hmi\n")
 
+# Set default installers
+if (MSYS)
+  set(CPACK_GENERATOR "WIX")
+else()
+  set(CPACK_GENERATOR "DEB")
+endif()
+
 #General
 set(VERSION "${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSION}")
 set(CPACK_PACKAGE_VERSION ${VERSION})
-set(CPACK_GENERATOR "RPM")
 if ("${DDS}" STREQUAL "CYCLONE-CE")
   set(CPACK_PACKAGE_NAME "vivoe-lite-cyclone-ce")
 elseif ("${DDS}" STREQUAL "OSPL-CE")
@@ -33,6 +39,32 @@ list(APPEND CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST "/var")
 list(APPEND CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST "/var/log")
 list(APPEND CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST "/etc")
 list(APPEND CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST "/etc/ld.so.conf.d")
+
+## Windows
+set (CPACK_COMPONENTS_ALL applications libraries headers)
+set (CPACK_COMPONENT_APPLICATIONS_DISPLAY_NAME "Vivoe Lite")
+set (CPACK_COMPONENT_LIBRARIES_DISPLAY_NAME "Libraries")
+set (CPACK_COMPONENT_HEADERS_DISPLAY_NAME "C++ Headers")
+# Human readable component descriptions
+set (CPACK_COMPONENT_APPLICATIONS_DESCRIPTION
+  "An extremely useful application that makes use of MyLib")
+set (CPACK_COMPONENT_LIBRARIES_DESCRIPTION
+  "Static libraries used to build programs with MyLib")
+set (CPACK_COMPONENT_HEADERS_DESCRIPTION
+  "C/C++ header files for use with MyLib")
+# Define dependencies between components
+set (CPACK_COMPONENT_HEADERS_DEPENDS libraries)
+# Define groups
+set(CPACK_COMPONENT_APPLICATIONS_GROUP "Runtime")
+set(CPACK_COMPONENT_LIBRARIES_GROUP "Development")
+set(CPACK_COMPONENT_HEADERS_GROUP "Development")
+set(CPACK_COMPONENT_GROUP_DEVELOPMENT_DESCRIPTION
+   "All of the tools you'll ever need to develop software")
+# Define NSIS installation types
+set(CPACK_ALL_INSTALL_TYPES Full Developer)
+set(CPACK_COMPONENT_LIBRARIES_INSTALL_TYPES Developer Full)
+set(CPACK_COMPONENT_HEADERS_INSTALL_TYPES Developer Full)
+set(CPACK_COMPONENT_APPLICATIONS_INSTALL_TYPES Full)
 
 # Debian
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Ross Newman")

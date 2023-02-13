@@ -23,6 +23,8 @@
 
 #include "events_gva.h"
 
+#include <glog/logging.h>
+
 #include "src/gva.h"
 #include "src/renderer_gva.h"
 

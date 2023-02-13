@@ -42,7 +42,7 @@ class rendererMap {
   rendererMap(std::string_view map, std::string_view style, int width, int height);
   ~rendererMap();
   rendererMap &operator=(const rendererMap &a) = delete;
-  rendererMap const &operator=( rendererMap &&a) = delete;
+  rendererMap const &operator=(rendererMap &&a) = delete;
 
   GvaStatusTypes Project(double zoom, double lon, double lat, cairo_surface_t **surface);
   void SetHeight(int height) { height_ = height; }

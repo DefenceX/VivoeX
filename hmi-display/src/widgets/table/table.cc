@@ -23,6 +23,8 @@
 
 #include "table.h"
 
+#include <glog/logging.h>
+
 #include "src/screen_gva.h"
 
 namespace gva {

@@ -23,6 +23,8 @@
 
 #include "config_reader.h"
 
+#include <glog/logging.h>
+
 #include <filesystem>
 #include <fstream>
 #include <iostream>

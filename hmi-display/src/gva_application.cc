@@ -23,11 +23,12 @@
 
 #include "gva_application.h"
 
+#include <glog/logging.h>
+
 #include <memory>
 
 #include "common/utils.h"
 #include "src/gva_functions_common.h"
-#include "src/trace.h"
 #include "src/widgets/keyboard.h"
 #include "src/widgets/widget.h"
 
@@ -423,8 +424,6 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
   bool update = true;
   auto *render = static_cast<gva::HandleType *>(user_data);
 
-  tracepoint(vivoe_lite, app_callback, update_counter_);
-
   if ((options_.videoEnabled_) && (gva::hmi::GetScreen()->currentFunction == gva::GvaFunctionEnum::kDriver)) {
     gva::hmi::GetScreen()->canvas.bufferType = gva::SurfaceType::kSurfaceCairo;
     gva::hmi::GetScreen()->canvas.surface =
@@ -482,7 +481,6 @@ void GvaApplication::Update(void *arg, gpointer user_data) {
   if (update) {
     gva::hmi::GetRendrer()->Update();
     update_counter_++;
-    tracepoint(vivoe_lite, app_callback, update_counter_);
   }
 
 }  // namespace gva

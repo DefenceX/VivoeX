@@ -48,12 +48,12 @@ target_link_libraries(
   ${TEST_LIBS}
 )
 
-target_link_directories(test_log PRIVATE ${GTEST_LIBRARY_DIRS} ${PANGO_LIBARARY_DIRS})
+target_link_directories(test_log PRIVATE ${GTEST_INCLUDE_DIRS} ${PANGO_LIBARARY_DIRS})
 
 target_include_directories(
   test_log PUBLIC
   ${TEST_INCLUDES}
-  ${GTEST_INCLUDE_DIRS}
+  ${GTEST_LIBRARY_DIRS}
 )
 
 add_dependencies(test_log config-proto googletest)
@@ -70,11 +70,11 @@ target_link_libraries(
   ${TEST_LIBS}
 )
 
-target_link_directories(test_hmi PRIVATE ${GTEST_LIBRARY_DIRS})
+target_link_directories(test_hmi PRIVATE ${GTEST_INCLUDE_DIRS})
 
 target_include_directories(test_hmi PUBLIC
   ${TEST_INCLUDES}
-  ${GTEST_INCLUDE_DIRS}
+  ${GTEST_LIBRARY_DIRS}
 )
 
 add_dependencies(test_hmi config-proto googletest)

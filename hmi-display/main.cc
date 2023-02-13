@@ -35,71 +35,20 @@
 #include "src/gva_application.h"
 #include "src/hmi_gva.h"
 #include "src/renderer_map.h"
-#include "src/trace.h"
 #include "src/widgets/alarm_indicator.h"
 #include "src/widgets/compass.h"
 #include "src/widgets/keyboard.h"
 #include "video/src/gva_video_rtp_yuv.h"
 
-///
-/// \brief Parse the command line options
-///
-/// \param argc Argument count
-/// \param argv Argument array
-/// \param opt HMI application options
-///
-int32_t GetOpt(int argc, char *argv[], GvaApplication::Options *opt) {
-  int c = 0;
-
-  const gva::ConfigData *configuration = gva::ConfigData::GetInstance();
-
-  while ((c = getopt(argc, argv, "hvwclf::")) != -1) {
-    switch (c) {
-      case 'v':
-        std::cout << "Version " << gva::kSemVerMajor << "." << gva::kSemVerMinor << "." << gva::kSemVerPatch
-                  << std::endl;
-        return 0;
-      case 'w':
-        opt->windowEnabled_ = true;
-        return -1;
-      case 'c':
-        opt->config = optarg;
-        return -1;
-      case 'l':
-        printf("-l selected");
-        opt->videoEnabled_ = true;
-        break;
-      case 'f':
-        configuration->SetFullscreen(true);
-        break;
-      case 'h':
-        std::cout << "  -c : XML config file" << std::endl;
-        std::cout << "  -h : help" << std::endl;
-        std::cout << "  -w : Show HMI window, for debug when no GVA display present" << std::endl;
-        std::cout << "  -v : Version" << std::endl;
-        std::cout << "  -l : Live video" << std::endl;
-        std::cout << "  -f : Fullscreen" << std::endl;
-        return 0;
-      case '?':
-        if (optopt == 'c')
-          std::cerr << "Option -" << optopt << " requires an argument.\n" << std::endl;
-
-        else
-          std::cerr << std::hex << "Unknown option character, -h for help'" << optopt << "'." << std::endl;
-        return 1;
-      default:
-        abort();
-    }
-  }
-  return -1;
-};
-
+DEFINE_bool(fullscreen, false, "Start the application fullscreen");
+DEFINE_bool(live, false, "Show live video streams");
+ 
 int main(int argc, char *argv[]) {
+  gflags::ParseCommandLineFlags(&argc, &argv, true);
   if (!google::IsGoogleLoggingInitialized()) {
     google::SetVersionString(std::to_string(gva::kSemVerMajor) + "." + std::to_string(gva::kSemVerMinor) + "." +
                              std::to_string(gva::kSemVerPatch));
     google::SetUsageMessage("HMI Display application renderer.");
-    google::ParseCommandLineFlags(&argc, &argv, false);
     google::InitGoogleLogging(argv[0]);
     google::InstallFailureSignalHandler();
     LOG(INFO) << "Initialised Google logging";
@@ -111,17 +60,12 @@ int main(int argc, char *argv[]) {
   std::cout << "hmi_display (By defencex.com.au)..." << std::endl;
   SYSLOG(INFO) << "HMI Display application started";
 
-  tracepoint(vivoe_lite, main, 0, (char *)"Hello");
-
-  GvaApplication::Options options = {false, false, ""};
-
-  if (int32_t ret = GetOpt(argc, argv, &options); ret >= 0) return ret;
+  GvaApplication::Options options = {FLAGS_live, FLAGS_fullscreen, ""};
 
   auto app = GvaApplication(options, ipaddr, port);
 
   // Blocking call to the application constructor
   app.Exec();
-  tracepoint(vivoe_lite, main, 0, (char *)"World");
 
   SYSLOG(INFO) << "Exiting hmi_display...\n";
   google::ShutdownGoogleLogging();
