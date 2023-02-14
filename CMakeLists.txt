@@ -92,6 +92,20 @@ if (MSYS)
     C:/msys64/mingw64/bin/libdatrie-1.dll
     C:/msys64/mingw64/bin/libbrotlicommon.dll
   DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+  # Images for dummy camera feeds
+  install(FILES  
+      ${IMAGE_PATH}/FrontRight.png 
+      ${IMAGE_PATH}/FrontCenter.png 
+      ${IMAGE_PATH}/FrontLeft.png 
+      ${IMAGE_PATH}/Right.png 
+      ${IMAGE_PATH}/Rear.png 
+      ${IMAGE_PATH}/Left.png 
+      ${IMAGE_PATH}/Quad.png 
+      DESTINATION ${CMAKE_INSTALL_PREFIX}/images)
+  # All other images
+  install(FILES  
+      ${CMAKE_SOURCE_DIR}/images/screen/DefenceX.png 
+      DESTINATION ${CMAKE_INSTALL_PREFIX}/images)
 else()
   install(TARGETS hmi-display DESTINATION /opt/gva/hmi)
 

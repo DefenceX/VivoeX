@@ -290,7 +290,13 @@ std::string ConfigData::GetLogPath() const { return current_config_->file().log_
 
 std::string ConfigData::GetLogFilename() const { return current_config_->file().log_filename(); }
 
-std::string ConfigData::GetImagePath() const { return current_config_->file().images_path(); }
+std::string ConfigData::GetImagePath() const {
+#if __MINGW64__ || __MINGW32__
+  return "../images/";
+#else
+  return current_config_->file().images_path();
+#endif
+}
 
 std::string ConfigData::GetGpsDevice() const { return current_config_->gps_device(); }
 std::string ConfigData::GetOdbDevice() const { return current_config_->odb_device(); }
