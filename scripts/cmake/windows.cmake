@@ -28,6 +28,7 @@ if (MSYS)
 
   set(WINDOWS_RESOURCE ${CMAKE_BINARY_DIR}/vivow-lite.res)
   add_library(resources OBJECT IMPORTED ${WINDOWS_RESOURCE})
+  set(WINDOWS_RESOURCE_LIB resources)
 
 
 endif()

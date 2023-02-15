@@ -1,4 +1,4 @@
-project (vivoe-lite-packages)
+project (vivoe-lite)
 
 # Create systems integration files
 file(WRITE ${CMAKE_BINARY_DIR}/etc/ld.so.conf.d/vivoe-lite.conf "/opt/gva/libs/\n") 
@@ -6,6 +6,10 @@ file(WRITE ${CMAKE_BINARY_DIR}/etc/profile.d/vivoe-lite.sh "export PATH=$PATH:/o
 
 #General
 set(VERSION "${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSION}")
+set(CPACK_PACKAGE_NAME vivoe-lite)
+set(CPACK_PACKAGE_VERSION_MAJOR ${CMAKE_MAJOR_VERSION})
+set(CPACK_PACKAGE_VERSION_MINOR ${CMAKE_MINOR_VERSION})
+set(CPACK_PACKAGE_VERSION_PATCH ${CMAKE_PATCH_VERSION})
 set(CPACK_PACKAGE_VERSION ${VERSION})
 if ("${DDS}" STREQUAL "CYCLONE-CE")
   set(CPACK_PACKAGE_NAME "vivoe-lite-cyclone-ce")
@@ -19,7 +23,6 @@ endif()
 # set(CPACK_PACKAGE_RELEASE 1)
 set(CPACK_PACKAGE_CONTACT "Ross Newman")
 set(CPACK_PACKAGE_VENDOR "DefenceX")
-set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CPACK_PACKAGE_RELEASE}.${CMAKE_SYSTEM_PROCESSOR}")
 
 if (MSYS)
   include(${CMAKE_SOURCE_DIR}/scripts/cmake/cpack-msys.cmake)
@@ -27,3 +30,8 @@ else()
   include(${CMAKE_SOURCE_DIR}/scripts/cmake/cpack-deb.cmake)
   include(${CMAKE_SOURCE_DIR}/scripts/cmake/cpack-rpm.cmake)
 endif()
+
+set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CPACK_SYSTEM_NAME}")
+
+include(CPack)
+
