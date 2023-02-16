@@ -20,7 +20,7 @@ elseif("${DDS}" STREQUAL "RTI")
 elseif()
   message(ERROR "DDS vendor not currently supported (${DDS})")
 endif()
-# set(CPACK_PACKAGE_RELEASE 1)
+
 set(CPACK_PACKAGE_CONTACT "Ross Newman")
 set(CPACK_PACKAGE_VENDOR "DefenceX")
 
