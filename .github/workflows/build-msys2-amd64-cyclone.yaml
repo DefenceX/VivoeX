@@ -25,7 +25,7 @@ jobs:
         with:
           msystem: MINGW64
           update: true
-          install: cmake git base-devel mingw-w64-x86_64-cmake mingw-w64-x86_64-cairo mingw-w64-x86_64-cairo mingw-w64-x86_64-toolchain mingw-w64-x86_64-gtk3  mingw-w64-x86_64-gcc mingw-w64-x86_64-ffmpeg mingw-w64-x86_64-nsis
+          install: git base-devel mingw-w64-x86_64-cmake mingw-w64-x86_64-cairo mingw-w64-x86_64-cairo mingw-w64-x86_64-toolchain mingw-w64-x86_64-gtk3  mingw-w64-x86_64-gcc mingw-w64-x86_64-ffmpeg mingw-w64-x86_64-nsis
       - name: CMake and Build
         run: |
           echo 'Running in MSYS2!' && \
@@ -33,18 +33,19 @@ jobs:
           cd build && \
           cmake -G "MSYS Makefiles" .. -DDDS=CYCLONE-CE .. && \
           make 
+          ls C:/
       # - name: Install
       #   run: |
       #     cd build && make install
-      - name: Package
-        run: |
-          cd build && cpack && \
-          echo "NSIS_PACKAGE=$(ls *.exe)" >> $GITHUB_ENV && echo "NSIS_PACKAGE=$(ls *.exe)" >> $GITHUB_OUTPUT
-      - name: Archive packaged .exe
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ env.NSIS_PACKAGE }}
-          path: build/${{ env.NSIS_PACKAGE }}
-          retention-days: 30
+      # - name: Package
+      #   run: |
+      #     cd build && cpack && \
+      #     echo "NSIS_PACKAGE=$(ls *.exe)" >> $GITHUB_ENV && echo "NSIS_PACKAGE=$(ls *.exe)" >> $GITHUB_OUTPUT
+      # - name: Archive packaged .exe
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: ${{ env.NSIS_PACKAGE }}
+      #     path: build/${{ env.NSIS_PACKAGE }}
+      #     retention-days: 30
 
           
