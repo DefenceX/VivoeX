@@ -25,7 +25,7 @@ jobs:
         with:
           msystem: MINGW64
           update: true
-          install: cmake git base-devel mingw-w64-x86_64-cmake mingw-w64-x86_64-cairo mingw-w64-x86_64-toolchain mingw-w64-x86_64-gtk3  mingw-w64-x86_64-gcc mingw-w64-x86_64-ffmpeg mingw-w64-x86_64-nsis
+          install: cmake git base-devel mingw-w64-x86_64-cmake mingw-w64-x86_64-cairo mingw-w64-x86_64-cairo mingw-w64-x86_64-toolchain mingw-w64-x86_64-gtk3  mingw-w64-x86_64-gcc mingw-w64-x86_64-ffmpeg mingw-w64-x86_64-nsis
       - name: CMake and Build
         run: |
           echo 'Running in MSYS2!' && \
@@ -33,9 +33,9 @@ jobs:
           cd build && \
           cmake -G "MSYS Makefiles" .. -DDDS=CYCLONE-CE .. && \
           make 
-      - name: Install
-        run: |
-          cd build && make install
+      # - name: Install
+      #   run: |
+      #     cd build && make install
       - name: Package
         run: |
           cd build && cpack && \
