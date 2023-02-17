@@ -1,14 +1,12 @@
 set(CPACK_GENERATOR "NSIS")
 
 ## Windows
-# set(A_PACK_DESCRIPTION_SUMMARY "${PROJECT_NAME} - A GVA compliant HMI for military applications")
-# set(A_INSTALL_PREFIX Consolas)
 set(CPACK_SYSTEM_NAME win64)
 # set(CPACK_SET_DESTDIR FALSE)
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "vivoe-lite")
 set(CPACK_COMPONENTS_ALL COMPONENTS)
 set(CPACK_COMPONENT_APPLICATIONS_DISPLAY_NAME "Vivoe Lite")
-set(CPACK_PACKAGING_INSTALL_PREFIX "vivoe-lite")
+# set(CPACK_PACKAGING_INSTALL_PREFIX "vivoe-lite")
 
 # NSIS
 set(CPACK_MONOLITHIC_INSTALL TRUE)
@@ -25,7 +23,12 @@ set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_SOURCE_DIR}/LICENSE)
 set(CPACK_NSIS_INSTALLED_ICON_NAME ${CMAKE_SOURCE_DIR}/images/favicon.ico)
 set(CPACK_NSIS_HELP_LINK "https://defencex.com.au/downloads.html")
 set(CPACK_NSIS_URL_INFO_ABOUT "https://defencex.com.au")
+set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
+    CreateShortCut \\\"$DESKTOP\\\\${PROJECT_NAME}.lnk\\\" \\\"$INSTDIR\\\\bin\\\\hmi-display.exe\\\"
+")
 set(CPACK_NSIS_CONTACT "enquiries@defencex.com.au")
+
+
 # set(CPACK_NSIS_MENU_LINKS
 #     "doc/cmake-@CMake_VERSION_MAJOR@.@CMake_VERSION_MINOR@/cmake.html"
 #     "CMake Help" "https://cmake.org" "CMake Web Site")
