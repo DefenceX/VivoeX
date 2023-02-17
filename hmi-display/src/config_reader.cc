@@ -292,7 +292,7 @@ std::string ConfigData::GetLogFilename() const { return current_config_->file().
 
 std::string ConfigData::GetImagePath() const {
 #if __MINGW64__ || __MINGW32__
-  return "../images/";
+  return "./images/";
 #else
   return current_config_->file().images_path();
 #endif
