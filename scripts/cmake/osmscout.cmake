@@ -26,8 +26,8 @@ ExternalProject_Add(
     SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/libosmscout/src
     BINARY_DIR          ${CMAKE_BINARY_DIR}/external/libosmscout/build
     INSTALL_COMMAND     make DESTDIR=${CMAKE_BINARY_DIR}/external/install install
-    UPDATE_DISCONNECTED 1
-    BUILD_ALWAYS        0
+    UPDATE_DISCONNECTED TRUE
+    BUILD_ALWAYS        FALSE
 )
 endif()
 

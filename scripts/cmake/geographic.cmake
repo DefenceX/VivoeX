@@ -19,9 +19,14 @@ ExternalProject_Add(
     BUILD_COMMAND       make $(nproc)
     INSTALL_COMMAND     make DESTDIR=${CMAKE_BINARY_DIR}/external/install install
     TEST_COMMAND        ""
-    UPDATE_DISCONNECTED TRUE
+    UPDATE_DISCONNECTED FALSE
     BUILD_ALWAYS        0
 )
 
-set(GEOGRAPHIC_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/external/install/usr/local/include)
+if (MSYS)
+  set(GEOGRAPHIC_INCLUDE_DIRS "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/GeographicLib/include")
+else()
+  set(GEOGRAPHIC_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/external/install/usr/local/include)
+endif()
+
 set(GEOGRAPHIC_LIBARAIES GeographicLib)
