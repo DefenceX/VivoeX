@@ -16,6 +16,6 @@ ExternalProject_Add(
     CONFIGURE_COMMAND   ./bootstrap && ./configure --disable-numa --disable-man-pages
     BUILD_COMMAND       make
     INSTALL_COMMAND     ""
-    UPDATE_DISCONNECTED TRUE
+    UPDATE_DISCONNECTED 1
     BUILD_ALWAYS        0
 )

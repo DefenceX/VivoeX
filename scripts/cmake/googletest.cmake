@@ -18,8 +18,7 @@ ExternalProject_Add(
     SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/googletest/src
     BINARY_DIR          ${CMAKE_BINARY_DIR}/external/googletest/build
     INSTALL_COMMAND     make DESTDIR=${CMAKE_BINARY_DIR}/external/install install
-    UPDATE_DISCONNECTED TRUE
-    BUILD_ALWAYS        0
+    UPDATE_DISCONNECTED 1
 )
 
 if (MSYS)

@@ -18,7 +18,7 @@ ExternalProject_Add(
     SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/libprotobuf/src
     BINARY_DIR          ${CMAKE_BINARY_DIR}/external/libprotobuf/build
     INSTALL_COMMAND     make DESTDIR=${CMAKE_BINARY_DIR}/external/install install
-    UPDATE_DISCONNECTED FALSE
+    UPDATE_DISCONNECTED 1
     BUILD_ALWAYS        0
 )
 

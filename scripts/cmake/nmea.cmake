@@ -15,12 +15,10 @@ ExternalProject_Add(
     STAMP_DIR           ${CMAKE_BINARY_DIR}/external/libnmea/stamp
     DOWNLOAD_DIR        ${CMAKE_BINARY_DIR}/external/libnmea/download
     SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/libnmea/src
-    BUILD_IN_SOURCE     TRUE
-    CONFIGURE_COMMAND   ""
-    BUILD_COMMAND       make CFLAGS=-Wno-implicit-fallthrough
+    BINARY_DIR           ${CMAKE_BINARY_DIR}/external/libnmea/build
+    BUILD_COMMAND       make
     INSTALL_COMMAND     make DESTDIR=${CMAKE_BINARY_DIR}/external/install install
-    UPDATE_DISCONNECTED TRUE
-    BUILD_ALWAYS        0
+    UPDATE_DISCONNECTED 1
 )
 include_directories(/usr/lib/x86_64-linux-gnu)
 

@@ -15,5 +15,5 @@ ExternalProject_Add(
     BINARY_DIR          ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build
     BUILD_COMMAND       bash -c "make $(nproc)"
     INSTALL_COMMAND     bash -c "make DESTDIR=${CMAKE_BINARY_DIR}/external/install install"
-    UPDATE_DISCONNECTED FALSE
+    UPDATE_DISCONNECTED 1
 )

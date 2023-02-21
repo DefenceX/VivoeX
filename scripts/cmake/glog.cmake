@@ -25,8 +25,6 @@ ExternalProject_Add(
     SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/libglog/src
     BINARY_DIR          ${CMAKE_BINARY_DIR}/external/libglog/build
     INSTALL_COMMAND     make DESTDIR=${CMAKE_BINARY_DIR}/external/install install 
-    UPDATE_DISCONNECTED FALSE
-    BUILD_ALWAYS        FALSE
+    UPDATE_DISCONNECTED 1
     DEPENDS             libgflags 
-    LOG_INSTALL         OFF
 )

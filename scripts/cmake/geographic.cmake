@@ -18,9 +18,7 @@ ExternalProject_Add(
     INSTALL_DIR         ${CMAKE_BINARY_DIR}/external/geographiclib/install
     BUILD_COMMAND       make $(nproc)
     INSTALL_COMMAND     make DESTDIR=${CMAKE_BINARY_DIR}/external/install install
-    TEST_COMMAND        ""
-    UPDATE_DISCONNECTED FALSE
-    BUILD_ALWAYS        0
+    UPDATE_DISCONNECTED 1
 )
 
 if (MSYS)
