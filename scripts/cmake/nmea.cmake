@@ -15,8 +15,7 @@ ExternalProject_Add(
     STAMP_DIR           ${CMAKE_BINARY_DIR}/external/libnmea/stamp
     DOWNLOAD_DIR        ${CMAKE_BINARY_DIR}/external/libnmea/download
     SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/libnmea/src
-    BINARY_DIR           ${CMAKE_BINARY_DIR}/external/libnmea/build
-    BUILD_COMMAND       make
+    BINARY_DIR          ${CMAKE_BINARY_DIR}/external/libnmea/build
     INSTALL_COMMAND     make DESTDIR=${CMAKE_BINARY_DIR}/external/install install
     UPDATE_DISCONNECTED 1
 )
@@ -27,4 +26,5 @@ if (MSYS)
   set(NMEA_LIBRARY_DIR "${CMAKE_BINARY_DIR}/external/install/usr/lib64")
 else()
   set(NMEA_INCLUDER_DIRS ${CMAKE_BINARY_DIR}/external/install/usr/include)
+  set(NMEA_LIBRARY_DIR ${CMAKE_BINARY_DIR}/external/install/usr/local/lib)
 endif()

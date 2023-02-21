@@ -41,6 +41,7 @@ add_executable(
 
 )
 
+message(STATUS >>>>> ${GTEST_LIBRARY_DIRS})
 target_link_directories(test_log PRIVATE ${GTEST_LIBRARY_DIRS} ${PANGO_LIBARARY_DIRS})
 
 target_link_libraries(
