@@ -253,6 +253,7 @@
         "NSIS",
         "osmscout",
         "Payloader",
+        "plantuml",
         "powertools",
         "Preinstall",
         "protobuf",
@@ -271,6 +272,7 @@
         "UNACK",
         "unfullscreen",
         "valgrind",
+        "Vetronics",
         "vivoe",
         "workarea"
     ],

@@ -9,7 +9,7 @@ message (STATUS "Added libnmea to external submodules")
 ExternalProject_Add(
     libnmea
     URL                 https://sourceforge.net/projects/nmea/files/NmeaLib/nmea-0.5.x/nmealib-0.5.3.zip
-    DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+    # DOWNLOAD_EXTRACT_TIMESTAMP TRUE
     PREFIX              ${CMAKE_BINARY_DIR}/external/libnmea/prefix
     TMP_DIR             ${CMAKE_BINARY_DIR}/external/libnmea/tmp
     STAMP_DIR           ${CMAKE_BINARY_DIR}/external/libnmea/stamp
