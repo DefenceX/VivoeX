@@ -20,7 +20,7 @@ ExternalProject_Add(
     BUILD_IN_SOURCE     TRUE
     BUILD_COMMAND       make $(nproc)
     INSTALL_COMMAND     make install
-    UPDATE_DISCONNECTED 1
+    UPDATE_DISCONNECTED FALSE
     BUILD_ALWAYS        0
 )
 

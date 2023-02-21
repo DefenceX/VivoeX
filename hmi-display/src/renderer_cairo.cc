@@ -314,7 +314,7 @@ uint32_t RendererCairo::Init(uint32_t width, uint32_t height, bool fullscreen, C
 
   render_.surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
 
-#if (MSYS)
+#if __MINGW64__ || __MINGW32__
   render_.win.app = gtk_application_new("org.gtk.vivoe-lite-hmi", G_APPLICATION_DEFAULT_FLAGS);
 #else
   render_.win.app = gtk_application_new("org.gtk.vivoe-lite-hmi", G_APPLICATION_FLAGS_NONE);

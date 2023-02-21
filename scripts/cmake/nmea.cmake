@@ -17,7 +17,7 @@ ExternalProject_Add(
     SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/libnmea/src
     BUILD_IN_SOURCE     TRUE
     CONFIGURE_COMMAND   ""
-    BUILD_COMMAND       make CC=gcc CFLAGS=-Wno-implicit-fallthrough
+    BUILD_COMMAND       make CFLAGS=-Wno-implicit-fallthrough
     INSTALL_COMMAND     make DESTDIR=${CMAKE_BINARY_DIR}/external/install install
     UPDATE_DISCONNECTED TRUE
     BUILD_ALWAYS        0
@@ -26,6 +26,7 @@ include_directories(/usr/lib/x86_64-linux-gnu)
 
 if (MSYS)
   set(NMEA_INCLUDER_DIRS "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/libnmea/include")
+  set(NMEA_LIBRARY_DIR "${CMAKE_BINARY_DIR}/external/install/usr/lib64")
 else()
-  set(NMEA_INCLUDER_DIRS ${CMAKE_BINARY_DIR}/external/install/usr/lib64)
+  set(NMEA_INCLUDER_DIRS ${CMAKE_BINARY_DIR}/external/install/usr/include)
 endif()

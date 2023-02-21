@@ -5,7 +5,7 @@ ExternalProject_Add(
     vivoe_media
     GIT_REPOSITORY      https://github.com/DefenceX/vivoe-media-framework
     GIT_SHALLOW         1
-	GIT_TAG             v0.4.0
+	GIT_TAG             main
 	CMAKE_ARGS          -DCMAKE_INSTALL_PREFIX:PATH=/opt/gva/libs
     PREFIX              ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/prefix
     TMP_DIR             ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/tmp
@@ -15,6 +15,6 @@ ExternalProject_Add(
     BINARY_DIR          ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build
     BUILD_COMMAND       bash -c "make $(nproc)"
     INSTALL_COMMAND     bash -c "make DESTDIR=${CMAKE_BINARY_DIR}/external/install install"
-    UPDATE_DISCONNECTED TRUE
+    UPDATE_DISCONNECTED FALSE
     BUILD_ALWAYS        0
 )
