@@ -16,5 +16,4 @@ ExternalProject_Add(
     BUILD_COMMAND       bash -c "make $(nproc)"
     INSTALL_COMMAND     bash -c "make DESTDIR=${CMAKE_BINARY_DIR}/external/install install"
     UPDATE_DISCONNECTED FALSE
-    BUILD_ALWAYS        0
 )

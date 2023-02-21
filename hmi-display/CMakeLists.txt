@@ -70,6 +70,8 @@ link_libraries(-lstdc++fs)
 add_executable(hmi-display ${SOURCES})
 add_dependencies(hmi-display libglog libprotobuf googletest libosmscout geographiclib hmi-video config-proto ${DDS_STACK} libosmscout)
 
+message(STATUS >>>>>>>>>>> ${NMEA_LIBRARY_DIR})
+link_directories( ${NMEA_LIBRARY_DIR} ${CMAKE_BINARY_DIR}/external/libnmea/src/lib )
 target_link_directories(hmi-display PRIVATE ${NMEA_LIBRARY_DIR} ${CMAKE_BINARY_DIR}/external/libnmea/src/lib/ ${CMAKE_BINARY_DIR}/external/install/usr/local/lib)
 target_link_libraries (hmi-display ${GEOGRAPHIC_LIBRARIES} ${WINDOWS_RESOURCE_LIB} glog GeographicLib config-proto ${OSMSCOUT_LIBARAIES} ${PROTOBUF_LIBRARY} ${GTK_LIBRARIES3} stdc++fs)
 target_link_libraries(hmi-display png pthread hmi-video vivoe-media nmea config-proto ${GFLAGS_LIBS} ${CAIRO_LIBRARIES} ${PANGO_LIBRARIES} ${SWSCALE_LIBRARIES} ${GTK3_LIBRARIES})
