@@ -8,8 +8,8 @@ message (STATUS "Added libnmea to external submodules")
 # ------------------------------------------------------------------------------
 ExternalProject_Add(
     libnmea
-    URL                 https://sourceforge.net/projects/nmea/files/NmeaLib/nmea-0.5.x/nmealib-0.5.3.zip
-    # DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+    GIT_REPOSITORY      https://github.com/DefenceX/nmealib
+    GIT_TAG             master
     PREFIX              ${CMAKE_BINARY_DIR}/external/libnmea/prefix
     TMP_DIR             ${CMAKE_BINARY_DIR}/external/libnmea/tmp
     STAMP_DIR           ${CMAKE_BINARY_DIR}/external/libnmea/stamp
@@ -17,11 +17,15 @@ ExternalProject_Add(
     SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/libnmea/src
     BUILD_IN_SOURCE     TRUE
     CONFIGURE_COMMAND   ""
-    BUILD_COMMAND       make
-    INSTALL_COMMAND     "" 
-    UPDATE_DISCONNECTED 1
+    BUILD_COMMAND       make CC=gcc CFLAGS=-Wno-implicit-fallthrough
+    INSTALL_COMMAND     make DESTDIR=${CMAKE_BINARY_DIR}/external/install install
+    UPDATE_DISCONNECTED TRUE
     BUILD_ALWAYS        0
 )
+include_directories(/usr/lib/x86_64-linux-gnu)
 
-
-set(NEMA_INCLUDER_DIRS "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/GeographicLib/include")
+if (MSYS)
+  set(NMEA_INCLUDER_DIRS "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/libnmea/include")
+else()
+  set(NMEA_INCLUDER_DIRS ${CMAKE_BINARY_DIR}/external/install/usr/lib64)
+endif()

@@ -19,7 +19,7 @@ ExternalProject_Add(
     BUILD_COMMAND       make $(nproc)
     INSTALL_COMMAND     make DESTDIR=${CMAKE_BINARY_DIR}/external/install install
     TEST_COMMAND        ""
-    UPDATE_DISCONNECTED 1
+    UPDATE_DISCONNECTED TRUE
     BUILD_ALWAYS        0
 )
 

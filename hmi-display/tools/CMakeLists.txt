@@ -36,7 +36,8 @@ include_directories(
 )
 
 link_directories(${CMAKE_BINARY_DIR}/external/libnmea/build/src)
-link_directories(${CMAKE_BINARY_DIR}/external/install/usr/local/lib/)
+link_directories(${CMAKE_BINARY_DIR}/external/install/usr/local/lib)
+link_directories(${CMAKE_BINARY_DIR}/external/install/usr/lib64)
 
 # OSMScout
 include_directories(${CMAKE_SOURCE_DIR}/hmi-display)

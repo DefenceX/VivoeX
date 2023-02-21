@@ -19,8 +19,14 @@ ExternalProject_Add(
     SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/libgflags/src
     BINARY_DIR          ${CMAKE_BINARY_DIR}/external/libgflags/build
     INSTALL_COMMAND     make DESTDIR=${CMAKE_BINARY_DIR}/external/install install 
-    UPDATE_DISCONNECTED 0
+    UPDATE_DISCONNECTED TRUE
     BUILD_ALWAYS        FALSE
 )
+
+if (MSYS)
+  set(GFLAGS_LIBS gflags_static)
+else()
+  set(GFLAGS_LIBS gflags)
+endif()
 
 add_dependencies(libgflags googletest)
