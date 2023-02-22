@@ -2,6 +2,7 @@ install(TARGETS hmi-display DESTINATION /opt/gva/hmi)
 
 # Install DDS
 file(GLOB_RECURSE DDS_LIBS ${CMAKE_BINARY_DIR}/external/install/usr/local/libcyclone*.so*)
+file(GLOB_RECURSE GLOG_LIBS ${CMAKE_BINARY_DIR}/external/install/usr/local/libglog*.so*)
 # Install binaries with external libs
 file(WRITE ${CMAKE_BINARY_DIR}/gva.log "")
 install(FILES ${CMAKE_BINARY_DIR}/gva.log DESTINATION "/var/log" PERMISSIONS OWNER_WRITE OWNER_READ GROUP_WRITE GROUP_READ WORLD_READ WORLD_WRITE)
@@ -22,12 +23,10 @@ install(FILES
             ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libosmscout_map.so.1.1.1
             ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libosmscout.so
             ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libosmscout.so.1.1.1
-            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libglog.so
-            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libglog.so.1
-            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libglog.so.0.6.0
             # ${CMAKE_BINARY_DIR}/external/install/opt/cairo/lib/lib/
             # ${CMAKE_BINARY_DIR}/external/install/lib/${ARCH}-linux-gnu/libpango-1.0.so
             # ${CMAKE_BINARY_DIR}/external/install/lib/${ARCH}-linux-gnu/libpangocairo-1.0.so
+            ${GLOG_LIBS}
             ${DDS_LIBS}
         DESTINATION "/opt/gva/libs" PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE GROUP_WRITE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_WRITE WORLD_EXECUTE)
 
