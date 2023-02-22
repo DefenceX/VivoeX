@@ -41,7 +41,6 @@ add_executable(
 
 )
 
-message(STATUS >>>>> ${GTEST_LIBRARY_DIRS})
 target_link_directories(test_log PRIVATE ${GTEST_LIBRARY_DIRS} ${PANGO_LIBARARY_DIRS})
 
 target_link_libraries(
@@ -57,7 +56,7 @@ target_include_directories(
   ${GTEST_INCLUDE_DIRS}
 )
 
-add_dependencies(test_log config-proto googletest)
+add_dependencies(test_log config-proto googletest glog)
 
 ## test-hmi
 add_executable(
@@ -72,14 +71,14 @@ target_link_libraries(
   ${TEST_LIBS}
 )
 
-target_link_directories(test_hmi PRIVATE ${GTEST_LIBRARY_DIRS} ${GTEST_INCLUDE_DIRS})
+target_link_directories(test_hmi PRIVATE ${GTEST_LIBRARY_DIRS})
 
 target_include_directories(test_hmi PUBLIC
   ${TEST_INCLUDES}
   ${GTEST_INCLUDE_DIRS}
 )
 
-add_dependencies(test_hmi config-proto googletest)
+add_dependencies(test_hmi config-proto googletest glog)
 
 include(GoogleTest)
 
