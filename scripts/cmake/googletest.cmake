@@ -24,7 +24,7 @@ ExternalProject_Add(
 if (MSYS)
   set(GTEST_LIBRARY_DIRS "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/googletest-distribution/lib")
 else()
-  set(
+  set(GTEST_LIBRARY_DIRS
     GTEST_LIBRARY_DIRS ${CMAKE_BINARY_DIR}/external/install/usr/local/lib
     GTEST_LIBRARY_DIRS ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64
   )
