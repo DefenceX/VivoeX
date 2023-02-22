@@ -19,10 +19,10 @@ endif()
 
 if($ENV{CI})
   message(STATUS "Running CI so flags for production builds")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${MSYS_FLAGS} -lstdc++fs -O3")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${MSYS_FLAGS} -lstdc++ -lstdc++fs -O3")
 else()
   message(STATUS "Running locally so optimised CFLAGS for checking")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${MSYS_FLAGS} -lstdc++fs -Wall -Werror")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${MSYS_FLAGS} -lstdc++ -lstdc++fs -Wall -Werror")
 endif()
 
 option(TRACE "Build with trace" OFF)
