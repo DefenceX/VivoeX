@@ -56,7 +56,7 @@ target_include_directories(
   ${GTEST_INCLUDE_DIRS}
 )
 
-add_dependencies(test_log config-proto googletest glog)
+add_dependencies(test_log config-proto googletest libglog)
 
 ## test-hmi
 add_executable(
@@ -78,7 +78,7 @@ target_include_directories(test_hmi PUBLIC
   ${GTEST_INCLUDE_DIRS}
 )
 
-add_dependencies(test_hmi config-proto googletest glog)
+add_dependencies(test_hmi config-proto googletest libglog)
 
 include(GoogleTest)
 
