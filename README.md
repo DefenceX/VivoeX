@@ -24,25 +24,11 @@
 **A Generic Vehicle Architecture HMI (Human Machine Interface)**
 
 # Dependencies
-This VIVOE (Vetronics Infrastructure for Video Over Ethernet) environment is currently tested on Ubuntu 22.04 LTS. To install required packages review and run [scripts/init_build_machine_ubuntu.sh](scripts/init_build_machine_ubuntu.sh). For msys2 under Windows 11 run [scripts/init_build_machine_msys2.sh](scripts/init_build_machine_msys2.sh)
+This VIVOE (Vetronics Infrastructure for Video Over Ethernet) environment is currently tested on Ubuntu 22.04 LTS. To install required packages review and run [scripts/init_build_machine_ubuntu.sh](scripts/init_build_machine_ubuntu.sh). 
 
-We also want to support CentOS try, some extra setup:
-```
-dnf install epel-release -y
-dnf config-manager --set-enabled powertools -y
-dnf localinstall --nogpgcheck https://download1.rpmfusion.org/free/el/rpmfusion-free-release-8.noarch.rpm -y
-dnf update -y
-dnf install cmake gcc-c++ cairo-devel doxygen libXext-devel ffmpeg-devel protobuf-devel protobuf-compiler gtk3-devel -y
-dnf -y install gcc-toolset-9-gcc gcc-toolset-9-gcc-c++
-source /opt/rh/gcc-toolset-9/enable
-export CI=YES
+For msys2 under Windows 11 run [scripts/init_build_machine_msys2.sh](scripts/init_build_machine_msys2.sh)
 
-```
-> NOTE: The export CI=YES is required as there is an issue compiling against Gtk3 on CentOS8 when strict warnings are enabled (default when running locally). To get around the issue our CI does not treat warnings as errors so setting this allows you to build with less checking.
-Additional packages for building documentation:
-```
-dnf install doxygen plantuml ImageMagick -y
-```
+For CentOS Stream 8 run [scripts/init_build_machine_centos.sh](scripts/init_build_machine_centos.sh)
 
 # Documentation
 Documentation can be generated using doxygen after cloning or see latest documentation on [Github Pages](https://defencex.github.io/vivoe-lite/).

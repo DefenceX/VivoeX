@@ -33,19 +33,18 @@ jobs:
           cd build && \
           cmake -G "MSYS Makefiles" .. -DDDS=CYCLONE-CE .. && \
           make 
-          ls C:/
-      # - name: Install
-      #   run: |
-      #     cd build && make install
-      # - name: Package
-      #   run: |
-      #     cd build && cpack && \
-      #     echo "NSIS_PACKAGE=$(ls *.exe)" >> $GITHUB_ENV && echo "NSIS_PACKAGE=$(ls *.exe)" >> $GITHUB_OUTPUT
-      # - name: Archive packaged .exe
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: ${{ env.NSIS_PACKAGE }}
-      #     path: build/${{ env.NSIS_PACKAGE }}
-      #     retention-days: 30
+      - name: Install
+        run: |
+          cd build && make install
+      - name: Package
+        run: |
+          cd build && cpack && \
+          echo "NSIS_PACKAGE=$(ls *.exe)" >> $GITHUB_ENV && echo "NSIS_PACKAGE=$(ls *.exe)" >> $GITHUB_OUTPUT
+      - name: Archive packaged .exe
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.NSIS_PACKAGE }}
+          path: build/${{ env.NSIS_PACKAGE }}
+          retention-days: 30
 
           
