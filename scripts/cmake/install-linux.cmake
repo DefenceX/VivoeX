@@ -22,6 +22,9 @@ install(FILES
             ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libosmscout_map.so.1.1.1
             ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libosmscout.so
             ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libosmscout.so.1.1.1
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libglog.so
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libglog.so.1
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libglog.so.0.6.0
             # ${CMAKE_BINARY_DIR}/external/install/opt/cairo/lib/lib/
             # ${CMAKE_BINARY_DIR}/external/install/lib/${ARCH}-linux-gnu/libpango-1.0.so
             # ${CMAKE_BINARY_DIR}/external/install/lib/${ARCH}-linux-gnu/libpangocairo-1.0.so
