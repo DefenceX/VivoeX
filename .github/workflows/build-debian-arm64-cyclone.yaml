@@ -78,4 +78,4 @@ jobs:
       - name: Run binary
         run: |
           sudo ldconfig && \
-          /opt/gva/hmi/hmi-display --help
+          /opt/gva/hmi/hmi-display --version

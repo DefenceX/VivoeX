@@ -103,4 +103,4 @@ jobs:
         run: dnf install ./*.rpm -y
 
       - name: Run binary
-        run: /opt/gva/hmi/hmi-display --help
+        run: /opt/gva/hmi/hmi-display --version
