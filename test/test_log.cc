@@ -102,7 +102,6 @@ TEST_F(LogTest, CheckingInfoLogs) {
   LOG(INFO) << "This is a test 4" << std::flush;
   LOG(INFO) << "This is a test 5" << std::flush;
   google::FlushLogFilesUnsafe(google::GLOG_INFO);
-  sync();
   after = CoutLines("/tmp/test_log.INFO");
 
   // EXPECT_EQ(after, before + 5);
