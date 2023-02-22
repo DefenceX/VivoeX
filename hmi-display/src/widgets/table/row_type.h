@@ -50,9 +50,9 @@ class RowType {
   /// \brief Sorting is based on priority then time
   ///
   ///
-  bool operator<(RowType &a) const;
+  bool operator<(const RowType &a) const;
 
-  bool operator>(RowType &a) const;
+  bool operator>(const RowType &a) const;
 
   ///
   /// \brief Get the Foreground Colour

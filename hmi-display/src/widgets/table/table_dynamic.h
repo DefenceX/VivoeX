@@ -182,4 +182,4 @@ class WidgetTableDynamic : public WidgetTable {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_WIDGETS_TABLE_TABLE_H_
+#endif  // HMI_DISPLAY_SRC_WIDGETS_TABLE_TABLE_DYNAMIC_H_

@@ -24,9 +24,10 @@
 #ifndef HMI_DISPLAY_SRC_WIDGETS_COMPASS_H_
 #define HMI_DISPLAY_SRC_WIDGETS_COMPASS_H_
 
+#include <math.h>
+
 #include <cstdint>
 
-#include "math.h"
 #include "src/renderer_cairo_types.h"
 #include "src/widgets/widget.h"
 

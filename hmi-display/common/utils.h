@@ -28,4 +28,5 @@ namespace gva {
 
 void SetBrightness(double brightness);
 }
+
 #endif  // HMI_DISPLAY_COMMON_UTILS_H_

@@ -67,7 +67,7 @@ RowType &RowType::operator=(const RowType &a) {
   return *this;
 }
 
-bool RowType::operator<(RowType &a) const {
+bool RowType::operator<(const RowType &a) const {
   if ((a.cells_.size() >= 3) && (this->cells_.size() >= 3)) {
     if ((a.cells_[2].GetText() == "A") && ((this->cells_[2].GetText() == "W") || (this->cells_[2].GetText() == "C")))
       return true;
@@ -76,7 +76,7 @@ bool RowType::operator<(RowType &a) const {
   return false;
 }
 
-bool RowType::operator>(RowType &a) const {
+bool RowType::operator>(const RowType &a) const {
   if ((a.cells_.size() >= 3) && (this->cells_.size() >= 3)) {
     if ((a.cells_[2].GetText() == "W") && ((this->cells_[2].GetText() == "C") || (this->cells_[2].GetText() == "A")))
       return true;

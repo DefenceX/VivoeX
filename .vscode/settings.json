@@ -228,6 +228,7 @@
         "epel",
         "Fadings",
         "geographiclib",
+        "GLOG",
         "graphviz",
         "Layouter",
         "ldconfig",

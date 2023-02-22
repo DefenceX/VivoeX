@@ -22,8 +22,8 @@
 /// \file renderer_base.h
 ///
 
-#ifndef HMI_DISPLAY_SRC_RENDER_BASE_H_
-#define HMI_DISPLAY_SRC_RENDER_BASE_H_
+#ifndef HMI_DISPLAY_SRC_RENDERER_BASE_H_
+#define HMI_DISPLAY_SRC_RENDERER_BASE_H_
 
 #include <stdint.h>
 
@@ -102,4 +102,4 @@ class RenderBase {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_RENDER_BASE_H_
+#endif  // HMI_DISPLAY_SRC_RENDERER_BASE_H_
