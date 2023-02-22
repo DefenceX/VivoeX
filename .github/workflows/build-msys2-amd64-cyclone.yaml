@@ -33,8 +33,8 @@ jobs:
           cd build && \
           cmake -G "MSYS Makefiles" .. -DDDS=CYCLONE-CE .. && \
           make 
-          tree /msys64 -L s -d 
-          ls C:/msys64/mingw64
+          tree /msys64 -L 3 -d 
+          find / | grep cairo-2
       # - name: Install
       #   run: |
       #     cd build && make install
