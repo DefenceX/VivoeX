@@ -28,3 +28,12 @@ ExternalProject_Add(
     UPDATE_DISCONNECTED 1
     DEPENDS             libgflags 
 )
+
+set(GLOG_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/external/install/usr/include)
+set(GLOG_LIBRARY glog)
+
+if(MSYS)
+  set(GLOG_LIBRARY_DIR "${CMAKE_BINARY_DIR}external/install/Program Files (x86)/glog/lib")
+else()
+  set(GLOG_LIBRARY_DIR ${CMAKE_BINARY_DIR}/external/install/usr/lib ${CMAKE_BINARY_DIR}/external/install/usr/lib64)
+endif()

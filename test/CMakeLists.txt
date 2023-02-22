@@ -45,7 +45,7 @@ target_link_directories(test_log PRIVATE ${GTEST_LIBRARY_DIRS} ${PANGO_LIBARARY_
 
 target_link_libraries(
   test_log
-  glog
+  ${GLOG_LIBRARY}
   ${GTEST_LIBARAIES}
   ${TEST_LIBS}
 )
@@ -66,7 +66,7 @@ add_executable(
 
 target_link_libraries(
   test_hmi
-  glog
+  ${GLOG_LIBRARY}
   ${GTEST_LIBARAIES}
   ${TEST_LIBS}
 )
