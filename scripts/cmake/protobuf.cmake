@@ -30,5 +30,9 @@ if(MSYS)
   set(PROTOBUF_LIBRARY_DIR "${CMAKE_BINARY_DIR}external/install/Program Files (x86)/protobuf/lib")
 else()
   set(PROTOC ${CMAKE_BINARY_DIR}/external/install/usr/local/bin/protoc)
-  set(PROTOBUF_LIBRARY_DIR ${CMAKE_BINARY_DIR}/external/install/usr/lib ${CMAKE_BINARY_DIR}/external/install/usr/lib64)
+  set(PROTOBUF_LIBRARY_DIR 
+    ${CMAKE_BINARY_DIR}/external/install/usr/lib 
+    ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64
+    ${CMAKE_BINARY_DIR}/external/install/usr/lib64
+  )
 endif()
