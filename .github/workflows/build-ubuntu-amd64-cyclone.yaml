@@ -34,7 +34,7 @@ jobs:
         run: mkdir build && cd build && cmake .. -DDDS=CYCLONE-CE .. && make -j $(nproc)
 
       - name: Install
-        run: cd build && make install
+        run: pwd && cd build && make install
 
       - name: Package for Debian (.deb)
         id: package
