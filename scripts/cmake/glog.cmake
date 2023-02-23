@@ -35,5 +35,10 @@ set(GLOG_LIBRARY glog)
 if(MSYS)
   set(GLOG_LIBRARY_DIR "${CMAKE_BINARY_DIR}external/install/Program Files (x86)/glog/lib")
 else()
-  set(GLOG_LIBRARY_DIR ${CMAKE_BINARY_DIR}/external/install/usr/lib ${CMAKE_BINARY_DIR}/external/install/usr/lib64)
+  set(GLOG_LIBRARY_DIR 
+    ${CMAKE_BINARY_DIR}/external/install/usr/lib 
+    ${CMAKE_BINARY_DIR}/external/install/usr/lib64
+    ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64
+    ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/aarch64-linux-gnu
+  )
 endif()

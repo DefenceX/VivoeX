@@ -4,8 +4,6 @@ install(TARGETS hmi-display DESTINATION /opt/gva/hmi)
 file(GLOB_RECURSE DDS_LIBS ${CMAKE_BINARY_DIR}/external/install/usr/*libcyclone*.so*)
 file(GLOB_RECURSE GLOG_LIBS ${CMAKE_BINARY_DIR}/external/install/usr/*libglog*.so*)
 # Install binaries with external libs
-file(WRITE ${CMAKE_BINARY_DIR}/gva.log "")
-install(FILES ${CMAKE_BINARY_DIR}/gva.log DESTINATION "/var/log" PERMISSIONS OWNER_WRITE OWNER_READ GROUP_WRITE GROUP_READ WORLD_READ WORLD_WRITE)
 install(FILES ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build/libvivoe-media.so DESTINATION "/opt/gva/libs")
 install(FILES ${CMAKE_BINARY_DIR}/etc/ld.so.conf.d/vivoe-lite.conf DESTINATION "/etc/ld.so.conf.d") 
 install(FILES ${CMAKE_BINARY_DIR}/etc/profile.d/vivoe-lite.sh DESTINATION "/etc/profile.d")
