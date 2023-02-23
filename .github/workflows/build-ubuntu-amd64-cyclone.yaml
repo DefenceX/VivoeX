@@ -32,9 +32,9 @@ jobs:
 
       - name: CMake and Build
         run: mkdir build && cd build && cmake .. -DDDS=CYCLONE-CE .. && make -j $(nproc)
+      # - name: Install
+      #   run: tree /etc && pwd && cd build && make install
 
-      - name: Install
-        run: tree /etc && pwd && cd build && make install
 
       - name: Package for Debian (.deb)
         id: package
