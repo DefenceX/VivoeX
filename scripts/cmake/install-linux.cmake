@@ -3,11 +3,12 @@ install(TARGETS hmi-display DESTINATION /opt/gva/hmi)
 # Create systems integration files
 file(WRITE ${CMAKE_BINARY_DIR}/etc/ld.so.conf.d/vivoe-lite.conf "/opt/gva/libs/\n") 
 file(WRITE ${CMAKE_BINARY_DIR}/etc/profile.d/vivoe-lite.sh "export PATH=$PATH:/opt/gva/hmi\n")
-install(MAKE_DIRECTORY DESTINATION /etc/ld.so.conf.d /etc/profile.d)
+install(DIRECTORY DESTINATION /etc/ld.so.conf.d)
+install(DIRECTORY DESTINATION /etc/profile.d)
 # Install binaries with external libs
-install(FILES ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build/libvivoe-media.so DESTINATION "/opt/gva/libs")
-install(FILES ${CMAKE_BINARY_DIR}/etc/ld.so.conf.d/vivoe-lite.conf DESTINATION "/etc/ld.so.conf.d") 
-install(FILES ${CMAKE_BINARY_DIR}/etc/profile.d/vivoe-lite.sh DESTINATION "/etc/profile.d")
+install(FILES ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build/libvivoe-media.so DESTINATION "/opt/gva/libs" PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE GROUP_WRITE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_WRITE WORLD_EXECUTE)
+install(FILES ${CMAKE_BINARY_DIR}/etc/ld.so.conf.d/vivoe-lite.conf DESTINATION "/etc/ld.so.conf.d" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ) 
+install(FILES ${CMAKE_BINARY_DIR}/etc/profile.d/vivoe-lite.sh DESTINATION "/etc/profile.d" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
 # Glob files, can be in different locations for different distros
 file(GLOB_RECURSE DDS_LIBS ${CMAKE_BINARY_DIR}/external/install/usr/*libcyclone*.so*)
 file(GLOB_RECURSE GLOG_LIBS ${CMAKE_BINARY_DIR}/external/install/usr/*libglog*.so*)

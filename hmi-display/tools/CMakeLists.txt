@@ -61,7 +61,7 @@ if (MSYS)
     "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/GeographicLib/lib"
     )
 else()
-    target_link_directories(widget-tester ${GLOG_LIBRARY_DIR} ${PROTOBUF_LIBRARY_DIR} ${GTEST_LIBRARY_DIRS})
+    target_link_directories(widget-tester BEFORE PRIVATE ${GLOG_LIBRARY_DIR} ${PROTOBUF_LIBRARY_DIR} ${GTEST_LIBRARY_DIRS})
 endif()
 
 add_dependencies(widget-tester libglog geographiclib libnmea libosmscout config-proto)
