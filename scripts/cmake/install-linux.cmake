@@ -1,7 +1,7 @@
 install(TARGETS hmi-display DESTINATION /opt/gva/hmi)
 
 # Create systems integration files
-file(WRITE ${CMAKE_BINARY_DIR}/etc/ld.so.conf.d/vivoe-lite.conf "/opt/gva/libs/\n") 
+file(WRITE ${CMAKE_BINARY_DIR}/etc/ld.so.conf.d/vivoe-lite.conf "/opt/gva/${CMAKE_INSTALL_LIBDIR}/\n") 
 file(WRITE ${CMAKE_BINARY_DIR}/etc/profile.d/vivoe-lite.sh "export PATH=$PATH:/opt/gva/hmi\n")
 # install(DIRECTORY DESTINATION /etc/ld.so.conf.d)
 # install(DIRECTORY DESTINATION /etc/profile.d)
