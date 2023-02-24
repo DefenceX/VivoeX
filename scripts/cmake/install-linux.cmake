@@ -23,18 +23,18 @@ install(FILES
             ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libglog.so
             ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libglog.so.1
             ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libglog.so.0.6.0
-            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libcycloneddsidl.so
-            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libcycloneddsidl.so.0.10.2
-            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libcycloneddsidl.so.0
-            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libcycloneddsidl.so
-            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libcycloneddsidl.so.0.10.2
-            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libcycloneddsidl.so.0
             ${CMAKE_BINARY_DIR}/external/install/usr/lib64/libcycloneddsidl.so
             ${CMAKE_BINARY_DIR}/external/install/usr/lib64/libcycloneddsidlcxx.so
             ${CMAKE_BINARY_DIR}/external/install/usr/lib64/libcycloneddsidl.so.0.10.2
             ${CMAKE_BINARY_DIR}/external/install/usr/lib64/libcycloneddsidlcxx.so.0
             ${CMAKE_BINARY_DIR}/external/install/usr/lib64/libcycloneddsidlcxx.so.0.10.2
             ${CMAKE_BINARY_DIR}/external/install/usr/lib64/libcycloneddsidl.so.0
+            ${CMAKE_BINARY_DIR}/external/install/usr/lib64/libddsc.so.0.10.2
+            ${CMAKE_BINARY_DIR}/external/install/usr/lib64/libddscxx.so
+            ${CMAKE_BINARY_DIR}/external/install/usr/lib64/libddsc.so.0
+            ${CMAKE_BINARY_DIR}/external/install/usr/lib64/libddscxx.so.0.10.2
+            ${CMAKE_BINARY_DIR}/external/install/usr/lib64/libddscxx.so.0
+            ${CMAKE_BINARY_DIR}/external/install/usr/lib64/libddsc.so
             # ${CMAKE_BINARY_DIR}/external/install/opt/cairo/lib/lib/
             # ${CMAKE_BINARY_DIR}/external/install/lib/${ARCH}-linux-gnu/libpango-1.0.so
             # ${CMAKE_BINARY_DIR}/external/install/lib/${ARCH}-linux-gnu/libpangocairo-1.0.so
