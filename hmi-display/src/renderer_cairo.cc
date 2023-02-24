@@ -580,13 +580,13 @@ void RendererCairo::Pop() {
   draw_commands_.push_back(command);
 }
 
-uint32_t RendererCairo::GetTextWidth(const std::string str, uint32_t fontSize) const {
+uint32_t RendererCairo::GetTextWidth(std::string_view str, uint32_t fontSize) const {
   cairo_t *cr = render_.cr;
   cairo_text_extents_t extents;
 
-  cairo_select_font_face(cr, config_->GetThemeFont().c_str(), CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
+  cairo_select_font_face(cr, config_->GetThemeFont().data(), CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
   cairo_set_font_size(cr, fontSize);
-  cairo_text_extents(cr, str.c_str(), &extents);
+  cairo_text_extents(cr, str.data(), &extents);
   return (uint32_t)extents.x_advance;
 }
 
@@ -657,9 +657,9 @@ uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, unsigned char *buffer
       return -1;
     }
     int width = cairo_image_surface_get_width(surf);
-    int height = cairo_image_surface_get_height(surf);
 
-    if ((height != gva::kMinimumHeight) || (width != gva::kMinimumWidth)) {
+    if (int height = cairo_image_surface_get_height(surf);
+        (height != gva::kMinimumHeight) || (width != gva::kMinimumWidth)) {
       cairo_surface_set_device_scale(surf, (double)width / kMinimumWidth, (double)height / kMinimumHeight);
     }
 
@@ -675,7 +675,7 @@ uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, unsigned char *buffer
   command.command = DrawType::kCommandImageTexture;
   command.points[0].x = x;
   command.points[0].y = y;
-  command.arg1 = image_list_.size();
+  command.arg1 = (int32_t)image_list_.size();
   draw_commands_.push_back(command);
   return 0;
 }
@@ -689,7 +689,7 @@ uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, unsigned char *buffer
   command.command = DrawType::kCommandImageTexture;
   command.points[0].x = x;
   command.points[0].y = y;
-  command.arg1 = image_list_.size();
+  command.arg1 = (int32_t)image_list_.size();
   draw_commands_.push_back(command);
   return 0;
 }
@@ -705,7 +705,7 @@ uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, cairo_surface_t *surf
   command.command = DrawType::kCommandImageTexturePersist;
   command.points[0].x = x;
   command.points[0].y = y;
-  command.arg1 = image_list_.size();
+  command.arg1 = (int32_t)image_list_.size();
   draw_commands_.push_back(command);
   return 0;
 }

@@ -390,7 +390,7 @@ class RendererCairo : public Renderer {
   /// \param fontSize
   /// \return uint32_t
   ///
-  uint32_t GetTextWidth(const std::string str, uint32_t fontSize) const;
+  uint32_t GetTextWidth(std::string_view str, uint32_t fontSize) const;
 
   ///
   /// \brief Get the Text Height object

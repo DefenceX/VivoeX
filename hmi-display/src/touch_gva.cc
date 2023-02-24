@@ -54,8 +54,8 @@ void TouchGva::Reset() { hotspots_.clear(); }
 
 bool TouchGva::Check(GvaFunctionGroupEnum groupId, uint32_t *binding, uint32_t x, uint32_t y) const {
   // Adjust for resized windows
-  x = (uint32_t)(x / ((float)Renderer::GetWidth() / (float)(kMinimumWidth)));
-  y = (uint32_t)(y / ((float)Renderer::GetHeight() / (float)(kMinimumHeight)));
+  x = (uint32_t)((float)x / ((float)Renderer::GetWidth() / kMinimumWidth));
+  y = (uint32_t)((float)y / ((float)Renderer::GetHeight() / kMinimumHeight));
 
   for (auto i = hotspots_.begin(); i != hotspots_.end(); ++i) {
     if ((x > i->GetX()) && (x < (i->GetX() + i->GetWidth())) && (y > i->GetY()) && (y < (i->GetY() + i->GetHeight())) &&
