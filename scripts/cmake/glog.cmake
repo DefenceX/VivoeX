@@ -4,7 +4,7 @@ include(ExternalProject)
 message (STATUS "Added libglog to external submodules")
 
 if (MSYS)
-  set(GFLAGS_DIR "${CMAKE_BINARY_DIR}/external/install/Program Files/gflags/lib")
+  set(GFLAGS_DIR "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/gflags/lib")
 else()
   set(GFLAGS_DIR ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/cmake/gflags)
 endif()
@@ -33,7 +33,7 @@ set(GLOG_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/external/install/usr/include)
 set(GLOG_LIBRARY glog)
 
 if(MSYS)
-  set(GLOG_LIBRARY_DIR "${CMAKE_BINARY_DIR}external/install/Program Files/glog/lib")
+  set(GLOG_LIBRARY_DIR "${CMAKE_BINARY_DIR}external/install/Program Files (x86)/glog/lib")
 else()
   set(GLOG_LIBRARY_DIR 
     ${CMAKE_BINARY_DIR}/external/install/usr/lib 

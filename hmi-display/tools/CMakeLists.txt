@@ -52,13 +52,13 @@ set_target_properties(widget-tester PROPERTIES UNITY_BUILD ON)
 if (MSYS)
     # Static link libraries .dll
     target_link_directories(widget-tester BEFORE PRIVATE
-    "${CMAKE_BINARY_DIR}/external/install/Program Files/gflags/lib"
-    "${CMAKE_BINARY_DIR}/external/install/Program Files/glog/lib"
-    "${CMAKE_BINARY_DIR}/external/install/Program Files/protobuf/lib"
-    "${CMAKE_BINARY_DIR}/external/install/Program Files/libosmscout/lib"
-    "${CMAKE_BINARY_DIR}/external/install/Program Files/libosmscout/lib"
-    "${CMAKE_BINARY_DIR}/external/install/Program Files/nmea/lib"
-    "${CMAKE_BINARY_DIR}/external/install/Program Files/GeographicLib/lib"
+    "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/gflags/lib"
+    "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/glog/lib"
+    "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/protobuf/lib"
+    "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/libosmscout/lib"
+    "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/libosmscout/lib"
+    "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/nmea/lib"
+    "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/GeographicLib/lib"
     )
 else()
     target_link_directories(widget-tester BEFORE PRIVATE ${GLOG_LIBRARY_DIR} ${PROTOBUF_LIBRARY_DIR} ${GTEST_LIBRARY_DIRS})
