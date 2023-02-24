@@ -11,6 +11,11 @@
 #
 name: "CodeQL"
 
+paths:
+  - hmi-display 
+paths-ignore: 
+  - hmi-display/tools
+
 on:
   push:
     branches: ["main"]
