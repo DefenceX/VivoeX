@@ -23,25 +23,25 @@ install(FILES
             ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libglog.so
             ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libglog.so.1
             ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libglog.so.0.6.0
-            ${CMAKE_BINARY_DIR}/external/install/usr/lib64/libcycloneddsidl.so
-            ${CMAKE_BINARY_DIR}/external/install/usr/lib64/libcycloneddsidlcxx.so
-            ${CMAKE_BINARY_DIR}/external/install/usr/lib64/libcycloneddsidl.so.0.10.2
-            ${CMAKE_BINARY_DIR}/external/install/usr/lib64/libcycloneddsidlcxx.so.0
-            ${CMAKE_BINARY_DIR}/external/install/usr/lib64/libcycloneddsidlcxx.so.0.10.2
-            ${CMAKE_BINARY_DIR}/external/install/usr/lib64/libcycloneddsidl.so.0
-            ${CMAKE_BINARY_DIR}/external/install/usr/lib64/libddsc.so.0.10.2
-            ${CMAKE_BINARY_DIR}/external/install/usr/lib64/libddscxx.so
-            ${CMAKE_BINARY_DIR}/external/install/usr/lib64/libddsc.so.0
-            ${CMAKE_BINARY_DIR}/external/install/usr/lib64/libddscxx.so.0.10.2
-            ${CMAKE_BINARY_DIR}/external/install/usr/lib64/libddscxx.so.0
-            ${CMAKE_BINARY_DIR}/external/install/usr/lib64/libddsc.so
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libcycloneddsidl.so
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libcycloneddsidlcxx.so
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libcycloneddsidl.so.0.10.2
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libcycloneddsidlcxx.so.0
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libcycloneddsidlcxx.so.0.10.2
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libcycloneddsidl.so.0
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libddsc.so.0.10.2
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libddscxx.so
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libddsc.so.0
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libddscxx.so.0.10.2
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libddscxx.so.0
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libddsc.so
             # ${CMAKE_BINARY_DIR}/external/install/opt/cairo/lib/lib/
             # ${CMAKE_BINARY_DIR}/external/install/lib/${ARCH}-linux-gnu/libpango-1.0.so
             # ${CMAKE_BINARY_DIR}/external/install/lib/${ARCH}-linux-gnu/libpangocairo-1.0.so
-        DESTINATION "/opt/gva/libs" PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE GROUP_WRITE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_WRITE WORLD_EXECUTE)
+        DESTINATION "/opt/gva/${CMAKE_INSTALL_LIBDIR}" PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE GROUP_WRITE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_WRITE WORLD_EXECUTE)
 
 # OS Integration files
-install(FILES ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build/libvivoe-media.so DESTINATION "/opt/gva/libs" PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE GROUP_WRITE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_WRITE WORLD_EXECUTE)
+install(FILES ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build/libvivoe-media.so DESTINATION "/opt/gva/${CMAKE_INSTALL_LIBDIR}" PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE GROUP_WRITE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_WRITE WORLD_EXECUTE)
 install(FILES ${CMAKE_BINARY_DIR}/etc/ld.so.conf.d/vivoe-lite.conf DESTINATION "/etc/ld.so.conf.d" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ) 
 install(FILES ${CMAKE_BINARY_DIR}/etc/profile.d/vivoe-lite.sh DESTINATION "/etc/profile.d" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
 

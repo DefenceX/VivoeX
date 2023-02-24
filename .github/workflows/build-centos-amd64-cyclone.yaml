@@ -50,8 +50,10 @@ jobs:
           cmake .. -DDDS=CYCLONE-CE .. && \
           make
           
-      # - name: Install
-      #   run: cd build && make install
+      - name: Install
+        run: |
+          cd build && \
+          make DESTDIR=./installed install
 
       - name: Package for CentOS (.rpm)
         id: package
