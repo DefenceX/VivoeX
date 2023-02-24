@@ -1,3 +1,5 @@
+PROJECT(cpack-deb)
+
 # Debian
 set(CPACK_GENERATOR "DEB")
 

@@ -47,7 +47,7 @@ jobs:
           gcc -v && \
           PATH=$PATH:${HOME}/.local/bin && \
           mkdir build && cd build && \
-          cmake .. -DDDS=CYCLONE-CE .. && \
+          cmake -Wno-dev .. -DDDS=CYCLONE-CE .. && \
           make
           
       - name: Install
@@ -57,7 +57,7 @@ jobs:
 
       - name: Package for CentOS (.rpm)
         id: package
-        run: PATH=$PATH:${HOME}/.local/bin && cd build && cpack -Wno-dev -V -G RPM && echo "RPM_PACKAGE=$(ls *.rpm)" >> $GITHUB_ENV && echo "RPM_PACKAGE=$(ls *.rpm)" >> $GITHUB_OUTPUT
+        run: PATH=$PATH:${HOME}/.local/bin && cd build && cpack -V -G RPM && echo "RPM_PACKAGE=$(ls *.rpm)" >> $GITHUB_ENV && echo "RPM_PACKAGE=$(ls *.rpm)" >> $GITHUB_OUTPUT
 
       - name: Archive packaged .rpm
         uses: actions/upload-artifact@v3
