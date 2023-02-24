@@ -31,20 +31,31 @@ jobs:
             lttng-tools liblttng-ust-dev liblttng-ctl-dev -y
 
       - name: CMake and Build
-        run: mkdir build && cd build && cmake .. -DDDS=CYCLONE-CE .. && make -j $(nproc)
-      # - name: Install
-      #   run: tree /etc && pwd && cd build && make install
+        run: \
+          mkdir build && \
+          cd build && \
+          cmake .. -DDDS=CYCLONE-CE .. && \
+          make -j $(nproc)
 
+      - name: Install
+        run: \
+          cd build && \
+          make DESTDIR=./installed install
 
       - name: Package for Debian (.deb)
         id: package
-        run: cd build && cpack -V -G DEB && echo "DEB_PACKAGE=$(ls *.deb)" >> $GITHUB_ENV && echo "DEB_PACKAGE=$(ls *.deb)" >> $GITHUB_OUTPUT
+        run: \
+          cd build && \
+          cpack -V -G DEB && \
+          echo "DEB_PACKAGE=$(ls *.deb)" >> $GITHUB_ENV && echo "DEB_PACKAGE=$(ls *.deb)" >> $GITHUB_OUTPUT
 
       # - name: CTestDEB_PACKAGE
       #   run: xvfb-run --server-args="-screen 0 1024x768x24" ctest -T memcheck
 
       - name: Post
-        run: cd .. && bash <(curl -s https://codecov.io/bash)
+        run: \
+          cd .. && \
+          bash <(curl -s https://codecov.io/bash)
 
       - name: Archive packaged .deb
         uses: actions/upload-artifact@v3

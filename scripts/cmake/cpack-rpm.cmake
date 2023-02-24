@@ -10,3 +10,6 @@ list(APPEND CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST "/var/log")
 list(APPEND CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST "/etc")
 list(APPEND CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST "/etc/ld.so.conf.d")
 
+# CPack 
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/scripts/cmake/vivoe-lite.spec.in" "${CMAKE_CURRENT_BINARY_DIR}/vivoe-lite.spec" @ONLY IMMEDIATE)
+set(CPACK_RPM_USER_BINARY_SPECFILE "${CMAKE_CURRENT_BINARY_DIR}/vivoe-lite.spec")
