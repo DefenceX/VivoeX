@@ -21,6 +21,7 @@
 /// \file main.cc
 ///
 
+#include <gflags/gflags.h>
 #include <glog/logging.h>
 #include <unistd.h>
 

@@ -126,7 +126,7 @@ execute_process(COMMAND arch OUTPUT_VARIABLE AARCH ERROR_VARIABLE ERROR OUTPUT_S
 if (${AARCH} STREQUAL "x86_64")
   set(CYCLONE_INSTALL_PATH /external/install/usr/local/lib64/cmake/CycloneDDS) # Intel
 elseif(${AARCH} STREQUAL "aarch64")
-  set(CYCLONE_INSTALL_PATH /external/install/usr/local/lib/aarch64-linux-gnu/cmake/CycloneDDS) # ARM (Raspberry Pi)
+  set(CYCLONE_INSTALL_PATH /external/install/usr/local/${CMAKE_INSTALL_LIBDIR}/aarch64-linux-gnu/cmake/CycloneDDS) # ARM (Raspberry Pi)
 else()
   message(FATAL_ERROR "Unrecognised or unsupported processor architecture ${AARCH}!!! ${ERROR}")
 endif()
@@ -194,7 +194,7 @@ ExternalProject_Add(
     BUILD_ALWAYS        0
 )
 
-set(DDS_LIBRARY_DIRS"${CMAKE_BINARY_DIR}/external/opensplice/lib/")
+set(DDS_LIBRARY_DIRS"${CMAKE_BINARY_DIR}/external/opensplice/${CMAKE_INSTALL_LIBDIR}/")
 set(DDS_LIBRARIES "ddsc cycloneddsidl dds_security_auth cycloneddsidl dds_security_ac dds_security_crypto")
 set(DDS_INCLUDES "${CMAKE_BINARY_DIR}/external/opensplice/src/src")
 
