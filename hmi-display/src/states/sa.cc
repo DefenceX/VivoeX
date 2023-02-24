@@ -29,7 +29,7 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
   const std::string path = ConfigData::GetInstance()->GetImagePath();
   std::string filename;
 
-  gva::WidgetPlanPositionIndicator *compass =
+  auto *compass =
       static_cast<WidgetPlanPositionIndicator *>(screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass));
 
   KeySide(keypress);

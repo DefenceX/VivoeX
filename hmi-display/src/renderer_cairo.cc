@@ -75,7 +75,7 @@ void RendererCairo::Draw() {
       case DrawType::kCommandCircle:
         cairo_save(cr);
         cairo_new_path(cr);
-        cairo_translate(cr, (int)currentCmd.points[0].x, (int)currentCmd.points[0].y);
+        cairo_translate(cr, currentCmd.points[0].x, currentCmd.points[0].y);
         cairo_arc(cr, 0, 0, currentCmd.radius, 0, 2 * M_PI);
         cairo_close_path(cr);
         if (currentCmd.fill) {
@@ -392,7 +392,7 @@ uint32_t RendererCairo::MovePen(int32_t x, int32_t y) {
   command.command = DrawType::kCommandPenMove;
   command.points[0].x = x;
   command.points[0].y = y;
-  command.arg1 = 1;  // 1 indicatesnew path
+  command.arg1 = 1;  // 1 indicates new path
   draw_commands_.push_back(command);
   return 0;
 }
@@ -516,7 +516,7 @@ void RendererCairo::DrawRectangle(uint32_t x, uint32_t y, uint32_t width, uint32
   draw_commands_.push_back(command);
 }
 
-void RendererCairo::DrawRoundedRectangle(uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t courner,
+void RendererCairo::DrawRoundedRectangle(uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t corner,
                                          bool fill) {
   Command command;
   command.command = DrawType::kCommandPenRoundedRectangle;
@@ -524,7 +524,7 @@ void RendererCairo::DrawRoundedRectangle(uint32_t x, uint32_t y, uint32_t width,
   command.points[0].y = y;
   command.arg1 = width;
   command.arg2 = height;
-  command.arg3 = courner;
+  command.arg3 = corner;
   command.fill = fill ? true : false;
   draw_commands_.push_back(command);
 }
@@ -580,17 +580,17 @@ void RendererCairo::Pop() {
   draw_commands_.push_back(command);
 }
 
-uint32_t RendererCairo::GetTextWidth(const std::string str, uint32_t fontSize) {
+uint32_t RendererCairo::GetTextWidth(const std::string str, uint32_t fontSize) const {
   cairo_t *cr = render_.cr;
   cairo_text_extents_t extents;
 
   cairo_select_font_face(cr, config_->GetThemeFont().c_str(), CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
   cairo_set_font_size(cr, fontSize);
   cairo_text_extents(cr, str.c_str(), &extents);
-  return extents.x_advance;
+  return (uint32_t)extents.x_advance;
 }
 
-uint32_t RendererCairo::GetTextHeight(std::string_view str, uint32_t fontSize) {
+uint32_t RendererCairo::GetTextHeight(std::string_view str, uint32_t fontSize) const {
   cairo_t *cr = render_.cr;
   cairo_text_extents_t extents;
 

@@ -27,8 +27,7 @@
 namespace gva {
 
 GvaKeyEnum Hmi::KeyAlarms(GvaKeyEnum keypress) {
-  WidgetTableDynamic *table =
-      (WidgetTableDynamic *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic);
+  auto *table = (WidgetTableDynamic *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic);
 
   switch (keypress) {
     case GvaKeyEnum::kKeyF1:  // F1

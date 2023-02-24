@@ -329,7 +329,7 @@ class RendererCairo : public Renderer {
   /// \param courner
   /// \param fill
   ///
-  void DrawRoundedRectangle(uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t courner, bool fill);
+  void DrawRoundedRectangle(uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t corner, bool fill);
 
   ///
   /// \brief
@@ -390,7 +390,7 @@ class RendererCairo : public Renderer {
   /// \param fontSize
   /// \return uint32_t
   ///
-  uint32_t GetTextWidth(const std::string str, uint32_t fontSize);
+  uint32_t GetTextWidth(const std::string str, uint32_t fontSize) const;
 
   ///
   /// \brief Get the Text Height object
@@ -399,7 +399,7 @@ class RendererCairo : public Renderer {
   /// \param fontSize
   /// \return uint32_t
   ///
-  uint32_t GetTextHeight(std::string_view str, uint32_t fontSize);
+  uint32_t GetTextHeight(std::string_view str, uint32_t fontSize) const;
 
   ///
   /// \brief
