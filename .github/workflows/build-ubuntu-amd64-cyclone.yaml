@@ -31,20 +31,20 @@ jobs:
             lttng-tools liblttng-ust-dev liblttng-ctl-dev -y
 
       - name: CMake and Build
-        run: \
+        run: |
           mkdir build && \
           cd build && \
           cmake .. -DDDS=CYCLONE-CE .. && \
           make -j $(nproc)
 
       - name: Install
-        run: \
+        run: |
           cd build && \
           make DESTDIR=./installed install
 
       - name: Package for Debian (.deb)
         id: package
-        run: \
+        run: |
           cd build && \
           cpack -V -G DEB && \
           echo "DEB_PACKAGE=$(ls *.deb)" >> $GITHUB_ENV && echo "DEB_PACKAGE=$(ls *.deb)" >> $GITHUB_OUTPUT
@@ -53,7 +53,7 @@ jobs:
       #   run: xvfb-run --server-args="-screen 0 1024x768x24" ctest -T memcheck
 
       - name: Post
-        run: \
+        run: |
           cd .. && \
           bash <(curl -s https://codecov.io/bash)
 
