@@ -23,6 +23,7 @@ ExternalProject_Add(
 
 if (MSYS)
   set(GEOGRAPHIC_INCLUDE_DIRS "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/GeographicLib/include")
+  set(GEOGRAPHIC_LIBRARY_DIRS "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/GeographicLib/${CMAKE_INSTALL_LIBDIR}")
 else()
   set(GEOGRAPHIC_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/external/install/usr/local/include)
 endif()
