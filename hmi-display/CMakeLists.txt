@@ -80,13 +80,13 @@ if (MSYS)
 	target_link_libraries(hmi-display ${WINDOWS_RESOURCE})
 	# Static link libraries .a
 	target_link_directories(hmi-display BEFORE PRIVATE
-		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/protobuf/lib"
-		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/gflags/lib"
-		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/glog/lib"
-		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/protobuf/lib"
-		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/libosmscout/lib"
-		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/nmea/lib"
-		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/GeographicLib/lib"
+		"${CMAKE_BINARY_DIR}/external/install/Program Files/protobuf/lib"
+		"${CMAKE_BINARY_DIR}/external/install/Program Files/gflags/lib"
+		"${CMAKE_BINARY_DIR}/external/install/Program Files/glog/lib"
+		"${CMAKE_BINARY_DIR}/external/install/Program Files/protobuf/lib"
+		"${CMAKE_BINARY_DIR}/external/install/Program Files/libosmscout/lib"
+		"${CMAKE_BINARY_DIR}/external/install/Program Files/nmea/lib"
+		"${CMAKE_BINARY_DIR}/external/install/Program Files/GeographicLib/lib"
 	) 
 	target_link_libraries(hmi-display shlwapi)
 endif()

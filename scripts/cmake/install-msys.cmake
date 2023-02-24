@@ -1,9 +1,9 @@
 install(TARGETS hmi-display)
-file(GLOB_RECURSE OSMSCOUT_DLL "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/libosmscout/bin/*.dll")
+file(GLOB_RECURSE OSMSCOUT_DLL "${CMAKE_BINARY_DIR}/external/install/Program Files/libosmscout/bin/*.dll")
 install(FILES ${OSMSCOUT_DLL} DESTINATION bin)
-install(FILES "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/GeographicLib/bin/libGeographicLib.dll" DESTINATION bin)
+install(FILES "${CMAKE_BINARY_DIR}/external/install/Program Files/GeographicLib/bin/libGeographicLib.dll" DESTINATION bin)
 install(FILES "${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libvivoe-media.dll" DESTINATION bin)
-install(FILES "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/glog/bin/libglog.dll" DESTINATION bin)
+install(FILES "${CMAKE_BINARY_DIR}/external/install/Program Files/glog/bin/libglog.dll" DESTINATION bin)
 # install(FILES "${CMAKE_SOURCE_DIR}/scripts/Vivoe Lite.lnk" DESTINATION $ENV{USERPROFILE}/Desktop)
 ## MSYS libs now
 install(FILES 
