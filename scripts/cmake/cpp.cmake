@@ -15,7 +15,6 @@ set(CMAKE_INSTALL_LIBDIR lib64)
 set(CODE_STYLE "{BasedOnStyle: Google, ColumnLimit: 120}")
 
 if (MSYS)
-set(CMAKE_GENERATOR_PLATFORM x64)
   set(MSYS_FLAGS "-L/mingw64/lib -mwindows -static-libstdc++ -D_POSIX_C_SOURCE -lstdc++ -lws2_32")
 endif()
 
