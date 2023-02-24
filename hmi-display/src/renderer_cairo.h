@@ -1,7 +1,7 @@
 //
 // MIT License
 //
-// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+// Copyright (c) 2023 DefenceX (enquiries@defencex.ai)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
 // associated documentation files (the 'Software'), to deal in the Software without restriction,
@@ -87,7 +87,7 @@ class RendererCairo : public Renderer {
   ~RendererCairo() override;
 
   ///
-  /// \brief Initalise the renderer with simple display parameters
+  /// \brief Initialise the renderer with simple display parameters
   ///
   /// \param width Canvas width in pixels
   /// \param height Canvas height in pixels
@@ -369,7 +369,7 @@ class RendererCairo : public Renderer {
   /// \param weight
   /// \param fontName
   ///
-  void SetTextFont(uint32_t slope, widget::WeightType weight, std::string fontName, double size);
+  void SetTextFont(uint32_t slope, widget::WeightType weight, std::string_view fontName, double size);
 
   ///
   /// \brief
@@ -399,7 +399,7 @@ class RendererCairo : public Renderer {
   /// \param fontSize
   /// \return uint32_t
   ///
-  uint32_t GetTextHeight(const std::string str, uint32_t fontSize);
+  uint32_t GetTextHeight(std::string_view str, uint32_t fontSize);
 
   ///
   /// \brief
@@ -408,7 +408,7 @@ class RendererCairo : public Renderer {
   /// \param y
   /// \param text
   ///
-  void DrawText(uint32_t x, uint32_t y, const std::string text);
+  void DrawText(uint32_t x, uint32_t y, std::string_view text);
 
   ///
   /// \brief
@@ -417,7 +417,7 @@ class RendererCairo : public Renderer {
   /// \param y
   /// \param text
   ///
-  void DrawLabel(uint32_t x, uint32_t y, const std::string text);
+  void DrawLabel(uint32_t x, uint32_t y, std::string_view text);
 
   ///
   /// \brief
@@ -426,7 +426,7 @@ class RendererCairo : public Renderer {
   /// \param text
   /// \param size
   ///
-  void DrawTextCentre(uint32_t x, const std::string text, uint32_t size);
+  void DrawTextCentre(uint32_t x, std::string_view text, uint32_t size);
 
   ///
   /// \brief
@@ -437,7 +437,7 @@ class RendererCairo : public Renderer {
   /// \param file
   /// \return uint32_t
   ///
-  uint32_t TextureRGB(uint32_t x, uint32_t y, unsigned char *buffer, std::string file) override;
+  uint32_t TextureRGB(uint32_t x, uint32_t y, unsigned char *buffer, std::string_view file) override;
 
   ///
   /// \brief

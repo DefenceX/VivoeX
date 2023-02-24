@@ -1,7 +1,7 @@
 //
 // MIT License
 //
-// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+// Copyright (c) 2023 DefenceX (enquiries@defencex.ai)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
 // associated documentation files (the 'Software'), to deal in the Software without restriction,
@@ -72,12 +72,7 @@ void WidgetBottomLabels::DrawControlLabels() {
       }
 
       switch (i) {
-        case 0:
-        case 1:
-        case 2:
-        case 3:
-        case 6:
-        case 7: {
+        default: {
           uint32_t width = GetRenderer()->GetTextWidth(label.text_, 12);
           GetRenderer()->DrawText((i * w) + offset + ((70 - width) / 2), GetY() + 14, label.text_.c_str());
         } break;

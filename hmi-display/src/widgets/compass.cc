@@ -1,7 +1,7 @@
 //
 // MIT License
 //
-// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+// Copyright (c) 2023 DefenceX (enquiries@defencex.ai)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
 // associated documentation files (the 'Software'), to deal in the Software without restriction,
@@ -44,8 +44,8 @@ void WidgetPlanPositionIndicator::Draw() {
 }
 
 // weaponSight for future use, currently unused
-void WidgetPlanPositionIndicator::DrawModern(uint32_t x, uint32_t y, uint32_t degrees, uint32_t sightAzimuth,
-                                             uint32_t weaponAzimuth [[maybe_unused]], bool sight) const {
+void WidgetPlanPositionIndicator::DrawModern(uint32_t x, uint32_t y, uint16_t degrees, uint16_t sightAzimuth,
+                                             uint16_t weaponAzimuth [[maybe_unused]], bool sight) const {
   double_t radius = 100;
 
   GetRenderer()->Save();
@@ -65,7 +65,7 @@ void WidgetPlanPositionIndicator::DrawModern(uint32_t x, uint32_t y, uint32_t de
   uint32_t step = 360 / 12;
 
   for (uint32_t d = 0; d <= 360; d += step) {
-    double_t r = DegreesToRadians(d + 15 + degrees % 30);
+    double_t r = DegreesToRadians((uint16_t)(d + 15 + degrees % 30));
     GetRenderer()->MovePen((int32_t)((radius - 20) * cos(r)), (int32_t)(-(radius - 20) * sin(r)));
     GetRenderer()->DrawPen((int32_t)(radius * cos(r)), (int32_t)(-radius * sin(r)), true);
   }
@@ -145,7 +145,7 @@ void WidgetPlanPositionIndicator::DrawModern(uint32_t x, uint32_t y, uint32_t de
   GetRenderer()->Restore();
 }
 
-void WidgetPlanPositionIndicator::DrawSight(double_t radius, uint32_t render_sight_azimuth, double_t angle) {
+void WidgetPlanPositionIndicator::DrawSight(double_t radius, uint32_t render_sight_azimuth, double_t angle) const {
   int32_t x2 = 0;
   int32_t y2 = 0;
 
@@ -170,8 +170,8 @@ void WidgetPlanPositionIndicator::DrawSight(double_t radius, uint32_t render_sig
   GetRenderer()->DrawPen(x2, y2, true);
 }
 
-void WidgetPlanPositionIndicator::DrawPPI(widget::ModeEnum mode, uint32_t x, uint32_t y, uint32_t degrees,
-                                          uint32_t sight_azimuth, uint32_t weapon_azimuth) {
+void WidgetPlanPositionIndicator::DrawPPI(widget::ModeEnum mode, uint32_t x, uint32_t y, uint16_t degrees,
+                                          uint16_t sight_azimuth, uint16_t weapon_azimuth) const {
   double_t radius = 100;
   double_t angle = 45;
   const uint32_t font_size = 14;
@@ -252,7 +252,7 @@ void WidgetPlanPositionIndicator::DrawPPI(widget::ModeEnum mode, uint32_t x, uin
   std::array<std::string, 4> compass_points = {"S", "W", "N", "E"};
 
   for (uint32_t d = 0; d < 360; d += RadiansToDegrees(step_radians)) {
-    auto render_degrees = d + degrees;
+    auto render_degrees = (uint16_t)(d + degrees);
 
     GetRenderer()->DrawText((uint32_t)(adjust_x - (radius - (double_t)pos) * sin(DegreesToRadians(render_degrees))),
                             (uint32_t)(adjust_y + (radius - (double_t)pos) * cos(DegreesToRadians(render_degrees))),
@@ -269,14 +269,14 @@ void WidgetPlanPositionIndicator::DrawPPI(widget::ModeEnum mode, uint32_t x, uin
     double_t r = DegreesToRadians((uint16_t)(d + degrees));
     p = c % 4 ? 28 : 20;
     c++;
-    GetRenderer()->MovePen((int32_t)((radius - 35) * cos(r)), (int32_t)(-(radius - 35) * sin(r)));
-    GetRenderer()->DrawPen((int32_t)((radius - p) * cos(r)), (int32_t)(-(radius - p) * sin(r)), true);
+    GetRenderer()->MovePen((int32_t)((radius - 35) * sin(r)), (int32_t)(-(radius - 35) * cos(r)));
+    GetRenderer()->DrawPen((int32_t)((radius - p) * sin(r)), (int32_t)(-(radius - p) * cos(r)), true);
   }
 
   // Heading (Goes under sight)
   GetRenderer()->Save();
   GetRenderer()->MovePen(0, 0);
-  GetRenderer()->Rotate(DegreesToRadians((uint16_t)weapon_azimuth));
+  GetRenderer()->Rotate(DegreesToRadians(weapon_azimuth));
 
   GetRenderer()->SetColourBackground(HMI_CYAN);
   if ((mode == widget::ModeEnum::kPpiClassicArrowWithSight) ||

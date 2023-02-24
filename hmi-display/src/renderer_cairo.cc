@@ -1,7 +1,7 @@
 //
 // MIT License
 //
-// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+// Copyright (c) 2023 DefenceX (enquiries@defencex.ai)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
 // associated documentation files (the 'Software'), to deal in the Software without restriction,
@@ -22,8 +22,9 @@
 ///
 
 #include "renderer_cairo.h"
-#include <gtk/gtk.h>
+
 #include <glog/logging.h>
+#include <gtk/gtk.h>
 #include <math.h>
 #include <pthread.h>
 #include <stdio.h>
@@ -44,7 +45,7 @@ RendererCairo::RendererCairo(uint32_t width, uint32_t height) : Renderer(width, 
   scale_ = 1.0;
   foreground_colour_ = {255, 255, 255};
   background_colour_ = {0, 0, 0};
-  texture_ = 0;
+  texture_ = nullptr;
   config_ = gva::ConfigData::GetInstance();
   render_.size.width = gva::kMinimumWidth;
   render_.size.height = gva::kMinimumHeight;
@@ -53,7 +54,7 @@ RendererCairo::RendererCairo(uint32_t width, uint32_t height) : Renderer(width, 
 RendererCairo::~RendererCairo() {
   if (texture_) {
     std::free(texture_);
-    texture_ = 0;
+    texture_ = nullptr;
   }
   cairo_destroy(render_.cr);
   g_object_unref(render_.win.app);
@@ -320,10 +321,6 @@ uint32_t RendererCairo::Init(uint32_t width, uint32_t height, bool fullscreen, C
   render_.win.app = gtk_application_new("org.gtk.vivoe-lite-hmi", G_APPLICATION_FLAGS_NONE);
 #endif
 
-  //  const gchar *quit_accels[2] = { "F11", NULL };
-  //  gtk_application_set_accels_for_action (GTK_APPLICATION (render_.win.app),
-  //                                  "win.fullscreen",quit_accels);
-
   g_signal_connect(render_.win.app, "activate", G_CALLBACK(Activate), NULL);
   g_timeout_add(40, Callback, &render_);
 
@@ -421,8 +418,6 @@ uint32_t RendererCairo::DrawPen(uint32_t x, uint32_t y, bool close) {
 }
 
 uint32_t RendererCairo::DrawPenRaw(int32_t x, int32_t y) {
-  //  y = render_.size.height - y;
-  //  x = render_.size.width - x;
   Command command;
   command.command = DrawType::kCommandPenDraw;
   command.points[0].x = x;
@@ -492,7 +487,7 @@ void RendererCairo::DrawCircle(uint32_t x, uint32_t y, uint32_t radius, bool fil
   command.radius = radius;
   command.points[1].x = 1;
   command.points[1].y = 0;
-  command.fill = fill ? 1 : 0;
+  command.fill = fill ? true : false;
   draw_commands_.push_back(command);
 }
 
@@ -517,7 +512,7 @@ void RendererCairo::DrawRectangle(uint32_t x, uint32_t y, uint32_t width, uint32
   command.points[0].y = y;
   command.points[1].x = width;
   command.points[1].y = height;
-  command.fill = fill ? 1 : 0;
+  command.fill = fill ? true : false;
   draw_commands_.push_back(command);
 }
 
@@ -530,7 +525,7 @@ void RendererCairo::DrawRoundedRectangle(uint32_t x, uint32_t y, uint32_t width,
   command.arg1 = width;
   command.arg2 = height;
   command.arg3 = courner;
-  command.fill = fill ? 1 : 0;
+  command.fill = fill ? true : false;
   draw_commands_.push_back(command);
 }
 
@@ -544,7 +539,7 @@ void RendererCairo::DrawTriangle(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t
   command.points[1].y = y2;
   command.points[2].x = x3;
   command.points[2].y = y3;
-  command.fill = fill ? 1 : 0;
+  command.fill = fill ? true : false;
   draw_commands_.push_back(command);
 }
 
@@ -563,7 +558,7 @@ uint32_t RendererCairo::DrawColor(uint32_t rgb) {
   return 0;
 }
 
-void RendererCairo::SetTextFont(uint32_t slope, widget::WeightType weight, const std::string fontName, double size) {
+void RendererCairo::SetTextFont(uint32_t slope, widget::WeightType weight, std::string_view fontName, double size) {
   Command command;
   command.command = DrawType::kCommandTextFont;
   command.arg1 = slope;
@@ -595,16 +590,16 @@ uint32_t RendererCairo::GetTextWidth(const std::string str, uint32_t fontSize) {
   return extents.x_advance;
 }
 
-uint32_t RendererCairo::GetTextHeight(const std::string str, uint32_t fontSize) {
+uint32_t RendererCairo::GetTextHeight(std::string_view str, uint32_t fontSize) {
   cairo_t *cr = render_.cr;
   cairo_text_extents_t extents;
 
   cairo_set_font_size(cr, fontSize);
-  cairo_text_extents(cr, str.c_str(), &extents);
-  return extents.height;
+  cairo_text_extents(cr, str.data(), &extents);
+  return (uint32_t)extents.height;
 }
 
-void RendererCairo::DrawText(uint32_t x, uint32_t y, const std::string text) {
+void RendererCairo::DrawText(uint32_t x, uint32_t y, std::string_view text) {
   Command command;
   command.command = DrawType::kCommandText;
   command.points[0].x = x;
@@ -613,7 +608,7 @@ void RendererCairo::DrawText(uint32_t x, uint32_t y, const std::string text) {
   draw_commands_.push_back(command);
 }
 
-void RendererCairo::DrawLabel(uint32_t x, uint32_t y, const std::string text) {
+void RendererCairo::DrawLabel(uint32_t x, uint32_t y, std::string_view text) {
   y = render_.size.height - y;
 
   Command command;
@@ -624,9 +619,11 @@ void RendererCairo::DrawLabel(uint32_t x, uint32_t y, const std::string text) {
   draw_commands_.push_back(command);
 }
 
-void RendererCairo::DrawTextCentre(uint32_t x, const std::string text, uint32_t size) { DrawText(x, 200, text); }
+void RendererCairo::DrawTextCentre(uint32_t x, std::string_view text, uint32_t size [[maybe_unused]]) {
+  DrawText(x, 200, text);
+}
 
-uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, unsigned char *buffer, std::string file) {
+uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, unsigned char *buffer, std::string_view file) {
   bool found_in_cache = false;
 
   image_type new_image;
@@ -654,7 +651,7 @@ uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, unsigned char *buffer
     new_image.from_cache = true;
   } else {
     // Add to cache
-    cairo_surface_t *surf = cairo_image_surface_create_from_png(file.c_str());
+    cairo_surface_t *surf = cairo_image_surface_create_from_png(file.data());
     if (cairo_surface_status(surf) != CAIRO_STATUS_SUCCESS) {
       LOG(INFO) << "Could not load file " << file << ", not found!";
       return -1;
@@ -685,9 +682,8 @@ uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, unsigned char *buffer
 
 uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, unsigned char *buffer) {
   image_type new_image;
-  new_image.image =
-      cairo_image_surface_create_for_data(reinterpret_cast<unsigned char *>(buffer), CAIRO_FORMAT_ARGB32, width_,
-                                          height_, cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, width_));
+  new_image.image = cairo_image_surface_create_for_data(buffer, CAIRO_FORMAT_ARGB32, width_, height_,
+                                                        cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, width_));
   image_list_.push_back(new_image);
   Command command;
   command.command = DrawType::kCommandImageTexture;
