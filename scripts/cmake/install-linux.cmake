@@ -6,9 +6,6 @@ file(WRITE ${CMAKE_BINARY_DIR}/etc/profile.d/vivoe-lite.sh "export PATH=$PATH:/o
 # install(DIRECTORY DESTINATION /etc/ld.so.conf.d)
 # install(DIRECTORY DESTINATION /etc/profile.d)
 # Install binaries with external libs
-# Glob files, can be in different locations for different distros
-file(GLOB_RECURSE DDS_LIBS ${CMAKE_BINARY_DIR}/external/install/usr/*libcyclone*.so*)
-file(GLOB_RECURSE GLOG_LIBS ${CMAKE_BINARY_DIR}/external/install/usr/*libglog*.so*)
 install(FILES  
             ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libvivoe-media.so
             ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libvivoe-media.so.1
@@ -23,8 +20,21 @@ install(FILES
             ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libosmscout_map.so.1.1.1
             ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libosmscout.so
             ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libosmscout.so.1.1.1
-            ${GLOG_LIBS}
-            ${DDS_LIBS}
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libglog.so
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libglog.so.1
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libglog.so.0.6.0
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libcycloneddsidl.so
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libcycloneddsidl.so.0.10.2
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libcycloneddsidl.so.0
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libcycloneddsidl.so
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libcycloneddsidl.so.0.10.2
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libcycloneddsidl.so.0
+            ${CMAKE_BINARY_DIR}/external/install/usr/lib64/libcycloneddsidl.so
+            ${CMAKE_BINARY_DIR}/external/install/usr/lib64/libcycloneddsidlcxx.so
+            ${CMAKE_BINARY_DIR}/external/install/usr/lib64/libcycloneddsidl.so.0.10.2
+            ${CMAKE_BINARY_DIR}/external/install/usr/lib64/libcycloneddsidlcxx.so.0
+            ${CMAKE_BINARY_DIR}/external/install/usr/lib64/libcycloneddsidlcxx.so.0.10.2
+            ${CMAKE_BINARY_DIR}/external/install/usr/lib64/libcycloneddsidl.so.0
             # ${CMAKE_BINARY_DIR}/external/install/opt/cairo/lib/lib/
             # ${CMAKE_BINARY_DIR}/external/install/lib/${ARCH}-linux-gnu/libpango-1.0.so
             # ${CMAKE_BINARY_DIR}/external/install/lib/${ARCH}-linux-gnu/libpangocairo-1.0.so

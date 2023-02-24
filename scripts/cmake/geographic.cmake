@@ -9,7 +9,7 @@ ExternalProject_Add(
     GIT_SHALLOW         1
     GIT_TAG             v2.1.2
     GIT_CONFIG          fetch.recurseSubmodules=true
-    CMAKE_ARGS          -DCMAKE_UNITY_BUILD=YES
+    CMAKE_ARGS          -DCMAKE_UNITY_BUILD=YES -DCMAKE_INSTALL_LIBDIR=${CMAKE_INSTALL_LIBDIR} 
     PREFIX              ${CMAKE_BINARY_DIR}/external/geographiclib/prefix
     TMP_DIR             ${CMAKE_BINARY_DIR}/external/geographiclib/tmp
     STAMP_DIR           ${CMAKE_BINARY_DIR}/external/geographiclib/stamp
