@@ -49,6 +49,7 @@
 
 #include <cairo.h>
 #include <ctype.h>
+#include <glog/logging.h>
 #include <gtk/gtk.h>
 #include <math.h>
 #include <stdio.h>
@@ -473,6 +474,18 @@ static void do_drawing(cairo_t *cr, int width, int height) {
 }
 
 ///
+/// \brief Construct a new gtk destory callback object
+///
+/// \param widget
+/// \param data
+///
+int gtk_destory_callback(GtkWidget *widget, gpointer data) {
+  google::ShutdownGoogleLogging();
+  gtk_main_quit();
+  return 0;
+}
+
+///
 /// \brief The main entry point for the widget tester application
 ///
 /// \param argc
@@ -580,6 +593,7 @@ int main(int argc, char *argv[]) {
     g_timeout_add(timeout, (GSourceFunc)time_handler, (gpointer)window);
   }
 
+  g_signal_connect(window, "destroy", G_CALLBACK(gtk_destory_callback), NULL);
   g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
   gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
