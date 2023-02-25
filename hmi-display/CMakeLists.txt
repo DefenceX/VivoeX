@@ -85,7 +85,7 @@ if (MSYS)
 		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/protobuf/lib"
 		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/libosmscout/lib"
 		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/nmea/lib"
-		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/GeographicLib/lib"
+		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/GeographicLib/lib64"
 	)
 	target_link_libraries(hmi-display shlwapi)
 else()
