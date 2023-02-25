@@ -56,8 +56,6 @@ RendererCairo::~RendererCairo() {
     std::free(texture_);
     texture_ = nullptr;
   }
-  cairo_destroy(render_.cr);
-  g_object_unref(render_.win.app);
   CloseWindow();
 }
 
@@ -778,5 +776,13 @@ gboolean RendererCairo::Callback(gpointer data) {
   return TRUE;
 }
 
-void RendererCairo::CloseWindow(void) {}
+void RendererCairo::CloseWindow(void) {
+  while (cairo_surface_get_reference_count(render_.surface)) {
+    cairo_surface_destroy(render_.surface);
+  };
+  LOG(INFO) << "Closing application";
+  // google::ShutdownGoogleLogging();
+  // gtk_main_quit();
+  // g_application_quit(G_APPLICATION(render_.win.app));
+}
 }  // namespace gva

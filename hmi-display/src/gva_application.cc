@@ -226,7 +226,6 @@ bool GvaApplication::ProcessTopKeys(gva::HandleType *render, gva::GvaKeyEnum key
     case gva::GvaKeyEnum::kKeyEscape:
       // exit on ESC key press
       if (render->surface) cairo_surface_destroy(render->surface);
-      google::ShutdownGoogleLogging();
       g_application_quit(G_APPLICATION(render->win.app));
       return true;
     case gva::GvaKeyEnum::kKeyBlackout:

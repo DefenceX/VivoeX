@@ -480,7 +480,6 @@ static void do_drawing(cairo_t *cr, int width, int height) {
 /// \param data
 ///
 int gtk_destory_callback(GtkWidget *widget, gpointer data) {
-  google::ShutdownGoogleLogging();
   gtk_main_quit();
   return 0;
 }

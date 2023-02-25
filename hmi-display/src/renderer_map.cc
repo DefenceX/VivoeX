@@ -68,8 +68,9 @@ rendererMap::rendererMap(std::string_view map, std::string_view style, int width
 };
 
 rendererMap::~rendererMap() {
-  cairo_surface_destroy(surface_);
-  cairo_destroy(cairo_);
+  while (cairo_surface_get_reference_count(surface_)) {
+    cairo_surface_destroy(surface_);
+  };
 };
 
 GvaStatusTypes rendererMap::Project(double zoom, double lon, double lat, cairo_surface_t **surface) {

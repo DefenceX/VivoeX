@@ -124,9 +124,9 @@ set(CycloneDDS_DIR ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/cmake/Cy
 
 execute_process(COMMAND arch OUTPUT_VARIABLE AARCH ERROR_VARIABLE ERROR OUTPUT_STRIP_TRAILING_WHITESPACE)
 if (${AARCH} STREQUAL "x86_64")
-  set(CYCLONE_INSTALL_PATH /external/install/usr/local/lib64/cmake/CycloneDDS) # Intel
+  set(CYCLONE_INSTALL_PATH /external/install/usr/local/${CMAKE_INSTALL_LIBDIR}/cmake/CycloneDDS) # Intel
 elseif(${AARCH} STREQUAL "aarch64")
-  set(CYCLONE_INSTALL_PATH /external/install/usr/local/${CMAKE_INSTALL_LIBDIR}/aarch64-linux-gnu/cmake/CycloneDDS) # ARM (Raspberry Pi)
+  set(CYCLONE_INSTALL_PATH /external/install/usr/local/${CMAKE_INSTALL_LIBDIR}/cmake/CycloneDDS) # ARM (Raspberry Pi)
 else()
   message(FATAL_ERROR "Unrecognised or unsupported processor architecture ${AARCH}!!! ${ERROR}")
 endif()
