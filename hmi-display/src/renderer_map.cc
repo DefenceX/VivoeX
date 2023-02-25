@@ -1,7 +1,7 @@
 //
 // MIT License
 //
-// Copyright (c) 2023 DefenceX (enquiries@defencex.ai)
+// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
 // associated documentation files (the 'Software'), to deal in the Software without restriction,
@@ -68,8 +68,8 @@ rendererMap::rendererMap(std::string_view map, std::string_view style, int width
 };
 
 rendererMap::~rendererMap() {
-  cairo_destroy(cairo_);
   cairo_surface_destroy(surface_);
+  cairo_destroy(cairo_);
 };
 
 GvaStatusTypes rendererMap::Project(double zoom, double lon, double lat, cairo_surface_t **surface) {

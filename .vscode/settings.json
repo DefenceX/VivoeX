@@ -235,6 +235,7 @@
         "epel",
         "Fadings",
         "geographiclib",
+        "gflags",
         "gint",
         "GLOG",
         "graphviz",

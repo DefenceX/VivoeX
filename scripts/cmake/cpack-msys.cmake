@@ -1,3 +1,5 @@
+PROJECT(cpack-msys)
+
 set(CPACK_GENERATOR "NSIS")
 
 ## Windows

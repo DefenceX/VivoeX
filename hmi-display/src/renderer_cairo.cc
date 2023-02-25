@@ -778,7 +778,5 @@ gboolean RendererCairo::Callback(gpointer data) {
   return TRUE;
 }
 
-void RendererCairo::CloseWindow(void) {
-  if (render_.surface) cairo_surface_destroy(render_.surface);
-}
+void RendererCairo::CloseWindow(void) {}
 }  // namespace gva
