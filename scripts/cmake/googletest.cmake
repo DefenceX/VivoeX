@@ -10,7 +10,7 @@ ExternalProject_Add(
     GIT_REPOSITORY      https://github.com/google/googletest
     GIT_TAG             v1.13.0
     GIT_SHALLOW         5
-    CMAKE_ARGS          -DCMAKE_UNITY_BUILD=NO
+    CMAKE_ARGS          -DCMAKE_INSTALL_LIBDIR=/usr/${CMAKE_INSTALL_LIBDIR} -DCMAKE_UNITY_BUILD=NO
     PREFIX              ${CMAKE_BINARY_DIR}/external/googletest/prefix
     TMP_DIR             ${CMAKE_BINARY_DIR}/external/googletest/tmp
     STAMP_DIR           ${CMAKE_BINARY_DIR}/external/googletest/stamp
