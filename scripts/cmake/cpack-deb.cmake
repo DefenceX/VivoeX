@@ -1,4 +1,4 @@
-PROJECT(cpack-deb)
+PROJECT(vivoe-lite)
 
 # Debian
 set(CPACK_GENERATOR "DEB")
