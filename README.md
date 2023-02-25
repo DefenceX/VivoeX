@@ -71,13 +71,14 @@ To enable code coverage reports set ENABLE_COVERAGE. The gdb debugger is avaiabl
 The BMS function can be configured with Open Street Maps but these need to be compiled and installed onto the system. Its recommended that you run wit these switched off if you do not need this functionality. See below for more information on creating maps for your region / territory.
 
 # HMI
-The project includes an reference implementation of the GVA (Generic Vehicle Architecture) like Human Machine Interface (HMI). This is meant as a designed for testing different live video sources and working with streaming protocols and does not implement functionality defined in the GVA Land Data Model (LDM). Its primerially used to demonstrate various video streaming pipelines and control mechanisms for real time video processing. Its primary purpose is for research and development and experimentation with different HMI elements for human factors and sensor integration, test, monitoring and detection of system wide events.
+The project includes an reference implementation of the GVA (Generic Vehicle Architecture) like Human Machine Interface (HMI). This is meant as a designed for testing different live video sources and working with streaming protocols and does not implement functionality defined in the GVA Land Data Model (LDM). Its primarily used to demonstrate various video streaming pipelines and control mechanisms for real time video processing. Virtual HMI can be used for research and development and experimentation with different HMI elements for human factors and sensor integration, test, monitoring and detection of system wide events.
 
-![GVA HMI](images/Display_RD104_02_sm.jpg#left)
-**Leonardo DRS military display**
+![GVA HMI](images/APCDisplay.png#left)
+
+**APC Technology, military display**
 <br>
 
-Dont have deep pockets and need a cheep alternative then the ARM (Raspberry Pi CM4) could be a cost effective solution. GVA in your pocket.
+Don't have deep pockets and need a cheep alternative then the ARM (Raspberry Pi CM4) could be a cost effective solution. GVA in your pocket.
 
 ![GVA HMI](images/reTerminal-drv.jpg#left)
 **Seeed reTerminal**
