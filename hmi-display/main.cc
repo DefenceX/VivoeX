@@ -1,7 +1,7 @@
 //
 // MIT License
 //
-// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+// Copyright (c) 2023 DefenceX (enquiries@defencex.ai)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
 // associated documentation files (the 'Software'), to deal in the Software without restriction,
@@ -21,6 +21,7 @@
 /// \file main.cc
 ///
 
+#include <gflags/gflags.h>
 #include <glog/logging.h>
 #include <unistd.h>
 
@@ -42,13 +43,17 @@
 
 DEFINE_bool(fullscreen, false, "Start the application fullscreen");
 DEFINE_bool(live, false, "Show live video streams");
- 
+
 int main(int argc, char *argv[]) {
+  google::SetVersionString(std::to_string(gva::kSemVerMajor) + "." + std::to_string(gva::kSemVerMinor) + "." +
+                           std::to_string(gva::kSemVerPatch));
+  google::SetUsageMessage(
+      "Human Machine Interface (HMI) display application renderer for using in\n"
+      "vehicles build on the Generic Vehicle Architecture (GVA), this is the open source\n"
+      "edition and does not include any elements of the Land Data Model (LDM). Commercial\n"
+      "support needed for country specific LDM");
   gflags::ParseCommandLineFlags(&argc, &argv, true);
   if (!google::IsGoogleLoggingInitialized()) {
-    google::SetVersionString(std::to_string(gva::kSemVerMajor) + "." + std::to_string(gva::kSemVerMinor) + "." +
-                             std::to_string(gva::kSemVerPatch));
-    google::SetUsageMessage("HMI Display application renderer.");
     google::InitGoogleLogging(argv[0]);
     google::InstallFailureSignalHandler();
     LOG(INFO) << "Initialised Google logging";

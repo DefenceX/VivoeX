@@ -1,7 +1,7 @@
 //
 // MIT License
 //
-// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+// Copyright (c) 2023 DefenceX (enquiries@defencex.ai)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
 // associated documentation files (the 'Software'), to deal in the Software without restriction,
@@ -50,9 +50,9 @@ class RowType {
   /// \brief Sorting is based on priority then time
   ///
   ///
-  bool operator<(RowType &a) const;
+  bool operator<(const RowType &a) const;
 
-  bool operator>(RowType &a) const;
+  bool operator>(const RowType &a) const;
 
   ///
   /// \brief Get the Foreground Colour

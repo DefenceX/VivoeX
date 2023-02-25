@@ -1,7 +1,7 @@
 //
 // MIT License
 //
-// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+// Copyright (c) 2023 DefenceX (enquiries@defencex.ai)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
 // associated documentation files (the 'Software'), to deal in the Software without restriction,
@@ -24,9 +24,10 @@
 #ifndef HMI_DISPLAY_SRC_WIDGETS_COMPASS_H_
 #define HMI_DISPLAY_SRC_WIDGETS_COMPASS_H_
 
+#include <math.h>
+
 #include <cstdint>
 
-#include "math.h"
 #include "src/renderer_cairo_types.h"
 #include "src/widgets/widget.h"
 
@@ -51,7 +52,7 @@ class WidgetPlanPositionIndicator : public WidgetX {
   /// \brief Draw a modern looking PPI
   ///
   ///
-  void DrawModern(uint32_t x, uint32_t y, uint32_t degrees, uint32_t sightAzimuth, uint32_t weaponAzimuth,
+  void DrawModern(uint32_t x, uint32_t y, uint16_t degrees, uint16_t sightAzimuth, uint16_t weaponAzimuth,
                   bool sight) const;
 
   ///
@@ -63,8 +64,8 @@ class WidgetPlanPositionIndicator : public WidgetX {
   /// \param degrees Compass heading
   /// \param sightAzimuth Camera heading
   ///
-  void DrawPPI(widget::ModeEnum mode, uint32_t x, uint32_t y, uint32_t degrees, uint32_t sightAzimuth,
-               uint32_t weaponAzimuth);
+  void DrawPPI(widget::ModeEnum mode, uint32_t x, uint32_t y, uint16_t degrees, uint16_t sightAzimuth,
+               uint16_t weaponAzimuth) const;
 
   ///
   /// \brief Set the Bearing object
@@ -109,7 +110,7 @@ class WidgetPlanPositionIndicator : public WidgetX {
   /// \param render_sight_azimuth
   /// \param angle
   ///
-  void DrawSight(double_t radius, uint32_t render_sight_azimuth, double_t angle);
+  void DrawSight(double_t radius, uint32_t render_sight_azimuth, double_t angle) const;
   const double scale_ = 0.5;
   int16_t bearing_ = 0;
   int16_t bearing_sight_ = 0;

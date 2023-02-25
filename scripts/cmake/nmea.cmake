@@ -10,6 +10,7 @@ ExternalProject_Add(
     libnmea
     GIT_REPOSITORY      https://github.com/DefenceX/nmealib
     GIT_TAG             master
+    CMAKE_ARGS          -DCMAKE_INSTALL_LIBDIR=${CMAKE_INSTALL_LIBDIR}
     PREFIX              ${CMAKE_BINARY_DIR}/external/libnmea/prefix
     TMP_DIR             ${CMAKE_BINARY_DIR}/external/libnmea/tmp
     STAMP_DIR           ${CMAKE_BINARY_DIR}/external/libnmea/stamp
@@ -23,7 +24,7 @@ include_directories(/usr/lib/x86_64-linux-gnu)
 
 if (MSYS)
   set(NMEA_INCLUDER_DIRS "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/libnmea/include")
-  set(NMEA_LIBRARY_DIR "${CMAKE_BINARY_DIR}/external/install/usr/lib64")
+  set(NMEA_LIBRARY_DIR "${CMAKE_BINARY_DIR}/external/install/usr/${CMAKE_INSTALL_LIBDIR}")
 else()
   set(NMEA_INCLUDER_DIRS ${CMAKE_BINARY_DIR}/external/install/usr/include)
   set(NMEA_LIBRARY_DIR ${CMAKE_BINARY_DIR}/external/install/usr/local/lib)

@@ -101,7 +101,7 @@ ExternalProject_Add(
     GIT_TAG             "0.10.2"
     GIT_SHALLOW         1
     GIT_CONFIG          fetch.recurseSubmodules=true
-    CMAKE_ARGS          -DCMAKE_INSTALL_MESSAGE=LAZY
+    CMAKE_ARGS          -DCMAKE_INSTALL_MESSAGE=LAZY -DCMAKE_INSTALL_LIBDIR=${CMAKE_INSTALL_LIBDIR}
     PREFIX              ${CMAKE_BINARY_DIR}/external/cyclonedds/prefix
     TMP_DIR             ${CMAKE_BINARY_DIR}/external/cyclonedds/tmp
     STAMP_DIR           ${CMAKE_BINARY_DIR}/external/cyclonedds/stamp
@@ -124,9 +124,9 @@ set(CycloneDDS_DIR ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/cmake/Cy
 
 execute_process(COMMAND arch OUTPUT_VARIABLE AARCH ERROR_VARIABLE ERROR OUTPUT_STRIP_TRAILING_WHITESPACE)
 if (${AARCH} STREQUAL "x86_64")
-  set(CYCLONE_INSTALL_PATH /external/install/usr/local/lib64/cmake/CycloneDDS) # Intel
+  set(CYCLONE_INSTALL_PATH /external/install/usr/local/${CMAKE_INSTALL_LIBDIR}/cmake/CycloneDDS) # Intel
 elseif(${AARCH} STREQUAL "aarch64")
-  set(CYCLONE_INSTALL_PATH /external/install/usr/local/lib/aarch64-linux-gnu/cmake/CycloneDDS) # ARM (Raspberry Pi)
+  set(CYCLONE_INSTALL_PATH /external/install/usr/local/${CMAKE_INSTALL_LIBDIR}/cmake/CycloneDDS) # ARM (Raspberry Pi)
 else()
   message(FATAL_ERROR "Unrecognised or unsupported processor architecture ${AARCH}!!! ${ERROR}")
 endif()
@@ -139,7 +139,7 @@ ExternalProject_Add(
     GIT_TAG             "0.10.2"
     GIT_SHALLOW         5
     GIT_CONFIG          fetch.recurseSubmodules=true
-    CMAKE_ARGS          -DCycloneDDS_DIR=${CMAKE_BINARY_DIR}${CYCLONE_INSTALL_PATH} -DCMAKE_INSTALL_MESSAGE=LAZY -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/external/install -DCMAKE_PREFIX_PATH=${CMAKE_BINARY_DIR}/external/install/usr/local/lib/cmake/CycloneDDS
+    CMAKE_ARGS          -DCMAKE_INSTALL_PREFIX=/usr/local -DCycloneDDS_DIR=${CMAKE_BINARY_DIR}${CYCLONE_INSTALL_PATH} -DCMAKE_INSTALL_LIBDIR=${CMAKE_INSTALL_LIBDIR} -DCMAKE_INSTALL_MESSAGE=LAZY 
     PREFIX              ${CMAKE_BINARY_DIR}/external/cyclonedds-cxx/prefix
     TMP_DIR             ${CMAKE_BINARY_DIR}/external/cyclonedds-cxx/tmp
     STAMP_DIR           ${CMAKE_BINARY_DIR}/external/cyclonedds-cxx/stamp
@@ -194,7 +194,7 @@ ExternalProject_Add(
     BUILD_ALWAYS        0
 )
 
-set(DDS_LIBRARY_DIRS"${CMAKE_BINARY_DIR}/external/opensplice/lib/")
+set(DDS_LIBRARY_DIRS"${CMAKE_BINARY_DIR}/external/opensplice/${CMAKE_INSTALL_LIBDIR}/")
 set(DDS_LIBRARIES "ddsc cycloneddsidl dds_security_auth cycloneddsidl dds_security_ac dds_security_crypto")
 set(DDS_INCLUDES "${CMAKE_BINARY_DIR}/external/opensplice/src/src")
 

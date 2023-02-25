@@ -71,7 +71,6 @@ add_executable(hmi-display ${SOURCES})
 add_dependencies(hmi-display libglog libprotobuf googletest libosmscout geographiclib hmi-video config-proto ${DDS_STACK} libosmscout)
 
 link_directories( ${NMEA_LIBRARY_DIR} ${CMAKE_BINARY_DIR}/external/libnmea/src/lib )
-target_link_directories(hmi-display PRIVATE ${GTEST_LIBRARY_DIRS} ${NMEA_LIBRARY_DIR} ${CMAKE_BINARY_DIR}/external/libnmea/src/lib/ ${CMAKE_BINARY_DIR}/external/install/usr/local/lib)
 target_link_libraries (hmi-display ${GEOGRAPHIC_LIBRARIES} ${WINDOWS_RESOURCE_LIB} glog GeographicLib config-proto ${OSMSCOUT_LIBARAIES} ${PROTOBUF_LIBRARY} ${GTK_LIBRARIES3} stdc++fs)
 target_link_libraries(hmi-display png pthread hmi-video vivoe-media nmea config-proto ${PROTOBUF_LIBRARY} ${GFLAGS_LIBS} ${CAIRO_LIBRARIES} ${PANGO_LIBRARIES} ${SWSCALE_LIBRARIES} ${GTK3_LIBRARIES})
 
@@ -87,11 +86,36 @@ if (MSYS)
 		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/libosmscout/lib"
 		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/nmea/lib"
 		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/GeographicLib/lib"
-	) 
+	)
 	target_link_libraries(hmi-display shlwapi)
+else()
+	target_link_directories(hmi-display PRIVATE
+		${CMAKE_BINARY_DIR}/external/libprotobuf/build
+		${GEOGRAPHIC_LIBRARY_DIRS}
+		${GLOG_LIBRARY_DIR}
+		${GTEST_LIBRARY_DIRS}
+		${NMEA_LIBRARY_DIR}
+		${CMAKE_BINARY_DIR}/external/libnmea/src/lib/
+		${CMAKE_BINARY_DIR}/external/install/usr/local/lib
+	)
 endif()
 
-target_include_directories(hmi-display PUBLIC ${NMEA_INCLUDER_DIRS} ${OSMSCOUT_INCLUDE_DIRS} ${GEOGRAPHIC_INCLUDE_DIRS} ${CMAKE_BINARY_DIR}/hmi-display/config ${CMAKE_CURRENT_SOURCE_DIR}/widgets ${CMAKE_CURRENT_SOURCE_DIR}/common ${CMAKE_BINARY_DIR}/hmi_display ${CAIRO_INCLUDE_DIRS} ${PANGO_INCLUDE_DIRS} ${SWSCALE_INCLUDE_DIRS} ${GTK3_INCLUDE_DIRS} common dds dds/location display)
+target_include_directories(hmi-display PUBLIC 
+    ${NMEA_INCLUDER_DIRS} 
+    ${OSMSCOUT_INCLUDE_DIRS} 
+    ${GEOGRAPHIC_INCLUDE_DIRS}
+    ${CMAKE_BINARY_DIR}/hmi-display/config
+    ${CMAKE_CURRENT_SOURCE_DIR}/widgets
+    ${CMAKE_CURRENT_SOURCE_DIR}/common
+    ${CMAKE_BINARY_DIR}/hmi_display
+    ${CAIRO_INCLUDE_DIRS}
+    ${PANGO_INCLUDE_DIRS}
+    ${SWSCALE_INCLUDE_DIRS}
+    ${GTK3_INCLUDE_DIRS}
+    common 
+    dds 
+    dds/location 
+    display)
 target_compile_options(hmi-display PUBLIC ${CAIRO_CFLAGS_OTHER} ${GTK3_CFLAGS_OTHER})
 set_target_properties(hmi-display PROPERTIES UNITY_BUILD OFF)
 

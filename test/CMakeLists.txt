@@ -41,11 +41,11 @@ add_executable(
 
 )
 
-target_link_directories(test_log PRIVATE ${GTEST_LIBRARY_DIRS} ${PANGO_LIBARARY_DIRS})
+target_link_directories(test_log PRIVATE ${GLOG_LIBRARY_DIR} ${PROTOBUF_LIBRARY_DIR} ${GTEST_LIBRARY_DIRS} ${PANGO_LIBARARY_DIRS})
 
 target_link_libraries(
   test_log
-  glog
+  ${GLOG_LIBRARY}
   ${GTEST_LIBARAIES}
   ${TEST_LIBS}
 )
@@ -66,12 +66,12 @@ add_executable(
 
 target_link_libraries(
   test_hmi
-  glog
+  ${GLOG_LIBRARY}
   ${GTEST_LIBARAIES}
   ${TEST_LIBS}
 )
 
-target_link_directories(test_hmi PRIVATE ${GTEST_LIBRARY_DIRS})
+target_link_directories(test_hmi PRIVATE ${GLOG_LIBRARY_DIR} ${PROTOBUF_LIBRARY_DIR} ${GTEST_LIBRARY_DIRS})
 
 target_include_directories(test_hmi PUBLIC
   ${TEST_INCLUDES}

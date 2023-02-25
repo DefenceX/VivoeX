@@ -50,16 +50,22 @@ target_compile_options(widget-tester PUBLIC ${CAIRO_CFLAGS_OTHER} ${GTK3_CFLAGS_
 set_target_properties(widget-tester PROPERTIES UNITY_BUILD ON)
 
 if (MSYS)
-# Static link libraries .a
-target_link_directories(widget-tester BEFORE PRIVATE
-"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/gflags/lib"
-"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/glog/lib"
-"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/protobuf/lib"
-"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/libosmscout/lib"
-"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/libosmscout/lib"
-"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/nmea/lib"
-"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/GeographicLib/lib"
-)
+    # Static link libraries .dll
+    target_link_directories(widget-tester BEFORE PRIVATE
+    "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/gflags/lib"
+    "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/glog/lib"
+    "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/protobuf/lib"
+    "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/libosmscout/lib"
+    "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/libosmscout/lib"
+    "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/nmea/lib"
+    "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/GeographicLib/lib"
+    )
+else()
+    target_link_directories(widget-tester BEFORE PRIVATE 
+		${CMAKE_BINARY_DIR}/external/libprotobuf/build
+		${GLOG_LIBRARY_DIR} 
+		${PROTOBUF_LIBRARY_DIR} 
+		${GTEST_LIBRARY_DIRS})
 endif()
 
 add_dependencies(widget-tester libglog geographiclib libnmea libosmscout config-proto)

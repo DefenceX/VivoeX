@@ -1,3 +1,5 @@
+PROJECT(cpack-msys)
+
 set(CPACK_GENERATOR "NSIS")
 
 ## Windows
@@ -15,14 +17,15 @@ set(CPACK_NSIS_MUI_UNIICON ${CMAKE_SOURCE_DIR}/images/favicon.ico)
 set(CPACK_NSIS_MUI_WELCOMEFINISHPAGE_BITMAP ${CMAKE_SOURCE_DIR}\\\\images\\\\NSIS_Installer_Welcome.bmp)
 set(CPACK_NSIS_MUI_UNWELCOMEFINISHPAGE_BITMAP ${CMAKE_SOURCE_DIR}\\\\images\\\\NSIS_Installer.bmp)
 set(CPACK_NSIS_COMPONENT_INSTALL OFF)
+set(CPACK_NSIS_CONTACT enquiries@defencex.ai)
 set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
 set(CPACK_NSIS_MODIFY_PATH OFF)
 set(CPACK_NSIS_DISPLAY_NAME "Vivoe Lite installer")
 set(CPACK_NSIS_PACKAGE_NAME "Vivoe Lite installer")
 set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_SOURCE_DIR}/LICENSE)
 set(CPACK_NSIS_INSTALLED_ICON_NAME ${CMAKE_SOURCE_DIR}/images/favicon.ico)
-set(CPACK_NSIS_HELP_LINK "https://defencex.com.au/downloads.html")
-set(CPACK_NSIS_URL_INFO_ABOUT "https://defencex.com.au")
+set(CPACK_NSIS_HELP_LINK "https://defencex.ai/downloads.html")
+set(CPACK_NSIS_URL_INFO_ABOUT "https://defencex.ai")
 set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
     CreateShortCut \\\"$DESKTOP\\\\${PROJECT_NAME}.lnk\\\" \\\"$INSTDIR\\\\bin\\\\hmi-display.exe\\\"
 ")
@@ -43,7 +46,6 @@ set(CPACK_NSIS_FINISH_TITLE "Installation complete...")
 set(CPACK_WIX_PRODUCT_GUID "a19cc271-5031-4579-b0a1-d0f541354291") 
 set(CPACK_WIX_PRODUCT_ICON ${CMAKE_SOURCE_DIR}/images/favicon.ico)
 set(CPACK_WIX_LICENSE_RTF ${CMAKE_SOURCE_DIR}/LICENSE)
-set(CPACK_WIX_ARCHITECTURE x64)
 
 # set(CPACK_COMPONENT_LIBRARIES_DISPLAY_NAME "Libraries")
 # set(CPACK_COMPONENT_HEADERS_DISPLAY_NAME "C++ Headers")

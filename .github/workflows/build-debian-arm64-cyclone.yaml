@@ -30,6 +30,11 @@ jobs:
       - name: CMake and Build
         run: mkdir build && cd build && cmake .. -DDDS=CYCLONE-CE .. && make
 
+      - name: Install
+        run: |
+          cd build && \
+          make DESTDIR=./installed install
+
       - name: Package for Debian (.deb)
         id: package
         run: cd build && cpack -V -G DEB && echo "DEB_PACKAGE=$(ls *.deb)" >> $GITHUB_ENV && echo "DEB_PACKAGE=$(ls *.deb)" >> $GITHUB_OUTPUT

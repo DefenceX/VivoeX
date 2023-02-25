@@ -1,3 +1,5 @@
+PROJECT(cpack-deb)
+
 # Debian
 set(CPACK_GENERATOR "DEB")
 
@@ -5,7 +7,7 @@ set(CPACK_PACKAGING_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX})
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Ross Newman")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
-set(CPACK_DEBIAN_PACKAGE_DEPENDS "libcairo2, libxt6, libxext6, libswscale5, libprotobuf23, liblttng-ust1")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "libcairo2, libxext6, libswscale5, libprotobuf23")
 set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "ldconfig")
 set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${CMAKE_CURRENT_SOURCE_DIR}/scripts/cmake/postinst")
 
@@ -19,7 +21,4 @@ set(CPACK_COMPONENTS_GROUPING ALL_COMPONENTS_IN_ONE)#ONE_PER_GROUP)
 # without this you won't be able to pack only specified component
 set(CPACK_DEB_COMPONENT_INSTALL YES)
 
-# CPack 
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/scripts/cmake/vivoe-lite.spec.in" "${CMAKE_CURRENT_BINARY_DIR}/vivoe-lite.spec" @ONLY IMMEDIATE)
-set(CPACK_RPM_USER_BINARY_SPECFILE "${CMAKE_CURRENT_BINARY_DIR}/vivoe-lite.spec")
 

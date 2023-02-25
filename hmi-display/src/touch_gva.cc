@@ -1,7 +1,7 @@
 //
 // MIT License
 //
-// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+// Copyright (c) 2023 DefenceX (enquiries@defencex.ai)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
 // associated documentation files (the 'Software'), to deal in the Software without restriction,
@@ -29,19 +29,19 @@
 namespace gva {
 
 GvaStatusTypes TouchGva::Add(GvaFunctionGroupEnum groupId, uint32_t x, uint32_t y) {
-  hotspots_.push_back(Hotspot(groupId, x, y));
+  hotspots_.emplace_back(Hotspot(groupId, x, y));
   return GvaStatusTypes::kGvaSuccess;
 }
 
 GvaStatusTypes TouchGva::Add(GvaFunctionGroupEnum groupId, uint32_t binding, uint32_t x, uint32_t y, uint32_t width,
                              uint32_t height) {
-  hotspots_.push_back(Hotspot(groupId, binding, x, y, width, height));
+  hotspots_.emplace_back(Hotspot(groupId, binding, x, y, width, height));
   return GvaStatusTypes::kGvaSuccess;
 }
 
 GvaStatusTypes TouchGva::AddAbsolute(GvaFunctionGroupEnum groupId, uint32_t binding, uint32_t x, uint32_t y,
                                      uint32_t xx, uint32_t yy) {
-  hotspots_.push_back(Hotspot(groupId, binding, x, y, xx - x, yy - y));
+  hotspots_.emplace_back(Hotspot(groupId, binding, x, y, xx - x, yy - y));
   return GvaStatusTypes::kGvaSuccess;
 }
 
@@ -54,8 +54,8 @@ void TouchGva::Reset() { hotspots_.clear(); }
 
 bool TouchGva::Check(GvaFunctionGroupEnum groupId, uint32_t *binding, uint32_t x, uint32_t y) const {
   // Adjust for resized windows
-  x = x / static_cast<float>(Renderer::GetWidth() / static_cast<float>(kMinimumWidth));
-  y = y / static_cast<float>(Renderer::GetHeight() / static_cast<float>(kMinimumHeight));
+  x = (uint32_t)((float)x / ((float)Renderer::GetWidth() / kMinimumWidth));
+  y = (uint32_t)((float)y / ((float)Renderer::GetHeight() / kMinimumHeight));
 
   for (auto i = hotspots_.begin(); i != hotspots_.end(); ++i) {
     if ((x > i->GetX()) && (x < (i->GetX() + i->GetWidth())) && (y > i->GetY()) && (y < (i->GetY() + i->GetHeight())) &&

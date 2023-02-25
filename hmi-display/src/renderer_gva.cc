@@ -1,7 +1,7 @@
 //
 // MIT License
 //
-// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+// Copyright (c) 2023 DefenceX (enquiries@defencex.ai)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
 // associated documentation files (the 'Software'), to deal in the Software without restriction,
@@ -172,7 +172,7 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
       SetLineThickness(3, LineType::kLineSolid, LineCapEnd::kLineCapSquare);
       Scale(0.4, 0.4);
       // Cross hair
-      // Virtical above
+      // Vertical above
       MovePenRaw(0, -10);
       DrawPenRaw(0, -15);
       MovePenRaw(0, -25);
@@ -186,7 +186,7 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
       DrawPenRaw(-50, +10);
       MovePenRaw(-70, 0);
       DrawPenRaw(-90, 0);
-      // Virtical below
+      // Vertical below
       MovePenRaw(0, +10);
       DrawPenRaw(0, +15);
       MovePenRaw(0, +25);
@@ -203,10 +203,6 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
 
       ClosePath(true);
       break;
-    case widget::IconType::kIconNone:
-    case widget::IconType::kIconEnter:
-    case widget::IconType::kIconLocation:
-    case widget::IconType::kIconCentre:
     default:
       // These have not been implemented yet
       break;

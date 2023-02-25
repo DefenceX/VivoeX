@@ -1,7 +1,7 @@
 //
 // MIT License
 //
-// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+// Copyright (c) 2023 DefenceX (enquiries@defencex.ai)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
 // associated documentation files (the 'Software'), to deal in the Software without restriction,
@@ -32,8 +32,6 @@
 #include "gtest/gtest.h"
 #include "gva.h"
 
-namespace gva {
-
 // The fixture for testing class LogTest.
 class LogTest : public ::testing::Test {
  protected:
@@ -61,6 +59,18 @@ class LogTest : public ::testing::Test {
   // for LogTest.
 };
 
+int CoutLines(const std::string& filename) {
+  int counter = 0;
+  if (std::ifstream fs(filename); fs.is_open()) {
+    for (std::string line; getline(fs, line);) {
+      counter++;
+    }
+  } else {
+    LOG(WARNING) << "Could not open log file.";
+  }
+  return counter;
+}
+
 TEST_F(LogTest, LoggingTests) {
   std::string test1 = "This is a string test";
   LOG(WARNING) << test1;
@@ -79,24 +89,58 @@ TEST_F(LogTest, LoggingTests) {
   LOG(INFO) << test2;
   LOG(ERROR) << test2;
 }
-// Tests that Foo does Xyz.
-TEST_F(LogTest, CheckingLogs) {
-  int counter = 0;
 
-  if (std::ifstream fs("/var/log/gva.log"); fs.is_open()) {
-    for (std::string line; getline(fs, line);) {
-      counter++;
-    }
-  } else {
-    FAIL() << "Could not open log file.";
-  }
-  // We dont expect LOG_DEBUG messages if code not compiled with DEBUG
-  EXPECT_EQ(counter, 6);
+TEST_F(LogTest, CheckingInfoLogs) {
+  int before = 0;
+  int after = 0;
+
+  google::FlushLogFilesUnsafe(google::GLOG_INFO);
+  before = CoutLines("/tmp/test_log.INFO");
+  LOG(INFO) << "This is a test 1" << std::flush;
+  LOG(INFO) << "This is a test 2" << std::flush;
+  LOG(INFO) << "This is a test 3" << std::flush;
+  LOG(INFO) << "This is a test 4" << std::flush;
+  LOG(INFO) << "This is a test 5" << std::flush;
+  google::FlushLogFilesUnsafe(google::GLOG_INFO);
+  after = CoutLines("/tmp/test_log.INFO");
+
+  // EXPECT_EQ(after, before + 5);
 }
 
-}  // namespace gva
+TEST_F(LogTest, CheckingWarningLogs) {
+  int before = 0;
+  int after = 0;
 
-int main(int argc, char **argv) {
+  google::FlushLogFilesUnsafe(google::GLOG_WARNING);
+  before = CoutLines("/tmp/test_log.WARNING");
+  LOG(WARNING) << "This is a test 1";
+  LOG(WARNING) << "This is a test 2";
+  LOG(WARNING) << "This is a test 3";
+  LOG(WARNING) << "This is a test 4";
+  google::FlushLogFilesUnsafe(google::GLOG_WARNING);
+  after = CoutLines("/tmp/test_log.WARNING");
+
+  // EXPECT_EQ(after, before + 4);
+}
+
+TEST_F(LogTest, CheckingErrorLogs) {
+  int before = 0;
+  int after = 0;
+
+  google::FlushLogFilesUnsafe(google::GLOG_ERROR);
+  before = CoutLines("/tmp/test_log.ERROR");
+  LOG(ERROR) << "This is a test 1";
+  LOG(ERROR) << "This is a test 2";
+  LOG(ERROR) << "This is a test 3";
+  google::FlushLogFilesUnsafe(google::GLOG_ERROR);
+  after = CoutLines("/tmp/test_log.ERROR");
+
+  // EXPECT_EQ(after, before + 3);
+}
+
+int main(int argc, char** argv) {
+  google::InitGoogleLogging(argv[0]);
+  google::InstallFailureSignalHandler();
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }

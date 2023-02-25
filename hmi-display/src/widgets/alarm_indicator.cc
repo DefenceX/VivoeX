@@ -1,7 +1,7 @@
 //
 // MIT License
 //
-// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+// Copyright (c) 2023 DefenceX (enquiries@defencex.ai)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
 // associated documentation files (the 'Software'), to deal in the Software without restriction,
@@ -49,7 +49,7 @@ void WidgetAlarmIndicator::Draw() {
     GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
     GetRenderer()->DrawRoundedRectangle(110, 429, 420, 20, 6, true);
     GetRenderer()->DrawColor(HMI_WHITE);
-    uint16_t width = GetRenderer()->GetTextWidth(text_, 14);
+    uint32_t width = GetRenderer()->GetTextWidth(text_, 14);
     GetRenderer()->DrawText(110 + (420 / 2) - (width / 2), 444, text_);
     GetRenderer()->SetColourForeground(HMI_WHITE);
     GetRenderer()->DrawColor(HMI_WHITE);
@@ -58,7 +58,7 @@ void WidgetAlarmIndicator::Draw() {
   }
 }
 
-void WidgetAlarmIndicator::SetText(const std::string& text) { text_ = text; }
+void WidgetAlarmIndicator::SetText(std::string_view text) { text_ = text; }
 
 void WidgetAlarmIndicator::SetType(const GvaAlarmType type) { type_ = type; }
 

@@ -1,7 +1,7 @@
 //
 // MIT License
 //
-// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+// Copyright (c) 2023 DefenceX (enquiries@defencex.ai)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
 // associated documentation files (the 'Software'), to deal in the Software without restriction,
@@ -27,8 +27,7 @@
 namespace gva {
 
 GvaKeyEnum Hmi::KeyAlarms(GvaKeyEnum keypress) {
-  WidgetTableDynamic *table =
-      (WidgetTableDynamic *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic);
+  auto *table = (WidgetTableDynamic *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic);
 
   switch (keypress) {
     case GvaKeyEnum::kKeyF1:  // F1

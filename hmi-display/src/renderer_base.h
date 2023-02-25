@@ -1,7 +1,7 @@
 //
 // MIT License
 //
-// Copyright (c) 2022 Ross Newman (ross.newman@defencex.com.au)
+// Copyright (c) 2023 DefenceX (enquiries@defencex.ai)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
 // associated documentation files (the 'Software'), to deal in the Software without restriction,
@@ -22,8 +22,8 @@
 /// \file renderer_base.h
 ///
 
-#ifndef HMI_DISPLAY_SRC_RENDER_BASE_H_
-#define HMI_DISPLAY_SRC_RENDER_BASE_H_
+#ifndef HMI_DISPLAY_SRC_RENDERER_BASE_H_
+#define HMI_DISPLAY_SRC_RENDERER_BASE_H_
 
 #include <stdint.h>
 
@@ -102,4 +102,4 @@ class RenderBase {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_RENDER_BASE_H_
+#endif  // HMI_DISPLAY_SRC_RENDERER_BASE_H_
