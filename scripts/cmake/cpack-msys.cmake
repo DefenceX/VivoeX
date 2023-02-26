@@ -1,4 +1,4 @@
-PROJECT(cpack-msys)
+PROJECT(vivoe-lite)
 
 set(CPACK_GENERATOR "NSIS")
 
