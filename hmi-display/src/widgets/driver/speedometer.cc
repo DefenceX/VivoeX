@@ -64,14 +64,14 @@ void WidgetDriverSpeedometer::Draw() {
 
   int64_t p = 28;
   uint32_t adjust_x = -8;
-  uint32_t adjust_y = +4;
+  uint32_t adjust_y = -4;
   uint16_t step = 360 / 16;
   int64_t c = 0;
   for (uint16_t d = 0; d <= 270; d += step) {
-    double_t radians = DegreesToRadians(d + 225);
+    double_t r = DegreesToRadians((uint16_t)d);
     if (c * 10 > 99) adjust_x = 0 - 15;
-    GetRenderer()->DrawText((uint32_t)(adjust_x + (double_t)(radius - p) * sin(radians)),
-                            (uint32_t)(adjust_y - (double_t)(radius - p) * cos(radians)), std::to_string(c * 10));
+    GetRenderer()->DrawText((uint32_t)(adjust_x + ((radius - p) * sin(r))),
+                            (uint32_t)(adjust_y + (-(radius - p) * cos(r))), std::to_string(c * 10));
     c++;
   }
   // Digital speed
@@ -91,9 +91,9 @@ void WidgetDriverSpeedometer::Draw() {
     double_t radians = DegreesToRadians(d + 225);
     p = c % 4 ? 10 : 15;
     c++;
-    GetRenderer()->MovePen((uint32_t)(+(double_t)(radius - p) * sin(radians)),
-                           (uint32_t)(-(double_t)(radius - p) * cos(radians)));
-    GetRenderer()->DrawPen((uint32_t)(+(double_t)(radius)*sin(radians)), (uint32_t)(-(double_t)(radius)*cos(radians)),
+    GetRenderer()->MovePen((uint32_t)(+(radius - p) * sin(radians)),
+                           (uint32_t)(-(radius - p) * cos(radians)));
+    GetRenderer()->DrawPen((uint32_t)(+(radius)*sin(radians)), (uint32_t)(-(radius)*cos(radians)),
                            true);
   }
 
