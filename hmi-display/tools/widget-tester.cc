@@ -92,6 +92,8 @@ static gva::WidgetTable table(renderer, &touch, gva::ConfigData::GetInstance()->
 static gva::WidgetDriverSpeedometer driver_speed(renderer);
 static gva::WidgetDriverRpmFuel driver_rpm(renderer);
 
+std::array<gva::WidgetPlanPositionIndicator::ThreatType, 5> threats;
+
 static void do_drawing(cairo_t *, int width, int h);
 
 ///
@@ -154,6 +156,13 @@ static gboolean time_handler(GtkWidget *widget) {
 ///
 static void do_drawing(cairo_t *cr, int width, int height) {
   renderer.render_.cr = cr;
+
+  threats[0] = {50, 10, 0xff0000, "Person", false, false};
+  threats[1] = {100, 15, 0xff0000, "Person", false, false};
+  threats[2] = {150, 20, 0x00ff00, "Person", false, false};
+  threats[3] = {200, 30, 0x00ff00, "Person", false, false};
+  threats[4] = {250, 15, 0xffbf00, "Person", false, false};
+
   cairo_save(cr);
 
   renderer.Init(width, height);
@@ -163,6 +172,11 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
       ppi.DrawPPI(gva::widget::ModeEnum::kPpiClassicTankWithSight, 0, 0, 0, 0, 10);
+      ppi.AddThreat(1, threats[0]);
+      ppi.AddThreat(2, threats[1]);
+      ppi.AddThreat(3, threats[2]);
+      ppi.AddThreat(4, threats[3]);
+      ppi.AddThreat(5, threats[4]);
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/widget_ppi_01.png").c_str());
       break;

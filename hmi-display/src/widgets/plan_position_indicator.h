@@ -38,6 +38,7 @@ class WidgetPlanPositionIndicator : public WidgetX {
  public:
   struct ThreatType {
     uint16_t bearing = 0;
+    uint16_t size = 0;
     uint32_t rgb_value = 0x00FF0000;  // green
     std::string label = "";
     bool flashing = false;
