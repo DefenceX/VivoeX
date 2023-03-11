@@ -244,30 +244,29 @@ void WidgetPlanPositionIndicator::DrawPPI(widget::ModeEnum mode, uint32_t x, uin
   }
 
   // Draw Text markers
-  int64_t pos = 9;
   int32_t adjust_x = -5;
-  int32_t adjust_y = +4;
-  double_t step_radians = (M_PI * 2) / 4;
+  int32_t adjust_y = 4;
   int64_t c = 0;
-  std::array<std::string, 4> compass_points = {"S", "W", "N", "E"};
+  std::array<std::string, 4> compass_points = {"N", "E", "S", "W"};
 
-  for (uint32_t d = 0; d < 360; d += RadiansToDegrees(step_radians)) {
-    auto render_degrees = (uint16_t)(d + degrees);
+  uint16_t step = 360 / 4;
+  for (uint16_t d = 0; d < 360; d += step) {
+    double_t r = DegreesToRadians((uint16_t)(d + degrees));
 
-    GetRenderer()->DrawText((uint32_t)(adjust_x - (radius - (double_t)pos) * sin(DegreesToRadians(render_degrees))),
-                            (uint32_t)(adjust_y + (radius - (double_t)pos) * cos(DegreesToRadians(render_degrees))),
+    GetRenderer()->DrawText((int32_t)(adjust_x + ((radius - 12) * sin(r))), 
+                            (int32_t)(adjust_y + (-(radius - 12) * cos(r))),
                             compass_points[c]);
     c++;
   }
 
   GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
-  uint16_t step = 360 / 32;
+  step = 360 / 40;
   c = 0;
   uint16_t p = 0;
 
   for (uint16_t d = 0; d < 360; d += step) {
     double_t r = DegreesToRadians((uint16_t)(d + degrees));
-    p = c % 4 ? 28 : 20;
+    p = c % 5 ? 28 : 20;
     c++;
     GetRenderer()->MovePen((int32_t)((radius - 35) * sin(r)), (int32_t)(-(radius - 35) * cos(r)));
     GetRenderer()->DrawPen((int32_t)((radius - p) * sin(r)), (int32_t)(-(radius - p) * cos(r)), true);
