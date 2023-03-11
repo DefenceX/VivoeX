@@ -23,8 +23,6 @@
 
 #include "alarm_indicator.h"
 
-#include "src/screen_gva.h"
-
 namespace gva {
 
 WidgetAlarmIndicator::WidgetAlarmIndicator(const RendererGva& renderer, TouchGva* touch)

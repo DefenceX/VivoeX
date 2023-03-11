@@ -25,8 +25,6 @@
 
 #include <glog/logging.h>
 
-#include "src/screen_gva.h"
-
 namespace gva {
 
 WidgetTable::WidgetTable(const RendererGva& renderer, TouchGva* touch, uint32_t background_colour)

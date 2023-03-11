@@ -26,7 +26,6 @@
 #include <glog/logging.h>
 
 #include "src/events_gva.h"
-#include "src/screen_gva.h"
 
 namespace gva {
 

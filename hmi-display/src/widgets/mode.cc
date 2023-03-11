@@ -23,8 +23,6 @@
 
 #include "src/widgets/mode.h"
 
-#include "src/screen_gva.h"
-
 namespace gva {
 
 WidgetMode::WidgetMode(const RendererGva& renderer) : WidgetX(renderer, widget::WidgetEnum::KWidgetTypeMode) {

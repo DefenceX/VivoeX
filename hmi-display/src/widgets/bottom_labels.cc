@@ -26,7 +26,6 @@
 #include <array>
 
 #include "src/gva.h"
-#include "src/screen_gva.h"
 
 namespace gva {
 

@@ -22,12 +22,13 @@ ExternalProject_Add(
     BUILD_ALWAYS        0
 )
 
-set(PROTOBUF_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/external/install/usr/include)
+set(PROTOBUF_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/external/install/usr/local/include/)
 set(PROTOBUF_LIBRARY protobuf)
 
 if(MSYS)
   set(PROTOC "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/protobuf/bin/protoc.exe")
   set(PROTOBUF_LIBRARY_DIR "${CMAKE_BINARY_DIR}external/install/Program Files (x86)/protobuf/lib")
+  set(PROTOBUF_INCLUDE_DIRS "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/protobuf/include")
 else()
   set(PROTOC ${CMAKE_BINARY_DIR}/external/install/usr/local/bin/protoc)
   set(PROTOBUF_LIBRARY_DIR 
