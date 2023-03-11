@@ -14,7 +14,7 @@ set(SOURCE_FILES widget-tester.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/touch_gva.cc 
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/hmi_gva_helpers.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/widget.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/compass.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/plan_position_indicator.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/keyboard.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/driver/speedometer.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../src/widgets/driver/rpm_fuel.cc

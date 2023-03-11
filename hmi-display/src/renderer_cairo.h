@@ -93,7 +93,7 @@ class RendererCairo : public Renderer {
   /// \param height Canvas height in pixels
   /// \return uint32_t
   ///
-  uint32_t Init(uint32_t width, uint32_t height);
+  uint32_t Init(uint32_t width, uint32_t height) const;
 
   ///
   /// \brief Initalise the renderer with display parameters

@@ -39,7 +39,7 @@ set(SOURCES main.cc
 			src/widgets/table/table_dynamic.cc
 			src/widgets/table/cell_type.cc
 			src/widgets/table/row_type.cc
-			src/widgets/compass.cc
+			src/widgets/plan_position_indicator.cc
 			src/widgets/top_labels.cc
 			src/widgets/bottom_labels.cc
 			src/widgets/side_labels.cc
