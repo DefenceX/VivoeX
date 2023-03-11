@@ -68,7 +68,7 @@ void WidgetDriverSpeedometer::Draw() {
   uint16_t step = 360 / 16;
   int64_t c = 0;
   for (uint16_t d = 0; d <= 270; d += step) {
-    double_t r = DegreesToRadians(d);
+    double_t r = DegreesToRadians(d + 225);
     if (c * 10 > 99) adjust_x = 0 - 15;
     GetRenderer()->DrawText((uint32_t)(adjust_x + ((radius - p) * sin(r))),
                             (uint32_t)(adjust_y + (-(radius - p) * cos(r))), std::to_string(c * 10));
