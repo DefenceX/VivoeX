@@ -62,13 +62,13 @@ void WidgetDriverSpeedometer::Draw() {
   GetRenderer()->SetLineThickness(2, LineType::kLineSolid);
   GetRenderer()->DrawCircle(0, 0, radius, true);  // Compass
 
-  int64_t p = 28;
+  int16_t p = 28;
   uint32_t adjust_x = -8;
   uint32_t adjust_y = -4;
   uint16_t step = 360 / 16;
   int64_t c = 0;
   for (uint16_t d = 0; d <= 270; d += step) {
-    double_t r = DegreesToRadians((uint16_t)d);
+    double_t r = DegreesToRadians(d);
     if (c * 10 > 99) adjust_x = 0 - 15;
     GetRenderer()->DrawText((uint32_t)(adjust_x + ((radius - p) * sin(r))),
                             (uint32_t)(adjust_y + (-(radius - p) * cos(r))), std::to_string(c * 10));
@@ -91,15 +91,13 @@ void WidgetDriverSpeedometer::Draw() {
     double_t radians = DegreesToRadians(d + 225);
     p = c % 4 ? 10 : 15;
     c++;
-    GetRenderer()->MovePen((uint32_t)(+(radius - p) * sin(radians)),
-                           (uint32_t)(-(radius - p) * cos(radians)));
-    GetRenderer()->DrawPen((uint32_t)(+(radius)*sin(radians)), (uint32_t)(-(radius)*cos(radians)),
-                           true);
+    GetRenderer()->MovePen((uint32_t)(+(radius - p) * sin(radians)), (uint32_t)(-(radius - p) * cos(radians)));
+    GetRenderer()->DrawPen((uint32_t)(+radius * sin(radians)), (uint32_t)(-radius * cos(radians)), true);
   }
 
   // Heading (Goes under sight)
   GetRenderer()->MovePen(0, 0);
-  GetRenderer()->Rotate(DegreesToRadians((uint16_t)(45 + (double_t)(value_ * 2.23))));
+  GetRenderer()->Rotate(DegreesToRadians((uint16_t)(45 + (value_ * 2.23))));
 
   GetRenderer()->SetColourBackground(HMI_CYAN);
   GetRenderer()->SetColourForeground(HMI_BLACK);
