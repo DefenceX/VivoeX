@@ -102,6 +102,23 @@ And install these additional packages to build the documentation:
 $ sudo dnf install doxygen plantuml ImageMagick
 \endcode
 
+\subsubsection centos Windows 11
+Cross compilation for Windows systems is achieved using MSYS2 (https://www.msys2.org/). Using the pacman package manager you can install all the required dependancies:
+```
+pacman -S base-devel \
+  mingw-w64-x86_64-toolchain \
+  mingw-w64-x86_64-gtk3 \
+  mingw-w64-x86_64-gcc mingw-w64-x86_64-ffmpeg \
+  mingw-w64-x86_64-nsis \
+  mingw-w64-x86_64-doxygen \
+  mingw-w64-x86_64-graphviz \
+  mingw-w64-x86_64-imagemagick
+```
+To build the windows Nullsoft (https://nsis.sourceforge.io/) installer cpack from your build directory:
+```
+cpack -G NSIS
+```
+
 \subsection build Building
 This project has a couple of options that can be specified at compile time:
 
