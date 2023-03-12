@@ -29,7 +29,7 @@ ExternalProject_Add(
     DEPENDS             libgflags 
 )
 
-set(GLOG_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/external/install/usr/include)
+set(GLOG_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/external/install/usr/local/include)
 set(GLOG_LIBRARY glog)
 
 if(MSYS)
@@ -40,5 +40,5 @@ else()
     ${CMAKE_BINARY_DIR}/external/install/usr/lib64
     ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64
     ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/aarch64-linux-gnu
-  )
+  )     
 endif()
