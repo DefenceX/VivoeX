@@ -196,7 +196,7 @@ void WidgetPlanPositionIndicator::DrawClassic(widget::ModeEnum mode, int32_t x, 
   const uint32_t font_size = 14;
 
   // Degrees north
-  int32_t render_sight_azimuth = sight_azimuth;
+  int16_t render_sight_azimuth = sight_azimuth;
   render_sight_azimuth = (render_sight_azimuth >= 360) ? render_sight_azimuth - 360 : render_sight_azimuth;
 
   // Set the font for all compass/s
@@ -316,12 +316,9 @@ void WidgetPlanPositionIndicator::DeleteThreat(int16_t id) { threats_.erase(id);
 void WidgetPlanPositionIndicator::DeleteAllThreats() { threats_.clear(); };
 
 void WidgetPlanPositionIndicator::DrawThreats() const {
-  for (auto& threat : threats_) {
-    auto threat_info = threat.second;
+  for (auto& [id, threat_info] : threats_) {
     uint32_t angle1 = threat_info->bearing - (threat_info->size / 2);
     uint32_t angle2 = threat_info->bearing + (threat_info->size / 2);
-    // if (angle1 < 0) angle1 += 360;
-    // if (angle2 > 360) angle1 -= 360;
     GetRenderer()->DrawColor(threat_info->rgb_value);
     GetRenderer()->SetLineThickness(4, LineType::kLineSolid);
     GetRenderer()->DrawArcRaw(GetX(), GetY(), (radius_ / 2) + 1, angle1, angle2);
