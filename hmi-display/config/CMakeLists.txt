@@ -12,5 +12,7 @@ set(PROTO_SRCS ${CMAKE_BINARY_DIR}/hmi-display/config/config.pb.cc)
 add_library(config-proto STATIC ${PROTO_SRCS})
 target_link_directories(config-proto BEFORE PRIVATE ${PROTOBUF_LIBRARY_DIR})
 target_link_libraries(config-proto ${PROTOBUF_LIBRARY})
+message(STATUS "PROTOBUF_LIBRARY_DIR: ${PROTOBUF_LIBRARY_DIR}")
+target_include_directories(config-proto BEFORE PRIVATE ${PROTOBUF_INCLUDE_DIR})
 
 add_dependencies(config-proto libprotobuf)

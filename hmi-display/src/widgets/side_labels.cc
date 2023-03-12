@@ -23,8 +23,6 @@
 
 #include "src/widgets/side_labels.h"
 
-#include "src/screen_gva.h"
-
 namespace gva {
 
 WidgetSideLabels::WidgetSideLabels(const RendererGva& renderer, TouchGva* touch)

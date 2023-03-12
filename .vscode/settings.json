@@ -232,6 +232,7 @@
         "defencex",
         "DESTDIR",
         "devel",
+        "enduml",
         "epel",
         "Fadings",
         "geographiclib",
@@ -282,7 +283,9 @@
         "rpmdir",
         "rpmfilename",
         "RTPS",
+        "skinparam",
         "Southbank",
+        "startuml",
         "stylesheet",
         "Teulings",
         "Timesource",
@@ -296,7 +299,9 @@
         "Vetronics",
         "vivoe",
         "workarea",
-        "xvfb"
+        "xpos",
+        "xvfb",
+        "ypos"
     ],
     "sonarlint.connectedMode.project": {
         "connectionId": "defencex",

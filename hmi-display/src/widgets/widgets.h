@@ -26,11 +26,11 @@
 
 #include "src/widgets/alarm_indicator.h"
 #include "src/widgets/bottom_labels.h"
-#include "src/widgets/compass.h"
 #include "src/widgets/driver/rpm_fuel.h"
 #include "src/widgets/driver/speedometer.h"
 #include "src/widgets/keyboard.h"
 #include "src/widgets/mode.h"
+#include "src/widgets/plan_position_indicator.h"
 #include "src/widgets/side_labels.h"
 #include "src/widgets/table/table.h"
 #include "src/widgets/table/table_dynamic.h"

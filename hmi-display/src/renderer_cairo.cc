@@ -296,7 +296,7 @@ void RendererCairo::Draw() {
   draw_commands_.clear();
 }
 
-uint32_t RendererCairo::Init(uint32_t width, uint32_t height) {
+uint32_t RendererCairo::Init(uint32_t width, uint32_t height) const {
   render_.surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
   return 0;
 }
@@ -324,7 +324,7 @@ uint32_t RendererCairo::Init(uint32_t width, uint32_t height, bool fullscreen, C
 
   render_.fullscreen = fullscreen;
 
-  g_application_run(G_APPLICATION(render_.win.app), 0, 0);
+  g_application_run(G_APPLICATION(render_.win.app), 0, nullptr);
   g_object_unref(render_.win.app);
 
   return 0;
@@ -713,7 +713,7 @@ uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, cairo_surface_t *surf
 // signal receives a ready-to-be-used cairo_t that is already
 // clipped to only Draw the exposed areas of the Widget
 //
-gboolean RendererCairo::DrawCb(GtkWidget *Widget, cairo_t *cr, gpointer data) {
+gboolean RendererCairo::DrawCb(GtkWidget *Widget, cairo_t *cr, gpointer dat [[maybe_unused]]) {
   cairo_set_source_surface(cr, render_.surface, 0, 0);
   cairo_paint(cr);
 
@@ -722,7 +722,7 @@ gboolean RendererCairo::DrawCb(GtkWidget *Widget, cairo_t *cr, gpointer data) {
 }
 
 // Create a new surface of the appropriate size to store our HMI
-gboolean RendererCairo::ConfigureEventCb(GtkWidget *Widget, GdkEventConfigure *event, gpointer data) {
+gboolean RendererCairo::ConfigureEventCb(GtkWidget *Widget, GdkEventConfigure *event, gpointer data [[maybe_unused]]) {
   render_.surface = gdk_window_create_similar_surface(gtk_widget_get_window(Widget), CAIRO_CONTENT_COLOR,
                                                       gtk_widget_get_allocated_width(Widget),
                                                       gtk_widget_get_allocated_height(Widget));
@@ -736,7 +736,7 @@ gboolean RendererCairo::ConfigureEventCb(GtkWidget *Widget, GdkEventConfigure *e
   return TRUE;
 }
 
-void RendererCairo::Activate(GtkApplication *app, gpointer user_data) {
+void RendererCairo::Activate(GtkApplication *app, gpointer user_data [[maybe_unused]]) {
   render_.win.win = gtk_application_window_new(app);
   gtk_window_set_title(GTK_WINDOW(render_.win.win), "HMI vivoe-lite");
 
@@ -781,8 +781,5 @@ void RendererCairo::CloseWindow(void) {
     cairo_surface_destroy(render_.surface);
   };
   LOG(INFO) << "Closing application";
-  // google::ShutdownGoogleLogging();
-  // gtk_main_quit();
-  // g_application_quit(G_APPLICATION(render_.win.app));
 }
 }  // namespace gva

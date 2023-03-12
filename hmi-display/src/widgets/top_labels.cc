@@ -23,8 +23,6 @@
 
 #include "src/widgets/top_labels.h"
 
-#include "src/screen_gva.h"
-
 namespace gva {
 
 WidgetTopLabels::WidgetTopLabels(const RendererGva& renderer, TouchGva* touch)

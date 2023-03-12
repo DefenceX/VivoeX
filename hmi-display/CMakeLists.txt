@@ -31,20 +31,6 @@ set(SOURCES main.cc
 			src/touch_gva.cc 
 			src/screen_gva.cc 
 			src/events_gva.cc 
-			src/widgets/widget.cc
-			src/widgets/keyboard.cc
-			src/widgets/driver/rpm_fuel.cc
-			src/widgets/driver/speedometer.cc
-			src/widgets/table/table.cc
-			src/widgets/table/table_dynamic.cc
-			src/widgets/table/cell_type.cc
-			src/widgets/table/row_type.cc
-			src/widgets/compass.cc
-			src/widgets/top_labels.cc
-			src/widgets/bottom_labels.cc
-			src/widgets/side_labels.cc
-			src/widgets/mode.cc
-			src/widgets/alarm_indicator.cc
 			common/debug.cc 
 			common/utils.cc 
 			src/hmi_gva.cc 
@@ -68,11 +54,11 @@ set(SOURCES main.cc
 
 link_libraries(-lstdc++fs)
 add_executable(hmi-display ${SOURCES})
-add_dependencies(hmi-display libglog libprotobuf googletest libosmscout geographiclib hmi-video config-proto ${DDS_STACK} libosmscout)
+add_dependencies(hmi-display widgets libglog libprotobuf googletest libosmscout geographiclib hmi-video config-proto ${DDS_STACK} libosmscout)
 
 link_directories( ${NMEA_LIBRARY_DIR} ${CMAKE_BINARY_DIR}/external/libnmea/src/lib )
-target_link_libraries (hmi-display ${GEOGRAPHIC_LIBRARIES} ${WINDOWS_RESOURCE_LIB} glog GeographicLib config-proto ${OSMSCOUT_LIBARAIES} ${PROTOBUF_LIBRARY} ${GTK_LIBRARIES3} stdc++fs)
-target_link_libraries(hmi-display png pthread hmi-video vivoe-media nmea config-proto ${PROTOBUF_LIBRARY} ${GFLAGS_LIBS} ${CAIRO_LIBRARIES} ${PANGO_LIBRARIES} ${SWSCALE_LIBRARIES} ${GTK3_LIBRARIES})
+target_link_libraries (hmi-display ${GEOGRAPHIC_LIBRARIES} ${WINDOWS_RESOURCE_LIB} pthread glog widgets GeographicLib config-proto ${OSMSCOUT_LIBARAIES} ${PROTOBUF_LIBRARY} ${GTK_LIBRARIES3} stdc++fs)
+target_link_libraries(hmi-display png pthread hmi-video vivoe-media nmea ${GFLAGS_LIBS} ${CAIRO_LIBRARIES} ${PANGO_LIBRARIES} ${SWSCALE_LIBRARIES} ${GTK3_LIBRARIES})
 
 if (MSYS)
 	# Add the resource file
@@ -116,6 +102,7 @@ target_include_directories(hmi-display PUBLIC
     dds 
     dds/location 
     display)
+	
 target_compile_options(hmi-display PUBLIC ${CAIRO_CFLAGS_OTHER} ${GTK3_CFLAGS_OTHER})
 set_target_properties(hmi-display PROPERTIES UNITY_BUILD OFF)
 

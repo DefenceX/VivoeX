@@ -23,7 +23,7 @@
 
 #include "src/widgets/keyboard.h"
 
-#include "src/screen_gva.h"
+#include "src/config_reader.h"
 
 namespace gva {
 

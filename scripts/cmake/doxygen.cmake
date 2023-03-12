@@ -1,6 +1,6 @@
 
 # The test program is used to ganerate all the widgets, argument 1 is 1millisecond delay in displaying images
-add_custom_target(doxygen-images COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/widget-tester -t 1 -o ./images)
+add_custom_target(doxygen-images COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/widget-tester --timeout 1 --path ./images)
 add_dependencies(doxygen-images widget-tester)
 
 add_custom_target(doxygen-images-convert COMMAND convert ${CMAKE_BINARY_DIR}/images/*.png -trim +repage  -set filename:f '%t' ${CMAKE_BINARY_DIR}/images/doxygen/'%[filename:f].png')

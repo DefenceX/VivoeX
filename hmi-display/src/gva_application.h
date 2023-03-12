@@ -36,8 +36,8 @@
 #include "src/renderer_map.h"
 #include "video/src/gva_video_rtp_yuv.h"
 #include "widgets/alarm_indicator.h"
-#include "widgets/compass.h"
 #include "widgets/keyboard.h"
+#include "widgets/plan_position_indicator.h"
 
 class GvaApplication {
  public:

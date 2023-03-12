@@ -49,7 +49,7 @@ jobs:
           mkdir build && cd build && \
           cmake -Wno-dev .. -DDDS=CYCLONE-CE .. && \
           make
-          
+
       - name: Install
         run: |
           cd build && \

@@ -18,14 +18,16 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 ///
-/// \file compass.cc
+/// \file plan_position_indicator.cc
 ///
 
-#include "src/widgets/compass.h"
+#include "src/widgets/plan_position_indicator.h"
 
 #include <float.h>
 #include <math.h>
 #include <stdio.h>
+
+#include <unordered_map>
 
 #include "src/gva_functions_common.h"
 #include "src/renderer_gva.h"
@@ -44,9 +46,14 @@ void WidgetPlanPositionIndicator::Draw() {
 }
 
 // weaponSight for future use, currently unused
-void WidgetPlanPositionIndicator::DrawModern(uint32_t x, uint32_t y, uint16_t degrees, uint16_t sightAzimuth,
-                                             uint16_t weaponAzimuth [[maybe_unused]], bool sight) const {
+void WidgetPlanPositionIndicator::DrawModern(int32_t x, int32_t y, int16_t degrees, int16_t sightAzimuth,
+                                             int16_t weaponAzimuth [[maybe_unused]], bool sight) const {
   double_t radius = 100;
+  const uint32_t font_size = 14;
+
+  // Set the font for all compass/s
+  GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightNormal,
+                             gva::ConfigData::GetInstance()->GetThemeFont(), font_size);
 
   GetRenderer()->Save();
   GetRenderer()->Scale(scale_, scale_);
@@ -65,29 +72,25 @@ void WidgetPlanPositionIndicator::DrawModern(uint32_t x, uint32_t y, uint16_t de
   uint32_t step = 360 / 12;
 
   for (uint32_t d = 0; d <= 360; d += step) {
-    double_t r = DegreesToRadians((uint16_t)(d + 15 + degrees % 30));
-    GetRenderer()->MovePen((int32_t)((radius - 20) * cos(r)), (int32_t)(-(radius - 20) * sin(r)));
-    GetRenderer()->DrawPen((int32_t)(radius * cos(r)), (int32_t)(-radius * sin(r)), true);
+    double_t r = DegreesToRadians((int16_t)(d + 15 + degrees % 30));
+    GetRenderer()->MovePen((int32_t)((radius - 20) * sin(r)), (int32_t)(-(radius - 20) * cos(r)));
+    GetRenderer()->DrawPen((int32_t)(radius * sin(r)), (int32_t)(-radius * cos(r)), true);
   }
 
-  uint32_t font_size = 14;
   GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightNormal,
                              ConfigData::GetInstance()->GetThemeFont(), font_size);
 
   // Draw Text markers
-  int64_t pos = 10;
-  uint32_t adjust_x = -6;
-  uint32_t adjust_y = +4;
-  step = (uint32_t)(((float)M_PI * 2) / 4);
-  std::array<std::string, 4> compass_points = {"S", "W", "N", "E"};
+  int32_t adjust_x = -8;
+  int32_t adjust_y = 4;
+  int64_t c = 0;
+  std::array<std::string, 4> compass_points = {"N", "E", "S", "W"};
+  step = 360 / 4;
+  for (uint16_t d = 0; d < 360; d += step) {
+    double_t r = DegreesToRadians((uint16_t)(d + degrees));
 
-  int32_t c = 0;
-  for (uint16_t d = 0; d < 360; d += RadiansToDegrees(step)) {
-    auto render_degrees = (uint16_t)(d + degrees);
-
-    GetRenderer()->DrawText((uint32_t)(adjust_x + (radius - (double_t)pos) * sin(DegreesToRadians(render_degrees))),
-                            (uint32_t)(adjust_y + (radius - (double_t)pos) * cos(DegreesToRadians(render_degrees))),
-                            compass_points[c]);
+    GetRenderer()->DrawText((int32_t)(adjust_x + ((radius - 9) * sin(r))),
+                            (int32_t)(adjust_y + (-(radius - 9) * cos(r))), compass_points[c]);
     c++;
   }
 
@@ -145,7 +148,7 @@ void WidgetPlanPositionIndicator::DrawModern(uint32_t x, uint32_t y, uint16_t de
   GetRenderer()->Restore();
 }
 
-void WidgetPlanPositionIndicator::DrawSight(double_t radius, uint32_t render_sight_azimuth, double_t angle) const {
+void WidgetPlanPositionIndicator::DrawSight(double_t radius, int16_t render_sight_azimuth, double_t angle) const {
   int32_t x2 = 0;
   int32_t y2 = 0;
 
@@ -170,28 +173,35 @@ void WidgetPlanPositionIndicator::DrawSight(double_t radius, uint32_t render_sig
   GetRenderer()->DrawPen(x2, y2, true);
 }
 
-void WidgetPlanPositionIndicator::DrawPPI(widget::ModeEnum mode, uint32_t x, uint32_t y, uint16_t degrees,
-                                          uint16_t sight_azimuth, uint16_t weapon_azimuth) const {
+void WidgetPlanPositionIndicator::DrawPPI(widget::ModeEnum mode, int32_t x, int32_t y, int16_t degrees,
+                                          int16_t sight_azimuth, int16_t weapon_azimuth [[maybe_unused]]) const {
+  switch (mode) {
+    case widget::ModeEnum::kPpiModernTankWithSights:
+      DrawModern(x, y, degrees, sight_azimuth, 10, true);
+      break;
+    case widget::ModeEnum::kPpiModernTankWithoutSights:
+      DrawModern(x, y, degrees, sight_azimuth, 10, false);
+      break;
+    default:
+      DrawClassic(mode, x, y, degrees, sight_azimuth, 10);
+      break;
+  }
+  DrawThreats();
+}
+
+void WidgetPlanPositionIndicator::DrawClassic(widget::ModeEnum mode, int32_t x, int32_t y, int16_t degrees,
+                                              int16_t sight_azimuth, int16_t weapon_azimuth) const {
   double_t radius = 100;
   double_t angle = 45;
   const uint32_t font_size = 14;
 
   // Degrees north
-  uint32_t render_sight_azimuth = sight_azimuth;
+  int16_t render_sight_azimuth = sight_azimuth;
   render_sight_azimuth = (render_sight_azimuth >= 360) ? render_sight_azimuth - 360 : render_sight_azimuth;
 
   // Set the font for all compass/s
   GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightNormal,
                              gva::ConfigData::GetInstance()->GetThemeFont(), font_size);
-
-  if (mode == widget::ModeEnum::kPpiModernTankWithSights) {
-    DrawModern(x, y, degrees, sight_azimuth, 10, true);
-    return;
-  }
-  if (mode == widget::ModeEnum::kPpiModernTankWithoutSights) {
-    DrawModern(x, y, degrees, sight_azimuth, 10, false);
-    return;
-  }
 
   GetRenderer()->Save();
   GetRenderer()->Scale(scale_, scale_);
@@ -253,16 +263,15 @@ void WidgetPlanPositionIndicator::DrawPPI(widget::ModeEnum mode, uint32_t x, uin
   for (uint16_t d = 0; d < 360; d += step) {
     double_t r = DegreesToRadians((uint16_t)(d + degrees));
 
-    GetRenderer()->DrawText((int32_t)(adjust_x + ((radius - 12) * sin(r))), 
-                            (int32_t)(adjust_y + (-(radius - 12) * cos(r))),
-                            compass_points[c]);
+    GetRenderer()->DrawText((int32_t)(adjust_x + ((radius - 12) * sin(r))),
+                            (int32_t)(adjust_y + (-(radius - 12) * cos(r))), compass_points[c]);
     c++;
   }
 
   GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
   step = 360 / 40;
   c = 0;
-  uint16_t p = 0;
+  int16_t p = 0;
 
   for (uint16_t d = 0; d < 360; d += step) {
     double_t r = DegreesToRadians((uint16_t)(d + degrees));
@@ -296,6 +305,24 @@ void WidgetPlanPositionIndicator::DrawPPI(widget::ModeEnum mode, uint32_t x, uin
   }
 
   GetRenderer()->Restore();
+};
+
+void WidgetPlanPositionIndicator::AddThreat(int16_t id, ThreatType threat) {
+  threats_[id] = std::make_shared<ThreatType>(threat);
+};
+
+void WidgetPlanPositionIndicator::DeleteThreat(int16_t id) { threats_.erase(id); };
+
+void WidgetPlanPositionIndicator::DeleteAllThreats() { threats_.clear(); };
+
+void WidgetPlanPositionIndicator::DrawThreats() const {
+  for (auto& [id, threat_info] : threats_) {
+    uint32_t angle1 = threat_info->bearing - (threat_info->size / 2);
+    uint32_t angle2 = threat_info->bearing + (threat_info->size / 2);
+    GetRenderer()->DrawColor(threat_info->rgb_value);
+    GetRenderer()->SetLineThickness(4, LineType::kLineSolid);
+    GetRenderer()->DrawArcRaw(GetX(), GetY(), (radius_ / 2) + 1, angle1, angle2);
+  }
 };
 
 }  // namespace gva
