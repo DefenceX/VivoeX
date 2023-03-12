@@ -4,6 +4,7 @@ project(widgets)
 pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
 
 set(SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/ai/object_localisation.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/alarm_indicator.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/bottom_labels.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/driver/rpm_fuel.cc
@@ -26,7 +27,7 @@ target_link_libraries (widgets config-proto ${PROTOBUF_LIBRARY} ${GTK_LIBRARIES3
 target_include_directories(widgets BEFORE PRIVATE ${PROTOBUF_INCLUDE_DIRS})
 
 target_include_directories(widgets BEFORE PUBLIC ${GTK3_INCLUDE_DIRS} ${CMAKE_BINARY_DIR}/hmi-display/config ${CMAKE_BINARY_DIR}/external/libprotobuf/build)
-add_dependencies(widgets config-proto)
+add_dependencies(widgets libglog config-proto)
 
 
 

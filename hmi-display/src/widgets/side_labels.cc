@@ -72,18 +72,18 @@ void WidgetSideLabels::Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t hei
   } else {
     if (text.find('.') != std::string::npos) {
       std::string first_line = text.substr(0, text.find('.'));
-      uint32_t width = GetRenderer()->GetTextWidth(first_line, 14);
-      GetRenderer()->DrawText(x + (98 - width) / 2, y + 20, first_line);
+      uint32_t text_width = GetRenderer()->GetTextWidth(first_line, 14);
+      GetRenderer()->DrawText(x + (98 - text_width) / 2, y + 20, first_line);
       std::string second_line = text.substr(text.find('.') + 1);
-      width = GetRenderer()->GetTextWidth(second_line, 14);
-      GetRenderer()->DrawText(x + (98 - width) / 2, y + 40, second_line);
+      text_width = GetRenderer()->GetTextWidth(second_line, 14);
+      GetRenderer()->DrawText(x + (98 - text_width) / 2, y + 40, second_line);
     } else {
-      uint32_t width = GetRenderer()->GetTextWidth(text, 14);
+      uint32_t text_width = GetRenderer()->GetTextWidth(text, 14);
       if (toggle_on) {
-        GetRenderer()->DrawText(x + (98 - width) / 2, y + 17, text);
+        GetRenderer()->DrawText(x + (98 - text_width) / 2, y + 17, text);
 
       } else {
-        GetRenderer()->DrawText(x + (98 - width) / 2, y + 30, text);
+        GetRenderer()->DrawText(x + (98 - text_width) / 2, y + 30, text);
       }
     }
   }
@@ -92,7 +92,7 @@ void WidgetSideLabels::Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t hei
   y_ = y;
 }
 
-void WidgetSideLabels::Toggle(const std::string& label1, const std::string& label2) {
+void WidgetSideLabels::Toggle(const std::string& label1, const std::string& label2) const {
   int ypos = 25;
   GetRenderer()->SetColourForeground(HMI_DARK_GREEN2);
   GetRenderer()->SetColourBackground(HMI_YELLOW);
