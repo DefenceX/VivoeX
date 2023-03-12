@@ -23,8 +23,6 @@
 
 #include "src/widgets/ai/object_localisation.h"
 
-#include <glog/logging.h>
-
 namespace gva {
 
 WidgetObjectLocalisation::WidgetObjectLocalisation(const RendererGva& renderer, TouchGva* touch)
@@ -46,7 +44,6 @@ void WidgetObjectLocalisation::DeleteAllBoundingBox() { boxes_.clear(); };
 
 void WidgetObjectLocalisation::DrawFunctionBoundingBoxes() const {
   for (auto& [id, box_info] : boxes_) {
-    LOG(INFO) << "Drawing id:" << id << " label:" << box_info->label;
     GetRenderer()->SetColourBackground(box_info->rgb_value);
     GetRenderer()->SetColourForeground(box_info->rgb_value);
     box_info->dotted ? GetRenderer()->SetLineThickness(3, LineType::kLineDashedMedium)
