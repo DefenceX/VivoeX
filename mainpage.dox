@@ -27,6 +27,7 @@
    - \ref table
    - \ref speed
    - \ref rpm
+   - \ref ai
 
 - \ref tools
    - \ref test-hmi
@@ -264,6 +265,11 @@ The driver has some special widgets for operating the vehicle the speedometer gv
 The driver has some special widgets for operating the vehicle the RPM and Fuel gauage gva::WidgetDriverRpmFuel is overlaid over the drivers camera.
 \image html rpm_01.png  "RPM 0" 
 \image html rpm_02.png  "RPM 4000" 
+
+\subsubsection ai Special overlays for testing AI with object classification / loaclisation
+This overlay is used with AI networks to highlight regions of interest.
+\image html objects_people_01.png  "Object Localisation" 
+
 \section tools Tooling
 
 \subsection test-hmi Widget Tester

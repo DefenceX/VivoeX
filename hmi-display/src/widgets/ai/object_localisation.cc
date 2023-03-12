@@ -23,6 +23,8 @@
 
 #include "src/widgets/ai/object_localisation.h"
 
+#include <glog/logging.h>
+
 namespace gva {
 
 WidgetObjectLocalisation::WidgetObjectLocalisation(const RendererGva& renderer, TouchGva* touch)
@@ -34,27 +36,34 @@ void WidgetObjectLocalisation::Draw() {
   }
 }
 
-void WidgetObjectLocalisation::AddBoundingBox(int16_t id, const BoxType& box) { boxes_.erase(id); };
+void WidgetObjectLocalisation::AddBoundingBox(int16_t id, const BoxType& box) {
+  boxes_[id] = std::make_shared<BoxType>(box);
+};
 
 void WidgetObjectLocalisation::DeleteBoundingBox(int16_t id) { boxes_.erase(id); };
 
 void WidgetObjectLocalisation::DeleteAllBoundingBox() { boxes_.clear(); };
 
 void WidgetObjectLocalisation::DrawFunctionBoundingBoxes() const {
-  // GetRenderer()->SetColourBackground(ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
-  GetRenderer()->SetLineType(CAIRO_LINE_JOIN_ROUND);
-  GetRenderer()->SetLineThickness(ConfigData::GetInstance()->GetThemeLabelBorderThickness(), LineType::kLineSolid);
   for (auto& [id, box_info] : boxes_) {
+    LOG(INFO) << "Drawing id:" << id << " label:" << box_info->label;
+    GetRenderer()->SetColourBackground(box_info->rgb_value);
     GetRenderer()->SetColourForeground(box_info->rgb_value);
     box_info->dotted ? GetRenderer()->SetLineThickness(3, LineType::kLineDashedMedium)
                      : GetRenderer()->SetLineThickness(3, LineType::kLineSolid);
-    GetRenderer()->DrawRoundedRectangle(box_info->xpos, box_info->ypos, box_info->width, box_info->height, 6, false);
+    GetRenderer()->DrawRoundedRectangle(box_info->xpos, box_info->ypos, box_info->width, box_info->height, 10, false);
 
     // Draw text the label
-    if (box_info->label.length()) {
-      GetRenderer()->SetColour(HMI_BLACK);
-      GetRenderer()->DrawText(box_info->xpos + 10, box_info->ypos, box_info->label);
+    if (box_info->label.length() == 0) {
+      box_info->label = "Unknown";
     }
+    GetRenderer()->SetLineThickness(3, LineType::kLineSolid);
+    GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_WEIGHT_NORMAL, widget::WeightType::kWeightNormal,
+                               gva::ConfigData::GetInstance()->GetThemeFont(), 8);
+    uint32_t text_width = GetRenderer()->GetTextWidth(box_info->label, 8);
+    GetRenderer()->DrawRoundedRectangle(box_info->xpos + 10, box_info->ypos - 8, 13 + text_width, 15, 5, true);
+    GetRenderer()->DrawColor(HMI_BLACK);
+    GetRenderer()->DrawText(box_info->xpos + 15, box_info->ypos + 2, box_info->label);
   }
 };
 
