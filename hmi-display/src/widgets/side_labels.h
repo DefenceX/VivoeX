@@ -80,7 +80,7 @@ class WidgetSideLabels : public WidgetX {
   /// \param text
   /// \param text_colour
   ///
-  void Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::string& text, uint32_t text_colour,
+  void Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t height, const std::string& text, uint32_t text_colour,
             bool toggle_on);
 
   ///
@@ -90,6 +90,13 @@ class WidgetSideLabels : public WidgetX {
   /// \param label2
   ///
   void Toggle(const std::string& label1, const std::string& label2) const;
+
+  ///
+  /// \brief Render the requested icon
+  ///
+  /// \param text the textual representation of the icon being requested
+  ///
+  void RenderIcon(const std::string& text, uint32_t x, uint32_t y, uint32_t width, uint32_t height) const;
 
   std::array<FunctionKeys::Labels, 6>* labels_;
   TouchGva* touch_;
