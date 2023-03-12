@@ -44,6 +44,7 @@ class WidgetPlanPositionIndicator : public WidgetX {
     bool flashing = false;
     bool dotted = false;
   };
+  
   ///
   /// \brief Construct a new Widget Plan Position Indicator object
   ///

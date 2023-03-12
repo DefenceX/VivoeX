@@ -299,7 +299,9 @@
         "Vetronics",
         "vivoe",
         "workarea",
-        "xvfb"
+        "xpos",
+        "xvfb",
+        "ypos"
     ],
     "sonarlint.connectedMode.project": {
         "connectionId": "defencex",

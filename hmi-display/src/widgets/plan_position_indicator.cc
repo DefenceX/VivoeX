@@ -318,10 +318,13 @@ void WidgetPlanPositionIndicator::DeleteAllThreats() { threats_.clear(); };
 void WidgetPlanPositionIndicator::DrawThreats() const {
   for (auto& threat : threats_) {
     auto threat_info = threat.second;
+    uint32_t angle1 = threat_info->bearing - (threat_info->size / 2);
+    uint32_t angle2 = threat_info->bearing + (threat_info->size / 2);
+    // if (angle1 < 0) angle1 += 360;
+    // if (angle2 > 360) angle1 -= 360;
     GetRenderer()->DrawColor(threat_info->rgb_value);
     GetRenderer()->SetLineThickness(4, LineType::kLineSolid);
-    GetRenderer()->DrawArcRaw(GetX(), GetY(), (radius_ / 2) + 1, threat_info->bearing - threat_info->size,
-                              threat_info->bearing + threat_info->size);
+    GetRenderer()->DrawArcRaw(GetX(), GetY(), (radius_ / 2) + 1, angle1, angle2);
   }
 };
 

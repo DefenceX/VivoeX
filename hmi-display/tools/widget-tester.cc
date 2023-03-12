@@ -198,11 +198,11 @@ static gboolean time_handler(GtkWidget *widget) {
 static void do_drawing(cairo_t *cr, int width, int height) {
   renderer.render_.cr = cr;
 
-  threats[0] = {50, 10, 0xff0000, "Person", false, false};
-  threats[1] = {100, 15, 0xff0000, "Person", false, false};
-  threats[2] = {150, 20, 0x00ff00, "Person", false, false};
-  threats[3] = {200, 30, 0x00ff00, "Person", false, false};
-  threats[4] = {250, 15, 0xffbf00, "Person", false, false};
+  threats[0] = {310, 20, 0xff0000, "Person", false, false};
+  threats[1] = {230, 12, 0xff0000, "Person", false, false};
+  threats[2] = {90, 13, 0xff0000, "Person", false, false};
+  threats[3] = {180, 17, 0x00ff00, "Person", false, false};
+  threats[4] = {45, 15, 0xffbf00, "Person", false, false};
 
   cairo_save(cr);
 
@@ -297,6 +297,11 @@ static void do_drawing(cairo_t *cr, int width, int height) {
     case 11:
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
+      threats[0].size += 10;
+      threats[2].size += 10;
+      threats[3].size += 10;
+      threats[4].size += 10;
+      threats[5].size += 10;
       ppi.AddThreat(1, threats[0]);
       ppi.AddThreat(2, threats[1]);
       ppi.AddThreat(3, threats[2]);
@@ -346,6 +351,8 @@ static void do_drawing(cairo_t *cr, int width, int height) {
     case 17:
       cairo_translate(cr, width / 2, height / 2);
       cairo_scale(cr, 2, 2);
+      threats[3].rgb_value = 0xff0000;
+      threats[4].rgb_value = 0xff0000;
       ppi.AddThreat(1, threats[0]);
       ppi.AddThreat(2, threats[1]);
       ppi.AddThreat(3, threats[2]);
