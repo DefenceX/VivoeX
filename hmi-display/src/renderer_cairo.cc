@@ -161,10 +161,10 @@ void RendererCairo::Draw() {
           cairo_set_source_rgb(cr, IntToFloat(background_colour_.red), IntToFloat(background_colour_.green),
                                IntToFloat(background_colour_.blue));
           cairo_fill_preserve(cr);
-          cairo_set_source_rgb(cr, IntToFloat(foreground_colour_.red), IntToFloat(foreground_colour_.green),
-                               IntToFloat(foreground_colour_.blue));
-          cairo_stroke(cr);
         }
+        cairo_set_source_rgb(cr, IntToFloat(foreground_colour_.red), IntToFloat(foreground_colour_.green),
+                             IntToFloat(foreground_colour_.blue));
+        cairo_stroke(cr);
         break;
       case DrawType::kCommandPenTriangle:
         cairo_new_path(cr);

@@ -60,7 +60,8 @@ enum class WidgetEnum {
   KWidgetTypeTable,
   KWidgetTypeTableDynamic,
   kWidgetTypeDialSpeedometer,
-  KWidgetTypeDialRpmFuel
+  KWidgetTypeDialRpmFuel,
+  KWidgetObjectLocalisation
 };
 
 ///

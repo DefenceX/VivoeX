@@ -4,6 +4,7 @@ project(widgets)
 pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
 
 set(SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/ai/object_localisation.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/alarm_indicator.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/bottom_labels.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/driver/rpm_fuel.cc

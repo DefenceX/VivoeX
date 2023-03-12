@@ -33,7 +33,7 @@ namespace gva {
 
 static const uint32_t kSemVerMajor = 0;
 static const uint32_t kSemVerMinor = 4;
-static const uint32_t kSemVerPatch = 76;
+static const uint32_t kSemVerPatch = 80;
 static const uint32_t kMinimumHeight = 480;
 static const uint32_t kMinimumWidth = 640;
 
@@ -344,7 +344,16 @@ enum class GvaAlarmType { kAlarmWarnings, kAlarmCaution, kAlarmAdvisory };
 /// \brief These are the functional groups
 ///
 ///
-enum class GvaFunctionGroupEnum { kTop, kBottom, kLeft, kRight, kAlarmTable, kKeyboard, kAlarmsIndicator };
+enum class GvaFunctionGroupEnum {
+  kTop,
+  kBottom,
+  kLeft,
+  kRight,
+  kAlarmTable,
+  kKeyboard,
+  kAlarmsIndicator,
+  kObjectBoxes
+};
 
 ///
 /// \brief These are physical GVA keys around the display
@@ -399,7 +408,17 @@ enum class GvaKeyEnum {
   kKeyLessThen,
   kKeyKeyboard,
   kKeyPreviousLabel,
-  kKeyNextLabel
+  kKeyNextLabel,
+  kKeyKeyboard_0,
+  kKeyKeyboard_1,
+  kKeyKeyboard_2,
+  kKeyKeyboard_3,
+  kKeyKeyboard_4,
+  kKeyKeyboard_5,
+  kKeyKeyboard_6,
+  kKeyKeyboard_7,
+  kKeyKeyboard_8,
+  kKeyKeyboard_9,
 };
 
 ///
