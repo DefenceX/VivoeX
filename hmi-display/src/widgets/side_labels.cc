@@ -34,7 +34,7 @@ void WidgetSideLabels::Draw() {
   }
 }
 
-void WidgetSideLabels::Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::string text,
+void WidgetSideLabels::Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::string& text,
                             uint32_t text_colour, bool toggle_on) {
   if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::kLabelRounded) {
     GetRenderer()->DrawRoundedRectangle(x, y, width, height, 6, true);
@@ -134,7 +134,7 @@ void WidgetSideLabels::DrawFunctionLabels() {
       SetStateLabel(label.state);
       Draw(GetX(), offset + (i * 72), 100, 50, label.text, GetStateTextColour(label.state), label.toggleActive);
       if (label.state != LabelStates::kLabelDisabled) {
-        touch_->Add(group, (uint32_t)(firstKey + i), GetX(), offset + (i * 72), 100, 50);
+        touch_->Add(group, firstKey + i, GetX(), offset + (i * 72), 100, 50);
       }
       if (label.toggleActive) Toggle(label.toggleText1, label.toggleText2);
     }

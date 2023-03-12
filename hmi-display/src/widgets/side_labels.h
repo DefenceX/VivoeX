@@ -80,7 +80,7 @@ class WidgetSideLabels : public WidgetX {
   /// \param text
   /// \param text_colour
   ///
-  void Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::string text, uint32_t text_colour,
+  void Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::string& text, uint32_t text_colour,
             bool toggle_on);
 
   ///

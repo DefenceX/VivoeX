@@ -95,6 +95,14 @@ class WidgetObjectLocalisation : public WidgetX {
   ///
   void DrawFunctionBoundingBoxes() const;
 
+  ///
+  /// \brief Convert an object Id to a specific key binding
+  ///
+  /// \param id
+  /// \return GvaKeyEnum
+  ///
+  GvaKeyEnum IdToKey(uint16_t id) const;
+
   std::unordered_map<int16_t, std::shared_ptr<BoxType>> boxes_;
   TouchGva* touch_;
 };

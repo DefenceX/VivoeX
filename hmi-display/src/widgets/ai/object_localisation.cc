@@ -50,6 +50,9 @@ void WidgetObjectLocalisation::DrawFunctionBoundingBoxes() const {
                      : GetRenderer()->SetLineThickness(3, LineType::kLineSolid);
     GetRenderer()->DrawRoundedRectangle(box_info->xpos, box_info->ypos, box_info->width, box_info->height, 10, false);
 
+    touch_->Add(gva::GvaFunctionGroupEnum::kObjectBoxes, (uint32_t)IdToKey(id), box_info->xpos, box_info->ypos,
+                box_info->width, box_info->height);
+
     // Draw text the label
     if (box_info->label.length() == 0) {
       box_info->label = "Unknown";
@@ -63,5 +66,33 @@ void WidgetObjectLocalisation::DrawFunctionBoundingBoxes() const {
     GetRenderer()->DrawText(box_info->xpos + 15, box_info->ypos + 2, box_info->label);
   }
 };
+
+GvaKeyEnum WidgetObjectLocalisation::IdToKey(uint16_t id) const {
+  switch (id) {
+    case 0:
+      return GvaKeyEnum::kKeyKeyboard_0;
+    case 1:
+      return GvaKeyEnum::kKeyKeyboard_1;
+    case 2:
+      return GvaKeyEnum::kKeyKeyboard_2;
+    case 3:
+      return GvaKeyEnum::kKeyKeyboard_3;
+    case 4:
+      return GvaKeyEnum::kKeyKeyboard_4;
+    case 5:
+      return GvaKeyEnum::kKeyKeyboard_5;
+    case 6:
+      return GvaKeyEnum::kKeyKeyboard_6;
+    case 7:
+      return GvaKeyEnum::kKeyKeyboard_7;
+    case 8:
+      return GvaKeyEnum::kKeyKeyboard_8;
+    case 9:
+      return GvaKeyEnum::kKeyKeyboard_9;
+    default:
+      break;
+  }
+  return GvaKeyEnum::kKeyUnknown;
+}
 
 }  // namespace gva
