@@ -79,6 +79,7 @@ struct Hmi : tinyfsm::Fsm<Hmi> {
   static CommonTaskKeys bottom_;
   static Canvas canvas_;
   static Screen screen_;
+  static std::shared_ptr<Updater> updater_;
   static std::shared_ptr<ScreenGva> screen_render_;
   static std::shared_ptr<rendererMap> map_;
   static GvaFunctionEnum lastState_;

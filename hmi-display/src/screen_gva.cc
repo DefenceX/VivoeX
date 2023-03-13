@@ -56,7 +56,8 @@ struct termios {
 const int kMaxNmea = 1000;
 
 namespace gva {
-ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : RendererGva(width, height), screen_(screen) {
+ScreenGva::ScreenGva(std::shared_ptr<Updater> updater, Screen *screen, uint32_t width, uint32_t height)
+    : RendererGva(width, height), screen_(screen), updater_(updater) {
   struct termios settings;
 
   config_ = gva::ConfigData::GetInstance();

@@ -350,6 +350,7 @@ FunctionSelect Hmi::top_;
 CommonTaskKeys Hmi::bottom_;
 Canvas Hmi::canvas_;
 Screen Hmi::screen_;
+std::shared_ptr<Updater> Hmi::updater_;
 std::shared_ptr<ScreenGva> Hmi::screen_render_;
 std::shared_ptr<rendererMap> Hmi::map_;
 GvaFunctionEnum Hmi::lastState_;

@@ -10,6 +10,7 @@ add_subdirectory(src/widgets)
 add_subdirectory(common)
 add_subdirectory(config)
 add_subdirectory(tools)
+add_subdirectory(updater)
 #add_subdirectory(dds)
 
 include_directories(${CMAKE_SOURCE_DIR})
@@ -54,11 +55,11 @@ set(SOURCES main.cc
 
 link_libraries(-lstdc++fs)
 add_executable(hmi-display ${SOURCES})
-add_dependencies(hmi-display widgets libglog libprotobuf googletest libosmscout geographiclib hmi-video config-proto ${DDS_STACK} libosmscout)
+add_dependencies(hmi-display widgets hmi-updater libglog libprotobuf googletest libosmscout geographiclib hmi-video config-proto ${DDS_STACK} libosmscout)
 
 link_directories( ${NMEA_LIBRARY_DIR} ${CMAKE_BINARY_DIR}/external/libnmea/src/lib )
 target_link_libraries (hmi-display ${GEOGRAPHIC_LIBRARIES} ${WINDOWS_RESOURCE_LIB} pthread glog widgets GeographicLib config-proto ${OSMSCOUT_LIBARAIES} ${PROTOBUF_LIBRARY} ${GTK_LIBRARIES3} stdc++fs)
-target_link_libraries(hmi-display png pthread hmi-video vivoe-media nmea ${GFLAGS_LIBS} ${CAIRO_LIBRARIES} ${PANGO_LIBRARIES} ${SWSCALE_LIBRARIES} ${GTK3_LIBRARIES})
+target_link_libraries(hmi-display hmi-updater png pthread hmi-video vivoe-media nmea ${GFLAGS_LIBS} ${CAIRO_LIBRARIES} ${PANGO_LIBRARIES} ${SWSCALE_LIBRARIES} ${GTK3_LIBRARIES})
 
 if (MSYS)
 	# Add the resource file

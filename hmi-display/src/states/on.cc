@@ -96,7 +96,8 @@ void StateOn::entry() {
   manager_->SetScreen(&screen_, GvaFunctionEnum::kSystems);
 
   // Create the screen render now
-  screen_render_ = std::make_shared<ScreenGva>(&screen_, view_.width, view_.height);
+  updater_ = std::make_shared<Updater>(0);
+  screen_render_ = std::make_shared<ScreenGva>(updater_, &screen_, view_.width, view_.height);
 
   // Configure the widgets
   ((WidgetPlanPositionIndicator *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass))

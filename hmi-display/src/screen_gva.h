@@ -34,6 +34,7 @@
 #include "nmea/nmea.h"
 #include "src/gva.h"
 #include "src/renderer_gva.h"
+#include "updater/updater.h"
 #include "widgets/table/table.h"
 #include "widgets/widget_types.h"
 
@@ -117,7 +118,7 @@ class ScreenGva : public RendererGva {
   /// \param width
   /// \param height
   ///
-  ScreenGva(Screen *screen, uint32_t width, uint32_t height);
+  ScreenGva(std::shared_ptr<Updater> updater, Screen *screen, uint32_t width, uint32_t height);
 
   ScreenGva &operator=(const ScreenGva &a) = delete;
 
@@ -163,6 +164,7 @@ class ScreenGva : public RendererGva {
   nmeaINFO info_;
   nmeaPARSER parser_;
   ConfigData *config_ = nullptr;
+  std::shared_ptr<Updater> &updater_;
 };
 
 }  // namespace gva
