@@ -40,6 +40,8 @@ class Updater : public UpdaterBase {
   ///
   Updater(uint64_t id);
 
+  ~Updater();
+
   ///
   /// \brief Register the widgets to be updated
   ///

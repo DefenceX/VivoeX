@@ -28,11 +28,15 @@
 #include <cmath>
 #include <iostream>
 
+#include "src/widgets/driver/rpm_fuel.h"
+#include "src/widgets/driver/speedometer.h"
 #include "src/widgets/plan_position_indicator.h"
 
 namespace gva {
 
 Updater::Updater(uint64_t id) : UpdaterBase(id){};
+
+Updater::~Updater() { pthread_cancel(thread_); };
 
 void Updater::RegisterWidgets(std::map<widget::WidgetEnum, std::shared_ptr<WidgetX>> &widget_list) {
   std::shared_ptr<gva::WidgetPlanPositionIndicator> compass =
@@ -56,13 +60,21 @@ void *Updater::WidgetUpdaterThread(void *ptr) {
   const std::map<widget::WidgetEnum, std::shared_ptr<WidgetX>> *widget_list =
       (std::map<widget::WidgetEnum, std::shared_ptr<WidgetX>> *)ptr;
 
+  std::shared_ptr<gva::WidgetDriverSpeedometer> speed = std::static_pointer_cast<gva::WidgetDriverSpeedometer>(
+      widget_list->at(widget::WidgetEnum::kWidgetTypeDialSpeedometer));
+
+  std::shared_ptr<gva::WidgetDriverRpmFuel> rpm =
+      std::static_pointer_cast<gva::WidgetDriverRpmFuel>(widget_list->at(widget::WidgetEnum::KWidgetTypeDialRpmFuel));
+
+  std::shared_ptr<gva::WidgetPlanPositionIndicator> compass =
+      std::static_pointer_cast<gva::WidgetPlanPositionIndicator>(
+          widget_list->at(widget::WidgetEnum::KWidgetTypeCompass));
+
   while (true) {
-    printf("Running...\n");
-    std::shared_ptr<gva::WidgetPlanPositionIndicator> compass =
-        std::static_pointer_cast<gva::WidgetPlanPositionIndicator>(
-            widget_list->at(widget::WidgetEnum::KWidgetTypeCompass));
-    compass->SetBearing(count);
-    usleep(100000);
+    compass->SetBearing(GenerateSineWave(count));
+    speed->SetValue(GenerateSineWave(count));
+    rpm->SetValue(GenerateSineWave(count) * 90);
+    usleep(1000000);
     count++;
   }
   return nullptr;
