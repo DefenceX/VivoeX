@@ -18,17 +18,61 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 ///
-/// \file example_updater.cc
+/// \file updater.cc
 ///
 
 #include "updater/updater.h"
 
+#include <glog/logging.h>
+
+#include <cmath>
+#include <iostream>
+
+#include "src/widgets/plan_position_indicator.h"
+
 namespace gva {
 
-void Updater::RegisterWidgets() {}
+Updater::Updater(uint64_t id) : UpdaterBase(id){};
+
+void Updater::RegisterWidgets(std::map<widget::WidgetEnum, std::shared_ptr<WidgetX>> &widget_list) {
+  std::shared_ptr<gva::WidgetPlanPositionIndicator> compass =
+      std::static_pointer_cast<gva::WidgetPlanPositionIndicator>(widget_list[widget::WidgetEnum::KWidgetTypeCompass]);
+  compass->SetBearing(200);
+
+  auto it = widget_list[widget::WidgetEnum::KWidgetTypeCompass];
+
+  widget_list_ = &widget_list;
+
+  thread_id_ = pthread_create(&thread_, nullptr, Updater::WidgetUpdaterThread, (void *)widget_list_);
+}
 
 void Updater::UpdateState(std::string state) {}
 
 void Updater::Event(std::string event) {}
 
+void *Updater::WidgetUpdaterThread(void *ptr) {
+  uint64_t count = 0;
+  LOG(INFO) << "Starting widget updater thread";
+  const std::map<widget::WidgetEnum, std::shared_ptr<WidgetX>> *widget_list =
+      (std::map<widget::WidgetEnum, std::shared_ptr<WidgetX>> *)ptr;
+
+  while (true) {
+    printf("Running...\n");
+    std::shared_ptr<gva::WidgetPlanPositionIndicator> compass =
+        std::static_pointer_cast<gva::WidgetPlanPositionIndicator>(
+            widget_list->at(widget::WidgetEnum::KWidgetTypeCompass));
+    compass->SetBearing(count);
+    usleep(100000);
+    count++;
+  }
+  return nullptr;
+}
+
+// Generate a sine wave with values ranging from 0 to 100
+int Updater::GenerateSineWave(int sample, double sampleRate, double frequency) {
+  const double PI = 3.14159265358979323846;
+  double time = (double)sample / sampleRate;
+  double value = sin(2 * PI * frequency * time);
+  return (int)(50.0 * value + 50.0);
+}
 }  // namespace gva

@@ -147,6 +147,8 @@ ScreenGva::ScreenGva(std::shared_ptr<Updater> updater, Screen *screen, uint32_t 
   //
   auto bottom_labels = (WidgetBottomLabels *)GetWidget(widget::WidgetEnum::KWidgetTypeBottomLabels);
   bottom_labels->SetLabels(&screen_->control->labels_);
+
+  updater_->RegisterWidgets(widget_list_);
 }
 
 ScreenGva::~ScreenGva() {

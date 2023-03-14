@@ -19,7 +19,7 @@
 //
 /// \brief Manage the touch screen events
 ///
-/// \file trace.h
+/// \file updater.h
 ///
 
 #ifndef HMI_DISPLAY_UPDATER_EXAMPLE_UPDATER_H_
@@ -38,13 +38,13 @@ class Updater : public UpdaterBase {
   ///
   /// \param id The HMI identity, will only get updates for this ID.
   ///
-  explicit Updater(uint64_t id) : UpdaterBase(id){};
+  Updater(uint64_t id);
 
   ///
   /// \brief Register the widgets to be updated
   ///
   ///
-  void RegisterWidgets() final;
+  void RegisterWidgets(std::map<widget::WidgetEnum, std::shared_ptr<WidgetX>>& widget_list);
 
   ///
   /// \brief Update the HMI state
@@ -59,6 +59,29 @@ class Updater : public UpdaterBase {
   /// \param event
   ///
   void Event(std::string event) final;
+
+  ///
+  /// \brief The updater thread
+  ///
+  /// \param ptr The widgets list pointer
+  /// \return void*
+  ///
+  static void* WidgetUpdaterThread(void* ptr);
+
+ private:
+  std::map<widget::WidgetEnum, std::shared_ptr<WidgetX>>* widget_list_ = nullptr;
+  int thread_id_ = 0;
+  pthread_t thread_ = 0;
+
+  ///
+  /// \brief Generate a sine wave
+  ///
+  /// \param sample The sample being requested
+  /// \param sampleRate i.e. 44100.0
+  /// \param frequency i.e. 440.0;
+  /// \return int The sample value. amplitude is 0-100
+  ///
+  static int GenerateSineWave(int sample, double sampleRate = 44100, double frequency = 440.0);
 };
 
 }  // namespace gva

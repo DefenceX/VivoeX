@@ -5,5 +5,5 @@ set(SOURCES
     updater.cc   
 )
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/..)
 add_library(hmi-updater STATIC ${SOURCES})
+target_include_directories(hmi-updater BEFORE PRIVATE /usr/include/cairo ${GTK3_INCLUDE_DIRS} ${PROTOBUF_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/.. ${CMAKE_BINARY_DIR}/hmi-display/config)
