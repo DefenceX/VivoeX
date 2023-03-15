@@ -27,6 +27,7 @@
    - \ref table
    - \ref speed
    - \ref rpm
+   - \ref ai
 
 - \ref tools
    - \ref test-hmi
@@ -100,6 +101,23 @@ And install these additional packages to build the documentation:
 \code 
 $ sudo dnf install doxygen plantuml ImageMagick
 \endcode
+
+\subsubsection centos Windows 11
+Cross compilation for Windows systems is achieved using MSYS2 (https://www.msys2.org/). Using the pacman package manager you can install all the required dependancies:
+```
+pacman -S base-devel \
+  mingw-w64-x86_64-toolchain \
+  mingw-w64-x86_64-gtk3 \
+  mingw-w64-x86_64-gcc mingw-w64-x86_64-ffmpeg \
+  mingw-w64-x86_64-nsis \
+  mingw-w64-x86_64-doxygen \
+  mingw-w64-x86_64-graphviz \
+  mingw-w64-x86_64-imagemagick
+```
+To build the windows Nullsoft (https://nsis.sourceforge.io/) installer cpack from your build directory:
+```
+cpack -G NSIS
+```
 
 \subsection build Building
 This project has a couple of options that can be specified at compile time:
@@ -264,6 +282,11 @@ The driver has some special widgets for operating the vehicle the speedometer gv
 The driver has some special widgets for operating the vehicle the RPM and Fuel gauage gva::WidgetDriverRpmFuel is overlaid over the drivers camera.
 \image html rpm_01.png  "RPM 0" 
 \image html rpm_02.png  "RPM 4000" 
+
+\subsubsection ai Special overlays for testing AI with object classification / loaclisation
+This overlay is used with AI networks to highlight regions of interest.
+\image html objects_people_01.png  "Object Localisation" 
+
 \section tools Tooling
 
 \subsection test-hmi Widget Tester

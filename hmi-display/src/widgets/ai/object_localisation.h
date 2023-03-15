@@ -20,8 +20,8 @@
 ///
 /// \file side_labels.h
 ///
-#ifndef HMI_DISPLAY_SRC_WIDGETS_SIDE_LABELS_H_
-#define HMI_DISPLAY_SRC_WIDGETS_SIDE_LABELS_H_
+#ifndef HMI_DISPLAY_SRC_WIDGETS_OBJECT_LOCALISATION_H_
+#define HMI_DISPLAY_SRC_WIDGETS_OBJECT_LOCALISATION_H_
 
 #include <cstdint>
 #include <string>
@@ -33,20 +33,31 @@
 
 namespace gva {
 
-class WidgetSideLabels : public WidgetX {
+class WidgetObjectLocalisation : public WidgetX {
  public:
+  struct BoxType {
+    uint32_t xpos = 0;
+    uint32_t ypos = 0;
+    uint32_t height = 0;
+    uint32_t width = 0;
+    uint32_t rgb_value = 0x00FF0000;  // green
+    std::string label = "";
+    bool flashing = false;
+    bool dotted = false;
+  };
+
   ///
   /// \brief Construct a new Widget Keyboard object, this widget is interactive and requires the touch events
   ///
   /// \param renderer
   ///
-  explicit WidgetSideLabels(const RendererGva& renderer, TouchGva* touch);
+  explicit WidgetObjectLocalisation(const RendererGva& renderer, TouchGva* touch);
 
   ///
   /// \brief Destroy the Widget Keyboard object
   ///
   ///
-  ~WidgetSideLabels() final = default;
+  ~WidgetObjectLocalisation() final = default;
 
   ///
   /// \brief The base overloaded Draw fuctions to draw this widget type
@@ -55,53 +66,47 @@ class WidgetSideLabels : public WidgetX {
   void Draw() final;
 
   ///
-  /// \brief Set the Labels object
+  /// \brief Add a box onto the object localisation overlay
   ///
-  /// \param labels
+  /// \param id Unique ID of the box
+  /// \param box The box object
   ///
-  void SetLabels(std::array<FunctionKeys::Labels, 6>* labels);
+  void AddBoundingBox(int16_t id, const BoxType& box);
+
+  ///
+  /// \brief Delete a box by ID
+  ///
+  /// \param id The ID of the box to be deletes
+  ///
+  void DeleteBoundingBox(int16_t id);
+
+  ///
+  /// \brief Delete all box
+  ///
+  ///
+  void DeleteAllBoundingBox();
 
  private:
   ///
-  /// \brief Draw the actual function labels (x6)
+  /// \brief Draw the actual bounding boxes
   ///
   /// \param x
   /// \param labels
   ///
-  void DrawFunctionLabels();
+  void DrawFunctionBoundingBoxes() const;
 
   ///
-  /// \brief Draw single label
+  /// \brief Convert an object Id to a specific key binding
   ///
-  /// \param x
-  /// \param y
-  /// \param width
-  /// \param height
-  /// \param text
-  /// \param text_colour
+  /// \param id
+  /// \return GvaKeyEnum
   ///
-  void Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t height, const std::string& text, uint32_t text_colour,
-            bool toggle_on);
+  GvaKeyEnum IdToKey(uint16_t id) const;
 
-  ///
-  /// \brief Draw a toggle if required
-  ///
-  /// \param label1
-  /// \param label2
-  ///
-  void Toggle(const std::string& label1, const std::string& label2) const;
-
-  ///
-  /// \brief Render the requested icon
-  ///
-  /// \param text the textual representation of the icon being requested
-  ///
-  void RenderIcon(const std::string& text, uint32_t x, uint32_t y, uint32_t width, uint32_t height) const;
-
-  std::array<FunctionKeys::Labels, 6>* labels_;
+  std::unordered_map<int16_t, std::shared_ptr<BoxType>> boxes_;
   TouchGva* touch_;
 };
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_WIDGETS_SIDE_LABELS_H_
+#endif  // HMI_DISPLAY_SRC_WIDGETS_OBJECT_LOCALISATION_H_

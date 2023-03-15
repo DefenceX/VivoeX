@@ -168,7 +168,7 @@ class WidgetX {
  private:
   const RendererGva& renderer_;
   widget::WidgetEnum widget_type_;
-  bool visible_ = true;
+  bool visible_ = false;
 };
 
 }  // namespace gva

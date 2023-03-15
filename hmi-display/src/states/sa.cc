@@ -31,7 +31,9 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
 
   auto *compass =
       static_cast<WidgetPlanPositionIndicator *>(screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass));
-
+  auto *objects =
+      static_cast<WidgetObjectLocalisation *>(screen_render_->GetWidget(widget::WidgetEnum::KWidgetObjectLocalisation));
+  objects->SetVisible(true);
   KeySide(keypress);
   Key(keypress);
 
@@ -54,6 +56,7 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
       compass->SetBearingSight(45);
       break;
     case GvaKeyEnum::kKeyF5:
+      objects->SetVisible(true);
       filename = path;
       filename.append("/FrontCenter.png");
       SetCanvasPng(filename.c_str());
@@ -142,5 +145,7 @@ void StateSA::react(EventKeyFunction const &e) {
   KeySA(e.key);
   if (e.key == GvaKeyEnum::kKeyNextLabel) transit<StateWPN>();
 };
+
+void StateSA::exit() { screen_render_->GetWidget(widget::WidgetEnum::KWidgetObjectLocalisation)->SetVisible(false); }
 
 }  // namespace gva

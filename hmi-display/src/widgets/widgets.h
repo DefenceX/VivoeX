@@ -24,6 +24,7 @@
 #ifndef HMI_DISPLAY_SRC_WIDGETS_WIDGETS_H_
 #define HMI_DISPLAY_SRC_WIDGETS_WIDGETS_H_
 
+#include "src/widgets/ai/object_localisation.h"
 #include "src/widgets/alarm_indicator.h"
 #include "src/widgets/bottom_labels.h"
 #include "src/widgets/driver/rpm_fuel.h"

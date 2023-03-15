@@ -28,6 +28,7 @@
 #include <cmath>
 #include <iostream>
 
+#include "src/widgets/ai/object_localisation.h"
 #include "src/widgets/driver/rpm_fuel.h"
 #include "src/widgets/driver/speedometer.h"
 #include "src/widgets/plan_position_indicator.h"
@@ -56,7 +57,18 @@ void Updater::Event(std::string event) {}
 
 void *Updater::WidgetUpdaterThread(void *ptr) {
   uint64_t count = 0;
+  std::array<gva::WidgetObjectLocalisation::BoxType, 8> box;
+
   LOG(INFO) << "Starting widget updater thread";
+
+  box[0] = {310, 170, 240, 104, 0xff0000, "Person, threat", false, false};
+  box[1] = {20, 185, 100, 40, 0x00ff00, "Person", false, false};
+  box[2] = {76, 200, 105, 50, 0xffa500, "Person, Gun", false, true};
+  box[3] = {180, 200, 180, 80, 0xff0000, "Person, Threat", false, false};
+  box[4] = {400, 190, 90, 36, 0xffa500, "", false, false};
+  box[5] = {500, 195, 50, 20, 0xfff00, "Person", false, true};
+  box[6] = {550, 169, 100, 42, 0xfff00, "Person", false, false};
+
   const std::map<widget::WidgetEnum, std::shared_ptr<WidgetX>> *widget_list =
       (std::map<widget::WidgetEnum, std::shared_ptr<WidgetX>> *)ptr;
 
@@ -69,6 +81,14 @@ void *Updater::WidgetUpdaterThread(void *ptr) {
   std::shared_ptr<gva::WidgetPlanPositionIndicator> compass =
       std::static_pointer_cast<gva::WidgetPlanPositionIndicator>(
           widget_list->at(widget::WidgetEnum::KWidgetTypeCompass));
+
+  std::shared_ptr<gva::WidgetObjectLocalisation> objects = std::static_pointer_cast<gva::WidgetObjectLocalisation>(
+      widget_list->at(widget::WidgetEnum::KWidgetObjectLocalisation));
+
+  // Loop through box and set unique ids
+  for (int16_t c = 0; c < 7; c++) {
+    objects->AddBoundingBox(c + 1, box[c]);
+  }
 
   gva::WidgetPlanPositionIndicator::ThreatType threat = {110, 30, 0xff0000, "Person", false, false};
   compass->AddThreat(1, threat);

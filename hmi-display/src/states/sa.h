@@ -37,6 +37,7 @@ namespace gva {
 
 struct StateSA : Hmi {
   void entry() override;
+  void exit() override;
   void react(EventKeyPowerOn const &) override;
   void react(EventKeySA const &) override;
   void react(EventKeyWPN const &) override;

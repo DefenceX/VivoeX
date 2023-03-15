@@ -62,6 +62,7 @@
 #include "src/gva.h"
 #include "src/hmi_gva_helpers.h"
 #include "src/renderer_gva.h"
+#include "src/widgets/ai/object_localisation.h"
 #include "src/widgets/alarm_indicator.h"
 #include "src/widgets/bottom_labels.h"
 #include "src/widgets/driver/rpm_fuel.h"
@@ -112,7 +113,8 @@ DEFINE_int32(id, 0,
              "       31: Drivers speed dial/s 40Kph\n"
              "       32: Drivers speed dial/s 100Kph\n"
              "       33: RPM 0\n"
-             "       34: RPM 4000");
+             "       34: RPM 4000\n"
+             "       35: Oject localisation people");
 
 const uint32_t kScreenHeight = 480;
 const uint32_t kScreenWidth = 640;
@@ -132,6 +134,7 @@ static gva::WidgetMode mode(renderer);
 static gva::WidgetTable table(renderer, &touch, gva::ConfigData::GetInstance()->GetThemeBackground());
 static gva::WidgetDriverSpeedometer driver_speed(renderer);
 static gva::WidgetDriverRpmFuel driver_rpm(renderer);
+static gva::WidgetObjectLocalisation objects(renderer, &touch);
 
 std::array<gva::WidgetPlanPositionIndicator::ThreatType, 5> threats;
 
@@ -558,6 +561,28 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       driver_rpm.Draw();
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/rpm_02.png").c_str());
+    } break;
+    case 35: {
+      LOG(INFO) << "Item  " << counter << ", Object localisation";
+      std::array<gva::WidgetObjectLocalisation::BoxType, 8> box;
+      box[0] = {310, 190, 240, 104, 0xff0000, "Person, threat", false, false};
+      box[1] = {20, 100, 100, 40, 0x00ff00, "Person", false, false};
+      box[2] = {76, 120, 105, 50, 0xffa500, "Person, Gun", false, true};
+      box[3] = {180, 200, 180, 80, 0xff0000, "Person, Threat", false, false};
+      box[4] = {400, 120, 90, 36, 0xffa500, "", false, false};
+      box[5] = {500, 125, 50, 20, 0xfff00, "Person", false, true};
+      box[6] = {550, 149, 100, 42, 0xfff00, "Person", false, false};
+      box[7] = {630, 115, 100, 36, 0xfff00, "Person", false, false};
+      objects.SetVisible(true);
+
+      // Loop through box and set unique ids
+      for (int16_t c = 0; c < 8; c++) {
+        objects.AddBoundingBox(c + 1, box[c]);
+      }
+
+      objects.Draw();
+      renderer.Draw();
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/objects_people_01.png").c_str());
     } break;
     default:
       counter = 9999;  // Cause loop to end and terminate

@@ -100,6 +100,8 @@ ScreenGva::ScreenGva(std::shared_ptr<Updater> updater, Screen *screen, uint32_t 
   TouchGva *touch = GetTouch();
 
   // Here we need to add all the possible screen widgets to the widget list, at this point they are uninitialised
+  widget_list_[widget::WidgetEnum::KWidgetObjectLocalisation] =
+      std::make_shared<WidgetObjectLocalisation>(*renderer, touch);
   widget_list_[widget::WidgetEnum::KWidgetTypeCompass] = std::make_shared<WidgetPlanPositionIndicator>(*renderer);
   widget_list_[widget::WidgetEnum::KWidgetTypeKeyboard] = std::make_shared<WidgetKeyboard>(*renderer);
   widget_list_[widget::WidgetEnum::kWidgetTypeDialSpeedometer] = std::make_shared<WidgetDriverSpeedometer>(*renderer);

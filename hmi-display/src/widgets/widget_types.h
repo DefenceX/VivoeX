@@ -23,7 +23,6 @@
 
 #ifndef HMI_DISPLAY_SRC_WIDGETS_WIDGET_TYPES_H_
 #define HMI_DISPLAY_SRC_WIDGETS_WIDGET_TYPES_H_
-
 namespace gva::widget {
 
 ///
@@ -60,7 +59,8 @@ enum class WidgetEnum {
   KWidgetTypeTable,
   KWidgetTypeTableDynamic,
   kWidgetTypeDialSpeedometer,
-  KWidgetTypeDialRpmFuel
+  KWidgetTypeDialRpmFuel,
+  KWidgetObjectLocalisation
 };
 
 ///

@@ -34,7 +34,7 @@ void WidgetSideLabels::Draw() {
   }
 }
 
-void WidgetSideLabels::Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::string text,
+void WidgetSideLabels::Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t height, const std::string& text,
                             uint32_t text_colour, bool toggle_on) {
   if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::kLabelRounded) {
     GetRenderer()->DrawRoundedRectangle(x, y, width, height, 6, true);
@@ -47,43 +47,22 @@ void WidgetSideLabels::Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t hei
                              ConfigData::GetInstance()->GetThemeFont(), 14);
 
   if (text.substr(0, 5) == "icon:") {
-    if (text.substr(5, 20) == "exit")
-      GetRenderer()->DrawIcon(widget::IconType::kIconPowerOff, x + width / 2, y + height / 2, 20, 20);
-    if (text.substr(5, 20) == "uparrow")
-      GetRenderer()->DrawIcon(widget::IconType::kIconUpArrow, x + width / 2, y + height / 2, 20, 20);
-    if (text.substr(5, 20) == "downarrow")
-      GetRenderer()->DrawIcon(widget::IconType::kIconDownArrow, x + width / 2, y + height / 2, 20, 20);
-    if (text.substr(5, 20) == "rightarrow")
-      GetRenderer()->DrawIcon(widget::IconType::kIconRightArrow, x + width / 2, y + height / 2, 20, 20);
-    if (text.substr(5, 20) == "leftarrow")
-      GetRenderer()->DrawIcon(widget::IconType::kIconLeftArrow, x + width / 2, y + height / 2, 20, 20);
-    if (text.substr(5, 20) == "rotateleft")
-      GetRenderer()->DrawIcon(widget::IconType::kIconRotateLeft, x + width / 2, y + height / 2, 20, 20);
-    if (text.substr(5, 20) == "rotateright")
-      GetRenderer()->DrawIcon(widget::IconType::kIconRotateRight, x + width / 2, y + height / 2, 20, 20);
-    if (text.substr(5, 20) == "plus")
-      GetRenderer()->DrawIcon(widget::IconType::kIconPlus, x + width / 2, y + height / 2, 20, 20);
-    if (text.substr(5, 20) == "minus")
-      GetRenderer()->DrawIcon(widget::IconType::kIconMinus, x + width / 2, y + height / 2, 20, 20);
-    if (text.substr(5, 20) == "waterfall")
-      GetRenderer()->DrawIcon(widget::IconType::kIconWaterfallSight, x + width / 2, y + height / 2, 20, 20);
-    if (text.substr(5, 20) == "cross")
-      GetRenderer()->DrawIcon(widget::IconType::kIconWCrossSight, x + width / 2, y + height / 2, 20, 20);
+    RenderIcon(text, x, y, width, height);
   } else {
     if (text.find('.') != std::string::npos) {
       std::string first_line = text.substr(0, text.find('.'));
-      uint32_t width = GetRenderer()->GetTextWidth(first_line, 14);
-      GetRenderer()->DrawText(x + (98 - width) / 2, y + 20, first_line);
+      uint32_t text_width = GetRenderer()->GetTextWidth(first_line, 14);
+      GetRenderer()->DrawText(x + (98 - text_width) / 2, y + 20, first_line);
       std::string second_line = text.substr(text.find('.') + 1);
-      width = GetRenderer()->GetTextWidth(second_line, 14);
-      GetRenderer()->DrawText(x + (98 - width) / 2, y + 40, second_line);
+      text_width = GetRenderer()->GetTextWidth(second_line, 14);
+      GetRenderer()->DrawText(x + (98 - text_width) / 2, y + 40, second_line);
     } else {
-      uint32_t width = GetRenderer()->GetTextWidth(text, 14);
+      uint32_t text_width = GetRenderer()->GetTextWidth(text, 14);
       if (toggle_on) {
-        GetRenderer()->DrawText(x + (98 - width) / 2, y + 17, text);
+        GetRenderer()->DrawText(x + (98 - text_width) / 2, y + 17, text);
 
       } else {
-        GetRenderer()->DrawText(x + (98 - width) / 2, y + 30, text);
+        GetRenderer()->DrawText(x + (98 - text_width) / 2, y + 30, text);
       }
     }
   }
@@ -92,7 +71,7 @@ void WidgetSideLabels::Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t hei
   y_ = y;
 }
 
-void WidgetSideLabels::Toggle(const std::string& label1, const std::string& label2) {
+void WidgetSideLabels::Toggle(const std::string& label1, const std::string& label2) const {
   int ypos = 25;
   GetRenderer()->SetColourForeground(HMI_DARK_GREEN2);
   GetRenderer()->SetColourBackground(HMI_YELLOW);
@@ -134,7 +113,7 @@ void WidgetSideLabels::DrawFunctionLabels() {
       SetStateLabel(label.state);
       Draw(GetX(), offset + (i * 72), 100, 50, label.text, GetStateTextColour(label.state), label.toggleActive);
       if (label.state != LabelStates::kLabelDisabled) {
-        touch_->Add(group, (uint32_t)(firstKey + i), GetX(), offset + (i * 72), 100, 50);
+        touch_->Add(group, firstKey + i, GetX(), offset + (i * 72), 100, 50);
       }
       if (label.toggleActive) Toggle(label.toggleText1, label.toggleText2);
     }
@@ -143,5 +122,30 @@ void WidgetSideLabels::DrawFunctionLabels() {
 }
 
 void WidgetSideLabels::SetLabels(std::array<FunctionKeys::Labels, 6>* labels) { labels_ = labels; }
+
+void WidgetSideLabels::RenderIcon(const std::string& text, uint32_t x, uint32_t y, uint32_t width, uint32_t height) const {
+  if (text.substr(5, 20) == "exit")
+    GetRenderer()->DrawIcon(widget::IconType::kIconPowerOff, x + width / 2, y + height / 2, 20, 20);
+  if (text.substr(5, 20) == "uparrow")
+    GetRenderer()->DrawIcon(widget::IconType::kIconUpArrow, x + width / 2, y + height / 2, 20, 20);
+  if (text.substr(5, 20) == "downarrow")
+    GetRenderer()->DrawIcon(widget::IconType::kIconDownArrow, x + width / 2, y + height / 2, 20, 20);
+  if (text.substr(5, 20) == "rightarrow")
+    GetRenderer()->DrawIcon(widget::IconType::kIconRightArrow, x + width / 2, y + height / 2, 20, 20);
+  if (text.substr(5, 20) == "leftarrow")
+    GetRenderer()->DrawIcon(widget::IconType::kIconLeftArrow, x + width / 2, y + height / 2, 20, 20);
+  if (text.substr(5, 20) == "rotateleft")
+    GetRenderer()->DrawIcon(widget::IconType::kIconRotateLeft, x + width / 2, y + height / 2, 20, 20);
+  if (text.substr(5, 20) == "rotateright")
+    GetRenderer()->DrawIcon(widget::IconType::kIconRotateRight, x + width / 2, y + height / 2, 20, 20);
+  if (text.substr(5, 20) == "plus")
+    GetRenderer()->DrawIcon(widget::IconType::kIconPlus, x + width / 2, y + height / 2, 20, 20);
+  if (text.substr(5, 20) == "minus")
+    GetRenderer()->DrawIcon(widget::IconType::kIconMinus, x + width / 2, y + height / 2, 20, 20);
+  if (text.substr(5, 20) == "waterfall")
+    GetRenderer()->DrawIcon(widget::IconType::kIconWaterfallSight, x + width / 2, y + height / 2, 20, 20);
+  if (text.substr(5, 20) == "cross")
+    GetRenderer()->DrawIcon(widget::IconType::kIconWCrossSight, x + width / 2, y + height / 2, 20, 20);
+}
 
 }  // namespace gva
