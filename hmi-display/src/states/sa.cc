@@ -33,7 +33,7 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
       static_cast<WidgetPlanPositionIndicator *>(screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass));
   auto *objects =
       static_cast<WidgetObjectLocalisation *>(screen_render_->GetWidget(widget::WidgetEnum::KWidgetObjectLocalisation));
-  objects->SetVisible(true);
+  objects->SetVisible(false);
   KeySide(keypress);
   Key(keypress);
 
@@ -114,6 +114,7 @@ void StateSA::entry() {
     if (!screen_.canvas.surface) {
       std::string filename;
       filename = ConfigData::GetInstance()->GetImagePath();
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetObjectLocalisation)->SetVisible(true);
       filename.append("/FrontCenter.png");
 
       SetCanvasPng(filename.c_str());
