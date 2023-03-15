@@ -44,7 +44,7 @@ class WidgetPlanPositionIndicator : public WidgetX {
     bool flashing = false;
     bool dotted = false;
   };
-  
+
   ///
   /// \brief Construct a new Widget Plan Position Indicator object
   ///
@@ -106,6 +106,13 @@ class WidgetPlanPositionIndicator : public WidgetX {
   void SetBearingSight(int16_t bearing_sight) { bearing_sight_ = bearing_sight; }
 
   ///
+  /// \brief Set the Weapon Azimuth attribute
+  ///
+  /// \param weapon_azimuth
+  ///
+  void SetWeaponAzimuth(int16_t weapon_azimuth) { weapon_azimuth_ = weapon_azimuth; }
+
+  ///
   /// \brief Get the Bearing object
   ///
   /// \return uint16_t
@@ -164,6 +171,7 @@ class WidgetPlanPositionIndicator : public WidgetX {
   int16_t radius_ = 100;
   int16_t bearing_ = 0;
   int16_t bearing_sight_ = 0;
+  int16_t weapon_azimuth_ = 10;
   widget::ModeEnum mode_ = widget::ModeEnum::kPpiClassicTankWithSight;
   std::unordered_map<int16_t, std::shared_ptr<ThreatType>> threats_;
 };

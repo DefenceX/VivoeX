@@ -284,7 +284,7 @@ void WidgetPlanPositionIndicator::DrawClassic(widget::ModeEnum mode, int32_t x, 
   // Heading (Goes under sight)
   GetRenderer()->Save();
   GetRenderer()->MovePen(0, 0);
-  GetRenderer()->Rotate(DegreesToRadians(weapon_azimuth));
+  GetRenderer()->Rotate(DegreesToRadians(weapon_azimuth_));
 
   GetRenderer()->SetColourBackground(HMI_CYAN);
   if ((mode == widget::ModeEnum::kPpiClassicArrowWithSight) ||
@@ -321,7 +321,7 @@ void WidgetPlanPositionIndicator::DrawThreats() const {
     uint32_t angle2 = threat_info->bearing + (threat_info->size / 2);
     GetRenderer()->DrawColor(threat_info->rgb_value);
     GetRenderer()->SetLineThickness(4, LineType::kLineSolid);
-    GetRenderer()->DrawArcRaw(GetX(), GetY(), (radius_ / 2) + 1, angle1, angle2);
+    GetRenderer()->DrawArcRaw(GetX() / 2, GetY() / 2, (radius_ / 2) + 1, angle1, angle2);
   }
 };
 

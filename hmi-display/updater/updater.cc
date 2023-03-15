@@ -70,8 +70,17 @@ void *Updater::WidgetUpdaterThread(void *ptr) {
       std::static_pointer_cast<gva::WidgetPlanPositionIndicator>(
           widget_list->at(widget::WidgetEnum::KWidgetTypeCompass));
 
+  gva::WidgetPlanPositionIndicator::ThreatType threat = {110, 30, 0xff0000, "Person", false, false};
+  compass->AddThreat(1, threat);
+  threat.rgb_value = 0xffa500;
+  threat.bearing = 20;
+  compass->AddThreat(2, threat);
+  // This is the threat event loop
   while (true) {
     compass->SetBearing(GenerateSineWave(count));
+    compass->SetBearingSight(count % 360);
+    compass->SetWeaponAzimuth(360 - (count % 360));
+
     speed->SetValue(GenerateSineWave(count));
     rpm->SetValue(GenerateSineWave(count) * 90);
     usleep(1000000);

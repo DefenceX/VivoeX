@@ -160,7 +160,6 @@ class WidgetX {
   ///
   uint32_t GetStateTextColour(LabelStates state) const;
 
- protected:
   uint32_t x_ = 0;
   uint32_t y_ = 0;
   uint32_t width_ = 0;
