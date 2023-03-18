@@ -72,9 +72,9 @@ int AudioFunctions::Callback(const void *input [[maybe_unused]], void *output, u
   return paContinue;
 }
 
-void AudioFunctions::PlayThreat() const { Play("/opt/gva/hmi/threat.wav"); }
-void AudioFunctions::PlayCaution() const { Play("/opt/gva/hmi/caution.wav"); }
-void AudioFunctions::PlayWarning() const { Play("/opt/gva/hmi/warning.wav"); }
+void AudioFunctions::PlayThreat() const { Play("/opt/gva/hmi/sounds/threat.wav"); }
+void AudioFunctions::PlayCaution() const { Play("/opt/gva/hmi/sounds/caution.wav"); }
+void AudioFunctions::PlayWarning() const { Play("/opt/gva/hmi/sounds/warning.wav"); }
 
 int AudioFunctions::Play(std::string_view filename) const {
   PaStream *stream;
@@ -84,7 +84,7 @@ int AudioFunctions::Play(std::string_view filename) const {
   // Open the sound file
   data.file = sf_open(std::string(filename).c_str(), SFM_READ, &data.info);
   if (sf_error(data.file) != SF_ERR_NO_ERROR) {
-    LOG(ERROR) << sf_strerror(data.file);
+    LOG(ERROR) << "File " << filename << sf_strerror(data.file);
     return 1;
   }
 

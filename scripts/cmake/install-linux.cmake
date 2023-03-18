@@ -50,6 +50,13 @@ install(FILES
     ${IMAGE_PATH}/Quad.png 
     DESTINATION "/opt/gva/hmi/images")
 
+# Audio files
+install(FILES  
+    ${CMAKE_SOURCE_DIR}/hmi-display/sounds/caution.wav
+    ${CMAKE_SOURCE_DIR}/hmi-display/sounds/threat.wav
+    ${CMAKE_SOURCE_DIR}/hmi-display/sounds/warning.wav
+    DESTINATION "/opt/gva/hmi/sounds")
+
 # All other images
 install(FILES  
     ${CMAKE_SOURCE_DIR}/images/screen/DefenceX.png 
