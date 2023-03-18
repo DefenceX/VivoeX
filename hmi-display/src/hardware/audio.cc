@@ -40,6 +40,14 @@ AudioFunctions::AudioFunctions() {
   }
 }
 
+AudioFunctions::~AudioFunctions() {
+  PaError error;
+  error = Pa_Terminate();
+  if (error != paNoError) {
+    LOG(ERROR) << "Problem terminating";
+  }
+}
+
 int AudioFunctions::Callback(const void *input [[maybe_unused]], void *output, unsigned long frameCount,
                              const PaStreamCallbackTimeInfo *timeInfo [[maybe_unused]],
                              PaStreamCallbackFlags statusFlags [[maybe_unused]], void *userData) {
@@ -65,8 +73,8 @@ int AudioFunctions::Callback(const void *input [[maybe_unused]], void *output, u
 }
 
 void AudioFunctions::PlayThreat() const { Play("/opt/gva/hmi/threat.wav"); }
-void AudioFunctions::PlayCaution()  const{ Play("/opt/gva/hmi/caution.wav"); }
-void AudioFunctions::PlayWarning() const{ Play("/opt/gva/hmi/warning.wav"); }
+void AudioFunctions::PlayCaution() const { Play("/opt/gva/hmi/caution.wav"); }
+void AudioFunctions::PlayWarning() const { Play("/opt/gva/hmi/warning.wav"); }
 
 int AudioFunctions::Play(std::string_view filename) const {
   PaStream *stream;
@@ -109,12 +117,6 @@ int AudioFunctions::Play(std::string_view filename) const {
   error = Pa_CloseStream(stream);
   if (error != paNoError) {
     LOG(ERROR) << "Problem closing stream";
-    return 1;
-  }
-
-  error = Pa_Terminate();
-  if (error != paNoError) {
-    LOG(ERROR) << "Problem terminating";
     return 1;
   }
 

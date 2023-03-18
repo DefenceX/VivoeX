@@ -110,20 +110,37 @@ void *Updater::WidgetUpdaterThread(void *ptr) {
   compass->AddThreat(2, threat);
   // This is the threat event loop
   while (true) {
-    compass->SetBearing(GenerateSineWave(count));
-    compass->SetBearingSight(count % 360);
-    compass->SetWeaponAzimuth(360 - (count % 360));
+    compass->SetBearing((uint16_t)GenerateSineWave((int)count));
+    compass->SetBearingSight((uint16_t)(count % 360));
+    compass->SetWeaponAzimuth((uint16_t)(360 - (count % 360)));
 
     speed->SetValue(GenerateSineWave(count));
     rpm->SetValue(GenerateSineWave(count) * 90);
     nanosleep((const struct timespec[]){{0, 100000000L}}, NULL);
 
     if (count == 50) {
+      alarm_indicator->SetType(GvaAlarmType::kAlarmAdvisory);
       alarm_indicator->SetVisible(true);
+      // As there is an alarm set the Ack control to enabled
+      bottom->EnableLabel(GvaKeyEnum::kKeyF16);
+    }
+
+    if (count == 150) {
+      alarm_indicator->SetVisible(true);
+      alarm_indicator->SetType(GvaAlarmType::kAlarmWarnings);
+      // As there is an alarm set the Ack control to enabled
+      bottom->EnableLabel(GvaKeyEnum::kKeyF16);
+      audio.PlayWarning();
+    }
+
+    if (count == 200) {
+      alarm_indicator->SetVisible(true);
+      alarm_indicator->SetType(GvaAlarmType::kAlarmCaution);
       // As there is an alarm set the Ack control to enabled
       bottom->EnableLabel(GvaKeyEnum::kKeyF16);
       audio.PlayCaution();
     }
+
     count++;
   }
   return nullptr;

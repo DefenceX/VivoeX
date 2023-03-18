@@ -45,6 +45,12 @@ class AudioFunctions {
   AudioFunctions();
 
   ///
+  /// \brief Destroy the Audio Functions object
+  ///
+  ///
+  ~AudioFunctions();
+
+  ///
   /// \brief Portaudio callback for simple audio
   ///
   /// \param input

@@ -75,6 +75,13 @@ class WidgetBottomLabels : public WidgetX {
   ///
   void EnableLabel(GvaKeyEnum key);
 
+  ///
+  /// \brief Disable a label
+  ///
+  /// \param key
+  ///
+  void DisableLabel(GvaKeyEnum key);
+
  private:
   void DrawControlLabels();
   ConfigData* config_ = nullptr;

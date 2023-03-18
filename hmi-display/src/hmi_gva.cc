@@ -127,6 +127,7 @@
 #include "hmi_gva.h"
 
 #include <iostream>
+#include <memory>
 
 #include "src/gva.h"
 #include "src/view_gva.h"
@@ -304,8 +305,12 @@ GvaKeyEnum Hmi::Key(GvaKeyEnum keypress) {
     case GvaKeyEnum::kKeyF16:  // Ack
       screen_.control->SetEnabledSelected(3);
       screen_.control->ResetAllEnabled();
-      // Clear alarms here till LDM
-      screen_.control->SetDisabled(3);
+      {
+        // Clear alarms here till LDM
+        auto bottom =
+            (gva::WidgetBottomLabels *)(screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeBottomLabels));
+        bottom->DisableLabel(GvaKeyEnum::kKeyF16);
+      }
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeAlarmIndicator)->SetVisible(false);
       break;
     case GvaKeyEnum::kKeyF17:  // Up Arrow

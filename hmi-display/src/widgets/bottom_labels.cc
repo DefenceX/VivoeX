@@ -120,4 +120,35 @@ void WidgetBottomLabels::EnableLabel(GvaKeyEnum key) {
   }
 }
 
+void WidgetBottomLabels::DisableLabel(GvaKeyEnum key) {
+  switch (key) {
+    case GvaKeyEnum::kKeyF13:  // Up
+      labels_[0].state_ = LabelStates::kLabelDisabled;
+      break;
+    case GvaKeyEnum::kKeyF14:  // Alarms
+      labels_[1].state_ = LabelStates::kLabelDisabled;
+      break;
+    case GvaKeyEnum::kKeyF15:  // Threats
+      labels_[2].state_ = LabelStates::kLabelDisabled;
+      break;
+    case GvaKeyEnum::kKeyF16:  // Ack
+      labels_[3].state_ = LabelStates::kLabelDisabled;
+      break;
+    case GvaKeyEnum::kKeyF17:  // Up
+      labels_[4].state_ = LabelStates::kLabelDisabled;
+      break;
+    case GvaKeyEnum::kKeyF18:  // Down
+      labels_[5].state_ = LabelStates::kLabelDisabled;
+      break;
+    case GvaKeyEnum::kKeyF19:  // Labels
+      labels_[6].state_ = LabelStates::kLabelDisabled;
+      break;
+    case GvaKeyEnum::kKeyF20:  // Enter
+      labels_[7].state_ = LabelStates::kLabelDisabled;
+      break;
+    default:  // Enter
+      break;
+  }
+}
+
 }  // namespace gva
