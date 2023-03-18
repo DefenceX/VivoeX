@@ -105,14 +105,9 @@ void StateOn::entry() {
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetX(330);
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetVisible(true);
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic)->SetVisible(false);
-  screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeAlarmIndicator)->SetVisible(true);
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeAlarmIndicator)->SetY(58);
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeBottomLabels)->SetY(480 - 20);
 
-  WidgetAlarmIndicator *ai =
-      (WidgetAlarmIndicator *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeAlarmIndicator);
-  ai->SetType(GvaAlarmType::kAlarmCaution);
-  ai->SetText("Engine over temperature");
   // As there is an alarm set the Ack control to enabled
   screen_.control->ForceEnabledSelected(3);
 

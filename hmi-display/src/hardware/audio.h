@@ -24,17 +24,26 @@
 #ifndef HMI_DISPLAY_SRC_HARDWARE_AUDIO_H_
 #define HMI_DISPLAY_SRC_HARDWARE_AUDIO_H_
 
-#include <ao/ao.h>
-#include <signal.h>
+#include <portaudio.h>
 #include <sndfile.h>
+
+#include <string>
 
 namespace gva {
 
 class AudioFunctions {
  public:
-  void OnCancelPlayback(int sig);
-  static void Clean(ao_device *device, SNDFILE *file);
-  int Play();
+  typedef struct {
+    SNDFILE *file;
+    SF_INFO info;
+  } callback_data_s;
+
+  static int callback(const void *input, void *output, unsigned long frameCount,
+                      const PaStreamCallbackTimeInfo *timeInfo, PaStreamCallbackFlags statusFlags, void *userData);
+  int Play(std::string filename);
+  void PlayThreat();
+  void PlayCaution();
+  void PlayWarning();
 };
 
 }  // namespace gva

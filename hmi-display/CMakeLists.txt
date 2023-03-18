@@ -59,21 +59,34 @@ add_executable(hmi-display ${SOURCES})
 add_dependencies(hmi-display widgets hmi-updater libglog libprotobuf googletest libosmscout geographiclib hmi-video config-proto ${DDS_STACK} libosmscout)
 
 link_directories( ${NMEA_LIBRARY_DIR} ${CMAKE_BINARY_DIR}/external/libnmea/src/lib )
-target_link_libraries (hmi-display ${GEOGRAPHIC_LIBRARIES} ${WINDOWS_RESOURCE_LIB} pthread glog widgets GeographicLib config-proto ${OSMSCOUT_LIBARAIES} ${PROTOBUF_LIBRARY} ${GTK_LIBRARIES3} stdc++fs)
-target_link_libraries(hmi-display 
+target_link_libraries(hmi-display
     hmi-updater 
 	png 
 	pthread 
 	hmi-video 
 	vivoe-media 
 	nmea 
-	ao
+	portaudio.a
+	portaudiocpp.a
+	asound
 	sndfile
+	pthread 
+	glog 
+	widgets 
+	GeographicLib 
+	config-proto 
+	stdc++fs
+	${OSMSCOUT_LIBARAIES} 
+	${PROTOBUF_LIBRARY} 
+	${GTK_LIBRARIES3} 
 	${GFLAGS_LIBS} 
 	${CAIRO_LIBRARIES} 
 	${PANGO_LIBRARIES} 
 	${SWSCALE_LIBRARIES} 
-	${GTK3_LIBRARIES})
+	${GTK3_LIBRARIES}
+	${GEOGRAPHIC_LIBRARIES} 
+	${WINDOWS_RESOURCE_LIB} 
+	)
 
 if (MSYS)
 	# Add the resource file

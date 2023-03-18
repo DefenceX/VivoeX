@@ -28,7 +28,9 @@
 #include <cmath>
 #include <iostream>
 
+#include "src/hardware/audio.h"
 #include "src/widgets/ai/object_localisation.h"
+#include "src/widgets/alarm_indicator.h"
 #include "src/widgets/driver/rpm_fuel.h"
 #include "src/widgets/driver/speedometer.h"
 #include "src/widgets/plan_position_indicator.h"
@@ -59,6 +61,7 @@ void *Updater::WidgetUpdaterThread(void *ptr) {
   uint64_t count = 0;
   std::array<gva::WidgetObjectLocalisation::BoxType, 8> box;
 
+  gva::AudioFunctions audio;
   LOG(INFO) << "Starting widget updater thread";
 
   box[0] = {310, 170, 240, 104, 0xff0000, "Person, threat", false, false};
@@ -85,6 +88,12 @@ void *Updater::WidgetUpdaterThread(void *ptr) {
   std::shared_ptr<gva::WidgetObjectLocalisation> objects = std::static_pointer_cast<gva::WidgetObjectLocalisation>(
       widget_list->at(widget::WidgetEnum::KWidgetObjectLocalisation));
 
+  std::shared_ptr<gva::WidgetAlarmIndicator> alarm_indicator = std::static_pointer_cast<gva::WidgetAlarmIndicator>(
+      widget_list->at(widget::WidgetEnum::KWidgetTypeAlarmIndicator));
+
+  alarm_indicator->SetType(GvaAlarmType::kAlarmCaution);
+  alarm_indicator->SetText("Engine over temperature");
+
   // Loop through box and set unique ids
   for (int16_t c = 0; c < 7; c++) {
     objects->AddBoundingBox(c + 1, box[c]);
@@ -104,6 +113,11 @@ void *Updater::WidgetUpdaterThread(void *ptr) {
     speed->SetValue(GenerateSineWave(count));
     rpm->SetValue(GenerateSineWave(count) * 90);
     nanosleep((const struct timespec[]){{0, 100000000L}}, NULL);
+
+    if (count == 50) {
+      alarm_indicator->SetVisible(true);
+      audio.PlayCaution();
+    }
     count++;
   }
   return nullptr;

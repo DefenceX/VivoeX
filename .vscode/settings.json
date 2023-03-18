@@ -283,6 +283,8 @@
         "rpmdir",
         "rpmfilename",
         "RTPS",
+        "samplerate",
+        "sfinfo",
         "skinparam",
         "Southbank",
         "startuml",
