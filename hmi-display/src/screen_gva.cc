@@ -171,7 +171,7 @@ void ClockUpdate(ClockArgs *a) {
   char clock[1000];
   snprintf(clock, sizeof(clock), "%02d/%02d/%02d %02d:%02d:%02d", local_time.tm_mday, local_time.tm_mon + 1,
            local_time.tm_year + 1900, local_time.tm_hour, local_time.tm_min, local_time.tm_sec);
-  a->clockString = clock;
+  a->status_bar->UpdateClock(clock);
 
 #if (__MINGW64__ || __MINGW32__)
 #else
@@ -215,12 +215,12 @@ void ClockUpdate(ClockArgs *a) {
   if ((a->info->lon != 0) && (a->info->lat != 0)) {
     switch (a->location.locationFormat) {
       case LocationEnum::kLocationFormatLongLat:
-        a->locationFormat = "LONLAT";
+        a->status_bar->UpdateLocationFormat("LON/LAT");
         {
           std::stringstream stream;
           stream << std::fixed << std::setprecision(2) << "Lat:" << a->info->lat << " Lon:" << a->info->lon << " ["
                  << a->info->sig << "]" << a->info->fix;
-          a->locationString = stream.str();
+          a->status_bar->UpdateLocation(stream.str());
         }
         break;
       case LocationEnum::kLocationFormatMgrs: {
@@ -231,8 +231,8 @@ void ClockUpdate(ClockArgs *a) {
         GeographicLib::UTMUPS::Forward(a->info->lat, a->info->lon, zone, northp, x, y);
         std::string mgrs;
         GeographicLib::MGRS::Forward(zone, northp, x, y, a->info->lat, 5, mgrs);
-        a->locationFormat = "MGRS";
-        a->locationString = mgrs;
+        a->status_bar->UpdateLocationFormat("MGRS");
+        a->status_bar->UpdateLocation(mgrs);
       } break;
     }
   }

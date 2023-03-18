@@ -69,15 +69,21 @@ class WidgetStatusBar : public WidgetTable {
   ///
   /// \param clock_string as text
   ///
-  void UpdateClock(std::string clock_string);
+  void UpdateClock(std::string_view clock_string);
 
   ///
   /// \brief  Update the location
   ///
-  /// \param location_format as text
-  /// \param location_string as text
+  /// \param location as text
   ///
-  void UpdateLocation(std::string location_format, std::string location_string);
+  void UpdateLocation(std::string_view location);
+
+  ///
+  /// \brief Set the location format i.e MGRS or Lat/Long
+  ///
+  /// \param location_format text representation
+  ///
+  void UpdateLocationFormat(std::string_view location_format);
 
  private:
   uint16_t warnings_ = 0;

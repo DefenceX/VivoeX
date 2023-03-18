@@ -35,10 +35,10 @@ WidgetStatusBar::WidgetStatusBar(const RendererGva &renderer, TouchGva *touch) :
   labels_[0].text = "00:00:00 01/01/1973";
   labels_[1].text = "Norm.";
   labels_[2].text = "Lat:0.000000 Lon:-0.000000";
-  labels_[4].text = "W:" + std::to_string(warnings_);
-  labels_[5].text = "A:" + std::to_string(advisories_);
-  labels_[6].text = "C:" + std::to_string(cautions_);
-  labels_[7].text = "O:" + std::to_string(overrides_);
+  labels_[3].text = "W:" + std::to_string(warnings_);
+  labels_[4].text = "A:" + std::to_string(advisories_);
+  labels_[5].text = "C:" + std::to_string(cautions_);
+  labels_[6].text = "O:" + std::to_string(overrides_);
 }
 
 void WidgetStatusBar::Draw() {
@@ -48,25 +48,25 @@ void WidgetStatusBar::Draw() {
 
     // Setup and Draw the status bar, one row table
     std::array<uint32_t, 7> widths = {23, 8, 37, 8, 8, 8, 8};
-    SetVisible(true);
     SetX(1);
-    SetY(20);
-    SetWidth(GetWidth());
+    SetWidth(640);
     SetBackgroundColour(ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
+
+    // Update the rows and cells
+    Reset();
     AddRow();
 
     for (uint32_t i = 0; i < 7; i++) {
       AddCell(labels_[i].text, widths[i], widget::CellAlignType::kAlignLeft);
     }
-    Draw();
+    WidgetTable::Draw();
   }
 }
 
-void WidgetStatusBar::UpdateClock(std::string clock_string) { labels_[0].text = clock_string; }
+void WidgetStatusBar::UpdateClock(std::string_view clock_string) { labels_[0].text = clock_string; }
 
-void WidgetStatusBar::UpdateLocation(std::string location_format, std::string location_string) {
-  labels_[1].text = location_format;
-  labels_[2].text = location_string;
-}
+void WidgetStatusBar::UpdateLocation(std::string_view location) { labels_[2].text = location; }
+
+void WidgetStatusBar::UpdateLocationFormat(std::string_view location_format) { labels_[1].text = location_format; }
 
 }  // namespace gva
