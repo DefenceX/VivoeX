@@ -24,33 +24,34 @@ link_directories(${CMAKE_BINARY_DIR}/external/libnmea/build/src)
 
 set(SOURCES main.cc 
 			# src/trace.cc
-			src/gva_application.cc
-			src/gva_functions_common.cc
-			src/renderer.cc 
-			src/renderer_cairo.cc 
-			src/renderer_gva.cc 
-			src/touch_gva.cc 
-			src/screen_gva.cc 
-			src/events_gva.cc 
 			common/debug.cc 
 			common/utils.cc 
+			src/config_reader.cc
+			src/events_gva.cc 
+			src/gva_application.cc
+			src/gva_functions_common.cc
+			src/hardware/audio.cc 
 			src/hmi_gva.cc 
 			src/hmi_gva_defaults.cc 
 			src/hmi_gva_helpers.cc 
-			src/view_gva.cc 
+			src/renderer.cc 
+			src/renderer_cairo.cc 
+			src/renderer_gva.cc 
 			src/renderer_map.cc 
-			src/config_reader.cc
-			src/states/on.cc
-			src/states/off.cc
-			src/states/sa.cc
-			src/states/wpn.cc
-			src/states/sys.cc
+			src/screen_gva.cc 
+			src/states/alarms.cc
+			src/states/bms.cc
+			src/states/com.cc
 			src/states/def.cc
 			src/states/drv.cc
-			src/states/com.cc
+			src/states/off.cc
+			src/states/on.cc
+			src/states/sa.cc
 			src/states/str.cc
-			src/states/bms.cc
-			src/states/alarms.cc
+			src/states/sys.cc
+			src/states/wpn.cc
+			src/touch_gva.cc 
+			src/view_gva.cc 
 			)
 
 link_libraries(-lstdc++fs)
@@ -59,7 +60,20 @@ add_dependencies(hmi-display widgets hmi-updater libglog libprotobuf googletest 
 
 link_directories( ${NMEA_LIBRARY_DIR} ${CMAKE_BINARY_DIR}/external/libnmea/src/lib )
 target_link_libraries (hmi-display ${GEOGRAPHIC_LIBRARIES} ${WINDOWS_RESOURCE_LIB} pthread glog widgets GeographicLib config-proto ${OSMSCOUT_LIBARAIES} ${PROTOBUF_LIBRARY} ${GTK_LIBRARIES3} stdc++fs)
-target_link_libraries(hmi-display hmi-updater png pthread hmi-video vivoe-media nmea ${GFLAGS_LIBS} ${CAIRO_LIBRARIES} ${PANGO_LIBRARIES} ${SWSCALE_LIBRARIES} ${GTK3_LIBRARIES})
+target_link_libraries(hmi-display 
+    hmi-updater 
+	png 
+	pthread 
+	hmi-video 
+	vivoe-media 
+	nmea 
+	ao
+	sndfile
+	${GFLAGS_LIBS} 
+	${CAIRO_LIBRARIES} 
+	${PANGO_LIBRARIES} 
+	${SWSCALE_LIBRARIES} 
+	${GTK3_LIBRARIES})
 
 if (MSYS)
 	# Add the resource file
