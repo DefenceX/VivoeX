@@ -27,18 +27,17 @@
 
 namespace gva {
 
-ViewGvaManager::ViewGvaManager(StatusBar *status_bar) : status_bar_(status_bar) {}
+ViewGvaManager::ViewGvaManager() {}
 
 void ViewGvaManager::AddNewView(GvaFunctionEnum function, FunctionSelect *top, CommonTaskKeys *bottom,
                                 FunctionKeys left, FunctionKeys right) {
-  views_.push_back(ViewGva(function, top, bottom, left, right));
+  views_.emplace_back(ViewGva(function, top, bottom, left, right));
   return;
 }
 
 void ViewGvaManager::SetScreen(Screen *screen, GvaFunctionEnum function) const {
   for (auto view : views_) {
     if (view.GetFunction() == function) {
-      screen->status_bar = status_bar_;
       screen->function_top = view.GetTop();
       screen->control = view.GetBottom();
       screen->function_left = *view.GetLeft();

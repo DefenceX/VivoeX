@@ -33,6 +33,7 @@
 #include "src/widgets/mode.h"
 #include "src/widgets/plan_position_indicator.h"
 #include "src/widgets/side_labels.h"
+#include "src/widgets/table/status_bar.h"
 #include "src/widgets/table/table.h"
 #include "src/widgets/table/table_dynamic.h"
 #include "src/widgets/top_labels.h"

@@ -33,11 +33,9 @@ struct termios {
 #else
 #include <termios.h>
 #endif
+#include <glog/logging.h>
 #include <time.h>
 #include <unistd.h>
-
-// #include <GeographicLib/LambertConformalConic.hpp>
-#include <glog/logging.h>
 
 #include <GeographicLib/MGRS.hpp>
 #include <GeographicLib/UTMUPS.hpp>
@@ -89,19 +87,12 @@ ScreenGva::ScreenGva(std::shared_ptr<Updater> updater, Screen *screen, uint32_t 
 #endif
 
   //
-  // Start the Real Time Clock
-  //
-  StartClock(screen_->status_bar);
-
-  //
   // Setup the required widgets
   //
   RendererGva *renderer = this;
   TouchGva *touch = GetTouch();
 
   // Here we need to add all the possible screen widgets to the widget list, at this point they are uninitialised
-  widget_list_[widget::WidgetEnum::KWidgetObjectLocalisation] =
-      std::make_shared<WidgetObjectLocalisation>(*renderer, touch);
   widget_list_[widget::WidgetEnum::KWidgetTypeCompass] = std::make_shared<WidgetPlanPositionIndicator>(*renderer);
   widget_list_[widget::WidgetEnum::KWidgetTypeKeyboard] = std::make_shared<WidgetKeyboard>(*renderer);
   widget_list_[widget::WidgetEnum::kWidgetTypeDialSpeedometer] = std::make_shared<WidgetDriverSpeedometer>(*renderer);
@@ -117,6 +108,14 @@ ScreenGva::ScreenGva(std::shared_ptr<Updater> updater, Screen *screen, uint32_t 
       std::make_shared<WidgetTable>(*renderer, touch, ConfigData::GetInstance()->GetThemeBackground());
   widget_list_[widget::WidgetEnum::KWidgetTypeTableDynamic] =
       std::make_shared<WidgetTableDynamic>(*renderer, touch, ConfigData::GetInstance()->GetThemeBackground());
+  widget_list_[widget::WidgetEnum::KWidgetObjectLocalisation] =
+      std::make_shared<WidgetObjectLocalisation>(*renderer, touch);
+  widget_list_[widget::WidgetEnum::KWidgetTypeStatusBar] = std::make_shared<WidgetStatusBar>(*renderer, touch);
+
+  //
+  // Start the Real Time Clock
+  //
+  StartClock(widget_list_[widget::WidgetEnum::KWidgetTypeStatusBar]);
 
   //
   // Load some dummy alarms (real alarms come from LDM)
@@ -205,8 +204,8 @@ void ClockUpdate(ClockArgs *a) {
     }
 
     snprintf(tmp, sizeof(tmp), "%s\r\n", buffer);
-    a->info->lon = a->location->lon;
-    a->info->lat = a->location->lat;
+    a->info->lon = a->location.lon;
+    a->info->lat = a->location.lat;
     nmea_parse(a->parser, tmp, sizeof(tmp), a->info);
     a->info->lat = ToDegrees((float)a->info->lat);
     a->info->lon = ToDegrees((float)a->info->lon);
@@ -214,7 +213,7 @@ void ClockUpdate(ClockArgs *a) {
 #endif
 
   if ((a->info->lon != 0) && (a->info->lat != 0)) {
-    switch (a->location->locationFormat) {
+    switch (a->location.locationFormat) {
       case LocationEnum::kLocationFormatLongLat:
         a->locationFormat = "LONLAT";
         {
@@ -252,13 +251,15 @@ void *ClockUpdateThread(void *arg) {
   return nullptr;
 }
 
-void ScreenGva::StartClock(StatusBar *barData) {
+void ScreenGva::StartClock(std::shared_ptr<WidgetX> status_bar_widget) {
+  std::shared_ptr<WidgetStatusBar> status_bar = std::dynamic_pointer_cast<WidgetStatusBar>(status_bar_widget);
   args_.active = true;
   args_.parser = &parser_;
   args_.info = &info_;
   args_.gps = &gps_;
   args_.screen = this;
-  args_.location = &barData->location;
+  args_.status_bar = status_bar;
+  args_.location.locationFormat = LocationEnum::kLocationFormatMgrs;
   args_.info->lon = ConfigData::GetInstance()->GetTestLon();
   args_.info->lat = ConfigData::GetInstance()->GetTestLat();
 
@@ -310,30 +311,6 @@ GvaStatusTypes ScreenGva::Update() {
     LOG(INFO) << "Blackout Requested";
     last_screen_ = *screen_;
     return GvaStatusTypes::kGvaSuccess;
-  }
-
-  // Setup and Draw the status bar, one row table
-  if (screen_->status_bar->visible) {
-    WidgetTable status_bar_table(*(RendererGva *)this, GetTouch(),
-                                 ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
-
-    // Setup and Draw the status bar, one row table
-    std::array<uint32_t, 7> widths = {23, 8, 37, 8, 8, 8, 8};
-    status_bar_table.SetVisible(true);
-    status_bar_table.SetX(1);
-    status_bar_table.SetY(screen_->status_bar->y);
-    status_bar_table.SetWidth(640);
-    status_bar_table.SetBackgroundColour(ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
-    status_bar_table.AddRow();
-
-    // Update the status bar cells
-    screen_->status_bar->labels[0].text = args_.clockString;
-    screen_->status_bar->labels[1].text = args_.locationFormat;
-    screen_->status_bar->labels[2].text = args_.locationString;
-    for (uint32_t i = 0; i < 7; i++) {
-      status_bar_table.AddCell(screen_->status_bar->labels[i].text, widths[i], widget::CellAlignType::kAlignLeft);
-    }
-    status_bar_table.Draw();
   }
 
   // Generic message box

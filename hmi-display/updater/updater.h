@@ -27,7 +27,7 @@
 
 #include <string>
 
-#include "include/updater_base.h"
+#include "updater_base.h"
 
 namespace gva {
 
@@ -46,7 +46,7 @@ class Updater : public UpdaterBase {
   /// \brief Register the widgets to be updated
   ///
   ///
-  void RegisterWidgets(std::map<widget::WidgetEnum, std::shared_ptr<WidgetX>>& widget_list);
+  void RegisterWidgets(std::unordered_map<widget::WidgetEnum, std::shared_ptr<WidgetX>>& widget_list);
 
   ///
   /// \brief Update the HMI state
@@ -71,7 +71,7 @@ class Updater : public UpdaterBase {
   static void* WidgetUpdaterThread(void* ptr);
 
  private:
-  std::map<widget::WidgetEnum, std::shared_ptr<WidgetX>>* widget_list_ = nullptr;
+  std::unordered_map<widget::WidgetEnum, std::shared_ptr<WidgetX>>* widget_list_ = nullptr;
   int thread_id_ = 0;
   pthread_t thread_ = 0;
 

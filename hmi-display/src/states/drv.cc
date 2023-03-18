@@ -74,7 +74,7 @@ void StateDRV::entry() {
     screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeDialRpmFuel)->SetX(950);
     screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeDialRpmFuel)->SetY(750);
 
-    screen_.status_bar->visible = true;
+    screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeStatusBar)->SetVisible(true);
     screen_.function_top->SetEnabled(4);
   }
 };

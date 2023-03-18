@@ -39,7 +39,7 @@ Updater::Updater(uint64_t id) : UpdaterBase(id){};
 
 Updater::~Updater() { pthread_cancel(thread_); };
 
-void Updater::RegisterWidgets(std::map<widget::WidgetEnum, std::shared_ptr<WidgetX>> &widget_list) {
+void Updater::RegisterWidgets(std::unordered_map<widget::WidgetEnum, std::shared_ptr<WidgetX>> &widget_list) {
   std::shared_ptr<gva::WidgetPlanPositionIndicator> compass =
       std::static_pointer_cast<gva::WidgetPlanPositionIndicator>(widget_list[widget::WidgetEnum::KWidgetTypeCompass]);
   compass->SetBearing(200);
@@ -69,8 +69,8 @@ void *Updater::WidgetUpdaterThread(void *ptr) {
   box[5] = {500, 195, 50, 20, 0xfff00, "Person", false, true};
   box[6] = {550, 169, 100, 42, 0xfff00, "Person", false, false};
 
-  const std::map<widget::WidgetEnum, std::shared_ptr<WidgetX>> *widget_list =
-      (std::map<widget::WidgetEnum, std::shared_ptr<WidgetX>> *)ptr;
+  const std::unordered_map<widget::WidgetEnum, std::shared_ptr<WidgetX>> *widget_list =
+      (std::unordered_map<widget::WidgetEnum, std::shared_ptr<WidgetX>> *)ptr;
 
   std::shared_ptr<gva::WidgetDriverSpeedometer> speed = std::static_pointer_cast<gva::WidgetDriverSpeedometer>(
       widget_list->at(widget::WidgetEnum::kWidgetTypeDialSpeedometer));
@@ -103,7 +103,7 @@ void *Updater::WidgetUpdaterThread(void *ptr) {
 
     speed->SetValue(GenerateSineWave(count));
     rpm->SetValue(GenerateSineWave(count) * 90);
-    usleep(1000000);
+    nanosleep((const struct timespec[]){{0, 100000000L}}, NULL);
     count++;
   }
   return nullptr;

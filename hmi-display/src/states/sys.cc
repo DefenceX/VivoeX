@@ -81,8 +81,7 @@ void StateSYS::entry() {
     manager_->SetScreen(&screen_, GvaFunctionEnum::kSystems);
     lastState_ = GvaFunctionEnum::kSystems;
     screen_.function_top->SetEnabled(3);
-
-    screen_.status_bar->labels[3].state = LabelStates::kLabelEnabledSelected;
+    screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeStatusBar)->SetVisible(true);
     screen_.function_top->labels[3].state = LabelStates::kLabelEnabledSelected;
 
     HmiHelper::TableSystem(table);

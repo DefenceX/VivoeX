@@ -18,69 +18,81 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 ///
-/// \file speedometer.h
+/// \file status_bar.h
 ///
-#ifndef HMI_DISPLAY_SRC_WIDGETS_DRIVER_SPEEDOMETER_H_
-#define HMI_DISPLAY_SRC_WIDGETS_DRIVER_SPEEDOMETER_H_
 
-#include <cstdint>
+#ifndef HMI_DISPLAY_SRC_WIDGETS_TABLE_STATUS_BAR_H_
+#define HMI_DISPLAY_SRC_WIDGETS_TABLE_STATUS_BAR_H_
 
-#include "src/renderer_cairo_types.h"
+#include <stdint.h>
+
+#include "src/widgets/table/table.h"
 #include "src/widgets/widget.h"
+#include "src/widgets/widget_types.h"
 
 namespace gva {
 
-class WidgetDriverSpeedometer : public WidgetX {
+///
+/// \brief A widget representing a table of elements
+///
+///
+class WidgetStatusBar : public WidgetTable {
  public:
   ///
-  /// \brief Construct a new Widget Plan Position Indicator object
+  /// \brief Construct a new Widget Keyboard object
   ///
   /// \param renderer
   ///
-  explicit WidgetDriverSpeedometer(const RendererGva& renderer);
+  explicit WidgetStatusBar(const RendererGva &renderer, TouchGva *touch);
+
+  ///
+  /// \brief Destroy the Widget Keyboard object
+  ///
+  ///
+  ~WidgetStatusBar() final = default;
 
   ///
   /// \brief Get the Widget Name attribute
   ///
   /// \return std::string
   ///
-  std::string GetWidgetName() const final { return "WidgetDriverSpeedometer"; };
+  std::string GetWidgetName() const final { return "StatusBar"; }
 
   ///
-  /// \brief The base overloaded Draw fuctions to draw this widget type
+  /// \brief The base class override to draw the table once setup
   ///
   ///
-  void Draw() final;
+  void Draw() override;
 
   ///
-  /// \brief Set the ValueS
+  /// \brief Update the system clock
   ///
-  /// \param bearing
+  /// \param clock_string as text
   ///
-  void SetValue(int16_t value) { value_ = value; }
+  void UpdateClock(std::string clock_string);
 
   ///
-  /// \brief Get the Value
+  /// \brief  Update the location
   ///
-  /// \return int16_t
+  /// \param location_format as text
+  /// \param location_string as text
   ///
-  int16_t GetValue() const { return value_; }
-
-  ///
-  /// \brief Set the Mode object
-  ///
-  /// \param mode
-  ///
-  void SetMode(widget::DialType mode) { mode_ = mode; }
+  void UpdateLocation(std::string location_format, std::string location_string);
 
  private:
-  const double scale_ = 0.5;
-  int16_t value_ = 0;
-  bool indicator_left_ = false;
-  bool indicator_right_ = false;
-  widget::DialType mode_ = widget::DialType::kDialSpeedKph;
+  uint16_t warnings_ = 0;
+  uint16_t cautions_ = 0;
+  uint16_t advisories_ = 0;
+  uint16_t overrides_ = 0;
+
+  LocationType location_;
+  struct Labels {
+    LabelStates state;
+    std::string text;
+  };
+  std::array<Labels, 7> labels_;
 };
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_WIDGETS_DRIVER_SPEEDOMETER_H_
+#endif  // HMI_DISPLAY_SRC_WIDGETS_TABLE_STATUS_BAR_H_

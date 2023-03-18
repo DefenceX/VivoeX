@@ -45,6 +45,13 @@ class WidgetX {
   explicit WidgetX(const RendererGva& renderer, widget::WidgetEnum widget_type);
 
   ///
+  /// \brief Get the Widget Name attribute
+  ///
+  /// \return std::string the widget name
+  ///
+  virtual std::string GetWidgetName() const { return "WidgetUnnamed"; };
+
+  ///
   /// \brief Set the Visible object
   ///
   /// \param visible

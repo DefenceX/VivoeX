@@ -72,24 +72,6 @@ FunctionSelect DefaultSettings::GetDefaultFunctionSelect() {
   return function_select;
 }
 
-StatusBar DefaultSettings::GetDefaultStatusBar() {
-  StatusBar status_bar;
-  status_bar.visible = true;
-  status_bar.x = kMinimumHeight - 11;
-  status_bar.y = 0;
-  status_bar.location.locationFormat = LocationEnum::kLocationFormatMgrs;
-  status_bar.location.lon = (float)gva::ConfigData::GetInstance()->GetTestLon();
-  status_bar.location.lat = (float)gva::ConfigData::GetInstance()->GetTestLat();
-  status_bar.labels[0].text = "00:00:00 01/01/1973";
-  status_bar.labels[1].text = "Norm.";
-  status_bar.labels[2].text = "Lat:0.000000 Lon:-0.000000";
-  status_bar.labels[3].text = "W:0";
-  status_bar.labels[4].text = "A:5";
-  status_bar.labels[5].text = "C:1";
-  status_bar.labels[6].text = "O:2";
-  return status_bar;
-}
-
 Canvas DefaultSettings::GetDefaultCanvas() {
   Canvas canvas;
   canvas.visible = true;

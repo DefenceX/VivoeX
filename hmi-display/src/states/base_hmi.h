@@ -74,7 +74,6 @@ struct Hmi : tinyfsm::Fsm<Hmi> {
  protected:
   static std::shared_ptr<ViewGvaManager> manager_;
   static ResolutionType view_;
-  static StatusBar status_;
   static FunctionSelect top_;
   static CommonTaskKeys bottom_;
   static Canvas canvas_;

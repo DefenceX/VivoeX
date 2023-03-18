@@ -53,6 +53,13 @@ class WidgetPlanPositionIndicator : public WidgetX {
   explicit WidgetPlanPositionIndicator(const RendererGva& renderer);
 
   ///
+  /// \brief Get the Widget Name attribute
+  ///
+  /// \return std::string
+  ///
+  std::string GetWidgetName() const final { return "WidgetPlanPositionIndicator"; };
+
+  ///
   /// \brief The base overloaded Draw fuctions to draw this widget type
   ///
   ///

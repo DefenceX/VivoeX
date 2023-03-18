@@ -17,70 +17,49 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+/// \brief Manage the touch screen events
 ///
-/// \file speedometer.h
+/// \file trace.h
 ///
-#ifndef HMI_DISPLAY_SRC_WIDGETS_DRIVER_SPEEDOMETER_H_
-#define HMI_DISPLAY_SRC_WIDGETS_DRIVER_SPEEDOMETER_H_
 
-#include <cstdint>
+#ifndef HMI_DISPLAY_UPDATER_UPDATER_H_
+#define HMI_DISPLAY_UPDATER_UPDATER_H_
 
-#include "src/renderer_cairo_types.h"
+#include <string>
+
 #include "src/widgets/widget.h"
 
 namespace gva {
 
-class WidgetDriverSpeedometer : public WidgetX {
+class UpdaterBase {
  public:
   ///
-  /// \brief Construct a new Widget Plan Position Indicator object
+  /// \brief Construct a new Updater object
   ///
-  /// \param renderer
+  /// \param id The HMI identity, will only get updates for this ID.
   ///
-  explicit WidgetDriverSpeedometer(const RendererGva& renderer);
+  UpdaterBase(uint64_t id) : id_(id){};
+
+  virtual ~UpdaterBase() = default;
 
   ///
-  /// \brief Get the Widget Name attribute
+  /// \brief Update the HMI state
   ///
-  /// \return std::string
+  /// \param state The new state
   ///
-  std::string GetWidgetName() const final { return "WidgetDriverSpeedometer"; };
+  virtual void UpdateState(std::string state) = 0;
 
   ///
-  /// \brief The base overloaded Draw fuctions to draw this widget type
+  /// \brief Process at HMI event
   ///
+  /// \param event
   ///
-  void Draw() final;
-
-  ///
-  /// \brief Set the ValueS
-  ///
-  /// \param bearing
-  ///
-  void SetValue(int16_t value) { value_ = value; }
-
-  ///
-  /// \brief Get the Value
-  ///
-  /// \return int16_t
-  ///
-  int16_t GetValue() const { return value_; }
-
-  ///
-  /// \brief Set the Mode object
-  ///
-  /// \param mode
-  ///
-  void SetMode(widget::DialType mode) { mode_ = mode; }
+  virtual void Event(std::string event) = 0;
 
  private:
-  const double scale_ = 0.5;
-  int16_t value_ = 0;
-  bool indicator_left_ = false;
-  bool indicator_right_ = false;
-  widget::DialType mode_ = widget::DialType::kDialSpeedKph;
+  uint64_t id_;
 };
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_WIDGETS_DRIVER_SPEEDOMETER_H_
+#endif  // HMI_DISPLAY_UPDATER_UPDATER_H_

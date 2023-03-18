@@ -46,13 +46,20 @@ class WidgetTable : public WidgetX {
   ///
   /// \param renderer
   ///
-  explicit WidgetTable(const RendererGva &renderer, TouchGva *touch, uint32_t background_colour);
+  explicit WidgetTable(const RendererGva &renderer, TouchGva *touch, uint32_t background_colour = 0x000000);
 
   ///
   /// \brief Destroy the Widget Keyboard object
   ///
   ///
   ~WidgetTable() override = default;
+
+  ///
+  /// \brief Get the Widget Name attribute
+  ///
+  /// \return std::string
+  ///
+  std::string GetWidgetName() const override { return "WidgetTable"; };
 
   ///
   /// \brief The base class override to draw the table once setup

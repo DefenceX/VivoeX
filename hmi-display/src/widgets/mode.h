@@ -49,6 +49,13 @@ class WidgetMode : public WidgetX {
   ~WidgetMode() final = default;
 
   ///
+  /// \brief Get the Widget Name attribute
+  ///
+  /// \return std::string
+  ///
+  std::string GetWidgetName() const final { return "WidgetMode"; };
+
+  ///
   /// \brief Draw the current widget
   ///
   ///

@@ -35,7 +35,7 @@ void StateOn::entry() {
   /* 4:3 aspect ratio @ lowest resolution */
   view_ = {kMinimumWidth, kMinimumHeight, 24};
 
-  if (!manager_) manager_ = std::make_shared<ViewGvaManager>(&status_);
+  if (!manager_) manager_ = std::make_shared<ViewGvaManager>();
 
   if (!std::filesystem::is_directory(ConfigData::GetInstance()->GetMapPath())) {
     LOG(ERROR) << "Could not find map data " << ConfigData::GetInstance()->GetMapPath();
@@ -51,7 +51,6 @@ void StateOn::entry() {
   }
   top_ = DefaultSettings::GetDefaultFunctionSelect();
   bottom_ = DefaultSettings::GetDefaultCommonTaskKeys();
-  status_ = DefaultSettings::GetDefaultStatusBar();
   canvas_ = DefaultSettings::GetDefaultCanvas();
   screen_ = DefaultSettings::GetDefaultScreen();
 

@@ -60,7 +60,7 @@ void StateDEF::entry() {
     manager_->SetScreen(&screen_, GvaFunctionEnum::kDefensiveSystems);
     Reset();
     screen_.function_top->SetEnabled(2);
-    screen_.status_bar->visible = true;
+    screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeStatusBar)->SetVisible(true);
     screen_.function_top->visible = true;
     screen_.function_top->labels[2].state = LabelStates::kLabelEnabledSelected;
   }
