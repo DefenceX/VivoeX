@@ -68,10 +68,17 @@ class WidgetBottomLabels : public WidgetX {
   ///
   void SetLabels(std::array<CommonTaskKeys::Labels, 8>* labels);
 
+  ///
+  /// \brief Enable a label
+  ///
+  /// \param key
+  ///
+  void EnableLabel(GvaKeyEnum key);
+
  private:
   void DrawControlLabels();
   ConfigData* config_ = nullptr;
-  std::array<CommonTaskKeys::Labels, 8>* labels_;
+  std::array<CommonTaskKeys::Labels, 8> labels_;
   TouchGva* touch_;
 };
 

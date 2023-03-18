@@ -304,7 +304,6 @@ struct LocationType {
   float lon;
 };
 
-
 enum class SurfaceType { kSurfaceNone = 0, kSurfaceFile, kSurfaceBufferRgb24, kSurfaceCairo };
 
 ///

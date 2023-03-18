@@ -108,9 +108,6 @@ void StateOn::entry() {
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeAlarmIndicator)->SetY(58);
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeBottomLabels)->SetY(480 - 20);
 
-  // As there is an alarm set the Ack control to enabled
-  screen_.control->ForceEnabledSelected(3);
-
   screen_.canvas = canvas_;
   screen_.canvas.visible = true;
   screen_.labels = LabelModeEnum::kLabelAll;

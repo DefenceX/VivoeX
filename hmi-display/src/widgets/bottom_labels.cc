@@ -54,7 +54,7 @@ void WidgetBottomLabels::DrawControlLabels() {
   GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightNormal,
                              config_->GetThemeFont(), 12);
 
-  for (auto label : *labels_) {
+  for (auto label : labels_) {
     if (label.state_ != LabelStates::kLabelHidden) {
       SetStateLabel(label.state_);
 
@@ -87,6 +87,37 @@ void WidgetBottomLabels::DrawControlLabels() {
   }
 }
 
-void WidgetBottomLabels::SetLabels(std::array<CommonTaskKeys::Labels, 8>* labels) { labels_ = labels; };
+void WidgetBottomLabels::SetLabels(std::array<CommonTaskKeys::Labels, 8>* labels) { labels_ = *labels; };
+
+void WidgetBottomLabels::EnableLabel(GvaKeyEnum key) {
+  switch (key) {
+    case GvaKeyEnum::kKeyF13:  // Up
+      labels_[0].state_ = LabelStates::kLabelEnabled;
+      break;
+    case GvaKeyEnum::kKeyF14:  // Alarms
+      labels_[1].state_ = LabelStates::kLabelEnabled;
+      break;
+    case GvaKeyEnum::kKeyF15:  // Threats
+      labels_[2].state_ = LabelStates::kLabelEnabled;
+      break;
+    case GvaKeyEnum::kKeyF16:  // Ack
+      labels_[3].state_ = LabelStates::kLabelEnabled;
+      break;
+    case GvaKeyEnum::kKeyF17:  // Up
+      labels_[4].state_ = LabelStates::kLabelEnabled;
+      break;
+    case GvaKeyEnum::kKeyF18:  // Down
+      labels_[5].state_ = LabelStates::kLabelEnabled;
+      break;
+    case GvaKeyEnum::kKeyF19:  // Labels
+      labels_[6].state_ = LabelStates::kLabelEnabled;
+      break;
+    case GvaKeyEnum::kKeyF20:  // Enter
+      labels_[7].state_ = LabelStates::kLabelEnabled;
+      break;
+    default:  // Enter
+      break;
+  }
+}
 
 }  // namespace gva

@@ -31,6 +31,7 @@
 #include "src/hardware/audio.h"
 #include "src/widgets/ai/object_localisation.h"
 #include "src/widgets/alarm_indicator.h"
+#include "src/widgets/bottom_labels.h"
 #include "src/widgets/driver/rpm_fuel.h"
 #include "src/widgets/driver/speedometer.h"
 #include "src/widgets/plan_position_indicator.h"
@@ -91,6 +92,9 @@ void *Updater::WidgetUpdaterThread(void *ptr) {
   std::shared_ptr<gva::WidgetAlarmIndicator> alarm_indicator = std::static_pointer_cast<gva::WidgetAlarmIndicator>(
       widget_list->at(widget::WidgetEnum::KWidgetTypeAlarmIndicator));
 
+  std::shared_ptr<gva::WidgetBottomLabels> bottom =
+      std::static_pointer_cast<gva::WidgetBottomLabels>(widget_list->at(widget::WidgetEnum::KWidgetTypeBottomLabels));
+
   alarm_indicator->SetType(GvaAlarmType::kAlarmCaution);
   alarm_indicator->SetText("Engine over temperature");
 
@@ -116,6 +120,8 @@ void *Updater::WidgetUpdaterThread(void *ptr) {
 
     if (count == 50) {
       alarm_indicator->SetVisible(true);
+      // As there is an alarm set the Ack control to enabled
+      bottom->EnableLabel(GvaKeyEnum::kKeyF16);
       audio.PlayCaution();
     }
     count++;
