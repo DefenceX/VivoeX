@@ -33,17 +33,56 @@ namespace gva {
 
 class AudioFunctions {
  public:
-  typedef struct {
+  struct CallbackData {
     SNDFILE *file;
     SF_INFO info;
-  } callback_data_s;
+  };
 
-  static int callback(const void *input, void *output, unsigned long frameCount,
+  ///
+  /// \brief Construct a new Audio Functions object
+  ///
+  ///
+  AudioFunctions();
+
+  ///
+  /// \brief Portaudio callback for simple audio
+  ///
+  /// \param input
+  /// \param output
+  /// \param frameCount
+  /// \param timeInfo
+  /// \param statusFlags
+  /// \param userData
+  /// \return int
+  ///
+  static int Callback(const void *input, void *output, unsigned long frameCount,
                       const PaStreamCallbackTimeInfo *timeInfo, PaStreamCallbackFlags statusFlags, void *userData);
-  int Play(std::string filename);
-  void PlayThreat();
-  void PlayCaution();
-  void PlayWarning();
+
+  ///
+  /// \brief Play a given file
+  ///
+  /// \param filename
+  /// \return int
+  ///
+  int Play(std::string_view filename) const;
+
+  ///
+  /// \brief Play threat tone
+  ///
+  ///
+  void PlayThreat() const;
+
+  ///
+  /// \brief Play Caution tone
+  ///
+  ///
+  void PlayCaution() const;
+
+  ///
+  /// \brief Play Warning
+  ///
+  ///
+  void PlayWarning() const;
 };
 
 }  // namespace gva

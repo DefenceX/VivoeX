@@ -25,29 +25,38 @@
 #include "src/hardware/audio.h"
 
 #include <glog/logging.h>
-#define BUFFER_SIZE 8192
 
 namespace gva {
 
 #define FRAMES_PER_BUFFER (512)
 
-int AudioFunctions::callback(const void *input, void *output, unsigned long frameCount,
-                             const PaStreamCallbackTimeInfo *timeInfo, PaStreamCallbackFlags statusFlags,
-                             void *userData) {
+AudioFunctions::AudioFunctions() {
+  PaError error;
+
+  // init portaudio
+  error = Pa_Initialize();
+  if (error != paNoError) {
+    LOG(ERROR) << "Problem initializing";
+  }
+}
+
+int AudioFunctions::Callback(const void *input [[maybe_unused]], void *output, unsigned long frameCount,
+                             const PaStreamCallbackTimeInfo *timeInfo [[maybe_unused]],
+                             PaStreamCallbackFlags statusFlags [[maybe_unused]], void *userData) {
   float *out;
-  callback_data_s *p_data = (callback_data_s *)userData;
+  auto *p_data = (CallbackData *)userData;
   sf_count_t num_read;
 
   out = (float *)output;
-  p_data = (callback_data_s *)userData;
+  p_data = (CallbackData *)userData;
 
-  /* clear output buffer */
+  // clear output buffer */
   memset(out, 0, sizeof(float) * frameCount * p_data->info.channels);
 
-  /* read directly into output buffer */
+  // read directly into output buffer
   num_read = sf_read_float(p_data->file, out, frameCount * p_data->info.channels);
 
-  /*  If we couldn't read a full frameCount of samples we've reached EOF */
+  //  If we couldn't read a full frameCount of samples we've reached EOF
   if (num_read < (int)frameCount) {
     return paComplete;
   }
@@ -55,67 +64,57 @@ int AudioFunctions::callback(const void *input, void *output, unsigned long fram
   return paContinue;
 }
 
-void AudioFunctions::PlayThreat() { Play("/opt/gva/hmi/threat.wav"); }
-void AudioFunctions::PlayCaution() { Play("/opt/gva/hmi/caution.wav"); }
-void AudioFunctions::PlayWarning() { Play("/opt/gva/hmi/warning.wav"); }
+void AudioFunctions::PlayThreat() const { Play("/opt/gva/hmi/threat.wav"); }
+void AudioFunctions::PlayCaution()  const{ Play("/opt/gva/hmi/caution.wav"); }
+void AudioFunctions::PlayWarning() const{ Play("/opt/gva/hmi/warning.wav"); }
 
-int AudioFunctions::Play(std::string filename) {
+int AudioFunctions::Play(std::string_view filename) const {
   PaStream *stream;
+  CallbackData data;
   PaError error;
-  callback_data_s data;
 
-  /* Open the soundfile */
-  data.file = sf_open(filename.c_str(), SFM_READ, &data.info);
+  // Open the sound file
+  data.file = sf_open(std::string(filename).c_str(), SFM_READ, &data.info);
   if (sf_error(data.file) != SF_ERR_NO_ERROR) {
-    fprintf(stderr, "%s\n", sf_strerror(data.file));
+    LOG(ERROR) << sf_strerror(data.file);
     return 1;
   }
 
-  /* init portaudio */
-  error = Pa_Initialize();
+  // Open PaStream with values read from the file
+  error = Pa_OpenDefaultStream(&stream, 0,                                                 // no input
+                               data.info.channels,                                         // stereo out
+                               paFloat32,                                                  // floating point
+                               data.info.samplerate, FRAMES_PER_BUFFER, Callback, &data);  // our sndfile data struct
   if (error != paNoError) {
-    fprintf(stderr, "Problem initializing\n");
+    LOG(ERROR) << "Problem opening Default Stream";
     return 1;
   }
 
-  /* Open PaStream with values read from the file */
-  error = Pa_OpenDefaultStream(&stream, 0 /* no input */
-                               ,
-                               data.info.channels /* stereo out */
-                               ,
-                               paFloat32 /* floating point */
-                               ,
-                               data.info.samplerate, FRAMES_PER_BUFFER, callback, &data); /* our sndfile data struct */
-  if (error != paNoError) {
-    fprintf(stderr, "Problem opening Default Stream\n");
-    return 1;
-  }
-
-  /* Start the stream */
+  // Start the stream
   error = Pa_StartStream(stream);
   if (error != paNoError) {
-    fprintf(stderr, "Problem opening starting Stream\n");
+    LOG(ERROR) << "Problem opening starting Stream";
     return 1;
   }
 
-  /* Run until EOF is reached */
+  // Run until EOF is reached
   while (Pa_IsStreamActive(stream)) {
     Pa_Sleep(100);
   }
 
-  /* Close the soundfile */
+  // Close the soundfile
   sf_close(data.file);
 
-  /*  Shut down portaudio */
+  //  Shut down portaudio
   error = Pa_CloseStream(stream);
   if (error != paNoError) {
-    fprintf(stderr, "Problem closing stream\n");
+    LOG(ERROR) << "Problem closing stream";
     return 1;
   }
 
   error = Pa_Terminate();
   if (error != paNoError) {
-    fprintf(stderr, "Problem terminating\n");
+    LOG(ERROR) << "Problem terminating";
     return 1;
   }
 
