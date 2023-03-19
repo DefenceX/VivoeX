@@ -56,7 +56,7 @@ set(SOURCES main.cc
 
 link_libraries(-lstdc++fs)
 add_executable(hmi-display ${SOURCES})
-add_dependencies(hmi-display widgets hmi-updater libglog libprotobuf googletest libosmscout geographiclib hmi-video config-proto ${DDS_STACK} libosmscout)
+add_dependencies(hmi-display widgets hmi-updater portaudio libglog libprotobuf googletest libosmscout geographiclib hmi-video config-proto ${DDS_STACK} libosmscout)
 
 link_directories( ${NMEA_LIBRARY_DIR} ${CMAKE_BINARY_DIR}/external/libnmea/src/lib )
 target_link_libraries(hmi-display
@@ -66,10 +66,9 @@ target_link_libraries(hmi-display
 	hmi-video 
 	vivoe-media 
 	nmea 
-	portaudio.a
+	${PORTAUDIO_LIBRARIES}
 	portaudiocpp.a
-	asound
-	sndfile
+	${SNDFILE_LIBRARIES}
 	pthread 
 	glog 
 	widgets 
@@ -100,6 +99,9 @@ if (MSYS)
 		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/libosmscout/lib"
 		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/nmea/lib"
 		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/GeographicLib/lib64"
+		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/GeographicLib/lib64"
+		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/portaudio"
+		"${CMAKE_BINARY_DIR}/external/install/mingw64/lib"
 	)
 	target_link_libraries(hmi-display shlwapi)
 else()
@@ -126,6 +128,7 @@ target_include_directories(hmi-display PUBLIC
     ${PANGO_INCLUDE_DIRS}
     ${SWSCALE_INCLUDE_DIRS}
     ${GTK3_INCLUDE_DIRS}
+    ${PORTAUDIO_INCLUDE_DIR}
     common 
     dds 
     dds/location 

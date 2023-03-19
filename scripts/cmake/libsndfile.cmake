@@ -19,3 +19,9 @@ ExternalProject_Add(
     INSTALL_COMMAND     make DESTDIR=${CMAKE_BINARY_DIR}/external/install install 
     UPDATE_DISCONNECTED 1
 )
+
+if (MSYS)
+    set(SNDFILE_LIBRARIES sndfile.dll.a)
+else()
+    set(SNDFILE_LIBRARIES sndfile.a)  
+endif()

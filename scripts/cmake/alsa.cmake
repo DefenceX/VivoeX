@@ -1,3 +1,4 @@
+if (NOT MSYS)
 include(ExternalProject)
 
 message (STATUS "Added alsa to external submodules")
@@ -17,7 +18,8 @@ ExternalProject_Add(
     DOWNLOAD_DIR        ${CMAKE_BINARY_DIR}/external/alsa/download
     SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/alsa/src
     BUILD_IN_SOURCE     TRUE
-    CONFIGURE_COMMAND   ./gitcompile
+    CONFIGURE_COMMAND   libtoolize --force --copy --automake && aclocal && autoheader && automake --foreign --copy --add-missing && autoconf && ./configure --disable-aload --disable-mixer --disable-rawmidi --disable-hwdep --disable-seq --disable-ucm --disable-topology --disable-maintainer-mode --disable-python --disable-old-symbols 
     INSTALL_COMMAND     make DESTDIR=${CMAKE_BINARY_DIR}/external/install install 
     UPDATE_DISCONNECTED 1
 )
+endif()

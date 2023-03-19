@@ -72,9 +72,15 @@ int AudioFunctions::Callback(const void *input [[maybe_unused]], void *output, u
   return paContinue;
 }
 
+#if __MINGW64__ || __MINGW32__
+void AudioFunctions::PlayThreat() const { Play("../sounds/threat.wav"); }
+void AudioFunctions::PlayCaution() const { Play("../sounds/caution.wav"); }
+void AudioFunctions::PlayWarning() const { Play("../sounds/warning.wav"); }
+#else
 void AudioFunctions::PlayThreat() const { Play("/opt/gva/hmi/sounds/threat.wav"); }
 void AudioFunctions::PlayCaution() const { Play("/opt/gva/hmi/sounds/caution.wav"); }
 void AudioFunctions::PlayWarning() const { Play("/opt/gva/hmi/sounds/warning.wav"); }
+#endif
 
 int AudioFunctions::Play(std::string_view filename) const {
   PaStream *stream;

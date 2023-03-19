@@ -14,6 +14,8 @@ install(FILES "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/glog/bin
 # install(FILES "${CMAKE_SOURCE_DIR}/scripts/Vivoe Lite.lnk" DESTINATION $ENV{USERPROFILE}/Desktop)
 ## MSYS libs now
 install(FILES 
+    "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/portaudio/bin/libportaudio.dll"
+    ${CMAKE_BINARY_DIR}/external/install/mingw64/bin/libsndfile-1.dll
     C:/msys64/mingw64/bin/libcairo-2.dll
     C:/msys64/mingw64/bin/libgcc_s_seh-1.dll
     C:/msys64/mingw64/bin/libgtk-3-0.dll
@@ -68,6 +70,14 @@ install(FILES
     ${AU_IMAGE_PATH}/Quad.png 
     DESTINATION images
     COMPONENT aus_imagry)
+
+# Audio files
+install(FILES  
+    ${CMAKE_SOURCE_DIR}/hmi-display/sounds/caution.wav
+    ${CMAKE_SOURCE_DIR}/hmi-display/sounds/threat.wav
+    ${CMAKE_SOURCE_DIR}/hmi-display/sounds/warning.wav
+    DESTINATION sounds)
+
 # All other images
 install(FILES  
     ${CMAKE_SOURCE_DIR}/images/screen/DefenceX.png 
