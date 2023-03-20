@@ -13,6 +13,7 @@ target_include_directories(hmi-updater BEFORE PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/.. 
     ${CMAKE_BINARY_DIR}/hmi-display/config
     ${PORTAUDIO_INCLUDE_DIR}
+    ${SNDFILE_LIBRARY_DIR}
 )
 
 add_dependencies(hmi-updater portaudio)

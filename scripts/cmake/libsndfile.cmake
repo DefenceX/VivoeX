@@ -23,5 +23,6 @@ ExternalProject_Add(
 if (MSYS)
     set(SNDFILE_LIBRARIES sndfile.dll.a)
 else()
-    set(SNDFILE_LIBRARIES sndfile.a)  
+    set(SNDFILE_LIBRARIES sndfile)  
+    set(SNDFILE_LIBRARY_DIR ${CMAKE_BINARY_DIR}/external/install/usr/local/lib)
 endif()

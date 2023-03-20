@@ -113,6 +113,7 @@ else()
 		${NMEA_LIBRARY_DIR}
 		${CMAKE_BINARY_DIR}/external/libnmea/src/lib/
 		${CMAKE_BINARY_DIR}/external/install/usr/local/lib
+		${SNDFILE_LIBRARY_DIR}
 	)
 endif()
 
@@ -135,6 +136,6 @@ target_include_directories(hmi-display PUBLIC
     display)
 	
 target_compile_options(hmi-display PUBLIC ${CAIRO_CFLAGS_OTHER} ${GTK3_CFLAGS_OTHER})
-set_target_properties(hmi-display PROPERTIES UNITY_BUILD OFF)
+set_target_properties(hmi-display PROPERTIES UNITY_BUILD ON)
 
 
