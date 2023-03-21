@@ -168,14 +168,20 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
       break;
     case widget::IconType::kIconWaterfallSight:
       SetLineThickness(1, LineType::kLineSolid, LineCapEnd::kLineCapSquare);
-      for (int ii = 0; ii < 4; ii++) {
-        for (int i = 0; i < 4; i++) {
-          int step = i * 10;
-          if (i >= 2) step += 10;
-          int step2 = ii * 10;
-          MovePenRaw(-17 + step, 15 - step2);
-          DrawPenRaw(-22 + step, 15 - step2);
+      {
+        int step2 = 0;
+        for (int ii = 0; ii < 4; ii++) {
+          step2 += (10 * ii) * .5;
+          for (int i = 0; i < 4; i++) {
+            int step = i * 10;
+            if (i >= 2) step += 10;
+            MovePenRaw(-17 + step, 15 - step2);
+            DrawPenRaw(-22 + step, 15 - step2);
+          }
         }
+        SetLineThickness(1, LineType::kLineDashedMedium, LineCapEnd::kLineCapSquare);
+        MovePenRaw(0, -15);
+        DrawPenRaw(0, 23);
       }
       ClosePath(true);
       break;
