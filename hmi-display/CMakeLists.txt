@@ -136,6 +136,6 @@ target_include_directories(hmi-display PUBLIC
     display)
 	
 target_compile_options(hmi-display PUBLIC ${CAIRO_CFLAGS_OTHER} ${GTK3_CFLAGS_OTHER})
-set_target_properties(hmi-display PROPERTIES UNITY_BUILD ON)
+set_target_properties(hmi-display PROPERTIES UNITY_BUILD OFF)
 
 

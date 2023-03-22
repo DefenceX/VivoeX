@@ -402,60 +402,60 @@ class RendererCairo : public Renderer {
   uint32_t GetTextHeight(std::string_view str, uint32_t fontSize) const;
 
   ///
-  /// \brief
+  /// \brief Draw some text on the screen
   ///
-  /// \param x
-  /// \param y
+  /// \param x axis pixel postion
+  /// \param y axis pixel postion
   /// \param text
   ///
   void DrawText(uint32_t x, uint32_t y, std::string_view text);
 
   ///
-  /// \brief
+  /// \brief Draw an on screen label
   ///
-  /// \param x
-  /// \param y
+  /// \param x axis pixel postion
+  /// \param y axis pixel postion
   /// \param text
   ///
   void DrawLabel(uint32_t x, uint32_t y, std::string_view text);
 
   ///
-  /// \brief
+  /// \brief Draw some text on the screen and centre it
   ///
-  /// \param x
-  /// \param text
-  /// \param size
+  /// \param x axis pixel postion
+  /// \param text to draw
+  /// \param size of the text
   ///
   void DrawTextCentre(uint32_t x, std::string_view text, uint32_t size);
 
   ///
-  /// \brief
+  /// \brief Set a texture (file) to use as a bitmap
   ///
-  /// \param x
-  /// \param y
-  /// \param buffer
-  /// \param file
-  /// \return uint32_t
+  /// \param x axis pixel postion
+  /// \param y axis pixel postion
+  /// \param buffer to load the image into
+  /// \param file to load
+  /// \return uint32_t the texture id
   ///
   uint32_t TextureRGB(uint32_t x, uint32_t y, unsigned char *buffer, std::string_view file) override;
 
   ///
-  /// \brief
+  /// \brief Set a texture (file) to use as a bitmap
   ///
-  /// \param x
-  /// \param y
-  /// \param buffer
-  /// \return uint32_t
+  /// \param x axis pixel postion
+  /// \param y axis pixel postion
+  /// \param buffer to load the image into
+  /// \return uint32_t the texture id
   ///
   uint32_t TextureRGB(uint32_t x, uint32_t y, unsigned char *buffer);
 
   ///
-  /// \brief
+  /// \brief Set a texture (cairo surface) to use as a bitmap
   ///
-  /// \param x
-  /// \param y
-  /// \param surface
-  /// \return uint32_t
+  /// \param x axis pixel postion
+  /// \param y axis pixel postion
+  /// \param surface to load the image into
+  /// \return uint32_t the texture id
   ///
   uint32_t TextureRGB(uint32_t x, uint32_t y, cairo_surface_t *surface);
 

@@ -12,7 +12,7 @@ if (MSYS)
         GIT_REPOSITORY      https://github.com/PortAudio/portaudio
         GIT_SHALLOW         1
         GIT_TAG             v19.7.0
-        CMAKE_ARGS          -DCMAKE_INSTALL_MESSAGE=LAZY  -DCMAKE_BUILD_TYPE=Release -DPA_USE_DS=0 -DPA_USE_WDMKS=0 -DPA_USE_WDMKS_DEVICE_INFO=0 -DPA_USE_WMME=0
+        CMAKE_ARGS          -DCMAKE_INSTALL_MESSAGE=LAZY  -DCMAKE_BUILD_TYPE=Release -DPA_USE_DS=1 -DPA_USE_WDMKS=1 -DPA_USE_WDMKS_DEVICE_INFO=1 -DPA_USE_WMME=1 -DPA_USE_WASAPI=1
         PREFIX              ${CMAKE_BINARY_DIR}/external/portaudio/prefix
         TMP_DIR             ${CMAKE_BINARY_DIR}/external/portaudio/tmp
         STAMP_DIR           ${CMAKE_BINARY_DIR}/external/portaudio/stamp
