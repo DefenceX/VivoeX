@@ -43,6 +43,6 @@ else()
         UPDATE_DISCONNECTED 1
     )
     add_dependencies(portaudio libsndfile alsa)
-    set(PORTAUDIO_INCLUDE_DIR ${CMAKE_BINARY_DIR}/external/install/include)
-    set(PORTAUDIO_LIBRARIES asound portaudio)
+    set(PORTAUDIO_INCLUDE_DIR ${CMAKE_BINARY_DIR}/external/install/usr/local/include)
+    set(PORTAUDIO_LIBRARIES asound portaudio.a)
 endif()
