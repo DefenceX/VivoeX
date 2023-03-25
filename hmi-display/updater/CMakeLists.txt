@@ -16,4 +16,4 @@ target_include_directories(hmi-updater BEFORE PRIVATE
     ${SNDFILE_LIBRARY_DIR}
 )
 
-add_dependencies(hmi-updater portaudio config-proto)
+add_dependencies(hmi-updater portaudio config-proto libglog)
