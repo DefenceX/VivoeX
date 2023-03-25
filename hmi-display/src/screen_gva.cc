@@ -161,85 +161,97 @@ ScreenGva::~ScreenGva() {
   LOG(INFO) << "GVA screen finalized.";
 }
 
-void ClockUpdate(ClockArgs *a) {
-  // Get the system time and be thread safe
-  auto unix_epoch_time = (time_t) nullptr;
-  struct tm local_time;
-  unix_epoch_time = time(&unix_epoch_time);
-  localtime_r(&unix_epoch_time, &local_time);  // Compliant
-
-  char clock[1000];
-  snprintf(clock, sizeof(clock), "%02d/%02d/%02d %02d:%02d:%02d", local_time.tm_mday, local_time.tm_mon + 1,
-           local_time.tm_year + 1900, local_time.tm_hour, local_time.tm_min, local_time.tm_sec);
-  a->status_bar->UpdateClock(clock);
-
-#if (__MINGW64__ || __MINGW32__)
+void ScreenGva::GetLocalTime(std::tm& localTime) {
+  const auto now = std::time(nullptr);
+#ifdef _WIN32
+  localtime_s(&localTime, &now);
 #else
-  char c;
-  char tmp[kMaxNmea + 2] = {0};
-  uint32_t i = 0;
-  uint32_t ii = 0;
-  char buffer[kMaxNmea] = {0};
-
-  if (*a->gps > 0) {
-    i = 0;
-    tcflush(*a->gps, TCIOFLUSH);
-
-    if (auto size = read(*a->gps, &buffer[0], 1); size != 0) {
-      memset(buffer, 0, kMaxNmea);
-      while (buffer[0] != '$') {
-        auto size_read = read(*a->gps, &buffer[0], 1);
-        if (size_read == 0) break;
-      }
-      while (buffer[i++] != '\n') {
-        ii = (uint32_t)read(*a->gps, &c, 1);
-        if (ii == 1) {
-          buffer[i] = c;
-        }
-        if (i == kMaxNmea) break;
-      }
-      buffer[i - 1] = 0;
-      std::string tmp_buffer = buffer;
-      LOG(INFO) << "GPS NMEA " << tmp_buffer;
-    }
-
-    snprintf(tmp, sizeof(tmp), "%s\r\n", buffer);
-    a->info->lon = a->location.lon;
-    a->info->lat = a->location.lat;
-    nmea_parse(a->parser, tmp, sizeof(tmp), a->info);
-    a->info->lat = ToDegrees((float)a->info->lat);
-    a->info->lon = ToDegrees((float)a->info->lon);
-  }
+  localtime_r(&now, &localTime);
 #endif
+}
 
-  if ((a->info->lon != 0) && (a->info->lat != 0)) {
-    switch (a->location.locationFormat) {
-      case LocationEnum::kLocationFormatLongLat:
-        a->status_bar->UpdateLocationFormat("LON/LAT");
-        {
-          std::stringstream stream;
-          stream << std::fixed << std::setprecision(2) << "Lat:" << a->info->lat << " Lon:" << a->info->lon << " ["
-                 << a->info->sig << "]" << a->info->fix;
-          a->status_bar->UpdateLocation(stream.str());
-        }
-        break;
-      case LocationEnum::kLocationFormatMgrs: {
-        int zone;
-        bool northp;
-        double x;
-        double y;
-        GeographicLib::UTMUPS::Forward(a->info->lat, a->info->lon, zone, northp, x, y);
-        std::string mgrs;
-        GeographicLib::MGRS::Forward(zone, northp, x, y, a->info->lat, 5, mgrs);
-        a->status_bar->UpdateLocationFormat("MGRS");
-        a->status_bar->UpdateLocation(mgrs);
-      } break;
-    }
+void ScreenGva::UpdateClock(std::shared_ptr<WidgetStatusBar> statusBar) {
+  std::tm localTime;
+  GetLocalTime(localTime);
+
+  std::stringstream stream;
+  stream << std::put_time(&localTime, "%m/%d/%Y %H:%M:%S");
+
+  statusBar->UpdateClock(stream.str());
+}
+
+void ScreenGva::ParseGpsData(int* gpsFd, nmeaINFO* info,  nmeaPARSER* parser, const LocationType& location) {
+  if (gpsFd == nullptr || *gpsFd <= 0) {
+    return;
   }
+
+  std::array<char, kMaxNmea> buffer{};
+  auto bytesRead = read(*gpsFd, buffer.data(), buffer.size());
+  if (bytesRead <= 0) {
+    return;
+  }
+
+  auto start = std::find(buffer.begin(), buffer.end(), '$');
+  if (start == buffer.end()) {
+    return;
+  }
+
+  auto end = std::find(start, buffer.end(), '\n');
+  if (end == buffer.end()) {
+    return;
+  }
+
+  const std::string nmea(start, end);
+  LOG(INFO) << "GPS NMEA " << nmea;
+
+  const std::string tmp = nmea + "\r\n";
+  info->lon = location.lon;
+  info->lat = location.lat;
+  nmea_parse(parser, tmp.c_str(), tmp.size(), info);
+  info->lat = ToDegrees(static_cast<float>(info->lat));
+  info->lon = ToDegrees(static_cast<float>(info->lon));
+}
+
+void ScreenGva::UpdateLocation(std::shared_ptr<WidgetStatusBar> statusBar, const nmeaINFO& info, const LocationType& location) {
+  switch (location.locationFormat) {
+    case LocationEnum::kLocationFormatLongLat: {
+      std::stringstream stream;
+      stream << std::fixed << std::setprecision(2) << "Lat:" << info.lat << " Lon:" << info.lon << " [" << info.sig << "]"
+             << info.fix;
+      statusBar->UpdateLocationFormat("LON/LAT");
+      statusBar->UpdateLocation(stream.str());
+      break;
+    }
+    case LocationEnum::kLocationFormatMgrs: {
+      int zone;
+      bool northp;
+      double x;
+      double y;
+      GeographicLib::UTMUPS::Forward(info.lat, info.lon, zone, northp, x, y);
+      std::string mgrs;
+      GeographicLib::MGRS::Forward(zone, northp, x, y, info.lat, 5, mgrs);
+      statusBar->UpdateLocationFormat("MGRS");
+      statusBar->UpdateLocation(mgrs);
+      break;
+    }
+    default:
+      break;
+  }
+}
+
+void ScreenGva::ClockUpdate(ClockArgs* args) {
+  UpdateClock(args->status_bar);
+
+  ParseGpsData(args->gps, args->info, args->parser, args->location);
+
+  if (args->info->lon != 0 && args->info->lat != 0) {
+    UpdateLocation(args->status_bar, *args->info, args->location);
+  }
+
   gva::EventsGva::CreateRefreshEvent();
 }
 
-void *ClockUpdateThread(ClockArgs arg) {
+void* ScreenGva::ClockUpdateThread(ClockArgs arg) {
   while (arg.active) {
     ClockUpdate(&arg);
     struct timespec reqDelay = {1, 0};
