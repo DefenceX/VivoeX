@@ -67,7 +67,7 @@ target_link_libraries(hmi-display
 	vivoe-media 
 	nmea 
 	${PORTAUDIO_LIBRARIES}
-	portaudiocpp.a
+	# portaudiocpp.a
 	${SNDFILE_LIBRARIES}
 	pthread 
 	glog 
@@ -100,7 +100,7 @@ if (MSYS)
 		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/nmea/lib"
 		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/GeographicLib/lib64"
 		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/GeographicLib/lib64"
-		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/portaudio"
+		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/portaudio/lib"
 		"${CMAKE_BINARY_DIR}/external/install/mingw64/lib"
 	)
 	target_link_libraries(hmi-display shlwapi)
@@ -114,6 +114,7 @@ else()
 		${CMAKE_BINARY_DIR}/external/libnmea/src/lib/
 		${CMAKE_BINARY_DIR}/external/install/usr/local/lib
 		${SNDFILE_LIBRARY_DIR}
+		${PORTAUDIO_LIBRARY_DIR}
 	)
 endif()
 

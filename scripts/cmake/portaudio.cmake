@@ -23,8 +23,12 @@ if (MSYS)
         UPDATE_DISCONNECTED 1
     )
     add_dependencies(portaudio libsndfile)
-    set(PORTAUDIO_INCLUDE_DIR ${CMAKE_BINARY_DIR}/external/install/mingw64/include)
-    set(PORTAUDIO_LIBRARIES portaudio.dll.a)
+    set(PORTAUDIO_INCLUDE_DIR 
+        ${CMAKE_BINARY_DIR}/external/install/mingw64/include
+        "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/portaudio/include")
+    set(PORTAUDIO_LIBRARY_DIR
+        "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/portaudio/lib")
+    set(PORTAUDIO_LIBRARIES portaudio.a)
 else()
     ExternalProject_Add(
         portaudio
