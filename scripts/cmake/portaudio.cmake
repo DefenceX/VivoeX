@@ -42,7 +42,7 @@ else()
         DOWNLOAD_DIR        ${CMAKE_BINARY_DIR}/external/portaudio/download
         SOURCE_DIR          ${CMAKE_BINARY_DIR}/external/portaudio/src
         BUILD_IN_SOURCE     TRUE
-        CONFIGURE_COMMAND   ./configure --enable-cxx --enable-static
+        CONFIGURE_COMMAND   ./configure --enable-static 
         INSTALL_COMMAND     make DESTDIR=${CMAKE_BINARY_DIR}/external/install install 
         UPDATE_DISCONNECTED 1
     )
