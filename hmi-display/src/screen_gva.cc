@@ -154,7 +154,7 @@ ScreenGva::ScreenGva(std::shared_ptr<Updater> updater, Screen *screen, uint32_t 
 
 ScreenGva::~ScreenGva() {
   args_.active = false;
-  pthread_join(clock_thread_, nullptr);
+  clock_thread_.join();
   nmea_parser_destroy(&parser_);
   close(gps_);
   if (gps_) LOG(INFO) << "GPS closed";
@@ -239,11 +239,9 @@ void ClockUpdate(ClockArgs *a) {
   gva::EventsGva::CreateRefreshEvent();
 }
 
-void *ClockUpdateThread(void *arg) {
-  auto a = (ClockArgs *)arg;
-
-  while (a->active) {
-    ClockUpdate(a);
+void *ClockUpdateThread(ClockArgs arg) {
+  while (arg.active) {
+    ClockUpdate(&arg);
     struct timespec reqDelay = {1, 0};
     nanosleep(&reqDelay, (struct timespec *)nullptr);
   }  // End thread loop
@@ -263,12 +261,9 @@ void ScreenGva::StartClock(std::shared_ptr<WidgetX> status_bar_widget) {
   args_.info->lon = ConfigData::GetInstance()->GetTestLon();
   args_.info->lat = ConfigData::GetInstance()->GetTestLat();
 
-  /* Launch clock thread */
-  if (pthread_create(&clock_thread_, nullptr, ClockUpdateThread, (void *)&args_)) {
-    LOG(ERROR) << "Error creating thread";
-    return;
-  }
-  LOG(INFO) << "Clock thread started";
+  // Launch clock thread
+  clock_thread_ = std::thread(ClockUpdateThread, args_);
+  LOG(INFO) << "Created clock thread";
 }
 
 GvaStatusTypes ScreenGva::Update() {

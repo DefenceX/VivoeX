@@ -162,7 +162,7 @@ class ScreenGva : public RendererGva {
   int gps_ = 0;
   uint32_t hndl_;
   Screen last_screen_;
-  pthread_t clock_thread_;
+  std::thread clock_thread_;
   nmeaINFO info_;
   nmeaPARSER parser_;
   ConfigData *config_ = nullptr;

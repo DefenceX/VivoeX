@@ -40,8 +40,6 @@ namespace gva {
 
 Updater::Updater(uint64_t id) : UpdaterBase(id){};
 
-Updater::~Updater() { pthread_cancel(thread_); };
-
 void Updater::RegisterWidgets(std::unordered_map<widget::WidgetEnum, std::shared_ptr<WidgetX>> &widget_list) {
   std::shared_ptr<gva::WidgetPlanPositionIndicator> compass =
       std::static_pointer_cast<gva::WidgetPlanPositionIndicator>(widget_list[widget::WidgetEnum::KWidgetTypeCompass]);
@@ -51,7 +49,7 @@ void Updater::RegisterWidgets(std::unordered_map<widget::WidgetEnum, std::shared
 
   widget_list_ = &widget_list;
 
-  thread_id_ = pthread_create(&thread_, nullptr, Updater::WidgetUpdaterThread, (void *)widget_list_);
+  thread_ =  std::thread(Updater::WidgetUpdaterThread, (void *)widget_list_);
 }
 
 void Updater::UpdateState(std::string state) {}

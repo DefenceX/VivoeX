@@ -26,6 +26,7 @@
 #define HMI_DISPLAY_UPDATER_EXAMPLE_UPDATER_H_
 
 #include <string>
+#include <thread>
 
 #include "updater_base.h"
 
@@ -40,7 +41,7 @@ class Updater : public UpdaterBase {
   ///
   Updater(uint64_t id);
 
-  ~Updater();
+  ~Updater() = default;
 
   ///
   /// \brief Register the widgets to be updated
@@ -72,8 +73,7 @@ class Updater : public UpdaterBase {
 
  private:
   std::unordered_map<widget::WidgetEnum, std::shared_ptr<WidgetX>>* widget_list_ = nullptr;
-  int thread_id_ = 0;
-  pthread_t thread_ = 0;
+  std::thread thread_;
 
   ///
   /// \brief Generate a sine wave
