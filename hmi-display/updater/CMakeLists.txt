@@ -15,3 +15,5 @@ target_include_directories(hmi-updater BEFORE PRIVATE
     ${PORTAUDIO_INCLUDE_DIR}
     ${SNDFILE_LIBRARY_DIR}
 )
+
+add_dependencies(hmi-updater config-proto)
