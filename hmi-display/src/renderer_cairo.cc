@@ -190,6 +190,11 @@ void RendererCairo::Draw() {
         cairo_set_source_rgb(cr, IntToFloat(currentCmd.colour.red), IntToFloat(currentCmd.colour.green),
                              IntToFloat(currentCmd.colour.blue));
         break;
+      case DrawType::kCommandPenCurveTo:
+        cairo_curve_to(cr, currentCmd.height, currentCmd.width, currentCmd.arg1, currentCmd.arg2, currentCmd.arg3,
+                       currentCmd.arg4);
+        cairo_stroke(cr);
+        break;
       case DrawType::kCommandPenThickness:
         cairo_set_line_width(cr, (cairo_line_join_t)currentCmd.arg1);
         {
@@ -547,6 +552,19 @@ uint32_t RendererCairo::DrawColor(uint8_t r, uint8_t g, uint8_t b) {
   command.colour.red = r;
   command.colour.green = g;
   command.colour.blue = b;
+  draw_commands_.push_back(command);
+  return 0;
+}
+
+uint32_t RendererCairo::CurveTo(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint32_t x3, uint32_t y3) {
+  Command command;
+  command.command = DrawType::kCommandPenCurveTo;
+  command.height = x1;
+  command.width = y1;
+  command.arg1 = x2;
+  command.arg2 = y2;
+  command.arg3 = x3;
+  command.arg4 = y3;
   draw_commands_.push_back(command);
   return 0;
 }

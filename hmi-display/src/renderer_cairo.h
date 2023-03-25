@@ -355,6 +355,21 @@ class RendererCairo : public Renderer {
   uint32_t DrawColor(uint8_t r, uint8_t g, uint8_t b) override;
 
   ///
+  /// \brief Adds a cubic Bézier spline to the path from the current point to position (x3 , y3 ) in user-space
+  /// coordinates, using (x1 , y1 ) and (x2 , y2 ) as the control points. After this call the current point will be (x3
+  /// , y3 ).
+  ///
+  /// \param x1 first point of x in pixels
+  /// \param y1 first point of y in pixels
+  /// \param x2 second point of x in pixels
+  /// \param y2 second point of y in pixels
+  /// \param x3 third point of x in pixels
+  /// \param y3 third point of y in pixels
+  /// \return uint32_t
+  ///
+  uint32_t CurveTo(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint32_t x3, uint32_t y3);
+
+  ///
   /// \brief
   ///
   /// \param rgb

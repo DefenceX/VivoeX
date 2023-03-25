@@ -174,14 +174,23 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
           step2 += (10 * ii) * .5;
           for (int i = 0; i < 4; i++) {
             int step = i * 10;
-            if (i >= 2) step += 10;
-            MovePenRaw(-17 + step, 15 - step2);
-            DrawPenRaw(-22 + step, 15 - step2);
+            if (i >= 2) step += 5;
+            MovePenRaw(-20 + step, 15 - step2);
+            DrawPenRaw(-15 + step, 15 - step2);
           }
         }
+        ClosePath(true);
+        SetLineThickness(1, LineType::kLineSolid, LineCapEnd::kLineCapSquare);
+        MovePen(-5, 19);
+        DrawPenRaw(5, 19);
+        ClosePath(true);
         SetLineThickness(1, LineType::kLineDashedMedium, LineCapEnd::kLineCapSquare);
         MovePenRaw(0, -15);
         DrawPenRaw(0, 23);
+        MovePenRaw(20, 15);
+        CurveTo(0, 15, 4, 0, 2, -20);
+        MovePenRaw(-20, 15);
+        CurveTo(0, 15, -4, 0, -2, -20);
       }
       ClosePath(true);
       break;
