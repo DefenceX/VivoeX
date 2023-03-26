@@ -101,6 +101,7 @@ struct Hmi : tinyfsm::Fsm<Hmi> {
   static ScreenGva *GetRendrer() { return screen_render_.get(); }
   static Screen *GetScreen() { return &screen_; }
   static void Labels(LabelModeEnum labels);
+  static void ClearAlarms(std::shared_ptr<ScreenGva> screen_render);
 };
 
 }  // namespace gva

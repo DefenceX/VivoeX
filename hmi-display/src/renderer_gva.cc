@@ -171,10 +171,10 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
       {
         int step2 = 0;
         for (int ii = 0; ii < 4; ii++) {
-          step2 += (10 * ii) * .5;
+          step2 += int((10 * ii) * .5);
           for (int i = 0; i < 4; i++) {
             int step = i * 10;
-            if (i >= 2) step += 5;
+            (i >= 2) ? step += 5 : 0;
             MovePenRaw(-20 + step, 15 - step2);
             DrawPenRaw(-15 + step, 15 - step2);
           }
@@ -236,11 +236,11 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
   Restore();
 }
 
-void RendererGva::DrawButton(const std::string keyText, uint32_t fontSize, uint32_t x, uint32_t y, uint32_t size) {
+void RendererGva::DrawButton(const std::string &keyText, uint32_t fontSize, uint32_t x, uint32_t y, uint32_t size) {
   DrawButton(keyText, fontSize, x, y, size, size, widget::CellAlignType::kAlignLeft);
 }
 
-void RendererGva::DrawButton(const std::string keyText, uint32_t fontSize, uint32_t x, uint32_t y, uint32_t width,
+void RendererGva::DrawButton(const std::string &keyText, uint32_t fontSize, uint32_t x, uint32_t y, uint32_t width,
                              uint32_t height, widget::CellAlignType align) {
   uint32_t textX = 6;
 

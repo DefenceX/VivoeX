@@ -305,12 +305,7 @@ GvaKeyEnum Hmi::Key(GvaKeyEnum keypress) {
     case GvaKeyEnum::kKeyF16:  // Ack
       screen_.control->SetEnabledSelected(3);
       screen_.control->ResetAllEnabled();
-      {
-        // Clear alarms here till LDM
-        auto bottom =
-            (gva::WidgetBottomLabels *)(screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeBottomLabels));
-        bottom->DisableLabel(GvaKeyEnum::kKeyF16);
-      }
+      Hmi::ClearAlarms(screen_render_);
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeAlarmIndicator)->SetVisible(false);
       break;
     case GvaKeyEnum::kKeyF17:  // Up Arrow
@@ -346,6 +341,12 @@ GvaKeyEnum Hmi::Key(GvaKeyEnum keypress) {
       break;
   }
   return keypress;
+}
+
+void Hmi::ClearAlarms(std::shared_ptr<ScreenGva> screen_render) {
+  // Clear alarms here till LDM
+  auto bottom = (gva::WidgetBottomLabels *)(screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeBottomLabels));
+  bottom->DisableLabel(GvaKeyEnum::kKeyF16);
 }
 
 std::shared_ptr<ViewGvaManager> Hmi::manager_;

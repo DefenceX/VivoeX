@@ -120,7 +120,7 @@ class ScreenGva : public RendererGva {
   /// \param width
   /// \param height
   ///
-  ScreenGva(std::shared_ptr<Updater> updater, Screen *screen, uint32_t width, uint32_t height);
+  ScreenGva(Screen *screen, uint32_t width, uint32_t height);
 
   ScreenGva &operator=(const ScreenGva &a) = delete;
 
@@ -154,15 +154,9 @@ class ScreenGva : public RendererGva {
   ///
   WidgetX *GetWidget(widget::WidgetEnum widget);
 
-  static void* ClockUpdateThread(ClockArgs arg);
+  static void *ClockUpdateThread(ClockArgs arg);
 
  private:
-  static void ClockUpdate(ClockArgs* args);
-  static void GetLocalTime(std::tm& localTime);
-  static void UpdateClock(std::shared_ptr<WidgetStatusBar> statusBar);
-  static void ParseGpsData(int* gpsFd, nmeaINFO* info,  nmeaPARSER* parser, const LocationType& location);
-  static void UpdateLocation(std::shared_ptr<WidgetStatusBar> statusBar, const nmeaINFO& info, const LocationType& location);
-
   char *PosDegrees(float lon, float lat);
   Screen *screen_ = nullptr;
   std::unordered_map<widget::WidgetEnum, std::shared_ptr<WidgetX>> widget_list_;

@@ -38,6 +38,7 @@ set(SOURCES main.cc
 			src/renderer_cairo.cc 
 			src/renderer_gva.cc 
 			src/renderer_map.cc 
+			src/status_updater.cc 
 			src/screen_gva.cc 
 			src/states/alarms.cc
 			src/states/bms.cc

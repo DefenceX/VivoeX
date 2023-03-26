@@ -26,7 +26,9 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#if __MINGW64__ || __MINGW32__
+
+#include "src/status_updater.h"
+#if defined(_WIN32)
 struct termios {
   uint32_t dummy_struct = 0;
 };
@@ -37,8 +39,6 @@ struct termios {
 #include <time.h>
 #include <unistd.h>
 
-#include <GeographicLib/MGRS.hpp>
-#include <GeographicLib/UTMUPS.hpp>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
@@ -51,12 +51,11 @@ struct termios {
 #include "src/hmi_gva_helpers.h"
 #include "widgets/widgets.h"
 
-const int kMaxNmea = 1000;
-
 namespace gva {
-ScreenGva::ScreenGva(std::shared_ptr<Updater> updater, Screen *screen, uint32_t width, uint32_t height)
-    : RendererGva(width, height), screen_(screen), updater_(updater) {
+ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : RendererGva(width, height), screen_(screen) {
   struct termios settings;
+
+  updater_ = std::make_shared<Updater>(0);
 
   config_ = gva::ConfigData::GetInstance();
 
@@ -161,99 +160,10 @@ ScreenGva::~ScreenGva() {
   LOG(INFO) << "GVA screen finalized.";
 }
 
-void ScreenGva::GetLocalTime(std::tm& localTime) {
-  const auto now = std::time(nullptr);
-#ifdef _WIN32
-  localtime_s(&localTime, &now);
-#else
-  localtime_r(&now, &localTime);
-#endif
-}
-
-void ScreenGva::UpdateClock(std::shared_ptr<WidgetStatusBar> statusBar) {
-  std::tm localTime;
-  GetLocalTime(localTime);
-
-  std::stringstream stream;
-  stream << std::put_time(&localTime, "%m/%d/%Y %H:%M:%S");
-
-  statusBar->UpdateClock(stream.str());
-}
-
-void ScreenGva::ParseGpsData(int* gpsFd, nmeaINFO* info,  nmeaPARSER* parser, const LocationType& location) {
-  if (gpsFd == nullptr || *gpsFd <= 0) {
-    return;
-  }
-
-  std::array<char, kMaxNmea> buffer{};
-  auto bytesRead = read(*gpsFd, buffer.data(), buffer.size());
-  if (bytesRead <= 0) {
-    return;
-  }
-
-  auto start = std::find(buffer.begin(), buffer.end(), '$');
-  if (start == buffer.end()) {
-    return;
-  }
-
-  auto end = std::find(start, buffer.end(), '\n');
-  if (end == buffer.end()) {
-    return;
-  }
-
-  const std::string nmea(start, end);
-  LOG(INFO) << "GPS NMEA " << nmea;
-
-  const std::string tmp = nmea + "\r\n";
-  info->lon = location.lon;
-  info->lat = location.lat;
-  nmea_parse(parser, tmp.c_str(), tmp.size(), info);
-  info->lat = ToDegrees(static_cast<float>(info->lat));
-  info->lon = ToDegrees(static_cast<float>(info->lon));
-}
-
-void ScreenGva::UpdateLocation(std::shared_ptr<WidgetStatusBar> statusBar, const nmeaINFO& info, const LocationType& location) {
-  switch (location.locationFormat) {
-    case LocationEnum::kLocationFormatLongLat: {
-      std::stringstream stream;
-      stream << std::fixed << std::setprecision(2) << "Lat:" << info.lat << " Lon:" << info.lon << " [" << info.sig << "]"
-             << info.fix;
-      statusBar->UpdateLocationFormat("LON/LAT");
-      statusBar->UpdateLocation(stream.str());
-      break;
-    }
-    case LocationEnum::kLocationFormatMgrs: {
-      int zone;
-      bool northp;
-      double x;
-      double y;
-      GeographicLib::UTMUPS::Forward(info.lat, info.lon, zone, northp, x, y);
-      std::string mgrs;
-      GeographicLib::MGRS::Forward(zone, northp, x, y, info.lat, 5, mgrs);
-      statusBar->UpdateLocationFormat("MGRS");
-      statusBar->UpdateLocation(mgrs);
-      break;
-    }
-    default:
-      break;
-  }
-}
-
-void ScreenGva::ClockUpdate(ClockArgs* args) {
-  UpdateClock(args->status_bar);
-
-  ParseGpsData(args->gps, args->info, args->parser, args->location);
-
-  if (args->info->lon != 0 && args->info->lat != 0) {
-    UpdateLocation(args->status_bar, *args->info, args->location);
-  }
-
-  gva::EventsGva::CreateRefreshEvent();
-}
-
-void* ScreenGva::ClockUpdateThread(ClockArgs arg) {
+void *ScreenGva::ClockUpdateThread(ClockArgs arg) {
+  StatusUpdater updater;
   while (arg.active) {
-    ClockUpdate(&arg);
+    updater.ClockUpdate(&arg);
     struct timespec reqDelay = {1, 0};
     nanosleep(&reqDelay, (struct timespec *)nullptr);
   }  // End thread loop

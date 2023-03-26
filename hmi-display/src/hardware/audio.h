@@ -50,6 +50,9 @@ class AudioFunctions {
   ///
   ~AudioFunctions();
 
+  AudioFunctions &operator=(const AudioFunctions &) = delete;
+  AudioFunctions(const AudioFunctions &) = delete;
+
   ///
   /// \brief Portaudio callback for simple audio
   ///
