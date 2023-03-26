@@ -60,6 +60,7 @@ enum class DrawType {
   kCommandLineJoin,
   kCommandPenColour,
   kCommandPenCurve,
+  kCommandPenCurveTo,
   kCommandPenLine,
   kCommandPenDraw,
   kCommandPenMove,

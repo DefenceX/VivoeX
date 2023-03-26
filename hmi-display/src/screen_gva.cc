@@ -26,23 +26,22 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#if __MINGW64__ || __MINGW32__
+
+#include "src/status_updater.h"
+#if defined(_WIN32)
 struct termios {
   uint32_t dummy_struct = 0;
 };
 #else
 #include <termios.h>
 #endif
+#include <glog/logging.h>
 #include <time.h>
 #include <unistd.h>
 
-// #include <GeographicLib/LambertConformalConic.hpp>
-#include <glog/logging.h>
-
-#include <GeographicLib/MGRS.hpp>
-#include <GeographicLib/UTMUPS.hpp>
 #include <iomanip>
 #include <iostream>
+#include <memory>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -52,8 +51,6 @@ struct termios {
 #include "src/gva_functions_common.h"
 #include "src/hmi_gva_helpers.h"
 #include "widgets/widgets.h"
-
-const int kMaxNmea = 1000;
 
 namespace gva {
 ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : RendererGva(width, height), screen_(screen) {
@@ -88,11 +85,6 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
 #endif
 
   //
-  // Start the Real Time Clock
-  //
-  StartClock(screen_->status_bar);
-
-  //
   // Setup the required widgets
   //
   RendererGva *renderer = this;
@@ -114,6 +106,14 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
       std::make_shared<WidgetTable>(*renderer, touch, ConfigData::GetInstance()->GetThemeBackground());
   widget_list_[widget::WidgetEnum::KWidgetTypeTableDynamic] =
       std::make_shared<WidgetTableDynamic>(*renderer, touch, ConfigData::GetInstance()->GetThemeBackground());
+  widget_list_[widget::WidgetEnum::KWidgetObjectLocalisation] =
+      std::make_shared<WidgetObjectLocalisation>(*renderer, touch);
+  widget_list_[widget::WidgetEnum::KWidgetTypeStatusBar] = std::make_shared<WidgetStatusBar>(*renderer, touch);
+
+  //
+  // Start the Real Time Clock
+  //
+  StartClock(widget_list_[widget::WidgetEnum::KWidgetTypeStatusBar]);
 
   //
   // Load some dummy alarms (real alarms come from LDM)
@@ -146,100 +146,23 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
   //
   auto bottom_labels = (WidgetBottomLabels *)GetWidget(widget::WidgetEnum::KWidgetTypeBottomLabels);
   bottom_labels->SetLabels(&screen_->control->labels_);
+
+  updater_.RegisterWidgets(widget_list_);
 }
 
 ScreenGva::~ScreenGva() {
   args_.active = false;
-  pthread_join(clock_thread_, nullptr);
+  clock_thread_.join();
   nmea_parser_destroy(&parser_);
   close(gps_);
   if (gps_) LOG(INFO) << "GPS closed";
   LOG(INFO) << "GVA screen finalized.";
 }
 
-void ClockUpdate(ClockArgs *a) {
-  // Get the system time and be thread safe
-  auto unix_epoch_time = (time_t) nullptr;
-  struct tm local_time;
-  unix_epoch_time = time(&unix_epoch_time);
-  localtime_r(&unix_epoch_time, &local_time);  // Compliant
-
-  char clock[1000];
-  snprintf(clock, sizeof(clock), "%02d/%02d/%02d %02d:%02d:%02d", local_time.tm_mday, local_time.tm_mon + 1,
-           local_time.tm_year + 1900, local_time.tm_hour, local_time.tm_min, local_time.tm_sec);
-  a->clockString = clock;
-
-#if (__MINGW64__ || __MINGW32__)
-#else
-  char c;
-  char tmp[kMaxNmea + 2] = {0};
-  uint32_t i = 0;
-  uint32_t ii = 0;
-  char buffer[kMaxNmea] = {0};
-
-  if (*a->gps > 0) {
-    i = 0;
-    tcflush(*a->gps, TCIOFLUSH);
-
-    if (auto size = read(*a->gps, &buffer[0], 1); size != 0) {
-      memset(buffer, 0, kMaxNmea);
-      while (buffer[0] != '$') {
-        auto size_read = read(*a->gps, &buffer[0], 1);
-        if (size_read == 0) break;
-      }
-      while (buffer[i++] != '\n') {
-        ii = (uint32_t)read(*a->gps, &c, 1);
-        if (ii == 1) {
-          buffer[i] = c;
-        }
-        if (i == kMaxNmea) break;
-      }
-      buffer[i - 1] = 0;
-      std::string tmp_buffer = buffer;
-      LOG(INFO) << "GPS NMEA " << tmp_buffer;
-    }
-
-    snprintf(tmp, sizeof(tmp), "%s\r\n", buffer);
-    a->info->lon = a->location->lon;
-    a->info->lat = a->location->lat;
-    nmea_parse(a->parser, tmp, sizeof(tmp), a->info);
-    a->info->lat = ToDegrees((float)a->info->lat);
-    a->info->lon = ToDegrees((float)a->info->lon);
-  }
-#endif
-
-  if ((a->info->lon != 0) && (a->info->lat != 0)) {
-    switch (a->location->locationFormat) {
-      case LocationEnum::kLocationFormatLongLat:
-        a->locationFormat = "LONLAT";
-        {
-          std::stringstream stream;
-          stream << std::fixed << std::setprecision(2) << "Lat:" << a->info->lat << " Lon:" << a->info->lon << " ["
-                 << a->info->sig << "]" << a->info->fix;
-          a->locationString = stream.str();
-        }
-        break;
-      case LocationEnum::kLocationFormatMgrs: {
-        int zone;
-        bool northp;
-        double x;
-        double y;
-        GeographicLib::UTMUPS::Forward(a->info->lat, a->info->lon, zone, northp, x, y);
-        std::string mgrs;
-        GeographicLib::MGRS::Forward(zone, northp, x, y, a->info->lat, 5, mgrs);
-        a->locationFormat = "MGRS";
-        a->locationString = mgrs;
-      } break;
-    }
-  }
-  gva::EventsGva::CreateRefreshEvent();
-}
-
-void *ClockUpdateThread(void *arg) {
-  auto a = (ClockArgs *)arg;
-
-  while (a->active) {
-    ClockUpdate(a);
+void *ScreenGva::ClockUpdateThread(ClockArgs arg) {
+  StatusUpdater updater;
+  while (arg.active) {
+    updater.ClockUpdate(&arg);
     struct timespec reqDelay = {1, 0};
     nanosleep(&reqDelay, (struct timespec *)nullptr);
   }  // End thread loop
@@ -247,22 +170,21 @@ void *ClockUpdateThread(void *arg) {
   return nullptr;
 }
 
-void ScreenGva::StartClock(StatusBar *barData) {
+void ScreenGva::StartClock(std::shared_ptr<WidgetX> status_bar_widget) {
+  std::shared_ptr<WidgetStatusBar> status_bar = std::dynamic_pointer_cast<WidgetStatusBar>(status_bar_widget);
   args_.active = true;
   args_.parser = &parser_;
   args_.info = &info_;
   args_.gps = &gps_;
   args_.screen = this;
-  args_.location = &barData->location;
+  args_.status_bar = status_bar;
+  args_.location.locationFormat = LocationEnum::kLocationFormatMgrs;
   args_.info->lon = ConfigData::GetInstance()->GetTestLon();
   args_.info->lat = ConfigData::GetInstance()->GetTestLat();
 
-  /* Launch clock thread */
-  if (pthread_create(&clock_thread_, nullptr, ClockUpdateThread, (void *)&args_)) {
-    LOG(ERROR) << "Error creating thread";
-    return;
-  }
-  LOG(INFO) << "Clock thread started";
+  // Launch clock thread
+  clock_thread_ = std::thread(ClockUpdateThread, args_);
+  LOG(INFO) << "Created clock thread";
 }
 
 GvaStatusTypes ScreenGva::Update() {
@@ -305,30 +227,6 @@ GvaStatusTypes ScreenGva::Update() {
     LOG(INFO) << "Blackout Requested";
     last_screen_ = *screen_;
     return GvaStatusTypes::kGvaSuccess;
-  }
-
-  // Setup and Draw the status bar, one row table
-  if (screen_->status_bar->visible) {
-    WidgetTable status_bar_table(*(RendererGva *)this, GetTouch(),
-                                 ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
-
-    // Setup and Draw the status bar, one row table
-    std::array<uint32_t, 7> widths = {23, 8, 37, 8, 8, 8, 8};
-    status_bar_table.SetVisible(true);
-    status_bar_table.SetX(1);
-    status_bar_table.SetY(screen_->status_bar->y);
-    status_bar_table.SetWidth(640);
-    status_bar_table.SetBackgroundColour(ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
-    status_bar_table.AddRow();
-
-    // Update the status bar cells
-    screen_->status_bar->labels[0].text = args_.clockString;
-    screen_->status_bar->labels[1].text = args_.locationFormat;
-    screen_->status_bar->labels[2].text = args_.locationString;
-    for (uint32_t i = 0; i < 7; i++) {
-      status_bar_table.AddCell(screen_->status_bar->labels[i].text, widths[i], widget::CellAlignType::kAlignLeft);
-    }
-    status_bar_table.Draw();
   }
 
   // Generic message box

@@ -143,9 +143,21 @@ bool ConfigData::GetMapEnabled() const { return current_config_->osm().enabled()
 
 void ConfigData::SetMapEnabled(bool enabled) const { current_config_->mutable_osm()->set_enabled(enabled); }
 
-std::string ConfigData::GetMapPath() const { return current_config_->osm().map_path(); }
+std::string ConfigData::GetMapPath() const { 
+#if __MINGW64__ || __MINGW32__
+  return "../maps/australia-latest";
+#else
+  return current_config_->osm().map_path();
+#endif
+}
 
-std::string ConfigData::GetStylesheetPath() const { return current_config_->osm().map_stylesheet_path(); }
+std::string ConfigData::GetStylesheetPath() const { 
+#if __MINGW64__ || __MINGW32__
+  return "../stylesheets/standard.oss";
+#else
+  return current_config_->osm().map_stylesheet_path();
+#endif
+}
 
 uint32_t ConfigDataTheme::GetThemeBackground() const { return (uint32_t)current_config_->theme().theme_background(); }
 
@@ -292,7 +304,7 @@ std::string ConfigData::GetLogFilename() const { return current_config_->file().
 
 std::string ConfigData::GetImagePath() const {
 #if __MINGW64__ || __MINGW32__
-  return "./images/";
+  return "../images/";
 #else
   return current_config_->file().images_path();
 #endif

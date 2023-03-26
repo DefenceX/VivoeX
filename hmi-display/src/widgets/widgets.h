@@ -24,6 +24,7 @@
 #ifndef HMI_DISPLAY_SRC_WIDGETS_WIDGETS_H_
 #define HMI_DISPLAY_SRC_WIDGETS_WIDGETS_H_
 
+#include "src/widgets/ai/object_localisation.h"
 #include "src/widgets/alarm_indicator.h"
 #include "src/widgets/bottom_labels.h"
 #include "src/widgets/driver/rpm_fuel.h"
@@ -32,6 +33,7 @@
 #include "src/widgets/mode.h"
 #include "src/widgets/plan_position_indicator.h"
 #include "src/widgets/side_labels.h"
+#include "src/widgets/table/status_bar.h"
 #include "src/widgets/table/table.h"
 #include "src/widgets/table/table_dynamic.h"
 #include "src/widgets/top_labels.h"

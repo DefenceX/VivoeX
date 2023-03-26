@@ -81,7 +81,7 @@ class ViewGva {
 
 class ViewGvaManager {
  public:
-  explicit ViewGvaManager(StatusBar *status_bar);
+  explicit ViewGvaManager();
   void AddNewView(GvaFunctionEnum function, FunctionSelect *top, CommonTaskKeys *bottom, FunctionKeys left,
                   FunctionKeys right);
   void SetScreen(Screen *screen, GvaFunctionEnum function) const;
@@ -89,7 +89,6 @@ class ViewGvaManager {
 
  private:
   std::vector<ViewGva> views_;
-  StatusBar *status_bar_;
   int idLast_ = 0;
   int id_ = 0;
 };

@@ -17,6 +17,7 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/table/row_type.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/table/table.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/table/table_dynamic.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/table/status_bar.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/top_labels.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/widget.cc
 )

@@ -127,6 +127,7 @@
 #include "hmi_gva.h"
 
 #include <iostream>
+#include <memory>
 
 #include "src/gva.h"
 #include "src/view_gva.h"
@@ -143,7 +144,7 @@ void Hmi::SetCanvasPng(const std::string &file) {
 }
 
 void Hmi::Reset() {
-  screen_.status_bar->visible = true;
+  screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeStatusBar)->SetVisible(true);
   screen_.labels = LabelModeEnum::kLabelAll;
   Labels(screen_.labels);
   screen_.function_top->ResetAllEnabled();
@@ -179,8 +180,8 @@ void Hmi::Labels(LabelModeEnum labels) {
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeLeftLabels)->SetVisible(true);
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTopLabels)->SetVisible(true);
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeBottomLabels)->SetVisible(true);
-      screen_.status_bar->visible = true;
-      screen_.status_bar->y = 15;
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeStatusBar)->SetVisible(true);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeStatusBar)->SetY(15);
       if (screen_.currentFunction == GvaFunctionEnum::kDriver) {
         screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetY(190);
         screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetX(120);
@@ -200,8 +201,8 @@ void Hmi::Labels(LabelModeEnum labels) {
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTopLabels)->SetVisible(false);
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeBottomLabels)->SetVisible(false);
       screen_.function_top->visible = false;
-      screen_.status_bar->visible = true;
-      screen_.status_bar->y = 2;
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeStatusBar)->SetVisible(true);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeStatusBar)->SetY(2);
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetY(160);
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetX(120);
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetWidth(kMinimumWidth - 40);
@@ -214,7 +215,7 @@ void Hmi::Labels(LabelModeEnum labels) {
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeLeftLabels)->SetVisible(false);
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTopLabels)->SetVisible(false);
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeBottomLabels)->SetVisible(false);
-      screen_.status_bar->visible = false;
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeStatusBar)->SetVisible(false);
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetVisible(false);
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetWidth(kMinimumWidth - 40);
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetX(20);
@@ -304,8 +305,7 @@ GvaKeyEnum Hmi::Key(GvaKeyEnum keypress) {
     case GvaKeyEnum::kKeyF16:  // Ack
       screen_.control->SetEnabledSelected(3);
       screen_.control->ResetAllEnabled();
-      // Clear alarms here till LDM
-      screen_.control->SetDisabled(3);
+      Hmi::ClearAlarms(screen_render_);
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeAlarmIndicator)->SetVisible(false);
       break;
     case GvaKeyEnum::kKeyF17:  // Up Arrow
@@ -343,9 +343,14 @@ GvaKeyEnum Hmi::Key(GvaKeyEnum keypress) {
   return keypress;
 }
 
+void Hmi::ClearAlarms(std::shared_ptr<ScreenGva> screen_render) {
+  // Clear alarms here till LDM
+  auto bottom = (gva::WidgetBottomLabels *)(screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeBottomLabels));
+  bottom->DisableLabel(GvaKeyEnum::kKeyF16);
+}
+
 std::shared_ptr<ViewGvaManager> Hmi::manager_;
 ResolutionType Hmi::view_;
-StatusBar Hmi::status_;
 FunctionSelect Hmi::top_;
 CommonTaskKeys Hmi::bottom_;
 Canvas Hmi::canvas_;

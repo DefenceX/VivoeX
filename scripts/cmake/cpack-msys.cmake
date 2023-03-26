@@ -27,7 +27,8 @@ set(CPACK_NSIS_INSTALLED_ICON_NAME ${CMAKE_SOURCE_DIR}/images/favicon.ico)
 set(CPACK_NSIS_HELP_LINK "https://defencex.ai/downloads.html")
 set(CPACK_NSIS_URL_INFO_ABOUT "https://defencex.ai")
 set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
+    SetOutPath $INSTDIR\\\\bin
     CreateShortCut \\\"$DESKTOP\\\\${PROJECT_NAME}.lnk\\\" \\\"$INSTDIR\\\\bin\\\\hmi-display.exe\\\"
 ")
-set(CPACK_NSIS_CONTACT "enquiries@defencex.com.au")
+set(CPACK_NSIS_CONTACT "enquiries@defencex.ai")
 

@@ -45,6 +45,13 @@ class WidgetX {
   explicit WidgetX(const RendererGva& renderer, widget::WidgetEnum widget_type);
 
   ///
+  /// \brief Get the Widget Name attribute
+  ///
+  /// \return std::string the widget name
+  ///
+  virtual std::string GetWidgetName() const { return "WidgetUnnamed"; };
+
+  ///
   /// \brief Set the Visible object
   ///
   /// \param visible
@@ -160,7 +167,6 @@ class WidgetX {
   ///
   uint32_t GetStateTextColour(LabelStates state) const;
 
- protected:
   uint32_t x_ = 0;
   uint32_t y_ = 0;
   uint32_t width_ = 0;
@@ -169,7 +175,7 @@ class WidgetX {
  private:
   const RendererGva& renderer_;
   widget::WidgetEnum widget_type_;
-  bool visible_ = true;
+  bool visible_ = false;
 };
 
 }  // namespace gva

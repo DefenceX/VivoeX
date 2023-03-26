@@ -57,6 +57,13 @@ class WidgetTableDynamic : public WidgetTable {
   ~WidgetTableDynamic() final = default;
 
   ///
+  /// \brief Get the Widget Name attribute
+  ///
+  /// \return std::string
+  ///
+  std::string GetWidgetName() const final { return "WidgetTableDynamic"; }
+
+  ///
   /// \brief The base class override to draw the table once setup
   ///
   ///

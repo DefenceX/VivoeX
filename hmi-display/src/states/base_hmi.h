@@ -74,11 +74,11 @@ struct Hmi : tinyfsm::Fsm<Hmi> {
  protected:
   static std::shared_ptr<ViewGvaManager> manager_;
   static ResolutionType view_;
-  static StatusBar status_;
   static FunctionSelect top_;
   static CommonTaskKeys bottom_;
   static Canvas canvas_;
   static Screen screen_;
+  static std::shared_ptr<Updater> updater_;
   static std::shared_ptr<ScreenGva> screen_render_;
   static std::shared_ptr<rendererMap> map_;
   static GvaFunctionEnum lastState_;
@@ -101,6 +101,7 @@ struct Hmi : tinyfsm::Fsm<Hmi> {
   static ScreenGva *GetRendrer() { return screen_render_.get(); }
   static Screen *GetScreen() { return &screen_; }
   static void Labels(LabelModeEnum labels);
+  static void ClearAlarms(std::shared_ptr<ScreenGva> screen_render);
 };
 
 }  // namespace gva

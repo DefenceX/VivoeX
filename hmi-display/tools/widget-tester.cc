@@ -575,7 +575,7 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       box[7] = {630, 115, 100, 36, 0xfff00, "Person", false, false};
       objects.SetVisible(true);
 
-      // // Loop through box and set unique ids
+      // Loop through box and set unique ids
       for (int16_t c = 0; c < 8; c++) {
         objects.AddBoundingBox(c + 1, box[c]);
       }

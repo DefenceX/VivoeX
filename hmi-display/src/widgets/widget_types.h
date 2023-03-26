@@ -23,7 +23,6 @@
 
 #ifndef HMI_DISPLAY_SRC_WIDGETS_WIDGET_TYPES_H_
 #define HMI_DISPLAY_SRC_WIDGETS_WIDGET_TYPES_H_
-
 namespace gva::widget {
 
 ///
@@ -49,6 +48,8 @@ enum class WeightType { kWeightNormal = 0, kWeightBold, kWeightItalic };
 ///
 ///
 enum class WidgetEnum {
+  KWidgetTypeStatusBar,
+  KWidgetObjectLocalisation,
   KWidgetTypeCompass,
   KWidgetTypeKeyboard,
   KWidgetTypeAlarmIndicator,
@@ -61,7 +62,6 @@ enum class WidgetEnum {
   KWidgetTypeTableDynamic,
   kWidgetTypeDialSpeedometer,
   KWidgetTypeDialRpmFuel,
-  KWidgetObjectLocalisation
 };
 
 ///

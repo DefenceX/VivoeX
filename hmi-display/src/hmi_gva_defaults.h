@@ -54,13 +54,6 @@ class DefaultSettings {
   static FunctionSelect GetDefaultFunctionSelect();
 
   ///
-  /// \brief Get the Default Status Bar object
-  ///
-  /// \return StatusBar
-  ///
-  static StatusBar GetDefaultStatusBar();
-
-  ///
   /// \brief Get the Default Canvas object
   ///
   /// \return Canvas

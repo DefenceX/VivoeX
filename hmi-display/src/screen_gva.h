@@ -34,8 +34,11 @@
 #include "nmea/nmea.h"
 #include "src/gva.h"
 #include "src/renderer_gva.h"
+#include "updater/updater.h"
 #include "widgets/table/table.h"
+#include "widgets/widget.h"
 #include "widgets/widget_types.h"
+#include "widgets/widgets.h"
 
 namespace gva {
 
@@ -84,7 +87,6 @@ struct Screen {
   Canvas canvas;
   FunctionSelect *function_top;
   CommonTaskKeys *control;
-  StatusBar *status_bar;
   FunctionKeys function_left;
   FunctionKeys function_right;
   Label label;
@@ -105,7 +107,8 @@ struct ClockArgs {
   nmeaINFO *info;
   nmeaPARSER *parser;
   bool active;
-  LocationType *location;
+  std::shared_ptr<WidgetStatusBar> status_bar;
+  LocationType location;
 };
 
 class ScreenGva : public RendererGva {
@@ -141,7 +144,7 @@ class ScreenGva : public RendererGva {
   ///
   /// \param barData To be used for updating
   ///
-  void StartClock(StatusBar *barData);
+  void StartClock(std::shared_ptr<WidgetX> status_bar_widget);
 
   ///
   /// \brief Get the Widget object
@@ -151,18 +154,21 @@ class ScreenGva : public RendererGva {
   ///
   WidgetX *GetWidget(widget::WidgetEnum widget);
 
+  static void *ClockUpdateThread(ClockArgs arg);
+
  private:
   char *PosDegrees(float lon, float lat);
   Screen *screen_ = nullptr;
-  std::map<widget::WidgetEnum, std::shared_ptr<WidgetX>> widget_list_;
+  std::unordered_map<widget::WidgetEnum, std::shared_ptr<WidgetX>> widget_list_;
   ClockArgs args_;
   int gps_ = 0;
   uint32_t hndl_;
   Screen last_screen_;
-  pthread_t clock_thread_;
+  std::thread clock_thread_;
   nmeaINFO info_;
   nmeaPARSER parser_;
   ConfigData *config_ = nullptr;
+  Updater updater_ = Updater(0);
 };
 
 }  // namespace gva

@@ -46,8 +46,8 @@ void WidgetObjectLocalisation::DrawFunctionBoundingBoxes() const {
   for (auto& [id, box_info] : boxes_) {
     GetRenderer()->SetColourBackground(box_info->rgb_value);
     GetRenderer()->SetColourForeground(box_info->rgb_value);
-    box_info->dotted ? GetRenderer()->SetLineThickness(3, LineType::kLineDashedMedium)
-                     : GetRenderer()->SetLineThickness(3, LineType::kLineSolid);
+    box_info->dotted ? GetRenderer()->SetLineThickness(1, LineType::kLineDashedMedium)
+                     : GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
     GetRenderer()->DrawRoundedRectangle(box_info->xpos, box_info->ypos, box_info->width, box_info->height, 10, false);
 
     touch_->Add(gva::GvaFunctionGroupEnum::kObjectBoxes, (uint32_t)IdToKey(id), box_info->xpos, box_info->ypos,
@@ -57,13 +57,13 @@ void WidgetObjectLocalisation::DrawFunctionBoundingBoxes() const {
     if (box_info->label.length() == 0) {
       box_info->label = "Unknown";
     }
-    GetRenderer()->SetLineThickness(3, LineType::kLineSolid);
+    GetRenderer()->SetLineThickness(2, LineType::kLineSolid);
     GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_WEIGHT_NORMAL, widget::WeightType::kWeightNormal,
                                gva::ConfigData::GetInstance()->GetThemeFont(), 8);
     uint32_t text_width = GetRenderer()->GetTextWidth(box_info->label, 8);
-    GetRenderer()->DrawRoundedRectangle(box_info->xpos + 10, box_info->ypos - 8, 13 + text_width, 15, 5, true);
+    GetRenderer()->DrawRoundedRectangle(box_info->xpos + 10, box_info->ypos - 5, 6 + text_width, 8, 5, true);
     GetRenderer()->DrawColor(HMI_BLACK);
-    GetRenderer()->DrawText(box_info->xpos + 15, box_info->ypos + 2, box_info->label);
+    GetRenderer()->DrawText(box_info->xpos + 13, box_info->ypos + 2, box_info->label);
   }
 };
 

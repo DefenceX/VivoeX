@@ -49,6 +49,13 @@ class WidgetBottomLabels : public WidgetX {
   ~WidgetBottomLabels() final = default;
 
   ///
+  /// \brief Get the Widget Name attribute
+  ///
+  /// \return std::string
+  ///
+  std::string GetWidgetName() const final { return "WidgetBottomLabels"; };
+
+  ///
   /// \brief The base overloaded Draw fuctions to draw this widget type
   ///
   ///, TouchType& touch
@@ -61,10 +68,24 @@ class WidgetBottomLabels : public WidgetX {
   ///
   void SetLabels(std::array<CommonTaskKeys::Labels, 8>* labels);
 
+  ///
+  /// \brief Enable a label
+  ///
+  /// \param key
+  ///
+  void EnableLabel(GvaKeyEnum key);
+
+  ///
+  /// \brief Disable a label
+  ///
+  /// \param key
+  ///
+  void DisableLabel(GvaKeyEnum key);
+
  private:
   void DrawControlLabels();
   ConfigData* config_ = nullptr;
-  std::array<CommonTaskKeys::Labels, 8>* labels_;
+  std::array<CommonTaskKeys::Labels, 8> labels_;
   TouchGva* touch_;
 };
 

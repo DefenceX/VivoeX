@@ -60,6 +60,13 @@ class WidgetObjectLocalisation : public WidgetX {
   ~WidgetObjectLocalisation() final = default;
 
   ///
+  /// \brief Get the Widget Name attribute
+  ///
+  /// \return std::string
+  ///
+  std::string GetWidgetName() const final { return "WidgetObjectLocalisation"; };
+
+  ///
   /// \brief The base overloaded Draw fuctions to draw this widget type
   ///
   ///, TouchType& touch

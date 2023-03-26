@@ -10,6 +10,7 @@ add_subdirectory(src/widgets)
 add_subdirectory(common)
 add_subdirectory(config)
 add_subdirectory(tools)
+add_subdirectory(updater)
 #add_subdirectory(dds)
 
 include_directories(${CMAKE_SOURCE_DIR})
@@ -23,42 +24,69 @@ link_directories(${CMAKE_BINARY_DIR}/external/libnmea/build/src)
 
 set(SOURCES main.cc 
 			# src/trace.cc
-			src/gva_application.cc
-			src/gva_functions_common.cc
-			src/renderer.cc 
-			src/renderer_cairo.cc 
-			src/renderer_gva.cc 
-			src/touch_gva.cc 
-			src/screen_gva.cc 
-			src/events_gva.cc 
 			common/debug.cc 
 			common/utils.cc 
+			src/config_reader.cc
+			src/events_gva.cc 
+			src/gva_application.cc
+			src/gva_functions_common.cc
+			src/hardware/audio.cc 
 			src/hmi_gva.cc 
 			src/hmi_gva_defaults.cc 
 			src/hmi_gva_helpers.cc 
-			src/view_gva.cc 
+			src/renderer.cc 
+			src/renderer_cairo.cc 
+			src/renderer_gva.cc 
 			src/renderer_map.cc 
-			src/config_reader.cc
-			src/states/on.cc
-			src/states/off.cc
-			src/states/sa.cc
-			src/states/wpn.cc
-			src/states/sys.cc
+			src/status_updater.cc 
+			src/screen_gva.cc 
+			src/states/alarms.cc
+			src/states/bms.cc
+			src/states/com.cc
 			src/states/def.cc
 			src/states/drv.cc
-			src/states/com.cc
+			src/states/off.cc
+			src/states/on.cc
+			src/states/sa.cc
 			src/states/str.cc
-			src/states/bms.cc
-			src/states/alarms.cc
+			src/states/sys.cc
+			src/states/wpn.cc
+			src/touch_gva.cc 
+			src/view_gva.cc 
 			)
 
 link_libraries(-lstdc++fs)
 add_executable(hmi-display ${SOURCES})
-add_dependencies(hmi-display widgets libglog libprotobuf googletest libosmscout geographiclib hmi-video config-proto ${DDS_STACK} libosmscout)
+add_dependencies(hmi-display widgets hmi-updater portaudio libglog libprotobuf googletest libosmscout geographiclib hmi-video config-proto ${DDS_STACK} libosmscout)
 
 link_directories( ${NMEA_LIBRARY_DIR} ${CMAKE_BINARY_DIR}/external/libnmea/src/lib )
-target_link_libraries (hmi-display ${GEOGRAPHIC_LIBRARIES} ${WINDOWS_RESOURCE_LIB} pthread glog widgets GeographicLib config-proto ${OSMSCOUT_LIBARAIES} ${PROTOBUF_LIBRARY} ${GTK_LIBRARIES3} stdc++fs)
-target_link_libraries(hmi-display png pthread hmi-video vivoe-media nmea ${GFLAGS_LIBS} ${CAIRO_LIBRARIES} ${PANGO_LIBRARIES} ${SWSCALE_LIBRARIES} ${GTK3_LIBRARIES})
+target_link_libraries(hmi-display
+    hmi-updater 
+	png 
+	pthread 
+	hmi-video 
+	vivoe-media 
+	nmea 
+	${PORTAUDIO_LIBRARIES}
+	# portaudiocpp.a
+	${SNDFILE_LIBRARIES}
+	pthread 
+	glog 
+	widgets 
+	GeographicLib 
+	config-proto 
+	stdc++fs
+	${OSMSCOUT_LIBARAIES} 
+	${PROTOBUF_LIBRARY} 
+	${GTK_LIBRARIES3} 
+	${GFLAGS_LIBS} 
+	${CAIRO_LIBRARIES} 
+	${PANGO_LIBRARIES} 
+	${SWSCALE_LIBRARIES} 
+	${GTK3_LIBRARIES}
+	${GEOGRAPHIC_LIBRARIES} 
+	${WINDOWS_RESOURCE_LIB} 
+	)
 
 if (MSYS)
 	# Add the resource file
@@ -72,6 +100,9 @@ if (MSYS)
 		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/libosmscout/lib"
 		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/nmea/lib"
 		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/GeographicLib/lib64"
+		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/GeographicLib/lib64"
+		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/portaudio/lib"
+		"${CMAKE_BINARY_DIR}/external/install/mingw64/lib"
 	)
 	target_link_libraries(hmi-display shlwapi)
 else()
@@ -83,6 +114,8 @@ else()
 		${NMEA_LIBRARY_DIR}
 		${CMAKE_BINARY_DIR}/external/libnmea/src/lib/
 		${CMAKE_BINARY_DIR}/external/install/usr/local/lib
+		${SNDFILE_LIBRARY_DIR}
+		${PORTAUDIO_LIBRARY_DIR}
 	)
 endif()
 
@@ -98,6 +131,7 @@ target_include_directories(hmi-display PUBLIC
     ${PANGO_INCLUDE_DIRS}
     ${SWSCALE_INCLUDE_DIRS}
     ${GTK3_INCLUDE_DIRS}
+    ${PORTAUDIO_INCLUDE_DIR}
     common 
     dds 
     dds/location 

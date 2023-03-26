@@ -16,7 +16,8 @@ set(CMAKE_INSTALL_LIBDIR lib64)
 set(CODE_STYLE "{BasedOnStyle: Google, ColumnLimit: 120}")
 
 if (MSYS)
-  set(MSYS_FLAGS "-L/mingw64/lib -mwindows -static-libstdc++ -D_POSIX_C_SOURCE -lstdc++ -lws2_32")
+  set(MSYS_FLAGS "-L/mingw64/lib -mwindows -static-libstdc++ -DWIN32 -D_POSIX_C_SOURCE -lstdc++ -lws2_32")
+  # set(MSYS_FLAGS "-L/mingw64/lib -static-libstdc++ -DWIN32 -D_POSIX_C_SOURCE -lstdc++ -lws2_32")
 endif()
 
 if($ENV{CI})

@@ -355,6 +355,21 @@ class RendererCairo : public Renderer {
   uint32_t DrawColor(uint8_t r, uint8_t g, uint8_t b) override;
 
   ///
+  /// \brief Adds a cubic Bézier spline to the path from the current point to position (x3 , y3 ) in user-space
+  /// coordinates, using (x1 , y1 ) and (x2 , y2 ) as the control points. After this call the current point will be (x3
+  /// , y3 ).
+  ///
+  /// \param x1 first point of x in pixels
+  /// \param y1 first point of y in pixels
+  /// \param x2 second point of x in pixels
+  /// \param y2 second point of y in pixels
+  /// \param x3 third point of x in pixels
+  /// \param y3 third point of y in pixels
+  /// \return uint32_t
+  ///
+  uint32_t CurveTo(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint32_t x3, uint32_t y3);
+
+  ///
   /// \brief
   ///
   /// \param rgb
@@ -402,60 +417,60 @@ class RendererCairo : public Renderer {
   uint32_t GetTextHeight(std::string_view str, uint32_t fontSize) const;
 
   ///
-  /// \brief
+  /// \brief Draw some text on the screen
   ///
-  /// \param x
-  /// \param y
+  /// \param x axis pixel postion
+  /// \param y axis pixel postion
   /// \param text
   ///
   void DrawText(uint32_t x, uint32_t y, std::string_view text);
 
   ///
-  /// \brief
+  /// \brief Draw an on screen label
   ///
-  /// \param x
-  /// \param y
+  /// \param x axis pixel postion
+  /// \param y axis pixel postion
   /// \param text
   ///
   void DrawLabel(uint32_t x, uint32_t y, std::string_view text);
 
   ///
-  /// \brief
+  /// \brief Draw some text on the screen and centre it
   ///
-  /// \param x
-  /// \param text
-  /// \param size
+  /// \param x axis pixel postion
+  /// \param text to draw
+  /// \param size of the text
   ///
   void DrawTextCentre(uint32_t x, std::string_view text, uint32_t size);
 
   ///
-  /// \brief
+  /// \brief Set a texture (file) to use as a bitmap
   ///
-  /// \param x
-  /// \param y
-  /// \param buffer
-  /// \param file
-  /// \return uint32_t
+  /// \param x axis pixel postion
+  /// \param y axis pixel postion
+  /// \param buffer to load the image into
+  /// \param file to load
+  /// \return uint32_t the texture id
   ///
   uint32_t TextureRGB(uint32_t x, uint32_t y, unsigned char *buffer, std::string_view file) override;
 
   ///
-  /// \brief
+  /// \brief Set a texture (file) to use as a bitmap
   ///
-  /// \param x
-  /// \param y
-  /// \param buffer
-  /// \return uint32_t
+  /// \param x axis pixel postion
+  /// \param y axis pixel postion
+  /// \param buffer to load the image into
+  /// \return uint32_t the texture id
   ///
   uint32_t TextureRGB(uint32_t x, uint32_t y, unsigned char *buffer);
 
   ///
-  /// \brief
+  /// \brief Set a texture (cairo surface) to use as a bitmap
   ///
-  /// \param x
-  /// \param y
-  /// \param surface
-  /// \return uint32_t
+  /// \param x axis pixel postion
+  /// \param y axis pixel postion
+  /// \param surface to load the image into
+  /// \return uint32_t the texture id
   ///
   uint32_t TextureRGB(uint32_t x, uint32_t y, cairo_surface_t *surface);
 

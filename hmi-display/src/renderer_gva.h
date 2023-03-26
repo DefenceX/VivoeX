@@ -117,7 +117,7 @@ class RendererGva : public RendererCairo {
   /// \param y Y pixel position
   /// \param size Size in pixels
   ///
-  void DrawButton(const std::string keytext, uint32_t fontSize, uint32_t x, uint32_t y, uint32_t size);
+  void DrawButton(const std::string &keytext, uint32_t fontSize, uint32_t x, uint32_t y, uint32_t size);
 
   ///
   /// \brief Draw keyboard buttons
@@ -131,8 +131,8 @@ class RendererGva : public RendererCairo {
   /// \param width Width of button in pixels
   /// \param align Alignment
   ///
-  void DrawButton(const std::string keytext, uint32_t fontSize, uint32_t x, uint32_t y, uint32_t height, uint32_t width,
-                  widget::CellAlignType align);
+  void DrawButton(const std::string &keytext, uint32_t fontSize, uint32_t x, uint32_t y, uint32_t height,
+                  uint32_t width, widget::CellAlignType align);
 
   ///
   /// \brief Get the Touch object

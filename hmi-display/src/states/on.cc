@@ -35,7 +35,7 @@ void StateOn::entry() {
   /* 4:3 aspect ratio @ lowest resolution */
   view_ = {kMinimumWidth, kMinimumHeight, 24};
 
-  if (!manager_) manager_ = std::make_shared<ViewGvaManager>(&status_);
+  if (!manager_) manager_ = std::make_shared<ViewGvaManager>();
 
   if (!std::filesystem::is_directory(ConfigData::GetInstance()->GetMapPath())) {
     LOG(ERROR) << "Could not find map data " << ConfigData::GetInstance()->GetMapPath();
@@ -51,7 +51,6 @@ void StateOn::entry() {
   }
   top_ = DefaultSettings::GetDefaultFunctionSelect();
   bottom_ = DefaultSettings::GetDefaultCommonTaskKeys();
-  status_ = DefaultSettings::GetDefaultStatusBar();
   canvas_ = DefaultSettings::GetDefaultCanvas();
   screen_ = DefaultSettings::GetDefaultScreen();
 
@@ -105,16 +104,8 @@ void StateOn::entry() {
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetX(330);
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetVisible(true);
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic)->SetVisible(false);
-  screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeAlarmIndicator)->SetVisible(true);
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeAlarmIndicator)->SetY(58);
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeBottomLabels)->SetY(480 - 20);
-
-  WidgetAlarmIndicator *ai =
-      (WidgetAlarmIndicator *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeAlarmIndicator);
-  ai->SetType(GvaAlarmType::kAlarmCaution);
-  ai->SetText("Engine over temperature");
-  // As there is an alarm set the Ack control to enabled
-  screen_.control->ForceEnabledSelected(3);
 
   screen_.canvas = canvas_;
   screen_.canvas.visible = true;

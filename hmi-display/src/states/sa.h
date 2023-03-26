@@ -29,6 +29,7 @@
 #include "src/hmi_gva.h"
 #include "src/states/base_hmi.h"
 #include "src/view_gva.h"
+#include "src/widgets/ai/object_localisation.h"
 #include "src/widgets/alarm_indicator.h"
 #include "src/widgets/plan_position_indicator.h"
 
@@ -36,6 +37,7 @@ namespace gva {
 
 struct StateSA : Hmi {
   void entry() override;
+  void exit() override;
   void react(EventKeyPowerOn const &) override;
   void react(EventKeySA const &) override;
   void react(EventKeyWPN const &) override;

@@ -69,17 +69,12 @@ void StateDRV::entry() {
     screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDialSpeedometer)->SetVisible(true);
     screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDialSpeedometer)->SetX(320);
     screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDialSpeedometer)->SetY(750);
-    WidgetDriverSpeedometer *dial =
-        (WidgetDriverSpeedometer *)screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDialSpeedometer);
-    dial->SetValue(10);
 
     screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeDialRpmFuel)->SetVisible(true);
     screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeDialRpmFuel)->SetX(950);
     screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeDialRpmFuel)->SetY(750);
-    WidgetDriverRpmFuel *rpm =
-        (WidgetDriverRpmFuel *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeDialRpmFuel);
-    rpm->SetValue(1200);
-    screen_.status_bar->visible = true;
+
+    screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeStatusBar)->SetVisible(true);
     screen_.function_top->SetEnabled(4);
   }
 };

@@ -29,6 +29,10 @@ install(FILES
             ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libddscxx.so.0.10.2
             ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libddscxx.so.0
             ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libddsc.so
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libddsc.so
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libsndfile.so
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libsndfile.so.1
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libsndfile.so.1.0.35
             # ${CMAKE_BINARY_DIR}/external/install/opt/cairo/lib/lib/
             # ${CMAKE_BINARY_DIR}/external/install/lib/${ARCH}-linux-gnu/libpango-1.0.so
             # ${CMAKE_BINARY_DIR}/external/install/lib/${ARCH}-linux-gnu/libpangocairo-1.0.so
@@ -49,6 +53,13 @@ install(FILES
     ${IMAGE_PATH}/Left.png 
     ${IMAGE_PATH}/Quad.png 
     DESTINATION "/opt/gva/hmi/images")
+
+# Audio files
+install(FILES  
+    ${CMAKE_SOURCE_DIR}/hmi-display/sounds/caution.wav
+    ${CMAKE_SOURCE_DIR}/hmi-display/sounds/threat.wav
+    ${CMAKE_SOURCE_DIR}/hmi-display/sounds/warning.wav
+    DESTINATION "/opt/gva/hmi/sounds")
 
 # All other images
 install(FILES  

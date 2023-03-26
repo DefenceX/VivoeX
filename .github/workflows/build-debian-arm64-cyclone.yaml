@@ -24,6 +24,7 @@ jobs:
             libxt-dev libxext-dev gtk-doc-tools libswscale-dev libprotobuf-c-dev \
             geographiclib-doc libgeographic-dev libgeographic-dev \
             autoconf automake libtool curl make g++ unzip lsb-release graphviz \
+            libtool automake autoconf autogen -y
             imagemagick -y && \
             pip install cpplint --user
 

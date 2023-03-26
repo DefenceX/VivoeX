@@ -48,6 +48,13 @@ class WidgetKeyboard : public WidgetX {
   ~WidgetKeyboard() final = default;
 
   ///
+  /// \brief Get the Widget Name attribute
+  ///
+  /// \return std::string
+  ///
+  std::string GetWidgetName() const final { return "WidgetKeyboard"; };
+
+  ///
   /// \brief Draw the current widget
   ///
   ///

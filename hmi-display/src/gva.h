@@ -33,7 +33,7 @@ namespace gva {
 
 static const uint32_t kSemVerMajor = 0;
 static const uint32_t kSemVerMinor = 4;
-static const uint32_t kSemVerPatch = 80;
+static const uint32_t kSemVerPatch = 149;
 static const uint32_t kMinimumHeight = 480;
 static const uint32_t kMinimumWidth = 640;
 
@@ -302,18 +302,6 @@ struct LocationType {
   LocationEnum locationFormat;
   float lat;
   float lon;
-};
-
-struct StatusBar {
-  bool visible;
-  uint32_t x;
-  uint32_t y;
-  LocationType location;
-  struct Labels {
-    LabelStates state;
-    std::string text;
-  };
-  std::array<Labels, 7> labels;
 };
 
 enum class SurfaceType { kSurfaceNone = 0, kSurfaceFile, kSurfaceBufferRgb24, kSurfaceCairo };
