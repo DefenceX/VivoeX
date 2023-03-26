@@ -36,10 +36,11 @@ class StatusUpdater {
   ~StatusUpdater() = default;
 
   void ClockUpdate(ClockArgs *args);
-  void GetLocalTime(std::tm &localTime);
-  void UpdateClock(std::shared_ptr<WidgetStatusBar> statusBar);
-  void ParseGpsData(const int *gpsFd, nmeaINFO *info, nmeaPARSER *parser, const LocationType &location);
-  void UpdateLocation(std::shared_ptr<WidgetStatusBar> statusBar, const nmeaINFO &info, const LocationType &location);
+  void GetLocalTime(std::tm &localTime) const;
+  void UpdateClock(std::shared_ptr<WidgetStatusBar> statusBar) const;
+  void ParseGpsData(const int *gpsFd, nmeaINFO *info, nmeaPARSER *parser, const LocationType &location) const;
+  void UpdateLocation(std::shared_ptr<WidgetStatusBar> statusBar, const nmeaINFO &info,
+                      const LocationType &location) const;
 
  private:
   static const int kMaxNmea = 1000;

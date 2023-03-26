@@ -53,8 +53,7 @@ struct termios {
 #include "widgets/widgets.h"
 
 namespace gva {
-ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height)
-    : RendererGva(width, height), screen_(screen), updater_(std::make_shared<Updater>(0)) {
+ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : RendererGva(width, height), screen_(screen) {
   struct termios settings;
 
   config_ = gva::ConfigData::GetInstance();
@@ -148,7 +147,7 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height)
   auto bottom_labels = (WidgetBottomLabels *)GetWidget(widget::WidgetEnum::KWidgetTypeBottomLabels);
   bottom_labels->SetLabels(&screen_->control->labels_);
 
-  updater_->RegisterWidgets(widget_list_);
+  updater_.RegisterWidgets(widget_list_);
 }
 
 ScreenGva::~ScreenGva() {

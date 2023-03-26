@@ -36,7 +36,7 @@
 
 namespace gva {
 
-void StatusUpdater::UpdateClock(std::shared_ptr<WidgetStatusBar> statusBar) {
+void StatusUpdater::UpdateClock(std::shared_ptr<WidgetStatusBar> statusBar) const {
   std::tm localTime;
   GetLocalTime(localTime);
 
@@ -46,7 +46,8 @@ void StatusUpdater::UpdateClock(std::shared_ptr<WidgetStatusBar> statusBar) {
   statusBar->UpdateClock(stream.str());
 }
 
-void StatusUpdater::ParseGpsData(const int *gpsFd, nmeaINFO *info, nmeaPARSER *parser, const LocationType &location) {
+void StatusUpdater::ParseGpsData(const int *gpsFd, nmeaINFO *info, nmeaPARSER *parser,
+                                 const LocationType &location) const {
   if (gpsFd == nullptr || *gpsFd <= 0) {
     return;
   }
@@ -73,13 +74,13 @@ void StatusUpdater::ParseGpsData(const int *gpsFd, nmeaINFO *info, nmeaPARSER *p
   const std::string tmp = nmea + "\r\n";
   info->lon = location.lon;
   info->lat = location.lat;
-  nmea_parse(parser, tmp.c_str(), tmp.size(), info);
+  nmea_parse(parser, tmp.c_str(), (int)tmp.size(), info);
   info->lat = ToDegrees(static_cast<float>(info->lat));
   info->lon = ToDegrees(static_cast<float>(info->lon));
 }
 
 void StatusUpdater::UpdateLocation(std::shared_ptr<WidgetStatusBar> statusBar, const nmeaINFO &info,
-                                   const LocationType &location) {
+                                   const LocationType &location) const {
   switch (location.locationFormat) {
     case LocationEnum::kLocationFormatLongLat: {
       std::stringstream stream;
@@ -118,7 +119,7 @@ void StatusUpdater::ClockUpdate(ClockArgs *args) {
   gva::EventsGva::CreateRefreshEvent();
 }
 
-void StatusUpdater::GetLocalTime(std::tm &localTime) {
+void StatusUpdater::GetLocalTime(std::tm &localTime) const {
   const auto now = std::time(nullptr);
 #if defined(_WIN32)
   localtime_s(&localTime, &now);

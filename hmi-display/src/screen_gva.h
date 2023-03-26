@@ -168,7 +168,7 @@ class ScreenGva : public RendererGva {
   nmeaINFO info_;
   nmeaPARSER parser_;
   ConfigData *config_ = nullptr;
-  const std::shared_ptr<Updater> &updater_;
+  Updater updater_ = Updater(0);
 };
 
 }  // namespace gva
