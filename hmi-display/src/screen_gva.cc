@@ -41,6 +41,7 @@ struct termios {
 
 #include <iomanip>
 #include <iostream>
+#include <memory>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -52,10 +53,9 @@ struct termios {
 #include "widgets/widgets.h"
 
 namespace gva {
-ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : RendererGva(width, height), screen_(screen) {
+ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height)
+    : RendererGva(width, height), screen_(screen), updater_(std::make_shared<Updater>(0)) {
   struct termios settings;
-
-  updater_ = std::make_shared<Updater>(0);
 
   config_ = gva::ConfigData::GetInstance();
 
