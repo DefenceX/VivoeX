@@ -68,9 +68,7 @@ target_link_libraries(hmi-display
 	vivoe-media 
 	nmea 
 	${PORTAUDIO_LIBRARIES}
-	# portaudiocpp.a
 	${SNDFILE_LIBRARIES}
-	pthread 
 	glog 
 	widgets 
 	GeographicLib 
