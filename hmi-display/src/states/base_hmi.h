@@ -28,8 +28,10 @@
 #include <string>
 
 #include "src/gva.h"
+#include "src/hmi_gva.h"
 #include "src/renderer_map.h"
 #include "src/screen_gva.h"
+#include "src/states/off.h"
 #include "src/states/base_hmi.h"
 #include "src/tinyfsm.h"
 #include "src/view_gva.h"
@@ -56,7 +58,8 @@ struct EventKeyFunction : tinyfsm::Event {
 //
 // State Machine Base Class Declaration
 //
-struct Hmi : tinyfsm::Fsm<Hmi> {
+class Hmi : public HmiState, public tinyfsm::Fsm<Hmi> {
+ public:
   virtual void react(EventKeyPowerOn const &) { return; }   // Nothing to do in base class
   virtual void react(EventKeySA const &) { return; }        // Nothing to do in base class
   virtual void react(EventKeyWPN const &) { return; }       // Nothing to do in base class
@@ -103,6 +106,11 @@ struct Hmi : tinyfsm::Fsm<Hmi> {
   static void Labels(LabelModeEnum labels);
   static void ClearAlarms(std::shared_ptr<ScreenGva> screen_render);
 };
+
+//
+// Initial state definition
+//
+FSM_INITIAL_STATE(Hmi, StateOff)
 
 }  // namespace gva
 

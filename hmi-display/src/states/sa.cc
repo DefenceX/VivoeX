@@ -23,6 +23,8 @@
 
 #include "sa.h"
 
+#include "src/states/states.h"
+
 namespace gva {
 
 GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {

@@ -25,6 +25,7 @@
 
 #include <glog/logging.h>
 
+#include "src/states/states.h"
 #include "src/widgets/widget_types.h"
 
 namespace gva {

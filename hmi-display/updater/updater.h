@@ -39,9 +39,9 @@ class Updater : public UpdaterBase {
   ///
   /// \param id The HMI identity, will only get updates for this ID.
   ///
-  Updater(uint64_t id);
+  explicit Updater(uint64_t id);
 
-  ~Updater() = default;
+  ~Updater() final;
 
   ///
   /// \brief Register the widgets to be updated
@@ -70,6 +70,8 @@ class Updater : public UpdaterBase {
   /// \return void*
   ///
   static void* WidgetUpdaterThread(void* ptr);
+
+  static bool updater_alive_;
 
  private:
   std::unordered_map<widget::WidgetEnum, std::shared_ptr<WidgetX>>* widget_list_ = nullptr;

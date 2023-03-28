@@ -24,6 +24,8 @@
 
 #include "alarms.h"
 
+#include "src/states/states.h"
+
 namespace gva {
 
 GvaKeyEnum Hmi::KeyAlarms(GvaKeyEnum keypress) {

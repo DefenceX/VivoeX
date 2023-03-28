@@ -22,6 +22,7 @@
 ///
 
 #include "bms.h"
+#include "src/states/states.h"
 
 namespace gva {
 

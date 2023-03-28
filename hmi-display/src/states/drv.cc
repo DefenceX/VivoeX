@@ -23,6 +23,7 @@
 
 #include "drv.h"
 
+#include "src/states/states.h"
 #include "src/widgets/driver/rpm_fuel.h"
 #include "src/widgets/driver/speedometer.h"
 

@@ -39,6 +39,7 @@
 #include "src/widgets/alarm_indicator.h"
 #include "src/widgets/keyboard.h"
 #include "src/widgets/plan_position_indicator.h"
+#include "updater/updater.h"
 #include "video/src/gva_video_rtp_yuv.h"
 
 DEFINE_bool(fullscreen, false, "Start the application fullscreen");

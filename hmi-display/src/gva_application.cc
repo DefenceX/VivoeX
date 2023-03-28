@@ -29,6 +29,7 @@
 
 #include "common/utils.h"
 #include "src/gva_functions_common.h"
+#include "src/states/base_hmi.h"
 #include "src/widgets/keyboard.h"
 #include "src/widgets/widget.h"
 

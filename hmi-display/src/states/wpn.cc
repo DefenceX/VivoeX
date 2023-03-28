@@ -24,6 +24,7 @@
 #include "wpn.h"
 
 #include "src/gva.h"
+#include "src/states/states.h"
 
 namespace gva {
 

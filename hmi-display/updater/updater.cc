@@ -38,7 +38,15 @@
 
 namespace gva {
 
+bool Updater::updater_alive_ = true;
+
 Updater::Updater(uint64_t id) : UpdaterBase(id){};
+
+Updater::~Updater() {
+  LOG(INFO) << "Updater shutting down threatUpdater";
+  updater_alive_ = false;
+  thread_.join();
+}
 
 void Updater::RegisterWidgets(std::unordered_map<widget::WidgetEnum, std::shared_ptr<WidgetX>> &widget_list) {
   std::shared_ptr<gva::WidgetPlanPositionIndicator> compass =
@@ -49,7 +57,7 @@ void Updater::RegisterWidgets(std::unordered_map<widget::WidgetEnum, std::shared
 
   widget_list_ = &widget_list;
 
-  thread_ =  std::thread(Updater::WidgetUpdaterThread, (void *)widget_list_);
+  thread_ = std::thread(Updater::WidgetUpdaterThread, (void *)widget_list_);
 }
 
 void Updater::UpdateState(std::string state) {}
@@ -107,7 +115,7 @@ void *Updater::WidgetUpdaterThread(void *ptr) {
   threat.bearing = 20;
   compass->AddThreat(2, threat);
   // This is the threat event loop
-  while (true) {
+  while (updater_alive_) {
     compass->SetBearing((uint16_t)GenerateSineWave((int)count));
     compass->SetBearingSight((uint16_t)(count % 360));
     compass->SetWeaponAzimuth((uint16_t)(360 - (count % 360)));

@@ -151,12 +151,12 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
 }
 
 ScreenGva::~ScreenGva() {
+  LOG(INFO) << "GVA screen finalized.";
   args_.active = false;
   clock_thread_.join();
   nmea_parser_destroy(&parser_);
   close(gps_);
   if (gps_) LOG(INFO) << "GPS closed";
-  LOG(INFO) << "GVA screen finalized.";
 }
 
 void *ScreenGva::ClockUpdateThread(ClockArgs arg) {

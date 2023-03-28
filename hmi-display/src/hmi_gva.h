@@ -32,23 +32,30 @@
 #include "src/hmi_gva_helpers.h"
 #include "src/renderer_map.h"
 #include "src/screen_gva.h"
-#include "src/states/alarms.h"
-#include "src/states/base_hmi.h"
-#include "src/states/bms.h"
-#include "src/states/com.h"
-#include "src/states/def.h"
-#include "src/states/drv.h"
-#include "src/states/off.h"
-#include "src/states/on.h"
-#include "src/states/sa.h"
-#include "src/states/str.h"
-#include "src/states/sys.h"
-#include "src/states/wpn.h"
 #include "src/view_gva.h"
 
 namespace gva {
 
-using hmi = Hmi;
+class HmiState {
+ public:
+  void SetCanvasPng(const std::string &file);
+  void Reset();
+  void Labels(LabelModeEnum labels);
+  void KeySide(GvaKeyEnum key);
+  GvaKeyEnum Key(GvaKeyEnum keypress);
+
+  void ClearAlarms(std::shared_ptr<ScreenGva> screen_render);
+  std::shared_ptr<ViewGvaManager> manager_;
+  ResolutionType view_;
+  FunctionSelect top_;
+  CommonTaskKeys bottom_;
+  Canvas canvas_;
+  Screen screen_;
+  std::shared_ptr<ScreenGva> screen_render_;
+  std::shared_ptr<rendererMap> map_;
+  GvaFunctionEnum lastState_;
+  bool alarmson_ = false;
+};
 
 }  // namespace gva
 

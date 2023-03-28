@@ -23,6 +23,8 @@
 
 #include "com.h"
 
+#include "src/states/states.h"
+
 namespace gva {
 
 GvaKeyEnum Hmi::KeyCOM(GvaKeyEnum keypress) {

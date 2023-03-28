@@ -137,13 +137,13 @@
 
 namespace gva {
 
-void Hmi::SetCanvasPng(const std::string &file) {
-  Hmi::GetScreen()->canvas.filename = file.c_str();
-  Hmi::GetScreen()->canvas.bufferType = SurfaceType::kSurfaceFile;
-  Hmi::GetScreen()->canvas.buffer = nullptr;
+void HmiState::SetCanvasPng(const std::string &file) {
+  canvas_.filename = file.c_str();
+  canvas_.bufferType = SurfaceType::kSurfaceFile;
+  canvas_.buffer = nullptr;
 }
 
-void Hmi::Reset() {
+void HmiState::Reset() {
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeStatusBar)->SetVisible(true);
   screen_.labels = LabelModeEnum::kLabelAll;
   Labels(screen_.labels);
@@ -169,7 +169,7 @@ void Hmi::Reset() {
   alarmson_ = false;
 }
 
-void Hmi::Labels(LabelModeEnum labels) {
+void HmiState::Labels(LabelModeEnum labels) {
   switch (labels) {
     case LabelModeEnum::kLabelAll:
       if ((screen_.currentFunction == GvaFunctionEnum::kSituationalAwareness) ||
@@ -225,7 +225,7 @@ void Hmi::Labels(LabelModeEnum labels) {
   }
 };
 
-void Hmi::KeySide(GvaKeyEnum key) {
+void HmiState::KeySide(GvaKeyEnum key) {
   // Clear any on screen messages
   screen_.message.visible = false;
 
@@ -284,7 +284,7 @@ void Hmi::KeySide(GvaKeyEnum key) {
   }
 }
 
-GvaKeyEnum Hmi::Key(GvaKeyEnum keypress) {
+GvaKeyEnum HmiState::Key(GvaKeyEnum keypress) {
   KeySide(keypress);
   switch (keypress) {
     case GvaKeyEnum::kKeyBlackout:
@@ -305,7 +305,7 @@ GvaKeyEnum Hmi::Key(GvaKeyEnum keypress) {
     case GvaKeyEnum::kKeyF16:  // Ack
       screen_.control->SetEnabledSelected(3);
       screen_.control->ResetAllEnabled();
-      Hmi::ClearAlarms(screen_render_);
+      ClearAlarms(screen_render_);
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeAlarmIndicator)->SetVisible(false);
       break;
     case GvaKeyEnum::kKeyF17:  // Up Arrow
@@ -343,26 +343,10 @@ GvaKeyEnum Hmi::Key(GvaKeyEnum keypress) {
   return keypress;
 }
 
-void Hmi::ClearAlarms(std::shared_ptr<ScreenGva> screen_render) {
+void HmiState::ClearAlarms(std::shared_ptr<ScreenGva> screen_render) {
   // Clear alarms here till LDM
   auto bottom = (gva::WidgetBottomLabels *)(screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeBottomLabels));
   bottom->DisableLabel(GvaKeyEnum::kKeyF16);
 }
-
-std::shared_ptr<ViewGvaManager> Hmi::manager_;
-ResolutionType Hmi::view_;
-FunctionSelect Hmi::top_;
-CommonTaskKeys Hmi::bottom_;
-Canvas Hmi::canvas_;
-Screen Hmi::screen_;
-std::shared_ptr<ScreenGva> Hmi::screen_render_;
-std::shared_ptr<rendererMap> Hmi::map_;
-GvaFunctionEnum Hmi::lastState_;
-bool Hmi::alarmson_ = false;
-
-//
-// Initial state definition
-//
-FSM_INITIAL_STATE(Hmi, StateOff)
 
 }  // namespace gva
