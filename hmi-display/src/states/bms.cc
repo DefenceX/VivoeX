@@ -25,6 +25,7 @@
 
 #include <glog/logging.h>
 
+#include "src/hmi_gva.h"
 #include "src/states/states.h"
 #include "src/widgets/widget_types.h"
 
@@ -63,7 +64,7 @@ double conv(int zoom) {
 }
 
 GvaKeyEnum Hmi::KeyBMS(GvaKeyEnum keypress) {
-  screen_.function_right.visible = true;
+  HmiState::GetInstance().screen_.function_right.visible = true;
   HmiState::GetInstance().KeySide(keypress);
   HmiState::GetInstance().Key(keypress);
   if (ConfigData::GetInstance()->GetMapEnabled()) {
@@ -100,10 +101,10 @@ GvaKeyEnum Hmi::KeyBMS(GvaKeyEnum keypress) {
       case GvaKeyEnum::kKeyF7:  ///
       case GvaKeyEnum::kKeyF8:
       case GvaKeyEnum::kKeyF12:
-        screen_.message.visible = true;
-        screen_.message.icon = widget::IconType::kIconInfo;
-        screen_.message.brief.text = "Function key";
-        screen_.message.detail.text = "Operation not implemented !";
+        HmiState::GetInstance().screen_.message.visible = true;
+        HmiState::GetInstance().screen_.message.icon = widget::IconType::kIconInfo;
+        HmiState::GetInstance().screen_.message.brief.text = "Function key";
+        HmiState::GetInstance().screen_.message.detail.text = "Operation not implemented !";
       default:
         update = false;
         break;
@@ -115,31 +116,33 @@ GvaKeyEnum Hmi::KeyBMS(GvaKeyEnum keypress) {
                 << std::to_string(((double)ConfigData::GetInstance()->GetZoom() / 10000000) +
                                   ((double)ConfigData::GetInstance()->GetZoom() / 10000))
                 << " ";
-      map_->SetWidth(kMinimumWidth);
-      map_->SetHeight(kMinimumHeight);
-      LOG(INFO) << "[BMS] res " + std::to_string(screen_render_->GetWidth()) << "x"
-                << std::to_string(screen_render_->GetHeight());
-      map_->Project(ConfigData::GetInstance()->GetZoom(), ConfigData::GetInstance()->GetTestLon(),
-                    ConfigData::GetInstance()->GetTestLat(), &screen_.canvas.surface);
-      screen_.canvas.bufferType = SurfaceType::kSurfaceCairo;
+      HmiState::GetInstance().map_->SetWidth(kMinimumWidth);
+      HmiState::GetInstance().map_->SetHeight(kMinimumHeight);
+      LOG(INFO) << "[BMS] res " + std::to_string(HmiState::GetInstance().screen_render_->GetWidth()) << "x"
+                << std::to_string(HmiState::GetInstance().screen_render_->GetHeight());
+      HmiState::GetInstance().map_->Project(
+          ConfigData::GetInstance()->GetZoom(), ConfigData::GetInstance()->GetTestLon(),
+          ConfigData::GetInstance()->GetTestLat(), &HmiState::GetInstance().screen_.canvas.surface);
+      HmiState::GetInstance().screen_.canvas.bufferType = SurfaceType::kSurfaceCairo;
     }
   }
   return keypress;
 }
 
 void StateBMS::entry() {
-  if (screen_.function_top->labels[7].state != LabelStates::kLabelHidden) {
-    manager_->SetScreen(&screen_, GvaFunctionEnum::kBattlefieldManagementSystem);
-    Reset();
-    lastState_ = GvaFunctionEnum::kBattlefieldManagementSystem;
-    screen_.function_top->SetEnabled(7);
-    screen_.canvas.visible = true;
+  if (HmiState::GetInstance().screen_.function_top->labels[7].state != LabelStates::kLabelHidden) {
+    HmiState::GetInstance().manager_->SetScreen(&HmiState::GetInstance().screen_, GvaFunctionEnum::kBattlefieldManagementSystem);
+    HmiState::GetInstance().ResetHmi();
+    HmiState::GetInstance().lastState_ = GvaFunctionEnum::kBattlefieldManagementSystem;
+    HmiState::GetInstance().screen_.function_top->SetEnabled(7);
+    HmiState::GetInstance().screen_.canvas.visible = true;
     if (ConfigData::GetInstance()->GetMapEnabled()) {
-      map_->SetWidth(kMinimumWidth);
-      map_->SetHeight(kMinimumHeight);
-      map_->Project(ConfigData::GetInstance()->GetZoom(), ConfigData::GetInstance()->GetTestLon(),
-                    ConfigData::GetInstance()->GetTestLat(), &screen_.canvas.surface);
-      screen_.canvas.bufferType = SurfaceType::kSurfaceCairo;
+      HmiState::GetInstance().map_->SetWidth(kMinimumWidth);
+      HmiState::GetInstance().map_->SetHeight(kMinimumHeight);
+      HmiState::GetInstance().map_->Project(ConfigData::GetInstance()->GetZoom(),
+                                            ConfigData::GetInstance()->GetTestLon(),
+                                            ConfigData::GetInstance()->GetTestLat(), &HmiState::GetInstance().screen_.canvas.surface);
+      HmiState::GetInstance().screen_.canvas.bufferType = SurfaceType::kSurfaceCairo;
     } else {
       // Display the DefenceX logo
       std::string filename = ConfigData::GetInstance()->GetImagePath();

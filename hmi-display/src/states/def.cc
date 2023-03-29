@@ -23,12 +23,13 @@
 
 #include "def.h"
 
+#include "src/hmi_gva.h"
 #include "src/states/states.h"
 
 namespace gva {
 
 GvaKeyEnum Hmi::KeyDEF(GvaKeyEnum keypress) {
-  screen_.function_right.visible = true;
+  HmiState::GetInstance().screen_.function_right.visible = true;
 
   HmiState::GetInstance().KeySide(keypress);
   HmiState::GetInstance().Key(keypress);
@@ -46,10 +47,10 @@ GvaKeyEnum Hmi::KeyDEF(GvaKeyEnum keypress) {
     case GvaKeyEnum::kKeyF10:
     case GvaKeyEnum::kKeyF11:
     case GvaKeyEnum::kKeyF12:
-      screen_.message.visible = true;
-      screen_.message.icon = widget::IconType::kIconError;
-      screen_.message.brief.text = "Function key";
-      screen_.message.detail.text = "Operation not implemented!";
+      HmiState::GetInstance().screen_.message.visible = true;
+      HmiState::GetInstance().screen_.message.icon = widget::IconType::kIconError;
+      HmiState::GetInstance().screen_.message.brief.text = "Function key";
+      HmiState::GetInstance().screen_.message.detail.text = "Operation not implemented!";
       break;
     default:  // Lots of keys we dont care about
       break;
@@ -58,13 +59,13 @@ GvaKeyEnum Hmi::KeyDEF(GvaKeyEnum keypress) {
 }
 
 void StateDEF::entry() {
-  if (screen_.function_top->labels[2].state != LabelStates::kLabelHidden) {
-    manager_->SetScreen(&screen_, GvaFunctionEnum::kDefensiveSystems);
-    Reset();
-    screen_.function_top->SetEnabled(2);
-    screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeStatusBar)->SetVisible(true);
-    screen_.function_top->visible = true;
-    screen_.function_top->labels[2].state = LabelStates::kLabelEnabledSelected;
+  if (HmiState::GetInstance().screen_.function_top->labels[2].state != LabelStates::kLabelHidden) {
+    HmiState::GetInstance().manager_->SetScreen(&HmiState::GetInstance().screen_, GvaFunctionEnum::kDefensiveSystems);
+    HmiState::GetInstance().ResetHmi();
+    HmiState::GetInstance().screen_.function_top->SetEnabled(2);
+    HmiState::GetInstance().screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeStatusBar)->SetVisible(true);
+    HmiState::GetInstance().screen_.function_top->visible = true;
+    HmiState::GetInstance().screen_.function_top->labels[2].state = LabelStates::kLabelEnabledSelected;
   }
 };
 

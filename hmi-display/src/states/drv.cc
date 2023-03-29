@@ -23,6 +23,7 @@
 
 #include "drv.h"
 
+#include "src/hmi_gva.h"
 #include "src/states/states.h"
 #include "src/widgets/driver/rpm_fuel.h"
 #include "src/widgets/driver/speedometer.h"
@@ -30,7 +31,7 @@
 namespace gva {
 
 GvaKeyEnum Hmi::KeyDRV(GvaKeyEnum keypress) {
-  screen_.function_right.visible = true;
+  HmiState::GetInstance().screen_.function_right.visible = true;
 
   HmiState::GetInstance().KeySide(keypress);
   HmiState::GetInstance().Key(keypress);
@@ -48,10 +49,10 @@ GvaKeyEnum Hmi::KeyDRV(GvaKeyEnum keypress) {
     case GvaKeyEnum::kKeyF10:
     case GvaKeyEnum::kKeyF11:
     case GvaKeyEnum::kKeyF12:
-      screen_.message.visible = true;
-      screen_.message.icon = widget::IconType::kIconError;
-      screen_.message.brief.text = "Function key";
-      screen_.message.detail.text = "Operation not implemented!";
+      HmiState::GetInstance().screen_.message.visible = true;
+      HmiState::GetInstance().screen_.message.icon = widget::IconType::kIconError;
+      HmiState::GetInstance().screen_.message.brief.text = "Function key";
+      HmiState::GetInstance().screen_.message.detail.text = "Operation not implemented!";
       break;
     default:  // LotsThe state machine for of keys we dont care about
       break;
@@ -60,30 +61,30 @@ GvaKeyEnum Hmi::KeyDRV(GvaKeyEnum keypress) {
 }
 
 void StateDRV::entry() {
-  if (screen_.function_top->labels[4].state != LabelStates::kLabelHidden) {
-    manager_->SetScreen(&screen_, GvaFunctionEnum::kDriver);
-    Reset();
-    lastState_ = GvaFunctionEnum::kDriver;
-    if (screen_.labels != LabelModeEnum::kLabelMinimal)
-      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetVisible(true);
+  if (HmiState::GetInstance().screen_.function_top->labels[4].state != LabelStates::kLabelHidden) {
+    HmiState::GetInstance().manager_->SetScreen(&HmiState::GetInstance().screen_, GvaFunctionEnum::kDriver);
+    HmiState::GetInstance().ResetHmi();
+    HmiState::GetInstance().lastState_ = GvaFunctionEnum::kDriver;
+    if (HmiState::GetInstance().screen_.labels != LabelModeEnum::kLabelMinimal)
+      HmiState::GetInstance().screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetVisible(true);
 
-    screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDialSpeedometer)->SetVisible(true);
-    screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDialSpeedometer)->SetX(320);
-    screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDialSpeedometer)->SetY(750);
+    HmiState::GetInstance().screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDialSpeedometer)->SetVisible(true);
+    HmiState::GetInstance().screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDialSpeedometer)->SetX(320);
+    HmiState::GetInstance().screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDialSpeedometer)->SetY(750);
 
-    screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeDialRpmFuel)->SetVisible(true);
-    screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeDialRpmFuel)->SetX(950);
-    screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeDialRpmFuel)->SetY(750);
+    HmiState::GetInstance().screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeDialRpmFuel)->SetVisible(true);
+    HmiState::GetInstance().screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeDialRpmFuel)->SetX(950);
+    HmiState::GetInstance().screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeDialRpmFuel)->SetY(750);
 
-    screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeStatusBar)->SetVisible(true);
-    screen_.function_top->SetEnabled(4);
+    HmiState::GetInstance().screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeStatusBar)->SetVisible(true);
+    HmiState::GetInstance().screen_.function_top->SetEnabled(4);
   }
 };
 
 void StateDRV::exit() {
   // Switch the dials off now not needed in other states
-  screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDialSpeedometer)->SetVisible(false);
-  screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeDialRpmFuel)->SetVisible(false);
+  HmiState::GetInstance().screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDialSpeedometer)->SetVisible(false);
+  HmiState::GetInstance().screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeDialRpmFuel)->SetVisible(false);
 }
 
 void StateDRV::react(EventKeyPowerOn const &) { transit<StateOff>(); };

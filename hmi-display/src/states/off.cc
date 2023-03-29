@@ -23,6 +23,7 @@
 
 #include "off.h"
 
+#include "src/hmi_gva.h"
 #include "src/states/states.h"
 
 namespace gva {

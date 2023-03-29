@@ -70,19 +70,6 @@ class Hmi : public tinyfsm::Fsm<Hmi> {
   virtual void entry(void) { return; }                      // entry actions in some States
   virtual void exit(void) { return; }                       // no exit actions
 
- protected:
-  static std::shared_ptr<ViewGvaManager> manager_;
-  static ResolutionType view_;
-  static FunctionSelect top_;
-  static CommonTaskKeys bottom_;
-  static Canvas canvas_;
-  static Screen screen_;
-  static std::shared_ptr<Updater> updater_;
-  static std::shared_ptr<ScreenGva> screen_render_;
-  static std::shared_ptr<rendererMap> map_;
-  static GvaFunctionEnum lastState_;
-  static bool alarmson_;
-
  public:
   static GvaKeyEnum KeySA(GvaKeyEnum key);
   static GvaKeyEnum KeyWPN(GvaKeyEnum key);
@@ -93,8 +80,8 @@ class Hmi : public tinyfsm::Fsm<Hmi> {
   static GvaKeyEnum KeyCOM(GvaKeyEnum key);
   static GvaKeyEnum KeyBMS(GvaKeyEnum key);
   static GvaKeyEnum KeyAlarms(GvaKeyEnum key);  // Nothing to do in base class
-  static ScreenGva *GetRendrer() { return screen_render_.get(); }
-  static Screen *GetScreen() { return &screen_; }
+  static ScreenGva *GetRendrer() { return HmiState::GetInstance().screen_render_.get(); }
+  static Screen *GetScreen() { return &HmiState::GetInstance().screen_; }
 };
 
 }  // namespace gva

@@ -23,12 +23,13 @@
 
 #include "str.h"
 
+#include "src/hmi_gva.h"
 #include "src/states/states.h"
 
 namespace gva {
 
 GvaKeyEnum Hmi::KeySTR(GvaKeyEnum keypress) {
-  screen_.function_right.visible = true;
+  HmiState::GetInstance().screen_.function_right.visible = true;
 
   HmiState::GetInstance().KeySide(keypress);
   HmiState::GetInstance().Key(keypress);
@@ -46,10 +47,10 @@ GvaKeyEnum Hmi::KeySTR(GvaKeyEnum keypress) {
     case GvaKeyEnum::kKeyF10:
     case GvaKeyEnum::kKeyF11:
     case GvaKeyEnum::kKeyF12:
-      screen_.message.visible = true;
-      screen_.message.icon = widget::IconType::kIconError;
-      screen_.message.brief.text = "Function key";
-      screen_.message.detail.text = "Operation not implemented !";
+      HmiState::GetInstance().screen_.message.visible = true;
+      HmiState::GetInstance().screen_.message.icon = widget::IconType::kIconError;
+      HmiState::GetInstance().screen_.message.brief.text = "Function key";
+      HmiState::GetInstance().screen_.message.detail.text = "Operation not implemented !";
       break;
     default:  // Lots of keys we dont care about
       break;
@@ -58,11 +59,11 @@ GvaKeyEnum Hmi::KeySTR(GvaKeyEnum keypress) {
 }
 
 void StateSTR::entry() {
-  if (screen_.function_top->labels[5].state != LabelStates::kLabelHidden) {
-    Reset();
-    manager_->SetScreen(&screen_, GvaFunctionEnum::KSpecialToRole);
-    lastState_ = GvaFunctionEnum::KSpecialToRole;
-    screen_.function_top->SetEnabled(5);
+  if (HmiState::GetInstance().screen_.function_top->labels[5].state != LabelStates::kLabelHidden) {
+    HmiState::GetInstance().ResetHmi();
+    HmiState::GetInstance().manager_->SetScreen(&HmiState::GetInstance().screen_, GvaFunctionEnum::KSpecialToRole);
+    HmiState::GetInstance().lastState_ = GvaFunctionEnum::KSpecialToRole;
+    HmiState::GetInstance().screen_.function_top->SetEnabled(5);
   }
 };
 

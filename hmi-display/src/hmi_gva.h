@@ -55,16 +55,16 @@ class HmiState {
   GvaKeyEnum Key(GvaKeyEnum keypress);
 
   void ClearAlarms(std::shared_ptr<ScreenGva> screen_render);
-  static std::shared_ptr<ViewGvaManager> manager_;
-  static ResolutionType view_;
-  static FunctionSelect top_;
-  static CommonTaskKeys bottom_;
-  static Canvas canvas_;
-  static Screen screen_;
-  static std::shared_ptr<ScreenGva> screen_render_;
-  static std::shared_ptr<rendererMap> map_;
-  static GvaFunctionEnum lastState_;
-  static bool alarmson_;
+  std::shared_ptr<ViewGvaManager> manager_;
+  ResolutionType view_;
+  FunctionSelect top_;
+  CommonTaskKeys bottom_;
+  Canvas canvas_;
+  Screen screen_;
+  std::shared_ptr<ScreenGva> screen_render_;
+  std::shared_ptr<rendererMap> map_;
+  GvaFunctionEnum lastState_;
+  bool alarmson_;
 };
 
 }  // namespace gva

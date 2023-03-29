@@ -23,6 +23,7 @@
 
 #include "sa.h"
 
+#include "src/hmi_gva.h"
 #include "src/states/states.h"
 
 namespace gva {
@@ -31,10 +32,10 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
   const std::string path = ConfigData::GetInstance()->GetImagePath();
   std::string filename;
 
-  auto *compass =
-      static_cast<WidgetPlanPositionIndicator *>(screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass));
-  auto *objects =
-      static_cast<WidgetObjectLocalisation *>(screen_render_->GetWidget(widget::WidgetEnum::KWidgetObjectLocalisation));
+  auto *compass = static_cast<WidgetPlanPositionIndicator *>(
+      HmiState::GetInstance().screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass));
+  auto *objects = static_cast<WidgetObjectLocalisation *>(
+      HmiState::GetInstance().screen_render_->GetWidget(widget::WidgetEnum::KWidgetObjectLocalisation));
   objects->SetVisible(false);
   HmiState::GetInstance().KeySide(keypress);
   HmiState::GetInstance().Key(keypress);
@@ -93,10 +94,10 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
     case GvaKeyEnum::kKeyF7:
     case GvaKeyEnum::kKeyF8:
     case GvaKeyEnum::kKeyF9:
-      screen_.message.visible = true;
-      screen_.message.icon = widget::IconType::kIconError;
-      screen_.message.brief.text = "Function key";
-      screen_.message.detail.text = "Operation not implemented!";
+      HmiState::GetInstance().screen_.message.visible = true;
+      HmiState::GetInstance().screen_.message.icon = widget::IconType::kIconError;
+      HmiState::GetInstance().screen_.message.brief.text = "Function key";
+      HmiState::GetInstance().screen_.message.detail.text = "Operation not implemented!";
       break;
     default:
       break;
@@ -105,18 +106,21 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
 }
 
 void StateSA::entry() {
-  if (screen_.function_top->labels[0].state != LabelStates::kLabelHidden) {
-    manager_->SetScreen(&screen_, GvaFunctionEnum::kSituationalAwareness);
-    lastState_ = GvaFunctionEnum::kSituationalAwareness;
-    Reset();
-    screen_.function_top->SetEnabled(0);
+  if (HmiState::GetInstance().screen_.function_top->labels[0].state != LabelStates::kLabelHidden) {
+    HmiState::GetInstance().manager_->SetScreen(&HmiState::GetInstance().screen_,
+                                                GvaFunctionEnum::kSituationalAwareness);
+    HmiState::GetInstance().lastState_ = GvaFunctionEnum::kSituationalAwareness;
+    HmiState::GetInstance().ResetHmi();
+    HmiState::GetInstance().screen_.function_top->SetEnabled(0);
 
-    if (screen_.labels != LabelModeEnum::kLabelMinimal)
-      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetVisible(true);
-    if (!screen_.canvas.surface) {
+    if (HmiState::GetInstance().screen_.labels != LabelModeEnum::kLabelMinimal)
+      HmiState::GetInstance().screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetVisible(true);
+    if (!HmiState::GetInstance().screen_.canvas.surface) {
       std::string filename;
       filename = ConfigData::GetInstance()->GetImagePath();
-      screen_render_->GetWidget(widget::WidgetEnum::KWidgetObjectLocalisation)->SetVisible(true);
+      HmiState::GetInstance()
+          .screen_render_->GetWidget(widget::WidgetEnum::KWidgetObjectLocalisation)
+          ->SetVisible(true);
       filename.append("/FrontCenter.png");
 
       HmiState::GetInstance().SetCanvasPng(filename.c_str());
@@ -149,6 +153,8 @@ void StateSA::react(EventKeyFunction const &e) {
   if (e.key == GvaKeyEnum::kKeyNextLabel) transit<StateWPN>();
 };
 
-void StateSA::exit() { screen_render_->GetWidget(widget::WidgetEnum::KWidgetObjectLocalisation)->SetVisible(false); }
+void StateSA::exit() {
+  HmiState::GetInstance().screen_render_->GetWidget(widget::WidgetEnum::KWidgetObjectLocalisation)->SetVisible(false);
+}
 
 }  // namespace gva

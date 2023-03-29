@@ -22,14 +22,16 @@
 ///
 
 #include "bms.h"
+#include "src/hmi_gva.h"
 #include "src/states/states.h"
 
 namespace gva {
 
 GvaKeyEnum Hmi::KeySYS(GvaKeyEnum keypress) {
-  screen_.function_left.visible = true;
-  screen_.function_right.visible = true;
-  WidgetTable *table = (WidgetTable *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable);
+  HmiState::GetInstance().screen_.function_left.visible = true;
+  HmiState::GetInstance().screen_.function_right.visible = true;
+  WidgetTable *table =
+      (WidgetTable *)HmiState::GetInstance().screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable);
 
   HmiState::GetInstance().KeySide(keypress);
   HmiState::GetInstance().Key(keypress);
@@ -49,20 +51,21 @@ GvaKeyEnum Hmi::KeySYS(GvaKeyEnum keypress) {
     case GvaKeyEnum::kKeyF8:
     case GvaKeyEnum::kKeyF9:
     case GvaKeyEnum::kKeyF10:
-      screen_.message.visible = true;
-      screen_.message.icon = widget::IconType::kIconError;
-      screen_.message.brief.text = "Function key";
-      screen_.message.detail.text = "Operation not implemented!";
+      HmiState::GetInstance().screen_.message.visible = true;
+      HmiState::GetInstance().screen_.message.icon = widget::IconType::kIconError;
+      HmiState::GetInstance().screen_.message.brief.text = "Function key";
+      HmiState::GetInstance().screen_.message.detail.text = "Operation not implemented!";
       break;
     case GvaKeyEnum::kKeyF11:
       // Blackout
-      screen_.info.mode =
-          (screen_.info.mode == ScreenMode::kModeBlackout) ? ScreenMode::kModeOperational : ScreenMode::kModeBlackout;
-      screen_.canvas.visible = true;
-      if (screen_.info.mode == ScreenMode::kModeBlackout)
-        screen_.canvas.blackout = true;
+      HmiState::GetInstance().screen_.info.mode =
+          (HmiState::GetInstance().screen_.info.mode == ScreenMode::kModeBlackout) ? ScreenMode::kModeOperational
+                                                                                   : ScreenMode::kModeBlackout;
+      HmiState::GetInstance().screen_.canvas.visible = true;
+      if (HmiState::GetInstance().screen_.info.mode == ScreenMode::kModeBlackout)
+        HmiState::GetInstance().screen_.canvas.blackout = true;
       else
-        screen_.canvas.blackout = false;
+        HmiState::GetInstance().screen_.canvas.blackout = false;
       break;
     case GvaKeyEnum::kKeyF12:
       // Exit
@@ -76,14 +79,15 @@ GvaKeyEnum Hmi::KeySYS(GvaKeyEnum keypress) {
 }
 
 void StateSYS::entry() {
-  if (screen_.function_top->labels[3].state != LabelStates::kLabelHidden) {
-    WidgetTable *table = (WidgetTable *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable);
-    Reset();
-    manager_->SetScreen(&screen_, GvaFunctionEnum::kSystems);
-    lastState_ = GvaFunctionEnum::kSystems;
-    screen_.function_top->SetEnabled(3);
-    screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeStatusBar)->SetVisible(true);
-    screen_.function_top->labels[3].state = LabelStates::kLabelEnabledSelected;
+  if (HmiState::GetInstance().screen_.function_top->labels[3].state != LabelStates::kLabelHidden) {
+    WidgetTable *table =
+        (WidgetTable *)HmiState::GetInstance().screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable);
+    HmiState::GetInstance().ResetHmi();
+    HmiState::GetInstance().manager_->SetScreen(&HmiState::GetInstance().screen_, GvaFunctionEnum::kSystems);
+    HmiState::GetInstance().lastState_ = GvaFunctionEnum::kSystems;
+    HmiState::GetInstance().screen_.function_top->SetEnabled(3);
+    HmiState::GetInstance().screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeStatusBar)->SetVisible(true);
+    HmiState::GetInstance().screen_.function_top->labels[3].state = LabelStates::kLabelEnabledSelected;
 
     HmiHelper::TableSystem(table);
   }

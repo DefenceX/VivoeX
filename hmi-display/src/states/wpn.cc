@@ -24,12 +24,13 @@
 #include "wpn.h"
 
 #include "src/gva.h"
+#include "src/hmi_gva.h"
 #include "src/states/states.h"
 
 namespace gva {
 
 GvaKeyEnum Hmi::KeyWPN(GvaKeyEnum keypress) {
-  screen_.function_right.visible = true;
+  HmiState::GetInstance().screen_.function_right.visible = true;
 
   HmiState::GetInstance().KeySide(keypress);
   HmiState::GetInstance().Key(keypress);
@@ -39,7 +40,7 @@ GvaKeyEnum Hmi::KeyWPN(GvaKeyEnum keypress) {
     case GvaKeyEnum::kKeyF8:  // Enable Waterfall sight
     case GvaKeyEnum::kKeyF7:  // Enable Cross hair sight
       // This is the only active screen at this time
-      screen_.message.visible = false;
+      HmiState::GetInstance().screen_.message.visible = false;
       break;
     case GvaKeyEnum::kKeyF2:
     case GvaKeyEnum::kKeyF3:
@@ -50,10 +51,10 @@ GvaKeyEnum Hmi::KeyWPN(GvaKeyEnum keypress) {
     case GvaKeyEnum::kKeyF10:
     case GvaKeyEnum::kKeyF11:
     case GvaKeyEnum::kKeyF12:
-      screen_.message.visible = true;
-      screen_.message.icon = widget::IconType::kIconError;
-      screen_.message.brief.text = "Function key";
-      screen_.message.detail.text = "Operation not implemented!";
+      HmiState::GetInstance().screen_.message.visible = true;
+      HmiState::GetInstance().screen_.message.icon = widget::IconType::kIconError;
+      HmiState::GetInstance().screen_.message.brief.text = "Function key";
+      HmiState::GetInstance().screen_.message.detail.text = "Operation not implemented!";
       break;
     default:  // Lots of keys we dont care about
       break;
@@ -62,16 +63,16 @@ GvaKeyEnum Hmi::KeyWPN(GvaKeyEnum keypress) {
 }
 
 void StateWPN::entry() {
-  if (screen_.function_top->labels[1].state != LabelStates::kLabelHidden) {
+  if (HmiState::GetInstance().screen_.function_top->labels[1].state != LabelStates::kLabelHidden) {
     std::string filename;
-    manager_->SetScreen(&screen_, GvaFunctionEnum::kWeapon);
-    Reset();
-    lastState_ = GvaFunctionEnum::kWeapon;
-    screen_.function_top->SetEnabled(1);
+    HmiState::GetInstance().manager_->SetScreen(&HmiState::GetInstance().screen_, GvaFunctionEnum::kWeapon);
+    HmiState::GetInstance().ResetHmi();
+    HmiState::GetInstance().lastState_ = GvaFunctionEnum::kWeapon;
+    HmiState::GetInstance().screen_.function_top->SetEnabled(1);
 
-    if (screen_.labels != LabelModeEnum::kLabelMinimal)
-      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetVisible(true);
-    screen_.canvas.visible = true;
+    if (HmiState::GetInstance().screen_.labels != LabelModeEnum::kLabelMinimal)
+      HmiState::GetInstance().screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetVisible(true);
+    HmiState::GetInstance().screen_.canvas.visible = true;
     filename = ConfigData::GetInstance()->GetImagePath();
     filename.append("/FrontCenter.png");
     HmiState::GetInstance().SetCanvasPng(filename.c_str());

@@ -23,13 +23,14 @@
 
 #include "com.h"
 
+#include "src/hmi_gva.h"
 #include "src/states/states.h"
 
 namespace gva {
 
 GvaKeyEnum Hmi::KeyCOM(GvaKeyEnum keypress) {
-  screen_.function_right.visible = true;
-  screen_.message.visible = true;
+  HmiState::GetInstance().screen_.function_right.visible = true;
+  HmiState::GetInstance().screen_.message.visible = true;
 
   HmiState::GetInstance().KeySide(keypress);
   HmiState::GetInstance().Key(keypress);
@@ -47,10 +48,10 @@ GvaKeyEnum Hmi::KeyCOM(GvaKeyEnum keypress) {
     case GvaKeyEnum::kKeyF10:
     case GvaKeyEnum::kKeyF11:
     case GvaKeyEnum::kKeyF12:
-      screen_.message.visible = true;
-      screen_.message.icon = widget::IconType::kIconError;
-      screen_.message.brief.text = "Function key";
-      screen_.message.detail.text = "Operation not implemented !";
+      HmiState::GetInstance().screen_.message.visible = true;
+      HmiState::GetInstance().screen_.message.icon = widget::IconType::kIconError;
+      HmiState::GetInstance().screen_.message.brief.text = "Function key";
+      HmiState::GetInstance().screen_.message.detail.text = "Operation not implemented !";
       break;
     default:  // Lots of keys we dont care about
       break;
@@ -59,11 +60,11 @@ GvaKeyEnum Hmi::KeyCOM(GvaKeyEnum keypress) {
 }
 
 void StateCOM::entry() {
-  if (screen_.function_top->labels[6].state != LabelStates::kLabelHidden) {
+  if (HmiState::GetInstance().screen_.function_top->labels[6].state != LabelStates::kLabelHidden) {
     HmiState::GetInstance().ResetHmi();
-    manager_->SetScreen(&screen_, GvaFunctionEnum::kCommunications);
-    lastState_ = GvaFunctionEnum::kCommunications;
-    screen_.function_top->SetEnabled(6);
+    HmiState::GetInstance().manager_->SetScreen(&HmiState::GetInstance().screen_, GvaFunctionEnum::kCommunications);
+    HmiState::GetInstance().lastState_ = GvaFunctionEnum::kCommunications;
+    HmiState::GetInstance().screen_.function_top->SetEnabled(6);
   }
 };
 

@@ -24,20 +24,22 @@
 
 #include "alarms.h"
 
+#include "src/hmi_gva.h"
 #include "src/states/states.h"
 
 namespace gva {
 
 GvaKeyEnum Hmi::KeyAlarms(GvaKeyEnum keypress) {
-  auto *table = (WidgetTableDynamic *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic);
+  auto *table = (WidgetTableDynamic *)HmiState::GetInstance().screen_render_->GetWidget(
+      widget::WidgetEnum::KWidgetTypeTableDynamic);
 
   switch (keypress) {
     case GvaKeyEnum::kKeyF1:  // F1
       if (table->GetSorted() == WidgetTableDynamic::SortType::kSortDescending) {
-        screen_.function_left.labels[0].text = "Sort.Ascending";
+        HmiState::GetInstance().screen_.function_left.labels[0].text = "Sort.Ascending";
         table->SetSorted(WidgetTableDynamic::SortType::kSortAscending);
       } else {
-        screen_.function_left.labels[0].text = "Sort.Descending";
+        HmiState::GetInstance().screen_.function_left.labels[0].text = "Sort.Descending";
         table->SetSorted(WidgetTableDynamic::SortType::kSortDescending);
       }
       return keypress;
@@ -48,10 +50,10 @@ GvaKeyEnum Hmi::KeyAlarms(GvaKeyEnum keypress) {
       break;
     case GvaKeyEnum::kKeyF3:  // F3
       if (table->GetHideOverride()) {
-        screen_.function_left.labels[2].text = "Hide.Overridden";
+        HmiState::GetInstance().screen_.function_left.labels[2].text = "Hide.Overridden";
         table->SetHideOverride(false);
       } else {
-        screen_.function_left.labels[2].text = "Show.Overridden";
+        HmiState::GetInstance().screen_.function_left.labels[2].text = "Show.Overridden";
         table->SetHideOverride(true);
       }
       return keypress;
@@ -60,7 +62,7 @@ GvaKeyEnum Hmi::KeyAlarms(GvaKeyEnum keypress) {
       if (table->GetAllHighlighted()) {
         table->SetAllHighlighted(false);
       } else {
-        screen_.function_left.labels[2].text = "Hide.Overridden";
+        HmiState::GetInstance().screen_.function_left.labels[2].text = "Hide.Overridden";
         table->SetAllHighlighted(true);
       }
       return keypress;
@@ -82,12 +84,13 @@ GvaKeyEnum Hmi::KeyAlarms(GvaKeyEnum keypress) {
 
 void StateAlarms::entry() {
   // Check to see if alarms was requested from hidden state, if so go back to last menu.
-  if (screen_.control->labels_[1].state_ != LabelStates::kLabelHidden) {
-    auto *table = (WidgetTableDynamic *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic);
+  if (HmiState::GetInstance().screen_.control->labels_[1].state_ != LabelStates::kLabelHidden) {
+    auto *table = (WidgetTableDynamic *)HmiState::GetInstance().screen_render_->GetWidget(
+        widget::WidgetEnum::KWidgetTypeTableDynamic);
 
-    if (alarmson_) {
-      alarmson_ = false;
-      switch (lastState_) {
+    if (HmiState::GetInstance().alarmson_) {
+      HmiState::GetInstance().alarmson_ = false;
+      switch (HmiState::GetInstance().lastState_) {
         case GvaFunctionEnum::kSituationalAwareness:
           transit<StateSA>();
           return;
@@ -117,20 +120,21 @@ void StateAlarms::entry() {
       }
     }
     HmiState::GetInstance().ResetHmi();
-    alarmson_ = true;
-    manager_->SetScreen(&screen_, GvaFunctionEnum::kAlarmsX);
+    HmiState::GetInstance().alarmson_ = true;
+    HmiState::GetInstance().manager_->SetScreen(&HmiState::GetInstance().screen_, GvaFunctionEnum::kAlarmsX);
     table->SetVisible(true);
 
     // Update the controls
-    screen_.control->ForceEnabledSelected(4);  // Up Arrow
-    screen_.control->ForceEnabledSelected(5);  // Down Arrow
-    screen_.control->ForceEnabledSelected(7);  // Enter
-    screen_.control->ForceEnabledSelected(1);
+    HmiState::GetInstance().screen_.control->ForceEnabledSelected(4);  // Up Arrow
+    HmiState::GetInstance().screen_.control->ForceEnabledSelected(5);  // Down Arrow
+    HmiState::GetInstance().screen_.control->ForceEnabledSelected(7);  // Enter
+    HmiState::GetInstance().screen_.control->ForceEnabledSelected(1);
   }
 };
 
 void StateAlarms::exit() {
-  auto *table = (WidgetTableDynamic *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic);
+  auto *table = (WidgetTableDynamic *)HmiState::GetInstance().screen_render_->GetWidget(
+      widget::WidgetEnum::KWidgetTypeTableDynamic);
   table->SetVisible(false);
 }
 

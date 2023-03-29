@@ -43,7 +43,7 @@ bool Updater::updater_alive_ = true;
 Updater::Updater(uint64_t id) : UpdaterBase(id){};
 
 Updater::~Updater() {
-  LOG(INFO) << "Updater shutting down threatUpdater";
+  LOG(INFO) << "Updater shutting down, trying to terminate thread";
   updater_alive_ = false;
   thread_.join();
 }
