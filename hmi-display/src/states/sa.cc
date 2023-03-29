@@ -36,8 +36,8 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
   auto *objects =
       static_cast<WidgetObjectLocalisation *>(screen_render_->GetWidget(widget::WidgetEnum::KWidgetObjectLocalisation));
   objects->SetVisible(false);
-  KeySide(keypress);
-  Key(keypress);
+  HmiState::GetInstance().KeySide(keypress);
+  HmiState::GetInstance().Key(keypress);
 
   compass->SetMode(ConfigData::GetInstance()->GetPpiMode());
 
@@ -45,7 +45,7 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
     case GvaKeyEnum::kKeyF2:
       filename = path;
       filename.append("/Quad.png");
-      SetCanvasPng(filename);
+      HmiState::GetInstance().SetCanvasPng(filename);
       if (ConfigData::GetInstance()->GetPpiMode() == widget::ModeEnum::kPpiClassicArrowWithSight)
         compass->SetMode(widget::ModeEnum::kPpiClassicArrowWithoutSight);
       if (ConfigData::GetInstance()->GetPpiMode() == widget::ModeEnum::kPpiClassicTankWithSight)
@@ -54,38 +54,38 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
     case GvaKeyEnum::kKeyF4:
       filename = path;
       filename.append("/FrontRight.png");
-      SetCanvasPng(filename.c_str());
+      HmiState::GetInstance().SetCanvasPng(filename.c_str());
       compass->SetBearingSight(45);
       break;
     case GvaKeyEnum::kKeyF5:
       objects->SetVisible(true);
       filename = path;
       filename.append("/FrontCenter.png");
-      SetCanvasPng(filename.c_str());
+      HmiState::GetInstance().SetCanvasPng(filename.c_str());
       compass->SetBearingSight(0);
       break;
     case GvaKeyEnum::kKeyF6:
       filename = path;
       filename.append("/FrontLeft.png");
-      SetCanvasPng(filename.c_str());
+      HmiState::GetInstance().SetCanvasPng(filename.c_str());
       compass->SetBearingSight(315);
       break;
     case GvaKeyEnum::kKeyF10:
       filename = path;
       filename.append("/Right.png");
-      SetCanvasPng(filename.c_str());
+      HmiState::GetInstance().SetCanvasPng(filename.c_str());
       compass->SetBearingSight(90);
       break;
     case GvaKeyEnum::kKeyF11:
       filename = path;
       filename.append("/Rear.png");
-      SetCanvasPng(filename.c_str());
+      HmiState::GetInstance().SetCanvasPng(filename.c_str());
       compass->SetBearingSight(180);
       break;
     case GvaKeyEnum::kKeyF12:
       filename = path;
       filename.append("/Left.png");
-      SetCanvasPng(filename.c_str());
+      HmiState::GetInstance().SetCanvasPng(filename.c_str());
       compass->SetBearingSight(270);
       break;
     case GvaKeyEnum::kKeyF1:
@@ -119,7 +119,7 @@ void StateSA::entry() {
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetObjectLocalisation)->SetVisible(true);
       filename.append("/FrontCenter.png");
 
-      SetCanvasPng(filename.c_str());
+      HmiState::GetInstance().SetCanvasPng(filename.c_str());
     }
   }
 };

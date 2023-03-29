@@ -29,12 +29,7 @@
 
 #include "src/gva.h"
 #include "src/hmi_gva.h"
-#include "src/renderer_map.h"
-#include "src/screen_gva.h"
-#include "src/states/off.h"
-#include "src/states/base_hmi.h"
 #include "src/tinyfsm.h"
-#include "src/view_gva.h"
 
 namespace gva {
 
@@ -58,8 +53,9 @@ struct EventKeyFunction : tinyfsm::Event {
 //
 // State Machine Base Class Declaration
 //
-class Hmi : public HmiState, public tinyfsm::Fsm<Hmi> {
+class Hmi : public tinyfsm::Fsm<Hmi> {
  public:
+  virtual ~Hmi() = default;
   virtual void react(EventKeyPowerOn const &) { return; }   // Nothing to do in base class
   virtual void react(EventKeySA const &) { return; }        // Nothing to do in base class
   virtual void react(EventKeyWPN const &) { return; }       // Nothing to do in base class
@@ -88,8 +84,6 @@ class Hmi : public HmiState, public tinyfsm::Fsm<Hmi> {
   static bool alarmson_;
 
  public:
-  static void KeySide(GvaKeyEnum key);
-  static GvaKeyEnum Key(GvaKeyEnum key);
   static GvaKeyEnum KeySA(GvaKeyEnum key);
   static GvaKeyEnum KeyWPN(GvaKeyEnum key);
   static GvaKeyEnum KeyDEF(GvaKeyEnum key);
@@ -99,18 +93,9 @@ class Hmi : public HmiState, public tinyfsm::Fsm<Hmi> {
   static GvaKeyEnum KeyCOM(GvaKeyEnum key);
   static GvaKeyEnum KeyBMS(GvaKeyEnum key);
   static GvaKeyEnum KeyAlarms(GvaKeyEnum key);  // Nothing to do in base class
-  static void Reset();
-  static void SetCanvasPng(const std::string &file);
   static ScreenGva *GetRendrer() { return screen_render_.get(); }
   static Screen *GetScreen() { return &screen_; }
-  static void Labels(LabelModeEnum labels);
-  static void ClearAlarms(std::shared_ptr<ScreenGva> screen_render);
 };
-
-//
-// Initial state definition
-//
-FSM_INITIAL_STATE(Hmi, StateOff)
 
 }  // namespace gva
 

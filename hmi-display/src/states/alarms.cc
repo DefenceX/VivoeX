@@ -116,7 +116,7 @@ void StateAlarms::entry() {
           return;  // Nothing more to do
       }
     }
-    Reset();
+    HmiState::GetInstance().ResetHmi();
     alarmson_ = true;
     manager_->SetScreen(&screen_, GvaFunctionEnum::kAlarmsX);
     table->SetVisible(true);
@@ -153,7 +153,7 @@ void StateAlarms::react(EventKeyBMS const &) { transit<StateBMS>(); };
 void StateAlarms::react(EventKeyAlarms const &) { transit<StateAlarms>(); };
 
 void StateAlarms::react(EventKeyFunction const &e) {
-  Key(e.key);
+  HmiState::GetInstance().Key(e.key);
   KeyAlarms(e.key);
 };
 

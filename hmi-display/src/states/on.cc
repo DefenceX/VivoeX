@@ -113,7 +113,7 @@ void StateOn::entry() {
   screen_.labels = LabelModeEnum::kLabelAll;
   std::string filename = ConfigData::GetInstance()->GetImagePath();
   filename.append("/FRONT_CENTRE.png");
-  SetCanvasPng(filename.c_str());
+  HmiState::GetInstance().SetCanvasPng(filename.c_str());
 
   // Set brightness
   gva::SetBrightness(gva::ConfigData::GetInstance()->GetBrightness());

@@ -64,8 +64,8 @@ double conv(int zoom) {
 
 GvaKeyEnum Hmi::KeyBMS(GvaKeyEnum keypress) {
   screen_.function_right.visible = true;
-  KeySide(keypress);
-  Key(keypress);
+  HmiState::GetInstance().KeySide(keypress);
+  HmiState::GetInstance().Key(keypress);
   if (ConfigData::GetInstance()->GetMapEnabled()) {
     bool update = true;
     int zoom_level = ConfigData::GetInstance()->GetZoom();
@@ -144,7 +144,7 @@ void StateBMS::entry() {
       // Display the DefenceX logo
       std::string filename = ConfigData::GetInstance()->GetImagePath();
       filename.append("/DefenceX.png");
-      SetCanvasPng(filename.c_str());
+      HmiState::GetInstance().SetCanvasPng(filename.c_str());
     }
   }
 };

@@ -31,8 +31,8 @@ namespace gva {
 GvaKeyEnum Hmi::KeyWPN(GvaKeyEnum keypress) {
   screen_.function_right.visible = true;
 
-  KeySide(keypress);
-  Key(keypress);
+  HmiState::GetInstance().KeySide(keypress);
+  HmiState::GetInstance().Key(keypress);
 
   switch (keypress) {
     case GvaKeyEnum::kKeyF1:
@@ -74,7 +74,7 @@ void StateWPN::entry() {
     screen_.canvas.visible = true;
     filename = ConfigData::GetInstance()->GetImagePath();
     filename.append("/FrontCenter.png");
-    SetCanvasPng(filename.c_str());
+    HmiState::GetInstance().SetCanvasPng(filename.c_str());
   }
 };
 

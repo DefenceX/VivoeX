@@ -143,7 +143,7 @@ void HmiState::SetCanvasPng(const std::string &file) {
   canvas_.buffer = nullptr;
 }
 
-void HmiState::Reset() {
+void HmiState::ResetHmi() {
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeStatusBar)->SetVisible(true);
   screen_.labels = LabelModeEnum::kLabelAll;
   Labels(screen_.labels);

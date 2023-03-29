@@ -31,4 +31,9 @@ void StateOff::entry(){};
 
 void StateOff::react(EventKeyPowerOn const &) { transit<StateOn>(); };
 
+//
+// Initial state definition
+//
+FSM_INITIAL_STATE(Hmi, StateOff)
+
 }  // namespace gva

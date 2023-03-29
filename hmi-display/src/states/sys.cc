@@ -31,8 +31,8 @@ GvaKeyEnum Hmi::KeySYS(GvaKeyEnum keypress) {
   screen_.function_right.visible = true;
   WidgetTable *table = (WidgetTable *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable);
 
-  KeySide(keypress);
-  Key(keypress);
+  HmiState::GetInstance().KeySide(keypress);
+  HmiState::GetInstance().Key(keypress);
 
   switch (keypress) {
     case GvaKeyEnum::kKeyF1:

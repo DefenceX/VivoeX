@@ -28,9 +28,7 @@
 #include "src/gva.h"
 #include "src/hmi_gva.h"
 #include "src/states/base_hmi.h"
-#include "src/view_gva.h"
-#include "src/widgets/alarm_indicator.h"
-#include "src/widgets/plan_position_indicator.h"
+#include "src/states/off.h"
 
 namespace gva {
 

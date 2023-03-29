@@ -32,8 +32,8 @@ namespace gva {
 GvaKeyEnum Hmi::KeyDRV(GvaKeyEnum keypress) {
   screen_.function_right.visible = true;
 
-  KeySide(keypress);
-  Key(keypress);
+  HmiState::GetInstance().KeySide(keypress);
+  HmiState::GetInstance().Key(keypress);
 
   switch (keypress) {
     case GvaKeyEnum::kKeyF1:

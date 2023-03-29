@@ -23,14 +23,13 @@
 #ifndef HMI_DISPLAY_SRC_STATES_OFF_H_
 #define HMI_DISPLAY_SRC_STATES_OFF_H_
 
-#include <iostream>
-
 #include "src/states/base_hmi.h"
 #include "src/states/off.h"
 
 namespace gva {
 
-struct StateOff : Hmi {
+class StateOff : public Hmi {
+ public:
   void entry() override;
   void react(EventKeyPowerOn const &) override;
 };

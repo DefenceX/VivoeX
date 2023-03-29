@@ -31,8 +31,8 @@ GvaKeyEnum Hmi::KeyCOM(GvaKeyEnum keypress) {
   screen_.function_right.visible = true;
   screen_.message.visible = true;
 
-  KeySide(keypress);
-  Key(keypress);
+  HmiState::GetInstance().KeySide(keypress);
+  HmiState::GetInstance().Key(keypress);
 
   switch (keypress) {
     case GvaKeyEnum::kKeyF1:
@@ -60,7 +60,7 @@ GvaKeyEnum Hmi::KeyCOM(GvaKeyEnum keypress) {
 
 void StateCOM::entry() {
   if (screen_.function_top->labels[6].state != LabelStates::kLabelHidden) {
-    Reset();
+    HmiState::GetInstance().ResetHmi();
     manager_->SetScreen(&screen_, GvaFunctionEnum::kCommunications);
     lastState_ = GvaFunctionEnum::kCommunications;
     screen_.function_top->SetEnabled(6);

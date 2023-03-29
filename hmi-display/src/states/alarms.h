@@ -35,7 +35,8 @@
 
 namespace gva {
 
-struct StateAlarms : Hmi {
+class StateAlarms : public Hmi {
+ public:
   virtual ~StateAlarms() = default;
   void entry() override;
   void exit() override;

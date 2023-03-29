@@ -38,23 +38,33 @@ namespace gva {
 
 class HmiState {
  public:
+  HmiState() {}
+  HmiState(HmiState const &) = delete;
+  void operator=(HmiState const &) = delete;
+
+  static HmiState &GetInstance() {
+    static HmiState instance;  // Guaranteed to be destroyed.
+                               // Instantiated on first use.
+    return instance;
+  }
+
   void SetCanvasPng(const std::string &file);
-  void Reset();
+  void ResetHmi();
   void Labels(LabelModeEnum labels);
   void KeySide(GvaKeyEnum key);
   GvaKeyEnum Key(GvaKeyEnum keypress);
 
   void ClearAlarms(std::shared_ptr<ScreenGva> screen_render);
-  std::shared_ptr<ViewGvaManager> manager_;
-  ResolutionType view_;
-  FunctionSelect top_;
-  CommonTaskKeys bottom_;
-  Canvas canvas_;
-  Screen screen_;
-  std::shared_ptr<ScreenGva> screen_render_;
-  std::shared_ptr<rendererMap> map_;
-  GvaFunctionEnum lastState_;
-  bool alarmson_ = false;
+  static std::shared_ptr<ViewGvaManager> manager_;
+  static ResolutionType view_;
+  static FunctionSelect top_;
+  static CommonTaskKeys bottom_;
+  static Canvas canvas_;
+  static Screen screen_;
+  static std::shared_ptr<ScreenGva> screen_render_;
+  static std::shared_ptr<rendererMap> map_;
+  static GvaFunctionEnum lastState_;
+  static bool alarmson_;
 };
 
 }  // namespace gva
