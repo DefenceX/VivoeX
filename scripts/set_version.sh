@@ -17,9 +17,9 @@ sed -i "s/${before}/${after}/g" ../README.md
 sed -i "s/sonar.projectVersion=\([0-9.]\+\)/sonar.projectVersion=${major}.${minor}.${patch}/g" ../sonar-project.properties
 
 # Update code
-sed -i "s/static const uint32_t kSemVerMajor= \([0-9]\+\)/static const uint32_t kSemVerMajor = ${major}/g" ../hmi-display/src/gva.h
-sed -i "s/static const uint32_t kSemVerMinor = \([0-9]\+\)/static const uint32_t kSemVerMinor = ${minor}/g" ../hmi-display/src/gva.h
-sed -i "s/static const uint32_t kSemVerPatch = \([0-9]\+\)/static const uint32_t kSemVerPatch = ${patch}/g" ../hmi-display/src/gva.h
+sed -i "s/static const uint32_t kSemVerMajor= \([0-9]\+\)/static const uint32_t kSemVerMajor = ${major}/g" ../src/hmicore/gva.h
+sed -i "s/static const uint32_t kSemVerMinor = \([0-9]\+\)/static const uint32_t kSemVerMinor = ${minor}/g" ../src/hmicore/gva.h
+sed -i "s/static const uint32_t kSemVerPatch = \([0-9]\+\)/static const uint32_t kSemVerPatch = ${patch}/g" ../src/hmicore/gva.h
 
 echo "${lines[0]}" > ../version
 echo "${lines[1]}" >> ../version

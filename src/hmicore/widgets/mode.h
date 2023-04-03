@@ -18,46 +18,67 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 ///
-/// \file test_events.cc
+/// \file mode.h
 ///
 
-#include <unistd.h>
+#ifndef HMI_DISPLAY_SRC_WIDGETS_MODE_H_
+#define HMI_DISPLAY_SRC_WIDGETS_MODE_H_
 
-#include <iostream>
+#include <cstdint>
+#include <string>
+#include <vector>
 
-#include "gtest/gtest.h"
-#include "src/events_gva.h"
-#include "src/gva.h"
-#include "src/hmi_gva.h"
+#include "hmicore/renderer_cairo_types.h"
+#include "hmicore/widgets/widget.h"
 
-namespace {
+namespace gva {
 
-static gva::EventsGva *events = 0;
+class WidgetMode : public WidgetX {
+ public:
+  ///
+  /// \brief Construct a new Widget Keyboard object
+  ///
+  /// \param renderer
+  ///
+  explicit WidgetMode(const RendererGva& renderer);
 
-TEST(Events, ConstructorTest) {
-  events = new gva::EventsGva(gva::hmi::GetRendrer()->GetWindow(), gva::hmi::GetRendrer()->GetTouch());
+  ///
+  /// \brief Destroy the Widget mode object
+  ///
+  ///
+  ~WidgetMode() final = default;
 
-  EXPECT_EQ(events, nullptr);
-}
+  ///
+  /// \brief Get the Widget Name attribute
+  ///
+  /// \return std::string
+  ///
+  std::string GetWidgetName() const final { return "WidgetMode"; };
 
-TEST(Events, Flush) {
-  //  events->flush();
+  ///
+  /// \brief Draw the current widget
+  ///
+  ///
+  void Draw() final;
 
-  EXPECT_EQ(events, nullptr);
-  free(events);
-}
+  ///
+  /// \brief Set the Mode object
+  ///
+  /// \param mode
+  ///
+  void SetMode(const std::string mode);
 
-TEST(Events, ConctructorTest2) {
-  // instantiate events
-  gva::EventKeyPowerOn on;
+  /// KWidgetTypeMode
+  ///  \brief Get the Mode object
+  ///
+  ///  \return std::string
+  ///
+  std::string GetMode() const;
 
-  gva::hmi::start();
-  gva::hmi::dispatch(on);
+ private:
+  std::string mode_ = "Maintenance Mode";
+};
 
-  gva::EventsGva io(gva::hmi::GetRendrer()->GetWindow(), gva::hmi::GetRendrer()->GetTouch());
+}  // namespace gva
 
-  EXPECT_EQ(gva::hmi::GetRendrer()->GetWindow(), nullptr);
-  EXPECT_EQ(events, nullptr);
-}
-
-}  // namespace
+#endif  // HMI_DISPLAY_SRC_WIDGETS_MODE_H_

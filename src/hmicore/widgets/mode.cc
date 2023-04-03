@@ -18,46 +18,36 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 ///
-/// \file test_events.cc
+/// \file mode.cc
 ///
 
-#include <unistd.h>
+#include "hmicore/widgets/mode.h"
 
-#include <iostream>
+namespace gva {
 
-#include "gtest/gtest.h"
-#include "src/events_gva.h"
-#include "src/gva.h"
-#include "src/hmi_gva.h"
-
-namespace {
-
-static gva::EventsGva *events = 0;
-
-TEST(Events, ConstructorTest) {
-  events = new gva::EventsGva(gva::hmi::GetRendrer()->GetWindow(), gva::hmi::GetRendrer()->GetTouch());
-
-  EXPECT_EQ(events, nullptr);
+WidgetMode::WidgetMode(const RendererGva& renderer) : WidgetX(renderer, widget::WidgetEnum::KWidgetTypeMode) {
+  SetVisible(false);
 }
 
-TEST(Events, Flush) {
-  //  events->flush();
+void WidgetMode::Draw() {
+  uint32_t y = kMinimumHeight - (kMinimumHeight * 0.12);
 
-  EXPECT_EQ(events, nullptr);
-  free(events);
+  GetRenderer()->SetColourForeground(HMI_WHITE);
+  GetRenderer()->SetColourBackground(HMI_DARK_BLUE);
+  GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
+
+  GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightNormal,
+                             ConfigData::GetInstance()->GetThemeFont(), 12);
+
+  uint32_t w = GetRenderer()->GetTextWidth(mode_, 12);
+  uint32_t h = GetRenderer()->GetTextHeight(mode_, 12);
+
+  GetRenderer()->DrawRoundedRectangle(kMinimumWidth / 2 - (w / 2) - 5, y, w + 10, (h) + 15, 6, true);
+  GetRenderer()->DrawText(kMinimumWidth / 2 - (w / 2), y + 16, mode_);
 }
 
-TEST(Events, ConctructorTest2) {
-  // instantiate events
-  gva::EventKeyPowerOn on;
+void WidgetMode::SetMode(const std::string mode) { mode_ = mode; }
 
-  gva::hmi::start();
-  gva::hmi::dispatch(on);
+std::string WidgetMode::GetMode() const { return mode_; }
 
-  gva::EventsGva io(gva::hmi::GetRendrer()->GetWindow(), gva::hmi::GetRendrer()->GetTouch());
-
-  EXPECT_EQ(gva::hmi::GetRendrer()->GetWindow(), nullptr);
-  EXPECT_EQ(events, nullptr);
-}
-
-}  // namespace
+}  // namespace gva

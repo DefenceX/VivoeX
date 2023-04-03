@@ -17,47 +17,34 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+/// \brief The screen manger for the GVA application
 ///
-/// \file test_events.cc
+/// \file status_updater.h
 ///
 
-#include <unistd.h>
+#ifndef HMI_DISPLAY_SRC_STATUS_UPDATER_H_
+#define HMI_DISPLAY_SRC_STATUS_UPDATER_H_
+#include <memory>
 
-#include <iostream>
+#include "hmicore/screen_gva.h"
+#include "hmicore/widgets/table/status_bar.h"
 
-#include "gtest/gtest.h"
-#include "src/events_gva.h"
-#include "src/gva.h"
-#include "src/hmi_gva.h"
+namespace gva {
+class StatusUpdater {
+ public:
+  StatusUpdater() = default;
+  ~StatusUpdater() = default;
 
-namespace {
+  void ClockUpdate(ClockArgs *args);
+  void GetLocalTime(std::tm &localTime) const;
+  void UpdateClock(std::shared_ptr<WidgetStatusBar> statusBar) const;
+  void ParseGpsData(const int *gpsFd, nmeaINFO *info, nmeaPARSER *parser, const LocationType &location) const;
+  void UpdateLocation(std::shared_ptr<WidgetStatusBar> statusBar, const nmeaINFO &info,
+                      const LocationType &location) const;
 
-static gva::EventsGva *events = 0;
+ private:
+  static const int kMaxNmea = 1000;
+};
+}  // namespace gva
 
-TEST(Events, ConstructorTest) {
-  events = new gva::EventsGva(gva::hmi::GetRendrer()->GetWindow(), gva::hmi::GetRendrer()->GetTouch());
-
-  EXPECT_EQ(events, nullptr);
-}
-
-TEST(Events, Flush) {
-  //  events->flush();
-
-  EXPECT_EQ(events, nullptr);
-  free(events);
-}
-
-TEST(Events, ConctructorTest2) {
-  // instantiate events
-  gva::EventKeyPowerOn on;
-
-  gva::hmi::start();
-  gva::hmi::dispatch(on);
-
-  gva::EventsGva io(gva::hmi::GetRendrer()->GetWindow(), gva::hmi::GetRendrer()->GetTouch());
-
-  EXPECT_EQ(gva::hmi::GetRendrer()->GetWindow(), nullptr);
-  EXPECT_EQ(events, nullptr);
-}
-
-}  // namespace
+#endif  // HMI_DISPLAY_SRC_STATUS_UPDATER_H_

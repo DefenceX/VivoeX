@@ -18,46 +18,35 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 ///
-/// \file test_events.cc
+/// \file utils.cc
 ///
 
+#include <fcntl.h>
+#include <glog/logging.h>
 #include <unistd.h>
 
 #include <iostream>
 
-#include "gtest/gtest.h"
-#include "src/events_gva.h"
-#include "src/gva.h"
-#include "src/hmi_gva.h"
+#include "hmicore/gva.h"
 
-namespace {
+namespace gva {
 
-static gva::EventsGva *events = 0;
+void SetBrightness(double brightness) {
+  const uint32_t max = 24000;
+  int fd = 0;
+  auto value = (uint32_t)(brightness * max);
+  fd = open("/sys/class/backlight/intel_backlight/brightness", O_WRONLY);
+  if (fd == -1) {
+    LOG(ERROR) << "Cant open /sys/class/backlight/intel_backlight/brightness, try running with sudo";
+    close(fd);
+    return;
+  }
 
-TEST(Events, ConstructorTest) {
-  events = new gva::EventsGva(gva::hmi::GetRendrer()->GetWindow(), gva::hmi::GetRendrer()->GetTouch());
-
-  EXPECT_EQ(events, nullptr);
+  if (std::string str_value = std::to_string(value);
+      write(fd, str_value.c_str(), str_value.length()) != (int)str_value.length()) {
+    LOG(ERROR) << "Cant write /sys/class/backlight/intel_backlight/brightness";
+  }
+  close(fd);
 }
 
-TEST(Events, Flush) {
-  //  events->flush();
-
-  EXPECT_EQ(events, nullptr);
-  free(events);
-}
-
-TEST(Events, ConctructorTest2) {
-  // instantiate events
-  gva::EventKeyPowerOn on;
-
-  gva::hmi::start();
-  gva::hmi::dispatch(on);
-
-  gva::EventsGva io(gva::hmi::GetRendrer()->GetWindow(), gva::hmi::GetRendrer()->GetTouch());
-
-  EXPECT_EQ(gva::hmi::GetRendrer()->GetWindow(), nullptr);
-  EXPECT_EQ(events, nullptr);
-}
-
-}  // namespace
+}  // namespace gva

@@ -18,46 +18,7 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 ///
-/// \file test_events.cc
+/// \file test_config.cc
 ///
 
-#include <unistd.h>
-
-#include <iostream>
-
 #include "gtest/gtest.h"
-#include "src/events_gva.h"
-#include "src/gva.h"
-#include "src/hmi_gva.h"
-
-namespace {
-
-static gva::EventsGva *events = 0;
-
-TEST(Events, ConstructorTest) {
-  events = new gva::EventsGva(gva::hmi::GetRendrer()->GetWindow(), gva::hmi::GetRendrer()->GetTouch());
-
-  EXPECT_EQ(events, nullptr);
-}
-
-TEST(Events, Flush) {
-  //  events->flush();
-
-  EXPECT_EQ(events, nullptr);
-  free(events);
-}
-
-TEST(Events, ConctructorTest2) {
-  // instantiate events
-  gva::EventKeyPowerOn on;
-
-  gva::hmi::start();
-  gva::hmi::dispatch(on);
-
-  gva::EventsGva io(gva::hmi::GetRendrer()->GetWindow(), gva::hmi::GetRendrer()->GetTouch());
-
-  EXPECT_EQ(gva::hmi::GetRendrer()->GetWindow(), nullptr);
-  EXPECT_EQ(events, nullptr);
-}
-
-}  // namespace

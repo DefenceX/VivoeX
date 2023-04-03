@@ -18,46 +18,27 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 ///
-/// \file test_events.cc
+/// \file off.h
 ///
-
-#include <unistd.h>
+#ifndef HMI_DISPLAY_SRC_STATES_OFF_H_
+#define HMI_DISPLAY_SRC_STATES_OFF_H_
 
 #include <iostream>
 
-#include "gtest/gtest.h"
-#include "src/events_gva.h"
-#include "src/gva.h"
-#include "src/hmi_gva.h"
+#include "hmicore/gva.h"
+#include "hmicore/hmi_gva.h"
+#include "hmicore/states/base_hmi.h"
+#include "hmicore/view_gva.h"
+#include "hmicore/widgets/alarm_indicator.h"
+#include "hmicore/widgets/plan_position_indicator.h"
 
-namespace {
+namespace gva {
 
-static gva::EventsGva *events = 0;
+struct StateOff : Hmi {
+  void entry() override;
+  void react(EventKeyPowerOn const &) override;
+};
 
-TEST(Events, ConstructorTest) {
-  events = new gva::EventsGva(gva::hmi::GetRendrer()->GetWindow(), gva::hmi::GetRendrer()->GetTouch());
+}  // namespace gva
 
-  EXPECT_EQ(events, nullptr);
-}
-
-TEST(Events, Flush) {
-  //  events->flush();
-
-  EXPECT_EQ(events, nullptr);
-  free(events);
-}
-
-TEST(Events, ConctructorTest2) {
-  // instantiate events
-  gva::EventKeyPowerOn on;
-
-  gva::hmi::start();
-  gva::hmi::dispatch(on);
-
-  gva::EventsGva io(gva::hmi::GetRendrer()->GetWindow(), gva::hmi::GetRendrer()->GetTouch());
-
-  EXPECT_EQ(gva::hmi::GetRendrer()->GetWindow(), nullptr);
-  EXPECT_EQ(events, nullptr);
-}
-
-}  // namespace
+#endif  // HMI_DISPLAY_SRC_STATES_OFF_H_

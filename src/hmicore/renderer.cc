@@ -18,46 +18,21 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 ///
-/// \file test_events.cc
+/// \file renderer.cc
 ///
 
-#include <unistd.h>
+#include "hmicore/renderer.h"
 
-#include <iostream>
+#include "hmicore/gva.h"
 
-#include "gtest/gtest.h"
-#include "src/events_gva.h"
-#include "src/gva.h"
-#include "src/hmi_gva.h"
+namespace gva {
 
-namespace {
+uint32_t Renderer::height_ = kMinimumHeight;
+uint32_t Renderer::width_ = kMinimumWidth;
 
-static gva::EventsGva *events = 0;
-
-TEST(Events, ConstructorTest) {
-  events = new gva::EventsGva(gva::hmi::GetRendrer()->GetWindow(), gva::hmi::GetRendrer()->GetTouch());
-
-  EXPECT_EQ(events, nullptr);
+Renderer::Renderer(uint32_t width, uint32_t height) {
+  width_ = width;
+  height_ = height;
 }
 
-TEST(Events, Flush) {
-  //  events->flush();
-
-  EXPECT_EQ(events, nullptr);
-  free(events);
-}
-
-TEST(Events, ConctructorTest2) {
-  // instantiate events
-  gva::EventKeyPowerOn on;
-
-  gva::hmi::start();
-  gva::hmi::dispatch(on);
-
-  gva::EventsGva io(gva::hmi::GetRendrer()->GetWindow(), gva::hmi::GetRendrer()->GetTouch());
-
-  EXPECT_EQ(gva::hmi::GetRendrer()->GetWindow(), nullptr);
-  EXPECT_EQ(events, nullptr);
-}
-
-}  // namespace
+}  // namespace gva

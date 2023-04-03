@@ -17,47 +17,49 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+/// \brief Manage the touch screen events
 ///
-/// \file test_events.cc
+/// \file trace.h
 ///
 
-#include <unistd.h>
+#ifndef HMI_DISPLAY_UPDATER_UPDATER_H_
+#define HMI_DISPLAY_UPDATER_UPDATER_H_
 
-#include <iostream>
+#include <string>
 
-#include "gtest/gtest.h"
-#include "src/events_gva.h"
-#include "src/gva.h"
-#include "src/hmi_gva.h"
+#include "hmicore/widgets/widget.h"
 
-namespace {
+namespace gva {
 
-static gva::EventsGva *events = 0;
+class UpdaterBase {
+ public:
+  ///
+  /// \brief Construct a new Updater object
+  ///
+  /// \param id The HMI identity, will only get updates for this ID.
+  ///
+  UpdaterBase(uint64_t id) : id_(id){};
 
-TEST(Events, ConstructorTest) {
-  events = new gva::EventsGva(gva::hmi::GetRendrer()->GetWindow(), gva::hmi::GetRendrer()->GetTouch());
+  virtual ~UpdaterBase() = default;
 
-  EXPECT_EQ(events, nullptr);
-}
+  ///
+  /// \brief Update the HMI state
+  ///
+  /// \param state The new state
+  ///
+  virtual void UpdateState(std::string state) = 0;
 
-TEST(Events, Flush) {
-  //  events->flush();
+  ///
+  /// \brief Process at HMI event
+  ///
+  /// \param event
+  ///
+  virtual void Event(std::string event) = 0;
 
-  EXPECT_EQ(events, nullptr);
-  free(events);
-}
+ private:
+  uint64_t id_;
+};
 
-TEST(Events, ConctructorTest2) {
-  // instantiate events
-  gva::EventKeyPowerOn on;
+}  // namespace gva
 
-  gva::hmi::start();
-  gva::hmi::dispatch(on);
-
-  gva::EventsGva io(gva::hmi::GetRendrer()->GetWindow(), gva::hmi::GetRendrer()->GetTouch());
-
-  EXPECT_EQ(gva::hmi::GetRendrer()->GetWindow(), nullptr);
-  EXPECT_EQ(events, nullptr);
-}
-
-}  // namespace
+#endif  // HMI_DISPLAY_UPDATER_UPDATER_H_

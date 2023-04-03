@@ -1,86 +1,73 @@
 enable_testing()
-
 include(FindPkgConfig)
+
 pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
 pkg_check_modules(SWSCALE REQUIRED libswscale)
 
 set(CMAKE_CXX_FLAGS --coverage)
 
-set(
-  TEST_INCLUDES
-  ${GTK3_INCLUDE_DIRS} 
-  ${CAIRO_INCLUDE_DIRS} 
-  ${PANGO_INCLUDE_DIRS} 
-  ${SWSCALE_INCLUDE_DIRS} 
-  ${PROTOBUF_INCLUDE_DIRS}
+include_directories(
   ${CMAKE_SOURCE_DIR}/hmi-display
-  ${CMAKE_SOURCE_DIR}/hmi-display/common
-  ${CMAKE_SOURCE_DIR}/hmi-display/src
-  ${CMAKE_SOURCE_DIR}/hmi-display/src/states
-  ${CMAKE_SOURCE_DIR}/hmi-display/src/widgets
-  ${CMAKE_SOURCE_DIR}/hmi-display/src/common
+  ${CAIRO_INCLUDE_DIRS}
+  ${CMAKE_BINARY_DIR}/external/install/usr/local/include/
+  ${CMAKE_BINARY_DIR}/external/libnmea/src/include
+  ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/src
   ${CMAKE_BINARY_DIR}/hmi-display/config
+  ${CMAKE_CURRENT_SOURCE_DIR}
+  ${CMAKE_SOURCE_DIR}/hmi-display
+  ${CMAKE_SOURCE_DIR}/src
+  ${GLOG_INCLUDE_DIRS}
+  ${GTEST_INCLUDE_DIRS}
+  ${GTK3_INCLUDE_DIRS}
+  ${PANGO_INCLUDE_DIRS}
+  ${PROTOBUF_INCLUDE_DIRS}
+  ${SWSCALE_INCLUDE_DIRS}
+  ${TEST_INCLUDES}
 )
 
-set(
-  TEST_LIBS 
-  ${GTK3_LIBRARIES}
-  ${PANGO_LIBRARIES}
-)
-
-## test_log
-
-set(
-  TEST_LOG_SOURCES
-)
-
-add_executable(
-  test_log
+add_executable(tests
   test_log.cc
-  ${TEST_LOG_SOURCES}
-
+  test_config.cc
+  test_updater.cc
 )
 
-target_link_directories(test_log PRIVATE ${GLOG_LIBRARY_DIR} ${PROTOBUF_LIBRARY_DIR} ${GTEST_LIBRARY_DIRS} ${PANGO_LIBARARY_DIRS})
-
-target_link_libraries(
-  test_log
-  ${GLOG_LIBRARY}
-  ${GTEST_LIBARAIES}
-  ${TEST_LIBS}
+target_link_libraries(tests
+  hmi-updater png pthread hmi-video vivoe-media nmea
+  ${PORTAUDIO_LIBRARIES} ${SNDFILE_LIBRARIES} pthread glog widgets
+  GeographicLib config-proto stdc++fs ${OSMSCOUT_LIBARAIES}
+  ${PROTOBUF_LIBRARY} ${GTK_LIBRARIES3} ${GFLAGS_LIBS}
+  ${CAIRO_LIBRARIES} ${PANGO_LIBRARIES} ${SWSCALE_LIBRARIES}
+  ${GTK3_LIBRARIES} ${GEOGRAPHIC_LIBRARIES} ${WINDOWS_RESOURCE_LIB}
+)
+target_link_directories(tests BEFORE PRIVATE
+  ${CMAKE_BINARY_DIR}/external/libnmea/build/src
+  ${CMAKE_BINARY_DIR}/external/libprotobuf/build
+  ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build
+  ${GLOG_LIBRARY_DIR}
+  ${GTEST_LIBRARY_DIRS}
+  ${PANGO_LIBARARY_DIRS}
+  ${CAIRO_LIBARARY_DIRS}
+  ${PROTOBUF_LIBRARY_DIR}
 )
 
-target_include_directories(
-  test_log PUBLIC
-  ${TEST_INCLUDES}
+add_dependencies(tests config-proto googletest libglog)
+target_link_libraries(tests hmicore)
+target_include_directories(tests BEFORE PRIVATE
+  ${CMAKE_SOURCE_DIR}/hmi-display
+  ${CMAKE_BINARY_DIR}/external/install/usr/local/include
+  ${CMAKE_BINARY_DIR}/external/libprotobuf/build
+  ${GLOG_INCLUDE_DIRS} 
+  ${PROTOBUF_INCLUDE_DIRS} 
   ${GTEST_INCLUDE_DIRS}
 )
 
-add_dependencies(test_log config-proto googletest libglog)
-
-## test-hmi
-add_executable(
-  test_hmi
-  test_hmi.cc
+target_link_directories(tests BEFORE PRIVATE
+    ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libglog.so.1
+		${CMAKE_BINARY_DIR}/external/libprotobuf/build
+		${GLOG_LIBRARY_DIR} 
+		${PROTOBUF_LIBRARY_DIR} 
+		${GTEST_LIBRARY_DIRS}
 )
-
-target_link_libraries(
-  test_hmi
-  ${GLOG_LIBRARY}
-  ${GTEST_LIBARAIES}
-  ${TEST_LIBS}
-)
-
-target_link_directories(test_hmi PRIVATE ${GLOG_LIBRARY_DIR} ${PROTOBUF_LIBRARY_DIR} ${GTEST_LIBRARY_DIRS})
-
-target_include_directories(test_hmi PUBLIC
-  ${TEST_INCLUDES}
-  ${GTEST_INCLUDE_DIRS}
-)
-
-add_dependencies(test_hmi config-proto googletest libglog)
 
 include(GoogleTest)
-
-gtest_discover_tests(test_hmi WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
-gtest_discover_tests(test_log WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+gtest_discover_tests(tests WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})

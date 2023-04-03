@@ -18,46 +18,24 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 ///
-/// \file test_events.cc
+/// \file widgets.h
 ///
 
-#include <unistd.h>
+#ifndef HMI_DISPLAY_SRC_WIDGETS_WIDGETS_H_
+#define HMI_DISPLAY_SRC_WIDGETS_WIDGETS_H_
 
-#include <iostream>
+#include "hmicore/widgets/ai/object_localisation.h"
+#include "hmicore/widgets/alarm_indicator.h"
+#include "hmicore/widgets/bottom_labels.h"
+#include "hmicore/widgets/driver/rpm_fuel.h"
+#include "hmicore/widgets/driver/speedometer.h"
+#include "hmicore/widgets/keyboard.h"
+#include "hmicore/widgets/mode.h"
+#include "hmicore/widgets/plan_position_indicator.h"
+#include "hmicore/widgets/side_labels.h"
+#include "hmicore/widgets/table/status_bar.h"
+#include "hmicore/widgets/table/table.h"
+#include "hmicore/widgets/table/table_dynamic.h"
+#include "hmicore/widgets/top_labels.h"
 
-#include "gtest/gtest.h"
-#include "src/events_gva.h"
-#include "src/gva.h"
-#include "src/hmi_gva.h"
-
-namespace {
-
-static gva::EventsGva *events = 0;
-
-TEST(Events, ConstructorTest) {
-  events = new gva::EventsGva(gva::hmi::GetRendrer()->GetWindow(), gva::hmi::GetRendrer()->GetTouch());
-
-  EXPECT_EQ(events, nullptr);
-}
-
-TEST(Events, Flush) {
-  //  events->flush();
-
-  EXPECT_EQ(events, nullptr);
-  free(events);
-}
-
-TEST(Events, ConctructorTest2) {
-  // instantiate events
-  gva::EventKeyPowerOn on;
-
-  gva::hmi::start();
-  gva::hmi::dispatch(on);
-
-  gva::EventsGva io(gva::hmi::GetRendrer()->GetWindow(), gva::hmi::GetRendrer()->GetTouch());
-
-  EXPECT_EQ(gva::hmi::GetRendrer()->GetWindow(), nullptr);
-  EXPECT_EQ(events, nullptr);
-}
-
-}  // namespace
+#endif  // HMI_DISPLAY_SRC_WIDGETS_WIDGETS_H_

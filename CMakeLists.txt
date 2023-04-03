@@ -36,8 +36,7 @@ execute_process(COMMAND ../update.sh)
 
 # add_subdirectory(dds)
 add_subdirectory(test)
-add_subdirectory(video)
-add_subdirectory(hmi-display)
+add_subdirectory(src)
 
 include(scripts/cmake/install.cmake)
 
