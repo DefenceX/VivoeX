@@ -59,21 +59,21 @@
 
 #include <ctime>
 
-#include "src/gva.h"
-#include "src/hmi_gva_helpers.h"
-#include "src/renderer_gva.h"
-#include "src/widgets/ai/object_localisation.h"
-#include "src/widgets/alarm_indicator.h"
-#include "src/widgets/bottom_labels.h"
-#include "src/widgets/driver/rpm_fuel.h"
-#include "src/widgets/driver/speedometer.h"
-#include "src/widgets/keyboard.h"
-#include "src/widgets/mode.h"
-#include "src/widgets/plan_position_indicator.h"
-#include "src/widgets/side_labels.h"
-#include "src/widgets/table/table.h"
-#include "src/widgets/top_labels.h"
-#include "src/widgets/widget_types.h"
+#include "hmicore/gva.h"
+#include "hmicore/hmi_gva_helpers.h"
+#include "hmicore/renderer_gva.h"
+#include "hmicore/widgets/ai/object_localisation.h"
+#include "hmicore/widgets/alarm_indicator.h"
+#include "hmicore/widgets/bottom_labels.h"
+#include "hmicore/widgets/driver/rpm_fuel.h"
+#include "hmicore/widgets/driver/speedometer.h"
+#include "hmicore/widgets/keyboard.h"
+#include "hmicore/widgets/mode.h"
+#include "hmicore/widgets/plan_position_indicator.h"
+#include "hmicore/widgets/side_labels.h"
+#include "hmicore/widgets/table/table.h"
+#include "hmicore/widgets/top_labels.h"
+#include "hmicore/widgets/widget_types.h"
 
 DEFINE_string(path, ".", "Path to save images to");
 DEFINE_int32(timeout, 1000, "Timeout in milliseconds between widget renders, 1 second if not specified.");

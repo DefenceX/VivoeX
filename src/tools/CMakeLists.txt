@@ -3,7 +3,7 @@ project(widget-tester)
 include(FindPkgConfig)
 
 pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
-# pkg_check_modules(CAIRO REQUIRED cairo)
+pkg_check_modules(CAIRO REQUIRED cairo)
 
 set(SOURCE_FILES widget-tester.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../hmicore/renderer_gva.cc
@@ -31,7 +31,30 @@ include_directories(${CMAKE_SOURCE_DIR}/hmi-display)
 link_libraries(-lstdc++fs)
 
 add_executable(widget-tester ${SOURCE_FILES})
-target_link_libraries(widget-tester pthread hmicore)
+target_link_libraries(widget-tester pthread
+    ${CAIRO_LIBRARIES} 
+    ${GEOGRAPHIC_LIBRARIES} 
+	${GFLAGS_LIBS} 
+	${GTK3_LIBRARIES}
+	${OSMSCOUT_LIBARAIES} 
+	${PANGO_LIBRARIES} 
+	${PORTAUDIO_LIBRARIES}
+	${PROTOBUF_LIBRARY} 
+	${SNDFILE_LIBRARIES}
+	${SWSCALE_LIBRARIES} 
+	${WINDOWS_RESOURCE_LIB} 
+	GeographicLib 
+	config-proto 
+	glog 
+	hmivideo 
+	nmea 
+	png 
+	pthread 
+	stdc++fs
+	vivoe-media 
+	widgets 
+    hmiupdater 
+)
 target_compile_options(widget-tester PUBLIC ${CAIRO_CFLAGS_OTHER} ${GTK3_CFLAGS_OTHER})
 set_target_properties(widget-tester PROPERTIES UNITY_BUILD OFF)
 

@@ -31,10 +31,14 @@ link_libraries(-lstdc++fs)
 add_executable(hmi-display main.cc)
 
 link_directories( ${NMEA_LIBRARY_DIR} ${CMAKE_BINARY_DIR}/external/libnmea/src/lib)
-message(STATUS ${GTK3_LIBRARIES})
-target_link_libraries(hmi-display
-    ${CAIRO_LIBRARIES} 
-    ${GEOGRAPHIC_LIBRARIES} 
+target_link_libraries(hmi-display 
+    hmicore
+	widgets 
+	pthread 
+	hmiupdater
+	hmiaudio
+	${CAIRO_LIBRARIES} 
+	${GEOGRAPHIC_LIBRARIES} 
 	${GFLAGS_LIBS} 
 	${GTK3_LIBRARIES}
 	${OSMSCOUT_LIBARAIES} 
@@ -44,19 +48,15 @@ target_link_libraries(hmi-display
 	${SNDFILE_LIBRARIES}
 	${SWSCALE_LIBRARIES} 
 	${WINDOWS_RESOURCE_LIB} 
-	gio-2.0
 	GeographicLib 
 	config-proto 
 	glog 
-	hmi-video 
+	hmivideo 
 	nmea 
 	png 
 	pthread 
 	stdc++fs
 	vivoe-media 
-	widgets 
-    hmi-updater 
-    hmicore
 )
 
 if (MSYS)

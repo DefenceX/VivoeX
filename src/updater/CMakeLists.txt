@@ -1,12 +1,12 @@
 
-project(hmi-updater)
+project(hmiupdater)
 
 set(SOURCES 
     updater.cc   
 )
 
-add_library(hmi-updater STATIC ${SOURCES})
-target_include_directories(hmi-updater BEFORE PRIVATE
+add_library(hmiupdater STATIC ${SOURCES})
+target_include_directories(hmiupdater BEFORE PRIVATE
      /usr/include/cairo
     ${GTK3_INCLUDE_DIRS}
     ${PROTOBUF_INCLUDE_DIRS}
@@ -16,4 +16,4 @@ target_include_directories(hmi-updater BEFORE PRIVATE
     ${SNDFILE_LIBRARY_DIR}
 )
 
-add_dependencies(hmi-updater portaudio config-proto libglog)
+add_dependencies(hmiupdater portaudio config-proto libglog)

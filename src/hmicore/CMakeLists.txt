@@ -1,4 +1,5 @@
 add_subdirectory(widgets)
+add_subdirectory(hardware)
 
 set(SOURCES ../common/debug.cc 
     ../common/utils.cc 
@@ -6,7 +7,6 @@ set(SOURCES ../common/debug.cc
     events_gva.cc 
     gva_application.cc
     gva_functions_common.cc
-    hardware/audio.cc 
     hmi_gva.cc 
     hmi_gva_defaults.cc 
     hmi_gva_helpers.cc 
@@ -32,8 +32,7 @@ set(SOURCES ../common/debug.cc
 )
 
 add_library(hmicore STATIC ${SOURCES})
-add_dependencies(hmicore widgets hmi-updater portaudio libglog libprotobuf googletest libosmscout geographiclib hmi-video config-proto ${DDS_STACK} libosmscout)
-message(STATUS >>>>>>> ${NMEA_INCLUDER_DIRS} )
+add_dependencies(hmicore widgets hmiupdater portaudio libglog libprotobuf googletest libosmscout geographiclib hmivideo config-proto ${DDS_STACK} libosmscout)
 
 target_include_directories (hmicore PUBLIC
     ${NMEA_INCLUDER_DIRS} 

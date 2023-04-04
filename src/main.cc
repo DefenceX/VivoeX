@@ -30,15 +30,15 @@
 #include <iostream>
 #include <string>
 
+#include "hmicore/events_gva.h"
+#include "hmicore/gva.h"
+#include "hmicore/gva_application.h"
+#include "hmicore/hmi_gva.h"
+#include "hmicore/renderer_map.h"
+#include "hmicore/widgets/alarm_indicator.h"
+#include "hmicore/widgets/keyboard.h"
+#include "hmicore/widgets/plan_position_indicator.h"
 #include "rtp_stream.h"  // NOLINT
-#include "src/events_gva.h"
-#include "src/gva.h"
-#include "src/gva_application.h"
-#include "src/hmi_gva.h"
-#include "src/renderer_map.h"
-#include "src/widgets/alarm_indicator.h"
-#include "src/widgets/keyboard.h"
-#include "src/widgets/plan_position_indicator.h"
 #include "video/src/gva_video_rtp_yuv.h"
 
 DEFINE_bool(fullscreen, false, "Start the application fullscreen");

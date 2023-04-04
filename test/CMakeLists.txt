@@ -31,14 +31,6 @@ add_executable(tests
   test_updater.cc
 )
 
-target_link_libraries(tests
-  hmi-updater png pthread hmi-video vivoe-media nmea
-  ${PORTAUDIO_LIBRARIES} ${SNDFILE_LIBRARIES} pthread glog widgets
-  GeographicLib config-proto stdc++fs ${OSMSCOUT_LIBARAIES}
-  ${PROTOBUF_LIBRARY} ${GTK_LIBRARIES3} ${GFLAGS_LIBS}
-  ${CAIRO_LIBRARIES} ${PANGO_LIBRARIES} ${SWSCALE_LIBRARIES}
-  ${GTK3_LIBRARIES} ${GEOGRAPHIC_LIBRARIES} ${WINDOWS_RESOURCE_LIB}
-)
 target_link_directories(tests BEFORE PRIVATE
   ${CMAKE_BINARY_DIR}/external/libnmea/build/src
   ${CMAKE_BINARY_DIR}/external/libprotobuf/build
@@ -51,22 +43,33 @@ target_link_directories(tests BEFORE PRIVATE
 )
 
 add_dependencies(tests config-proto googletest libglog)
-target_link_libraries(tests hmicore)
-target_include_directories(tests BEFORE PRIVATE
-  ${CMAKE_SOURCE_DIR}/hmi-display
-  ${CMAKE_BINARY_DIR}/external/install/usr/local/include
-  ${CMAKE_BINARY_DIR}/external/libprotobuf/build
-  ${GLOG_INCLUDE_DIRS} 
-  ${PROTOBUF_INCLUDE_DIRS} 
-  ${GTEST_INCLUDE_DIRS}
-)
-
-target_link_directories(tests BEFORE PRIVATE
-    ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libglog.so.1
-		${CMAKE_BINARY_DIR}/external/libprotobuf/build
-		${GLOG_LIBRARY_DIR} 
-		${PROTOBUF_LIBRARY_DIR} 
-		${GTEST_LIBRARY_DIRS}
+target_link_libraries(tests 
+  hmiupdater 
+  hmiaudio
+  widgets 
+  hmicore 
+  pthread
+  ${CAIRO_LIBRARIES} 
+  ${GEOGRAPHIC_LIBRARIES} 
+	${GFLAGS_LIBS} 
+	${GTK3_LIBRARIES}
+	${OSMSCOUT_LIBARAIES} 
+	${PANGO_LIBRARIES} 
+	${PORTAUDIO_LIBRARIES}
+	${PROTOBUF_LIBRARY} 
+	${SNDFILE_LIBRARIES}
+	${SWSCALE_LIBRARIES} 
+	${WINDOWS_RESOURCE_LIB} 
+	GeographicLib 
+	config-proto 
+	glog 
+  gtest
+	hmivideo 
+	nmea 
+	png 
+	pthread 
+	stdc++fs
+	vivoe-media 
 )
 
 include(GoogleTest)
