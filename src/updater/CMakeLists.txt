@@ -11,7 +11,7 @@ target_include_directories(hmiupdater BEFORE PRIVATE
     ${GTK3_INCLUDE_DIRS}
     ${PROTOBUF_INCLUDE_DIRS}
     ${CMAKE_CURRENT_SOURCE_DIR}/.. 
-    ${CMAKE_BINARY_DIR}/hmi-display/config
+    ${CMAKE_BINARY_DIR}/src/config
     ${PORTAUDIO_INCLUDE_DIR}
     ${SNDFILE_LIBRARY_DIR}
 )

@@ -19,7 +19,8 @@
                 "/usr/include/gdk-pixbuf-2.0",
                 "/usr/include/atk-1.0",
                 "${workspaceFolder}/hmi-display",
-                "${workspaceFolder}/build/external/install/usr/local/include"
+                "${workspaceFolder}/build/external/install/usr/local/include",
+                "${workspaceFolder}/src"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/g++",

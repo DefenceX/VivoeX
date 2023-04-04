@@ -41,7 +41,7 @@ class Updater : public UpdaterBase {
   ///
   Updater(uint64_t id);
 
-  ~Updater() = default;
+  ~Updater();
 
   ///
   /// \brief Register the widgets to be updated
@@ -70,6 +70,12 @@ class Updater : public UpdaterBase {
   /// \return void*
   ///
   static void* WidgetUpdaterThread(void* ptr);
+
+  ///
+  /// \brief Set to false to terminate thread
+  ///
+  ///
+  static bool running_;
 
  private:
   std::unordered_map<widget::WidgetEnum, std::shared_ptr<WidgetX>>* widget_list_ = nullptr;

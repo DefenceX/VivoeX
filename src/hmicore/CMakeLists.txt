@@ -38,7 +38,7 @@ target_include_directories (hmicore PUBLIC
     ${NMEA_INCLUDER_DIRS} 
     ${OSMSCOUT_INCLUDE_DIRS} 
     ${GEOGRAPHIC_INCLUDE_DIRS}
-    ${CMAKE_BINARY_DIR}/hmi-display/config
+    ${CMAKE_BINARY_DIR}/src/config
     ${CMAKE_CURRENT_SOURCE_DIR}/widgets
     ${CMAKE_CURRENT_SOURCE_DIR}/common
     ${CAIRO_INCLUDE_DIRS}
