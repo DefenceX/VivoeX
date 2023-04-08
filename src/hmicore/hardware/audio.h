@@ -92,6 +92,10 @@ class AudioFunctions {
   ///
   ///
   void PlayWarning() const;
+
+ private:
+  static void *AlsaLog(const char *file, int line, const char *function, int err, const char *fmt, ...);
+  const uint32_t kFramesPerBuffer = 512;
 };
 
 }  // namespace gva

@@ -24,17 +24,23 @@
 
 #include "hmicore/hardware/audio.h"
 
+#include <alsa/asoundlib.h>
 #include <glog/logging.h>
 
 namespace gva {
 
-#define FRAMES_PER_BUFFER (512)
+void *AudioFunctions::AlsaLog(const char *file, int line, const char *function, int err, const char *fmt, ...) {
+  LOG(INFO) << "PortAudio info: " << file << ":" << line << " " << function << " " << err << " " << fmt << "\n";
+  return nullptr;
+}
 
 AudioFunctions::AudioFunctions() {
   PaError error;
 
+  snd_lib_error_set_handler((snd_lib_error_handler_t)AudioFunctions::AlsaLog);
   // init portaudio
   error = Pa_Initialize();
+
   if (error != paNoError) {
     LOG(ERROR) << "Problem initializing";
   }
@@ -95,10 +101,10 @@ int AudioFunctions::Play(std::string_view filename) const {
   }
 
   // Open PaStream with values read from the file
-  error = Pa_OpenDefaultStream(&stream, 0,                                                 // no input
-                               data.info.channels,                                         // stereo out
-                               paFloat32,                                                  // floating point
-                               data.info.samplerate, FRAMES_PER_BUFFER, Callback, &data);  // our sndfile data struct
+  error = Pa_OpenDefaultStream(&stream, 0,                                                // no input
+                               data.info.channels,                                        // stereo out
+                               paFloat32,                                                 // floating point
+                               data.info.samplerate, kFramesPerBuffer, Callback, &data);  // our sndfile data struct
   if (error != paNoError) {
     LOG(ERROR) << "Problem opening Default Stream";
     return 1;
