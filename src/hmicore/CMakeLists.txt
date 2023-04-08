@@ -32,7 +32,7 @@ set(SOURCES ../common/debug.cc
 )
 
 add_library(hmicore STATIC ${SOURCES})
-add_dependencies(hmicore hmiaudio widgets hmiupdater portaudio libglog libprotobuf googletest libosmscout geographiclib hmivideo config-proto ${DDS_STACK} libosmscout)
+add_dependencies(hmicore hmiaudio widgets hmiupdater libglog libprotobuf libnmea googletest libosmscout geographiclib hmivideo config-proto ${DDS_STACK} libosmscout portaudio)
 
 target_include_directories (hmicore PUBLIC
     ${NMEA_INCLUDER_DIRS} 
