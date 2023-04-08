@@ -71,6 +71,8 @@ int main(int argc, char *argv[]) {
 
   // Blocking call to the application constructor
   app.Exec();
+  gva::Updater::running_ = false;
+  gva::ScreenGva::args_.active = false;
 
   SYSLOG(INFO) << "Exiting hmi_display...\n";
   google::ShutdownGoogleLogging();

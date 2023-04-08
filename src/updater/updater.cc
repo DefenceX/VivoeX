@@ -50,10 +50,11 @@ void Updater::RegisterWidgets(std::unordered_map<widget::WidgetEnum, std::shared
 
   widget_list_ = &widget_list;
 
-  thread_ = std::thread(Updater::WidgetUpdaterThread, (void *)widget_list_);
+  thread_ = std::thread(Updater::WidgetUpdaterThread, widget_list_);
 }
 
 Updater::~Updater() {
+  LOG(INFO) << "Finalising updater";
   running_ = false;
   if (thread_.joinable()) {
     thread_.join();
@@ -64,8 +65,8 @@ void Updater::UpdateState(std::string state) {}
 
 void Updater::Event(std::string event) {}
 
-void *Updater::WidgetUpdaterThread(void *ptr) {
-  uint64_t count = 0;
+void Updater::WidgetUpdaterThread(std::unordered_map<widget::WidgetEnum, std::shared_ptr<WidgetX>> *widget_list) {
+  uint16_t count = 0;
   std::array<gva::WidgetObjectLocalisation::BoxType, 8> box;
 
   gva::AudioFunctions audio;
@@ -78,9 +79,6 @@ void *Updater::WidgetUpdaterThread(void *ptr) {
   box[4] = {400, 190, 90, 36, 0xffa500, "", false, false};
   box[5] = {500, 195, 50, 20, 0xfff00, "Person", false, true};
   box[6] = {550, 169, 100, 42, 0xfff00, "Person", false, false};
-
-  const std::unordered_map<widget::WidgetEnum, std::shared_ptr<WidgetX>> *widget_list =
-      (std::unordered_map<widget::WidgetEnum, std::shared_ptr<WidgetX>> *)ptr;
 
   std::shared_ptr<gva::WidgetDriverSpeedometer> speed = std::static_pointer_cast<gva::WidgetDriverSpeedometer>(
       widget_list->at(widget::WidgetEnum::kWidgetTypeDialSpeedometer));
@@ -124,7 +122,7 @@ void *Updater::WidgetUpdaterThread(void *ptr) {
 
     speed->SetValue(GenerateSineWave(count));
     rpm->SetValue(GenerateSineWave(count) * 90);
-    nanosleep((const struct timespec[]){{0, 100000000L}}, NULL);
+    nanosleep((const struct timespec[]){{0, 100000000L}}, nullptr);
 
     if (count == 50) {
       alarm_indicator->SetType(GvaAlarmType::kAlarmAdvisory);
@@ -151,14 +149,14 @@ void *Updater::WidgetUpdaterThread(void *ptr) {
 
     count++;
   }
-  return nullptr;
+  LOG(INFO) << "Quitting widget updater thread";
 }
 
 // Generate a sine wave with values ranging from 0 to 100
-int Updater::GenerateSineWave(int sample, double sampleRate, double frequency) {
+uint16_t Updater::GenerateSineWave(int sample, double sampleRate, double frequency) {
   const double PI = 3.14159265358979323846;
   double time = (double)sample / sampleRate;
   double value = sin(2 * PI * frequency * time);
-  return (int)(50.0 * value + 50.0);
+  return (uint16_t)(50.0 * value + 50.0);
 }
 }  // namespace gva

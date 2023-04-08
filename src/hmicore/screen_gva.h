@@ -154,13 +154,20 @@ class ScreenGva : public RendererGva {
   ///
   WidgetX *GetWidget(widget::WidgetEnum widget);
 
-  static void *ClockUpdateThread(ClockArgs arg);
+  ///
+  /// \brief The thread that reads and updates the clock and status bar info
+  ///
+  /// \param arg status bar arguments
+  /// \return void*
+  ///
+  static void ClockUpdateThread(ClockArgs *arg);
+
+  static ClockArgs args_;
 
  private:
   char *PosDegrees(float lon, float lat);
   Screen *screen_ = nullptr;
   std::unordered_map<widget::WidgetEnum, std::shared_ptr<WidgetX>> widget_list_;
-  ClockArgs args_;
   int gps_ = 0;
   uint32_t hndl_;
   Screen last_screen_;

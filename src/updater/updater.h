@@ -69,7 +69,7 @@ class Updater : public UpdaterBase {
   /// \param ptr The widgets list pointer
   /// \return void*
   ///
-  static void* WidgetUpdaterThread(void* ptr);
+  static void WidgetUpdaterThread(std::unordered_map<widget::WidgetEnum, std::shared_ptr<WidgetX>>* widget_list);
 
   ///
   /// \brief Set to false to terminate thread
@@ -89,7 +89,7 @@ class Updater : public UpdaterBase {
   /// \param frequency i.e. 440.0;
   /// \return int The sample value. amplitude is 0-100
   ///
-  static int GenerateSineWave(int sample, double sampleRate = 44100, double frequency = 440.0);
+  static uint16_t GenerateSineWave(int sample, double sampleRate = 44100, double frequency = 440.0);
 };
 
 }  // namespace gva

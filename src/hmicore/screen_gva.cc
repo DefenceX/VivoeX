@@ -53,6 +53,9 @@ struct termios {
 #include "widgets/widgets.h"
 
 namespace gva {
+
+ClockArgs ScreenGva::args_ = {};
+
 ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : RendererGva(width, height), screen_(screen) {
   struct termios settings;
 
@@ -159,15 +162,15 @@ ScreenGva::~ScreenGva() {
   LOG(INFO) << "GVA screen finalized.";
 }
 
-void *ScreenGva::ClockUpdateThread(ClockArgs arg) {
+void ScreenGva::ClockUpdateThread(ClockArgs *arg) {
   StatusUpdater updater;
-  while (arg.active) {
-    updater.ClockUpdate(&arg);
+  while (arg->active) {
+    updater.ClockUpdate(arg);
     struct timespec reqDelay = {1, 0};
     nanosleep(&reqDelay, (struct timespec *)nullptr);
   }  // End thread loop
 
-  return nullptr;
+  LOG(INFO) << "Clock thread terminated";
 }
 
 void ScreenGva::StartClock(std::shared_ptr<WidgetX> status_bar_widget) {
@@ -183,7 +186,7 @@ void ScreenGva::StartClock(std::shared_ptr<WidgetX> status_bar_widget) {
   args_.info->lat = ConfigData::GetInstance()->GetTestLat();
 
   // Launch clock thread
-  clock_thread_ = std::thread(ClockUpdateThread, args_);
+  clock_thread_ = std::thread(ClockUpdateThread, &args_);
   LOG(INFO) << "Created clock thread";
 }
 
