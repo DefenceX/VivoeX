@@ -75,5 +75,9 @@ int main(int argc, char *argv[]) {
   gva::ScreenGva::args_.active = false;
 
   SYSLOG(INFO) << "Exiting hmi_display...\n";
+
+  // wait 100ms for threads to exit
+  nanosleep((const struct timespec[]){{0, 100000000L}}, nullptr);
+
   google::ShutdownGoogleLogging();
 }

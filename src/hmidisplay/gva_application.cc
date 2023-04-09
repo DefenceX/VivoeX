@@ -197,6 +197,7 @@ void GvaApplication::Fullscreen(gva::HandleType *render) {
   render->fullscreen ? gtk_window_unfullscreen(GTK_WINDOW(gtk_.win)) : gtk_window_fullscreen(GTK_WINDOW(gtk_.win));
   render->fullscreen = render->fullscreen ? false : true;
   gva::ConfigData::GetInstance()->SetFullscreen(render->fullscreen);
+
   LOG(INFO) << "Toggle fullscreen";
 
   if (GdkMonitor *monitor = gdk_display_get_primary_monitor(gdk_display_get_default()); monitor) {

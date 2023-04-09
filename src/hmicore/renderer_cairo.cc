@@ -297,25 +297,14 @@ void RendererCairo::Draw() {
   draw_commands_.clear();
 }
 
-HandleType *RendererCairo::Init(uint32_t width, uint32_t height) const {
-  render_.size.width = width;
-  render_.size.height = height;
-  render_.surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
-  return 0;
-}
-
 HandleType *RendererCairo::Init(uint32_t width, uint32_t height, bool fullscreen) {
   render_.size.width = width;
   render_.size.height = height;
-
   width_ = width;
   height_ = height;
-
   render_.surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
-
   render_.fullscreen = fullscreen;
-
-  return 0;
+  return &render_;
 }
 
 void RendererCairo::SetPixel(uint32_t x, uint32_t y) {}

@@ -87,25 +87,14 @@ class RendererCairo : public Renderer {
   ~RendererCairo() override;
 
   ///
-  /// \brief Initialise the renderer with simple display parameters
+  /// \brief Initalise the renderer with display parameters
   ///
   /// \param width Canvas width in pixels
   /// \param height Canvas height in pixels
+  /// \param fullscreen Fullscreen mode when true
   /// \return HandleType* a pointer to the renderer handler
   ///
-  HandleType *Init(uint32_t width, uint32_t height) const;
-
-  ///
-  /// \brief Initalise the renderer with display parameters
-  ///
-  /// \param width
-  /// \param height
-  /// \param fullscreen
-  /// \param cb
-  /// \param arg
-  /// \return HandleType* a pointer to the renderer handler
-  ///
-  HandleType *Init(uint32_t width, uint32_t height, bool fullscreen);
+  HandleType *Init(uint32_t width, uint32_t height, bool fullscreen = false);
 
   // Pure Virtual functions
   //
