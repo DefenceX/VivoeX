@@ -5,7 +5,6 @@ set(SOURCES ../common/debug.cc
     ../common/utils.cc 
     config_reader.cc
     events_gva.cc 
-    gva_application.cc
     gva_functions_common.cc
     hmi_gva.cc 
     hmi_gva_defaults.cc 

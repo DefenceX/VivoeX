@@ -24,6 +24,7 @@
 #ifndef HMICORE_GVA_APPLICATION_H_
 #define HMICORE_GVA_APPLICATION_H_
 #include <gtk/gtk.h>
+#include <rtp_stream.h>
 #include <unistd.h>
 
 #include <iostream>
@@ -32,14 +33,13 @@
 
 #include "hmicore/events_gva.h"
 #include "hmicore/gva.h"
-#include "hmicore/gva_application_types.h"
 #include "hmicore/hmi_gva.h"
 #include "hmicore/renderer_map.h"
-#include "rtp_stream.h"  // NOLINT
+#include "hmicore/widgets/alarm_indicator.h"
+#include "hmicore/widgets/keyboard.h"
+#include "hmicore/widgets/plan_position_indicator.h"
+#include "hmidisplay/gva_application_types.h"
 #include "video/src/gva_video_rtp_yuv.h"
-#include "widgets/alarm_indicator.h"
-#include "widgets/keyboard.h"
-#include "widgets/plan_position_indicator.h"
 
 class GvaApplication {
  public:

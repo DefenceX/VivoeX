@@ -22,7 +22,7 @@
 ///
 
 #include "bms.h"
-#include "hmicore/gva_application.h"
+#include "hmidisplay/gva_application.h"
 
 namespace gva {
 

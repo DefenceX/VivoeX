@@ -34,12 +34,33 @@ add_executable(
 
 target_link_directories(tests PRIVATE ${GLOG_LIBRARY_DIR} ${PROTOBUF_LIBRARY_DIR} ${GTEST_LIBRARY_DIRS} ${PANGO_LIBARARY_DIRS})
 
-target_link_libraries(
-  tests
-  ${GLOG_LIBRARY}
-  ${GTEST_LIBARAIES}
+target_link_libraries(tests
+  hmiupdater 
+  hmiaudio
+  widgets 
+  hmicore 
+  pthread
+  ${CAIRO_LIBRARIES} 
+  ${GEOGRAPHIC_LIBRARIES} 
+  ${GFLAGS_LIBS} 
   ${GTK3_LIBRARIES}
-  ${PANGO_LIBRARIES}
+  ${OSMSCOUT_LIBARAIES} 
+  ${PANGO_LIBRARIES} 
+  ${PORTAUDIO_LIBRARIES}
+  ${PROTOBUF_LIBRARY} 
+  ${SNDFILE_LIBRARIES}
+  ${SWSCALE_LIBRARIES} 
+  ${WINDOWS_RESOURCE_LIB} 
+  GeographicLib 
+  config-proto 
+  glog 
+  gtest
+  hmivideo 
+  nmea 
+  png 
+  pthread 
+  stdc++fs
+  vivoe-media 
 )
 
 target_include_directories(

@@ -28,8 +28,8 @@
 #include <vector>
 
 #include "hmicore/gva.h"
-#include "hmicore/gva_application_types.h"
 #include "hmicore/renderer_gva.h"
+#include "hmidisplay/gva_application_types.h"
 
 namespace gva {
 

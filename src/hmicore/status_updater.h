@@ -64,7 +64,8 @@ class StatusUpdater {
   /// \param parser the current NMEA parser
   /// \param location the location presentation type
   ///
-  void ParseGpsData(const int *gps_file_descriptor, nmeaINFO *info, nmeaPARSER *parser, const LocationType &location) const;
+  void ParseGpsData(const int *gps_file_descriptor, nmeaINFO *info, nmeaPARSER *parser,
+                    const LocationType &location) const;
 
   ///
   /// \brief Update the location
