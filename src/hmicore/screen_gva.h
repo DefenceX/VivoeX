@@ -22,14 +22,15 @@
 /// \file screen_gva.h
 ///
 
-#ifndef HMI_DISPLAY_SRC_SCREEN_GVA_H_
-#define HMI_DISPLAY_SRC_SCREEN_GVA_H_
+#ifndef HMICORE_SCREEN_GVA_H_
+#define HMICORE_SCREEN_GVA_H_
 #include <cairo.h>
 #include <pthread.h>
 
 #include <map>
 #include <memory>
 #include <string>
+#include <unordered_map>
 
 #include "hmicore/gva.h"
 #include "hmicore/renderer_gva.h"
@@ -180,4 +181,4 @@ class ScreenGva : public RendererGva {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_SCREEN_GVA_H_
+#endif  // HMICORE_SCREEN_GVA_H_

@@ -21,8 +21,8 @@
 /// \file renderer_map.h
 ///
 
-#ifndef HMI_DISPLAY_SRC_RENDERER_MAP_H_
-#define HMI_DISPLAY_SRC_RENDERER_MAP_H_
+#ifndef HMICORE_RENDERER_MAP_H_
+#define HMICORE_RENDERER_MAP_H_
 
 #include <cairo.h>
 #include <osmscout/Database.h>
@@ -70,4 +70,4 @@ class rendererMap {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_RENDERER_MAP_H_
+#endif  // HMICORE_RENDERER_MAP_H_

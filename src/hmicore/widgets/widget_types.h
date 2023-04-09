@@ -21,8 +21,8 @@
 /// \file widget_types.h
 ///
 
-#ifndef HMI_DISPLAY_SRC_WIDGETS_WIDGET_TYPES_H_
-#define HMI_DISPLAY_SRC_WIDGETS_WIDGET_TYPES_H_
+#ifndef HMICORE_WIDGETS_WIDGET_TYPES_H_
+#define HMICORE_WIDGETS_WIDGET_TYPES_H_
 namespace gva::widget {
 
 ///
@@ -127,4 +127,4 @@ struct GvaColourType {
 
 }  // namespace gva::widget
 
-#endif  // HMI_DISPLAY_SRC_WIDGETS_WIDGET_TYPES_H_
+#endif  // HMICORE_WIDGETS_WIDGET_TYPES_H_

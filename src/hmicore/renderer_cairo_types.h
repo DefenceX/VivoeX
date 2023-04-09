@@ -21,8 +21,8 @@
 /// \file renderer_cairo_types.h
 ///
 
-#ifndef HMI_DISPLAY_SRC_RENDERER_CAIRO_TYPES_H_
-#define HMI_DISPLAY_SRC_RENDERER_CAIRO_TYPES_H_
+#ifndef HMICORE_RENDERER_CAIRO_TYPES_H_
+#define HMICORE_RENDERER_CAIRO_TYPES_H_
 
 #include <gtk/gtk.h>
 
@@ -30,21 +30,12 @@
 
 namespace gva {
 
-struct gtkType {
-  GtkApplication *app;
-  GtkWidget *win;
-  GtkWidget *draw;
-  uint32_t height;
-  uint32_t width;
-};
-
 class HandleType {
  public:
   uint32_t handle;
   bool inUse;
   bool fullscreen;
   ResolutionType size;
-  gtkType win;
   cairo_surface_t *surface;
   cairo_t *cr;
 };
@@ -82,4 +73,4 @@ enum class DrawType {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_RENDERER_CAIRO_TYPES_H_
+#endif  // HMICORE_RENDERER_CAIRO_TYPES_H_

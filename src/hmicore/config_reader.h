@@ -21,8 +21,8 @@
 /// \file config_reader.h
 ///
 
-#ifndef HMI_DISPLAY_SRC_CONFIG_READER_H_
-#define HMI_DISPLAY_SRC_CONFIG_READER_H_
+#ifndef HMICORE_CONFIG_READER_H_
+#define HMICORE_CONFIG_READER_H_
 
 #include <memory>
 #include <string>
@@ -454,4 +454,4 @@ class ConfigData : public ConfigDataTheme {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_CONFIG_READER_H_
+#endif  // HMICORE_CONFIG_READER_H_

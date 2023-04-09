@@ -38,7 +38,7 @@ namespace gva {
 
 void StatusUpdater::UpdateClock(std::shared_ptr<WidgetStatusBar> statusBar) const {
   std::tm localTime;
-  GetLocalTime(localTime);
+  GetLocalTime(&localTime);
 
   std::stringstream stream;
   stream << std::put_time(&localTime, "%m/%d/%Y %H:%M:%S");
@@ -119,12 +119,12 @@ void StatusUpdater::ClockUpdate(ClockArgs *args) {
   gva::EventsGva::CreateRefreshEvent();
 }
 
-void StatusUpdater::GetLocalTime(std::tm &localTime) const {
+void StatusUpdater::GetLocalTime(std::tm *localTime) const {
   const auto now = std::time(nullptr);
 #if defined(_WIN32)
-  localtime_s(&localTime, &now);
+  localtime_s(localTime, &now);
 #else
-  localtime_r(&now, &localTime);
+  localtime_r(&now, localTime);
 #endif
 }
 }  // namespace gva

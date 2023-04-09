@@ -28,6 +28,7 @@
 #include <memory>
 
 #include "common/utils.h"
+#include "hmicore/gva.h"
 #include "hmicore/gva_functions_common.h"
 #include "hmicore/widgets/keyboard.h"
 #include "hmicore/widgets/widget.h"
@@ -36,6 +37,76 @@ GvaApplication::Options GvaApplication::options_ = {};
 std::unique_ptr<gva::GvaVideoRtpYuv> GvaApplication::rtp_stream1_ = nullptr;
 uint32_t GvaApplication::update_counter_ = 0;
 bool GvaApplication::first_execution_ = true;
+gtkType GvaApplication::gtk_;
+void GvaApplication::CloseWindow(void) { gva::hmi::GetRendrer()->DestroySurface(); }
+//
+// ReDraw the screen from the surface. Note that the ::Draw
+// signal receives a ready-to-be-used cairo_t that is already
+// clipped to only Draw the exposed areas of the Widget
+//
+gboolean GvaApplication::DrawCb(GtkWidget *Widget, cairo_t *cr, gpointer dat [[maybe_unused]]) {
+  gva::hmi::GetRendrer()->DrawSurface();
+  gtk_widget_queue_draw(Widget);
+  return FALSE;
+}
+
+// Create a new surface of the appropriate size to store our HMI
+gboolean GvaApplication::ConfigureEventCb(GtkWidget *Widget, GdkEventConfigure *event, gpointer data [[maybe_unused]]) {
+  gva::hmi::GetRendrer()->SetSurface(gdk_window_create_similar_surface(
+      gtk_widget_get_window(Widget), CAIRO_CONTENT_COLOR, gtk_widget_get_allocated_width(Widget),
+      gtk_widget_get_allocated_height(Widget)));
+
+  int width = gtk_widget_get_allocated_width(Widget);
+  int height = gtk_widget_get_allocated_height(Widget);
+  gva::hmi::GetRendrer()->Configure(width, height);
+
+  gtk_widget_set_size_request(gtk_.draw, (gint)width, (gint)height);
+  gtk_widget_queue_draw(Widget);
+
+  // We've handled the configure event, no need for further processing.
+  return TRUE;
+}
+
+void GvaApplication::Activate(GtkApplication *app, gpointer user_data [[maybe_unused]]) {
+  gtk_.win = gtk_application_window_new(app);
+  gtk_window_set_title(GTK_WINDOW(gtk_.win), "HMI vivoe-lite");
+
+  gtk_.draw = gtk_drawing_area_new();
+  gtk_container_add(GTK_CONTAINER(gtk_.win), gtk_.draw);
+  // set a minimum size
+  gtk_widget_set_size_request(gtk_.draw, gva::kMinimumWidth, gva::kMinimumHeight);
+
+  //
+  // Event signals
+  //
+  g_signal_connect(gtk_.win, "destroy", G_CALLBACK(CloseWindow), NULL);
+  g_signal_connect(gtk_.draw, "button-press-event", G_CALLBACK(gva::EventsGva::ButtonPressEventCb), NULL);
+  g_signal_connect(gtk_.draw, "button-release-event", G_CALLBACK(gva::EventsGva::ButtonReleaseEventCb), NULL);
+  g_signal_connect(gtk_.win, "key-press-event", G_CALLBACK(gva::EventsGva::KeyPressEventCb), NULL);
+  g_signal_connect(gtk_.win, "key-release-event", G_CALLBACK(gva::EventsGva::KeyReleaseEventCb), NULL);
+
+  // Ask to receive events the Drawing area doesn't normally
+  // subscribe to. In particular, we need to ask for the
+  // button press and motion notify events that want to handle.
+  //
+  gtk_widget_set_events(gtk_.draw, gtk_widget_get_events(gtk_.draw) | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
+                                       GDK_POINTER_MOTION_MASK);
+
+  //
+  // Signals used to handle the backing surface
+  //
+  g_signal_connect(gtk_.draw, "draw", G_CALLBACK(DrawCb), NULL);
+  g_signal_connect(gtk_.draw, "configure-event", G_CALLBACK(ConfigureEventCb), NULL);
+  if (gva::ConfigData::GetInstance()->GetFullscreen()) gtk_window_fullscreen(GTK_WINDOW(gtk_.win));
+
+  gtk_widget_show_all(gtk_.win);
+}
+
+gboolean GvaApplication::Callback(gpointer data) {
+  
+  // callback_(arg_, data);
+  return TRUE;
+}
 
 GvaApplication::GvaApplication(const Options &options, const std::string &ipaddr, const uint32_t port) {
   options_ = options;
@@ -54,7 +125,7 @@ GvaApplication::GvaApplication(const Options &options, const std::string &ipaddr
   //
   // Initialise the display events
   //
-  io_ = std::make_shared<gva::EventsGva>(gva::hmi::GetRendrer()->GetWindow(), gva::hmi::GetRendrer()->GetTouch());
+  io_ = std::make_shared<gva::EventsGva>(&gtk_, gva::hmi::GetRendrer()->GetTouch());
 
   //
   // Setup video sources (default size will be 640 x 480 unless specified)
@@ -67,17 +138,31 @@ GvaApplication::GvaApplication(const Options &options, const std::string &ipaddr
   }
 }
 
-//
+///
+/// \brief Execute the main GTK application loop (blocking till windows destroyed)
 ///
 ///
 void GvaApplication::Exec() const {
+  gva::HandleType *renderer;
+
+  // Draw the first screen, then the callback (Update) will refresh as required
+  renderer = gva::hmi::GetRendrer()->Init(640, 480, gva::ConfigData::GetInstance()->GetFullscreen());
+
+#if __MINGW64__ || __MINGW32__
+  gtk_.app = gtk_application_new("org.gtk.vivoe-lite-hmi", G_APPLICATION_DEFAULT_FLAGS);
+#else
+  gtk_.app = gtk_application_new("org.gtk.vivoe-lite-hmi", G_APPLICATION_FLAGS_NONE);
+#endif
+  g_signal_connect(gtk_.app, "activate", G_CALLBACK(Activate), NULL);
+
+  g_timeout_add(40, Callback, renderer);
+
   //
   // Start the render and event loop
   //
+  g_application_run(G_APPLICATION(gtk_.app), 0, nullptr);
+  g_object_unref(gtk_.app);
 
-  // Draw the first screen, then the callback (Update) will refresh as required
-  gva::hmi::GetRendrer()->Init(640, 480, gva::ConfigData::GetInstance()->GetFullscreen(), Update,
-                               static_cast<void *>(io_.get()));
   // Free the config reader (writes data back to disk)
   gva::ConfigData::GetInstance()->WriteData();
 }
@@ -102,8 +187,7 @@ void GvaApplication::Dispatch(gva::GvaKeyEnum key) {
 void GvaApplication::Fullscreen(gva::HandleType *render) {
   GdkRectangle workarea;
 
-  render->fullscreen ? gtk_window_unfullscreen(GTK_WINDOW(render->win.win))
-                     : gtk_window_fullscreen(GTK_WINDOW(render->win.win));
+  render->fullscreen ? gtk_window_unfullscreen(GTK_WINDOW(gtk_.win)) : gtk_window_fullscreen(GTK_WINDOW(gtk_.win));
   render->fullscreen = render->fullscreen ? false : true;
   gva::ConfigData::GetInstance()->SetFullscreen(render->fullscreen);
   LOG(INFO) << "Toggle fullscreen";
@@ -226,7 +310,7 @@ bool GvaApplication::ProcessTopKeys(gva::HandleType *render, gva::GvaKeyEnum key
     case gva::GvaKeyEnum::kKeyEscape:
       // exit on ESC key press
       if (render->surface) cairo_surface_destroy(render->surface);
-      g_application_quit(G_APPLICATION(render->win.app));
+      g_application_quit(G_APPLICATION(gtk_.app));
       return true;
     case gva::GvaKeyEnum::kKeyBlackout:
       Dispatch(key);

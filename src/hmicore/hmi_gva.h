@@ -21,8 +21,8 @@
 /// \file hmi_gva.h
 ///
 
-#ifndef HMI_DISPLAY_SRC_HMI_GVA_H_
-#define HMI_DISPLAY_SRC_HMI_GVA_H_
+#ifndef HMICORE_HMI_GVA_H_
+#define HMICORE_HMI_GVA_H_
 #include <iostream>
 #include <string>
 
@@ -52,4 +52,4 @@ using hmi = Hmi;
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_HMI_GVA_H_
+#endif  // HMICORE_HMI_GVA_H_

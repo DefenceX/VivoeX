@@ -21,8 +21,8 @@
 /// \file view_gva.h
 ///
 
-#ifndef HMI_DISPLAY_SRC_VIEW_GVA_H_
-#define HMI_DISPLAY_SRC_VIEW_GVA_H_
+#ifndef HMICORE_VIEW_GVA_H_
+#define HMICORE_VIEW_GVA_H_
 #include <functional>
 #include <memory>
 #include <string>
@@ -81,7 +81,7 @@ class ViewGva {
 
 class ViewGvaManager {
  public:
-  explicit ViewGvaManager();
+  ViewGvaManager();
   void AddNewView(GvaFunctionEnum function, FunctionSelect *top, CommonTaskKeys *bottom, FunctionKeys left,
                   FunctionKeys right);
   void SetScreen(Screen *screen, GvaFunctionEnum function) const;
@@ -95,4 +95,4 @@ class ViewGvaManager {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_VIEW_GVA_H_
+#endif  // HMICORE_VIEW_GVA_H_

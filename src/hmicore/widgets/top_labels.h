@@ -20,10 +20,11 @@
 ///
 /// \file top_labels.h
 ///
-#ifndef HMI_DISPLAY_SRC_WIDGETS_TOP_LABELS_H_
-#define HMI_DISPLAY_SRC_WIDGETS_TOP_LABELS_H_
+#ifndef HMICORE_WIDGETS_TOP_LABELS_H_
+#define HMICORE_WIDGETS_TOP_LABELS_H_
 
 #include <cstdint>
+#include <string>
 #include <vector>
 
 #include "hmicore/events_gva.h"
@@ -52,7 +53,7 @@ class WidgetTopLabels : public WidgetX {
   ///
   /// \return std::string
   ///
-  std::string GetWidgetName() const final { return "WidgetTopLabels"; };
+  std::string GetWidgetName() const final { return "WidgetTopLabels"; }
 
   ///
   /// \brief The base overloaded Draw fuctions to draw this widget type
@@ -81,4 +82,4 @@ class WidgetTopLabels : public WidgetX {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_WIDGETS_TOP_LABELS_H_
+#endif  // HMICORE_WIDGETS_TOP_LABELS_H_

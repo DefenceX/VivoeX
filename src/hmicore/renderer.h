@@ -21,13 +21,14 @@
 /// \file renderer.h
 ///
 
-#ifndef HMI_DISPLAY_SRC_RENDERER_H_
-#define HMI_DISPLAY_SRC_RENDERER_H_
+#ifndef HMICORE_RENDERER_H_
+#define HMICORE_RENDERER_H_
 #include <stdint.h>
 
 #include <string>
 
 #include "hmicore/debug.h"
+#include "hmicore/gva.h"
 
 #define HMI_AMBER 255, 153, 0
 #define HMI_WHITE 255, 255, 255
@@ -49,29 +50,6 @@
 #define HMI_NONE -1, -1, -1
 
 namespace gva {
-
-struct ColourType {
-  uint32_t red = 0;
-  uint32_t green = 0;
-  uint32_t blue = 0;
-};
-
-struct PointType {
-  int32_t x = 0;
-  int32_t y = 0;
-};
-
-struct ResolutionType {
-  uint32_t width = 0;
-  uint32_t height = 0;
-  uint32_t depth = 0;
-};
-
-struct RgbUnpackedType {
-  uint32_t r = 0;
-  uint32_t g = 0;
-  uint32_t b = 0;
-};
 
 class RendererCairo;
 
@@ -275,4 +253,4 @@ class Renderer {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_RENDERER_H_
+#endif  // HMICORE_RENDERER_H_

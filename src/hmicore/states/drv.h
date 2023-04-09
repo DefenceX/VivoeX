@@ -20,8 +20,8 @@
 ///
 /// \file drv.h
 ///
-#ifndef HMI_DISPLAY_SRC_STATES_DRV_H_
-#define HMI_DISPLAY_SRC_STATES_DRV_H_
+#ifndef HMICORE_STATES_DRV_H_
+#define HMICORE_STATES_DRV_H_
 
 #include <iostream>
 
@@ -52,4 +52,4 @@ struct StateDRV : Hmi {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_STATES_DRV_H_
+#endif  // HMICORE_STATES_DRV_H_

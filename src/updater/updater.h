@@ -22,13 +22,15 @@
 /// \file updater.h
 ///
 
-#ifndef HMI_DISPLAY_UPDATER_EXAMPLE_UPDATER_H_
-#define HMI_DISPLAY_UPDATER_EXAMPLE_UPDATER_H_
+#ifndef UPDATER_UPDATER_H_
+#define UPDATER_UPDATER_H_
 
+#include <memory>
 #include <string>
 #include <thread>
+#include <unordered_map>
 
-#include "updater_base.h"
+#include "updater/updater_base.h"
 
 namespace gva {
 
@@ -39,7 +41,7 @@ class Updater : public UpdaterBase {
   ///
   /// \param id The HMI identity, will only get updates for this ID.
   ///
-  Updater(uint64_t id);
+  explicit Updater(uint64_t id);
 
   ~Updater();
 
@@ -47,7 +49,7 @@ class Updater : public UpdaterBase {
   /// \brief Register the widgets to be updated
   ///
   ///
-  void RegisterWidgets(std::unordered_map<widget::WidgetEnum, std::shared_ptr<WidgetX>>& widget_list);
+  void RegisterWidgets(std::unordered_map<widget::WidgetEnum, std::shared_ptr<WidgetX>>& widget_list);  // NOLINT
 
   ///
   /// \brief Update the HMI state
@@ -94,4 +96,4 @@ class Updater : public UpdaterBase {
 
 }  // namespace gva
 
-#endif  //  HMI_DISPLAY_UPDATER_EXAMPLE_UPDATER_H_
+#endif  //  UPDATER_UPDATER_H_

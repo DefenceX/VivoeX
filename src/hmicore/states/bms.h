@@ -20,8 +20,8 @@
 ///
 /// \file bms.h
 ///
-#ifndef HMI_DISPLAY_SRC_STATES_BMS_H_
-#define HMI_DISPLAY_SRC_STATES_BMS_H_
+#ifndef HMICORE_STATES_BMS_H_
+#define HMICORE_STATES_BMS_H_
 
 #include <iostream>
 
@@ -54,4 +54,4 @@ using hmi = Hmi;
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_STATES_BMS_H_
+#endif  // HMICORE_STATES_BMS_H_

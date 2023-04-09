@@ -21,10 +21,13 @@
 /// \file status_bar.h
 ///
 
-#ifndef HMI_DISPLAY_SRC_WIDGETS_TABLE_STATUS_BAR_H_
-#define HMI_DISPLAY_SRC_WIDGETS_TABLE_STATUS_BAR_H_
+#ifndef HMICORE_WIDGETS_TABLE_STATUS_BAR_H_
+#define HMICORE_WIDGETS_TABLE_STATUS_BAR_H_
 
 #include <stdint.h>
+
+#include <string>
+
 
 #include "hmicore/widgets/table/table.h"
 #include "hmicore/widgets/widget.h"
@@ -101,4 +104,4 @@ class WidgetStatusBar : public WidgetTable {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_WIDGETS_TABLE_STATUS_BAR_H_
+#endif  // HMICORE_WIDGETS_TABLE_STATUS_BAR_H_

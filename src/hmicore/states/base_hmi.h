@@ -21,8 +21,8 @@
 /// \file base_hmi.h
 ///
 
-#ifndef HMI_DISPLAY_SRC_STATES_BASE_HMI_H_
-#define HMI_DISPLAY_SRC_STATES_BASE_HMI_H_
+#ifndef HMICORE_STATES_BASE_HMI_H_
+#define HMICORE_STATES_BASE_HMI_H_
 
 #include <memory>
 #include <string>
@@ -106,4 +106,4 @@ struct Hmi : tinyfsm::Fsm<Hmi> {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_STATES_BASE_HMI_H_
+#endif  // HMICORE_STATES_BASE_HMI_H_

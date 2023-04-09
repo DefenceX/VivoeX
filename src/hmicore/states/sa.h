@@ -20,8 +20,8 @@
 ///
 /// \file sa.h
 ///
-#ifndef HMI_DISPLAY_SRC_STATES_SA_H_
-#define HMI_DISPLAY_SRC_STATES_SA_H_
+#ifndef HMICORE_STATES_SA_H_
+#define HMICORE_STATES_SA_H_
 
 #include <iostream>
 
@@ -53,4 +53,4 @@ struct StateSA : Hmi {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_STATES_SA_H_
+#endif  // HMICORE_STATES_SA_H_

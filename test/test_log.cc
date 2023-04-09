@@ -30,7 +30,7 @@
 #include <string>
 
 #include "gtest/gtest.h"
-#include "gva.h"
+#include "hmicore/gva.h"
 
 // The fixture for testing class LogTest.
 class LogTest : public ::testing::Test {

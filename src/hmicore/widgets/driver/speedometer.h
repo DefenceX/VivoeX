@@ -20,10 +20,11 @@
 ///
 /// \file speedometer.h
 ///
-#ifndef HMI_DISPLAY_SRC_WIDGETS_DRIVER_SPEEDOMETER_H_
-#define HMI_DISPLAY_SRC_WIDGETS_DRIVER_SPEEDOMETER_H_
+#ifndef HMICORE_WIDGETS_DRIVER_SPEEDOMETER_H_
+#define HMICORE_WIDGETS_DRIVER_SPEEDOMETER_H_
 
 #include <cstdint>
+#include <string>
 
 #include "hmicore/renderer_cairo_types.h"
 #include "hmicore/widgets/widget.h"
@@ -83,4 +84,4 @@ class WidgetDriverSpeedometer : public WidgetX {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_WIDGETS_DRIVER_SPEEDOMETER_H_
+#endif  // HMICORE_WIDGETS_DRIVER_SPEEDOMETER_H_

@@ -22,8 +22,8 @@
 /// \file status_updater.h
 ///
 
-#ifndef HMI_DISPLAY_SRC_STATUS_UPDATER_H_
-#define HMI_DISPLAY_SRC_STATUS_UPDATER_H_
+#ifndef HMICORE_STATUS_UPDATER_H_
+#define HMICORE_STATUS_UPDATER_H_
 #include <memory>
 
 #include "hmicore/screen_gva.h"
@@ -35,10 +35,44 @@ class StatusUpdater {
   StatusUpdater() = default;
   ~StatusUpdater() = default;
 
+  ///
+  /// \brief Update the clock
+  ///
+  /// \param args the arguments that need to be updated
+  ///
   void ClockUpdate(ClockArgs *args);
-  void GetLocalTime(std::tm &localTime) const;
+
+  ///
+  /// \brief Get the Local Time attribute
+  ///
+  /// \param localTime (out) the structure containing the time
+  ///
+  void GetLocalTime(std::tm *localTime) const;
+
+  ///
+  /// \brief Update the clock and the rest of the status bar settings
+  ///
+  /// \param statusBar the stsus bar being updated
+  ///
   void UpdateClock(std::shared_ptr<WidgetStatusBar> statusBar) const;
-  void ParseGpsData(const int *gpsFd, nmeaINFO *info, nmeaPARSER *parser, const LocationType &location) const;
+
+  ///
+  /// \brief Parse the GPS data
+  ///
+  /// \param gpsFd the GPS file descriptor
+  /// \param info the NMEA information
+  /// \param parser the current NMEA parser
+  /// \param location the location presentation type
+  ///
+  void ParseGpsData(const int *gps_file_descriptor, nmeaINFO *info, nmeaPARSER *parser, const LocationType &location) const;
+
+  ///
+  /// \brief Update the location
+  ///
+  /// \param statusBar the information being updated
+  /// \param info new NMEA information
+  /// \param location the location presentation type
+  ///
   void UpdateLocation(std::shared_ptr<WidgetStatusBar> statusBar, const nmeaINFO &info,
                       const LocationType &location) const;
 
@@ -47,4 +81,4 @@ class StatusUpdater {
 };
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_STATUS_UPDATER_H_
+#endif  // HMICORE_STATUS_UPDATER_H_

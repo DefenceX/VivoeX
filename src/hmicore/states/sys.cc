@@ -22,6 +22,7 @@
 ///
 
 #include "bms.h"
+#include "hmicore/gva_application.h"
 
 namespace gva {
 
@@ -66,7 +67,7 @@ GvaKeyEnum Hmi::KeySYS(GvaKeyEnum keypress) {
     case GvaKeyEnum::kKeyF12:
       // Exit
       if (RendererCairo::render_.surface) cairo_surface_destroy(RendererCairo::render_.surface);
-      g_application_quit(G_APPLICATION(RendererCairo::render_.win.app));
+      g_application_quit(G_APPLICATION(GvaApplication::gtk_.app));
       break;
     default:  // Lots of keys we dont care about
       break;

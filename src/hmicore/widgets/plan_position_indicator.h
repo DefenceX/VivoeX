@@ -21,13 +21,15 @@
 ///
 /// \file plan_position_indicator.h
 ///
-#ifndef HMI_DISPLAY_SRC_WIDGETS_PLAN_POSITION_INDICATOR_H_
-#define HMI_DISPLAY_SRC_WIDGETS_PLAN_POSITION_INDICATOR_H_
+#ifndef HMICORE_WIDGETS_PLAN_POSITION_INDICATOR_H_
+#define HMICORE_WIDGETS_PLAN_POSITION_INDICATOR_H_
 
 #include <math.h>
 
 #include <cstdint>
 #include <memory>
+#include <string>
+#include <unordered_map>
 
 #include "hmicore/renderer_cairo_types.h"
 #include "hmicore/widgets/widget.h"
@@ -185,4 +187,4 @@ class WidgetPlanPositionIndicator : public WidgetX {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_WIDGETS_PLAN_POSITION_INDICATOR_H_
+#endif  // HMICORE_WIDGETS_PLAN_POSITION_INDICATOR_H_

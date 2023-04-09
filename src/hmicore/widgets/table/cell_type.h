@@ -21,8 +21,8 @@
 /// \file cell_type.h
 ///
 
-#ifndef HMI_DISPLAY_SRC_WIDGETS_TABLE_CELL_TYPE_H_
-#define HMI_DISPLAY_SRC_WIDGETS_TABLE_CELL_TYPE_H_
+#ifndef HMICORE_WIDGETS_TABLE_CELL_TYPE_H_
+#define HMICORE_WIDGETS_TABLE_CELL_TYPE_H_
 
 #include <string>
 
@@ -112,4 +112,4 @@ class CellType {
 };
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_WIDGETS_TABLE_CELL_TYPE_H_
+#endif  // HMICORE_WIDGETS_TABLE_CELL_TYPE_H_

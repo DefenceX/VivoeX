@@ -21,8 +21,10 @@
 /// \file widget.h
 ///
 
-#ifndef HMI_DISPLAY_SRC_WIDGETS_WIDGET_H_
-#define HMI_DISPLAY_SRC_WIDGETS_WIDGET_H_
+#ifndef HMICORE_WIDGETS_WIDGET_H_
+#define HMICORE_WIDGETS_WIDGET_H_
+
+#include <string>
 
 #include "hmicore/renderer_gva.h"
 #include "hmicore/widgets/widget_types.h"
@@ -49,7 +51,7 @@ class WidgetX {
   ///
   /// \return std::string the widget name
   ///
-  virtual std::string GetWidgetName() const { return "WidgetUnnamed"; };
+  virtual std::string GetWidgetName() const { return "WidgetUnnamed"; }
 
   ///
   /// \brief Set the Visible object
@@ -180,4 +182,4 @@ class WidgetX {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_WIDGETS_WIDGET_H_
+#endif  // HMICORE_WIDGETS_WIDGET_H_

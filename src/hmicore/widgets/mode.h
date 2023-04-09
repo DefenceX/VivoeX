@@ -21,8 +21,8 @@
 /// \file mode.h
 ///
 
-#ifndef HMI_DISPLAY_SRC_WIDGETS_MODE_H_
-#define HMI_DISPLAY_SRC_WIDGETS_MODE_H_
+#ifndef HMICORE_WIDGETS_MODE_H_
+#define HMICORE_WIDGETS_MODE_H_
 
 #include <cstdint>
 #include <string>
@@ -81,4 +81,4 @@ class WidgetMode : public WidgetX {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_WIDGETS_MODE_H_
+#endif  // HMICORE_WIDGETS_MODE_H_

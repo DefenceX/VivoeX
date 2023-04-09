@@ -104,15 +104,16 @@ function(cpplint_add_subdirectory DIR)
     # perform cpplint check
     add_custom_target(${TARGET_NAME}
         COMMAND ${CPPLINT} "--extensions=${EXTENSIONS}"
-                           "--root=${CPPLINT_PROJECT_ROOT}"
+                           "--root=${CPPLINT_PROJECT_ROOT}/src"
+                           "--repository=${CPPLINT_PROJECT_ROOT}"
                            "--linelength=120"
+                           "--filter=-build/c++11"
                            "--output=vs7"
                            "--quiet"
                            ${LIST_OF_FILES}
         DEPENDS ${LIST_OF_FILES}
         COMMENT "cpplint: Checking source code style"
     )
-
     # run this target when root cpplint.py test is triggered
     add_dependencies(${CPPLINT_TARGET} ${TARGET_NAME})
     

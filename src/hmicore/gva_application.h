@@ -21,8 +21,9 @@
 /// \file gva_application.h
 ///
 
-#ifndef HMI_DISPLAY_SRC_GVA_APPLICATION_H_
-#define HMI_DISPLAY_SRC_GVA_APPLICATION_H_
+#ifndef HMICORE_GVA_APPLICATION_H_
+#define HMICORE_GVA_APPLICATION_H_
+#include <gtk/gtk.h>
 #include <unistd.h>
 
 #include <iostream>
@@ -31,6 +32,7 @@
 
 #include "hmicore/events_gva.h"
 #include "hmicore/gva.h"
+#include "hmicore/gva_application_types.h"
 #include "hmicore/hmi_gva.h"
 #include "hmicore/renderer_map.h"
 #include "rtp_stream.h"  // NOLINT
@@ -93,6 +95,8 @@ class GvaApplication {
   static Options options_;
   static std::unique_ptr<gva::GvaVideoRtpYuv> rtp_stream1_;
 
+  static gtkType gtk_;
+
  private:
   ///
   /// \brief Adjust Brightness up by 5%
@@ -144,11 +148,16 @@ class GvaApplication {
   ///
   ///
   static void Dispatch(gva::GvaKeyEnum key);
-
   std::shared_ptr<gva::EventsGva> io_;
   gva::EventsGva *io_test_ = nullptr;
   static uint32_t update_counter_;
   static bool first_execution_;
+
+  static gboolean DrawCb(GtkWidget *Widget, cairo_t *cr, gpointer data);
+  static gboolean ConfigureEventCb(GtkWidget *Widget, GdkEventConfigure *event, gpointer data);
+  static void Activate(GtkApplication *app, gpointer user_data);
+  static gboolean Callback(gpointer user_data);
+  static void CloseWindow(void);
 };
 
-#endif  // HMI_DISPLAY_SRC_GVA_APPLICATION_H_
+#endif  // HMICORE_GVA_APPLICATION_H_

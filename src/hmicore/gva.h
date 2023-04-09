@@ -21,8 +21,8 @@
 /// \file gva.h
 ///
 
-#ifndef HMI_DISPLAY_SRC_GVA_H_
-#define HMI_DISPLAY_SRC_GVA_H_
+#ifndef HMICORE_GVA_H_
+#define HMICORE_GVA_H_
 
 #include <array>
 #include <string>
@@ -33,7 +33,7 @@ namespace gva {
 
 static const uint32_t kSemVerMajor = 0;
 static const uint32_t kSemVerMinor = 4;
-static const uint32_t kSemVerPatch = 301;
+static const uint32_t kSemVerPatch = 331;
 static const uint32_t kMinimumHeight = 480;
 static const uint32_t kMinimumWidth = 640;
 
@@ -415,6 +415,69 @@ enum class GvaKeyEnum {
 ///
 enum class GvaStatusTypes { kGvaSuccess = 0, kGvaError, kGvaNetworkError, kGvaDdsError, kGvaXmlError, kGvaRtpError };
 
+struct ColourType {
+  uint32_t red = 0;
+  uint32_t green = 0;
+  uint32_t blue = 0;
+};
+
+struct PointType {
+  int32_t x = 0;
+  int32_t y = 0;
+};
+
+struct ResolutionType {
+  uint32_t width = 0;
+  uint32_t height = 0;
+  uint32_t depth = 0;
+};
+
+struct RgbUnpackedType {
+  uint32_t r = 0;
+  uint32_t g = 0;
+  uint32_t b = 0;
+};
+
+enum class EventEnumType {
+  kNoEvent = 0,
+  kKeyEventPressed,
+  kKeyEventReleased,
+  kTouchEvent,
+  kDdsEvent,
+  kResizeEvent,
+  kRedrawEvent,
+  kWidgetUpdate
+};
+
+struct TouchType {
+  int x = 0;
+  int y = 0;
+};
+
+///
+/// \brief This holds additional information on keys
+///
+///
+struct KeyType {
+  GvaKeyEnum key = GvaKeyEnum::kKeyUnknown;
+  LabelStates label_state = LabelStates::kLabelHidden;  // Only applicable to labels on screen F1-F20
+};
+
+class EventGvaType {
+ public:
+  EventGvaType() = default;
+  EventGvaType(int x, int y) {
+    touch_.x = x;
+    touch_.y = y;
+    type_ = EventEnumType::kTouchEvent;
+  }
+  explicit EventGvaType(GvaKeyEnum key) : key_(key) { type_ = EventEnumType::kNoEvent; }
+  EventEnumType type_;
+  GvaKeyEnum key_ = GvaKeyEnum::kKeyUnknown;  // Key pressed
+  TouchType touch_;                           // Touch event
+  ResolutionType resize_;
+};
+
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_GVA_H_
+#endif  // HMICORE_GVA_H_

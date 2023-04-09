@@ -21,8 +21,8 @@
 /// \file hmi_gva_helpers.h
 ///
 
-#ifndef HMI_DISPLAY_SRC_HMI_GVA_HELPERS_H_
-#define HMI_DISPLAY_SRC_HMI_GVA_HELPERS_H_
+#ifndef HMICORE_HMI_GVA_HELPERS_H_
+#define HMICORE_HMI_GVA_HELPERS_H_
 #include "hmicore/screen_gva.h"
 
 namespace gva {
@@ -36,4 +36,4 @@ class HmiHelper {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_HMI_GVA_HELPERS_H_
+#endif  // HMICORE_HMI_GVA_HELPERS_H_

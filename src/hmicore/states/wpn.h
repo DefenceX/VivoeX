@@ -20,8 +20,8 @@
 ///
 /// \file wpn.h
 ///
-#ifndef HMI_DISPLAY_SRC_STATES_WPN_H_
-#define HMI_DISPLAY_SRC_STATES_WPN_H_
+#ifndef HMICORE_STATES_WPN_H_
+#define HMICORE_STATES_WPN_H_
 
 #include <iostream>
 
@@ -51,4 +51,4 @@ struct StateWPN : Hmi {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_STATES_WPN_H_
+#endif  // HMICORE_STATES_WPN_H_

@@ -20,8 +20,8 @@
 ///
 /// \file alarms.h
 ///
-#ifndef HMI_DISPLAY_SRC_STATES_ALARMS_H_
-#define HMI_DISPLAY_SRC_STATES_ALARMS_H_
+#ifndef HMICORE_STATES_ALARMS_H_
+#define HMICORE_STATES_ALARMS_H_
 
 #include <iostream>
 
@@ -53,4 +53,4 @@ struct StateAlarms : Hmi {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_STATES_ALARMS_H_
+#endif  // HMICORE_STATES_ALARMS_H_

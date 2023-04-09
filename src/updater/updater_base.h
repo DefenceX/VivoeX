@@ -22,8 +22,8 @@
 /// \file trace.h
 ///
 
-#ifndef HMI_DISPLAY_UPDATER_UPDATER_H_
-#define HMI_DISPLAY_UPDATER_UPDATER_H_
+#ifndef UPDATER_UPDATER_BASE_H_
+#define UPDATER_UPDATER_BASE_H_
 
 #include <string>
 
@@ -38,7 +38,7 @@ class UpdaterBase {
   ///
   /// \param id The HMI identity, will only get updates for this ID.
   ///
-  UpdaterBase(uint64_t id) : id_(id){};
+  explicit UpdaterBase(uint64_t id) : id_(id) {}
 
   virtual ~UpdaterBase() = default;
 
@@ -62,4 +62,4 @@ class UpdaterBase {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_UPDATER_UPDATER_H_
+#endif  // UPDATER_UPDATER_BASE_H_

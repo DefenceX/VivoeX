@@ -21,8 +21,8 @@
 // \file renderer_cairo.h
 //
 
-#ifndef HMI_DISPLAY_SRC_RENDERER_CAIRO_H_
-#define HMI_DISPLAY_SRC_RENDERER_CAIRO_H_
+#ifndef HMICORE_RENDERER_CAIRO_H_
+#define HMICORE_RENDERER_CAIRO_H_
 
 #include <cairo.h>
 #include <gtk/gtk.h>
@@ -91,9 +91,9 @@ class RendererCairo : public Renderer {
   ///
   /// \param width Canvas width in pixels
   /// \param height Canvas height in pixels
-  /// \return uint32_t
+  /// \return HandleType* a pointer to the renderer handler
   ///
-  uint32_t Init(uint32_t width, uint32_t height) const;
+  HandleType *Init(uint32_t width, uint32_t height) const;
 
   ///
   /// \brief Initalise the renderer with display parameters
@@ -103,9 +103,9 @@ class RendererCairo : public Renderer {
   /// \param fullscreen
   /// \param cb
   /// \param arg
-  /// \return uint32_t
+  /// \return HandleType* a pointer to the renderer handler
   ///
-  uint32_t Init(uint32_t width, uint32_t height, bool fullscreen, CallbackType cb, void *arg);
+  HandleType *Init(uint32_t width, uint32_t height, bool fullscreen);
 
   // Pure Virtual functions
   //
@@ -492,31 +492,18 @@ class RendererCairo : public Renderer {
   }
 
   ///
-  /// \brief Get the Window object
-  ///
-  /// \return gtkType*
-  ///
-  gtkType *GetWindow() { return &render_.win; }
-
-  ///
   /// \brief Set the Height object
   ///
   /// \param height
   ///
-  void SetHeight(uint32_t height) const {
-    height_ = height;
-    gtk_widget_set_size_request(render_.win.draw, (gint)width_, (gint)height_);
-  }
+  void SetHeight(uint32_t height) const { height_ = height; }
 
   ///
   /// \brief Set the Width object
   ///
   /// \param width
   ///
-  void SetWidth(uint32_t width) const {
-    width_ = width;
-    gtk_widget_set_size_request(render_.win.draw, (gint)width_, (gint)height_);
-  }
+  void SetWidth(uint32_t width) const { width_ = width; }
 
   ///
   /// \brief Get the Height object
@@ -524,10 +511,8 @@ class RendererCairo : public Renderer {
   /// \return uint32_t
   ///
   uint32_t GetHeight() const {
-    gint h;
-    gint w;
-    gtk_widget_get_size_request(render_.win.draw, &w, &h);
-    return w;
+    // gtk_widget_get_size_request(render_.win.draw, &w, &h);
+    return height_;
   }
 
   ///
@@ -535,18 +520,40 @@ class RendererCairo : public Renderer {
   ///
   /// \return uint32_t
   ///
-  uint32_t GetWidth() const {
-    gint h;
-    gint w;
-    gtk_widget_get_size_request(render_.win.draw, &w, &h);
-    return h;
-  }
+  uint32_t GetWidth() const { return height_; }
+
+  ///
+  /// \brief Set the Surface attribute, used by application
+  ///
+  /// \param surface
+  ///
+  void SetSurface(cairo_surface_t *surface);
+
+  ///
+  /// \brief Draw the surface to the screen
+  ///
+  /// \return gboolean
+  ///
+  void DrawSurface();
+
+  ///
+  /// \brief Configure the surface to use new dimensions
+  ///
+  /// \param height
+  /// \param width
+  ///
+  void Configure(uint32_t height, uint32_t width);
+
+  ///
+  /// \brief Destroy the current cairo surface, usually called during shutdown
+  ///
+  ///
+  static void DestroySurface(void);
 
  private:
   char *texture_;
   int32_t current_handle_;
   double scale_;
-  gtkType root_;
 
   ///
   /// \brief Convert a standard integer to a double for use with the cairo colour system
@@ -570,14 +577,9 @@ class RendererCairo : public Renderer {
   // Image Cache
   //
   std::vector<image_type> cache_image_list_;
-  static gboolean DrawCb(GtkWidget *Widget, cairo_t *cr, gpointer data);
-  static gboolean ConfigureEventCb(GtkWidget *Widget, GdkEventConfigure *event, gpointer data);
-  static void Activate(GtkApplication *app, gpointer user_data);
-  static gboolean Callback(gpointer user_data);
-  static void CloseWindow(void);
   ConfigData *config_;
 };
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_RENDERER_CAIRO_H_
+#endif  // HMICORE_RENDERER_CAIRO_H_

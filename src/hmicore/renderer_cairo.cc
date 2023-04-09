@@ -24,7 +24,6 @@
 #include "renderer_cairo.h"
 
 #include <glog/logging.h>
-#include <gtk/gtk.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,8 +35,6 @@
 
 namespace gva {
 
-static CallbackType callback_;
-static void *arg_;
 HandleType RendererCairo::render_;
 
 RendererCairo::RendererCairo(uint32_t width, uint32_t height) : Renderer(width, height) {
@@ -55,7 +52,7 @@ RendererCairo::~RendererCairo() {
     std::free(texture_);
     texture_ = nullptr;
   }
-  CloseWindow();
+  DestroySurface();
 }
 
 void RendererCairo::Draw() {
@@ -300,36 +297,23 @@ void RendererCairo::Draw() {
   draw_commands_.clear();
 }
 
-uint32_t RendererCairo::Init(uint32_t width, uint32_t height) const {
+HandleType *RendererCairo::Init(uint32_t width, uint32_t height) const {
+  render_.size.width = width;
+  render_.size.height = height;
   render_.surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
   return 0;
 }
 
-uint32_t RendererCairo::Init(uint32_t width, uint32_t height, bool fullscreen, CallbackType cb, void *arg) {
+HandleType *RendererCairo::Init(uint32_t width, uint32_t height, bool fullscreen) {
   render_.size.width = width;
   render_.size.height = height;
 
   width_ = width;
   height_ = height;
-  callback_ = cb;
-  arg_ = arg;
-  render_.fullscreen = false;
 
   render_.surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
 
-#if __MINGW64__ || __MINGW32__
-  render_.win.app = gtk_application_new("org.gtk.vivoe-lite-hmi", G_APPLICATION_DEFAULT_FLAGS);
-#else
-  render_.win.app = gtk_application_new("org.gtk.vivoe-lite-hmi", G_APPLICATION_FLAGS_NONE);
-#endif
-
-  g_signal_connect(render_.win.app, "activate", G_CALLBACK(Activate), NULL);
-  g_timeout_add(40, Callback, &render_);
-
   render_.fullscreen = fullscreen;
-
-  g_application_run(G_APPLICATION(render_.win.app), 0, nullptr);
-  g_object_unref(render_.win.app);
 
   return 0;
 }
@@ -730,73 +714,25 @@ uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, cairo_surface_t *surf
 // signal receives a ready-to-be-used cairo_t that is already
 // clipped to only Draw the exposed areas of the Widget
 //
-gboolean RendererCairo::DrawCb(GtkWidget *Widget, cairo_t *cr, gpointer dat [[maybe_unused]]) {
-  cairo_set_source_surface(cr, render_.surface, 0, 0);
-  cairo_paint(cr);
-
-  gtk_widget_queue_draw(Widget);
-  return FALSE;
+void RendererCairo::DrawSurface() {
+  cairo_set_source_surface(render_.cr, render_.surface, 0, 0);
+  cairo_paint(render_.cr);
 }
 
-// Create a new surface of the appropriate size to store our HMI
-gboolean RendererCairo::ConfigureEventCb(GtkWidget *Widget, GdkEventConfigure *event, gpointer data [[maybe_unused]]) {
-  render_.surface = gdk_window_create_similar_surface(gtk_widget_get_window(Widget), CAIRO_CONTENT_COLOR,
-                                                      gtk_widget_get_allocated_width(Widget),
-                                                      gtk_widget_get_allocated_height(Widget));
+void RendererCairo::SetSurface(cairo_surface_t *surface) { render_.surface = surface; }
+
+void RendererCairo::Configure(uint32_t height, uint32_t width) {
   render_.cr = cairo_create(render_.surface);
-  cairo_scale(render_.cr, (double)gtk_widget_get_allocated_width(Widget) / kMinimumWidth,
-              (double)gtk_widget_get_allocated_height(Widget) / kMinimumHeight);
-  Renderer::SetWidth(gtk_widget_get_allocated_width(Widget));
-  Renderer::SetHeight(gtk_widget_get_allocated_height(Widget));
-  gtk_widget_queue_draw(Widget);
-  // We've handled the configure event, no need for further processing.
-  return TRUE;
+  cairo_scale(render_.cr, (double)width / kMinimumWidth, (double)height / kMinimumHeight);
+  Renderer::SetWidth(width);
+  Renderer::SetHeight(height);
 }
 
-void RendererCairo::Activate(GtkApplication *app, gpointer user_data [[maybe_unused]]) {
-  render_.win.win = gtk_application_window_new(app);
-  gtk_window_set_title(GTK_WINDOW(render_.win.win), "HMI vivoe-lite");
-
-  render_.win.draw = gtk_drawing_area_new();
-  gtk_container_add(GTK_CONTAINER(render_.win.win), render_.win.draw);
-  // set a minimum size
-  gtk_widget_set_size_request(render_.win.draw, kMinimumWidth, kMinimumHeight);
-
-  //
-  // Event signals
-  //
-  g_signal_connect(render_.win.win, "destroy", G_CALLBACK(CloseWindow), NULL);
-  g_signal_connect(render_.win.draw, "button-press-event", G_CALLBACK(gva::EventsGva::ButtonPressEventCb), NULL);
-  g_signal_connect(render_.win.draw, "button-release-event", G_CALLBACK(gva::EventsGva::ButtonReleaseEventCb), NULL);
-  g_signal_connect(render_.win.win, "key-press-event", G_CALLBACK(gva::EventsGva::KeyPressEventCb), NULL);
-  g_signal_connect(render_.win.win, "key-release-event", G_CALLBACK(gva::EventsGva::KeyReleaseEventCb), NULL);
-
-  // Ask to receive events the Drawing area doesn't normally
-  // subscribe to. In particular, we need to ask for the
-  // button press and motion notify events that want to handle.
-  //
-  gtk_widget_set_events(render_.win.draw, gtk_widget_get_events(render_.win.draw) | GDK_BUTTON_PRESS_MASK |
-                                              GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK);
-
-  //
-  // Signals used to handle the backing surface
-  //
-  g_signal_connect(render_.win.draw, "draw", G_CALLBACK(DrawCb), NULL);
-  g_signal_connect(render_.win.draw, "configure-event", G_CALLBACK(ConfigureEventCb), NULL);
-  if (render_.fullscreen) gtk_window_fullscreen(GTK_WINDOW(render_.win.win));
-
-  gtk_widget_show_all(render_.win.win);
-}
-
-gboolean RendererCairo::Callback(gpointer data) {
-  callback_(arg_, data);
-  return TRUE;
-}
-
-void RendererCairo::CloseWindow(void) {
+void RendererCairo::DestroySurface(void) {
   while (cairo_surface_get_reference_count(render_.surface)) {
     cairo_surface_destroy(render_.surface);
   };
   LOG(INFO) << "Closing application";
 }
+
 }  // namespace gva

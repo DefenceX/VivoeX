@@ -28,6 +28,7 @@
 #include <cmath>
 #include <iostream>
 
+#include "hmicore/gva.h"
 #include "hmicore/hardware/audio.h"
 #include "hmicore/widgets/ai/object_localisation.h"
 #include "hmicore/widgets/alarm_indicator.h"
@@ -42,13 +43,12 @@ bool Updater::running_ = false;
 Updater::Updater(uint64_t id) : UpdaterBase(id){};
 
 void Updater::RegisterWidgets(std::unordered_map<widget::WidgetEnum, std::shared_ptr<WidgetX>> &widget_list) {
+  widget_list_ = &widget_list;
   std::shared_ptr<gva::WidgetPlanPositionIndicator> compass =
       std::static_pointer_cast<gva::WidgetPlanPositionIndicator>(widget_list[widget::WidgetEnum::KWidgetTypeCompass]);
   compass->SetBearing(200);
 
   auto it = widget_list[widget::WidgetEnum::KWidgetTypeCompass];
-
-  widget_list_ = &widget_list;
 
   thread_ = std::thread(Updater::WidgetUpdaterThread, widget_list_);
 }

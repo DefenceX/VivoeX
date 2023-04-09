@@ -31,11 +31,7 @@ set(SOURCES ../common/debug.cc
     view_gva.cc 
 )
 
-add_library(hmicore STATIC ${SOURCES})
-add_dependencies(hmicore hmiaudio widgets hmiupdater libglog libprotobuf libnmea googletest libosmscout geographiclib hmivideo config-proto ${DDS_STACK} libosmscout)
-
-target_include_directories (hmicore PUBLIC
-    ${NMEA_INCLUDER_DIRS} 
+include_directories (
     ${OSMSCOUT_INCLUDE_DIRS} 
     ${GEOGRAPHIC_INCLUDE_DIRS}
     ${CMAKE_BINARY_DIR}/src/config
@@ -46,7 +42,12 @@ target_include_directories (hmicore PUBLIC
     ${SWSCALE_INCLUDE_DIRS}
     ${GTK3_INCLUDE_DIRS}  
     ${PORTAUDIO_INCLUDE_DIR}
+    ${NMEA_INCLUDE_DIR}
+    /home/newman/repos/vivoe-lite/build/external/libnmea/src/include
     ${CMAKE_CURRENT_SOURCE_DIR}/..
     ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/src
 )
+
+add_library(hmicore STATIC ${SOURCES})
+add_dependencies(hmicore hmiaudio widgets hmiupdater libglog libprotobuf libnmea googletest libosmscout geographiclib hmivideo config-proto ${DDS_STACK} libosmscout)
 

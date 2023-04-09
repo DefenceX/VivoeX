@@ -21,8 +21,8 @@
 /// \file widgets.h
 ///
 
-#ifndef HMI_DISPLAY_SRC_WIDGETS_WIDGETS_H_
-#define HMI_DISPLAY_SRC_WIDGETS_WIDGETS_H_
+#ifndef HMICORE_WIDGETS_WIDGETS_H_
+#define HMICORE_WIDGETS_WIDGETS_H_
 
 #include "hmicore/widgets/ai/object_localisation.h"
 #include "hmicore/widgets/alarm_indicator.h"
@@ -38,4 +38,4 @@
 #include "hmicore/widgets/table/table_dynamic.h"
 #include "hmicore/widgets/top_labels.h"
 
-#endif  // HMI_DISPLAY_SRC_WIDGETS_WIDGETS_H_
+#endif  // HMICORE_WIDGETS_WIDGETS_H_

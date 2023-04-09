@@ -20,8 +20,8 @@
 ///
 /// \file table_dynamic.h
 ///
-#ifndef HMI_DISPLAY_SRC_WIDGETS_TABLE_TABLE_DYNAMIC_H_
-#define HMI_DISPLAY_SRC_WIDGETS_TABLE_TABLE_DYNAMIC_H_
+#ifndef HMICORE_WIDGETS_TABLE_TABLE_DYNAMIC_H_
+#define HMICORE_WIDGETS_TABLE_TABLE_DYNAMIC_H_
 
 #include <memory>
 #include <string>
@@ -189,4 +189,4 @@ class WidgetTableDynamic : public WidgetTable {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_WIDGETS_TABLE_TABLE_DYNAMIC_H_
+#endif  // HMICORE_WIDGETS_TABLE_TABLE_DYNAMIC_H_

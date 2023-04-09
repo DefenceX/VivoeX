@@ -21,8 +21,8 @@
 /// \file debug.h
 ///
 
-#ifndef HMI_DISPLAY_COMMON_DEBUG_H_
-#define HMI_DISPLAY_COMMON_DEBUG_H_
+#ifndef COMMON_DEBUG_H_
+#define COMMON_DEBUG_H_
 
 #define TRACE_POINT cout << "Function : " << __FUNCTION__ << ", Line : " << __LINE__ << "\n"
 
@@ -33,4 +33,4 @@ void DumpHex(const void* data, size_t size);
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_COMMON_DEBUG_H_
+#endif  // COMMON_DEBUG_H_

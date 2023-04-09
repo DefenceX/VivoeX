@@ -20,57 +20,18 @@
 //
 // \file events_gva.h
 //
+#ifndef HMICORE_EVENTS_GVA_H_
+#define HMICORE_EVENTS_GVA_H_
 
-#ifndef HMI_DISPLAY_SRC_EVENTS_GVA_H_
-#define HMI_DISPLAY_SRC_EVENTS_GVA_H_
 #include <gtk/gtk.h>
 
 #include <vector>
 
 #include "hmicore/gva.h"
+#include "hmicore/gva_application_types.h"
 #include "hmicore/renderer_gva.h"
 
 namespace gva {
-
-enum class EventEnumType {
-  kNoEvent = 0,
-  kKeyEventPressed,
-  kKeyEventReleased,
-  kTouchEvent,
-  kDdsEvent,
-  kResizeEvent,
-  kRedrawEvent,
-  kWidgetUpdate
-};
-
-struct TouchType {
-  int x = 0;
-  int y = 0;
-};
-
-///
-/// \brief This holds additional information on keys
-///
-///
-struct KeyType {
-  GvaKeyEnum key = GvaKeyEnum::kKeyUnknown;
-  LabelStates label_state = LabelStates::kLabelHidden;  // Only applicable to labels on screen F1-F20
-};
-
-class EventGvaType {
- public:
-  EventGvaType() = default;
-  EventGvaType(int x, int y) {
-    touch_.x = x;
-    touch_.y = y;
-    type_ = EventEnumType::kTouchEvent;
-  }
-  explicit EventGvaType(GvaKeyEnum key) : key_(key) { type_ = EventEnumType::kNoEvent; }
-  EventEnumType type_;
-  GvaKeyEnum key_ = GvaKeyEnum::kKeyUnknown;  // Key pressed
-  TouchType touch_;                           // Touch event
-  ResolutionType resize_;
-};
 
 class EventsGva {
  public:
@@ -80,7 +41,23 @@ class EventsGva {
   /// \param touch Touch event register
   ///
   EventsGva(gtkType *window, TouchGva *touch);
+
+  ///
+  /// \brief Get the next event from the queue
+  ///
+  /// \param event
+  /// \return GvaStatusTypes
+  ///
   GvaStatusTypes NextGvaEvent(EventGvaType *event);  // Use for GTK/DDS/Touch events
+
+  ///
+  /// \brief Process a GTK button press event
+  ///
+  /// \param Widget
+  /// \param event
+  /// \param data
+  /// \return gboolean
+  ///
   static gboolean ButtonPressEventCb(GtkWidget *Widget, GdkEventButton *event, gpointer data);
 
   ///
@@ -94,8 +71,9 @@ class EventsGva {
   static gboolean ButtonReleaseEventCb(GtkWidget *Widget, GdkEventButton *event, gpointer data);
 
   ///
-  /// \brief Handle button press events by either Drawing a rectangle or clearing the surface, depending on which button
-  /// was pressed. The ::button-press signal handler receives a GdkEventButton struct which contains this information.
+  /// \brief Handle button press events by either Drawing a rectangle or clearing the surface, depending on which
+  /// button was pressed. The ::button-press signal handler receives a GdkEventButton struct which contains this
+  /// information.
   ///
   /// \param Widget
   /// \param event
@@ -104,8 +82,9 @@ class EventsGva {
   static gboolean KeyPressEventCb(GtkWidget *Widget, GdkEventKey *event);
 
   ///
-  /// \brief Handle button press events by either Drawing a rectangle or clearing the surface, depending on which button
-  /// was pressed. The ::button-press signal handler receives a GdkEventButton struct which contains this information.
+  /// \brief Handle button press events by either Drawing a rectangle or clearing the surface, depending on which
+  /// button was pressed. The ::button-press signal handler receives a GdkEventButton struct which contains this
+  /// information.
   ///
   /// \param Widget
   /// \param event
@@ -161,4 +140,4 @@ class EventsGva {
 
 };  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_EVENTS_GVA_H_
+#endif  // HMICORE_EVENTS_GVA_H_

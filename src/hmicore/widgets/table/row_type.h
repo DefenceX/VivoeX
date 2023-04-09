@@ -21,8 +21,8 @@
 /// \file row_type.h
 ///
 
-#ifndef HMI_DISPLAY_SRC_WIDGETS_TABLE_ROW_TYPE_H_
-#define HMI_DISPLAY_SRC_WIDGETS_TABLE_ROW_TYPE_H_
+#ifndef HMICORE_WIDGETS_TABLE_ROW_TYPE_H_
+#define HMICORE_WIDGETS_TABLE_ROW_TYPE_H_
 
 #include <string>
 #include <vector>
@@ -131,4 +131,4 @@ class RowType {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_WIDGETS_TABLE_ROW_TYPE_H_
+#endif  // HMICORE_WIDGETS_TABLE_ROW_TYPE_H_

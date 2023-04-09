@@ -241,6 +241,7 @@
         "gint",
         "GLOG",
         "graphviz",
+        "HMICORE",
         "Layouter",
         "ldconfig",
         "libcairo",

@@ -21,8 +21,8 @@
 /// \file gva_functions_common.h
 ///
 
-#ifndef HMI_DISPLAY_SRC_GVA_FUNCTIONS_COMMON_H_
-#define HMI_DISPLAY_SRC_GVA_FUNCTIONS_COMMON_H_
+#ifndef HMICORE_GVA_FUNCTIONS_COMMON_H_
+#define HMICORE_GVA_FUNCTIONS_COMMON_H_
 
 #include <float.h>
 #include <math.h>
@@ -87,4 +87,4 @@ uint16_t DegreesAdd(uint16_t degrees, uint16_t add);
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_GVA_FUNCTIONS_COMMON_H_
+#endif  // HMICORE_GVA_FUNCTIONS_COMMON_H_

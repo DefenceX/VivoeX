@@ -56,7 +56,7 @@ AudioFunctions::~AudioFunctions() {
 
 int AudioFunctions::Callback(const void *input [[maybe_unused]], void *output, unsigned long frameCount,
                              const PaStreamCallbackTimeInfo *timeInfo [[maybe_unused]],
-                             PaStreamCallbackFlags statusFlags [[maybe_unused]], void *userData) {
+                             PaStreamCallbackFlags statusFlags [[maybe_unused]], void *userData) {  // NOLINT
   float *out;
   auto *p_data = (CallbackData *)userData;
   sf_count_t num_read;

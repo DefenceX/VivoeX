@@ -21,8 +21,8 @@
 /// \file audio.h
 ///
 
-#ifndef HMI_DISPLAY_SRC_HARDWARE_AUDIO_H_
-#define HMI_DISPLAY_SRC_HARDWARE_AUDIO_H_
+#ifndef HMICORE_HARDWARE_AUDIO_H_
+#define HMICORE_HARDWARE_AUDIO_H_
 
 #include <portaudio.h>
 #include <sndfile.h>
@@ -64,7 +64,7 @@ class AudioFunctions {
   /// \param userData
   /// \return int
   ///
-  static int Callback(const void *input, void *output, unsigned long frameCount,
+  static int Callback(const void *input, void *output, unsigned long frameCount,  // NOLINT
                       const PaStreamCallbackTimeInfo *timeInfo, PaStreamCallbackFlags statusFlags, void *userData);
 
   ///
@@ -100,4 +100,4 @@ class AudioFunctions {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_HARDWARE_AUDIO_H_
+#endif  // HMICORE_HARDWARE_AUDIO_H_

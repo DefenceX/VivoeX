@@ -20,8 +20,8 @@
 ///
 /// \file on.h
 ///
-#ifndef HMI_DISPLAY_SRC_STATES_ON_H_
-#define HMI_DISPLAY_SRC_STATES_ON_H_
+#ifndef HMICORE_STATES_ON_H_
+#define HMICORE_STATES_ON_H_
 
 #include <iostream>
 
@@ -40,4 +40,4 @@ struct StateOn : Hmi {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_STATES_ON_H_
+#endif  // HMICORE_STATES_ON_H_

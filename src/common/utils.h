@@ -21,12 +21,12 @@
 /// \file utils.h
 ///
 
-#ifndef HMI_DISPLAY_COMMON_UTILS_H_
-#define HMI_DISPLAY_COMMON_UTILS_H_
+#ifndef COMMON_UTILS_H_
+#define COMMON_UTILS_H_
 
 namespace gva {
 
 void SetBrightness(double brightness);
 }
 
-#endif  // HMI_DISPLAY_COMMON_UTILS_H_
+#endif  // COMMON_UTILS_H_

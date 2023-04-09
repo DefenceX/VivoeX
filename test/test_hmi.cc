@@ -31,7 +31,7 @@
 #include "events_gva.h"
 #include "gtest/gtest.h"
 #include "gva.h"
-#include "src/touch_gva.h"
+#include "hmicore/touch_gva.h"
 
 namespace gva {
 
@@ -65,8 +65,3 @@ class HmiTest : public ::testing::Test {
 TEST_F(HmiTest, CheckTests) { return; }
 
 }  // namespace gva
-
-int main(int argc, char **argv) {
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}

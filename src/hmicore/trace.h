@@ -22,8 +22,8 @@
 /// \file trace.h
 ///
 
-#ifndef HMI_DISPLAY_SRC_TRACE_H_
-#define HMI_DISPLAY_SRC_TRACE_H_
+#ifndef HMICORE_TRACE_H_
+#define HMICORE_TRACE_H_
 
 #undef TRACEPOINT_PROVIDER
 #define TRACEPOINT_PROVIDER vivoe_lite
@@ -47,4 +47,4 @@ TRACEPOINT_EVENT(vivoe_lite, app_callback, TP_ARGS(int, counter),
 
 #include <lttng/tracepoint-event.h>
 
-#endif  // HMI_DISPLAY_SRC_TRACE_H_
+#endif  // HMICORE_TRACE_H_

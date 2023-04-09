@@ -20,8 +20,8 @@
 ///
 /// \file table.h
 ///
-#ifndef HMI_DISPLAY_SRC_WIDGETS_TABLE_TABLE_H_
-#define HMI_DISPLAY_SRC_WIDGETS_TABLE_TABLE_H_
+#ifndef HMICORE_WIDGETS_TABLE_TABLE_H_
+#define HMICORE_WIDGETS_TABLE_TABLE_H_
 
 #include <memory>
 #include <string>
@@ -202,4 +202,4 @@ class WidgetTable : public WidgetX {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_WIDGETS_TABLE_TABLE_H_
+#endif  // HMICORE_WIDGETS_TABLE_TABLE_H_

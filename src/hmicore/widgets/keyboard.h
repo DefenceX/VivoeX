@@ -20,10 +20,11 @@
 ///
 /// \file keyboard.h
 ///
-#ifndef HMI_DISPLAY_SRC_WIDGETS_KEYBOARD_H_
-#define HMI_DISPLAY_SRC_WIDGETS_KEYBOARD_H_
+#ifndef HMICORE_WIDGETS_KEYBOARD_H_
+#define HMICORE_WIDGETS_KEYBOARD_H_
 
 #include <cstdint>
+#include <string>
 #include <vector>
 
 #include "hmicore/renderer_cairo_types.h"
@@ -96,4 +97,4 @@ class WidgetKeyboard : public WidgetX {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_WIDGETS_KEYBOARD_H_
+#endif  // HMICORE_WIDGETS_KEYBOARD_H_

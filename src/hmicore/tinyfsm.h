@@ -35,8 +35,8 @@
  * ---------------------------------------------------------------------
  */
 
-#ifndef HMI_DISPLAY_SRC_TINYFSM_H_
-#define HMI_DISPLAY_SRC_TINYFSM_H_
+#ifndef HMICORE_TINYFSM_H_
+#define HMICORE_TINYFSM_H_
 
 #ifndef TINYFSM_NOSTDLIB
 #include <type_traits>
@@ -310,4 +310,4 @@ struct MealyMachine : tinyfsm::Fsm<F> {
   }                                                      \
   }
 
-#endif  // HMI_DISPLAY_SRC_TINYFSM_H_
+#endif  // HMICORE_TINYFSM_H_

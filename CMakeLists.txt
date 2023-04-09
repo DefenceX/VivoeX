@@ -46,12 +46,11 @@ aux_source_directory(${CMAKE_SOURCE_DIR}/src src)
 include(scripts/cmake/cpplint.cmake)
 
 # add all source code directories
-cpplint_add_subdirectory(hmi-display)
-cpplint_add_subdirectory(video)
+cpplint_add_subdirectory(src)
 
 # Setup tests
 enable_testing()
-add_test(NAME HMI_Tests COMMAND test_hmi --gtest_output=xml:./test-results/hello_test.xml)
+add_test(NAME HMI_Tests COMMAND tests --gtest_output=xml:./test-results/hello_test.xml)
 
 # Uninstall target
 if(NOT TARGET uninstall)

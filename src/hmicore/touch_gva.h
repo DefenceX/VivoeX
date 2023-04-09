@@ -22,8 +22,8 @@
 /// \file touch_gva.h
 ///
 
-#ifndef HMI_DISPLAY_SRC_TOUCH_GVA_H_
-#define HMI_DISPLAY_SRC_TOUCH_GVA_H_
+#ifndef HMICORE_TOUCH_GVA_H_
+#define HMICORE_TOUCH_GVA_H_
 
 #include <vector>
 
@@ -64,4 +64,4 @@ class TouchGva {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_TOUCH_GVA_H_
+#endif  // HMICORE_TOUCH_GVA_H_

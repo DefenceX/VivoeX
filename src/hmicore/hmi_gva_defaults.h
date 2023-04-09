@@ -20,8 +20,8 @@
 ///
 /// \file hmi_gva_defaults.h
 ///
-#ifndef HMI_DISPLAY_SRC_HMI_GVA_DEFAULTS_H_
-#define HMI_DISPLAY_SRC_HMI_GVA_DEFAULTS_H_
+#ifndef HMICORE_HMI_GVA_DEFAULTS_H_
+#define HMICORE_HMI_GVA_DEFAULTS_H_
 
 #include "hmicore/gva.h"
 #include "hmicore/screen_gva.h"
@@ -162,4 +162,4 @@ class DefaultSettings {
 };
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_HMI_GVA_DEFAULTS_H_
+#endif  // HMICORE_HMI_GVA_DEFAULTS_H_

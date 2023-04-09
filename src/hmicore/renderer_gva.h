@@ -21,8 +21,8 @@
 /// \file renderer_gva.h
 ///
 
-#ifndef HMI_DISPLAY_SRC_RENDERER_GVA_H_
-#define HMI_DISPLAY_SRC_RENDERER_GVA_H_
+#ifndef HMICORE_RENDERER_GVA_H_
+#define HMICORE_RENDERER_GVA_H_
 
 #include <memory>
 #include <string>
@@ -81,7 +81,7 @@ class RendererGva : public RendererCairo {
   ///
   void DrawFunctionLabels(uint32_t x, const std::array<FunctionKeys::Labels, 6> &labels);
 
-  /// Init
+  ///
   ///  \brief Draw the labels on the top of the screen
   ///
   ///  \param y The y pixel position
@@ -216,4 +216,4 @@ class WidgetFunctionKeyToggle : public WidgetBase {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_RENDERER_GVA_H_
+#endif  // HMICORE_RENDERER_GVA_H_

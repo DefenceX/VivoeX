@@ -20,8 +20,8 @@
 ///
 /// \file str.h
 ///
-#ifndef HMI_DISPLAY_SRC_STATES_STR_H_
-#define HMI_DISPLAY_SRC_STATES_STR_H_
+#ifndef HMICORE_STATES_STR_H_
+#define HMICORE_STATES_STR_H_
 
 #include <iostream>
 
@@ -51,4 +51,4 @@ struct StateSTR : Hmi {
 
 }  // namespace gva
 
-#endif  // HMI_DISPLAY_SRC_STATES_STR_H_
+#endif  // HMICORE_STATES_STR_H_

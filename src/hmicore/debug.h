@@ -21,10 +21,10 @@
 /// \file debug.h
 ///
 
-#ifndef HMI_DISPLAY_SRC_DEBUG_H_
-#define HMI_DISPLAY_SRC_DEBUG_H_
+#ifndef HMICORE_DEBUG_H_
+#define HMICORE_DEBUG_H_
 
 #include <stdio.h>
 void DumpHex(const void* data, size_t size);
 
-#endif  // HMI_DISPLAY_SRC_DEBUG_H_
+#endif  // HMICORE_DEBUG_H_

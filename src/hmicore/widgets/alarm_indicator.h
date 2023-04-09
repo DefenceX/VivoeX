@@ -20,8 +20,8 @@
 ///
 /// \file alarm_indicator.h
 ///
-#ifndef HMI_DISPLAY_SRC_WIDGETS_ALARM_INDICATOR_H_
-#define HMI_DISPLAY_SRC_WIDGETS_ALARM_INDICATOR_H_
+#ifndef HMICORE_WIDGETS_ALARM_INDICATOR_H_
+#define HMICORE_WIDGETS_ALARM_INDICATOR_H_
 
 #include <cstdint>
 #include <string>
@@ -79,4 +79,4 @@ class WidgetAlarmIndicator : public WidgetX {
 };
 
 }  // namespace gva
-#endif  // HMI_DISPLAY_SRC_WIDGETS_ALARM_INDICATOR_H_
+#endif  // HMICORE_WIDGETS_ALARM_INDICATOR_H_
