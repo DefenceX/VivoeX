@@ -48,6 +48,15 @@ struct TouchType {
   int y = 0;
 };
 
+///
+/// \brief This holds additional information on keys
+///
+///
+struct KeyType {
+  GvaKeyEnum key = GvaKeyEnum::kKeyUnknown;
+  LabelStates label_state = LabelStates::kLabelHidden;  // Only applicable to labels on screen F1-F20
+};
+
 class EventGvaType {
  public:
   EventGvaType() = default;
@@ -57,9 +66,9 @@ class EventGvaType {
     type_ = EventEnumType::kTouchEvent;
   }
   explicit EventGvaType(GvaKeyEnum key) : key_(key) { type_ = EventEnumType::kNoEvent; }
-  EventEnumType type_ = EventEnumType::kNoEvent;
-  GvaKeyEnum key_ = GvaKeyEnum::kKeyUnknown;
-  TouchType touch_;
+  EventEnumType type_;
+  GvaKeyEnum key_ = GvaKeyEnum::kKeyUnknown;  // Key pressed
+  TouchType touch_;                           // Touch event
   ResolutionType resize_;
 };
 
