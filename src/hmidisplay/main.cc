@@ -23,6 +23,7 @@
 
 #include <gflags/gflags.h>
 #include <glog/logging.h>
+#include <rtp_stream.h>
 #include <unistd.h>
 
 #include <cstddef>
@@ -38,7 +39,6 @@
 #include "hmicore/widgets/keyboard.h"
 #include "hmicore/widgets/plan_position_indicator.h"
 #include "hmidisplay/gva_application.h"
-#include "rtp_stream.h"  // NOLINT
 #include "video/src/gva_video_rtp_yuv.h"
 
 DEFINE_bool(fullscreen, false, "Start the application fullscreen");

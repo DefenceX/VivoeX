@@ -20,7 +20,6 @@ include_directories(${CMAKE_BINARY_DIR}/hmi-display/config)
 link_directories(${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build)
 link_directories(${CMAKE_BINARY_DIR}/external/libnmea/build/src)
 
-link_libraries(-lstdc++fs)
 add_executable(hmi-display main.cc gva_application.cc)
 
 link_directories( ${NMEA_LIBRARY_DIR} ${CMAKE_BINARY_DIR}/external/libnmea/src/lib)

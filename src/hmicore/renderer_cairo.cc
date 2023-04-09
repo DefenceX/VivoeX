@@ -714,9 +714,9 @@ uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, cairo_surface_t *surf
 // signal receives a ready-to-be-used cairo_t that is already
 // clipped to only Draw the exposed areas of the Widget
 //
-void RendererCairo::DrawSurface() {
-  cairo_set_source_surface(render_.cr, render_.surface, 0, 0);
-  cairo_paint(render_.cr);
+void RendererCairo::DrawSurface(cairo_t *cr) {
+  cairo_set_source_surface(cr, render_.surface, 0, 0);
+  cairo_paint(cr);
 }
 
 void RendererCairo::SetSurface(cairo_surface_t *surface) { render_.surface = surface; }

@@ -21,8 +21,8 @@
 /// \file gva_application.h
 ///
 
-#ifndef HMICORE_GVA_APPLICATION_H_
-#define HMICORE_GVA_APPLICATION_H_
+#ifndef HMIDISPLAY_GVA_APPLICATION_H_
+#define HMIDISPLAY_GVA_APPLICATION_H_
 #include <gtk/gtk.h>
 #include <rtp_stream.h>
 #include <unistd.h>
@@ -90,7 +90,7 @@ class GvaApplication {
   /// \param arg
   /// \param user_data
   ///
-  static void Update(void *arg, gpointer user_data);
+  static void Update(gpointer user_data);
 
   static Options options_;
   static std::unique_ptr<gva::GvaVideoRtpYuv> rtp_stream1_;
@@ -148,16 +148,52 @@ class GvaApplication {
   ///
   ///
   static void Dispatch(gva::GvaKeyEnum key);
-  std::shared_ptr<gva::EventsGva> io_;
+  static std::shared_ptr<gva::EventsGva> io_;
   gva::EventsGva *io_test_ = nullptr;
   static uint32_t update_counter_;
   static bool first_execution_;
 
+  ///
+  /// \brief GTK3 redraw callback
+  ///
+  /// \param Widget The widget to draw
+  /// \param cr The cairo context
+  /// \param data Pointer to data object
+  /// \return gboolean
+  ///
   static gboolean DrawCb(GtkWidget *Widget, cairo_t *cr, gpointer data);
+
+  ///
+  /// \brief GTK3 configure event callback
+  ///
+  /// \param Widget The widget to draw
+  /// \param event The event
+  /// \param data Pointer to data object
+  /// \return gboolean
+  ///
   static gboolean ConfigureEventCb(GtkWidget *Widget, GdkEventConfigure *event, gpointer data);
+
+  ///
+  /// \brief GTK3 activate callback
+  ///
+  /// \param app The GTK application
+  /// \param user_data Pointer to data object
+  ///
   static void Activate(GtkApplication *app, gpointer user_data);
+
+  ///
+  /// \brief Timer callback
+  ///
+  /// \param user_data Pointer to data object
+  /// \return gboolean
+  ///
   static gboolean Callback(gpointer user_data);
+
+  ///
+  /// \brief Free the rendered canvas
+  ///
+  ///
   static void CloseWindow(void);
 };
 
-#endif  // HMICORE_GVA_APPLICATION_H_
+#endif  // HMIDISPLAY_GVA_APPLICATION_H_

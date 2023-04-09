@@ -510,10 +510,7 @@ class RendererCairo : public Renderer {
   ///
   /// \return uint32_t
   ///
-  uint32_t GetHeight() const {
-    // gtk_widget_get_size_request(render_.win.draw, &w, &h);
-    return height_;
-  }
+  uint32_t GetHeight() const { return height_; }
 
   ///
   /// \brief Get the Width object
@@ -530,11 +527,11 @@ class RendererCairo : public Renderer {
   void SetSurface(cairo_surface_t *surface);
 
   ///
-  /// \brief Draw the surface to the screen
+  /// \brief Draw the new cairo surface to the screen
   ///
   /// \return gboolean
   ///
-  void DrawSurface();
+  void DrawSurface(cairo_t *cr);
 
   ///
   /// \brief Configure the surface to use new dimensions
@@ -548,7 +545,7 @@ class RendererCairo : public Renderer {
   /// \brief Destroy the current cairo surface, usually called during shutdown
   ///
   ///
-  static void DestroySurface(void);
+  static void DestroySurface();
 
  private:
   char *texture_;

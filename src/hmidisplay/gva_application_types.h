@@ -21,8 +21,8 @@
 /// \file gva_application_types.h
 ///
 
-#ifndef HMICORE_GVA_APPLICATION_TYPES_H_
-#define HMICORE_GVA_APPLICATION_TYPES_H_
+#ifndef HMIDISPLAY_GVA_APPLICATION_TYPES_H_
+#define HMIDISPLAY_GVA_APPLICATION_TYPES_H_
 
 #include <gtk/gtk.h>
 
@@ -34,4 +34,4 @@ struct gtkType {
   uint32_t width;
 };
 
-#endif  // HMICORE_GVA_APPLICATION_TYPES_H_
+#endif  // HMIDISPLAY_GVA_APPLICATION_TYPES_H_

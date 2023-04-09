@@ -59,7 +59,7 @@ Table below is a summary of the libraries used in this project:
 | glog                  | https://github.com/google/glog                                 | v0.6.0      | 05/04/2022 |
 | libosmscout           | https://github.com/Framstag/libosmscout                        | 1.1.0       | 22/11/2018 |
 | lttng-ust             | https://github.com/lttng/lttng-ust                             | v2.13.5     | 01/10/2022 |
-| vivoe-media-framework | https://github.com/DefenceX/vivoe-media-framework              | v0.4.342    | 12/02/2023 |
+| vivoe-media-framework | https://github.com/DefenceX/vivoe-media-framework              | v0.4.344    | 12/02/2023 |
 | nmea                  | https://nmea.sourceforge.net/                                  | 0.5.3       | 11/03/2008 |
 | pango                 | https://github.com/GNOME/pango                                 | 1.50.12     | 19/11/2022 |
 | protobuf              | https://github.com/protocolbuffers/protobuf                    | v21.12      | 13/12/2022 |
