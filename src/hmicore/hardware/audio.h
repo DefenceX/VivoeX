@@ -29,6 +29,8 @@
 
 #include <string>
 
+#include "hmicore/hardware/sample.h"
+
 namespace gva {
 
 class AudioFunctions {
@@ -73,29 +75,43 @@ class AudioFunctions {
   /// \param filename
   /// \return int
   ///
-  int Play(std::string_view filename) const;
+  int Play(AudioSampleBase &sample);
 
   ///
   /// \brief Play threat tone
   ///
   ///
-  void PlayThreat() const;
+  void PlayThreat();
 
   ///
   /// \brief Play Caution tone
   ///
   ///
-  void PlayCaution() const;
+  void PlayCaution();
 
   ///
   /// \brief Play Warning
   ///
   ///
-  void PlayWarning() const;
+  void PlayWarning();
 
   const uint32_t kFramesPerBuffer = 512;
 
  private:
+#if _WIN32
+  const std::string kThreatFilename = "../sounds/threat.wav";
+  const std::string kCautionFilename = "../sounds/caution.wav";
+  const std::string kWarningFilename = "../sounds/warning.wav";
+#else
+  const std::string kThreatFilename = "/opt/gva/hmi/sounds/threat.wav";
+  const std::string kCautionFilename = "/opt/gva/hmi/sounds/caution.wav";
+  const std::string kWarningFilename = "/opt/gva/hmi/sounds/warning.wav";
+#endif
+  AudioSample threat_ = AudioSample(kThreatFilename);
+  AudioSample caution_ = AudioSample(kCautionFilename);
+  AudioSample warning_ = AudioSample(kWarningFilename);
+  PaStream *stream_ = nullptr;
+
   static void *AlsaLog(const char *file, int line, const char *function, int err, const char *fmt, ...);
 };
 

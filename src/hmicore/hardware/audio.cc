@@ -27,6 +27,8 @@
 #include <alsa/asoundlib.h>
 #include <glog/logging.h>
 
+#include <string>
+
 namespace gva {
 
 void *AudioFunctions::AlsaLog(const char *file, int line, const char *function, int err, const char *fmt, ...) {
@@ -58,77 +60,59 @@ int AudioFunctions::Callback(const void *input [[maybe_unused]], void *output, u
                              const PaStreamCallbackTimeInfo *timeInfo [[maybe_unused]],
                              PaStreamCallbackFlags statusFlags [[maybe_unused]], void *userData) {  // NOLINT
   float *out;
-  auto *p_data = (CallbackData *)userData;
+  auto *sample_data = (AudioSampleBase *)userData;
   sf_count_t num_read;
 
   out = (float *)output;
-  p_data = (CallbackData *)userData;
-
-  // clear output buffer */
-  memset(out, 0, sizeof(float) * frameCount * p_data->info.channels);
-
-  // read directly into output buffer
-  num_read = sf_read_float(p_data->file, out, frameCount * p_data->info.channels);
+  sample_data = (AudioSampleBase *)userData;
+  num_read = sample_data->ReadBytes(out, 512);
 
   //  If we couldn't read a full frameCount of samples we've reached EOF
   if (num_read < (int)frameCount) {
+    sample_data->Seek(0);  // go to start of file ready for next play
     return paComplete;
   }
 
   return paContinue;
 }
 
-#if __MINGW64__ || __MINGW32__
-void AudioFunctions::PlayThreat() const { Play("../sounds/threat.wav"); }
-void AudioFunctions::PlayCaution() const { Play("../sounds/caution.wav"); }
-void AudioFunctions::PlayWarning() const { Play("../sounds/warning.wav"); }
+#if _WIN32
+const std::string kThreatFilename = "../sounds/threat.wav";
+const std::string kCautionFilename = "../sounds/caution.wav";
+const std::string kWarningFilename = "../sounds/warning.wav";
 #else
-void AudioFunctions::PlayThreat() const { Play("/opt/gva/hmi/sounds/threat.wav"); }
-void AudioFunctions::PlayCaution() const { Play("/opt/gva/hmi/sounds/caution.wav"); }
-void AudioFunctions::PlayWarning() const { Play("/opt/gva/hmi/sounds/warning.wav"); }
+const std::string kThreatFilename = "/opt/gva/hmi/sounds/threat.wav";
+const std::string kCautionFilename = "/opt/gva/hmi/sounds/caution.wav";
+const std::string kWarningFilename = "/opt/gva/hmi/sounds/warning.wav";
 #endif
 
-int AudioFunctions::Play(std::string_view filename) const {
-  PaStream *stream;
-  CallbackData data;
+void AudioFunctions::PlayThreat() { Play(threat_); }
+void AudioFunctions::PlayCaution() { Play(caution_); }
+void AudioFunctions::PlayWarning() { Play(caution_); }
+
+int AudioFunctions::Play(AudioSampleBase &sample) {
   PaError error;
 
-  // Open the sound file
-  data.file = sf_open(std::string(filename).c_str(), SFM_READ, &data.info);
-  if (sf_error(data.file) != SF_ERR_NO_ERROR) {
-    LOG(ERROR) << "File " << filename << sf_strerror(data.file);
-    return 1;
-  }
+  // Go to start of file, may have been played before
+  sample.Seek(0);
 
-  // Open PaStream with values read from the file
-  error = Pa_OpenDefaultStream(&stream, 0,                                                // no input
-                               data.info.channels,                                        // stereo out
-                               paFloat32,                                                 // floating point
-                               data.info.samplerate, kFramesPerBuffer, Callback, &data);  // our sndfile data struct
+  Pa_StopStream(stream_);
+
+  // Open PaStream with values read from the sample
+  error =
+      Pa_OpenDefaultStream(&stream_, 0,                                                     // no input
+                           sample.GetChannels(),                                            // stereo out
+                           paFloat32,                                                       // floating point
+                           sample.GetSamplingRate(), kFramesPerBuffer, Callback, &sample);  // our sndfile data struct
   if (error != paNoError) {
     LOG(ERROR) << "Problem opening Default Stream";
     return 1;
   }
 
   // Start the stream
-  error = Pa_StartStream(stream);
+  error = Pa_StartStream(stream_);
   if (error != paNoError) {
     LOG(ERROR) << "Problem opening starting Stream";
-    return 1;
-  }
-
-  // Run until EOF is reached
-  while (Pa_IsStreamActive(stream)) {
-    Pa_Sleep(100);
-  }
-
-  // Close the soundfile
-  sf_close(data.file);
-
-  //  Shut down portaudio
-  error = Pa_CloseStream(stream);
-  if (error != paNoError) {
-    LOG(ERROR) << "Problem closing stream";
     return 1;
   }
 
