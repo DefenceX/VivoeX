@@ -73,9 +73,9 @@ install(FILES
 
 # Audio files
 install(FILES  
-    ${CMAKE_SOURCE_DIR}/hmi-display/sounds/caution.wav
-    ${CMAKE_SOURCE_DIR}/hmi-display/sounds/threat.wav
-    ${CMAKE_SOURCE_DIR}/hmi-display/sounds/warning.wav
+    ${CMAKE_SOURCE_DIR}/src/sounds/caution.wav
+    ${CMAKE_SOURCE_DIR}/src/sounds/threat.wav
+    ${CMAKE_SOURCE_DIR}/src/sounds/warning.wav
     DESTINATION sounds)
 
 # All other images

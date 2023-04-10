@@ -17,8 +17,7 @@ CPackConfig*
 CPackSourceConfig.cmake
 dds/libdds.a
 gva-tools/gva-tool
-hmi-display/hmi-display
-hmi-display/log.txt
+src/log.txt
 include/
 libbusiness_logic.a
 libtest_catch.a

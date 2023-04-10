@@ -27,7 +27,7 @@ link_directories(${CMAKE_BINARY_DIR}/external/install/usr/local/lib)
 link_directories(${CMAKE_BINARY_DIR}/external/install/usr/lib64)
 
 # OSMScout
-include_directories(${CMAKE_SOURCE_DIR}/hmi-display)
+include_directories(${CMAKE_SOURCE_DIR}/src)
 link_libraries(-lstdc++fs)
 
 add_executable(widget-tester ${SOURCE_FILES})
