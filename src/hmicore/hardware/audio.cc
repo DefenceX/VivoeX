@@ -88,7 +88,7 @@ const std::string kWarningFilename = "/opt/gva/hmi/sounds/warning.wav";
 
 void AudioFunctions::PlayThreat() { Play(threat_); }
 void AudioFunctions::PlayCaution() { Play(caution_); }
-void AudioFunctions::PlayWarning() { Play(caution_); }
+void AudioFunctions::PlayWarning() { Play(warning_); }
 
 int AudioFunctions::Play(AudioSampleBase &sample) {
   PaError error;
@@ -96,7 +96,10 @@ int AudioFunctions::Play(AudioSampleBase &sample) {
   // Go to start of file, may have been played before
   sample.Seek(0);
 
-  Pa_StopStream(stream_);
+  if (stream_ != nullptr) {
+    Pa_CloseStream(stream_);
+    stream_ = nullptr;
+  }
 
   // Open PaStream with values read from the sample
   error =
