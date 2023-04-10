@@ -22,5 +22,5 @@ ExternalProject_Add(
     INSTALL_COMMAND     make DESTDIR=${CMAKE_BINARY_DIR}/external/install install 
     UPDATE_DISCONNECTED 1
 )
-set(ALSA_INCLUDE_DIR ${CMAKE_BINARY_DIR}/external/install/usr/include/alsa)
+set(ALSA_INCLUDE_DIR ${CMAKE_BINARY_DIR}/external/install/usr/include)
 endif()
