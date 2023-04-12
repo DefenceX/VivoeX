@@ -31,5 +31,9 @@ ExternalProject_Add(
 )
 endif()
 
-set(OSMSCOUT_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/external/install/usr/local/include "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/libosmscout/include")
+if (MSYS)
+  set(OSMSCOUT_INCLUDE_DIRS "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/libosmscout/include")
+else()
+  set(OSMSCOUT_INCLUDE_DIRS ${CMAKE_BINARY_DIR}/external/install/usr/local/include)
+endif()
 set(OSMSCOUT_LIBARAIES osmscout_import osmscout_map_cairo osmscout_map osmscout)

@@ -10,11 +10,13 @@ set(
   TEST_INCLUDES
   ${GTK3_INCLUDE_DIRS} 
   ${CAIRO_INCLUDE_DIRS} 
+  ${GTEST_INCLUDE_DIRS}
   ${PANGO_INCLUDE_DIRS} 
   ${SWSCALE_INCLUDE_DIRS} 
   ${PROTOBUF_INCLUDE_DIRS}
   ${NMEA_INCLUDE_DIR}
   ${MEDIA_INCLUDE_DIR}
+  ${OSMSCOUT_INCLUDE_DIRS}
   ${CMAKE_SOURCE_DIR}/src
   ${CMAKE_SOURCE_DIR}/src/common
   ${CMAKE_SOURCE_DIR}/src/hmicore
@@ -32,7 +34,30 @@ add_executable(
   ${TEST_LOG_SOURCES}
 )
 
-target_link_directories(tests PRIVATE ${GLOG_LIBRARY_DIR} ${PROTOBUF_LIBRARY_DIR} ${GTEST_LIBRARY_DIRS} ${PANGO_LIBARARY_DIRS})
+if (MSYS)
+	# Static link libraries .a
+	target_link_directories(tests BEFORE PRIVATE
+		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/protobuf/lib"
+		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/gflags/lib"
+		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/glog/lib"
+		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/protobuf/lib"
+		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/libosmscout/lib"
+		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/nmea/lib"
+		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/GeographicLib/lib64"
+		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/GeographicLib/lib64"
+		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/portaudio/lib"
+    "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/googletest-distribution/lib64"
+		"${CMAKE_BINARY_DIR}/external/install/mingw64/lib"
+    "${CMAKE_BINARY_DIR}/external/install/usr/local/lib"
+	)
+	target_link_libraries(tests shlwapi)
+else()
+  target_link_directories(tests PRIVATE 
+    ${GLOG_LIBRARY_DIR} 
+    ${PROTOBUF_LIBRARY_DIR} 
+    ${GTEST_LIBRARY_DIRS} 
+    ${PANGO_LIBARARY_DIRS})
+endif()
 
 target_link_libraries(tests
   hmiupdater 
@@ -55,6 +80,7 @@ target_link_libraries(tests
   config-proto 
   glog 
   gtest
+  gtest_main
   hmivideo 
   nmea 
   png 
@@ -66,11 +92,10 @@ target_link_libraries(tests
 target_include_directories(
   tests PUBLIC
   ${TEST_INCLUDES}
-  ${GTEST_INCLUDE_DIRS}
 )
 
 add_dependencies(tests config-proto googletest libglog)
 
 include(GoogleTest)
 
-gtest_discover_tests(tests WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+# gtest_discover_tests(tests WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})

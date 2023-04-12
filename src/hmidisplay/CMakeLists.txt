@@ -6,16 +6,17 @@ pkg_check_modules(CAIRO REQUIRED cairo)
 pkg_check_modules(PANGO REQUIRED pango)
 pkg_check_modules(SWSCALE REQUIRED libswscale)
 
-
-include_directories(${CMAKE_SOURCE_DIR})
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
-include_directories(${CMAKE_BINARY_DIR}/external/vivoe-media-framework/src)
-include_directories(${CMAKE_BINARY_DIR}/external/libnmea/src/include)
-include_directories(${GLOG_INCLUDE_DIRS})
-include_directories(${CAIRO_INCLUDE_DIRS})
-include_directories(${GTK3_INCLUDE_DIRS})
-include_directories(${CMAKE_BINARY_DIR}/src/config)
+include_directories(${CMAKE_SOURCE_DIR}
+  ${CMAKE_CURRENT_SOURCE_DIR}
+  ${OSMSCOUT_INCLUDE_DIRS}
+  ${CMAKE_CURRENT_SOURCE_DIR}/src
+  ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/src
+  ${CMAKE_BINARY_DIR}/external/libnmea/src/include
+  ${GLOG_INCLUDE_DIRS}
+  ${CAIRO_INCLUDE_DIRS}
+  ${GTK3_INCLUDE_DIRS}
+  ${CMAKE_BINARY_DIR}/src/config
+)
 
 link_directories(${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build)
 link_directories(${CMAKE_BINARY_DIR}/external/libnmea/build/src)

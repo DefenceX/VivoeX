@@ -46,6 +46,8 @@ TEST(TestUpdater, Start) {
       std::make_shared<gva::WidgetObjectLocalisation>(renderer, &touch);
   widget_list[gva::widget::WidgetEnum::KWidgetTypeStatusBar] = std::make_shared<gva::WidgetStatusBar>(renderer, &touch);
   updater.RegisterWidgets(widget_list);
-  sleep(2);
+  // Delay 2 seconds
+  std::this_thread::sleep_for(std::chrono::seconds(2));
+  
   gva::Updater::running_ = false;
 }

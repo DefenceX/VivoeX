@@ -21,8 +21,9 @@
 /// \file sys.cc
 ///
 
-#include "bms.h"
 #include "hmidisplay/gva_application.h"
+
+#include "bms.h"
 
 namespace gva {
 

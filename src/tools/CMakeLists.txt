@@ -20,6 +20,7 @@ include_directories(
     ${CMAKE_BINARY_DIR}/external/libnmea/src/include
     ${CMAKE_BINARY_DIR}/external/install/usr/local/include/
     ${CMAKE_BINARY_DIR}/external/libnmea/build/src
+    ${OSMSCOUT_INCLUDE_DIRS}
 )
 
 link_directories(${CMAKE_BINARY_DIR}/external/libnmea/build/src)
@@ -45,7 +46,6 @@ target_link_libraries(widget-tester pthread
 	${WINDOWS_RESOURCE_LIB} 
 	GeographicLib 
 	config-proto 
-	glog 
 	hmivideo 
 	nmea 
 	png 
@@ -54,6 +54,7 @@ target_link_libraries(widget-tester pthread
 	vivoe-media 
 	widgets 
     hmiupdater 
+	glog 
 )
 target_compile_options(widget-tester PUBLIC ${CAIRO_CFLAGS_OTHER} ${GTK3_CFLAGS_OTHER})
 set_target_properties(widget-tester PROPERTIES UNITY_BUILD OFF)
@@ -65,10 +66,12 @@ if (MSYS)
     "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/glog/lib"
     "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/protobuf/lib"
     "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/libosmscout/lib"
-    "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/libosmscout/lib"
     "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/nmea/lib"
-    "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/GeographicLib/lib"
+    "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/GeographicLib/lib64"
+    "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/portaudio/lib"
+    "${CMAKE_BINARY_DIR}/external/install/mingw64/lib"
     )
+	target_link_libraries(widget-tester shlwapi)
 else()
     target_link_directories(widget-tester BEFORE PRIVATE 
 		${CMAKE_BINARY_DIR}/external/libprotobuf/build

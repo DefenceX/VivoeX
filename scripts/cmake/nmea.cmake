@@ -23,8 +23,8 @@ ExternalProject_Add(
 include_directories(/usr/lib/x86_64-linux-gnu)
 
 if (MSYS)
-  set(NMEA_INCLUDE_DIR "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/libnmea/include")
-  set(NMEA_LIBRARY_DIR "${CMAKE_BINARY_DIR}/external/install/usr/${CMAKE_INSTALL_LIBDIR}")
+  set(NMEA_INCLUDE_DIR "${CMAKE_BINARY_DIR}/external/libnmea/src/include")
+  set(NMEA_LIBRARY_DIR "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/nmea/lib")
 else()
   set(NMEA_INCLUDE_DIR ${CMAKE_BINARY_DIR}/external/libnmea/src/include)
   set(NMEA_LIBRARY_DIR ${CMAKE_BINARY_DIR}/external/install/usr/local/lib)

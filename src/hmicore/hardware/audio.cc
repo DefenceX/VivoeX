@@ -24,22 +24,29 @@
 
 #include "hmicore/hardware/audio.h"
 
+#ifndef _WIN32
 #include <alsa/asoundlib.h>
+#endif
 #include <glog/logging.h>
 
 #include <string>
 
 namespace gva {
 
+#ifndef _WIN32
 void *AudioFunctions::AlsaLog(const char *file, int line, const char *function, int err, const char *fmt, ...) {
   LOG(INFO) << "PortAudio info: " << file << ":" << line << " " << function << " " << err << " " << fmt << "\n";
   return nullptr;
 }
+#endif
 
 AudioFunctions::AudioFunctions() {
   PaError error;
 
+#ifndef _WIN32
   snd_lib_error_set_handler((snd_lib_error_handler_t)AudioFunctions::AlsaLog);
+#endif
+
   // init portaudio
   error = Pa_Initialize();
 
