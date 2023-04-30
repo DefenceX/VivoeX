@@ -17,9 +17,10 @@ set(SOURCE_FILES widget-tester.cc
 )
 
 include_directories(
-    ${CMAKE_BINARY_DIR}/external/libnmea/src/include
-    ${CMAKE_BINARY_DIR}/external/install/usr/local/include/
     ${CMAKE_BINARY_DIR}/external/libnmea/build/src
+    ${CMAKE_BINARY_DIR}/external/libnmea/src/include
+    ${CMAKE_BINARY_DIR}/external/mediax/src/src
+    ${CMAKE_BINARY_DIR}/external/install/usr/local/include/
     ${OSMSCOUT_INCLUDE_DIRS}
 )
 
@@ -45,13 +46,12 @@ target_link_libraries(widget-tester pthread
 	${SWSCALE_LIBRARIES} 
 	${WINDOWS_RESOURCE_LIB} 
 	GeographicLib 
-	config-proto 
-	hmivideo 
+	config-proto  
 	nmea 
 	png 
 	pthread 
 	stdc++fs
-	vivoe-media 
+	mediax 
 	widgets 
     hmiupdater 
 	glog 

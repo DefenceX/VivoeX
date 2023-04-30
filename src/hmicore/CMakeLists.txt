@@ -30,8 +30,6 @@ set(SOURCES ../common/debug.cc
     view_gva.cc 
 )
 
-message(STATUS ">>>>>>>>>>>>>>>>>>>>> ${OSMSCOUT_INCLUDE_DIRS}")
-
 include_directories (
     ${OSMSCOUT_INCLUDE_DIRS}
     ${GEOGRAPHIC_INCLUDE_DIRS}
@@ -45,9 +43,10 @@ include_directories (
     ${PORTAUDIO_INCLUDE_DIR}
     ${NMEA_INCLUDE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/..
-    ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/src
+    ${CMAKE_BINARY_DIR}/external/mediax/src/src
 )
 
 add_library(hmicore STATIC ${SOURCES})
-add_dependencies(hmicore hmiaudio widgets hmiupdater libglog libprotobuf libnmea googletest libosmscout geographiclib hmivideo config-proto ${DDS_STACK} libosmscout)
+add_dependencies(hmicore hmiaudio widgets hmiupdater libglog libprotobuf libnmea googletest libosmscout geographiclib vivoe_media config-proto ${DDS_STACK} libosmscout)
 # target_link_libraries(hmicore shlwapi)
+target_include_directories(hmicore PUBLIC ${CMAKE_BINARY_DIR}/external/mediax/src/src)

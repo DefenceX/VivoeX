@@ -80,13 +80,12 @@ target_link_libraries(tests
   config-proto 
   glog 
   gtest
-  gtest_main
-  hmivideo 
+  gtest_main 
   nmea 
   png 
   pthread 
   stdc++fs
-  vivoe-media 
+  mediax 
 )
 
 target_include_directories(

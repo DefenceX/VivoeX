@@ -28,7 +28,7 @@ include(scripts/cmake/osmscout.cmake)
 include(scripts/cmake/nmea.cmake)
 include(scripts/cmake/protobuf.cmake)
 include(scripts/cmake/sonar.cmake)
-include(scripts/cmake/vivoe-media-framework.cmake)
+include(scripts/cmake/vivoex.cmake)
 include(scripts/cmake/windows.cmake)
 
 ## Update the version number everytime cmake is run, patch number can go up a lot

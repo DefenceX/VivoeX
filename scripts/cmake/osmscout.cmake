@@ -16,8 +16,8 @@ list(APPEND CMAKE_MODULE_PATH ../libosmscout/cmake)
 ExternalProject_Add(
     libosmscout
     GIT_REPOSITORY      https://github.com/Framstag/libosmscout
-    # GIT_TAG             1.1.0
-    # GIT_SHALLOW         5
+    GIT_TAG             v2023.03.30.1
+    GIT_SHALLOW         5
     CMAKE_ARGS          -Wno-dev -DCMAKE_CXX_FLAGS='-lstdc++fs\ -std=c++11' -DCMAKE_INSTALL_LIBDIR=${CMAKE_INSTALL_LIBDIR} -DCMAKE_UNITY_BUILD=YES -DCMAKE_BUILD_TYPE=Release -DOSMSCOUT_BUILD_TESTS=Off -DOSMSCOUT_BUILD_DOC_API=Off -DOSMSCOUT_BUILD_TESTS=Off -DOSMSCOUT_BUILD_GPX=Off -DOSMSCOUT_BUILD_MAP_AGG=Off -DOSMSCOUT_BUILD_MAP_SVG=Off -DOSMSCOUT_BUILD_MAP_OPENGL=Off -DOSMSCOUT_BUILD_MAP_QT=Off -D=OSMSCOUT_BUILD_CLIENT_QT=Off -DOSMSCOUT_BUILD_MAP_SVG=Off -DOSMSCOUT_BUILD_WEBPAGE=Off
     PREFIX              ${CMAKE_BINARY_DIR}/external/libosmscout/prefix
     TMP_DIR             ${CMAKE_BINARY_DIR}/external/libosmscout/tmp

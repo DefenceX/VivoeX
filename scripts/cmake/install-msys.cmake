@@ -9,7 +9,7 @@ install(FILES
 	"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/libosmscout/bin/libosmscout_map_gdi.dll"
 
  DESTINATION bin)
-install(FILES "${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libvivoe-media.dll" DESTINATION bin)
+install(FILES "${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libmediax.dll" DESTINATION bin)
 install(FILES "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/glog/bin/libglog.dll" DESTINATION bin)
 # install(FILES "${CMAKE_SOURCE_DIR}/scripts/Vivoe Lite.lnk" DESTINATION $ENV{USERPROFILE}/Desktop)
 ## MSYS libs now

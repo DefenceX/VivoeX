@@ -7,8 +7,8 @@ file(WRITE ${CMAKE_BINARY_DIR}/etc/profile.d/vivoe-lite.sh "export PATH=$PATH:/o
 # install(DIRECTORY DESTINATION /etc/profile.d)
 # Install binaries with external libs
 install(FILES  
-            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libvivoe-media.so
-            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libvivoe-media.so.1
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libmediax.so
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libmediax.so.1
             ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libGeographicLib.so
             ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libGeographicLib.so.23
             ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libGeographicLib.so.23.1.0
@@ -39,7 +39,7 @@ install(FILES
         DESTINATION "/opt/gva/${CMAKE_INSTALL_LIBDIR}" PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE GROUP_WRITE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_WRITE WORLD_EXECUTE)
 
 # OS Integration files
-install(FILES ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build/libvivoe-media.so DESTINATION "/opt/gva/${CMAKE_INSTALL_LIBDIR}" PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE GROUP_WRITE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_WRITE WORLD_EXECUTE)
+install(FILES ${CMAKE_BINARY_DIR}/external/mediax/build/libmediax.so DESTINATION "/opt/gva/${CMAKE_INSTALL_LIBDIR}" PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE GROUP_WRITE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_WRITE WORLD_EXECUTE)
 install(FILES ${CMAKE_BINARY_DIR}/etc/ld.so.conf.d/vivoe-lite.conf DESTINATION "/etc/ld.so.conf.d" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ) 
 install(FILES ${CMAKE_BINARY_DIR}/etc/profile.d/vivoe-lite.sh DESTINATION "/etc/profile.d" PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ)
 

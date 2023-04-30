@@ -39,7 +39,6 @@
 #include "hmicore/widgets/keyboard.h"
 #include "hmicore/widgets/plan_position_indicator.h"
 #include "hmidisplay/gva_application.h"
-#include "video/src/gva_video_rtp_yuv.h"
 
 DEFINE_bool(fullscreen, false, "Start the application fullscreen");
 DEFINE_bool(live, false, "Show live video streams");

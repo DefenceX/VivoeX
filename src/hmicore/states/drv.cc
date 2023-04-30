@@ -28,6 +28,8 @@
 
 namespace gva {
 
+StateDRV::StateDRV() {}
+
 GvaKeyEnum Hmi::KeyDRV(GvaKeyEnum keypress) {
   screen_.function_right.visible = true;
 

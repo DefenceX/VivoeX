@@ -9,8 +9,8 @@ pkg_check_modules(SWSCALE REQUIRED libswscale)
 include_directories(${CMAKE_SOURCE_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${OSMSCOUT_INCLUDE_DIRS}
-  ${CMAKE_CURRENT_SOURCE_DIR}/src
-  ${CMAKE_BINARY_DIR}/external/vivoe-media-framework/src
+  ${CMAKE_SOURCE_DIR}/src
+  ${CMAKE_BINARY_DIR}/external/mediax/src/src
   ${CMAKE_BINARY_DIR}/external/libnmea/src/include
   ${GLOG_INCLUDE_DIRS}
   ${CAIRO_INCLUDE_DIRS}
@@ -18,7 +18,7 @@ include_directories(${CMAKE_SOURCE_DIR}
   ${CMAKE_BINARY_DIR}/src/config
 )
 
-link_directories(${CMAKE_BINARY_DIR}/external/vivoe-media-framework/build)
+link_directories(${CMAKE_BINARY_DIR}/external/mediax/build)
 link_directories(${CMAKE_BINARY_DIR}/external/libnmea/build/src)
 
 add_executable(hmi-display main.cc gva_application.cc)
@@ -43,13 +43,12 @@ target_link_libraries(hmi-display
 	${WINDOWS_RESOURCE_LIB} 
 	GeographicLib 
 	config-proto 
-	glog 
-	hmivideo 
+	glog  
 	nmea 
 	png 
 	pthread 
 	stdc++fs
-	vivoe-media 
+	mediax 
 )
 
 if (MSYS)

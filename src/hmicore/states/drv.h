@@ -23,6 +23,8 @@
 #ifndef HMICORE_STATES_DRV_H_
 #define HMICORE_STATES_DRV_H_
 
+#include <rtp_stream.h>
+
 #include <iostream>
 
 #include "hmicore/gva.h"
@@ -35,6 +37,7 @@
 namespace gva {
 
 struct StateDRV : Hmi {
+  StateDRV();
   void entry() override;
   void exit() override;
   void react(EventKeyPowerOn const &) override;
@@ -48,6 +51,9 @@ struct StateDRV : Hmi {
   void react(EventKeyBMS const &) override;
   void react(EventKeyAlarms const &) override;
   void react(EventKeyFunction const &e) override;
+
+ private:
+  RtpStream drivers_feed_;
 };
 
 }  // namespace gva

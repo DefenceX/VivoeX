@@ -34,7 +34,6 @@
 #include "hmicore/widgets/widget.h"
 
 GvaApplication::Options GvaApplication::options_ = {};
-std::unique_ptr<gva::GvaVideoRtpYuv> GvaApplication::rtp_stream1_ = nullptr;
 uint32_t GvaApplication::update_counter_ = 0;
 bool GvaApplication::first_execution_ = true;
 std::shared_ptr<gva::EventsGva> GvaApplication::io_;
@@ -117,8 +116,6 @@ gboolean GvaApplication::Callback(gpointer data) {
 GvaApplication::GvaApplication(const Options &options, const std::string &ipaddr, const uint32_t port) {
   options_ = options;
 
-  rtp_stream1_ = std::make_unique<gva::GvaVideoRtpYuv>(ipaddr, port);
-
   // instantiate events
   gva::EventKeyPowerOn on;
 
@@ -132,16 +129,6 @@ GvaApplication::GvaApplication(const Options &options, const std::string &ipaddr
   // Initialise the display events
   //
   io_ = std::make_shared<gva::EventsGva>(&gtk_, gva::hmi::GetRendrer()->GetTouch());
-
-  //
-  // Setup video sources (default size will be 640 x 480 unless specified)
-  //
-  if (options_.videoEnabled_ == true) {
-    LOG(INFO) << "Resolution " << std::to_string(rtp_stream1_->GetHeight()) + "x"
-              << std::to_string(rtp_stream1_->GetWidth());
-
-    LOG(INFO) << "GVA Incoming RTP stream initalized " << ipaddr << ":" << std::to_string(port);
-  }
 }
 
 ///
@@ -514,15 +501,6 @@ void GvaApplication::Update(gpointer user_data) {
   gva::EventGvaType event;
   bool update = true;
   auto *render = static_cast<gva::HandleType *>(user_data);
-
-  if ((options_.videoEnabled_) && (gva::hmi::GetScreen()->currentFunction == gva::GvaFunctionEnum::kDriver)) {
-    gva::hmi::GetScreen()->canvas.bufferType = gva::SurfaceType::kSurfaceCairo;
-    gva::hmi::GetScreen()->canvas.surface =
-        cairo_image_surface_create(CAIRO_FORMAT_ARGB32, gva::kMinimumWidth, gva::kMinimumHeight);
-    auto test = (char *)(cairo_image_surface_get_data(gva::hmi::GetScreen()->canvas.surface));
-    rtp_stream1_->GvaReceiveFrame(test, gva::VideoFormat::kFormatRgbaColour);
-    cairo_surface_mark_dirty(gva::hmi::GetScreen()->canvas.surface);
-  }
 
   io_->NextGvaEvent(&event);
 

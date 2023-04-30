@@ -39,7 +39,6 @@
 #include "hmicore/widgets/keyboard.h"
 #include "hmicore/widgets/plan_position_indicator.h"
 #include "hmidisplay/gva_application_types.h"
-#include "video/src/gva_video_rtp_yuv.h"
 
 class GvaApplication {
  public:
@@ -93,8 +92,6 @@ class GvaApplication {
   static void Update(gpointer user_data);
 
   static Options options_;
-  static std::unique_ptr<gva::GvaVideoRtpYuv> rtp_stream1_;
-
   static gtkType gtk_;
 
  private:
