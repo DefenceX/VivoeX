@@ -537,9 +537,8 @@ class RendererCairo : public Renderer {
   static void DestroySurface();
 
  private:
-  char *texture_;
   int32_t current_handle_;
-  double scale_;
+  double scale_ = 1.0;
 
   ///
   /// \brief Convert a standard integer to a double for use with the cairo colour system

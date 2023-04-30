@@ -51,7 +51,6 @@ void StateOn::entry() {
   }
   top_ = DefaultSettings::GetDefaultFunctionSelect();
   bottom_ = DefaultSettings::GetDefaultCommonTaskKeys();
-  canvas_ = DefaultSettings::GetDefaultCanvas();
   screen_ = DefaultSettings::GetDefaultScreen();
 
   // Setup the main screens

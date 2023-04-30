@@ -72,16 +72,6 @@ FunctionSelect DefaultSettings::GetDefaultFunctionSelect() {
   return function_select;
 }
 
-Canvas DefaultSettings::GetDefaultCanvas() {
-  Canvas canvas;
-  canvas.visible = true;
-  canvas.bufferType = SurfaceType::kSurfaceNone;
-  canvas.filename = "";
-  canvas.buffer = nullptr;
-  canvas.surface = nullptr;
-  return canvas;
-}
-
 FunctionKeys DefaultSettings::GetDefaultFunctionKeysDefaultAllHidden() {
   FunctionKeys keys;
   keys.visible = true;

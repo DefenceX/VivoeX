@@ -48,6 +48,7 @@ enum class WeightType { kWeightNormal = 0, kWeightBold, kWeightItalic };
 ///
 ///
 enum class WidgetEnum {
+  KWidgetTypeCanvas,
   KWidgetTypeStatusBar,
   KWidgetObjectLocalisation,
   KWidgetTypeCompass,
@@ -59,6 +60,7 @@ enum class WidgetEnum {
   KWidgetTypeRightLabels,
   KWidgetTypeMode,
   KWidgetTypeTable,
+  KWidgetTypeMessageBox,
   KWidgetTypeTableDynamic,
   kWidgetTypeDialSpeedometer,
   KWidgetTypeDialRpmFuel,

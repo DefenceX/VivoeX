@@ -12,7 +12,7 @@ set(SOURCES ../common/debug.cc
     renderer.cc 
     renderer_cairo.cc 
     renderer_gva.cc 
-    renderer_map.cc 
+    renderer_map.cc
     status_updater.cc 
     screen_gva.cc 
     states/alarms.cc

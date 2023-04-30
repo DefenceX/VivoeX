@@ -51,7 +51,14 @@ class WidgetX {
   ///
   /// \return std::string the widget name
   ///
-  virtual std::string GetWidgetName() const { return "WidgetUnnamed"; }
+  virtual std::string GetWidgetName() const = 0;
+
+  ///
+  /// \brief Get the Widget Type attribute
+  ///
+  /// \return std::string
+  ///
+  virtual widget::WidgetEnum GetWidgetType() const;
 
   ///
   /// \brief Set the Visible object

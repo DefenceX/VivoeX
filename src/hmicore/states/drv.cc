@@ -28,7 +28,24 @@
 
 namespace gva {
 
-StateDRV::StateDRV() {}
+StateDRV::StateDRV() {
+  canvas_ = (gva::WidgetCanvas *)(screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCanvas));
+  RtpStream::RtpStreamIn("DemoVideo1", ColourspaceType::kColourspaceYuv, 640, 480, "239.192.1.1", 5004);
+}
+
+void StateDRV::UpdateVideo() {
+  uint8_t *cpu_buffer;
+  if (drivers_feed_.Receive(&cpu_buffer, 80) == true) {
+    if (gva::hmi::GetScreen()->currentFunction == gva::GvaFunctionEnum::kDriver) {
+      gva::hmi::GetScreen()->canvas.surface =
+          cairo_image_surface_create(CAIRO_FORMAT_ARGB32, gva::kMinimumWidth, gva::kMinimumHeight);
+      auto test = (uint8_t *)(cairo_image_surface_get_data(gva::hmi::GetScreen()->canvas.surface));
+      YuvToRgba(480, 640, cpu_buffer, test);
+      cairo_surface_mark_dirty(gva::hmi::GetScreen()->canvas.surface);
+      canvas_->SetSurface(gva::hmi::GetScreen()->canvas.surface);
+    }
+  }
+}
 
 GvaKeyEnum Hmi::KeyDRV(GvaKeyEnum keypress) {
   screen_.function_right.visible = true;
@@ -78,6 +95,9 @@ void StateDRV::entry() {
 
     screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeStatusBar)->SetVisible(true);
     screen_.function_top->SetEnabled(4);
+
+    // Start the video stream receiver
+    drivers_feed_.Start();
   }
 };
 
@@ -85,6 +105,8 @@ void StateDRV::exit() {
   // Switch the dials off now not needed in other states
   screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDialSpeedometer)->SetVisible(false);
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeDialRpmFuel)->SetVisible(false);
+  // Stop the video stream receiver, easy to restart. Stream still running
+  drivers_feed_.Stop();
 }
 
 void StateDRV::react(EventKeyPowerOn const &) { transit<StateOff>(); };

@@ -50,6 +50,7 @@ struct termios {
 #include "hmicore/gva.h"
 #include "hmicore/gva_functions_common.h"
 #include "hmicore/hmi_gva_helpers.h"
+#include "widgets/canvas.h"
 #include "widgets/widgets.h"
 
 namespace gva {
@@ -94,6 +95,7 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
   TouchGva *touch = GetTouch();
 
   // Here we need to add all the possible screen widgets to the widget list, at this point they are uninitialised
+  widget_list_[widget::WidgetEnum::KWidgetTypeCompass] = std::make_shared<WidgetPlanPositionIndicator>(*renderer);
   widget_list_[widget::WidgetEnum::KWidgetTypeCompass] = std::make_shared<WidgetPlanPositionIndicator>(*renderer);
   widget_list_[widget::WidgetEnum::KWidgetTypeKeyboard] = std::make_shared<WidgetKeyboard>(*renderer);
   widget_list_[widget::WidgetEnum::kWidgetTypeDialSpeedometer] = std::make_shared<WidgetDriverSpeedometer>(*renderer);
@@ -191,72 +193,29 @@ void ScreenGva::StartClock(std::shared_ptr<WidgetX> status_bar_widget) {
 }
 
 GvaStatusTypes ScreenGva::Update() {
-  unsigned char *texture = nullptr;
+  std::cout << "WidgetX 1\n";
 
   // Reset the Drawing context, must be Reset before reDrawing the screen
   Reset();
+  std::cout << "WidgetX 2\n";
   GetTouch()->Reset();
+  std::cout << "WidgetX 3\n";
 
-  // Draw the background canvas first
-  if (screen_->canvas.blackout) {
-    // Set background black
-    SetColourForeground(HMI_BLACK);
-    SetColourBackground(HMI_BLACK);
-    DrawRectangle(0, 0, width_, height_, true);
-  } else {
-    switch (screen_->canvas.bufferType) {
-      case SurfaceType::kSurfaceCairo:
-        TextureRGB(0, 0, screen_->canvas.surface);
-        break;
-      case SurfaceType::kSurfaceFile:
-        TextureRGB(0, 0, screen_->canvas.buffer);
-        TextureRGB(0, 0, texture, screen_->canvas.filename);
-        break;
-      default:
-        // Set background green
-        SetColourForeground(config_->GetThemeBackground());
-        SetColourBackground(config_->GetThemeBackground());
-        DrawRectangle(0, 0, width_, height_, true);
-        break;
-    }
-  }
 
-  // If BLACKOUT then nothing to render
-  if (screen_->canvas.blackout) {
-    //
-    // Refresh display
-    //
-    Draw();
-    LOG(INFO) << "Blackout Requested";
-    last_screen_ = *screen_;
-    return GvaStatusTypes::kGvaSuccess;
-  }
-
-  // Generic message box
-  if (screen_->message.visible) {
-    WidgetTable message_box_table(*(RendererGva *)this, GetTouch(),
-                                  ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
-    message_box_table.SetX((gva::kMinimumWidth / 2) - 150);
-    message_box_table.SetY(220);
-    message_box_table.SetWidth(300);
-    message_box_table.SetBackgroundColour(ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
-
-    uint32_t background = gva::ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled();
-
-    message_box_table.AddRow();
-    message_box_table.AddCell("System Information", 100, widget::CellAlignType::kAlignCentre, background);
-
-    message_box_table.AddRow();
-    message_box_table.AddCell(screen_->message.detail.text, 100, widget::CellAlignType::kAlignCentre, background);
-
-    message_box_table.Draw();
-
-    DrawIcon(screen_->message.icon, 320 - 150 + 300 - 17, 229, 11, 11);
-  }
 
   /// Iterate over all widgets and draw the visible ones
   for (auto const &[key, val] : widget_list_) {
+    std::cout << "WidgetX:" << val->GetWidgetName() << "\n";
     if (val->GetVisible()) val->Draw();
+
+    // Now lets check check we are not blacked out
+    if (val->GetWidgetType() == widget::WidgetEnum::KWidgetTypeCanvas) {
+      const gva::WidgetCanvas *canvas_ = (gva::WidgetCanvas *)val.get();
+      if (canvas_->GetBlackout()) {
+        // Break out the loop as we are blacked out, nothing more to render
+        break;
+      }
+    }
   }
 
   //

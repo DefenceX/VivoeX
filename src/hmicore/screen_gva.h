@@ -45,8 +45,6 @@ namespace gva {
 
 struct Canvas {
   bool visible;
-  SurfaceType bufferType;
-  std::string filename;
   unsigned char *buffer;
   cairo_surface_t *surface;
   bool blackout = false;

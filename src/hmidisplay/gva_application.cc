@@ -522,10 +522,9 @@ void GvaApplication::Update(gpointer user_data) {
       update = SetKeyReleased(render, event.key_);
       break;
     case gva::EventEnumType::kResizeEvent: {
-      printf("[GVA] WindowResize: %d x %d", event.resize_.width, event.resize_.height);
       if (event.resize_.width != gva::hmi::GetRendrer()->GetWidth() ||
           event.resize_.height != gva::hmi::GetRendrer()->GetHeight()) {
-        printf("[GVA] WindowResize: %d x %d", event.resize_.width, event.resize_.height);
+        LOG(INFO) << "[GVA] WindowResize: " << event.resize_.width << "x" << event.resize_.height << "\n";
         gva::hmi::GetRendrer()->SetWidth(event.resize_.width);
         gva::hmi::GetRendrer()->SetHeight(event.resize_.height);
         gva::hmi::GetRendrer()->GetTouch()->SetResolution(event.resize_.width, event.resize_.height);

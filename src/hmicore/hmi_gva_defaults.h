@@ -54,13 +54,6 @@ class DefaultSettings {
   static FunctionSelect GetDefaultFunctionSelect();
 
   ///
-  /// \brief Get the Default Canvas object
-  ///
-  /// \return Canvas
-  ///
-  static Canvas GetDefaultCanvas();
-
-  ///
   /// \brief Get the Default Function Keys Default All Hidden object
   ///
   /// \return FunctionKeys

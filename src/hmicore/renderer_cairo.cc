@@ -38,22 +38,14 @@ namespace gva {
 HandleType RendererCairo::render_;
 
 RendererCairo::RendererCairo(uint32_t width, uint32_t height) : Renderer(width, height) {
-  scale_ = 1.0;
   foreground_colour_ = {255, 255, 255};
   background_colour_ = {0, 0, 0};
-  texture_ = nullptr;
   config_ = gva::ConfigData::GetInstance();
   render_.size.width = gva::kMinimumWidth;
   render_.size.height = gva::kMinimumHeight;
 }
 
-RendererCairo::~RendererCairo() {
-  if (texture_) {
-    std::free(texture_);
-    texture_ = nullptr;
-  }
-  DestroySurface();
-}
+RendererCairo::~RendererCairo() { DestroySurface(); }
 
 void RendererCairo::Draw() {
   std::array<double, 1> dashed = {1.0};
@@ -285,7 +277,7 @@ void RendererCairo::Draw() {
         cairo_show_text(cr, currentCmd.text.c_str());
       } break;
       default:
-        printf("[GVA] Unrecognised command!!!\n");
+        LOG(INFO) << "Unrecognised command!!!";
         break;
     }
   }

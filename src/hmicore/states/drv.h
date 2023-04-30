@@ -32,12 +32,14 @@
 #include "hmicore/states/base_hmi.h"
 #include "hmicore/view_gva.h"
 #include "hmicore/widgets/alarm_indicator.h"
+#include "hmicore/widgets/canvas.h"
 #include "hmicore/widgets/plan_position_indicator.h"
 
 namespace gva {
 
 struct StateDRV : Hmi {
   StateDRV();
+  void UpdateVideo();
   void entry() override;
   void exit() override;
   void react(EventKeyPowerOn const &) override;
@@ -54,6 +56,7 @@ struct StateDRV : Hmi {
 
  private:
   RtpStream drivers_feed_;
+  gva::WidgetCanvas *canvas_ = nullptr;
 };
 
 }  // namespace gva

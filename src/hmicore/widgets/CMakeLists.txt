@@ -9,6 +9,8 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/bottom_labels.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/driver/rpm_fuel.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/driver/speedometer.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/table/message_box.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/canvas.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/keyboard.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/mode.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/plan_position_indicator.cc

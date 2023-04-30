@@ -132,24 +132,26 @@
 #include "hmicore/gva.h"
 #include "hmicore/view_gva.h"
 #include "hmicore/widgets/alarm_indicator.h"
+#include "hmicore/widgets/canvas.h"
 #include "hmicore/widgets/plan_position_indicator.h"
 #include "hmicore/widgets/table/table.h"
 
 namespace gva {
 
 void Hmi::SetCanvasPng(const std::string &file) {
-  Hmi::GetScreen()->canvas.filename = file.c_str();
-  Hmi::GetScreen()->canvas.bufferType = SurfaceType::kSurfaceFile;
-  Hmi::GetScreen()->canvas.buffer = nullptr;
+  auto canvas = (gva::WidgetCanvas *)(screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCanvas));
+  canvas->SetVisible(true);
+  canvas->SetFilename(file);
 }
 
 void Hmi::Reset() {
+  auto canvas = (gva::WidgetCanvas *)(screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCanvas));
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeStatusBar)->SetVisible(true);
   screen_.labels = LabelModeEnum::kLabelAll;
   Labels(screen_.labels);
   screen_.function_top->ResetAllEnabled();
-  screen_.canvas.visible = false;
-  screen_.canvas.bufferType = SurfaceType::kSurfaceNone;
+  canvas->SetVisible(false);
+  canvas->Reset();
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetVisible(false);
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetVisible(false);
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeKeyboard)->SetVisible(false);

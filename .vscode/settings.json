@@ -216,7 +216,8 @@
         "slist": "cpp",
         "scoped_allocator": "cpp",
         "typeindex": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "source_location": "cpp"
     },
     "cSpell.words": [
         "alarmson",
@@ -224,6 +225,7 @@
         "automake",
         "Buildroot",
         "CBRN",
+        "Colourspace",
         "cpack",
         "cpplint",
         "ctest",

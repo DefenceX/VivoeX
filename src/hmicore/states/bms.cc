@@ -25,6 +25,7 @@
 
 #include <glog/logging.h>
 
+#include "hmicore/widgets/canvas.h"
 #include "hmicore/widgets/widget_types.h"
 
 namespace gva {
@@ -118,9 +119,11 @@ GvaKeyEnum Hmi::KeyBMS(GvaKeyEnum keypress) {
       map_->SetHeight(kMinimumHeight);
       LOG(INFO) << "[BMS] res " + std::to_string(screen_render_->GetWidth()) << "x"
                 << std::to_string(screen_render_->GetHeight());
+
       map_->Project(ConfigData::GetInstance()->GetZoom(), ConfigData::GetInstance()->GetTestLon(),
                     ConfigData::GetInstance()->GetTestLat(), &screen_.canvas.surface);
-      screen_.canvas.bufferType = SurfaceType::kSurfaceCairo;
+      auto canvas = (gva::WidgetCanvas *)(screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCanvas));
+      canvas->SetSurface(screen_.canvas.surface);
     }
   }
   return keypress;
@@ -138,7 +141,8 @@ void StateBMS::entry() {
       map_->SetHeight(kMinimumHeight);
       map_->Project(ConfigData::GetInstance()->GetZoom(), ConfigData::GetInstance()->GetTestLon(),
                     ConfigData::GetInstance()->GetTestLat(), &screen_.canvas.surface);
-      screen_.canvas.bufferType = SurfaceType::kSurfaceCairo;
+      auto canvas = (gva::WidgetCanvas *)(screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCanvas));
+      canvas->SetSurface(screen_.canvas.surface);
     } else {
       // Display the DefenceX logo
       std::string filename = ConfigData::GetInstance()->GetImagePath();
