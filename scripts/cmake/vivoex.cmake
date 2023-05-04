@@ -5,8 +5,8 @@ ExternalProject_Add(
     vivoe_media
     GIT_REPOSITORY      https://github.com/DefenceX/MediaX
     GIT_SHALLOW         1
-	GIT_TAG             v0.5.0
-	CMAKE_ARGS          -DCMAKE_INSTALL_PREFIX:PATH=/opt/gva/libs
+	# GIT_TAG             v0.5.0
+	GIT_TAG             main
     PREFIX              ${CMAKE_BINARY_DIR}/external/mediax/prefix
     TMP_DIR             ${CMAKE_BINARY_DIR}/external/mediax/tmp
     STAMP_DIR           ${CMAKE_BINARY_DIR}/external/mediax/stamp

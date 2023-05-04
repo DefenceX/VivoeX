@@ -48,7 +48,7 @@ target_link_libraries(hmi-display
 	png 
 	pthread 
 	stdc++fs
-	mediax 
+	mediax
 )
 
 if (MSYS)

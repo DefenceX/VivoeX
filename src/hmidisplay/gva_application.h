@@ -24,7 +24,7 @@
 #ifndef HMIDISPLAY_GVA_APPLICATION_H_
 #define HMIDISPLAY_GVA_APPLICATION_H_
 #include <gtk/gtk.h>
-#include <rtp_stream.h>
+#include <rtpvraw_depayloader.h>
 #include <unistd.h>
 
 #include <iostream>

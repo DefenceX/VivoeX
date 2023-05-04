@@ -23,7 +23,7 @@
 #ifndef HMICORE_STATES_DRV_H_
 #define HMICORE_STATES_DRV_H_
 
-#include <rtp_stream.h>
+#include <rtpvraw_depayloader.h>
 
 #include <iostream>
 
@@ -55,7 +55,7 @@ struct StateDRV : Hmi {
   void react(EventKeyFunction const &e) override;
 
  private:
-  RtpStream drivers_feed_;
+  RtpvrawDepayloader drivers_feed_;
   gva::WidgetCanvas *canvas_ = nullptr;
 };
 
