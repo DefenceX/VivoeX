@@ -79,6 +79,8 @@ GvaKeyEnum Hmi::KeyAlarms(GvaKeyEnum keypress) {
 };
 
 void StateAlarms::entry() {
+  DLOG(INFO) << "Entering the DEF State";
+
   // Check to see if alarms was requested from hidden state, if so go back to last menu.
   if (screen_.control->labels_[1].state_ != LabelStates::kLabelHidden) {
     auto *table = (WidgetTableDynamic *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic);

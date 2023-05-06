@@ -46,6 +46,7 @@ DEFINE_bool(live, false, "Show live video streams");
 int main(int argc, char *argv[]) {
   google::SetVersionString(std::to_string(gva::kSemVerMajor) + "." + std::to_string(gva::kSemVerMinor) + "." +
                            std::to_string(gva::kSemVerPatch));
+
   google::SetUsageMessage(
       "Human Machine Interface (HMI) display application renderer for using in\n"
       "vehicles build on the Generic Vehicle Architecture (GVA), this is the open source\n"
@@ -70,6 +71,7 @@ int main(int argc, char *argv[]) {
 
   // Blocking call to the application constructor
   app.Exec();
+
   gva::Updater::running_ = false;
   gva::ScreenGva::args_.active = false;
 

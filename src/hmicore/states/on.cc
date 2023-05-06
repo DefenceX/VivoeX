@@ -32,6 +32,8 @@
 namespace gva {
 
 void StateOn::entry() {
+  DLOG(INFO) << "Entering the On State";
+
   /* 4:3 aspect ratio @ lowest resolution */
   view_ = {kMinimumWidth, kMinimumHeight, 24};
 

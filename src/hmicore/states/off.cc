@@ -22,9 +22,11 @@
 ///
 #include "off.h"
 
+#include <glog/logging.h>
+
 namespace gva {
 
-void StateOff::entry(){};
+void StateOff::entry() { DLOG(INFO) << "Entering the Off State"; };
 
 void StateOff::react(EventKeyPowerOn const &) { transit<StateOn>(); };
 

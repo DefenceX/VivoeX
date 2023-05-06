@@ -61,6 +61,8 @@ GvaKeyEnum Hmi::KeyWPN(GvaKeyEnum keypress) {
 }
 
 void StateWPN::entry() {
+  DLOG(INFO) << "Entering the WPN State";
+
   if (screen_.function_top->labels[1].state != LabelStates::kLabelHidden) {
     std::string filename;
     manager_->SetScreen(&screen_, GvaFunctionEnum::kWeapon);
@@ -98,6 +100,8 @@ void StateWPN::react(EventKeyBMS const &) { transit<StateBMS>(); };
 void StateWPN::react(EventKeyAlarms const &) { transit<StateAlarms>(); };
 
 void StateWPN::react(EventKeyFunction const &e) {
+  DLOG(INFO) << "Leaving the WPN State";
+
   KeyWPN(e.key);
   if (e.key == GvaKeyEnum::kKeyPreviousLabel) transit<StateSA>();
   if (e.key == GvaKeyEnum::kKeyNextLabel) transit<StateDEF>();

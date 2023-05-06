@@ -21,9 +21,8 @@
 /// \file sys.cc
 ///
 
-#include "hmidisplay/gva_application.h"
-
 #include "bms.h"
+#include "hmidisplay/gva_application.h"
 
 namespace gva {
 
@@ -77,6 +76,8 @@ GvaKeyEnum Hmi::KeySYS(GvaKeyEnum keypress) {
 }
 
 void StateSYS::entry() {
+  DLOG(INFO) << "Entering the SYS State";
+
   if (screen_.function_top->labels[3].state != LabelStates::kLabelHidden) {
     WidgetTable *table = (WidgetTable *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable);
     Reset();
@@ -111,6 +112,8 @@ void StateSYS::react(EventKeyBMS const &) { transit<StateBMS>(); };
 void StateSYS::react(EventKeyAlarms const &) { transit<StateAlarms>(); };
 
 void StateSYS::react(EventKeyFunction const &e) {
+  DLOG(INFO) << "Entering the SYS State";
+
   KeySYS(e.key);
   if (e.key == GvaKeyEnum::kKeyPreviousLabel) transit<StateDEF>();
   if (e.key == GvaKeyEnum::kKeyNextLabel) transit<StateDRV>();

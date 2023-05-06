@@ -31,7 +31,6 @@
 namespace gva {
 
 StateDRV::StateDRV() {
-  canvas_ = (gva::WidgetCanvas *)(screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCanvas));
   RtpvrawDepayloader::RtpvrawDepayloaderIn("DemoVideo1", ColourspaceType::kColourspaceYuv, 640, 480, "239.192.1.1",
                                            5004);
 }
@@ -99,8 +98,11 @@ void StateDRV::entry() {
     screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeStatusBar)->SetVisible(true);
     screen_.function_top->SetEnabled(4);
 
+    canvas_ = (gva::WidgetCanvas *)(screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCanvas));
+    canvas_->SetSurfaceDefault();
+
     // Start the video stream receiver
-    drivers_feed_.Start();
+    // drivers_feed_.Start();
   }
 };
 
@@ -109,7 +111,7 @@ void StateDRV::exit() {
   screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDialSpeedometer)->SetVisible(false);
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeDialRpmFuel)->SetVisible(false);
   // Stop the video stream receiver, easy to restart. Stream still running
-  drivers_feed_.Stop();
+  // drivers_feed_.Stop();
 }
 
 void StateDRV::react(EventKeyPowerOn const &) { transit<StateOff>(); };

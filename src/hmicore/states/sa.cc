@@ -23,6 +23,7 @@
 
 #include "sa.h"
 
+#include <glog/logging.h>
 namespace gva {
 
 GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
@@ -103,6 +104,7 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
 }
 
 void StateSA::entry() {
+  LOG(INFO) << "Entering the SA State";
   if (screen_.function_top->labels[0].state != LabelStates::kLabelHidden) {
     manager_->SetScreen(&screen_, GvaFunctionEnum::kSituationalAwareness);
     lastState_ = GvaFunctionEnum::kSituationalAwareness;
@@ -147,6 +149,9 @@ void StateSA::react(EventKeyFunction const &e) {
   if (e.key == GvaKeyEnum::kKeyNextLabel) transit<StateWPN>();
 };
 
-void StateSA::exit() { screen_render_->GetWidget(widget::WidgetEnum::KWidgetObjectLocalisation)->SetVisible(false); }
+void StateSA::exit() {
+  DLOG(INFO) << "Leaving the SA State";
+  screen_render_->GetWidget(widget::WidgetEnum::KWidgetObjectLocalisation)->SetVisible(false);
+}
 
 }  // namespace gva

@@ -150,8 +150,7 @@ void Hmi::Reset() {
   screen_.labels = LabelModeEnum::kLabelAll;
   Labels(screen_.labels);
   screen_.function_top->ResetAllEnabled();
-  canvas->SetVisible(false);
-  canvas->Reset();
+  canvas->SetSurfaceDefault();
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetVisible(false);
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetVisible(false);
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeKeyboard)->SetVisible(false);

@@ -104,6 +104,12 @@ class WidgetCanvas : public WidgetX {
   void SetSurface(cairo_surface_t* surface);
 
   ///
+  /// \brief Set the Surface to the default background
+  ///
+  ///
+  void SetSurfaceDefault();
+
+  ///
   /// \brief Set to default background
   ///
   ///

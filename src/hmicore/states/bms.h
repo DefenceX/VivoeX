@@ -24,6 +24,7 @@
 #define HMICORE_STATES_BMS_H_
 
 #include <iostream>
+#include <glog/logging.h>
 
 #include "hmicore/gva.h"
 #include "hmicore/hmi_gva.h"

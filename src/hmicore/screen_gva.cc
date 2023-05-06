@@ -95,7 +95,7 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
   TouchGva *touch = GetTouch();
 
   // Here we need to add all the possible screen widgets to the widget list, at this point they are uninitialised
-  widget_list_[widget::WidgetEnum::KWidgetTypeCompass] = std::make_shared<WidgetPlanPositionIndicator>(*renderer);
+  widget_list_[widget::WidgetEnum::KWidgetTypeCanvas] = std::make_shared<WidgetCanvas>(*renderer);
   widget_list_[widget::WidgetEnum::KWidgetTypeCompass] = std::make_shared<WidgetPlanPositionIndicator>(*renderer);
   widget_list_[widget::WidgetEnum::KWidgetTypeKeyboard] = std::make_shared<WidgetKeyboard>(*renderer);
   widget_list_[widget::WidgetEnum::kWidgetTypeDialSpeedometer] = std::make_shared<WidgetDriverSpeedometer>(*renderer);
@@ -115,6 +115,10 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
       std::make_shared<WidgetObjectLocalisation>(*renderer, touch);
   widget_list_[widget::WidgetEnum::KWidgetTypeStatusBar] = std::make_shared<WidgetStatusBar>(*renderer, touch);
 
+  for (auto const &[key, val] : widget_list_) {
+    LOG(INFO) << "Created WidgetX item :" << val->GetWidgetName() << "(" << val->GetVisible() << ")";
+  }
+  sleep(5);
   //
   // Start the Real Time Clock
   //
@@ -193,19 +197,13 @@ void ScreenGva::StartClock(std::shared_ptr<WidgetX> status_bar_widget) {
 }
 
 GvaStatusTypes ScreenGva::Update() {
-  std::cout << "WidgetX 1\n";
-
   // Reset the Drawing context, must be Reset before reDrawing the screen
   Reset();
-  std::cout << "WidgetX 2\n";
   GetTouch()->Reset();
-  std::cout << "WidgetX 3\n";
-
-
 
   /// Iterate over all widgets and draw the visible ones
   for (auto const &[key, val] : widget_list_) {
-    std::cout << "WidgetX:" << val->GetWidgetName() << "\n";
+    std::cout << "WidgetX:" << val->GetWidgetName() << "(" << val->GetVisible() << ")\n ";
     if (val->GetVisible()) val->Draw();
 
     // Now lets check check we are not blacked out
@@ -227,6 +225,16 @@ GvaStatusTypes ScreenGva::Update() {
   return GvaStatusTypes::kGvaSuccess;
 }
 
-WidgetX *ScreenGva::GetWidget(widget::WidgetEnum widget) { return widget_list_[widget].get(); }
+WidgetX *ScreenGva::GetWidget(widget::WidgetEnum widget) {
+  if (widget_list_.empty()) {
+    LOG(FATAL) << "Widget list is empty";
+  }
+
+  // find the widget in widget_list_ and return it
+  if (widget_list_.find(widget) == widget_list_.end()) {
+    LOG(FATAL) << "Widget(" << (int)widget << ") not found";
+  }
+  return widget_list_.find(widget)->second.get();
+}
 
 }  // namespace gva

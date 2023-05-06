@@ -56,6 +56,8 @@ GvaKeyEnum Hmi::KeySTR(GvaKeyEnum keypress) {
 }
 
 void StateSTR::entry() {
+  DLOG(INFO) << "Entering the STR State";
+
   if (screen_.function_top->labels[5].state != LabelStates::kLabelHidden) {
     Reset();
     manager_->SetScreen(&screen_, GvaFunctionEnum::KSpecialToRole);
@@ -85,6 +87,8 @@ void StateSTR::react(EventKeyBMS const &) { transit<StateBMS>(); };
 void StateSTR::react(EventKeyAlarms const &) { transit<StateAlarms>(); };
 
 void StateSTR::react(EventKeyFunction const &e) {
+  DLOG(INFO) << "Leaving the STR State";
+
   KeySTR(e.key);
   if (e.key == GvaKeyEnum::kKeyPreviousLabel) transit<StateDRV>();
   if (e.key == GvaKeyEnum::kKeyNextLabel) transit<StateCOM>();

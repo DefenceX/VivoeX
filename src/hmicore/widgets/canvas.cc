@@ -23,35 +23,43 @@
 
 #include "hmicore/widgets/canvas.h"
 
+#include <glog/logging.h>
 namespace gva {
 
 WidgetCanvas::WidgetCanvas(const RendererGva& renderer) : WidgetX(renderer, widget::WidgetEnum::KWidgetTypeCanvas) {
-  SetVisible(false);
+  SetVisible(true);
 }
 
 void WidgetCanvas::Draw() {
   // Draw the background canvas first
   if (blackout_) {
-    // Set background black
-    GetRenderer()->SetColourForeground(HMI_BLACK);
-    GetRenderer()->SetColourBackground(HMI_BLACK);
-    GetRenderer()->DrawRectangle(0, 0, width_, height_, true);
-  } else {
-    switch (mode_) {
-      case SurfaceType::kSurfaceCairo:
-        GetRenderer()->TextureRGB(0, 0, surface_);
-        break;
-      case SurfaceType::kSurfaceFile:
-        GetRenderer()->TextureRGB(0, 0, buffer_);
-        GetRenderer()->TextureRGB(0, 0, buffer_, filename_);
-        break;
-      default:
-        // Set background green
-        GetRenderer()->SetColourForeground(gva::ConfigData::GetInstance()->GetThemeBackground());
-        GetRenderer()->SetColourBackground(gva::ConfigData::GetInstance()->GetThemeBackground());
-        GetRenderer()->DrawRectangle(0, 0, width_, height_, true);
-        break;
-    }
+    mode_ = SurfaceType::kSurfaceBlackout;
+  }
+
+  switch (mode_) {
+    case SurfaceType::kSurfaceBlackout:
+      DLOG(INFO) << "Canvas Blackout\n";
+      // Set background black
+      GetRenderer()->SetColourForeground(HMI_BLACK);
+      GetRenderer()->SetColourBackground(HMI_BLACK);
+      GetRenderer()->DrawRectangle(0, 0, width_, height_, true);
+      break;
+    case SurfaceType::kSurfaceCairo:
+      DLOG(INFO) << "Canvas kSurfaceCairo\n";
+      GetRenderer()->TextureRGB(0, 0, surface_);
+      break;
+    case SurfaceType::kSurfaceFile:
+      DLOG(INFO) << "Canvas kSurfaceFile\n";
+      GetRenderer()->TextureRGB(0, 0, buffer_);
+      GetRenderer()->TextureRGB(0, 0, buffer_, filename_);
+      break;
+    default:
+      DLOG(INFO) << "Canvas default\n";
+      // Set background green
+      GetRenderer()->SetColourForeground(gva::ConfigData::GetInstance()->GetThemeBackground());
+      GetRenderer()->SetColourBackground(gva::ConfigData::GetInstance()->GetThemeBackground());
+      GetRenderer()->DrawRectangle(0, 0, width_, height_, true);
+      break;
   }
 }
 
@@ -73,6 +81,9 @@ void WidgetCanvas::SetSurface(cairo_surface_t* surface) {
   surface_ = surface;
 }
 
-void WidgetCanvas::Reset() { mode_ = SurfaceType::kSurfaceNone; }
+void WidgetCanvas::SetSurfaceDefault() {
+  // No surface is the default
+  mode_ = SurfaceType::kSurfaceNone;
+}
 
 }  // namespace gva

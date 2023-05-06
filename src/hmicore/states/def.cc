@@ -23,6 +23,8 @@
 
 #include "def.h"
 
+#include <glog/logging.h>
+
 namespace gva {
 
 GvaKeyEnum Hmi::KeyDEF(GvaKeyEnum keypress) {
@@ -56,6 +58,7 @@ GvaKeyEnum Hmi::KeyDEF(GvaKeyEnum keypress) {
 }
 
 void StateDEF::entry() {
+  DLOG(INFO) << "Entering the DEF State";
   if (screen_.function_top->labels[2].state != LabelStates::kLabelHidden) {
     manager_->SetScreen(&screen_, GvaFunctionEnum::kDefensiveSystems);
     Reset();

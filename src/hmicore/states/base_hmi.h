@@ -24,6 +24,8 @@
 #ifndef HMICORE_STATES_BASE_HMI_H_
 #define HMICORE_STATES_BASE_HMI_H_
 
+#include <glog/logging.h>
+
 #include <memory>
 #include <string>
 
@@ -57,6 +59,7 @@ struct EventKeyFunction : tinyfsm::Event {
 // State Machine Base Class Declaration
 //
 struct Hmi : tinyfsm::Fsm<Hmi> {
+  virtual ~Hmi() = default;
   virtual void react(EventKeyPowerOn const &) { return; }   // Nothing to do in base class
   virtual void react(EventKeySA const &) { return; }        // Nothing to do in base class
   virtual void react(EventKeyWPN const &) { return; }       // Nothing to do in base class

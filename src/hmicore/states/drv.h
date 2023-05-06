@@ -26,6 +26,7 @@
 #include <rtpvraw_depayloader.h>
 
 #include <iostream>
+#include <glog/logging.h>
 
 #include "hmicore/gva.h"
 #include "hmicore/hmi_gva.h"

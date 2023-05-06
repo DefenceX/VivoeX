@@ -57,6 +57,8 @@ GvaKeyEnum Hmi::KeyCOM(GvaKeyEnum keypress) {
 }
 
 void StateCOM::entry() {
+  DLOG(INFO) << "Entering the COM State";
+
   if (screen_.function_top->labels[6].state != LabelStates::kLabelHidden) {
     Reset();
     manager_->SetScreen(&screen_, GvaFunctionEnum::kCommunications);

@@ -130,6 +130,8 @@ GvaKeyEnum Hmi::KeyBMS(GvaKeyEnum keypress) {
 }
 
 void StateBMS::entry() {
+  DLOG(INFO) << "Entering the BMS State";
+
   if (screen_.function_top->labels[7].state != LabelStates::kLabelHidden) {
     manager_->SetScreen(&screen_, GvaFunctionEnum::kBattlefieldManagementSystem);
     Reset();

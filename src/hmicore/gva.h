@@ -33,7 +33,7 @@ namespace gva {
 
 static const uint32_t kSemVerMajor = 0;
 static const uint32_t kSemVerMinor = 4;
-static const uint32_t kSemVerPatch = 380;
+static const uint32_t kSemVerPatch = 382;
 static const uint32_t kMinimumHeight = 480;
 static const uint32_t kMinimumWidth = 640;
 
@@ -304,7 +304,7 @@ struct LocationType {
   float lon;
 };
 
-enum class SurfaceType { kSurfaceNone = 0, kSurfaceFile, kSurfaceBufferRgb24, kSurfaceCairo };
+enum class SurfaceType { kSurfaceNone = 0, kSurfaceBlackout, kSurfaceFile, kSurfaceBufferRgb24, kSurfaceCairo };
 
 ///
 /// \brief This is where you define all your screens, these are just the defaults
