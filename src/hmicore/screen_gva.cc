@@ -118,7 +118,7 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
   for (auto const &[key, val] : widget_list_) {
     LOG(INFO) << "Created WidgetX item :" << val->GetWidgetName() << "(" << val->GetVisible() << ")";
   }
-  sleep(5);
+
   //
   // Start the Real Time Clock
   //
@@ -203,7 +203,6 @@ GvaStatusTypes ScreenGva::Update() {
 
   /// Iterate over all widgets and draw the visible ones
   for (auto const &[key, val] : widget_list_) {
-    std::cout << "WidgetX:" << val->GetWidgetName() << "(" << val->GetVisible() << ")\n ";
     if (val->GetVisible()) val->Draw();
 
     // Now lets check check we are not blacked out

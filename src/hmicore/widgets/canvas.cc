@@ -31,11 +31,6 @@ WidgetCanvas::WidgetCanvas(const RendererGva& renderer) : WidgetX(renderer, widg
 }
 
 void WidgetCanvas::Draw() {
-  // Draw the background canvas first
-  if (blackout_) {
-    mode_ = SurfaceType::kSurfaceBlackout;
-  }
-
   switch (mode_) {
     case SurfaceType::kSurfaceBlackout:
       DLOG(INFO) << "Canvas Blackout\n";
@@ -65,9 +60,9 @@ void WidgetCanvas::Draw() {
 
 void WidgetCanvas::SetMode(const SurfaceType mode) { mode_ = mode; }
 
-void WidgetCanvas::SetBlackout() { blackout_ = true; }
+void WidgetCanvas::SetBlackout() { mode_ = SurfaceType::kSurfaceBlackout; }
 
-bool WidgetCanvas::GetBlackout() const { return blackout_; }
+bool WidgetCanvas::GetBlackout() const { return (mode_ == SurfaceType::kSurfaceBlackout); }
 
 SurfaceType WidgetCanvas::GetMode() const { return mode_; }
 
