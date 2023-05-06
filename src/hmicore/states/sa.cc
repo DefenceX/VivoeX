@@ -54,38 +54,32 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
       filename = path;
       filename.append("/FrontRight.png");
       SetCanvasPng(filename.c_str());
-      compass->SetBearingSight(45);
       break;
     case GvaKeyEnum::kKeyF5:
       objects->SetVisible(true);
       filename = path;
       filename.append("/FrontCenter.png");
       SetCanvasPng(filename.c_str());
-      compass->SetBearingSight(0);
       break;
     case GvaKeyEnum::kKeyF6:
       filename = path;
       filename.append("/FrontLeft.png");
       SetCanvasPng(filename.c_str());
-      compass->SetBearingSight(315);
       break;
     case GvaKeyEnum::kKeyF10:
       filename = path;
       filename.append("/Right.png");
       SetCanvasPng(filename.c_str());
-      compass->SetBearingSight(90);
       break;
     case GvaKeyEnum::kKeyF11:
       filename = path;
       filename.append("/Rear.png");
       SetCanvasPng(filename.c_str());
-      compass->SetBearingSight(180);
       break;
     case GvaKeyEnum::kKeyF12:
       filename = path;
       filename.append("/Left.png");
       SetCanvasPng(filename.c_str());
-      compass->SetBearingSight(270);
       break;
     case GvaKeyEnum::kKeyF1:
     case GvaKeyEnum::kKeyF3:

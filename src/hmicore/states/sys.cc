@@ -29,7 +29,7 @@ namespace gva {
 GvaKeyEnum Hmi::KeySYS(GvaKeyEnum keypress) {
   screen_.function_left.visible = true;
   screen_.function_right.visible = true;
-  WidgetTable *table = (WidgetTable *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable);
+  auto table = (WidgetTable *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable);
 
   KeySide(keypress);
   Key(keypress);
@@ -79,14 +79,14 @@ void StateSYS::entry() {
   DLOG(INFO) << "Entering the SYS State";
 
   if (screen_.function_top->labels[3].state != LabelStates::kLabelHidden) {
-    WidgetTable *table = (WidgetTable *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable);
-    Reset();
     manager_->SetScreen(&screen_, GvaFunctionEnum::kSystems);
     lastState_ = GvaFunctionEnum::kSystems;
+    Reset();
     screen_.function_top->SetEnabled(3);
     screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeStatusBar)->SetVisible(true);
     screen_.function_top->labels[3].state = LabelStates::kLabelEnabledSelected;
 
+    auto table = (WidgetTable *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable);
     HmiHelper::TableSystem(table);
   }
 };

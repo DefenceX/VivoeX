@@ -29,7 +29,6 @@
 namespace gva {
 
 WidgetVideo::WidgetVideo(const RendererGva &renderer) : WidgetCanvas(renderer) {
-  SetVisible(true);
   video_feed_.RtpvrawDepayloaderIn("DemoVideo1", ColourspaceType::kColourspaceYuv, 640, 480, "239.192.1.1", 5004);
 }
 

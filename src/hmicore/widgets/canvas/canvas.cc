@@ -42,8 +42,6 @@ void WidgetCanvas::DrawCanvas() {
     case SurfaceType::kSurfaceBlackout:
       DLOG(INFO) << "Canvas Blackout\n";
       // Set background black
-      std::cout << "+++++++++++++++++++++++++++++++++++Canvas blackout" << width_ << ":" << height_ << " \n";
-
       GetRenderer()->SetColourForeground(HMI_BLACK);
       GetRenderer()->SetColourBackground(HMI_BLACK);
       GetRenderer()->DrawRectangle(0, 0, width_, height_, true);
@@ -60,7 +58,6 @@ void WidgetCanvas::DrawCanvas() {
     default:
       DLOG(INFO) << "Canvas default\n";
       // Set background green
-      std::cout << "+++++++++++++++++++++++++++++++++++Canvas canvas" << width_ << ":" << height_ << " \n";
       GetRenderer()->SetColourForeground(gva::ConfigData::GetInstance()->GetThemeBackground());
       GetRenderer()->SetColourBackground(gva::ConfigData::GetInstance()->GetThemeBackground());
       GetRenderer()->DrawRectangle(0, 0, width_, height_, true);

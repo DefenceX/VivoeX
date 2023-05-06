@@ -60,9 +60,9 @@ void StateCOM::entry() {
   DLOG(INFO) << "Entering the COM State";
 
   if (screen_.function_top->labels[6].state != LabelStates::kLabelHidden) {
-    Reset();
     manager_->SetScreen(&screen_, GvaFunctionEnum::kCommunications);
     lastState_ = GvaFunctionEnum::kCommunications;
+    Reset();
     screen_.function_top->SetEnabled(6);
   }
 };
