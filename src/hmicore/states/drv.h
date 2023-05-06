@@ -56,6 +56,7 @@ struct StateDRV : Hmi {
 
  private:
   gva::WidgetCanvas *canvas_ = nullptr;
+  gva::WidgetVideo *video_ = nullptr;
 };
 
 }  // namespace gva

@@ -27,6 +27,8 @@
 #include "hmicore/widgets/ai/object_localisation.h"
 #include "hmicore/widgets/alarm_indicator.h"
 #include "hmicore/widgets/bottom_labels.h"
+#include "hmicore/widgets/canvas/canvas.h"
+#include "hmicore/widgets/canvas/video.h"
 #include "hmicore/widgets/driver/rpm_fuel.h"
 #include "hmicore/widgets/driver/speedometer.h"
 #include "hmicore/widgets/keyboard.h"

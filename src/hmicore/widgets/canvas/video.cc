@@ -29,8 +29,23 @@
 namespace gva {
 
 WidgetVideo::WidgetVideo(const RendererGva &renderer) : WidgetCanvas(renderer) {
-  video_feed_.RtpvrawDepayloaderIn("DemoVideo1", ColourspaceType::kColourspaceYuv, 640, 480, "239.192.1.1", 5004);
+  std::cout << "Line : " << __LINE__ << "\n";
+  std::string session_name = "TestVideo1";
+  std::string ip_address = "239.192.1.1";
+  RtpvrawDepayloader test;
+  if (kSapEnabled == true) {
+    // Listed for SAP/SDP
+    video_feed_.RtpvrawDepayloaderIn(session_name);
+  } else {
+    // No SAP/SDP so define it now in code
+    video_feed_.RtpvrawDepayloaderIn(session_name, ColourspaceType::kColourspaceYuv, 640, 480, ip_address);
+    video_feed_.Open();
+  }
+  std::cout << "Line : " << __LINE__ << "\n";
+  Start();
 }
+
+WidgetVideo::~WidgetVideo() { video_feed_.Close(); }
 
 void WidgetVideo::SetReceiveTimeout(uint32_t timeout_ms) { timeout_ms_ = timeout_ms; }
 
@@ -42,10 +57,24 @@ void WidgetVideo::Draw() {
 
 void WidgetVideo::DrawVideo() {
   uint8_t *cpu_buffer;
+  std::cout << "Line : " << __LINE__ << "\n";
   if (video_feed_.Receive(&cpu_buffer, timeout_ms_) == true) {
-    video::YuvToRgba(480, 640, cpu_buffer, rgb_buffer_.data());
-    GetRenderer()->TextureRGB(0, 0, rgb_buffer_.data());
+    std::cout << "Line : " << __LINE__ << "\n";
+    // video::YuvToRgba(480, 640, cpu_buffer, rgb_buffer_.data());
+    // GetRenderer()->TextureRGB(0, 0, rgb_buffer_.data());
+    GetRenderer()->SetColourForeground(HMI_BLACK);
+    GetRenderer()->SetColourBackground(HMI_BLACK);
+    GetRenderer()->DrawRectangle(0, 0, width_, height_, true);
+  } else {
+    std::cout << "Line : " << __LINE__ << "\n";
+    GetRenderer()->SetColourForeground(HMI_BLACK);
+    GetRenderer()->SetColourBackground(HMI_BLACK);
+    GetRenderer()->DrawRectangle(0, 0, width_, height_, true);
   }
 }
+
+void WidgetVideo::Stop() { video_feed_.Stop(); }
+
+void WidgetVideo::Start() { video_feed_.Start(); }
 
 }  // namespace gva

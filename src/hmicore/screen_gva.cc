@@ -50,7 +50,6 @@ struct termios {
 #include "hmicore/gva.h"
 #include "hmicore/gva_functions_common.h"
 #include "hmicore/hmi_gva_helpers.h"
-#include "hmicore/widgets/canvas/canvas.h"
 #include "hmicore/widgets/widgets.h"
 
 namespace gva {
@@ -96,6 +95,7 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
 
   // Here we need to add all the possible screen widgets to the widget list, at this point they are uninitialised
   widget_list_[widget::WidgetEnum::KWidgetTypeCanvas] = std::make_shared<WidgetCanvas>(*renderer);
+  widget_list_[widget::WidgetEnum::KWidgetTypeVideo] = std::make_shared<WidgetVideo>(*renderer);
   widget_list_[widget::WidgetEnum::KWidgetTypeCompass] = std::make_shared<WidgetPlanPositionIndicator>(*renderer);
   widget_list_[widget::WidgetEnum::KWidgetTypeKeyboard] = std::make_shared<WidgetKeyboard>(*renderer);
   widget_list_[widget::WidgetEnum::kWidgetTypeDialSpeedometer] = std::make_shared<WidgetDriverSpeedometer>(*renderer);
@@ -118,7 +118,7 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
   for (auto const &[key, val] : widget_list_) {
     LOG(INFO) << "Created WidgetX item :" << val->GetWidgetName() << "(" << val->GetVisible() << ")";
   }
-  sleep(2);
+
   //
   // Start the Real Time Clock
   //

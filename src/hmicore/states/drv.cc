@@ -81,8 +81,11 @@ void StateDRV::entry() {
     screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeStatusBar)->SetVisible(true);
     screen_.function_top->SetEnabled(4);
 
+    video_ = (gva::WidgetVideo *)(screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeVideo));
+    video_->SetVisible(true);
     canvas_ = (gva::WidgetCanvas *)(screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCanvas));
     canvas_->SetSurfaceDefault();
+    canvas_->SetVisible(false);
 
     // Start the video stream receiver
     // drivers_feed_.Start();

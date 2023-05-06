@@ -64,7 +64,7 @@ void WidgetDriverSpeedometer::Draw() {
 
   int16_t p = 28;
   uint32_t adjust_x = -8;
-  uint32_t adjust_y = -4;
+  uint32_t adjust_y = +4;
   uint16_t step = 360 / 16;
   int64_t c = 0;
   for (uint16_t d = 0; d <= 270; d += step) {

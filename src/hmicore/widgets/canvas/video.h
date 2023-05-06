@@ -49,7 +49,7 @@ class WidgetVideo : public WidgetCanvas {
   /// \brief Destroy the Widget video object
   ///
   ///
-  ~WidgetVideo() final = default;
+  ~WidgetVideo();
 
   ///
   /// \brief Set the Receive timeout attribute for frame data, default 80ms
@@ -69,10 +69,23 @@ class WidgetVideo : public WidgetCanvas {
   ///
   void DrawVideo();
 
+  ///
+  /// \brief Start the video stream
+  ///
+  ///
+  void Start();
+
+  ///
+  /// \brief Stop the video stream
+  ///
+  ///
+  void Stop();
+
  private:
   std::array<uint8_t, 640 * 480 * 3> rgb_buffer_;
   RtpvrawDepayloader video_feed_;
   uint32_t timeout_ms_ = 80;
+  const bool kSapEnabled = true;
 };
 
 }  // namespace gva
