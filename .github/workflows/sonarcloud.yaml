@@ -26,7 +26,7 @@ jobs:
             geographiclib-doc libgeographic-dev libgeographic-dev libprotobuf23 libprotobuf-dev \
             protobuf-compiler autoconf automake libtool curl make g++ unzip lsb-release tree graphviz gcovr \
             lttng-tools lttng-modules-dkms liblttng-ust-dev liblttng-ctl-dev \
-            libtool automake autoconf autogen -y
+            libtool automake autoconf autogen libgflags-dev libgtkmm-3.0-dev -y
       - name: Run build-wrapper
         run: |
           tree -L 3 -d

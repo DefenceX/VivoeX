@@ -76,7 +76,7 @@ Please ensure you have the following packages installed prior to building the ap
 
 \subsubsection ubuntu Ubuntu 22.04
  
-\code $ sudo apt install libcairo2-dev libxt-dev libxml2-dev ncurses-dev libxext-dev libswscale-dev 
+\code $ sudo apt install libcairo2-dev libxt-dev libxml2-dev ncurses-dev libxext-dev libgflags-dev libswscale-dev libgtkmm-3.0-dev
 \endcode
 And install these additional packages to build the documentation:
 \code 
