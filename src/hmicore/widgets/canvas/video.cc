@@ -35,10 +35,10 @@ WidgetVideo::WidgetVideo(const RendererGva &renderer) : WidgetCanvas(renderer) {
   RtpvrawDepayloader test;
   if (kSapEnabled == true) {
     // Listed for SAP/SDP
-    video_feed_.RtpvrawDepayloaderIn(session_name);
+    video_feed_.SetStreamInfo(session_name);
   } else {
     // No SAP/SDP so define it now in code
-    video_feed_.RtpvrawDepayloaderIn(session_name, ColourspaceType::kColourspaceYuv, 640, 480, ip_address);
+    video_feed_.SetStreamInfo(session_name, ColourspaceType::kColourspaceYuv, 640, 480, ip_address);
     video_feed_.Open();
   }
   std::cout << "Line : " << __LINE__ << "\n";
