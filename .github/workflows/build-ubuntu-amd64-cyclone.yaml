@@ -28,7 +28,7 @@ jobs:
             libpango1.0-dev libxt-dev libxml2-dev ncurses-dev libxext-dev gtk-doc-tools libswscale-dev libprotobuf-c-dev \
             geographiclib-doc libgeographic-dev libgeographic-dev libprotobuf23 libprotobuf-dev \
             protobuf-compiler autoconf automake libtool curl make g++ unzip lsb-release graphviz \
-            libtool automake autoconf autogen libgflags-dev gtkmm-3.0-y
+            libtool automake autoconf autogen libgflags-dev libgtkmm-3.0-dev -y
 
       - name: CMake and Build
         run: |
