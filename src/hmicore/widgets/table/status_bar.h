@@ -28,7 +28,6 @@
 
 #include <string>
 
-
 #include "hmicore/widgets/table/table.h"
 #include "hmicore/widgets/widget.h"
 #include "hmicore/widgets/widget_types.h"
@@ -59,7 +58,7 @@ class WidgetStatusBar : public WidgetTable {
   ///
   /// \return std::string
   ///
-  std::string GetWidgetName() const final { return "StatusBar"; }
+  std::string GetWidgetName() const final { return "WidgetStatusBar"; }
 
   ///
   /// \brief The base class override to draw the table once setup

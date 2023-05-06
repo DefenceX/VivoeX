@@ -32,8 +32,8 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
 
   auto *compass =
       static_cast<WidgetPlanPositionIndicator *>(screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass));
-  auto *objects =
-      static_cast<WidgetObjectLocalisation *>(screen_render_->GetWidget(widget::WidgetEnum::KWidgetObjectLocalisation));
+  auto *objects = static_cast<WidgetObjectLocalisation *>(
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeObjectLocalisation));
   objects->SetVisible(false);
   KeySide(keypress);
   Key(keypress);
@@ -116,7 +116,7 @@ void StateSA::entry() {
     if (!screen_.canvas.surface) {
       std::string filename;
       filename = ConfigData::GetInstance()->GetImagePath();
-      screen_render_->GetWidget(widget::WidgetEnum::KWidgetObjectLocalisation)->SetVisible(true);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeObjectLocalisation)->SetVisible(true);
       filename.append("/FrontCenter.png");
 
       SetCanvasPng(filename.c_str());
@@ -151,7 +151,7 @@ void StateSA::react(EventKeyFunction const &e) {
 
 void StateSA::exit() {
   DLOG(INFO) << "Leaving the SA State";
-  screen_render_->GetWidget(widget::WidgetEnum::KWidgetObjectLocalisation)->SetVisible(false);
+  screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeObjectLocalisation)->SetVisible(false);
 }
 
 }  // namespace gva

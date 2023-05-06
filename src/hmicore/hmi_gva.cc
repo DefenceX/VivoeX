@@ -132,7 +132,7 @@
 #include "hmicore/gva.h"
 #include "hmicore/view_gva.h"
 #include "hmicore/widgets/alarm_indicator.h"
-#include "hmicore/widgets/canvas.h"
+#include "hmicore/widgets/canvas/canvas.h"
 #include "hmicore/widgets/plan_position_indicator.h"
 #include "hmicore/widgets/table/table.h"
 
@@ -146,14 +146,12 @@ void Hmi::SetCanvasPng(const std::string &file) {
 
 void Hmi::Reset() {
   auto canvas = (gva::WidgetCanvas *)(screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCanvas));
-  screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeStatusBar)->SetVisible(true);
+  screen_render_->ResetWidgets();
   screen_.labels = LabelModeEnum::kLabelAll;
   Labels(screen_.labels);
   screen_.function_top->ResetAllEnabled();
   canvas->SetSurfaceDefault();
-  screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetVisible(false);
-  screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetVisible(false);
-  screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeKeyboard)->SetVisible(false);
+  canvas->SetVisible(true);
   if (screen_.currentFunction == GvaFunctionEnum::kDriver) {
     screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetY(190);
     screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetX(120);
@@ -165,8 +163,6 @@ void Hmi::Reset() {
   screen_.control->SetDisabled(4);  // Up Arrow
   screen_.control->SetDisabled(5);  // Down Arrow
   screen_.control->SetDisabled(7);  // Enter
-  screen_.message.visible = false;
-  screen_.info.mode = ScreenMode::kModeOperational;
   alarmson_ = false;
 }
 

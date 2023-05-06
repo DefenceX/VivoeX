@@ -27,7 +27,7 @@
 #include <math.h>
 #include <stdio.h>
 
-#include <unordered_map>
+#include <map>
 
 #include "hmicore/gva_functions_common.h"
 #include "hmicore/renderer_gva.h"

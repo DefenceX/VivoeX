@@ -24,9 +24,9 @@
 #define HMICORE_WIDGETS_AI_OBJECT_LOCALISATION_H_
 
 #include <cstdint>
+#include <map>
 #include <memory>
 #include <string>
-#include <unordered_map>
 #include <vector>
 
 #include "hmicore/events_gva.h"
@@ -112,7 +112,7 @@ class WidgetObjectLocalisation : public WidgetX {
   ///
   GvaKeyEnum IdToKey(uint16_t id) const;
 
-  std::unordered_map<int16_t, std::shared_ptr<BoxType>> boxes_;
+  std::map<int16_t, std::shared_ptr<BoxType>> boxes_;
   TouchGva* touch_;
 };
 

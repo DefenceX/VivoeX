@@ -30,7 +30,6 @@
 #include <map>
 #include <memory>
 #include <string>
-#include <unordered_map>
 
 #include "hmicore/gva.h"
 #include "hmicore/renderer_gva.h"
@@ -146,6 +145,13 @@ class ScreenGva : public RendererGva {
   void StartClock(std::shared_ptr<WidgetX> status_bar_widget);
 
   ///
+  /// \brief Reset the all the widgets to not be visible
+  ///
+  /// \return WidgetX*
+  ///
+  void ResetWidgets() const;
+
+  ///
   /// \brief Get the Widget object
   ///
   /// \param widget
@@ -166,7 +172,7 @@ class ScreenGva : public RendererGva {
  private:
   char *PosDegrees(float lon, float lat);
   Screen *screen_ = nullptr;
-  std::unordered_map<widget::WidgetEnum, std::shared_ptr<WidgetX>> widget_list_;
+  std::map<widget::WidgetEnum, std::shared_ptr<WidgetX>> widget_list_;
   int gps_ = 0;
   uint32_t hndl_;
   Screen last_screen_;

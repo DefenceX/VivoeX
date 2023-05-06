@@ -42,7 +42,7 @@ bool Updater::running_ = false;
 
 Updater::Updater(uint64_t id) : UpdaterBase(id){};
 
-void Updater::RegisterWidgets(std::unordered_map<widget::WidgetEnum, std::shared_ptr<WidgetX>> &widget_list) {
+void Updater::RegisterWidgets(std::map<widget::WidgetEnum, std::shared_ptr<WidgetX>> &widget_list) {
   widget_list_ = &widget_list;
   std::shared_ptr<gva::WidgetPlanPositionIndicator> compass =
       std::static_pointer_cast<gva::WidgetPlanPositionIndicator>(widget_list[widget::WidgetEnum::KWidgetTypeCompass]);
@@ -65,7 +65,7 @@ void Updater::UpdateState(std::string state) {}
 
 void Updater::Event(std::string event) {}
 
-void Updater::WidgetUpdaterThread(std::unordered_map<widget::WidgetEnum, std::shared_ptr<WidgetX>> *widget_list) {
+void Updater::WidgetUpdaterThread(std::map<widget::WidgetEnum, std::shared_ptr<WidgetX>> *widget_list) {
   uint16_t count = 0;
   std::array<gva::WidgetObjectLocalisation::BoxType, 8> box;
 
@@ -91,7 +91,7 @@ void Updater::WidgetUpdaterThread(std::unordered_map<widget::WidgetEnum, std::sh
           widget_list->at(widget::WidgetEnum::KWidgetTypeCompass));
 
   std::shared_ptr<gva::WidgetObjectLocalisation> objects = std::static_pointer_cast<gva::WidgetObjectLocalisation>(
-      widget_list->at(widget::WidgetEnum::KWidgetObjectLocalisation));
+      widget_list->at(widget::WidgetEnum::KWidgetTypeObjectLocalisation));
 
   std::shared_ptr<gva::WidgetAlarmIndicator> alarm_indicator = std::static_pointer_cast<gva::WidgetAlarmIndicator>(
       widget_list->at(widget::WidgetEnum::KWidgetTypeAlarmIndicator));

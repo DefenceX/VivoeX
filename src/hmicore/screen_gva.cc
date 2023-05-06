@@ -50,8 +50,8 @@ struct termios {
 #include "hmicore/gva.h"
 #include "hmicore/gva_functions_common.h"
 #include "hmicore/hmi_gva_helpers.h"
-#include "widgets/canvas.h"
-#include "widgets/widgets.h"
+#include "hmicore/widgets/canvas/canvas.h"
+#include "hmicore/widgets/widgets.h"
 
 namespace gva {
 
@@ -111,14 +111,14 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
       std::make_shared<WidgetTable>(*renderer, touch, ConfigData::GetInstance()->GetThemeBackground());
   widget_list_[widget::WidgetEnum::KWidgetTypeTableDynamic] =
       std::make_shared<WidgetTableDynamic>(*renderer, touch, ConfigData::GetInstance()->GetThemeBackground());
-  widget_list_[widget::WidgetEnum::KWidgetObjectLocalisation] =
+  widget_list_[widget::WidgetEnum::KWidgetTypeObjectLocalisation] =
       std::make_shared<WidgetObjectLocalisation>(*renderer, touch);
   widget_list_[widget::WidgetEnum::KWidgetTypeStatusBar] = std::make_shared<WidgetStatusBar>(*renderer, touch);
 
   for (auto const &[key, val] : widget_list_) {
     LOG(INFO) << "Created WidgetX item :" << val->GetWidgetName() << "(" << val->GetVisible() << ")";
   }
-
+  sleep(2);
   //
   // Start the Real Time Clock
   //
@@ -197,21 +197,21 @@ void ScreenGva::StartClock(std::shared_ptr<WidgetX> status_bar_widget) {
 }
 
 GvaStatusTypes ScreenGva::Update() {
+  auto canvas = (WidgetCanvas *)GetWidget(widget::WidgetEnum::KWidgetTypeCanvas);
+
   // Reset the Drawing context, must be Reset before reDrawing the screen
   Reset();
   GetTouch()->Reset();
 
-  /// Iterate over all widgets and draw the visible ones
-  for (auto const &[key, val] : widget_list_) {
-    if (val->GetVisible()) val->Draw();
+  // Now lets check check we are not blacked out
 
-    // Now lets check check we are not blacked out
-    if (val->GetWidgetType() == widget::WidgetEnum::KWidgetTypeCanvas) {
-      const gva::WidgetCanvas *canvas_ = (gva::WidgetCanvas *)val.get();
-      if (canvas_->GetBlackout()) {
-        // Break out the loop as we are blacked out, nothing more to render
-        break;
-      }
+  if (canvas->GetBlackout()) {
+    // Draw the blackout and we are done, no need to iterate over the widgets
+    canvas->Draw();
+  } else {
+    /// Iterate over all widgets and draw the visible ones
+    for (auto const &[key, val] : widget_list_) {
+      if (val->GetVisible()) val->Draw();
     }
   }
 
@@ -222,6 +222,13 @@ GvaStatusTypes ScreenGva::Update() {
   last_screen_ = *screen_;
 
   return GvaStatusTypes::kGvaSuccess;
+}
+
+void ScreenGva::ResetWidgets() const {
+  /// Iterate over all widgets and draw the visible ones
+  for (auto const &[key, val] : widget_list_) {
+    val->SetVisible(false);
+  }
 }
 
 WidgetX *ScreenGva::GetWidget(widget::WidgetEnum widget) {

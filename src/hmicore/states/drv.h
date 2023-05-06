@@ -23,17 +23,16 @@
 #ifndef HMICORE_STATES_DRV_H_
 #define HMICORE_STATES_DRV_H_
 
-#include <rtpvraw_depayloader.h>
+#include <glog/logging.h>
 
 #include <iostream>
-#include <glog/logging.h>
 
 #include "hmicore/gva.h"
 #include "hmicore/hmi_gva.h"
 #include "hmicore/states/base_hmi.h"
 #include "hmicore/view_gva.h"
 #include "hmicore/widgets/alarm_indicator.h"
-#include "hmicore/widgets/canvas.h"
+#include "hmicore/widgets/canvas/canvas.h"
 #include "hmicore/widgets/plan_position_indicator.h"
 
 namespace gva {
@@ -56,7 +55,6 @@ struct StateDRV : Hmi {
   void react(EventKeyFunction const &e) override;
 
  private:
-  RtpvrawDepayloader drivers_feed_;
   gva::WidgetCanvas *canvas_ = nullptr;
 };
 

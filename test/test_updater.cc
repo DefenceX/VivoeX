@@ -10,7 +10,7 @@
 #include "hmicore/widgets/widgets.h"
 #include "updater/updater.h"
 
-std::unordered_map<gva::widget::WidgetEnum, std::shared_ptr<gva::WidgetX>> widget_list;
+std::map<gva::widget::WidgetEnum, std::shared_ptr<gva::WidgetX>> widget_list;
 
 TEST(TestUpdater, Start) {
   gva::Updater updater(1);
@@ -42,12 +42,12 @@ TEST(TestUpdater, Start) {
       std::make_shared<gva::WidgetTable>(renderer, &touch, gva::ConfigData::GetInstance()->GetThemeBackground());
   widget_list[gva::widget::WidgetEnum::KWidgetTypeTableDynamic] =
       std::make_shared<gva::WidgetTableDynamic>(renderer, &touch, gva::ConfigData::GetInstance()->GetThemeBackground());
-  widget_list[gva::widget::WidgetEnum::KWidgetObjectLocalisation] =
+  widget_list[gva::widget::WidgetEnum::KWidgetTypeObjectLocalisation] =
       std::make_shared<gva::WidgetObjectLocalisation>(renderer, &touch);
   widget_list[gva::widget::WidgetEnum::KWidgetTypeStatusBar] = std::make_shared<gva::WidgetStatusBar>(renderer, &touch);
   updater.RegisterWidgets(widget_list);
   // Delay 2 seconds
   std::this_thread::sleep_for(std::chrono::seconds(2));
-  
+
   gva::Updater::running_ = false;
 }

@@ -26,7 +26,7 @@
 namespace gva {
 
 WidgetObjectLocalisation::WidgetObjectLocalisation(const RendererGva& renderer, TouchGva* touch)
-    : WidgetX(renderer, widget::WidgetEnum::KWidgetObjectLocalisation), touch_(touch) {}
+    : WidgetX(renderer, widget::WidgetEnum::KWidgetTypeObjectLocalisation), touch_(touch) {}
 
 void WidgetObjectLocalisation::Draw() {
   if (GetVisible()) {

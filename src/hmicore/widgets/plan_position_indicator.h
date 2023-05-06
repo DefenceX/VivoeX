@@ -29,7 +29,7 @@
 #include <cstdint>
 #include <memory>
 #include <string>
-#include <unordered_map>
+#include <map>
 
 #include "hmicore/renderer_cairo_types.h"
 #include "hmicore/widgets/widget.h"

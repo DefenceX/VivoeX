@@ -25,7 +25,7 @@
 
 #include <glog/logging.h>
 
-#include "hmicore/widgets/canvas.h"
+#include "hmicore/widgets/canvas/canvas.h"
 #include "hmicore/widgets/widget_types.h"
 
 namespace gva {

@@ -25,10 +25,10 @@
 #ifndef UPDATER_UPDATER_H_
 #define UPDATER_UPDATER_H_
 
+#include <map>
 #include <memory>
 #include <string>
 #include <thread>
-#include <unordered_map>
 
 #include "updater/updater_base.h"
 
@@ -49,7 +49,7 @@ class Updater : public UpdaterBase {
   /// \brief Register the widgets to be updated
   ///
   ///
-  void RegisterWidgets(std::unordered_map<widget::WidgetEnum, std::shared_ptr<WidgetX>>& widget_list);  // NOLINT
+  void RegisterWidgets(std::map<widget::WidgetEnum, std::shared_ptr<WidgetX>>& widget_list);  // NOLINT
 
   ///
   /// \brief Update the HMI state
@@ -71,7 +71,7 @@ class Updater : public UpdaterBase {
   /// \param ptr The widgets list pointer
   /// \return void*
   ///
-  static void WidgetUpdaterThread(std::unordered_map<widget::WidgetEnum, std::shared_ptr<WidgetX>>* widget_list);
+  static void WidgetUpdaterThread(std::map<widget::WidgetEnum, std::shared_ptr<WidgetX>>* widget_list);
 
   ///
   /// \brief Set to false to terminate thread
@@ -80,7 +80,7 @@ class Updater : public UpdaterBase {
   static bool running_;
 
  private:
-  std::unordered_map<widget::WidgetEnum, std::shared_ptr<WidgetX>>* widget_list_ = nullptr;
+  std::map<widget::WidgetEnum, std::shared_ptr<WidgetX>>* widget_list_ = nullptr;
   std::thread thread_;
 
   ///
