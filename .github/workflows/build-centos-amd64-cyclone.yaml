@@ -38,7 +38,7 @@ jobs:
         run: |
           dnf install git cmake gcc-c++ python2-pip rpm-build cairo-devel libXt-devel doxygen graphviz ImageMagick \
           libxml2-devel ncurses-devel libXext-devel ffmpeg-devel GeographicLib-devel \
-          libtool automake autoconf autogen libgflags-devel \
+          libtool automake autoconf autogen gflags \
           lttng-ust-devel lttng-ust-devel gtk3-devel -y && \
           pip2 install cpplint --user
 
