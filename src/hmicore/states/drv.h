@@ -55,7 +55,6 @@ struct StateDRV : Hmi {
   void react(EventKeyFunction const &e) override;
 
  private:
-  gva::WidgetCanvas *canvas_ = nullptr;
   gva::WidgetVideo *video_ = nullptr;
 };
 
