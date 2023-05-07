@@ -10,8 +10,8 @@ add_custom_command(
 set(PROTO_SRCS ${CMAKE_BINARY_DIR}/src/config/config.pb.cc)
 
 add_library(config-proto STATIC ${PROTO_SRCS})
-target_link_directories(config-proto BEFORE PRIVATE ${PROTOBUF_LIBRARY_DIR})
-target_link_libraries(config-proto ${PROTOBUF_LIBRARY})
-target_include_directories(config-proto BEFORE PRIVATE ${PROTOBUF_INCLUDE_DIR})
+# target_link_directories(config-proto BEFORE PRIVATE ${PROTOBUF_LIBRARY_DIR})
+# target_link_libraries(config-proto  ${PROTOBUF_LIBRARY})
+# target_include_directories(config-proto BEFORE PRIVATE ${PROTOBUF_INCLUDE_DIR})
 
 add_dependencies(config-proto libprotobuf)

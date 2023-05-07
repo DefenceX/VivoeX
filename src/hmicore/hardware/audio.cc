@@ -110,10 +110,10 @@ int AudioFunctions::Play(AudioSampleBase *sample) {
 
   // Open PaStream with values read from the sample
   error =
-      Pa_OpenDefaultStream(&stream_, 0,                                                      // no input
-                           sample->GetChannels(),                                            // stereo out
-                           paFloat32,                                                        // floating point
-                           sample->GetSamplingRate(), kFramesPerBuffer, Callback, &sample);  // our sndfile data struct
+      Pa_OpenDefaultStream(&stream_, 0,                                                     // no input
+                           sample->GetChannels(),                                           // stereo out
+                           paFloat32,                                                       // floating point
+                           sample->GetSamplingRate(), kFramesPerBuffer, Callback, sample);  // our sndfile data struct
   if (error != paNoError) {
     LOG(ERROR) << "Problem opening Default Stream";
     return 1;

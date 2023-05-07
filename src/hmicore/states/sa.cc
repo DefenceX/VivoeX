@@ -58,7 +58,8 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
     case GvaKeyEnum::kKeyF5:
       objects->SetVisible(true);
       filename = path;
-      filename.append("/FrontCenter.png");
+      // filename.append("/FrontCenter.png");
+      filename.append("/Soldiers01.png");
       SetCanvasPng(filename.c_str());
       break;
     case GvaKeyEnum::kKeyF6:
@@ -111,8 +112,8 @@ void StateSA::entry() {
       std::string filename;
       filename = ConfigData::GetInstance()->GetImagePath();
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeObjectLocalisation)->SetVisible(true);
-      filename.append("/FrontCenter.png");
-
+      // filename.append("/FrontCenter.png");
+      filename.append("/Soldiers01.png");
       SetCanvasPng(filename.c_str());
     }
   }

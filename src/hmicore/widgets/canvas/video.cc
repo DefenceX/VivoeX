@@ -29,7 +29,6 @@
 namespace gva {
 
 WidgetVideo::WidgetVideo(const RendererGva &renderer) : WidgetCanvas(renderer) {
-  std::cout << "Line : " << __LINE__ << "\n";
   std::string session_name = "TestVideo1";
   std::string ip_address = "239.192.1.1";
   RtpvrawDepayloader test;
@@ -41,7 +40,6 @@ WidgetVideo::WidgetVideo(const RendererGva &renderer) : WidgetCanvas(renderer) {
     video_feed_.SetStreamInfo(session_name, ColourspaceType::kColourspaceYuv, 640, 480, ip_address);
     video_feed_.Open();
   }
-  std::cout << "Line : " << __LINE__ << "\n";
   Start();
 }
 
@@ -57,16 +55,13 @@ void WidgetVideo::Draw() {
 
 void WidgetVideo::DrawVideo() {
   uint8_t *cpu_buffer;
-  std::cout << "Line : " << __LINE__ << "\n";
   if (video_feed_.Receive(&cpu_buffer, timeout_ms_) == true) {
-    std::cout << "Line : " << __LINE__ << "\n";
     // video::YuvToRgba(480, 640, cpu_buffer, rgb_buffer_.data());
     // GetRenderer()->TextureRGB(0, 0, rgb_buffer_.data());
     GetRenderer()->SetColourForeground(HMI_BLACK);
     GetRenderer()->SetColourBackground(HMI_BLACK);
     GetRenderer()->DrawRectangle(0, 0, width_, height_, true);
   } else {
-    std::cout << "Line : " << __LINE__ << "\n";
     GetRenderer()->SetColourForeground(HMI_BLACK);
     GetRenderer()->SetColourBackground(HMI_BLACK);
     GetRenderer()->DrawRectangle(0, 0, width_, height_, true);
