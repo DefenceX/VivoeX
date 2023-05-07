@@ -1,0 +1,13 @@
+#!/bin/sh
+
+result=$(grep -n -r --include="*.cc" --include="*.h"  --include="*.txt" --include="*.yaml" --include="Doxyfile" --include="*.md" --include="*.sh" "<<<<<<< HEAD" $WORKSPACE_ROOT)
+
+if [ -z "$result" ]
+then
+  echo "No CONFLICTS detected"
+  exit 0
+else
+  echo "Found CONFLICTS that still need resolution:"
+  echo "$result"
+  exit 1
+fi

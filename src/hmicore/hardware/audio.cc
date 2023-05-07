@@ -93,15 +93,15 @@ const std::string kCautionFilename = "/opt/gva/hmi/sounds/caution.wav";
 const std::string kWarningFilename = "/opt/gva/hmi/sounds/warning.wav";
 #endif
 
-void AudioFunctions::PlayThreat() { Play(threat_); }
-void AudioFunctions::PlayCaution() { Play(caution_); }
-void AudioFunctions::PlayWarning() { Play(warning_); }
+void AudioFunctions::PlayThreat() { Play(&threat_); }
+void AudioFunctions::PlayCaution() { Play(&caution_); }
+void AudioFunctions::PlayWarning() { Play(&warning_); }
 
-int AudioFunctions::Play(AudioSampleBase &sample) {
+int AudioFunctions::Play(AudioSampleBase *sample) {
   PaError error;
 
   // Go to start of file, may have been played before
-  sample.Seek(0);
+  sample->Seek(0);
 
   if (stream_ != nullptr) {
     Pa_CloseStream(stream_);
@@ -110,10 +110,10 @@ int AudioFunctions::Play(AudioSampleBase &sample) {
 
   // Open PaStream with values read from the sample
   error =
-      Pa_OpenDefaultStream(&stream_, 0,                                                     // no input
-                           sample.GetChannels(),                                            // stereo out
-                           paFloat32,                                                       // floating point
-                           sample.GetSamplingRate(), kFramesPerBuffer, Callback, &sample);  // our sndfile data struct
+      Pa_OpenDefaultStream(&stream_, 0,                                                      // no input
+                           sample->GetChannels(),                                            // stereo out
+                           paFloat32,                                                        // floating point
+                           sample->GetSamplingRate(), kFramesPerBuffer, Callback, &sample);  // our sndfile data struct
   if (error != paNoError) {
     LOG(ERROR) << "Problem opening Default Stream";
     return 1;

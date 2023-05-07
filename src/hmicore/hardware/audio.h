@@ -75,7 +75,7 @@ class AudioFunctions {
   /// \param filename
   /// \return int
   ///
-  int Play(AudioSampleBase &sample);
+  int Play(AudioSampleBase *sample);
 
   ///
   /// \brief Play threat tone

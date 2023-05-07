@@ -21,8 +21,8 @@
 /// \file messaage_box.h
 ///
 
-#ifndef HMICORE_MESSAGE_BOX_H_
-#define HMICORE_MESSAGE_BOX_H_
+#ifndef HMICORE_WIDGETS_TABLE_MESSAGE_BOX_H_
+#define HMICORE_WIDGETS_TABLE_MESSAGE_BOX_H_
 
 #include <cstdint>
 #include <string>
@@ -77,4 +77,4 @@ class WidgetMessageBox : public WidgetTable {
 
 }  // namespace gva
 
-#endif  // HMICORE_MESSAGE_BOX_H_
+#endif  // HMICORE_WIDGETS_TABLE_MESSAGE_BOX_H_

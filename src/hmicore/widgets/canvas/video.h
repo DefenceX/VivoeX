@@ -21,8 +21,8 @@
 /// \file video.h
 ///
 
-#ifndef HMICORE_CANVAS_VIDEO_H_
-#define HMICORE_CANVAS_VIDEO_H_
+#ifndef HMICORE_WIDGETS_CANVAS_VIDEO_H_
+#define HMICORE_WIDGETS_CANVAS_VIDEO_H_
 
 #include <rtpvraw_depayloader.h>
 
@@ -90,4 +90,4 @@ class WidgetVideo : public WidgetCanvas {
 
 }  // namespace gva
 
-#endif  // HMICORE_CANVAS_VIDEO_H_
+#endif  // HMICORE_WIDGETS_CANVAS_VIDEO_H_

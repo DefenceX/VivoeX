@@ -27,9 +27,10 @@
 #include <math.h>
 
 #include <cstdint>
+#include <map>
 #include <memory>
 #include <string>
-#include <map>
+#include <unordered_map>
 
 #include "hmicore/renderer_cairo_types.h"
 #include "hmicore/widgets/widget.h"

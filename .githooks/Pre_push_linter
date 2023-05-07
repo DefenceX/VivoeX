@@ -1,0 +1,15 @@
+#!/bin/sh
+max_nolint_count=50
+nolint_count=$(grep -sinr NOLINT $WORKSPACE_ROOT/src/ | wc -l)
+
+echo "NOLINT: Number of linter exceptions: $nolint_count"
+grep -sinr NOLINT $WORKSPACE_ROOT/src/
+
+if [ $((nolint_count)) -gt $((max_nolint_count)) ]; then
+    echo " NOLINT: There are too many linter exeptions!"
+    echo ""
+    echo "NOLINT: Please resolve them before pushing."
+  exit 1
+fi
+
+exit 0

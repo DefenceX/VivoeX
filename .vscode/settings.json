@@ -322,6 +322,9 @@
         "connectionId": "defencex",
         "projectKey": "DefenceX_vivoe-lite"
     },
+    "terminal.integrated.env.linux": {
+        "WORKSPACE_ROOT": "${workspaceFolder}"
+    },
     "sonarlint.output.showAnalyzerLogs": true,
     "sonarlint.output.showVerboseLogs": true,
     "sonarlint.trace.server": "off",

@@ -23,8 +23,9 @@
 #ifndef HMICORE_STATES_SYS_H_
 #define HMICORE_STATES_SYS_H_
 
-#include <iostream>
 #include <glog/logging.h>
+
+#include <iostream>
 
 #include "hmicore/gva.h"
 #include "hmicore/hmi_gva.h"

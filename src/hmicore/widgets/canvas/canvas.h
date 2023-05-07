@@ -21,8 +21,8 @@
 /// \file canvas.h
 ///
 
-#ifndef HMICORE_CANVAS_CANVAS_H_
-#define HMICORE_CANVAS_CANVAS_H_
+#ifndef HMICORE_WIDGETS_CANVAS_CANVAS_H_
+#define HMICORE_WIDGETS_CANVAS_CANVAS_H_
 
 #include <cstdint>
 #include <string>
@@ -131,4 +131,4 @@ class WidgetCanvas : public WidgetX {
 
 }  // namespace gva
 
-#endif  // HMICORE_CANVAS_CANVAS_H_
+#endif  // HMICORE_WIDGETS_CANVAS_CANVAS_H_

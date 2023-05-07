@@ -1,0 +1,15 @@
+#!/bin/sh
+max_todo_count=50
+todo_count=$(grep -sinr todo $WORKSPACE_ROOT/src/ | wc -l)
+
+echo "Number of TODOs: $todo_count"
+grep -sinr todo $WORKSPACE_ROOT/src/
+
+if [ $((todo_count)) -gt $((max_todo_count)) ]; then
+    echo "Too many TODOs!"
+    echo ""
+    echo "Please resolve them before pushing."
+  exit 1
+fi
+
+exit 0
