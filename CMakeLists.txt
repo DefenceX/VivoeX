@@ -31,6 +31,9 @@ include(scripts/cmake/sonar.cmake)
 include(scripts/cmake/mediax.cmake)
 include(scripts/cmake/windows.cmake)
 
+# Git shooks setup
+execute_process(COMMAND git config --local include.path ${CMAKE_SOURCE_DIR}/.gitconfig)
+
 ## Update the version number everytime cmake is run, patch number can go up a lot
 execute_process(COMMAND ../update.sh)
 

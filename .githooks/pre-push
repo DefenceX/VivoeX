@@ -24,7 +24,7 @@ url="$2"
 
 $WORKSPACE_ROOT/.githooks/pre-push-check-linter
 $WORKSPACE_ROOT/.githooks/pre-push-check-todo
-$WORKSPACE_ROOT/.githooks/pre-push-conflict-check
+$WORKSPACE_ROOT/.githooks/pre-push-check-conflict
 $WORKSPACE_ROOT/.githooks/pre-push-check-untracked
 
 # --- Safety check
