@@ -47,6 +47,6 @@ include_directories (
 )
 
 add_library(hmicore STATIC ${SOURCES})
-add_dependencies(hmicore hmiaudio widgets hmiupdater libglog libprotobuf libnmea googletest libosmscout geographiclib vivoe_media config-proto ${DDS_STACK} libosmscout)
+add_dependencies(hmicore hmiaudio widgets hmiupdater libglog libprotobuf libnmea googletest libosmscout geographiclib libmediax config-proto ${DDS_STACK} libosmscout)
 # target_link_libraries(hmicore shlwapi)
 target_include_directories(hmicore PUBLIC ${CMAKE_BINARY_DIR}/external/mediax/src/src)

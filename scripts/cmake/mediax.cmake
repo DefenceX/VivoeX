@@ -2,7 +2,7 @@
 # mediax
 # ------------------------------------------------------------------------------
 ExternalProject_Add(
-    vivoe_media
+    libmediax
     GIT_REPOSITORY      https://github.com/DefenceX/MediaX
     GIT_SHALLOW         1
     CMAKE_ARGS          -DEXAMPLES=OFF

@@ -31,7 +31,7 @@ target_link_libraries (widgets config-proto ${PROTOBUF_LIBRARY} ${GTK_LIBRARIES3
 target_include_directories(widgets BEFORE PRIVATE ${PROTOBUF_INCLUDE_DIRS} ${GLOG_INCLUDE_DIRS} ${NMEA_INCLUDE_DIR} ${MEDIA_INCLUDE_DIR})
 
 target_include_directories(widgets BEFORE PUBLIC ${GTK3_INCLUDE_DIRS} ${CMAKE_BINARY_DIR}/src/config ${CMAKE_BINARY_DIR}/external/libprotobuf/build)
-add_dependencies(widgets libglog config-proto)
+add_dependencies(widgets libglog config-proto libmediax)
 
 
 
