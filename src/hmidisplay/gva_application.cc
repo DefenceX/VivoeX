@@ -37,7 +37,6 @@ void GvaApplication::CloseWindow(void) { gva::hmi::GetRendrer()->DestroySurface(
 // clipped to only Draw the exposed areas of the Widget
 //
 gboolean GvaApplication::DrawCb(GtkWidget *Widget, cairo_t *cr, gpointer dat [[maybe_unused]]) {
-  DLOG(INFO) << "GTK draw event";
   gva::hmi::GetRendrer()->DrawSurface(cr);
   gtk_widget_queue_draw(Widget);
   return FALSE;

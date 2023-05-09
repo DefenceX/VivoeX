@@ -152,7 +152,6 @@ void Hmi::Reset() {
   screen_.control->SetDisabled(4);  // Up Arrow
   screen_.control->SetDisabled(5);  // Down Arrow
   screen_.control->SetDisabled(7);  // Enter
-  alarmson_ = false;
 }
 
 void Hmi::Labels(LabelModeEnum labels) {

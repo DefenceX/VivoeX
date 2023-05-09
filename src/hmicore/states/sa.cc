@@ -30,13 +30,13 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress, GvaKeyEnum *current) {
   Key(keypress);
 
   compass->SetMode(ConfigData::GetInstance()->GetPpiMode());
-  video->SetVisible(false);
 
   switch (keypress) {
     case GvaKeyEnum::kKeyF2:
       filename = path;
       filename.append("/Quad.png");
       SetCanvasPng(filename);
+      video->SetVisible(false);
       if (ConfigData::GetInstance()->GetPpiMode() == widget::ModeEnum::kPpiClassicArrowWithSight)
         compass->SetMode(widget::ModeEnum::kPpiClassicArrowWithoutSight);
       if (ConfigData::GetInstance()->GetPpiMode() == widget::ModeEnum::kPpiClassicTankWithSight)
@@ -58,6 +58,7 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress, GvaKeyEnum *current) {
       // filename.append("/FrontCenter.png");
       filename.append("/Soldiers01.png");
       SetCanvasPng(filename.c_str());
+      video->SetVisible(false);
       // video->SetIpAddress("239.192.2.1");
       // video->SetVisible(true);
       *current = keypress;
@@ -134,6 +135,7 @@ void StateSA::entry() {
       filename = ConfigData::GetInstance()->GetImagePath();
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeObjectLocalisation)->SetVisible(true);
       // filename.append("/FrontCenter.png");
+      std::cout << "Setting soldier image\n";
       filename.append("/Soldiers01.png");
       SetCanvasPng(filename.c_str());
       // video_ = (gva::WidgetVideo *)(screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeVideo));

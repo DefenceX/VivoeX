@@ -104,9 +104,9 @@ void StateAlarms::entry() {
           return;  // Nothing more to do
       }
     }
-    Reset();
     alarmson_ = true;
     manager_->SetScreen(&screen_, GvaFunctionEnum::kAlarmsX);
+    Reset();
     table->SetVisible(true);
 
     // Update the controls
