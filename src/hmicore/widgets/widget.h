@@ -1,21 +1,10 @@
 //
-// MIT License
+// Copyright (c) 2023, DefenceX PTY LTD
 //
-// Copyright (c) 2023 DefenceX (enquiries@defencex.ai)
+// This file is part of the VivoeX project developed by DefenceX.
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
-// associated documentation files (the 'Software'), to deal in the Software without restriction,
-// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-// subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all copies or substantial
-// portions of the Software.
-// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+// Licensed under the Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)
+// License. See the LICENSE file in the project root for full license details.
 //
 ///
 /// \file widget.h
@@ -176,14 +165,21 @@ class WidgetX {
   ///
   uint32_t GetStateTextColour(LabelStates state) const;
 
+  /// The widget x location in pixels
   uint32_t x_ = 0;
+  /// The widget y location in pixels
   uint32_t y_ = 0;
+  /// The widget width in pixels
   uint32_t width_ = 0;
+  /// The widget height in pixels
   uint32_t height_ = 0;
 
  private:
+  /// The GVA renderer
   const RendererGva& renderer_;
+  /// The widget type enum
   widget::WidgetEnum widget_type_;
+  /// The widget visible state
   bool visible_ = false;
 };
 

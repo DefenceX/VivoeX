@@ -71,7 +71,9 @@ struct is_same_fsm : std::is_same<typename F::fsmtype, typename S::fsmtype> {};
 
 template <typename S>
 struct _state_instance {
+  /// \brief State instance
   using value_type = S;
+  /// \brief State instance
   using type = _state_instance<S>;
   static S value;
 };

@@ -236,16 +236,7 @@ AIM The aim of this NATO standardization agreement (STANAG) is to respond to the
 * [RFC 4566](https://tools.ietf.org/html/rfc4566) SDP: Session Description Protocol
 * [RFC 4856](https://tools.ietf.org/html/rfc4856) Media Type Registration of Payload Formats in the RTP Profile for Audio and Video Conferences
 * [RFC 6340](https://tools.ietf.org/html/rfc6340) Textual Conventions for the Representation of Floating-Point Numbers
-## Licensing
 
-open-vivoe is released under the MIT license. Some parts of the software are released under other licenses as specified.
-
-**THIS IS ALPHA QUALITY SOFTWARE FOR RESEARCH PURPOSES ONLY. THIS IS NOT A PRODUCT.
-YOU ARE RESPONSIBLE FOR COMPLYING WITH LOCAL LAWS AND REGULATIONS.
-NO WARRANTY EXPRESSED OR IMPLIED.**
----
-
-<img src="https://cdn-images-1.medium.com/max/1600/1*C87EjxGeMPrkTuVRVWVg4w.png" width="225"></img>
 # Links
 * http://defencex.com.au/ DefenceX Sponsored (Commercial Plugins for LDM)
 * http://landopensystems.mod.uk/ UK MoD LOSA
@@ -258,3 +249,9 @@ NO WARRANTY EXPRESSED OR IMPLIED.**
 * https://geographiclib.sourceforge.io/
 * https://index.ros.org/doc/ros2/
 * https://www.visiononline.org/vision-standards-details.cfm?type=5
+
+# Licensing
+
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
+
+This library is also available as part of VivoeX Pro under a commercial license with full GxA (DDS Land Data Model) support. Please visit http://defencex.ai for more information and support.

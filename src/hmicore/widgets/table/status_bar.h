@@ -1,21 +1,10 @@
 //
-// MIT License
+// Copyright (c) 2023, DefenceX PTY LTD
 //
-// Copyright (c) 2023 DefenceX (enquiries@defencex.ai)
+// This file is part of the VivoeX project developed by DefenceX.
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
-// associated documentation files (the 'Software'), to deal in the Software without restriction,
-// including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-// subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all copies or substantial
-// portions of the Software.
-// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-// LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+// Licensed under the Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)
+// License. See the LICENSE file in the project root for full license details.
 //
 ///
 /// \file status_bar.h
@@ -88,16 +77,29 @@ class WidgetStatusBar : public WidgetTable {
   void UpdateLocationFormat(std::string_view location_format);
 
  private:
+  /// The GVA warnings counter
   uint16_t warnings_ = 0;
+  /// The GVA cautions counter
   uint16_t cautions_ = 0;
+  /// The GVA advisories counter
   uint16_t advisories_ = 0;
+  /// The GVA overrides counter
   uint16_t overrides_ = 0;
 
+  /// The vehicle location
   LocationType location_;
+
+  ///
+  /// \brief The labels for the status bar
+  ///
+  ///
   struct Labels {
+    /// The label state
     LabelStates state;
+    /// The label text
     std::string text;
   };
+  /// The labels for the status bar
   std::array<Labels, 7> labels_;
 };
 

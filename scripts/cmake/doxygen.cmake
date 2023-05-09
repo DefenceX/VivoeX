@@ -11,6 +11,12 @@ set(SEM_VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERS
 message(STATUS "Setup doxygen version ${SEM_VERSION} ${GIT_HASH}")
 add_custom_target(doxygen COMMAND IMAGE_DIR=${CMAKE_BINARY_DIR}/images/doxygen SEM_VERSION=${SEM_VERSION} GIT_HASH=${GIT_HASH} doxygen WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
+add_custom_target(doxygencheck 
+  COMMAND IMAGE_DIR=${CMAKE_SOURCE_DIR}/images/doxygen SEM_VERSION=${SEM_VERSION} GIT_HASH=${GIT_HASH} doxygen 2>  ${CMAKE_BINARY_DIR}/doxygen_output.txt 1>/dev/null
+  COMMAND cat ${CMAKE_BINARY_DIR}/doxygen_output.txt | grep "warning" 
+  COMMAND cat ${CMAKE_BINARY_DIR}/doxygen_output.txt | grep "warning" | wc -l
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+
 # Move any changed images over into source to be checked in
 # We cannot check PNG files directly as the header changes after each generation so do a pixel by pixel check to fin differancesS
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/images/doxygen/)
