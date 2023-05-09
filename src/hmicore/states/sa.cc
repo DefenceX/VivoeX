@@ -26,7 +26,7 @@
 #include <glog/logging.h>
 namespace gva {
 
-GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
+GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress, GvaKeyEnum *current) {
   const std::string path = ConfigData::GetInstance()->GetImagePath();
   std::string filename;
 
@@ -49,11 +49,13 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
         compass->SetMode(widget::ModeEnum::kPpiClassicArrowWithoutSight);
       if (ConfigData::GetInstance()->GetPpiMode() == widget::ModeEnum::kPpiClassicTankWithSight)
         compass->SetMode(widget::ModeEnum::kPpiClassicTankWithoutSight);
+      *current = keypress;
       break;
     case GvaKeyEnum::kKeyF4:
       filename = path;
       filename.append("/FrontRight.png");
       SetCanvasPng(filename.c_str());
+      *current = keypress;
       break;
     case GvaKeyEnum::kKeyF5:
       objects->SetVisible(true);
@@ -61,26 +63,31 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
       // filename.append("/FrontCenter.png");
       filename.append("/Soldiers01.png");
       SetCanvasPng(filename.c_str());
+      *current = keypress;
       break;
     case GvaKeyEnum::kKeyF6:
       filename = path;
       filename.append("/FrontLeft.png");
       SetCanvasPng(filename.c_str());
+      *current = keypress;
       break;
     case GvaKeyEnum::kKeyF10:
       filename = path;
       filename.append("/Right.png");
       SetCanvasPng(filename.c_str());
+      *current = keypress;
       break;
     case GvaKeyEnum::kKeyF11:
       filename = path;
       filename.append("/Rear.png");
       SetCanvasPng(filename.c_str());
+      *current = keypress;
       break;
     case GvaKeyEnum::kKeyF12:
       filename = path;
       filename.append("/Left.png");
       SetCanvasPng(filename.c_str());
+      *current = keypress;
       break;
     case GvaKeyEnum::kKeyF1:
     case GvaKeyEnum::kKeyF3:
@@ -91,6 +98,11 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress) {
       screen_.message.icon = widget::IconType::kIconError;
       screen_.message.brief.text = "Function key";
       screen_.message.detail.text = "Operation not implemented!";
+      break;
+    case GvaKeyEnum::kKeyF19:  // labels
+      if (*current == GvaKeyEnum::kKeyF5) {
+        screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeObjectLocalisation)->SetVisible(true);
+      }
       break;
     default:
       break;
@@ -140,7 +152,7 @@ void StateSA::react(EventKeyBMS const &) { transit<StateBMS>(); };
 void StateSA::react(EventKeyAlarms const &) { transit<StateAlarms>(); };
 
 void StateSA::react(EventKeyFunction const &e) {
-  KeySA(e.key);
+  KeySA(e.key, &current_selection_);
   if (e.key == GvaKeyEnum::kKeyNextLabel) transit<StateWPN>();
 };
 

@@ -67,18 +67,31 @@ void Updater::Event(std::string event) {}
 
 void Updater::WidgetUpdaterThread(std::map<widget::WidgetEnum, std::shared_ptr<WidgetX>> *widget_list) {
   uint16_t count = 0;
-  std::array<gva::WidgetObjectLocalisation::BoxType, 8> box;
+  std::array<gva::WidgetObjectLocalisation::BoxType, 6> box;
 
   gva::AudioFunctions audio;
   LOG(INFO) << "Starting widget updater thread";
 
-  box[0] = {310, 170, 240, 104, 0xff0000, "Person, threat", false, false};
-  box[1] = {20, 185, 100, 40, 0x00ff00, "Person", false, false};
-  box[2] = {76, 200, 105, 50, 0xffa500, "Person, Gun", false, true};
-  box[3] = {180, 200, 180, 80, 0xff0000, "Person, Threat", false, false};
-  box[4] = {400, 190, 90, 36, 0xffa500, "", false, false};
-  box[5] = {500, 195, 50, 20, 0xfff00, "Person", false, true};
-  box[6] = {550, 169, 100, 42, 0xfff00, "Person", false, false};
+  // box[0] = {310, 170, 240, 104, 0xff0000, "Person, threat", false, false};
+  // box[1] = {20, 185, 100, 40, 0x00ff00, "Person", false, false};
+  // box[2] = {76, 200, 105, 50, 0xffa500, "Person, Gun", false, true};
+  // box[3] = {180, 200, 180, 80, 0xff0000, "Person, Threat", false, false};
+  // box[4] = {400, 190, 90, 36, 0xffa500, "", false, false};
+  // box[5] = {500, 195, 50, 20, 0xfff00, "Person", false, true};
+  // box[6] = {550, 169, 100, 42, 0xfff00, "Person", false, false};
+
+  box[0] = {8, 174, 234, 88, 0x00ff00, "Person", false, false};
+  box[1] = {80, 83, 366, 148, 0x00ff00, "Person", false, false};
+  box[2] = {285, 144, 274, 120, 0x00ff00, "Person", false, false};
+  box[3] = {395, 187, 213, 71, 0x00ff00, "Person", false, false};
+  box[4] = {436, 88, 369, 162, 0xffa500, "Person", false, false};
+  box[5] = {475, 189, 43, 90, 0xff0000, "Weapon", false, false};
+  // box[1] = {20, 185, 100, 40, 0x00ff00, "Person", false, false};
+  // box[2] = {76, 200, 105, 50, 0xffa500, "Person, Gun", false, true};
+  // box[3] = {180, 200, 180, 80, 0xff0000, "Person, Threat", false, false};
+  // box[4] = {400, 190, 90, 36, 0xffa500, "", false, false};
+  // box[5] = {500, 195, 50, 20, 0xfff00, "Person", false, true};
+  // box[6] = {550, 169, 100, 42, 0xfff00, "Person", false, false};
 
   std::shared_ptr<gva::WidgetDriverSpeedometer> speed = std::static_pointer_cast<gva::WidgetDriverSpeedometer>(
       widget_list->at(widget::WidgetEnum::kWidgetTypeDialSpeedometer));
@@ -103,8 +116,9 @@ void Updater::WidgetUpdaterThread(std::map<widget::WidgetEnum, std::shared_ptr<W
   alarm_indicator->SetText("Engine over temperature");
 
   // Loop through box and set unique ids
-  for (int16_t c = 0; c < 7; c++) {
-    objects->AddBoundingBox(c + 1, box[c]);
+  uint16_t id = 0;
+  for (const auto &object : box) {
+    objects->AddBoundingBox(id++, object);
   }
 
   gva::WidgetPlanPositionIndicator::ThreatType threat = {110, 30, 0xff0000, "Person", false, false};

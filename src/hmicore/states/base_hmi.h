@@ -90,7 +90,7 @@ struct Hmi : tinyfsm::Fsm<Hmi> {
  public:
   static void KeySide(GvaKeyEnum key);
   static GvaKeyEnum Key(GvaKeyEnum key);
-  static GvaKeyEnum KeySA(GvaKeyEnum key);
+  static GvaKeyEnum KeySA(GvaKeyEnum key, GvaKeyEnum *current);
   static GvaKeyEnum KeyWPN(GvaKeyEnum key);
   static GvaKeyEnum KeyDEF(GvaKeyEnum key);
   static GvaKeyEnum KeySYS(GvaKeyEnum key);

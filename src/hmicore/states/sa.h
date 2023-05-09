@@ -49,6 +49,9 @@ struct StateSA : Hmi {
   void react(EventKeyBMS const &) override;
   void react(EventKeyAlarms const &) override;
   void react(EventKeyFunction const &e) override;
+
+ private:
+  GvaKeyEnum current_selection_ = GvaKeyEnum::kKeyF5;
 };
 
 }  // namespace gva
