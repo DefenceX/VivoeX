@@ -62,6 +62,7 @@ install(FILES
 
 # All other images
 install(FILES  
-    ${CMAKE_SOURCE_DIR}/images/screen/DefenceX.png 
-    DESTINATION "/opt/gva/hmi/images")
+  ${CMAKE_SOURCE_DIR}/images/screen/DefenceX.png 
+  ${CMAKE_SOURCE_DIR}/images/common/VideoBackground.png 
+  DESTINATION "/opt/gva/hmi/images")
 

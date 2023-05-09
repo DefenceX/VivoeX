@@ -43,17 +43,28 @@ void WidgetVideo::Draw() {
 }
 
 void WidgetVideo::DrawVideo() {
-  uint8_t *cpu_buffer;
-  if (video_feed_.Receive(&cpu_buffer, timeout_ms_) == true) {
-    // video::YuvToRgba(480, 640, cpu_buffer, rgb_buffer_.data());
-    // GetRenderer()->TextureRGB(0, 0, rgb_buffer_.data());
-    GetRenderer()->SetColourForeground(HMI_BLACK);
-    GetRenderer()->SetColourBackground(HMI_BLACK);
-    GetRenderer()->DrawRectangle(0, 0, width_, height_, true);
-  } else {
-    GetRenderer()->SetColourForeground(HMI_BLACK);
-    GetRenderer()->SetColourBackground(HMI_BLACK);
-    GetRenderer()->DrawRectangle(0, 0, width_, height_, true);
+  // uint8_t *cpu_buffer;
+  // if (video_feed_.Receive(&cpu_buffer, timeout_ms_) == true) {
+  //   // video::YuvToRgba(480, 640, cpu_buffer, rgb_buffer_.data());
+  //   // GetRenderer()->TextureRGB(0, 0, rgb_buffer_.data());
+  //   GetRenderer()->SetColourForeground(HMI_BLACK);
+  //   GetRenderer()->SetColourBackground(HMI_BLACK);
+  //   GetRenderer()->DrawRectangle(0, 0, width_, height_, true);
+  // } else
+  {
+    std::cout << "Running\n";
+    const std::string path = ConfigData::GetInstance()->GetImagePath();
+    SetFilename(path + "/VideoBackground.png");
+
+    WidgetCanvas::Draw();
+    GetRenderer()->SetColourForeground(HMI_WHITE);
+
+    GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightNormal,
+                               ConfigData::GetInstance()->GetThemeFont(), 12);
+    std::string stream = video_feed_.GetIpAddress() + ":" + std::to_string(video_feed_.GetPort()) + " offline";
+    uint32_t w = GetRenderer()->GetTextWidth(stream, 12);
+
+    GetRenderer()->DrawText(kMinimumWidth / 2 - (w / 2), 400 + 16, stream);
   }
 }
 

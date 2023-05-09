@@ -62,7 +62,6 @@ gboolean GvaApplication::ConfigureEventCb(GtkWidget *Widget, GdkEventConfigure *
 }
 
 void GvaApplication::Activate(GtkApplication *app, gpointer user_data [[maybe_unused]]) {
-  LOG(ERROR) << "GTK activate event";
   gtk_.win = gtk_application_window_new(app);
   gtk_window_set_title(GTK_WINDOW(gtk_.win), "HMI vivoe-lite");
 

@@ -79,8 +79,6 @@ void StateDRV::exit() {
   // Switch the dials off now not needed in other states
   screen_render_->GetWidget(widget::WidgetEnum::kWidgetTypeDialSpeedometer)->SetVisible(false);
   screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeDialRpmFuel)->SetVisible(false);
-  // Stop the video stream receiver, easy to restart. Stream still running
-  // drivers_feed_.Stop();
 }
 
 void StateDRV::react(EventKeyPowerOn const &) { transit<StateOff>(); };

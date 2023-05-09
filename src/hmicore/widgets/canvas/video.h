@@ -74,7 +74,7 @@ class WidgetVideo : public WidgetCanvas {
   std::array<uint8_t, 640 * 480 * 3> rgb_buffer_;
   RtpvrawDepayloader video_feed_;
   uint32_t timeout_ms_ = 80;
-  const bool kSapEnabled = true;
+  const bool kSapEnabled = false;
 };
 
 }  // namespace gva

@@ -216,7 +216,7 @@ GvaStatusTypes ScreenGva::Update() {
 void ScreenGva::ResetWidgets() const {
   /// Iterate over all widgets and draw the visible ones
   for (auto const &[key, val] : widget_list_) {
-    val->SetVisible(false);
+    if (key != widget::WidgetEnum::KWidgetTypeAlarmIndicator) val->SetVisible(false);
   }
 }
 
