@@ -1,0 +1,2 @@
+#!/bin/sh
+$WORKSPACE_ROOT/scripts/doxygencheck.sh

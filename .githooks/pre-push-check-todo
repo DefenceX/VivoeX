@@ -1,8 +1,12 @@
 #!/bin/sh
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
 max_todo_count=50
 todo_count=$(grep -sinr todo $WORKSPACE_ROOT/src/ | wc -l)
 
-echo "Number of TODOs: $todo_count"
+echo "Number of TODOs: ${RED}$todo_count${NC}"
 grep -sinr todo $WORKSPACE_ROOT/src/
 
 if [ $((todo_count)) -gt $((max_todo_count)) ]; then
