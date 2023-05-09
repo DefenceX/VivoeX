@@ -25,13 +25,46 @@ namespace gva {
 ///
 class CellType {
  public:
+  ///
+  /// \brief Construct a new Cell Type object
+  ///
+  ///
   CellType() = default;
+
+  ///
+  /// \brief Destroy the Cell Type object
+  ///
+  ///
   ~CellType() = default;
+
+  ///
+  /// \brief Construct a new Cell Type object
+  ///
+  /// \param text The text to display in the cell
+  /// \param width The width of the cell
+  /// \param background_colour The background colour of the cell
+  /// \param foreground_colour The foreground colour of the cell
+  /// \param outline_colour The outline colour of the cell
+  /// \param highlight_colour The highlight colour of the cell
+  /// \param alignment The alignment of the cell
+  ///
   CellType(const std::string text, const uint32_t width, const uint32_t background_colour,
            const uint32_t foreground_colour, const uint32_t outline_colour, const uint32_t highlight_colour,
            const widget::CellAlignType alignment);
 
+  ///
+  /// \brief Construct a new Cell Type object
+  ///
+  /// \param a The cell to copy
+  ///
   CellType(const CellType &a);
+
+  ///
+  /// \brief Assignment operator
+  ///
+  /// \param a The cell to assign
+  /// \return CellType&
+  ///
   CellType &operator=(const CellType &a);
 
   ///
@@ -91,12 +124,19 @@ class CellType {
   widget::CellAlignType GetCellAlignment() const;
 
  private:
+  /// The width of the cell
   uint32_t width_ = 0;
+  /// The text to display in the cell
   std::string text_ = "";
+  /// The background colour of the cell
   uint32_t background_colour_ = 0;
+  /// The foreground colour of the cell
   uint32_t foreground_colour_ = 0;
+  /// The outline colour of the cell
   uint32_t outline_colour_ = 0;
+  /// The highlight colour of the cell
   uint32_t highlight_colour_ = 0;
+  /// The alignment of the cell enum
   widget::CellAlignType alignment_ = widget::CellAlignType::kAlignLeft;
 };
 }  // namespace gva

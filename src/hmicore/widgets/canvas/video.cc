@@ -52,24 +52,30 @@ void WidgetVideo::DrawVideo() {
   //   GetRenderer()->DrawRectangle(0, 0, width_, height_, true);
   // } else
   {
-    std::cout << "Running\n";
     const std::string path = ConfigData::GetInstance()->GetImagePath();
     SetFilename(path + "/VideoBackground.png");
 
     WidgetCanvas::Draw();
-    GetRenderer()->SetColourForeground(HMI_WHITE);
+    GetRenderer()->DrawColor(HMI_WHITE);
+
+    GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
 
     GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightNormal,
                                ConfigData::GetInstance()->GetThemeFont(), 12);
-    std::string stream = video_feed_.GetIpAddress() + ":" + std::to_string(video_feed_.GetPort()) + " offline";
+    std::string stream = "sap://" + video_feed_.GetSessionName() + "@" + video_feed_.GetIpAddress() + ":" +
+                         std::to_string(video_feed_.GetPort()) + " offline";
     uint32_t w = GetRenderer()->GetTextWidth(stream, 12);
 
-    GetRenderer()->DrawText(kMinimumWidth / 2 - (w / 2), 400 + 16, stream);
+    GetRenderer()->DrawText(kMinimumWidth / 2 - (w / 2), 300 + 16, stream);
   }
 }
 
 void WidgetVideo::Stop() { video_feed_.Stop(); }
 
 void WidgetVideo::Start() { video_feed_.Start(); }
+
+void WidgetVideo::SetSessionName(std::string_view session_name) { video_feed_.SetSessionName(session_name); }
+
+void WidgetVideo::SetIpAddress(std::string_view ip_address) { video_feed_.SetIpAddress(ip_address); }
 
 }  // namespace gva

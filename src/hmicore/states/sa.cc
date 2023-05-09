@@ -16,6 +16,8 @@
 namespace gva {
 
 GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress, GvaKeyEnum *current) {
+  gva::WidgetVideo *video = (gva::WidgetVideo *)(screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeVideo));
+  screen_.function_right.visible = true;
   const std::string path = ConfigData::GetInstance()->GetImagePath();
   std::string filename;
 
@@ -28,6 +30,7 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress, GvaKeyEnum *current) {
   Key(keypress);
 
   compass->SetMode(ConfigData::GetInstance()->GetPpiMode());
+  video->SetVisible(false);
 
   switch (keypress) {
     case GvaKeyEnum::kKeyF2:
@@ -41,9 +44,12 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress, GvaKeyEnum *current) {
       *current = keypress;
       break;
     case GvaKeyEnum::kKeyF4:
-      filename = path;
-      filename.append("/FrontRight.png");
-      SetCanvasPng(filename.c_str());
+      // filename = path;
+      // filename.append("/FrontRight.png");
+      // SetCanvasPng(filename.c_str());
+      video->SetSessionName("day1");
+      video->SetIpAddress("239.192.1.1");
+      video->SetVisible(true);
       *current = keypress;
       break;
     case GvaKeyEnum::kKeyF5:
@@ -52,30 +58,44 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress, GvaKeyEnum *current) {
       // filename.append("/FrontCenter.png");
       filename.append("/Soldiers01.png");
       SetCanvasPng(filename.c_str());
+      // video->SetIpAddress("239.192.2.1");
+      // video->SetVisible(true);
       *current = keypress;
       break;
     case GvaKeyEnum::kKeyF6:
-      filename = path;
-      filename.append("/FrontLeft.png");
-      SetCanvasPng(filename.c_str());
+      // filename = path;
+      // filename.append("/FrontLeft.png");
+      // SetCanvasPng(filename.c_str());
+      video->SetSessionName("day3");
+      video->SetIpAddress("239.192.3.1");
+      video->SetVisible(true);
       *current = keypress;
       break;
     case GvaKeyEnum::kKeyF10:
-      filename = path;
-      filename.append("/Right.png");
-      SetCanvasPng(filename.c_str());
+      // filename = path;
+      // filename.append("/Right.png");
+      // SetCanvasPng(filename.c_str());
+      video->SetSessionName("day4");
+      video->SetIpAddress("239.192.4.1");
+      video->SetVisible(true);
       *current = keypress;
       break;
     case GvaKeyEnum::kKeyF11:
-      filename = path;
-      filename.append("/Rear.png");
-      SetCanvasPng(filename.c_str());
+      // filename = path;
+      // filename.append("/Rear.png");
+      // SetCanvasPng(filename.c_str());
+      video->SetSessionName("day5");
+      video->SetIpAddress("239.192.5.1");
+      video->SetVisible(true);
       *current = keypress;
       break;
     case GvaKeyEnum::kKeyF12:
-      filename = path;
-      filename.append("/Left.png");
-      SetCanvasPng(filename.c_str());
+      // filename = path;
+      // filename.append("/Left.png");
+      // SetCanvasPng(filename.c_str());
+      video->SetSessionName("day6");
+      video->SetIpAddress("239.192.6.1");
+      video->SetVisible(true);
       *current = keypress;
       break;
     case GvaKeyEnum::kKeyF1:
@@ -116,6 +136,7 @@ void StateSA::entry() {
       // filename.append("/FrontCenter.png");
       filename.append("/Soldiers01.png");
       SetCanvasPng(filename.c_str());
+      // video_ = (gva::WidgetVideo *)(screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeVideo));
     }
   }
 };

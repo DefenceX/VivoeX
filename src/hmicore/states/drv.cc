@@ -71,6 +71,8 @@ void StateDRV::entry() {
     screen_.function_top->SetEnabled(4);
 
     video_ = (gva::WidgetVideo *)(screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeVideo));
+    video_->SetSessionName("driver");
+    video_->SetIpAddress("239.192.20.1");
     video_->SetVisible(true);
   }
 };

@@ -38,7 +38,7 @@ class WidgetVideo : public WidgetCanvas {
   /// \brief Destroy the Widget video object
   ///
   ///
-  ~WidgetVideo();
+  ~WidgetVideo() final;
 
   ///
   /// \brief Set the Receive timeout attribute for frame data, default 80ms
@@ -70,10 +70,28 @@ class WidgetVideo : public WidgetCanvas {
   ///
   void Stop();
 
+  ///
+  /// \brief Set the Session Name attribute
+  ///
+  /// \param ip_address The SAP/SDP session name
+  ///
+  void SetSessionName(std::string_view session_name);
+
+  ///
+  /// \brief Set the Ipaddress attribute
+  ///
+  /// \param ip_address the IPV4 address of the video stream
+  ///
+  void SetIpAddress(std::string_view ip_address);
+
  private:
+  /// The RGB video buffer
   std::array<uint8_t, 640 * 480 * 3> rgb_buffer_;
+  /// The video feed object
   RtpvrawDepayloader video_feed_;
+  /// The timeout for receiving video frames
   uint32_t timeout_ms_ = 80;
+  /// The SAP/SDP announcement flag
   const bool kSapEnabled = false;
 };
 

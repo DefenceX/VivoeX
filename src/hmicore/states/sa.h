@@ -41,6 +41,7 @@ struct StateSA : Hmi {
 
  private:
   GvaKeyEnum current_selection_ = GvaKeyEnum::kKeyF5;
+  gva::WidgetVideo *video_ = nullptr;
 };
 
 }  // namespace gva
