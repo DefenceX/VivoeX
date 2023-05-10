@@ -26,13 +26,13 @@ void HmiHelper::TableLicences(WidgetTable *table) {
   table->SetWidth(420);
 
   table->AddRow(widget::WeightType::kWeightBold);
-  table->AddCell("Software", 80);
-  table->AddCell("Licence", 20);
+  table->AddCell("Software", 70);
+  table->AddCell("Licence", 30);
 
   table->AddRow();
-  std::string tmp = "Vivoe Lite";
+  std::string tmp = "VivoeX";
   table->AddCell(tmp, 80);
-  table->AddCell("MIT", 20);
+  table->AddCell("CC BY-NC 4.0", 20);
 
   table->AddRow();
   table->AddCell("RTP Payloader", 80);
@@ -91,7 +91,7 @@ void HmiHelper::TableSystem(WidgetTable *table) {
   }
 
   table->AddRow();
-  table->AddCell("UK Maps, " + ConfigData::GetInstance()->GetMapPath(), 80);
+  table->AddCell("Map database, " + ConfigData::GetInstance()->GetMapPath(), 80);
   if (std::filesystem::exists(ConfigData::GetInstance()->GetMapPath())) {
     table->AddCell("OK", 20);
   } else {

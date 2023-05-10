@@ -34,9 +34,10 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress, GvaKeyEnum *current) {
   switch (keypress) {
     case GvaKeyEnum::kKeyF2:
       filename = path;
-      filename.append("/Quad.png");
+      filename.append("/Soldiers01.png");
       SetCanvasPng(filename);
       video->SetVisible(false);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeObjectLocalisation)->SetVisible(true);
       if (ConfigData::GetInstance()->GetPpiMode() == widget::ModeEnum::kPpiClassicArrowWithSight)
         compass->SetMode(widget::ModeEnum::kPpiClassicArrowWithoutSight);
       if (ConfigData::GetInstance()->GetPpiMode() == widget::ModeEnum::kPpiClassicTankWithSight)
@@ -44,56 +45,36 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress, GvaKeyEnum *current) {
       *current = keypress;
       break;
     case GvaKeyEnum::kKeyF4:
-      // filename = path;
-      // filename.append("/FrontRight.png");
-      // SetCanvasPng(filename.c_str());
       video->SetSessionName("day1");
       video->SetIpAddress("239.192.1.1");
       video->SetVisible(true);
       *current = keypress;
       break;
     case GvaKeyEnum::kKeyF5:
-      objects->SetVisible(true);
-      filename = path;
-      // filename.append("/FrontCenter.png");
-      filename.append("/Soldiers01.png");
-      SetCanvasPng(filename.c_str());
-      video->SetVisible(false);
-      // video->SetIpAddress("239.192.2.1");
-      // video->SetVisible(true);
+      video->SetSessionName("day2");
+      video->SetIpAddress("239.192.2.1");
+      video->SetVisible(true);
       *current = keypress;
       break;
     case GvaKeyEnum::kKeyF6:
-      // filename = path;
-      // filename.append("/FrontLeft.png");
-      // SetCanvasPng(filename.c_str());
       video->SetSessionName("day3");
       video->SetIpAddress("239.192.3.1");
       video->SetVisible(true);
       *current = keypress;
       break;
     case GvaKeyEnum::kKeyF10:
-      // filename = path;
-      // filename.append("/Right.png");
-      // SetCanvasPng(filename.c_str());
       video->SetSessionName("day4");
       video->SetIpAddress("239.192.4.1");
       video->SetVisible(true);
       *current = keypress;
       break;
     case GvaKeyEnum::kKeyF11:
-      // filename = path;
-      // filename.append("/Rear.png");
-      // SetCanvasPng(filename.c_str());
       video->SetSessionName("day5");
       video->SetIpAddress("239.192.5.1");
       video->SetVisible(true);
       *current = keypress;
       break;
     case GvaKeyEnum::kKeyF12:
-      // filename = path;
-      // filename.append("/Left.png");
-      // SetCanvasPng(filename.c_str());
       video->SetSessionName("day6");
       video->SetIpAddress("239.192.6.1");
       video->SetVisible(true);
@@ -110,7 +91,7 @@ GvaKeyEnum Hmi::KeySA(GvaKeyEnum keypress, GvaKeyEnum *current) {
       screen_.message.detail.text = "Operation not implemented!";
       break;
     case GvaKeyEnum::kKeyF19:  // labels
-      if (*current == GvaKeyEnum::kKeyF5) {
+      if (*current == GvaKeyEnum::kKeyF2) {
         screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeObjectLocalisation)->SetVisible(true);
       }
       break;
@@ -130,16 +111,10 @@ void StateSA::entry() {
 
     if (screen_.labels != LabelModeEnum::kLabelMinimal)
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetVisible(true);
-    if (!screen_.canvas.surface) {
-      std::string filename;
-      filename = ConfigData::GetInstance()->GetImagePath();
-      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeObjectLocalisation)->SetVisible(true);
-      // filename.append("/FrontCenter.png");
-      std::cout << "Setting soldier image\n";
-      filename.append("/Soldiers01.png");
-      SetCanvasPng(filename.c_str());
-      // video_ = (gva::WidgetVideo *)(screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeVideo));
-    }
+    video_ = (gva::WidgetVideo *)(screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeVideo));
+    video_->SetSessionName("day3");
+    video_->SetIpAddress("239.192.3.1");
+    video_->SetVisible(true);
   }
 };
 
