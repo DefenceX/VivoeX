@@ -21,7 +21,16 @@
 namespace gva {
 class StatusUpdater {
  public:
+  ///
+  /// \brief Construct a new Status Updater object
+  ///
+  ///
   StatusUpdater() = default;
+
+  ///
+  /// \brief Destroy the Status Updater object
+  ///
+  ///
   ~StatusUpdater() = default;
 
   ///
@@ -67,6 +76,7 @@ class StatusUpdater {
                       const LocationType &location) const;
 
  private:
+  /// The maximum number of NMEA sentences
   static const int kMaxNmea = 1000;
 };
 }  // namespace gva

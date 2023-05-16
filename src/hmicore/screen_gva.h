@@ -6,7 +6,7 @@
 // Licensed under the Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)
 // License. See the LICENSE file in the project root for full license details.
 //
-/// \brief The screen manger for the GVA application
+/// The screen manger for the GVA application
 ///
 /// \file screen_gva.h
 ///
@@ -32,46 +32,58 @@
 namespace gva {
 
 struct Canvas {
+  /// The canvas width
   bool visible;
+  /// The canvas buffer pointer
   unsigned char *buffer;
+  /// The cairo surface
   cairo_surface_t *surface;
+  /// True if blackout mode enabled
   bool blackout = false;
 };
 
 struct Label {
+  /// Label is visible
   bool visible;
+  /// The text to display
   std::string text;
+  /// The label X dimension
   uint32_t x;
+  /// The label Y dimension
   uint32_t y;
+  /// The font size
   uint32_t fontSize;
 };
 
 struct Message {
   /// Message is visible
   bool visible;
-
+  /// width in pixels
   uint32_t width;
+  /// an icon to display instead of the text
   widget::IconType icon;
   struct {
+    /// The message text
     std::string text;
+    /// The font size
     uint32_t fontSize;
   } brief;
 
   struct {
-    /// \brief The message text
+    /// The message text
     std::string text;
-    /// \brief The font size
+    /// The font size
     uint32_t fontSize;
   } detail;
 };
 
 struct Screen {
   struct {
-    /// \brief A textual description of this screen
+    ///  A textual description of this screen
     std::string name;
-    /// \brief The current ScreenMode
+    /// The current ScreenMode
     ScreenMode mode;
-    /// \brief The tty device connected to GPS
+    /// The tty device connected to GPS
     std::string gpsDevice;
   } info;
 
@@ -91,22 +103,32 @@ class ScreenGva;
 // These are used by the clock thread to update the time and refresh the screen
 //
 struct ClockArgs {
-  std::string clockString;
-  std::string locationFormat;
-  std::string locationString;
+  /// Clock string
+  std::string clock_string;
+  /// Location string format
+  std::string location_format;
+  /// Location string
+  std::string location_string;
+  /// The screen to update
   ScreenGva *screen;
+  /// GPS handle
   int *gps;
+  /// NMEA info
   nmeaINFO *info;
+  /// NMEA parser
   nmeaPARSER *parser;
+  /// true if active
   bool active;
+  /// The status bar widget
   std::shared_ptr<WidgetStatusBar> status_bar;
+  /// The location type
   LocationType location;
 };
 
 class ScreenGva : public RendererGva {
  public:
   ///
-  /// \brief Construct a new Screen Gva object
+  /// Construct a new Screen Gva object
   ///
   /// \param screen
   /// \param width
@@ -119,34 +141,34 @@ class ScreenGva : public RendererGva {
   ScreenGva(const ScreenGva &Other) = default;
 
   ///
-  /// \brief Destroy the Screen Gva object
+  /// Destroy the Screen Gva object
   ///
   ///
   ~ScreenGva() final;
 
   ///
-  /// \brief Redraw the screen
+  /// Redraw the screen
   ///
   /// \return GvaStatusTypes Status
   ///
   GvaStatusTypes Update();
 
   ///
-  /// \brief Start the clock thread running to update the clock (pthread started)
+  /// Start the clock thread running to update the clock (pthread started)
   ///
   /// \param barData To be used for updating
   ///
   void StartClock(std::shared_ptr<WidgetX> status_bar_widget);
 
   ///
-  /// \brief Reset the all the widgets to not be visible
+  /// Reset the all the widgets to not be visible
   ///
   /// \return WidgetX*
   ///
   void ResetWidgets() const;
 
   ///
-  /// \brief Get the Widget object
+  /// Get the Widget object
   ///
   /// \param widget
   /// \return WidgetX*
@@ -154,16 +176,18 @@ class ScreenGva : public RendererGva {
   WidgetX *GetWidget(widget::WidgetEnum widget);
 
   ///
-  /// \brief The thread that reads and updates the clock and status bar info
+  /// The thread that reads and updates the clock and status bar info
   ///
   /// \param arg status bar arguments
   /// \return void*
   ///
   static void ClockUpdateThread(ClockArgs *arg);
 
+  /// Arguments to pass to the clock thread
   static ClockArgs args_;
 
  private:
+  /// Position in degrees
   char *PosDegrees(float lon, float lat);
   Screen *screen_ = nullptr;
   std::map<widget::WidgetEnum, std::shared_ptr<WidgetX>> widget_list_;
