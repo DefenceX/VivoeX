@@ -92,7 +92,7 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeysSituationalAwarenessLeft() {
   keys.labels[0].text = "Remote.Wpn Sight";
   keys.labels[0].toggleActive = false;
   keys.labels[1].state = LabelStates::kLabelEnabled;
-  keys.labels[1].text = "Quad";
+  keys.labels[1].text = "Demo";
   keys.labels[1].toggleActive = false;
   keys.labels[2].state = LabelStates::kLabelHidden;
   keys.labels[2].text = "Unused";
