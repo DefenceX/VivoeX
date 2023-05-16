@@ -13,6 +13,7 @@
 #include "hmicore/widgets/canvas/video.h"
 
 #include <colourspace.h>
+#include <rtp_types.h>
 #include <rtpvraw_depayloader.h>
 
 namespace gva {
@@ -62,8 +63,15 @@ void WidgetVideo::DrawVideo() {
 
     GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightNormal,
                                ConfigData::GetInstance()->GetThemeFont(), 12);
-    std::string stream = "sap://" + video_feed_.GetSessionName() + "@" + video_feed_.GetIpAddress() + ":" +
-                         std::to_string(video_feed_.GetPort()) + " offline";
+    std::string stream;
+    if (kSapEnabled) {
+      stream =
+          "sap://" + kIpaddr + "@" + std::to_string(kPort) + ":" + std::to_string(video_feed_.GetPort()) + " offline";
+
+    } else {
+      stream = "rtp://" + video_feed_.GetSessionName() + "@" + video_feed_.GetIpAddress() + ":" +
+               std::to_string(video_feed_.GetPort()) + " offline";
+    }
     uint32_t w = GetRenderer()->GetTextWidth(stream, 12);
 
     GetRenderer()->DrawText(kMinimumWidth / 2 - (w / 2), 300 + 16, stream);
