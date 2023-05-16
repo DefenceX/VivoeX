@@ -168,7 +168,7 @@ class Fsm {
     static_assert(is_same_fsm<F, S>::value, "transit to different state machine");
     current_state_ptr->exit();
     // NOTE: we get into deep trouble if the action_function sends a new event.
-    // TODO(ross.newman@defencex.com.au): implement a mechanism to check for reentrancy
+    // TODO(ross): implement a mechanism to check for reentrancy
     action_function();
     current_state_ptr = &_state_instance<S>::value;
     current_state_ptr->entry();
