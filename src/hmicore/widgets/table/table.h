@@ -103,6 +103,8 @@ class WidgetTable : public WidgetX {
   ///
   /// \param text The text to be contained in the cell
   /// \param width The width of the ctable_
+  /// \param align Alignment CellAlignType
+  ///
   virtual void AddCell(const std::string text, uint32_t width, widget::CellAlignType align);
 
   ///

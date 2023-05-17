@@ -234,13 +234,13 @@ class RendererCairo : public Renderer {
   uint32_t DrawLine(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2) override;
 
   ///
-  /// \brief
+  /// \brief Save the current state of the renderer
   ///
   ///
   void Save();
 
   ///
-  /// \brief
+  /// \brief Restore the last saved state of the renderer
   ///
   ///
   void Restore();
@@ -365,13 +365,13 @@ class RendererCairo : public Renderer {
   void SetTextFont(uint32_t slope, widget::WeightType weight, std::string_view fontName, double size);
 
   ///
-  /// \brief
+  /// \brief Push the current state of the renderer
   ///
   ///
   void Push();
 
   ///
-  /// \brief
+  /// \brief Pop the last saved state of the renderer
   ///
   ///
   void Pop();
@@ -461,7 +461,7 @@ class RendererCairo : public Renderer {
   void Draw();
 
   ///
-  /// \brief
+  /// \brief Redraw the screen
   ///
   ///
   void Reset() {

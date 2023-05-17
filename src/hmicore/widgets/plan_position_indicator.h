@@ -100,7 +100,7 @@ class WidgetPlanPositionIndicator : public WidgetX {
   ///
   /// \brief Set the Bearing Sight object
   ///
-  /// \param bearing
+  /// \param bearing_sight The bearing sight
   ///
   void SetBearingSight(int16_t bearing_sight) { bearing_sight_ = bearing_sight; }
 

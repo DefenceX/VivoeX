@@ -54,9 +54,6 @@ class WidgetX {
   ///
   /// \param visible
   ///
-  ///
-  /// \param visible
-  ///
   void SetVisible(bool visible);
 
   ///

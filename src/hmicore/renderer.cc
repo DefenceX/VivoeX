@@ -24,4 +24,20 @@ Renderer::Renderer(uint32_t width, uint32_t height) {
   height_ = height;
 }
 
+RgbUnpackedType Renderer::UnpackRgb(uint64_t rgb) const {
+  RgbUnpackedType colour;
+  colour.r = (rgb & 0x0000000000ff0000) >> 16;
+  colour.g = (rgb & 0x000000000000ff00) >> 8;
+  colour.b = (rgb & 0x00000000000000ff);
+  return colour;
+}
+
+uint32_t Renderer::PackRgb(uint8_t r, uint8_t g, uint8_t b) {
+  auto red = (uint32_t)r;
+  auto green = (uint32_t)g;
+  auto blue = (uint32_t)b;
+  uint32_t packed = (red << 16) | (green << 8) | blue;
+  return packed;
+}
+
 }  // namespace gva

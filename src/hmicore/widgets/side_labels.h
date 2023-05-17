@@ -27,7 +27,8 @@ class WidgetSideLabels : public WidgetX {
   ///
   /// \brief Construct a new Widget Keyboard object, this widget is interactive and requires the touch events
   ///
-  /// \param renderer
+  /// \param renderer The underlying renderer, should be cairo
+  /// \param touch the touch object
   ///
   explicit WidgetSideLabels(const RendererGva& renderer, TouchGva* touch);
 

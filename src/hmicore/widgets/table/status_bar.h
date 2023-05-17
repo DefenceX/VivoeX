@@ -32,7 +32,8 @@ class WidgetStatusBar : public WidgetTable {
   ///
   /// \brief Construct a new Widget Keyboard object
   ///
-  /// \param renderer
+  /// \param renderer The underlying renderer, should be cairo
+  /// \param touch The touch object
   ///
   explicit WidgetStatusBar(const RendererGva &renderer, TouchGva *touch);
 

@@ -33,9 +33,11 @@ class WidgetTableDynamic : public WidgetTable {
   enum class SortType { kSortUnsorted = 0, kSortAscending, kSortDescending };
 
   ///
-  /// \brief Construct a new Widget Keyboard object
+  /// \brief Construct a new Widget Table Dynamic object
   ///
-  /// \param renderer
+  /// \param renderer The Gva renderer
+  /// \param touch The touch object
+  /// \param background_colour The background colour
   ///
   explicit WidgetTableDynamic(const RendererGva &renderer, TouchGva *touch, uint32_t background_colour);
 
@@ -105,6 +107,8 @@ class WidgetTableDynamic : public WidgetTable {
   ///
   /// \param text The text to be contained in the cell
   /// \param width The width of the ctable_
+  /// \param align Alignment CellAlignType
+  ///
   void AddCell(const std::string text, uint32_t width, widget::CellAlignType align) final;
 
   ///

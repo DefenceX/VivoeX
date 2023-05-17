@@ -43,9 +43,9 @@ class WidgetDriverRpmFuel : public WidgetX {
   void Draw() final;
 
   ///
-  /// \brief Set the ValueS
+  /// \brief Set the Value
   ///
-  /// \param bearing
+  /// \param value the value to set
   ///
   void SetValue(int16_t value) { value_ = value; }
 

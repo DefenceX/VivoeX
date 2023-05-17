@@ -57,7 +57,7 @@ class Updater : public UpdaterBase {
   ///
   /// \brief The updater thread
   ///
-  /// \param ptr The widgets list pointer
+  /// \param widget_list The widgets list pointer
   /// \return void*
   ///
   static void WidgetUpdaterThread(std::map<widget::WidgetEnum, std::shared_ptr<WidgetX>>* widget_list);

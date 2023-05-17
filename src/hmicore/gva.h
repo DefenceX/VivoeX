@@ -87,13 +87,20 @@ class StateBase {
   }
 };
 
+///
+/// \brief These are the labels on the left and right of the screen
+///
+///
 class FunctionSelect : public StateBase {
  public:
+  /// The label is visible
   bool visible;
 
   struct Labels {
+    /// The label state
     LabelStates state;
   };
+  /// The labels
   std::array<Labels, 8> labels;
 
   ///

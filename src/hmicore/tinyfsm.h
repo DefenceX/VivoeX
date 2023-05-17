@@ -71,10 +71,11 @@ struct is_same_fsm : std::is_same<typename F::fsmtype, typename S::fsmtype> {};
 
 template <typename S>
 struct _state_instance {
-  /// \brief State instance
+  /// State instance
   using value_type = S;
-  /// \brief State instance
+  /// State instance
   using type = _state_instance<S>;
+  ///  State instance
   static S value;
 };
 
@@ -212,6 +213,7 @@ struct FsmList<> {
 
 template <typename F, typename... FF>
 struct FsmList<F, FF...> {
+  /// Finite state machine template
   using fsmtype = Fsm<F>;
 
   ///

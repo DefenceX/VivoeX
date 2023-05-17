@@ -109,24 +109,24 @@ class Renderer {
   ///
   /// \brief Set the Width attribute
   ///
-  /// \param width
+  /// \param width The width of the renderer
   ///
   static void SetWidth(uint32_t width) { width_ = width; }
 
   ///
   /// \brief Set the Height attribute
   ///
-  /// \param height
+  /// \param height The height of the renderer
   ///
   static void SetHeight(uint32_t height) { height_ = height; }
 
   ///
   /// \brief Draw a straight line
   ///
-  /// \param x1
-  /// \param y1
-  /// \param x2
-  /// \param y2
+  /// \param x1 The start X position
+  /// \param y1 The start Y position
+  /// \param x2 The end X position
+  /// \param y2 The end Y position
   /// \return uint32_t
   ///
   virtual uint32_t DrawLine(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2) = 0;
@@ -134,30 +134,30 @@ class Renderer {
   ///
   /// \brief Draw a circle, set filled to true to have solid circle
   ///
-  /// \param x
-  /// \param y
-  /// \param radius
-  /// \param fill
+  /// \param x The X position
+  /// \param y The Y position
+  /// \param radius The radius of the circle
+  /// \param fill Set to true to have a solid circle
   ///
   virtual void DrawCircle(uint32_t x, uint32_t y, uint32_t radius, bool fill) = 0;
 
   ///
   /// \brief Draw a rectangle, set filled to true to have solid rectangle
   ///
-  /// \param x1
-  /// \param y1
-  /// \param x2
-  /// \param y2
-  /// \param fill
+  /// \param x1 The start X position
+  /// \param y1 The start Y position
+  /// \param x2 The end X position
+  /// \param y2 The end Y position
+  /// \param fill Set to true to have a solid rectangle
   ///
   virtual void DrawRectangle(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, bool fill) = 0;
 
   ///
   /// \brief Set the draw colour
   ///
-  /// \param r
-  /// \param g
-  /// \param b
+  /// \param r The red value
+  /// \param g The green value
+  /// \param b The blue value
   /// \return uint32_t
   ///
   virtual uint32_t DrawColor(uint8_t r, uint8_t g, uint8_t b) = 0;
@@ -165,30 +165,23 @@ class Renderer {
   ///
   /// \brief Set the background texture to and RGB buffer (No Alpha channel)
   ///
-  /// \param x
-  /// \param y
-  /// \param buffer
-  /// \param file
-  /// \return uint32_t
+  /// \param x The X position
+  /// \param y The Y position
+  /// \param buffer The RGB buffer
+  /// \param file The file name
+  /// \return uint32_t The number of bytes written
   ///
   virtual uint32_t TextureRGB(uint32_t x, uint32_t y, unsigned char* buffer, std::string_view file) = 0;
 
   ///
   /// \brief Pack three red, green, blue values
   ///
-  /// \param r
-  /// \param g
-  /// \param b
-  /// \return uint64_t
+  /// \param r The red value
+  /// \param g The green value
+  /// \param b The blue value
+  /// \return uint64_t The packed value
   ///
-  static uint32_t PackRgb(uint8_t r, uint8_t g, uint8_t b) {
-    auto red = (uint32_t)r;
-    auto green = (uint32_t)g;
-    auto blue = (uint32_t)b;
-
-    uint32_t packed = (red << 16) | (green << 8) | blue;
-    return packed;
-  }
+  static uint32_t PackRgb(uint8_t r, uint8_t g, uint8_t b);
 
   ///
   /// \brief Unpack a red value
@@ -220,22 +213,20 @@ class Renderer {
   /// \param rgb
   /// \return RgbUnpackedType
   ///
-  RgbUnpackedType UnpackRgb(uint64_t rgb) const {
-    RgbUnpackedType colour;
-    colour.r = (rgb & 0x0000000000ff0000) >> 16;
-    colour.g = (rgb & 0x000000000000ff00) >> 8;
-    colour.b = (rgb & 0x00000000000000ff);
-    return colour;
-  }
+  RgbUnpackedType UnpackRgb(uint64_t rgb) const;
 
  protected:
+  /// The height of the renderer
   static uint32_t height_;
+  /// The width of the renderer
   static uint32_t width_;
 
  private:
+  /// The foreground colour
   ColourType foreground_colour_;
+  /// The background colour
   ColourType background_colour_;
-  friend class rendererSdl;
+  /// The Cairo renderer
   friend class RendererCairo;
 };
 

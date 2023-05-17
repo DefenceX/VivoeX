@@ -45,7 +45,7 @@ class WidgetDriverSpeedometer : public WidgetX {
   ///
   /// \brief Set the ValueS
   ///
-  /// \param bearing
+  /// \param value the value to set
   ///
   void SetValue(int16_t value) { value_ = value; }
 

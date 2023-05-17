@@ -73,7 +73,7 @@ class WidgetVideo : public WidgetCanvas {
   ///
   /// \brief Set the Session Name attribute
   ///
-  /// \param ip_address The SAP/SDP session name
+  /// \param session_name The SAP/SDP session name
   ///
   void SetSessionName(std::string_view session_name);
 
