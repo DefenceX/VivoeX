@@ -16,7 +16,6 @@
 
 #include <string>
 
-#include "hmicore/debug.h"
 #include "hmicore/gva.h"
 
 #define HMI_AMBER 255, 153, 0

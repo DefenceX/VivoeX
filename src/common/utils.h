@@ -15,7 +15,13 @@
 
 namespace gva {
 
+///
+/// \brief Set the Brightness attribute, requires superuser privileges
+///
+/// \param brightness
+///
 void SetBrightness(double brightness);
-}
+
+}  // namespace gva
 
 #endif  // COMMON_UTILS_H_

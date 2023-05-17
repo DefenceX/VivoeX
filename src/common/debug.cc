@@ -11,32 +11,47 @@
 ///
 
 #include "debug.h"
+
+#include <cstring>
+#include <iomanip>
+#include <iostream>
+
 namespace gva {
 
-void DumpHex(const void *data, size_t size) {
-  char ascii[17];
-  size_t i, j;
+void Pad(size_t i, size_t j) {
+  if ((i + 1) % 16 <= 8) {
+    std::cout << ' ';
+  }
+
+  for (j = (i + 1) % 16; j < 16; ++j) {
+    std::cout << "   ";
+  }
+}
+
+void DumpHex(const uint8_t *data, size_t size) {
+  const auto *bytes = static_cast<const unsigned char *>(data);
+  std::array<uint8_t, 17> ascii;
+  size_t j = 0;
   ascii[16] = '\0';
-  for (i = 0; i < size; ++i) {
-    printf("%02X ", ((unsigned char *)data)[i]);
-    if (((unsigned char *)data)[i] >= ' ' && ((unsigned char *)data)[i] <= '~') {
-      ascii[i % 16] = ((unsigned char *)data)[i];
+
+  for (size_t i = 0; i < size; ++i) {
+    std::cout << std::hex << std::setw(2) << std::setfill('0') << static_cast<unsigned int>(bytes[i]) << ' ';
+
+    if (bytes[i] >= ' ' && bytes[i] <= '~') {
+      ascii[i % 16] = bytes[i];
     } else {
       ascii[i % 16] = '.';
     }
+
     if ((i + 1) % 8 == 0 || i + 1 == size) {
-      printf(" ");
+      std::cout << ' ';
+
       if ((i + 1) % 16 == 0) {
-        printf("|  %s \n", ascii);
+        std::cout << "|  " << ascii.data() << '\n';
       } else if (i + 1 == size) {
         ascii[(i + 1) % 16] = '\0';
-        if ((i + 1) % 16 <= 8) {
-          printf(" ");
-        }
-        for (j = (i + 1) % 16; j < 16; ++j) {
-          printf("   ");
-        }
-        printf("|  %s \n", ascii);
+        Pad(i, j);
+        std::cout << "|  " << ascii.data() << '\n';
       }
     }
   }

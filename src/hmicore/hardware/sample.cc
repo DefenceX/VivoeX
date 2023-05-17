@@ -44,7 +44,7 @@ AudioSample::AudioSample(const std::string_view filename) {
   LOG(INFO) << "Loaded " << total_ << " bytes from " << filename;
 }
 
-int32_t AudioSample::ReadBytes(void* buffer, const uint32_t bytes) {
+int32_t AudioSample::ReadBytes(uint8_t* buffer, const uint32_t bytes) {
   uint32_t bytes_to_copy = 0;
   // Clear the buffer
   memset(buffer, 0, sizeof(float) * bytes);

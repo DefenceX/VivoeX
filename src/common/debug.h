@@ -13,12 +13,18 @@
 #ifndef COMMON_DEBUG_H_
 #define COMMON_DEBUG_H_
 
-#define TRACE_POINT cout << "Function : " << __FUNCTION__ << ", Line : " << __LINE__ << "\n"
+#include <stdint.h>
+#include <stdio.h>
 
 namespace gva {
 
-#include <stdio.h>
-void DumpHex(const void* data, size_t size);
+///
+/// \brief Dump hexidecimal values to stdout
+///
+/// \param data The data to dump
+/// \param size The size of the data
+///
+void DumpHex(const uint8_t* data, size_t size);
 
 }  // namespace gva
 

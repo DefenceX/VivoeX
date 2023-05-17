@@ -16,7 +16,6 @@
 
 #include <array>
 
-#include "debug.h"
 #include "screen_gva.h"
 
 namespace gva {

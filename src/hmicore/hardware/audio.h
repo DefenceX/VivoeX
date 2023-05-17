@@ -22,10 +22,17 @@
 
 namespace gva {
 
+///
+/// \brief The Audio Functions class
+///
+///
 class AudioFunctions {
  public:
+  /// The callback data
   struct CallbackData {
+    /// The audio sample file
     SNDFILE *file;
+    /// The audio sample info
     SF_INFO info;
   };
 
@@ -42,6 +49,11 @@ class AudioFunctions {
   ~AudioFunctions();
 
   AudioFunctions &operator=(const AudioFunctions &) = delete;
+
+  ///
+  /// \brief Construct a new Audio Functions object
+  ///
+  ///
   AudioFunctions(const AudioFunctions &) = delete;
 
   ///
@@ -84,23 +96,45 @@ class AudioFunctions {
   ///
   void PlayWarning();
 
+  /// Number of frames per buffer
   const uint32_t kFramesPerBuffer = 512;
 
  private:
 #if _WIN32
+  /// The threat audio sample filename
   const std::string kThreatFilename = "../sounds/threat.wav";
+  /// The caution audio sample filename
   const std::string kCautionFilename = "../sounds/caution.wav";
+  /// The warning audio sample filename
   const std::string kWarningFilename = "../sounds/warning.wav";
 #else
+  /// The threat audio sample filename
   const std::string kThreatFilename = "/opt/gva/hmi/sounds/threat.wav";
+  /// The caution audio sample filename
   const std::string kCautionFilename = "/opt/gva/hmi/sounds/caution.wav";
+  /// The warning audio sample filename
   const std::string kWarningFilename = "/opt/gva/hmi/sounds/warning.wav";
 #endif
+  /// The threat audio sample
   AudioSample threat_ = AudioSample(kThreatFilename);
+  /// The caution audio sample
   AudioSample caution_ = AudioSample(kCautionFilename);
+  /// The warning audio sample
   AudioSample warning_ = AudioSample(kWarningFilename);
+  /// The portaudio stream
   PaStream *stream_ = nullptr;
 
+  ///
+  /// \brief Log the ALSA error
+  ///
+  /// \param file The file name
+  /// \param line The line number
+  /// \param function The callback
+  /// \param err The error code
+  /// \param fmt The format string
+  /// \param ...
+  /// \return void*
+  ///
   static void *AlsaLog(const char *file, int line, const char *function, int err, const char *fmt, ...);
 };
 
