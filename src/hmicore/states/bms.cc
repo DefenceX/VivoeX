@@ -104,8 +104,8 @@ GvaKeyEnum Hmi::KeyBMS(GvaKeyEnum keypress) {
                 << std::to_string(((double)ConfigData::GetInstance()->GetZoom() / 10000000) +
                                   ((double)ConfigData::GetInstance()->GetZoom() / 10000))
                 << " ";
-      map_->SetWidth(kMinimumWidth);
-      map_->SetHeight(kMinimumHeight);
+      map_->SetWidth(1920);
+      map_->SetHeight(1080);
       LOG(INFO) << "[BMS] res " + std::to_string(screen_render_->GetWidth()) << "x"
                 << std::to_string(screen_render_->GetHeight());
 

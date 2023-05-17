@@ -240,6 +240,7 @@
         "GLOG",
         "graphviz",
         "HMICORE",
+        "HMIDISPLAY",
         "Layouter",
         "ldconfig",
         "libcairo",

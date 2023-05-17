@@ -6,7 +6,7 @@
 // Licensed under the Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)
 // License. See the LICENSE file in the project root for full license details.
 //
-/// \brief The screen manger for the GVA application
+/// The screen manger for the GVA application
 ///
 /// \file screen_gva.h
 ///
@@ -32,46 +32,58 @@
 namespace gva {
 
 struct Canvas {
+  /// flag indicating if the canvas is visible
   bool visible;
+  /// A pointer to the buffer
   unsigned char *buffer;
+  /// The cairo surface
   cairo_surface_t *surface;
+  /// Set if in blackout mode
   bool blackout = false;
 };
 
 struct Label {
+  /// Label is visible
   bool visible;
+  /// Label text
   std::string text;
+  /// The label X position in pixels
   uint32_t x;
+  /// The label Y position in pixels
   uint32_t y;
+  /// The label font size
   uint32_t fontSize;
 };
 
 struct Message {
   /// Message is visible
   bool visible;
-
+  /// The message X position in pixels
   uint32_t width;
+  /// The icon to display instead of text
   widget::IconType icon;
   struct {
+    /// The label text
     std::string text;
+    /// The label font size
     uint32_t fontSize;
   } brief;
 
   struct {
-    /// \brief The message text
+    /// The message text
     std::string text;
-    /// \brief The font size
+    /// The font size
     uint32_t fontSize;
   } detail;
 };
 
 struct Screen {
   struct {
-    /// \brief A textual description of this screen
+    /// A textual description of this screen
     std::string name;
-    /// \brief The current ScreenMode
+    /// The current ScreenMode
     ScreenMode mode;
-    /// \brief The tty device connected to GPS
+    /// The tty device connected to GPS
     std::string gpsDevice;
   } info;
 
@@ -106,7 +118,7 @@ struct ClockArgs {
 class ScreenGva : public RendererGva {
  public:
   ///
-  /// \brief Construct a new Screen Gva object
+  /// Construct a new Screen Gva object
   ///
   /// \param screen
   /// \param width
@@ -114,39 +126,50 @@ class ScreenGva : public RendererGva {
   ///
   ScreenGva(Screen *screen, uint32_t width, uint32_t height);
 
+  ///
+  /// \brief Construct a new Screen Gva object
+  ///
+  /// \param a The argument to copy
+  /// \return ScreenGva&
+  ///
   ScreenGva &operator=(const ScreenGva &a) = delete;
 
+  ///
+  /// \brief Construct a new Screen Gva object
+  ///
+  /// \param Other  The object to copy
+  ///
   ScreenGva(const ScreenGva &Other) = default;
 
   ///
-  /// \brief Destroy the Screen Gva object
+  /// Destroy the Screen Gva object
   ///
   ///
   ~ScreenGva() final;
 
   ///
-  /// \brief Redraw the screen
+  /// Redraw the screen
   ///
   /// \return GvaStatusTypes Status
   ///
   GvaStatusTypes Update();
 
   ///
-  /// \brief Start the clock thread running to update the clock (pthread started)
+  /// Start the clock thread running to update the clock (pthread started)
   ///
   /// \param barData To be used for updating
   ///
   void StartClock(std::shared_ptr<WidgetX> status_bar_widget);
 
   ///
-  /// \brief Reset the all the widgets to not be visible
+  /// Reset the all the widgets to not be visible
   ///
   /// \return WidgetX*
   ///
   void ResetWidgets() const;
 
   ///
-  /// \brief Get the Widget object
+  /// Get the Widget object
   ///
   /// \param widget
   /// \return WidgetX*
@@ -154,26 +177,48 @@ class ScreenGva : public RendererGva {
   WidgetX *GetWidget(widget::WidgetEnum widget);
 
   ///
-  /// \brief The thread that reads and updates the clock and status bar info
+  /// The thread that reads and updates the clock and status bar info
   ///
   /// \param arg status bar arguments
   /// \return void*
   ///
   static void ClockUpdateThread(ClockArgs *arg);
 
+  ///
+  /// \brief The arguments for the clock thread
+  ///
+  ///
   static ClockArgs args_;
 
  private:
+  ///
+  /// \brief The Position in object
+  ///
+  /// \param lon The position longitude
+  /// \param lat The position latitude
+  /// \return char*
+  ///
   char *PosDegrees(float lon, float lat);
+
+  /// Pointer to the screen
   Screen *screen_ = nullptr;
+  /// The widget list
   std::map<widget::WidgetEnum, std::shared_ptr<WidgetX>> widget_list_;
+  /// The GPS device handle
   int gps_ = 0;
-  uint32_t hndl_;
+  /// The serial port handle
+  uint32_t handle_;
+  /// The last screen
   Screen last_screen_;
+  /// The clock update thread
   std::thread clock_thread_;
+  /// The GPS information
   nmeaINFO info_;
+  /// The GPS parser
   nmeaPARSER parser_;
+  /// The pointer to the configuation data
   ConfigData *config_ = nullptr;
+  /// The updater for the HMI
   Updater updater_ = Updater(0);
 };
 

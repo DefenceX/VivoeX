@@ -36,16 +36,13 @@ void WidgetCanvas::DrawCanvas() {
       GetRenderer()->DrawRectangle(0, 0, width_, height_, true);
       break;
     case SurfaceType::kSurfaceCairo:
-      DLOG(INFO) << "Canvas kSurfaceCairo\n";
       GetRenderer()->TextureRGB(0, 0, surface_);
       break;
     case SurfaceType::kSurfaceFile:
-      DLOG(INFO) << "Canvas kSurfaceFile\n";
       // GetRenderer()->TextureRGB(0, 0, buffer_);
       GetRenderer()->TextureRGB(0, 0, buffer_, filename_);
       break;
     default:
-      DLOG(INFO) << "Canvas default\n";
       // Set background green
       GetRenderer()->SetColourForeground(gva::ConfigData::GetInstance()->GetThemeBackground());
       GetRenderer()->SetColourBackground(gva::ConfigData::GetInstance()->GetThemeBackground());

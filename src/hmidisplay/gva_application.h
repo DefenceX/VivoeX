@@ -31,10 +31,13 @@
 
 class GvaApplication {
  public:
-  /// \brief Application options
+  /// Application options
   struct Options {
+    /// Video enabled flag (default false)
     bool videoEnabled_ = false;
+    /// Window enabled flag (default false)
     bool windowEnabled_ = false;
+    /// The config file location
     std::string config;
   };
 
@@ -80,7 +83,9 @@ class GvaApplication {
   ///
   static void Update(gpointer user_data);
 
+  /// GTK application options
   static Options options_;
+  /// The GTK application
   static gtkType gtk_;
 
  private:
@@ -134,9 +139,10 @@ class GvaApplication {
   ///
   ///
   static void Dispatch(gva::GvaKeyEnum key);
+
+  /// Event data input/output
   static std::shared_ptr<gva::EventsGva> io_;
-  gva::EventsGva *io_test_ = nullptr;
-  static uint32_t update_counter_;
+  ///  Flag indicating first execution of callbacks
   static bool first_execution_;
 
   ///

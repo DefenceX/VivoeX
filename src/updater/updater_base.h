@@ -29,6 +29,10 @@ class UpdaterBase {
   ///
   explicit UpdaterBase(uint64_t id) : id_(id) {}
 
+  ///
+  /// \brief Destroy the Updater Base object
+  ///
+  ///
   virtual ~UpdaterBase() = default;
 
   ///
@@ -46,7 +50,8 @@ class UpdaterBase {
   virtual void Event(std::string event) = 0;
 
  private:
-  uint64_t id_;
+  /// The updater unique identity
+  uint64_t id_ = 0;
 };
 
 }  // namespace gva

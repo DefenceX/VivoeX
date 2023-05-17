@@ -13,6 +13,7 @@
 #include "gva_application.h"
 
 #include <glog/logging.h>
+#include <gtk/gtk.h>
 
 #include <memory>
 
@@ -23,7 +24,6 @@
 #include "hmicore/widgets/widget.h"
 
 GvaApplication::Options GvaApplication::options_ = {};
-uint32_t GvaApplication::update_counter_ = 0;
 bool GvaApplication::first_execution_ = true;
 std::shared_ptr<gva::EventsGva> GvaApplication::io_;
 
@@ -68,6 +68,7 @@ void GvaApplication::Activate(GtkApplication *app, gpointer user_data [[maybe_un
   gtk_container_add(GTK_CONTAINER(gtk_.win), gtk_.draw);
   // set a minimum size
   gtk_widget_set_size_request(gtk_.draw, gva::kMinimumWidth, gva::kMinimumHeight);
+  gtk_window_set_default_size(GTK_WINDOW(gtk_.win), gva::kMinimumWidth, gva::kMinimumHeight);
 
   //
   // Event signals
@@ -168,20 +169,27 @@ void GvaApplication::Dispatch(gva::GvaKeyEnum key) {
 void GvaApplication::Fullscreen(gva::HandleType *render) {
   GdkRectangle workarea;
 
-  render->fullscreen ? gtk_window_unfullscreen(GTK_WINDOW(gtk_.win)) : gtk_window_fullscreen(GTK_WINDOW(gtk_.win));
+  if (render->fullscreen) {
+    LOG(INFO) << "Un-fullscreen";
+    gtk_window_unfullscreen(GTK_WINDOW(gtk_.win));
+    gva::hmi::GetRendrer()->GetTouch()->SetResolution(gva::kMinimumWidth, gva::kMinimumHeight);
+    gtk_window_resize(GTK_WINDOW(gtk_.win), gva::kMinimumWidth, gva::kMinimumHeight);
+  } else {
+    LOG(INFO) << "Switch to fullscreen";
+    gtk_window_fullscreen(GTK_WINDOW(gtk_.win));
+    if (GdkMonitor *monitor = gdk_display_get_primary_monitor(gdk_display_get_default()); monitor) {
+      gdk_monitor_get_workarea(monitor, &workarea);
+      LOG(INFO) << "Switching resolution to " + std::to_string(workarea.width) + "x" + std::to_string(workarea.height);
+
+      gva::hmi::GetRendrer()->GetTouch()->SetResolution(workarea.width, workarea.height);
+    } else {
+      LOG(ERROR) << "gdk_monitor_get_workarea failed when switching to fullscreen.";
+    }
+  }
+
   render->fullscreen = render->fullscreen ? false : true;
   gva::ConfigData::GetInstance()->SetFullscreen(render->fullscreen);
 
-  LOG(INFO) << "Toggle fullscreen";
-
-  if (GdkMonitor *monitor = gdk_display_get_primary_monitor(gdk_display_get_default()); monitor) {
-    gdk_monitor_get_workarea(monitor, &workarea);
-    LOG(INFO) << "Switching resolution to " + std::to_string(workarea.width) + "x" + std::to_string(workarea.height);
-
-    gva::hmi::GetRendrer()->GetTouch()->SetResolution(workarea.width, workarea.height);
-  } else {
-    LOG(ERROR) << "gdk_monitor_get_workarea failed when switching to fullscreen.";
-  }
   gva::EventsGva::CreateRefreshEvent();
 }
 
@@ -502,7 +510,7 @@ void GvaApplication::Update(gpointer user_data) {
     default:
       break;
     case gva::EventEnumType::kKeyEventPressed:
-      LOG(INFO) << "[GVA] Key press event being processed value=" << std::to_string(int(event.key_));
+      LOG(INFO) << "Key press event being processed value=" << std::to_string(int(event.key_));
       update = SetKeyPressed(event.key_);
       break;
     case gva::EventEnumType::kKeyEventReleased:
@@ -511,7 +519,7 @@ void GvaApplication::Update(gpointer user_data) {
     case gva::EventEnumType::kResizeEvent: {
       if (event.resize_.width != gva::hmi::GetRendrer()->GetWidth() ||
           event.resize_.height != gva::hmi::GetRendrer()->GetHeight()) {
-        LOG(INFO) << "[GVA] WindowResize: " << event.resize_.width << "x" << event.resize_.height << "\n";
+        LOG(INFO) << "WindowResize: " << event.resize_.width << "x" << event.resize_.height << "\n";
         gva::hmi::GetRendrer()->SetWidth(event.resize_.width);
         gva::hmi::GetRendrer()->SetHeight(event.resize_.height);
         gva::hmi::GetRendrer()->GetTouch()->SetResolution(event.resize_.width, event.resize_.height);
@@ -529,7 +537,6 @@ void GvaApplication::Update(gpointer user_data) {
 
   // Only update if a change was detected
   if (update) {
-    update_counter_++;
     gva::hmi::GetRendrer()->Update();
   }
 
