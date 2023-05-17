@@ -213,7 +213,7 @@ The HMI uses Cairo for rendering the GUI components.
 NGVA is a NATO Standardisation Agreement (STANAG 4754) based on open standards to design and integrate multiple electronic sub-systems onto military vehicles which are controllable from a multifunction crew display and control unit. 
 
 ### DEF(AUST)11316 AS GVA
-Email asgva.office@defence.gov.au requesting access to the DEF(AUST) and AS GVA GovDex community
+Email ASGVA office requesting access to the DEF(AUST) and AS GVA GovDex community
 
 ## Video
 ### DEF STAN 00-083 - Vetronics Infrastructure for Video Over Ethernet (VIVOE)

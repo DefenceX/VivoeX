@@ -44,7 +44,19 @@ class Hotspot : public RenderBase {
   ///
   Hotspot(GvaFunctionGroupEnum groupId, uint32_t binding, uint32_t x, uint32_t y, uint32_t width, uint32_t height)
       : RenderBase(x, y, width, height), group_id_(groupId), binding_(binding) {}
+
+  ///
+  /// \brief Get the Group Id attribute
+  ///
+  /// \return GvaFunctionGroupEnum
+  ///
   GvaFunctionGroupEnum GetGroupId() const { return group_id_; }
+
+  ///
+  /// \brief Get the Binding attribute
+  ///
+  /// \return uint32_t
+  ///
   uint32_t GetBinding() const { return binding_; }
 
  private:

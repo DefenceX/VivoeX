@@ -103,15 +103,25 @@ class ScreenGva;
 // These are used by the clock thread to update the time and refresh the screen
 //
 struct ClockArgs {
-  std::string clockString;
-  std::string locationFormat;
-  std::string locationString;
+  /// Clock string
+  std::string clock_string;
+  /// Location string format
+  std::string location_format;
+  /// Location string
+  std::string location_string;
+  /// The screen to update
   ScreenGva *screen;
+  /// GPS handle
   int *gps;
+  /// NMEA info
   nmeaINFO *info;
+  /// NMEA parser
   nmeaPARSER *parser;
+  /// true if active
   bool active;
+  /// The status bar widget
   std::shared_ptr<WidgetStatusBar> status_bar;
+  /// The location type
   LocationType location;
 };
 
