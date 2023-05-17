@@ -13,4 +13,4 @@ We welcome all conversations around security and vunrabilities in our code base,
 
 ## Reporting a Vulnerability
 
-Please contact us with any issues on enquiries@defencex.com.au or reach out to developers on LinkedIn.
+Please contact us with any issues or reach out to developers on LinkedIn.
