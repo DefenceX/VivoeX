@@ -53,12 +53,6 @@ class WidgetVideo : public WidgetCanvas {
   void Draw() final;
 
   ///
-  /// \brief Draw the canvas with video rendered on it
-  ///
-  ///
-  void DrawVideo();
-
-  ///
   /// \brief Start the video stream
   ///
   ///
@@ -75,14 +69,14 @@ class WidgetVideo : public WidgetCanvas {
   ///
   /// \param session_name The SAP/SDP session name
   ///
-  void SetSessionName(std::string_view session_name);
+  void SetSessionName(std::string_view session_name) const;
 
   ///
   /// \brief Set the Ipaddress attribute
   ///
   /// \param ip_address the IPV4 address of the video stream
   ///
-  void SetIpAddress(std::string_view ip_address);
+  void SetIpAddress(std::string_view ip_address) const;
 
  private:
   /// The RGB video buffer
@@ -90,7 +84,7 @@ class WidgetVideo : public WidgetCanvas {
   /// The video feed object
   RtpvrawDepayloader video_feed_;
   /// The timeout for receiving video frames
-  uint32_t timeout_ms_ = 80;
+  uint32_t timeout_ms_ = 5;
   /// The SAP/SDP announcement flag
   const bool kSapEnabled = false;
 };

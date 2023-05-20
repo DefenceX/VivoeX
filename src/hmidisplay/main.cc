@@ -29,24 +29,26 @@
 #include "hmicore/widgets/plan_position_indicator.h"
 #include "hmidisplay/gva_application.h"
 
+/// Flag for fullscreen
 DEFINE_bool(fullscreen, false, "Start the application fullscreen");
+/// Flag for live video
 DEFINE_bool(live, false, "Show live video streams");
 
-int main(int argc, char *argv[]) {
-  google::SetVersionString(std::to_string(gva::kSemVerMajor) + "." + std::to_string(gva::kSemVerMinor) + "." +
-                           std::to_string(gva::kSemVerPatch));
-
+int main(int argc, char* argv[]) {
   google::SetUsageMessage(
       "Human Machine Interface (HMI) display application renderer for using in\n"
       "vehicles build on the Generic Vehicle Architecture (GVA), this is the open source\n"
       "edition and does not include any elements of the Land Data Model (LDM). Commercial\n"
       "support needed for country specific LDM");
+
+  // Initialize Google's logging library.
+  google::InitGoogleLogging(argv[0]);
   gflags::ParseCommandLineFlags(&argc, &argv, true);
-  if (!google::IsGoogleLoggingInitialized()) {
-    google::InitGoogleLogging(argv[0]);
-    google::InstallFailureSignalHandler();
-    LOG(INFO) << "Initialised Google logging";
-  }
+  google::SetVersionString(std::to_string(gva::kSemVerMajor) + "." + std::to_string(gva::kSemVerMinor) + "." +
+                           std::to_string(gva::kSemVerPatch));
+
+  google::InstallFailureSignalHandler();
+  LOG(INFO) << "Initialised Google logging";
 
   std::string ipaddr = "127.0.0.1";
   uint32_t port = 5004;

@@ -17,8 +17,13 @@
 
 namespace gva {
 
+/// Class definition of the DefaultSettings
 class DefaultSettings {
  public:
+  ///
+  /// \brief Construct a new Default Settings object
+  ///
+  ///
   DefaultSettings() = default;
 
   ///

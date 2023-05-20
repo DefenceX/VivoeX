@@ -16,10 +16,14 @@
 
 namespace gva {
 
+/// Class definition of the HmiHelper
 class HmiHelper {
  public:
+  /// Construct a table of licences
   static void TableLicences(WidgetTable *table);
+  /// Construct a table of system information
   static void TableSystem(WidgetTable *table);
+  /// Construct a table of alarms
   static void TableAlarms(WidgetTable *table);
 };
 

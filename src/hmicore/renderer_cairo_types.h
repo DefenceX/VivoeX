@@ -19,16 +19,24 @@
 
 namespace gva {
 
+/// Class definition of the HandleType
 class HandleType {
  public:
+  /// Construct a new Handle Type object
   uint32_t handle;
+  /// true if in user
   bool inUse;
+  /// True if fullscreen
   bool fullscreen;
+  /// The screen dimensions
   ResolutionType size;
+  /// Cairo screen surface
   cairo_surface_t *surface;
+  /// Cairo context
   cairo_t *cr;
 };
 
+/// Class definition of the DrawType
 enum class DrawType {
   kCommandUndefined = 0,
   kCommandCircle,

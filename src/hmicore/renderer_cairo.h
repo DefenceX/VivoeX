@@ -426,7 +426,7 @@ class RendererCairo : public Renderer {
   ///
   /// \param x axis pixel postion
   /// \param y axis pixel postion
-  /// \param buffer to load the image into
+  /// \param buffer unused when file set
   /// \param file to load
   /// \return uint32_t the texture id
   ///

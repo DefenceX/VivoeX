@@ -13,6 +13,7 @@
 #include "hmicore/widgets/canvas/video.h"
 
 #include <colourspace.h>
+#include <glog/logging.h>
 #include <rtp_types.h>
 #include <rtpvraw_depayloader.h>
 
@@ -38,25 +39,14 @@ WidgetVideo::~WidgetVideo() { video_feed_.Close(); }
 void WidgetVideo::SetReceiveTimeout(uint32_t timeout_ms) { timeout_ms_ = timeout_ms; }
 
 void WidgetVideo::Draw() {
-  if (GetVisible()) {
-    DrawVideo();
-  }
-}
+  uint8_t *cpu_buffer;
+  if (video_feed_.Receive(&cpu_buffer, 1) == true) {
+    video::YuvToRgba(480, 640, cpu_buffer, rgb_buffer_.data());
+    GetRenderer()->TextureRGB(0, 0, rgb_buffer_.data());
+  } else {
+    const std::string video_background_filename = ConfigData::GetInstance()->GetImagePath() + "/VideoBackground.png";
+    GetRenderer()->TextureRGB(0, 0, nullptr, video_background_filename);
 
-void WidgetVideo::DrawVideo() {
-  // uint8_t *cpu_buffer;
-  // if (video_feed_.Receive(&cpu_buffer, timeout_ms_) == true) {
-  //   // video::YuvToRgba(480, 640, cpu_buffer, rgb_buffer_.data());
-  //   // GetRenderer()->TextureRGB(0, 0, rgb_buffer_.data());
-  //   GetRenderer()->SetColourForeground(HMI_BLACK);
-  //   GetRenderer()->SetColourBackground(HMI_BLACK);
-  //   GetRenderer()->DrawRectangle(0, 0, width_, height_, true);
-  // } else
-  {
-    const std::string path = ConfigData::GetInstance()->GetImagePath();
-    SetFilename(path + "/VideoBackground.png");
-
-    WidgetCanvas::Draw();
     GetRenderer()->DrawColor(HMI_WHITE);
 
     GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
@@ -66,7 +56,7 @@ void WidgetVideo::DrawVideo() {
     std::string stream;
     if (kSapEnabled) {
       stream =
-          "sap://" + kIpaddr + "@" + std::to_string(kPort) + ":" + std::to_string(video_feed_.GetPort()) + " offline";
+          "sap://" + kIpaddr + "@" + std::to_string(kPort) + ":" + std::to_string(video_feed_.GetPort()) + " offline ";
 
     } else {
       stream = "rtp://" + video_feed_.GetSessionName() + "@" + video_feed_.GetIpAddress() + ":" +
@@ -82,8 +72,8 @@ void WidgetVideo::Stop() { video_feed_.Stop(); }
 
 void WidgetVideo::Start() { video_feed_.Start(); }
 
-void WidgetVideo::SetSessionName(std::string_view session_name) { video_feed_.SetSessionName(session_name); }
+void WidgetVideo::SetSessionName(std::string_view session_name) const { video_feed_.SetSessionName(session_name); }
 
-void WidgetVideo::SetIpAddress(std::string_view ip_address) { video_feed_.SetIpAddress(ip_address); }
+void WidgetVideo::SetIpAddress(std::string_view ip_address) const { video_feed_.SetIpAddress(ip_address); }
 
 }  // namespace gva

@@ -14,10 +14,12 @@
 
 namespace gva {
 
+/// \brief Plot a circle on the X axis
 int32_t PlotCircleX(uint16_t x, double_t radius, double_t degree) {
   return (int32_t)(x + radius * sin(((M_PI * 2) / 360) * degree));
 }
 
+/// \brief Plot a circle on the Y axis
 int32_t PlotCircleY(uint16_t y, double_t radius, double_t degree) {
   return (int32_t)(y - radius * cos(((M_PI * 2) / 360) * degree));
 }

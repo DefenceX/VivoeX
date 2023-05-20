@@ -64,8 +64,11 @@
 #include "hmicore/widgets/top_labels.h"
 #include "hmicore/widgets/widget_types.h"
 
+/// Flag for path to images
 DEFINE_string(path, ".", "Path to save images to");
+/// Flag for timeout in milliseconds
 DEFINE_int32(timeout, 1000, "Timeout in milliseconds between widget renders, 1 second if not specified.");
+/// Flag for widget ID to render
 DEFINE_int32(id, 0,
              "The ID of the single widget to render from list below (timeout does not apply here):\n"
              "       0: PPI classic tank site, north facing site\n"

@@ -489,7 +489,6 @@ bool GvaApplication::SetKeyReleased(gva::HandleType *render, gva::GvaKeyEnum key
 ///
 /// \brief Renderer callback to update screen
 ///
-/// \param arg Callback arguments
 /// \param user_data Renderer handle
 ///
 void GvaApplication::Update(gpointer user_data) {

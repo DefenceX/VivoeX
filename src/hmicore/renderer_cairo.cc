@@ -243,7 +243,7 @@ void RendererCairo::Draw() {
         cairo_paint(cr);
         // // Only free the image if it wasn't from cache. i.e. video
         // if (!image_list_[currentCmd.arg1].from_cache) cairo_surface_destroy(image_list_[currentCmd.arg1].image);
-        // break;
+        break;
       case DrawType::kCommandImageTexturePersist:
         cairo_set_source_surface(cr, image_list_[currentCmd.arg1 - 1].image, currentCmd.points[0].x,
                                  currentCmd.points[0].y);

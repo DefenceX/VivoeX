@@ -29,6 +29,7 @@
 #include "hmicore/widgets/plan_position_indicator.h"
 #include "hmidisplay/gva_application_types.h"
 
+/// Class definition of the GvaApplication
 class GvaApplication {
  public:
   /// Application options
@@ -44,6 +45,7 @@ class GvaApplication {
   ///
   /// \brief Construct a new Gva Application object
   ///
+  /// \param options The application options
   /// \param ipaddr The stream IP address for raw RTP video
   /// \param port The port for the above RTP stream
   ///
@@ -64,22 +66,22 @@ class GvaApplication {
   ///
   /// \brief Create the Key Pressed event
   ///
-  /// \param key
+  /// \param key The key being pressed
   ///
   static bool SetKeyPressed(gva::GvaKeyEnum key);
 
   ///
   /// \brief Create the Key Released event
   ///
-  /// \param key
+  /// \param renderer The renderer
+  /// \param key The key being released
   ///
-  static bool SetKeyReleased(gva::HandleType *, gva::GvaKeyEnum key);
+  static bool SetKeyReleased(gva::HandleType *renderer, gva::GvaKeyEnum key);
 
   ///
-  /// \brief Update the canvas and re-render the screen
+  /// \brief Update the GTK application
   ///
-  /// \param arg
-  /// \param user_data
+  /// \param user_data Pointer to data object
   ///
   static void Update(gpointer user_data);
 

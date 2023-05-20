@@ -31,6 +31,7 @@
 
 namespace gva {
 
+/// Struct definition of the Canvas
 struct Canvas {
   /// flag indicating if the canvas is visible
   bool visible;
@@ -42,6 +43,7 @@ struct Canvas {
   bool blackout = false;
 };
 
+/// Struct definition of the Labels
 struct Label {
   /// Label is visible
   bool visible;
@@ -62,13 +64,14 @@ struct Message {
   uint32_t width;
   /// The icon to display instead of text
   widget::IconType icon;
+  /// The brief message
   struct {
     /// The label text
     std::string text;
     /// The label font size
     uint32_t fontSize;
   } brief;
-
+  /// The detail message
   struct {
     /// The message text
     std::string text;
@@ -77,6 +80,7 @@ struct Message {
   } detail;
 };
 
+/// Struct definition of the Screen
 struct Screen {
   struct {
     /// A textual description of this screen
@@ -86,22 +90,29 @@ struct Screen {
     /// The tty device connected to GPS
     std::string gpsDevice;
   } info;
-
+  /// The current function
   GvaFunctionEnum currentFunction;
+  /// The canvas
   Canvas canvas;
+  /// The function select widget
   FunctionSelect *function_top;
+  /// The function select widget
   CommonTaskKeys *control;
+  /// The function select widget
   FunctionKeys function_left;
+  /// The function select widget
   FunctionKeys function_right;
+  /// The labels
   Label label;
+  /// The message if any
   Message message;
+  /// The label enum
   LabelModeEnum labels;
 };
 
 class ScreenGva;
-//
-// These are used by the clock thread to update the time and refresh the screen
-//
+
+/// The clock arguments
 struct ClockArgs {
   /// Clock string
   std::string clock_string;
@@ -125,6 +136,7 @@ struct ClockArgs {
   LocationType location;
 };
 
+/// Class definition of the ScreenGva
 class ScreenGva : public RendererGva {
  public:
   ///
@@ -167,7 +179,7 @@ class ScreenGva : public RendererGva {
   ///
   /// Start the clock thread running to update the clock (pthread started)
   ///
-  /// \param barData To be used for updating
+  /// \param status_bar_widget the widget to update
   ///
   void StartClock(std::shared_ptr<WidgetX> status_bar_widget);
 
