@@ -43,11 +43,11 @@ void WidgetDriverSpeedometer::Draw() {
   GetRenderer()->Scale(0.5, 0.5);
   GetRenderer()->Translate(GetX(), GetY());
 
-  GetRenderer()->DrawColor(HMI_WHITE);
+  GetRenderer()->DrawColor(kHmiWhite);
 
   // Compass
-  GetRenderer()->SetColourBackground(HMI_BLACK);
-  GetRenderer()->SetColourForeground(HMI_WHITE);
+  GetRenderer()->SetColourBackground(kHmiBlack);
+  GetRenderer()->SetColourForeground(kHmiWhite);
   GetRenderer()->SetLineThickness(2, LineType::kLineSolid);
   GetRenderer()->DrawCircle(0, 0, radius, true);  // Compass
 
@@ -88,8 +88,8 @@ void WidgetDriverSpeedometer::Draw() {
   GetRenderer()->MovePen(0, 0);
   GetRenderer()->Rotate(DegreesToRadians((uint16_t)(45 + (value_ * 2.23))));
 
-  GetRenderer()->SetColourBackground(HMI_CYAN);
-  GetRenderer()->SetColourForeground(HMI_BLACK);
+  GetRenderer()->SetColourBackground(kHmiCyan);
+  GetRenderer()->SetColourForeground(kHmiBlack);
   GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
   GetRenderer()->DrawRectangle(-4, +12, 4, 76, true);
 

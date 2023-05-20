@@ -35,9 +35,9 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
   sy = (height / (double)15);
 
   Save();
-  DrawColor(HMI_WHITE);
-  SetColourBackground(HMI_WHITE);
-  SetColourForeground(HMI_WHITE);
+  DrawColor(kHmiWhite);
+  SetColourBackground(kHmiWhite);
+  SetColourForeground(kHmiWhite);
   SetLineThickness(1, LineType::kLineSolid);
 
   Translate(x, y);
@@ -137,16 +137,16 @@ void RendererGva::DrawIcon(widget::IconType icon, uint32_t x, uint32_t y, uint32
       Rotate(M_PI);
 
       SetLineThickness(2, LineType::kLineSolid);
-      if (icon == widget::IconType::kIconError) SetColourBackground(HMI_GREEN);
-      if (icon == widget::IconType::kIconError) SetColourBackground(HMI_RED);
-      if (icon == widget::IconType::kIconWarning) SetColourBackground(HMI_ORANGE);
+      if (icon == widget::IconType::kIconError) SetColourBackground(kHmiGreen);
+      if (icon == widget::IconType::kIconError) SetColourBackground(kHmiRed);
+      if (icon == widget::IconType::kIconWarning) SetColourBackground(kHmiOrange);
       Scale(sx, sy);
       MovePenRaw(-10, +10);
       DrawPenRaw(0, -10);
       DrawPenRaw(+10, +10);
       DrawPenRaw(-10, +10);
       ClosePath(true);
-      DrawColor(HMI_WHITE);
+      DrawColor(kHmiWhite);
       MovePenRaw(0, -3);
       DrawPenRaw(0, +3);
       ClosePath(true);
@@ -232,14 +232,14 @@ void RendererGva::DrawButton(const std::string &keyText, uint32_t fontSize, uint
                              uint32_t height, widget::CellAlignType align) {
   uint32_t textX = 6;
 
-  SetColourForeground(HMI_GREY);
+  SetColourForeground(kHmiGrey);
   DrawRoundedRectangle(x, y, width, height, 6, true);
-  SetColourForeground(HMI_WHITE);
+  SetColourForeground(kHmiWhite);
   SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightBold, config_->GetThemeFont(), fontSize);
   uint32_t textHeight = GetTextHeight("qh", fontSize);
   uint32_t textWidth = GetTextWidth(keyText, fontSize);
 
-  DrawColor(HMI_WHITE);
+  DrawColor(kHmiWhite);
   if (align == widget::CellAlignType::kAlignCentre) textX = (width / 2) - (textWidth / 2);
   DrawText(x + textX, y + (height - textHeight - 4), keyText);
 };

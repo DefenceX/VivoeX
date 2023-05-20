@@ -40,7 +40,8 @@ class WidgetObjectLocalisation : public WidgetX {
   ///
   /// \brief Construct a new Widget Keyboard object, this widget is interactive and requires the touch events
   ///
-  /// \param renderer
+  /// \param renderer the renderer
+  /// \param touch the touch object
   ///
   explicit WidgetObjectLocalisation(const RendererGva& renderer, TouchGva* touch);
 

@@ -31,8 +31,8 @@ void WidgetCanvas::DrawCanvas() {
     case SurfaceType::kSurfaceBlackout:
       DLOG(INFO) << "Canvas Blackout\n";
       // Set background black
-      GetRenderer()->SetColourForeground(HMI_BLACK);
-      GetRenderer()->SetColourBackground(HMI_BLACK);
+      GetRenderer()->SetColourForeground(kHmiBlack);
+      GetRenderer()->SetColourBackground(kHmiBlack);
       GetRenderer()->DrawRectangle(0, 0, width_, height_, true);
       break;
     case SurfaceType::kSurfaceCairo:

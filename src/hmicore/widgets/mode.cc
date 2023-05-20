@@ -21,8 +21,8 @@ WidgetMode::WidgetMode(const RendererGva& renderer) : WidgetX(renderer, widget::
 void WidgetMode::Draw() {
   uint32_t y = kMinimumHeight - (kMinimumHeight * 0.12);
 
-  GetRenderer()->SetColourForeground(HMI_WHITE);
-  GetRenderer()->SetColourBackground(HMI_DARK_BLUE);
+  GetRenderer()->SetColourForeground(kHmiWhite);
+  GetRenderer()->SetColourBackground(kHmiDarkBlue);
   GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
 
   GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightNormal,

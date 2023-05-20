@@ -61,15 +61,15 @@ void WidgetTableDynamic::Draw() {
 }
 
 void WidgetTableDynamic::AddRow() {
-  RowType row(ConfigData::GetInstance()->GetTableBackground(), Renderer::PackRgb(HMI_WHITE),
-              Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_YELLOW), widget::WeightType::kWeightNormal, false,
+  RowType row(ConfigData::GetInstance()->GetTableBackground(), Renderer::PackRgb(kHmiWhite),
+              Renderer::PackRgb(kHmiWhite), Renderer::PackRgb(kHmiYellow), widget::WeightType::kWeightNormal, false,
               widget::CellAlignType::kAlignLeft);
   dynamic_rows_.push_back(row);
 }
 
 void WidgetTableDynamic::AddRow(widget::WeightType font_weight) {
-  AddRow(Renderer::PackRgb(HMI_WHITE), ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled(),
-         Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_YELLOW), font_weight);
+  AddRow(Renderer::PackRgb(kHmiWhite), ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled(),
+         Renderer::PackRgb(kHmiWhite), Renderer::PackRgb(kHmiYellow), font_weight);
 }
 
 void WidgetTableDynamic::AddCell(const std::string text, uint32_t width) {

@@ -31,16 +31,27 @@ namespace gva {
 // Event Declarations
 //
 struct EventKeyPowerOn : tinyfsm::Event {};
+/// Event for SA key press
 struct EventKeySA : tinyfsm::Event {};
+/// Event for WPN key press
 struct EventKeyWPN : tinyfsm::Event {};
+/// Event for DEF key press
 struct EventKeyDEF : tinyfsm::Event {};
+/// Event for SYS key press
 struct EventKeySYS : tinyfsm::Event {};
+/// Event for DRV key press
 struct EventKeyDRV : tinyfsm::Event {};
+/// Event for STR key press
 struct EventKeySTR : tinyfsm::Event {};
+/// Event for COM key press
 struct EventKeyCOM : tinyfsm::Event {};
+/// Event for BMS key press
 struct EventKeyBMS : tinyfsm::Event {};
+/// Event for Alarms key press
 struct EventKeyAlarms : tinyfsm::Event {};
+/// Event for Function key press
 struct EventKeyFunction : tinyfsm::Event {
+  /// The key pressed
   GvaKeyEnum key;
 };
 

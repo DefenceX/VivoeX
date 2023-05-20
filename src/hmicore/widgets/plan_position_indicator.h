@@ -64,10 +64,11 @@ class WidgetPlanPositionIndicator : public WidgetX {
   /// \param x X pixel position
   /// \param y Y pixel position
   /// \param degrees Compass heading
-  /// \param sightAzimuth Camera heading
+  /// \param sight_azimuth Camera heading
+  /// \param weapon_azimuth Weapon heading
   ///
-  void DrawPPI(widget::ModeEnum mode, int32_t x, int32_t y, int16_t degrees, int16_t sightAzimuth,
-               int16_t weaponAzimuth) const;
+  void DrawPPI(widget::ModeEnum mode, int32_t x, int32_t y, int16_t degrees, int16_t sight_azimuth,
+               int16_t weapon_azimuth) const;
 
   ///
   /// \brief Set the Bearing object

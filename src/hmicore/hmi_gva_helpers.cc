@@ -79,7 +79,7 @@ void HmiHelper::TableSystem(WidgetTable *table) {
   if (std::filesystem::exists(ConfigData::GetInstance()->GetGpsDevice())) {
     table->AddCell("OK", 20);
   } else {
-    table->AddCell("Error", 20, Renderer::PackRgb(HMI_RED));
+    table->AddCell("Error", 20, Renderer::PackRgb(kHmiRed));
   }
 
   table->AddRow();
@@ -87,7 +87,7 @@ void HmiHelper::TableSystem(WidgetTable *table) {
   if (std::filesystem::exists(ConfigData::GetInstance()->GetOdbDevice())) {
     table->AddCell("OK", 20);
   } else {
-    table->AddCell("Error", 20, Renderer::PackRgb(HMI_RED));
+    table->AddCell("Error", 20, Renderer::PackRgb(kHmiRed));
   }
 
   table->AddRow();
@@ -95,12 +95,12 @@ void HmiHelper::TableSystem(WidgetTable *table) {
   if (std::filesystem::exists(ConfigData::GetInstance()->GetMapPath())) {
     table->AddCell("OK", 20);
   } else {
-    table->AddCell("Error", 20, Renderer::PackRgb(HMI_RED));
+    table->AddCell("Error", 20, Renderer::PackRgb(kHmiRed));
   }
 
   table->AddRow();
   table->AddCell("Timesource GPS Lock", 80);
-  table->AddCell("Off", 20, Renderer::PackRgb(HMI_ORANGE));
+  table->AddCell("Off", 20, Renderer::PackRgb(kHmiOrange));
 }
 
 void HmiHelper::TableAlarms(WidgetTable *table) {
@@ -119,29 +119,29 @@ void HmiHelper::TableAlarms(WidgetTable *table) {
   table->AddCell("Status", 20);
   table->SetCurrentRow(1);
 
-  table->AddRow(Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_RED), Renderer::PackRgb(HMI_WHITE),
-                Renderer::PackRgb(HMI_YELLOW), widget::WeightType::kWeightNormal);
+  table->AddRow(Renderer::PackRgb(kHmiWhite), Renderer::PackRgb(kHmiRed), Renderer::PackRgb(kHmiWhite),
+                Renderer::PackRgb(kHmiYellow), widget::WeightType::kWeightNormal);
   table->AddCell("15/6 15:06", 20);
   table->AddCell("Low engine oil pressure", 50);
   table->AddCell("W", 10);
   table->AddCell("RES", 20);
 
-  table->AddRow(Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_RED), Renderer::PackRgb(HMI_WHITE),
-                Renderer::PackRgb(HMI_YELLOW), widget::WeightType::kWeightNormal);
+  table->AddRow(Renderer::PackRgb(kHmiWhite), Renderer::PackRgb(kHmiRed), Renderer::PackRgb(kHmiWhite),
+                Renderer::PackRgb(kHmiYellow), widget::WeightType::kWeightNormal);
   table->AddCell("15/6 15:26", 20);
   table->AddCell("Engine over temperature", 50);
   table->AddCell("W", 10);
   table->AddCell("UNACK", 20);
 
-  table->AddRow(Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_RED), Renderer::PackRgb(HMI_WHITE),
-                Renderer::PackRgb(HMI_YELLOW), widget::WeightType::kWeightNormal);
+  table->AddRow(Renderer::PackRgb(kHmiWhite), Renderer::PackRgb(kHmiRed), Renderer::PackRgb(kHmiWhite),
+                Renderer::PackRgb(kHmiYellow), widget::WeightType::kWeightNormal);
   table->AddCell("15/6 15:29", 20);
   table->AddCell("Engine over temperature", 50);
   table->AddCell("W", 10);
   table->AddCell("RES", 20);
 
-  table->AddRow(Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_ORANGE), Renderer::PackRgb(HMI_WHITE),
-                Renderer::PackRgb(HMI_YELLOW), widget::WeightType::kWeightNormal);
+  table->AddRow(Renderer::PackRgb(kHmiWhite), Renderer::PackRgb(kHmiOrange), Renderer::PackRgb(kHmiWhite),
+                Renderer::PackRgb(kHmiYellow), widget::WeightType::kWeightNormal);
   table->AddCell("15/6 14:00", 20);
   table->AddCell("Gun fault", 50);
   table->AddCell("C", 10);
@@ -153,15 +153,15 @@ void HmiHelper::TableAlarms(WidgetTable *table) {
   table->AddCell("A", 10);
   table->AddCell("ACK", 20);
 
-  table->AddRow(Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_GREY), Renderer::PackRgb(HMI_WHITE),
-                Renderer::PackRgb(HMI_YELLOW), widget::WeightType::kWeightNormal);
+  table->AddRow(Renderer::PackRgb(kHmiWhite), Renderer::PackRgb(kHmiGrey), Renderer::PackRgb(kHmiWhite),
+                Renderer::PackRgb(kHmiYellow), widget::WeightType::kWeightNormal);
   table->AddCell("15/6 19:03", 20);
   table->AddCell("Gun barrel over temperature", 50);
   table->AddCell("C", 10);
-  table->AddCell("ACK(OVR)", 20, Renderer::PackRgb(HMI_GREY));
+  table->AddCell("ACK(OVR)", 20, Renderer::PackRgb(kHmiGrey));
 
-  table->AddRow(Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_ORANGE), Renderer::PackRgb(HMI_WHITE),
-                Renderer::PackRgb(HMI_YELLOW), widget::WeightType::kWeightNormal);
+  table->AddRow(Renderer::PackRgb(kHmiWhite), Renderer::PackRgb(kHmiOrange), Renderer::PackRgb(kHmiWhite),
+                Renderer::PackRgb(kHmiYellow), widget::WeightType::kWeightNormal);
   table->AddCell("15/6 19:04", 20);
   table->AddCell("LRU xx fault", 50);
   table->AddCell("C", 10);
@@ -173,8 +173,8 @@ void HmiHelper::TableAlarms(WidgetTable *table) {
   table->AddCell("A", 10);
   table->AddCell("ACK", 20);
 
-  table->AddRow(Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_ORANGE), Renderer::PackRgb(HMI_WHITE),
-                Renderer::PackRgb(HMI_YELLOW), widget::WeightType::kWeightNormal);
+  table->AddRow(Renderer::PackRgb(kHmiWhite), Renderer::PackRgb(kHmiOrange), Renderer::PackRgb(kHmiWhite),
+                Renderer::PackRgb(kHmiYellow), widget::WeightType::kWeightNormal);
   table->AddCell("15/6 19:10", 20);
   table->AddCell("CBRN detected high CO2", 50);
   table->AddCell("C", 10);

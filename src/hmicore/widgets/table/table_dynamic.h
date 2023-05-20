@@ -168,7 +168,7 @@ class WidgetTableDynamic : public WidgetTable {
 
  private:
   uint32_t background_colour_;
-  uint32_t foreground_colour_ = Renderer::PackRgb(HMI_WHITE);
+  uint32_t foreground_colour_ = Renderer::PackRgb(kHmiWhite);
   uint32_t outline_colour_ = ConfigData::GetInstance()->GetThemeLabelBorderEnabled();
   uint32_t highlight_colour_ = ConfigData::GetInstance()->GetThemeLabelBorderEnabledSelected();
 

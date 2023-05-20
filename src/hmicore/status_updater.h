@@ -57,7 +57,7 @@ class StatusUpdater {
   ///
   /// \brief Parse the GPS data
   ///
-  /// \param gpsFd the GPS file descriptor
+  /// \param gps_file_descriptor the GPS file descriptor
   /// \param info the NMEA information
   /// \param parser the current NMEA parser
   /// \param location the location presentation type

@@ -82,6 +82,7 @@ struct Message {
 
 /// Struct definition of the Screen
 struct Screen {
+  /// Screen information
   struct {
     /// A textual description of this screen
     std::string name;

@@ -45,8 +45,10 @@ class ConfigDataBase {
   ///
   void WriteData() const;
 
+  /// CThe current config data
   std::unique_ptr<config::Gva> current_config_;
 
+  /// The default config data
   std::string config_file_ = "config.pb";
 };
 

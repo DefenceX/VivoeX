@@ -18,24 +18,23 @@
 
 #include "hmicore/gva.h"
 
-#define HMI_AMBER 255, 153, 0
-#define HMI_WHITE 255, 255, 255
-#define HMI_RED 255, 0, 0
-#define HMI_GREY 127, 127, 127
-#define HMI_MEDIUM_GREY 96, 96, 96
-#define HMI_DARK_GREY 64, 64, 64
-#define HMI_GREEN 0, 255, 0
-#define HMI_DARK_GREEN 0, 128, 0
-#define HMI_DARK_GREEN2 0, 75, 0
-#define HMI_BLUE 0, 0, 255
-#define HMI_CYAN 0, 255, 255
-#define HMI_DARK_BLUE 51, 102, 153
-#define HMI_LIGHT_BLUE 50, 50, 255
-#define HMI_BLACK 0, 0, 0
-#define HMI_YELLOW 255, 255, 0
-
-#define HMI_ORANGE 255, 165, 0
-#define HMI_NONE -1, -1, -1
+const gva::ColourType kHmiAmber = {255, 153, 0};
+const gva::ColourType kHmiWhite = {255, 255, 255};
+const gva::ColourType kHmiRed = {255, 0, 0};
+const gva::ColourType kHmiGrey = {127, 127, 127};
+const gva::ColourType kHmiMediumGrey = {96, 96, 96};
+const gva::ColourType kHmiDarkGrey = {64, 64, 64};
+const gva::ColourType kHmiGreen = {0, 255, 0};
+const gva::ColourType kHmiDarkGreen = {0, 128, 0};
+const gva::ColourType kHmiDarkGreen2 = {0, 75, 0};
+const gva::ColourType kHmiBlue = {0, 0, 255};
+const gva::ColourType kHmiCyan = {0, 255, 255};
+const gva::ColourType kHmiDarkBlue = {51, 102, 153};
+const gva::ColourType kHmiLightBlue = {50, 50, 255};
+const gva::ColourType kHmiBlack = {0, 0, 0};
+const gva::ColourType kHmiYellow = {255, 255, 0};
+const gva::ColourType kHmiOrange = {255, 165, 0};
+const gva::ColourType kHmiNone = {0, 0, 0};
 
 namespace gva {
 
@@ -172,6 +171,14 @@ class Renderer {
   /// \return uint32_t The number of bytes written
   ///
   virtual uint32_t TextureRGB(uint32_t x, uint32_t y, unsigned char* buffer, std::string_view file) = 0;
+
+  ///
+  /// \brief Pack the colour to RGB
+  ///
+  /// \param colour The value to pack
+  /// \return uint32_t
+  ///
+  static uint32_t PackRgb(ColourType colour);
 
   ///
   /// \brief Pack three red, green, blue values

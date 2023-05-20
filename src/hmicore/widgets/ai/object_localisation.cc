@@ -51,7 +51,7 @@ void WidgetObjectLocalisation::DrawFunctionBoundingBoxes() const {
                                gva::ConfigData::GetInstance()->GetThemeFont(), 8);
     uint32_t text_width = GetRenderer()->GetTextWidth(box_info->label, 8);
     GetRenderer()->DrawRoundedRectangle(box_info->xpos + 10, box_info->ypos - 5, 6 + text_width, 8, 5, true);
-    GetRenderer()->DrawColor(HMI_BLACK);
+    GetRenderer()->DrawColor(kHmiBlack);
     GetRenderer()->DrawText(box_info->xpos + 13, box_info->ypos + 2, box_info->label);
   }
 };

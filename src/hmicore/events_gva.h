@@ -43,44 +43,44 @@ class EventsGva {
   ///
   /// \brief Process a GTK button press event
   ///
-  /// \param Widget
+  /// \param widget
   /// \param event
   /// \param data
   /// \return gboolean
   ///
-  static gboolean ButtonPressEventCb(GtkWidget *Widget, GdkEventButton *event, gpointer data);
+  static gboolean ButtonPressEventCb(GtkWidget *widget, GdkEventButton *event, gpointer data);
 
   ///
   /// \brief  A button press event or touch label event, key released
   ///
-  /// \param Widget
+  /// \param widget
   /// \param event
   /// \param data
   /// \return gboolean
   ///
-  static gboolean ButtonReleaseEventCb(GtkWidget *Widget, GdkEventButton *event, gpointer data);
+  static gboolean ButtonReleaseEventCb(GtkWidget *widget, GdkEventButton *event, gpointer data);
 
   ///
   /// \brief Handle button press events by either Drawing a rectangle or clearing the surface, depending on which
-  /// button was pressed. The ::button-press signal handler receives a GdkEventButton struct which contains this
+  /// button was pressed. The button-press signal handler receives a GdkEventButton struct which contains this
   /// information.
   ///
-  /// \param Widget
+  /// \param widget
   /// \param event
   /// \return gboolean
   ///
-  static gboolean KeyPressEventCb(GtkWidget *Widget, GdkEventKey *event);
+  static gboolean KeyPressEventCb(GtkWidget *widget, GdkEventKey *event);
 
   ///
   /// \brief Handle button press events by either Drawing a rectangle or clearing the surface, depending on which
-  /// button was pressed. The ::button-press signal handler receives a GdkEventButton struct which contains this
+  /// button was pressed. The button-press signal handler receives a GdkEventButton struct which contains this
   /// information.
   ///
-  /// \param Widget
+  /// \param widget
   /// \param event
   /// \return gboolean
   ///
-  static gboolean KeyReleaseEventCb(GtkWidget *Widget, GdkEventKey *event);
+  static gboolean KeyReleaseEventCb(GtkWidget *widget, GdkEventKey *event);
 
   ///
   /// \brief Get the Window object

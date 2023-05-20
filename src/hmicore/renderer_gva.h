@@ -25,16 +25,6 @@
 
 namespace gva {
 
-class GvaCell {
- public:
-  std::string text;
-  widget::CellAlignType align;
-  widget::GvaColourType foreground;
-  widget::GvaColourType background;
-  widget::GvaColourType textcolour;
-  widget::WeightType weight;
-};
-
 class RendererGva : public RendererCairo {
  public:
   ///
@@ -62,10 +52,9 @@ class RendererGva : public RendererCairo {
   void DrawLabels(char *text, uint32_t fontSize, uint32_t x, uint32_t y);
 
   ///
+  /// \brief Draw all the labels on the screen
+  ///
   /// \param x position of the labels, useful for labels on left and right sides of the screen
-  /// \param state State of the label
-  /// \param toggle Toggle
-  /// \param toggleOn Toggle on
   /// \param labels Array of labels to be rendered
   ///
   void DrawFunctionLabels(uint32_t x, const std::array<FunctionKeys::Labels, 6> &labels);
@@ -74,7 +63,7 @@ class RendererGva : public RendererCairo {
   ///  \brief Draw the labels on the top of the screen
   ///
   ///  \param y The y pixel position
-  ///  \param state State of the label
+  ///  \param labels The labels
   ///
   void DrawTopLabels(uint32_t y, const std::array<FunctionSelect::Labels, 8> &labels);
 
@@ -82,7 +71,7 @@ class RendererGva : public RendererCairo {
   /// \brief Draw the control labels on the bottom of the screen
   ///
   /// \param y The y pixel position
-  /// \param state State of the label
+  /// \param labels The labels
   ///
   void DrawControlLabels(const uint32_t y, const std::array<CommonTaskKeys::Labels, 8> &labels);
 
@@ -185,11 +174,16 @@ class WidgetBase {
   /// \return uint32_t
   ///
   uint32_t GetY() const { return y_; }
+
+  /// The GVA renderer
   RendererGva &renderer_;
+  /// The X pixel position
   uint32_t x_;
+  /// The Y pixel position
   uint32_t y_;
 };
 
+/// Class definition of the Widget Function Select
 class WidgetFunctionKeyToggle : public WidgetBase {
   using WidgetBase::WidgetBase;
 

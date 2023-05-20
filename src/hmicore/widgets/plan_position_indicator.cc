@@ -47,14 +47,14 @@ void WidgetPlanPositionIndicator::DrawModern(int32_t x, int32_t y, int16_t degre
   GetRenderer()->Save();
   GetRenderer()->Scale(scale_, scale_);
   GetRenderer()->Translate(x, y);
-  GetRenderer()->DrawColor(HMI_WHITE);
+  GetRenderer()->DrawColor(kHmiWhite);
 
   // Compass
-  GetRenderer()->SetColourBackground(HMI_GREY);
-  GetRenderer()->SetColourForeground(HMI_WHITE);
+  GetRenderer()->SetColourBackground(kHmiGrey);
+  GetRenderer()->SetColourForeground(kHmiWhite);
   GetRenderer()->SetLineThickness(2, LineType::kLineSolid);
   GetRenderer()->DrawCircle(0, 0, (uint32_t)radius, true);  // Compass outline
-  GetRenderer()->SetColourBackground(HMI_BLACK);
+  GetRenderer()->SetColourBackground(kHmiBlack);
   GetRenderer()->DrawCircle(0, 0, 80, true);  // Inner circle
 
   GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
@@ -86,9 +86,9 @@ void WidgetPlanPositionIndicator::DrawModern(int32_t x, int32_t y, int16_t degre
   // Vehicle outline
   GetRenderer()->SetLineType(CAIRO_LINE_JOIN_MITER);
   GetRenderer()->Save();
-  GetRenderer()->DrawColor(HMI_WHITE);
-  GetRenderer()->SetColourForeground(HMI_WHITE);
-  GetRenderer()->SetColourBackground(HMI_GREY);
+  GetRenderer()->DrawColor(kHmiWhite);
+  GetRenderer()->SetColourForeground(kHmiWhite);
+  GetRenderer()->SetColourBackground(kHmiGrey);
   GetRenderer()->SetLineThickness(2, LineType::kLineSolid);
   GetRenderer()->MovePen(-30, +65);
   GetRenderer()->DrawPen(30, +65, false);
@@ -104,8 +104,8 @@ void WidgetPlanPositionIndicator::DrawModern(int32_t x, int32_t y, int16_t degre
 
   // Turret outline
   GetRenderer()->Save();
-  GetRenderer()->SetColourForeground(HMI_WHITE);
-  GetRenderer()->SetColourBackground(HMI_GREY);
+  GetRenderer()->SetColourForeground(kHmiWhite);
+  GetRenderer()->SetColourBackground(kHmiGrey);
   GetRenderer()->SetLineThickness(2, LineType::kLineSolid);
   GetRenderer()->MovePen(-14, 57);
   GetRenderer()->DrawPen(-25, 52, false);
@@ -127,10 +127,10 @@ void WidgetPlanPositionIndicator::DrawModern(int32_t x, int32_t y, int16_t degre
     GetRenderer()->Translate(-14, 0);
     GetRenderer()->Rotate(gva::DegreesToRadians(sightAzimuth));
     GetRenderer()->DrawCircle(0, 0, 3, true);
-    GetRenderer()->SetColourBackground(HMI_CYAN);
+    GetRenderer()->SetColourBackground(kHmiCyan);
     GetRenderer()->DrawTriangle(0, 0, -8, -16, 6, -16, true);
-    GetRenderer()->SetColourBackground(HMI_DARK_BLUE);
-    GetRenderer()->SetColourForeground(HMI_DARK_BLUE);
+    GetRenderer()->SetColourBackground(kHmiDarkBlue);
+    GetRenderer()->SetColourForeground(kHmiDarkBlue);
     GetRenderer()->DrawTriangle(0, 0, -3, -15, 1, -15, true);
     GetRenderer()->Restore();
   }
@@ -142,8 +142,8 @@ void WidgetPlanPositionIndicator::DrawSight(double_t radius, int16_t render_sigh
   int32_t y2 = 0;
 
   // Sight
-  GetRenderer()->SetColourBackground(HMI_WHITE);
-  GetRenderer()->SetColourForeground(HMI_WHITE);
+  GetRenderer()->SetColourBackground(kHmiWhite);
+  GetRenderer()->SetColourForeground(kHmiWhite);
   GetRenderer()->SetLineThickness(2, LineType::kLineSolid);
 
   x2 = PlotCircleX(0, radius - 10, render_sight_azimuth);
@@ -196,11 +196,11 @@ void WidgetPlanPositionIndicator::DrawClassic(widget::ModeEnum mode, int32_t x, 
   GetRenderer()->Scale(scale_, scale_);
   GetRenderer()->Translate(x, y);
 
-  GetRenderer()->DrawColor(HMI_WHITE);
+  GetRenderer()->DrawColor(kHmiWhite);
 
   // Compass
-  GetRenderer()->SetColourBackground(HMI_BLACK);
-  GetRenderer()->SetColourForeground(HMI_WHITE);
+  GetRenderer()->SetColourBackground(kHmiBlack);
+  GetRenderer()->SetColourForeground(kHmiWhite);
   GetRenderer()->SetLineThickness(2, LineType::kLineSolid);
   GetRenderer()->DrawCircle(0, 0, (uint32_t)radius, true);  // Compass
 
@@ -210,8 +210,8 @@ void WidgetPlanPositionIndicator::DrawClassic(widget::ModeEnum mode, int32_t x, 
       // Vehicle outline
       GetRenderer()->Save();
       GetRenderer()->SetLineType(CAIRO_LINE_JOIN_MITER);
-      GetRenderer()->SetColourForeground(HMI_WHITE);
-      GetRenderer()->SetColourBackground(HMI_WHITE);
+      GetRenderer()->SetColourForeground(kHmiWhite);
+      GetRenderer()->SetColourBackground(kHmiWhite);
       GetRenderer()->SetLineThickness(8, LineType::kLineSolid, LineCapEnd::kLineCapButt);
       GetRenderer()->MovePen(-22, +30);
       GetRenderer()->DrawPen(0, 10, false);
@@ -225,8 +225,8 @@ void WidgetPlanPositionIndicator::DrawClassic(widget::ModeEnum mode, int32_t x, 
       GetRenderer()->DrawCircle(0, 0, 16, true);  // Inner circle
       GetRenderer()->SetLineType(CAIRO_LINE_JOIN_MITER);
       GetRenderer()->Save();
-      GetRenderer()->SetColourForeground(HMI_WHITE);
-      GetRenderer()->SetColourBackground(HMI_WHITE);
+      GetRenderer()->SetColourForeground(kHmiWhite);
+      GetRenderer()->SetColourBackground(kHmiWhite);
       GetRenderer()->SetLineThickness(3, LineType::kLineSolid);
       GetRenderer()->MovePen(-30, +40);
       GetRenderer()->DrawPen(+30, +40, false);
@@ -275,14 +275,14 @@ void WidgetPlanPositionIndicator::DrawClassic(widget::ModeEnum mode, int32_t x, 
   GetRenderer()->MovePen(0, 0);
   GetRenderer()->Rotate(DegreesToRadians(weapon_azimuth_));
 
-  GetRenderer()->SetColourBackground(HMI_CYAN);
+  GetRenderer()->SetColourBackground(kHmiCyan);
   if ((mode == widget::ModeEnum::kPpiClassicArrowWithSight) ||
       (mode == widget::ModeEnum::kPpiClassicArrowWithoutSight)) {
-    GetRenderer()->SetColourForeground(HMI_BLACK);
+    GetRenderer()->SetColourForeground(kHmiBlack);
     GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
     GetRenderer()->DrawRectangle(-4, -73, 8, 73, true);
   } else {
-    GetRenderer()->SetColourForeground(HMI_CYAN);
+    GetRenderer()->SetColourForeground(kHmiCyan);
     GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
     GetRenderer()->DrawRectangle(-1, -73, 3, 57, true);
   }

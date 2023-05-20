@@ -47,7 +47,7 @@ void WidgetVideo::Draw() {
     const std::string video_background_filename = ConfigData::GetInstance()->GetImagePath() + "/VideoBackground.png";
     GetRenderer()->TextureRGB(0, 0, nullptr, video_background_filename);
 
-    GetRenderer()->DrawColor(HMI_WHITE);
+    GetRenderer()->DrawColor(kHmiWhite);
 
     GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
 

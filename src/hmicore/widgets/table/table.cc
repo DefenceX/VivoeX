@@ -28,7 +28,7 @@ void WidgetTable::DrawTable() {
   GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightBold,
                              ConfigData::GetInstance()->GetThemeFont(), 12);
   GetRenderer()->SetColourBackground(gva::ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
-  GetRenderer()->DrawColor(HMI_WHITE);
+  GetRenderer()->DrawColor(kHmiWhite);
 
   uint16_t row_count = 0;
   for (auto row : rows_) {
@@ -96,15 +96,15 @@ void WidgetTable::AddRow(uint32_t foreground_colour, uint32_t background_colour,
 }
 
 void WidgetTable::AddRow() {
-  RowType row(ConfigData::GetInstance()->GetTableBackground(), Renderer::PackRgb(HMI_WHITE),
-              Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_YELLOW), widget::WeightType::kWeightNormal, false,
+  RowType row(ConfigData::GetInstance()->GetTableBackground(), Renderer::PackRgb(kHmiWhite),
+              Renderer::PackRgb(kHmiWhite), Renderer::PackRgb(kHmiYellow), widget::WeightType::kWeightNormal, false,
               widget::CellAlignType::kAlignLeft);
   rows_.push_back(row);
 }
 
 void WidgetTable::AddRow(widget::WeightType font_weight) {
-  AddRow(Renderer::PackRgb(HMI_WHITE), ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled(),
-         Renderer::PackRgb(HMI_WHITE), Renderer::PackRgb(HMI_YELLOW), font_weight);
+  AddRow(Renderer::PackRgb(kHmiWhite), ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled(),
+         Renderer::PackRgb(kHmiWhite), Renderer::PackRgb(kHmiYellow), font_weight);
 }
 
 void WidgetTable::AddCell(const std::string text, uint32_t width) {

@@ -32,6 +32,14 @@ RgbUnpackedType Renderer::UnpackRgb(uint64_t rgb) const {
   return colour;
 }
 
+uint32_t Renderer::PackRgb(ColourType colour) {
+  auto red = (uint32_t)colour.red;
+  auto green = (uint32_t)colour.green;
+  auto blue = (uint32_t)colour.blue;
+  uint32_t packed = (red << 16) | (green << 8) | blue;
+  return packed;
+}
+
 uint32_t Renderer::PackRgb(uint8_t r, uint8_t g, uint8_t b) {
   auto red = (uint32_t)r;
   auto green = (uint32_t)g;

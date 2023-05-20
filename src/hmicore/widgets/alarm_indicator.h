@@ -30,7 +30,8 @@ class WidgetAlarmIndicator : public WidgetX {
   ///
   /// \brief Construct a new Widget Alarm Indicator object
   ///
-  /// \param renderer
+  /// \param renderer the renderer
+  /// \param touch the touch object
   ///
   explicit WidgetAlarmIndicator(const RendererGva& renderer, TouchGva* touch);
 

@@ -16,6 +16,7 @@
 #include <string>
 #include <vector>
 
+#include "hmicore/gva.h"
 #include "hmicore/renderer_gva.h"
 #include "hmicore/widgets/table/cell_type.h"
 #include "hmicore/widgets/table/row_type.h"
@@ -31,9 +32,11 @@ namespace gva {
 class WidgetTable : public WidgetX {
  public:
   ///
-  /// \brief Construct a new Widget Keyboard object
+  /// \brief Construct a new Widget Table object
   ///
-  /// \param renderer
+  /// \param renderer the renderer
+  /// \param touch the touch object
+  /// \param background_colour the background colour
   ///
   explicit WidgetTable(const RendererGva &renderer, TouchGva *touch, uint32_t background_colour = 0x000000);
 
@@ -186,7 +189,7 @@ class WidgetTable : public WidgetX {
   uint32_t current_cell_ = 0;
   uint32_t current_row_ = 0;
   uint32_t background_colour_;
-  uint32_t foreground_colour_ = Renderer::PackRgb(HMI_WHITE);
+  uint32_t foreground_colour_ = Renderer::PackRgb(kHmiWhite);
   uint32_t outline_colour_ = ConfigData::GetInstance()->GetThemeLabelBorderEnabled();
   uint32_t highlight_colour_ = ConfigData::GetInstance()->GetThemeLabelBorderEnabledSelected();
 };

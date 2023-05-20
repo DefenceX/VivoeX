@@ -306,8 +306,21 @@ void RendererCairo::SetColourForeground(uint8_t red, uint8_t green, uint8_t blue
   draw_commands_.push_back(command);
 }
 
+void RendererCairo::SetColourForeground(ColourType colour) {
+  SetColourForeground(colour.red, colour.green, colour.blue);
+}
+
 void RendererCairo::SetColourForeground(uint32_t rgb) {
   SetColourForeground((rgb & 0xff0000) >> 16, (rgb & 0xff00) >> 8, rgb & 0xff);
+}
+
+void RendererCairo::SetColourBackground(ColourType colour) {
+  Command command;
+  command.command = DrawType::kCommandColourBackground;
+  command.arg1 = colour.red;
+  command.arg2 = colour.green;
+  command.arg3 = colour.blue;
+  draw_commands_.push_back(command);
 }
 
 void RendererCairo::SetColourBackground(uint8_t red, uint8_t green, uint8_t blue) {
@@ -519,6 +532,11 @@ uint32_t RendererCairo::CurveTo(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t 
   command.arg3 = x3;
   command.arg4 = y3;
   draw_commands_.push_back(command);
+  return 0;
+}
+
+uint32_t RendererCairo::DrawColor(ColourType colour) {
+  DrawColor(colour.red, colour.green, colour.blue);
   return 0;
 }
 

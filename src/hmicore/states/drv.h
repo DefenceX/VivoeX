@@ -26,24 +26,101 @@
 
 namespace gva {
 
+/// Class definition of the StateDRV
 struct StateDRV : Hmi {
+  ///
+  /// \brief Construct a new State DRV object
+  ///
+  ///
   StateDRV();
+
+  ///
+  /// \brief Update the video
+  ///
+  ///
   void UpdateVideo();
+
+  ///
+  /// \brief Entry into the state
+  ///
+  ///
   void entry() override;
+
+  ///
+  /// \brief Exit from the state
+  ///
+  ///
   void exit() override;
+
+  ///
+  /// \brief React to an event
+  ///
+  ///
   void react(EventKeyPowerOn const &) override;
+
+  ///
+  /// \brief React to an SA change event
+  ///
+  ///
   void react(EventKeySA const &) override;
+
+  ///
+  /// \brief React to a WPN change event
+  ///
+  ///
   void react(EventKeyWPN const &) override;
+
+  ///
+  /// \brief React to a DRV change event
+  ///
+  ///
   void react(EventKeyDEF const &) override;
+
+  ///
+  /// \brief React to a SYS change event
+  ///
+  ///
   void react(EventKeySYS const &) override;
+
+  ///
+  /// \brief React to a DRV change event
+  ///
+  ///
   void react(EventKeyDRV const &) override;
+
+  ///
+  /// \brief React to a COM change event
+  ///
+  ///
   void react(EventKeySTR const &) override;
+
+  ///
+  /// \brief React to a COM change event
+  ///
+  ///
   void react(EventKeyCOM const &) override;
+
+  ///
+  /// \brief React to a COM change event
+  ///
+  ///
   void react(EventKeyBMS const &) override;
+
+  ///
+  /// \brief React to a COM change event
+  ///
+  ///
   void react(EventKeyAlarms const &) override;
+
+  ///
+  /// \brief React to a COM change event
+  ///
+  /// \param e the event
+  ///
   void react(EventKeyFunction const &e) override;
 
  private:
+  /// The video widget
   gva::WidgetVideo *video_ = nullptr;
 };
 

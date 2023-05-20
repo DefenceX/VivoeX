@@ -62,25 +62,25 @@ void WidgetSideLabels::Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t hei
 
 void WidgetSideLabels::Toggle(const std::string& label1, const std::string& label2) const {
   int ypos = 25;
-  GetRenderer()->SetColourForeground(HMI_DARK_GREEN2);
-  GetRenderer()->SetColourBackground(HMI_YELLOW);
+  GetRenderer()->SetColourForeground(kHmiDarkGreen2);
+  GetRenderer()->SetColourBackground(kHmiYellow);
 
   if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::kLabelRounded) {
     GetRenderer()->DrawRoundedRectangle(GetX() + 5, GetY() + ypos, 40, 20, 4, true);
   } else {
     GetRenderer()->DrawRectangle(GetX() + 5, GetY() + ypos, 40, 20, true);
   }
-  GetRenderer()->DrawColor(HMI_BLACK);
+  GetRenderer()->DrawColor(kHmiBlack);
   GetRenderer()->DrawText(GetX() + 12, GetY() + ypos + 15, label1);
-  GetRenderer()->SetColourBackground(HMI_GREY);
-  GetRenderer()->SetColourForeground(HMI_DARK_GREY);
+  GetRenderer()->SetColourBackground(kHmiGrey);
+  GetRenderer()->SetColourForeground(kHmiDarkGreen2);
 
   if (gva::ConfigData::GetInstance()->GetThemeLabelStyle() == config::kLabelRounded) {
     GetRenderer()->DrawRoundedRectangle(GetX() + 50, GetY() + ypos, 45, 20, 4, true);
   } else {
     GetRenderer()->DrawRectangle(GetX() + 50, GetY() + ypos, 45, 20, true);
   }
-  GetRenderer()->DrawColor(HMI_BLACK);
+  GetRenderer()->DrawColor(kHmiBlack);
   GetRenderer()->DrawText(GetX() + 56, GetY() + ypos + 15, label2);
 }
 

@@ -30,35 +30,58 @@
 
 namespace gva {
 
+/// The Command structure
 struct Command {
+  /// The command type
   DrawType command = DrawType::kCommandUndefined;
+  /// The height value
   double height = 0;
+  /// The width value
   double width = 0;
+  /// Points value
   std::array<PointType, 3> points;
+  /// The radius value
   double radius = 0;
+  /// The angle1 value
   double angle1 = 0;
+  /// The angle2 value
   double angle2 = 0;
-  ColourType colour = {HMI_WHITE};
+  /// The colour value
+  ColourType colour = kHmiWhite;
+  /// An argument value 1
   int32_t arg1 = 0;
+  /// An argument value 2
   int32_t arg2 = 0;
+  /// An argument value 3
   int32_t arg3 = 0;
+  /// An argument value 4
   int32_t arg4 = 0;
+  /// String text
   std::string text = "";
+  /// Fill if true
   bool fill = false;
 };
 
+/// Struct definition of the image_type
 struct image_type {
+  /// The images string filename
   std::string name;
+  /// The images cairo surface
   cairo_surface_t *image;
+  /// True if read from cache
   bool from_cache;
 };
 
+/// Struct definition of the LineType
 enum class LineCapEnd { kLineCapButt, kLineCapRound, kLineCapSquare };
 
+/// callback typr
 typedef void (*CallbackType)(void *io, gpointer data);
 
+/// Class definition of the Renderer Cairo
 class RendererCairo : public Renderer {
  public:
+  /// Class definition of the HandleType
   static HandleType render_;
 
   ///
@@ -112,6 +135,13 @@ class RendererCairo : public Renderer {
   ///
   /// \brief Set the Colour Foreground object
   ///
+  /// \param colour The colour to set
+  ///
+  void SetColourForeground(ColourType colour);
+
+  ///
+  /// \brief Set the Colour Foreground object
+  ///
   /// \param red
   /// \param green
   /// \param blue
@@ -124,6 +154,13 @@ class RendererCairo : public Renderer {
   /// \param rgb
   ///
   void SetColourForeground(uint32_t rgb);
+
+  ///
+  /// \brief Set the Colour Background attribute
+  ///
+  /// \param colour
+  ///
+  void SetColourBackground(ColourType colour);
 
   ///
   /// \brief Set the Colour Background object
@@ -323,11 +360,19 @@ class RendererCairo : public Renderer {
   void DrawTriangle(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint32_t x3, uint32_t y3, bool fill);
 
   ///
-  /// \brief
+  /// \brief Set the Colour object to draw with
   ///
-  /// \param r
-  /// \param g
-  /// \param b
+  /// \param colour The colour to draw with
+  /// \return uint32_t
+  ///
+  uint32_t DrawColor(ColourType colour);
+
+  ///
+  /// \brief Set the Colour object to draw with
+  ///
+  /// \param r The red value
+  /// \param g The green value
+  /// \param b The blue value
   /// \return uint32_t
   ///
   uint32_t DrawColor(uint8_t r, uint8_t g, uint8_t b) override;
