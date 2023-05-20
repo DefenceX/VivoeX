@@ -24,6 +24,7 @@
 
 namespace gva {
 
+/// Structure of the toggle data
 struct ToggleInfo {
   /// Toggle visibility
   bool visible;
@@ -37,6 +38,7 @@ struct ToggleInfo {
   std::string left_label;
 };
 
+/// Class defining the view
 class LabelAction {
  public:
   ///
@@ -135,6 +137,7 @@ class ViewGva {
   std::array<LabelAction, 6> function_right_action_;
 };
 
+/// Class defining the view manager
 class ViewGvaManager {
  public:
   ///

@@ -19,6 +19,7 @@
 
 namespace gva {
 
+/// Class defining the base renderer
 class RenderBase {
  public:
   ///

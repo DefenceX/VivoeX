@@ -25,6 +25,7 @@
 
 namespace gva {
 
+/// Class defining the video widget
 class WidgetVideo : public WidgetCanvas {
  public:
   ///

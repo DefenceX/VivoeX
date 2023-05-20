@@ -25,6 +25,7 @@
 
 namespace gva {
 
+/// The STR state
 struct StateSTR : Hmi {
   void entry() override;
   void react(EventKeyPowerOn const &) override;

@@ -32,6 +32,7 @@
 
 namespace gva {
 
+/// The WPN state
 struct StateWPN : Hmi {
   void entry() override;
   void react(EventKeyPowerOn const &) override;

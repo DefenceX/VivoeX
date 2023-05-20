@@ -1,5 +1,5 @@
 
-# Creation of alarms
+## Creation of alarms
 To generate sounds install ***apt install tones***
 
 ## Threat

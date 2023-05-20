@@ -26,14 +26,22 @@
 
 namespace gva {
 
+/// Class defining the Plan Position Indicator
 class WidgetPlanPositionIndicator : public WidgetX {
  public:
+  /// Threat structured data
   struct ThreatType {
+    /// The threat bearing
     uint16_t bearing = 0;
+    /// The azimuth of the threat
     uint16_t size = 0;
+    // The colour of the threat
     uint32_t rgb_value = 0x00FF0000;  // green
+    /// The label of the threat
     std::string label = "";
+    /// Flash if true
     bool flashing = false;
+    /// Dotted if true
     bool dotted = false;
   };
 

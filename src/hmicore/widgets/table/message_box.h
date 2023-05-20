@@ -23,6 +23,7 @@
 
 namespace gva {
 
+/// Class defining the mode widget
 class WidgetMessageBox : public WidgetTable {
  public:
   ///

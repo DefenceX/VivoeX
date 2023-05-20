@@ -18,28 +18,46 @@
 
 #include "hmicore/gva.h"
 
+/// The RGB values for amber
 const gva::ColourType kHmiAmber = {255, 153, 0};
+/// The RGB values for white
 const gva::ColourType kHmiWhite = {255, 255, 255};
+/// The RGB values for red
 const gva::ColourType kHmiRed = {255, 0, 0};
+/// The RGB values for dark red
 const gva::ColourType kHmiGrey = {127, 127, 127};
+/// The RGB values for dark red
 const gva::ColourType kHmiMediumGrey = {96, 96, 96};
+/// The RGB values for dark red
 const gva::ColourType kHmiDarkGrey = {64, 64, 64};
+/// The RGB values for dark red
 const gva::ColourType kHmiGreen = {0, 255, 0};
+/// The RGB values for dark red
 const gva::ColourType kHmiDarkGreen = {0, 128, 0};
+/// The RGB values for dark red
 const gva::ColourType kHmiDarkGreen2 = {0, 75, 0};
+/// The RGB values for dark red
 const gva::ColourType kHmiBlue = {0, 0, 255};
+/// The RGB values for dark red
 const gva::ColourType kHmiCyan = {0, 255, 255};
+/// The RGB values for dark red
 const gva::ColourType kHmiDarkBlue = {51, 102, 153};
+/// The RGB values for dark red
 const gva::ColourType kHmiLightBlue = {50, 50, 255};
+/// The RGB values for dark red
 const gva::ColourType kHmiBlack = {0, 0, 0};
+/// The RGB values for dark red
 const gva::ColourType kHmiYellow = {255, 255, 0};
+/// The RGB values for dark red
 const gva::ColourType kHmiOrange = {255, 165, 0};
+/// The RGB values for dark red
 const gva::ColourType kHmiNone = {0, 0, 0};
 
 namespace gva {
 
 class RendererCairo;
 
+/// Class defining the renderer
 class Renderer {
  public:
   ///

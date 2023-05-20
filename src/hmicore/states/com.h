@@ -25,6 +25,7 @@
 
 namespace gva {
 
+/// The COM state
 struct StateCOM : Hmi {
   void entry() override;
   void react(EventKeyPowerOn const &) override;

@@ -20,6 +20,7 @@
 
 namespace gva {
 
+/// Class defining the updater
 class UpdaterBase {
  public:
   ///

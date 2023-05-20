@@ -73,7 +73,7 @@ class AudioFunctions {
   ///
   /// \brief Play a given file
   ///
-  /// \param filename
+  /// \param sample The audio sample
   /// \return int
   ///
   int Play(AudioSampleBase *sample);

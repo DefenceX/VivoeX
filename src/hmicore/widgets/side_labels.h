@@ -22,6 +22,7 @@
 
 namespace gva {
 
+/// Class defining the side labels
 class WidgetSideLabels : public WidgetX {
  public:
   ///

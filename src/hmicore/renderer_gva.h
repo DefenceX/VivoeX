@@ -25,6 +25,7 @@
 
 namespace gva {
 
+/// Class definition of the GVA renderer
 class RendererGva : public RendererCairo {
  public:
   ///
@@ -100,16 +101,15 @@ class RendererGva : public RendererCairo {
   ///
   /// \brief Draw keyboard buttons
   ///
-  /// \param keytext The button text
-  /// \param fontSize The font size to be used
+  /// \param key_text The button text
+  /// \param font_size The font size to be used
   /// \param x X pixel position
   /// \param y Y pixel position
-  /// \param size Size in pixels
   /// \param height Height of button in pixels
   /// \param width Width of button in pixels
-  /// \param align Alignment
+  /// \param align The text alignment
   ///
-  void DrawButton(const std::string &keytext, uint32_t fontSize, uint32_t x, uint32_t y, uint32_t height,
+  void DrawButton(const std::string &key_text, uint32_t font_size, uint32_t x, uint32_t y, uint32_t height,
                   uint32_t width, widget::CellAlignType align);
 
   ///
@@ -140,6 +140,7 @@ class RendererGva : public RendererCairo {
   ConfigData *config_ = nullptr;
 };
 
+/// Class definition of the Widget Base
 class WidgetBase {
  public:
   ///

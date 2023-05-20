@@ -16,8 +16,6 @@
 #include <array>
 #include <string>
 
-enum class SurfaceType { kSurfaceNone = 0, kSurfaceFile, kSurfaceRgb24, kSurfaceCairo, kSurfaceBlackout };
-
 namespace gva {
 
 ///
@@ -211,13 +209,14 @@ enum class EventEnumType {
   /// A widget update event
   kWidgetUpdate
 };
+
 /// Enum for the surface types
 enum class SurfaceType {
   kSurfaceNone = 0,
   kSurfaceBlackout,
   kSurfaceFile,
   kSurfaceVideo,
-  kSurfaceBufferRgb24,
+  kSurfaceRgb24,
   kSurfaceCairo
 };
 
@@ -333,6 +332,7 @@ class FunctionSelect : public StateBase {
   /// The label is visible
   bool visible;
 
+  /// Label object
   struct Labels {
     /// The label state
     LabelStates state;

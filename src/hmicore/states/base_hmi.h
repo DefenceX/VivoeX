@@ -59,6 +59,7 @@ struct EventKeyFunction : tinyfsm::Event {
 // State Machine Base Class Declaration
 //
 struct Hmi : tinyfsm::Fsm<Hmi> {
+  /// The default constructor
   virtual ~Hmi() = default;
   /// Nothing to do in base class
   virtual void react(EventKeyPowerOn const &) { return; }

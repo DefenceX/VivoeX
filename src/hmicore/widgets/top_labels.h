@@ -22,6 +22,7 @@
 
 namespace gva {
 
+/// Class defining the top labels
 class WidgetTopLabels : public WidgetX {
  public:
   ///

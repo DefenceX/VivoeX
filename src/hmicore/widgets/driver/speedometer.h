@@ -20,6 +20,7 @@
 
 namespace gva {
 
+/// Class defining the mode widget
 class WidgetDriverSpeedometer : public WidgetX {
  public:
   ///

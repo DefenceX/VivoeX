@@ -19,6 +19,8 @@
 #include "hmicore/widgets/table/status_bar.h"
 
 namespace gva {
+
+/// Class defining the status updater
 class StatusUpdater {
  public:
   ///

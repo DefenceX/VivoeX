@@ -23,6 +23,7 @@ namespace gva {
 class ScreenGva;
 class HandleType;
 
+/// Class defining the base widget
 class WidgetX {
  public:
   virtual ~WidgetX() = default;

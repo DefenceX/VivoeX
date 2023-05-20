@@ -108,9 +108,11 @@ DEFINE_int32(id, 0,
              "       34: RPM 4000\n"
              "       35: Oject localisation people");
 
+/// The Screen height
 const uint32_t kScreenHeight = 480;
+/// The Screen width
 const uint32_t kScreenWidth = 640;
-
+/// Save path
 std::string path;
 static gva::RendererGva renderer(kScreenWidth, kScreenHeight);
 static gva::TouchGva touch;  // Dummy to get the interactive widgets to render
@@ -127,7 +129,7 @@ static gva::WidgetTable table(renderer, &touch, gva::ConfigData::GetInstance()->
 static gva::WidgetDriverSpeedometer driver_speed(renderer);
 static gva::WidgetDriverRpmFuel driver_rpm(renderer);
 static gva::WidgetObjectLocalisation objects(renderer, &touch);
-
+/// Array of threats
 std::array<gva::WidgetPlanPositionIndicator::ThreatType, 5> threats;
 
 static void do_drawing(cairo_t *, int width, int h);

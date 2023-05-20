@@ -71,16 +71,6 @@ int AudioFunctions::Callback(const void *input [[maybe_unused]], void *output, u
   return paContinue;
 }
 
-#if _WIN32
-const std::string kThreatFilename = "../sounds/threat.wav";
-const std::string kCautionFilename = "../sounds/caution.wav";
-const std::string kWarningFilename = "../sounds/warning.wav";
-#else
-const std::string kThreatFilename = "/opt/gva/hmi/sounds/threat.wav";
-const std::string kCautionFilename = "/opt/gva/hmi/sounds/caution.wav";
-const std::string kWarningFilename = "/opt/gva/hmi/sounds/warning.wav";
-#endif
-
 void AudioFunctions::PlayThreat() { Play(&threat_); }
 void AudioFunctions::PlayCaution() { Play(&caution_); }
 void AudioFunctions::PlayWarning() { Play(&warning_); }

@@ -283,79 +283,79 @@ class RendererCairo : public Renderer {
   void Restore();
 
   ///
-  /// \brief
+  /// \brief Scale the renderer
   ///
-  /// \param x
-  /// \param y
+  /// \param x The x scale
+  /// \param y The y scale
   ///
   void Scale(double x, double y);
 
   ///
-  /// \brief
+  /// \brief Translate the renderer
   ///
-  /// \param x
-  /// \param y
+  /// \param x The x position to translate to
+  /// \param y The y position to translate to
   ///
   void Translate(uint32_t x, uint32_t y);
 
   ///
-  /// \brief
+  /// \brief Rotate the renderer
   ///
-  /// \param radians
+  /// \param radians The angle to rotate by
   ///
   void Rotate(double radians);
 
   ///
-  /// \brief
+  /// \brief Close drawing path
   ///
-  /// \param fill
+  /// \param fill Fill if true
   /// \return uint32_t
   ///
   uint32_t ClosePath(bool fill);
 
   ///
-  /// \brief
+  /// \brief Draw a circle
   ///
-  /// \param x
-  /// \param y
-  /// \param radius
-  /// \param fill
+  /// \param x The x position
+  /// \param y The y position
+  /// \param radius The radius in pixels
+  /// \param fill Fill if true
   ///
   void DrawCircle(uint32_t x, uint32_t y, uint32_t radius, bool fill) override;
 
   ///
-  /// \brief
+  /// \brief Draw a rectangle
   ///
-  /// \param x
-  /// \param y
-  /// \param width
-  /// \param height
-  /// \param fill
+  /// \param x The x position
+  /// \param y The y position
+  /// \param width The width in pixels
+  /// \param height The height in pixels
+  /// \param fill Fill if true
   ///
   void DrawRectangle(uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool fill) override;
 
   ///
-  /// \brief
+  /// \brief Draw a rounded rectangle
   ///
-  /// \param x
-  /// \param y
-  /// \param width
-  /// \param height
-  /// \param courner
-  /// \param fill
+  /// \param x The x position
+  /// \param y The y position
+  /// \param width The width
+  /// \param height The height in pixels
+  /// \param corner The corner radius
+  /// \param fill Fill if true
   ///
   void DrawRoundedRectangle(uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t corner, bool fill);
 
   ///
-  /// \brief
+  /// \brief Draw a triangle
   ///
-  /// \param x1
-  /// \param y1
-  /// \param x2
-  /// \param y2
-  /// \param x3
-  /// \param y3
-  /// \param fill
+  /// \param x1 The first x position
+  /// \param y1 The first y position
+  /// \param x2 The second x position
+  /// \param y2 The second y position
+  /// \param x3 The third x position
+  /// \param y3 The third y position
+  /// \param fill Fill if true
   ///
   void DrawTriangle(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint32_t x3, uint32_t y3, bool fill);
 
@@ -393,9 +393,9 @@ class RendererCairo : public Renderer {
   uint32_t CurveTo(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint32_t x3, uint32_t y3);
 
   ///
-  /// \brief
+  /// \brief Set the draw colour
   ///
-  /// \param rgb
+  /// \param rgb The colour to draw with, packed RGB
   /// \return uint32_t
   ///
   uint32_t DrawColor(uint32_t rgb);
@@ -403,11 +403,12 @@ class RendererCairo : public Renderer {
   ///
   /// \brief Set the Text Font object
   ///
-  /// \param slope
-  /// \param weight
-  /// \param fontName
+  /// \param slope The font slope
+  /// \param weight The font weight
+  /// \param font_name The font name
+  /// \param size The font size
   ///
-  void SetTextFont(uint32_t slope, widget::WeightType weight, std::string_view fontName, double size);
+  void SetTextFont(uint32_t slope, widget::WeightType weight, std::string_view font_name, double size);
 
   ///
   /// \brief Push the current state of the renderer

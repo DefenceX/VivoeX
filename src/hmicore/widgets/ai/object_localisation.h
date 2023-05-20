@@ -24,16 +24,26 @@
 
 namespace gva {
 
+/// Class defining the bounding box object
 class WidgetObjectLocalisation : public WidgetX {
  public:
+  /// The bounding box data
   struct BoxType {
+    /// The object x position
     uint32_t xpos = 0;
+    /// The object y position
     uint32_t ypos = 0;
+    /// The object height
     uint32_t height = 0;
+    /// The object width
     uint32_t width = 0;
+    /// The object RGB colour
     uint32_t rgb_value = 0x00FF0000;  // green
+    /// The object label
     std::string label = "";
+    /// Flashing if true
     bool flashing = false;
+    /// Dotted if true
     bool dotted = false;
   };
 

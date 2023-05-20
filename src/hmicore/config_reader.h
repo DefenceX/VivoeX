@@ -52,6 +52,7 @@ class ConfigDataBase {
   std::string config_file_ = "config.pb";
 };
 
+/// Class defining the theme
 class ConfigDataTheme : public ConfigDataBase {
  public:
   ///
@@ -440,6 +441,7 @@ class ConfigData : public ConfigDataTheme {
   ///
   uint32_t LookupKey(config::Key key) const;
 
+  /// The config data singleton
   static ConfigData* config_;
 };
 

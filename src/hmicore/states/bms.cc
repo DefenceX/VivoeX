@@ -19,6 +19,12 @@
 
 namespace gva {
 
+///
+/// \brief Convert zoom level to a double
+///
+/// \param zoom The zoom level
+/// \return double
+///
 double conv(int zoom) {
   switch (zoom) {
     case 1620000:

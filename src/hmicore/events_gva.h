@@ -23,6 +23,7 @@
 
 namespace gva {
 
+/// Class defining the events
 class EventsGva {
  public:
   //
@@ -89,6 +90,7 @@ class EventsGva {
   ///
   gtkType *GetWindow() { return window_; }
 
+  /// The event queue
   static std::vector<EventGvaType> eventqueue_;
 
   ///

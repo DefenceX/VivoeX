@@ -270,6 +270,7 @@ struct FsmList<F, FF...> {
 template <typename... SS>
 struct StateList;
 template <>
+/// State list
 struct StateList<> {
   /// \brief Reset state list
   static void Reset() {}

@@ -37,6 +37,7 @@
 
 namespace gva {
 
+/// Alias for HMI
 using hmi = Hmi;
 
 }  // namespace gva
