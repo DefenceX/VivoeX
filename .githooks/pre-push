@@ -22,6 +22,11 @@
 remote="$1"
 url="$2"
 
+if [ ! -z "$MSYSTEM_CHOST" ]; then
+   exit 0
+fi
+
+
 $WORKSPACE_ROOT/.githooks/pre-push-doxygen-check
 $WORKSPACE_ROOT/.githooks/pre-push-check-linter
 $WORKSPACE_ROOT/.githooks/pre-push-check-todo
