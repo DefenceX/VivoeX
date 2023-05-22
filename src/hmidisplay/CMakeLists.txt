@@ -26,7 +26,7 @@ add_executable(hmi-display main.cc gva_application.cc)
 link_directories( ${NMEA_LIBRARY_DIR} ${CMAKE_BINARY_DIR}/external/libnmea/src/lib)
 target_link_libraries(hmi-display 
     hmicore
-	widgets 
+    widgets 
 	pthread 
 	hmiupdater
 	hmiaudio
@@ -40,7 +40,6 @@ target_link_libraries(hmi-display
 	${PROTOBUF_LIBRARY} 
 	${SNDFILE_LIBRARIES}
 	${SWSCALE_LIBRARIES} 
-	${WINDOWS_RESOURCE_LIB} 
 	GeographicLib 
 	config-proto 
 	glog  
@@ -49,6 +48,7 @@ target_link_libraries(hmi-display
 	pthread 
 	stdc++fs
 	mediax
+	${WINDOWS_RESOURCE_LIB} 
 )
 
 if (MSYS)
@@ -65,6 +65,7 @@ if (MSYS)
 		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/GeographicLib/lib64"
 		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/GeographicLib/lib64"
 		"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/portaudio/lib"
+        "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/mediax/lib"
 		"${CMAKE_BINARY_DIR}/external/install/mingw64/lib"
 	)
 	target_link_libraries(hmi-display shlwapi)

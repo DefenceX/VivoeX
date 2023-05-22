@@ -447,7 +447,7 @@ class RendererCairo : public Renderer {
   /// \param y axis pixel postion
   /// \param text
   ///
-  void DrawText(uint32_t x, uint32_t y, std::string_view text);
+  void DrawString(uint32_t x, uint32_t y, std::string_view text);
 
   ///
   /// \brief Draw an on screen label

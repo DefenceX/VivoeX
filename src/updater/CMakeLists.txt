@@ -16,4 +16,4 @@ target_include_directories(hmiupdater BEFORE PRIVATE
     ${SNDFILE_LIBRARY_DIR}
 )
 
-add_dependencies(hmiupdater portaudio config-proto libglog libpistache)
+add_dependencies(hmiupdater portaudio config-proto libglog)

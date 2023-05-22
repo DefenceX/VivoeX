@@ -32,7 +32,7 @@ void WidgetMode::Draw() {
   uint32_t h = GetRenderer()->GetTextHeight(mode_, 12);
 
   GetRenderer()->DrawRoundedRectangle(kMinimumWidth / 2 - (w / 2) - 5, y, w + 10, (h) + 15, 6, true);
-  GetRenderer()->DrawText(kMinimumWidth / 2 - (w / 2), y + 16, mode_);
+  GetRenderer()->DrawString(kMinimumWidth / 2 - (w / 2), y + 16, mode_);
 }
 
 void WidgetMode::SetMode(const std::string mode) { mode_ = mode; }

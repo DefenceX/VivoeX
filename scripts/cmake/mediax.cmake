@@ -18,4 +18,5 @@ ExternalProject_Add(
     UPDATE_DISCONNECTED 1
 )
 
-set(MEDIA_INCLUDE_DIR ${CMAKE_BINARY_DIR}/external/mediax/src)
+set(MEDIA_INCLUDE_DIR ${CMAKE_BINARY_DIR}/external/mediax/src "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/mediax/include")
+set(MEDIA_LIBRARY_DIR "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/mediax/lib")

@@ -11,9 +11,9 @@
 ///
 
 #include "hmicore/widgets/canvas/video.h"
+#include "hmicore/renderer_cairo.h"
 
 #include <colourspace.h>
-#include <glog/logging.h>
 #include <rtp_types.h>
 #include <rtpvraw_depayloader.h>
 
@@ -62,9 +62,9 @@ void WidgetVideo::Draw() {
       stream = "rtp://" + video_feed_.GetSessionName() + "@" + video_feed_.GetIpAddress() + ":" +
                std::to_string(video_feed_.GetPort()) + " offline";
     }
-    uint32_t w = GetRenderer()->GetTextWidth(stream, 12);
+    uint32_t w = GetRenderer()->GetTextWidth(stream, 12); 
 
-    GetRenderer()->DrawText(kMinimumWidth / 2 - (w / 2), 300 + 16, stream);
+    GetRenderer()->DrawString(kMinimumWidth / 2 - (w / 2), 300 + 16, stream);
   }
 }
 

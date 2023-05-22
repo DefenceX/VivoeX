@@ -24,7 +24,10 @@ if (MSYS)
   file(APPEND ${CMAKE_BINARY_DIR}/vivoe-lite.rc "    END\n")
   file(APPEND ${CMAKE_BINARY_DIR}/vivoe-lite.rc "  END\n")
 
-  execute_process(COMMAND windres ${CMAKE_BINARY_DIR}/vivoe-lite.rc -O coff -o ${CMAKE_BINARY_DIR}/vivoe-lite.res)
+  execute_process(
+    COMMAND rm ${CMAKE_BINARY_DIR}/vivoe-lite.res --force)
+  execute_process(
+    COMMAND windres ${CMAKE_BINARY_DIR}/vivoe-lite.rc -O coff -o ${CMAKE_BINARY_DIR}/vivoe-lite.res)
 
   set(WINDOWS_RESOURCE ${CMAKE_BINARY_DIR}/vivoe-lite.res)
   add_library(resources OBJECT IMPORTED ${WINDOWS_RESOURCE})

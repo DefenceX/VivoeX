@@ -78,7 +78,7 @@ void WidgetPlanPositionIndicator::DrawModern(int32_t x, int32_t y, int16_t degre
   for (uint16_t d = 0; d < 360; d += step) {
     double_t r = DegreesToRadians((uint16_t)(d + degrees));
 
-    GetRenderer()->DrawText((int32_t)(adjust_x + ((radius - 9) * sin(r))),
+    GetRenderer()->DrawString((int32_t)(adjust_x + ((radius - 9) * sin(r))),
                             (int32_t)(adjust_y + (-(radius - 9) * cos(r))), compass_points[c]);
     c++;
   }
@@ -252,7 +252,7 @@ void WidgetPlanPositionIndicator::DrawClassic(widget::ModeEnum mode, int32_t x, 
   for (uint16_t d = 0; d < 360; d += step) {
     double_t r = DegreesToRadians((uint16_t)(d + degrees));
 
-    GetRenderer()->DrawText((int32_t)(adjust_x + ((radius - 12) * sin(r))),
+    GetRenderer()->DrawString((int32_t)(adjust_x + ((radius - 12) * sin(r))),
                             (int32_t)(adjust_y + (-(radius - 12) * cos(r))), compass_points[c]);
     c++;
   }

@@ -62,7 +62,7 @@ void WidgetBottomLabels::DrawControlLabels() {
       switch (i) {
         default: {
           uint32_t width = GetRenderer()->GetTextWidth(label.text_, 12);
-          GetRenderer()->DrawText((i * w) + offset + ((70 - width) / 2), GetY() + 14, label.text_.c_str());
+          GetRenderer()->DrawString((i * w) + offset + ((70 - width) / 2), GetY() + 14, label.text_.c_str());
         } break;
         case 4:
           GetRenderer()->DrawIcon(widget::IconType::kIconUpArrow, (i * w) + offset + 34, GetY() + 11, 15, 8);

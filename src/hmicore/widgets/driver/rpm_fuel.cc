@@ -60,14 +60,14 @@ void WidgetDriverRpmFuel::Draw() {
     double_t radians = DegreesToRadians(d + 225);
 
     if (c * 10 > 99) adjust_x = 0 - 15;
-    GetRenderer()->DrawText((uint32_t)(adjust_x + (double_t)(radius - p) * sin(radians)),
+    GetRenderer()->DrawString((uint32_t)(adjust_x + (double_t)(radius - p) * sin(radians)),
                             (uint32_t)(adjust_y - (double_t)(radius - p) * cos(radians)), std::to_string(c));
     c++;
   }
 
   // Gears
-  GetRenderer()->DrawText(-16, 60, "RPM");
-  GetRenderer()->DrawText(-20, 40, "Drive");
+  GetRenderer()->DrawString(-16, 60, "RPM");
+  GetRenderer()->DrawString(-20, 40, "Drive");
 
   GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
 

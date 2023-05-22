@@ -67,7 +67,7 @@ void WidgetTable::DrawTable() {
           pos = offset + 4;
           break;
       }
-      GetRenderer()->DrawText(pos, (GetY() + ((row_count + 1) * height)) - 5, column.GetText());
+      GetRenderer()->DrawString(pos, (GetY() + ((row_count + 1) * height)) - 5, column.GetText());
       offset += cell_width;
     }
     row_count++;

@@ -33,8 +33,6 @@ void WidgetMessageBox::Draw() {
   AddRow();
   AddCell(std::string(message_text_), 100, widget::CellAlignType::kAlignCentre, background);
 
-  Draw();
-
   GetRenderer()->DrawIcon(icon_, 320 - 150 + 300 - 17, 229, 11, 11);
 }
 

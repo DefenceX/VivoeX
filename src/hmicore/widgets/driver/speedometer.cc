@@ -59,17 +59,17 @@ void WidgetDriverSpeedometer::Draw() {
   for (uint16_t d = 0; d <= 270; d += step) {
     double_t r = DegreesToRadians(d + 225);
     if (c * 10 > 99) adjust_x = 0 - 15;
-    GetRenderer()->DrawText((uint32_t)(adjust_x + ((radius - p) * sin(r))),
+    GetRenderer()->DrawString((uint32_t)(adjust_x + ((radius - p) * sin(r))),
                             (uint32_t)(adjust_y + (-(radius - p) * cos(r))), std::to_string(c * 10));
     c++;
   }
   // Digital speed
   if (mode_ == widget::DialType::kDialSpeedKph) {
-    GetRenderer()->DrawText(-30, 40, std::to_string(value_) + " Km/h");
+    GetRenderer()->DrawString(-30, 40, std::to_string(value_) + " Km/h");
   }
 
   if (mode_ == widget::DialType::kDialSpeedMph) {
-    GetRenderer()->DrawText(-30, 40, std::to_string(value_) + " Mph");
+    GetRenderer()->DrawString(-30, 40, std::to_string(value_) + " Mph");
   }
 
   GetRenderer()->SetLineThickness(1, LineType::kLineSolid);

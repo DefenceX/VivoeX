@@ -330,5 +330,6 @@
             ]
         }
     },
-    "terminal.integrated.defaultProfile.windows": "MINGW64 / MSYS2"
+    "terminal.integrated.defaultProfile.windows": "MINGW64 / MSYS2",
+    "C_Cpp.clang_format_style": "{ BasedOnStyle: Google, ColumnLimit: 120 }"
 }

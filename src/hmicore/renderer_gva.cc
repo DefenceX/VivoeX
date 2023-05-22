@@ -11,12 +11,8 @@
 ///
 
 #include "renderer_gva.h"
-
 #include <math.h> /* sqrt */
-
 #include <array>
-
-#include "screen_gva.h"
 
 namespace gva {
 
@@ -240,8 +236,10 @@ void RendererGva::DrawButton(const std::string &keyText, uint32_t fontSize, uint
   uint32_t textWidth = GetTextWidth(keyText, fontSize);
 
   DrawColor(kHmiWhite);
-  if (align == widget::CellAlignType::kAlignCentre) textX = (width / 2) - (textWidth / 2);
-  DrawText(x + textX, y + (height - textHeight - 4), keyText);
+  if (align == widget::CellAlignType::kAlignCentre) {
+    textX = (width / 2) - (textWidth / 2);
+  }
+  DrawString(x + textX, y + (height - textHeight - 4), std::string(keyText));
 };
 
 }  // namespace gva

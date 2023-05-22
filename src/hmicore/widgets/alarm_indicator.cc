@@ -37,7 +37,7 @@ void WidgetAlarmIndicator::Draw() {
     GetRenderer()->DrawRoundedRectangle(110, 429, 420, 20, 6, true);
     GetRenderer()->DrawColor(kHmiWhite);
     uint32_t width = GetRenderer()->GetTextWidth(text_, 14);
-    GetRenderer()->DrawText(110 + (420 / 2) - (width / 2), 444, text_);
+    GetRenderer()->DrawString(110 + (420 / 2) - (width / 2), 444, text_);
     GetRenderer()->SetColourForeground(kHmiWhite);
     GetRenderer()->DrawColor(kHmiWhite);
 

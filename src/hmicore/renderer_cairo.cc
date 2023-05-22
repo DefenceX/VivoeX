@@ -586,7 +586,7 @@ uint32_t RendererCairo::GetTextHeight(std::string_view str, uint32_t fontSize) c
   return (uint32_t)extents.height;
 }
 
-void RendererCairo::DrawText(uint32_t x, uint32_t y, std::string_view text) {
+void RendererCairo::DrawString(uint32_t x, uint32_t y, std::string_view text) {
   Command command;
   command.command = DrawType::kCommandText;
   command.points[0].x = x;
@@ -607,7 +607,7 @@ void RendererCairo::DrawLabel(uint32_t x, uint32_t y, std::string_view text) {
 }
 
 void RendererCairo::DrawTextCentre(uint32_t x, std::string_view text, uint32_t size [[maybe_unused]]) {
-  DrawText(x, 200, text);
+  DrawString(x, 200, text);
 }
 
 uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, unsigned char *buffer, std::string_view file) {

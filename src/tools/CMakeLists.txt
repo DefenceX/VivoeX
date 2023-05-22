@@ -69,6 +69,7 @@ if (MSYS)
     "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/nmea/lib"
     "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/GeographicLib/lib64"
     "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/portaudio/lib"
+    "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/mediax/lib"    
     "${CMAKE_BINARY_DIR}/external/install/mingw64/lib"
     )
 	target_link_libraries(widget-tester shlwapi)

@@ -18,6 +18,7 @@ set(CODE_STYLE "{BasedOnStyle: Google, ColumnLimit: 120}")
 if (MSYS)
   set(MSYS_FLAGS "-L/mingw64/lib -mwindows -static-libstdc++ -DWIN32 -D_POSIX_C_SOURCE -lstdc++ -lws2_32")
   # set(MSYS_FLAGS "-L/mingw64/lib -static-libstdc++ -DWIN32 -D_POSIX_C_SOURCE -lstdc++ -lws2_32")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DGLOG_NO_ABBREVIATED_SEVERITIES=1")
 endif()
 
 if($ENV{CI})

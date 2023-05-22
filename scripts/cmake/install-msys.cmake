@@ -4,12 +4,11 @@ file(GLOB_RECURSE OSMSCOUT_DLL "${CMAKE_BINARY_DIR}/external/install/Program Fil
 install(FILES ${OSMSCOUT_DLL} DESTINATION bin)
 install(FILES 
 	"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/GeographicLib/bin/libGeographicLib.dll"
-        "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/libosmscout/bin/libosmscout_map.dll"
+    "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/libosmscout/bin/libosmscout_map.dll"
 	"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/libosmscout/bin/libosmscout_map_cairo.dll"
 	"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/libosmscout/bin/libosmscout_map_gdi.dll"
-
+	"${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/mediax/lib/libmediax.dll"
  DESTINATION bin)
-install(FILES "${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libmediax.dll" DESTINATION bin)
 install(FILES "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/glog/bin/libglog.dll" DESTINATION bin)
 # install(FILES "${CMAKE_SOURCE_DIR}/scripts/Vivoe Lite.lnk" DESTINATION $ENV{USERPROFILE}/Desktop)
 ## MSYS libs now

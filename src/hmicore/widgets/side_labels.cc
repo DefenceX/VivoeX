@@ -41,17 +41,17 @@ void WidgetSideLabels::Draw(uint32_t x, uint32_t y, uint32_t width, uint32_t hei
     if (text.find('.') != std::string::npos) {
       std::string first_line = text.substr(0, text.find('.'));
       uint32_t text_width = GetRenderer()->GetTextWidth(first_line, 14);
-      GetRenderer()->DrawText(x + (98 - text_width) / 2, y + 20, first_line);
+      GetRenderer()->DrawString(x + (98 - text_width) / 2, y + 20, first_line);
       std::string second_line = text.substr(text.find('.') + 1);
       text_width = GetRenderer()->GetTextWidth(second_line, 14);
-      GetRenderer()->DrawText(x + (98 - text_width) / 2, y + 40, second_line);
+      GetRenderer()->DrawString(x + (98 - text_width) / 2, y + 40, second_line);
     } else {
       uint32_t text_width = GetRenderer()->GetTextWidth(text, 14);
       if (toggle_on) {
-        GetRenderer()->DrawText(x + (98 - text_width) / 2, y + 17, text);
+        GetRenderer()->DrawString(x + (98 - text_width) / 2, y + 17, text);
 
       } else {
-        GetRenderer()->DrawText(x + (98 - text_width) / 2, y + 30, text);
+        GetRenderer()->DrawString(x + (98 - text_width) / 2, y + 30, text);
       }
     }
   }
@@ -71,7 +71,7 @@ void WidgetSideLabels::Toggle(const std::string& label1, const std::string& labe
     GetRenderer()->DrawRectangle(GetX() + 5, GetY() + ypos, 40, 20, true);
   }
   GetRenderer()->DrawColor(kHmiBlack);
-  GetRenderer()->DrawText(GetX() + 12, GetY() + ypos + 15, label1);
+  GetRenderer()->DrawString(GetX() + 12, GetY() + ypos + 15, label1);
   GetRenderer()->SetColourBackground(kHmiGrey);
   GetRenderer()->SetColourForeground(kHmiDarkGreen2);
 
@@ -81,7 +81,7 @@ void WidgetSideLabels::Toggle(const std::string& label1, const std::string& labe
     GetRenderer()->DrawRectangle(GetX() + 50, GetY() + ypos, 45, 20, true);
   }
   GetRenderer()->DrawColor(kHmiBlack);
-  GetRenderer()->DrawText(GetX() + 56, GetY() + ypos + 15, label2);
+  GetRenderer()->DrawString(GetX() + 56, GetY() + ypos + 15, label2);
 }
 
 // On the left and right of the screen
