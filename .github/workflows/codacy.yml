@@ -42,7 +42,11 @@ jobs:
 
       - name: Apt Install
         run: |
-          sudo ./scripts/init_build_machine_ubuntu.sh
+          sudo apt-get --no-install-recommends install catch cpplint rpm libgtk-3-dev valgrind libcairo2-dev \
+            libpango1.0-dev libxt-dev libxml2-dev ncurses-dev libxext-dev libswscale-dev libprotobuf-c-dev \
+            geographiclib-doc libgeographic-dev libgeographic-dev libprotobuf23 libprotobuf-dev \
+            protobuf-compiler autoconf automake libtool curl make g++ unzip lsb-release \
+            lttng-tools lttng-modules-dkms liblttng-ust-dev liblttng-ctl-dev -y
 
       # Execute Codacy Analysis CLI and generate a SARIF output with the security issues identified during the analysis
       - name: Run Codacy Analysis CLI
