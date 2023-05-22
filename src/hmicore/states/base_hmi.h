@@ -55,9 +55,7 @@ struct EventKeyFunction : tinyfsm::Event {
   GvaKeyEnum key;
 };
 
-//
-// State Machine Base Class Declaration
-//
+/// State Machine Base Class Declaration
 struct Hmi : tinyfsm::Fsm<Hmi> {
   /// The default constructor
   virtual ~Hmi() = default;

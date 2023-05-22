@@ -7,7 +7,7 @@
 // License. See the LICENSE file in the project root for full license details.
 //
 ///
-/// \file messaage_box.h
+/// \file message_box.h
 ///
 
 #ifndef HMICORE_WIDGETS_TABLE_MESSAGE_BOX_H_

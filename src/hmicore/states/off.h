@@ -25,6 +25,7 @@
 
 namespace gva {
 
+/// The Off state
 struct StateOff : Hmi {
   void entry() override;
   void react(EventKeyPowerOn const &) override;

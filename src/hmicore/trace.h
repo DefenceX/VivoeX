@@ -23,6 +23,7 @@
 #define TRACEPOINT_INCLUDE "src/trace.h"
 
 #if !defined(_TRACE_H) || defined(TRACEPOINT_HEADER_MULTI_READ)
+/// Define the tracepoint header
 #define _TRACE_H
 
 #include <lttng/tracepoint.h>

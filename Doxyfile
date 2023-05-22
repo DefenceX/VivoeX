@@ -60,8 +60,6 @@ PROJECT_LOGO           = ./images/TransparentLogo.png
 
 OUTPUT_DIRECTORY       =
 
-HTML_COLORSTYLE        = LIGHT # required with Doxygen >= 1.9.5
-
 # If the CREATE_SUBDIRS tag is set to YES then doxygen will create 4096 sub-
 # directories (in 2 levels) under the output directory of each output format and
 # will distribute the generated files over these directories. Enabling this
@@ -153,7 +151,6 @@ INLINE_INHERITED_MEMB  = NO
 # The default value is: YES.
 
 FULL_PATH_NAMES        = YES
-FULL_SIDEBAR           = NO
 
 # The STRIP_FROM_PATH tag can be used to strip a user-defined part of the path.
 # Stripping is only done if one of the specified strings matches the left-hand
@@ -789,7 +786,7 @@ WARN_LOGFILE           =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = mainpage.dox ./src ./src/hmidisplay ./src/hmicore ./src/updater ./src/config ./src/tools ./src/common ./src/hmicore/widgets ./src/hmicore/states ./src/video
+INPUT                  = mainpage.dox ./src ./src/hmidisplay ./src/hmicore ./src/updater ./src/config ./src/tools ./src/common ./src/hmicore/widgets ./src/hmicore/states 
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses

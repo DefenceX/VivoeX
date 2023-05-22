@@ -25,6 +25,7 @@
 
 namespace gva {
 
+/// The On state
 struct StateOn : Hmi {
   void entry() override;
 };

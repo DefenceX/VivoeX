@@ -24,6 +24,7 @@
 
 namespace gva {
 
+/// The SA state
 struct StateSA : Hmi {
   void entry() override;
   void exit() override;

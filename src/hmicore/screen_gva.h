@@ -57,6 +57,7 @@ struct Label {
   uint32_t fontSize;
 };
 
+/// Struct definition of the Message
 struct Message {
   /// Message is visible
   bool visible;

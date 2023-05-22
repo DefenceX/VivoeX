@@ -20,6 +20,7 @@
 
 namespace gva {
 
+/// Class defining the mode widget
 class WidgetDriverRpmFuel : public WidgetX {
  public:
   ///

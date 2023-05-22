@@ -314,7 +314,8 @@
         "projectKey": "DefenceX_vivoe-lite"
     },
     "terminal.integrated.env.linux": {
-        "WORKSPACE_ROOT": "${workspaceFolder}"
+        "WORKSPACE_ROOT": "${workspaceFolder}",
+        "PATH": "${env:PATH}:${workspaceFolder}/scripts"
     },
     "sonarlint.output.showAnalyzerLogs": true,
     "sonarlint.output.showVerboseLogs": true,

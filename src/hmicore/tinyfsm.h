@@ -70,6 +70,7 @@ struct is_same_fsm : std::is_same<typename F::fsmtype, typename S::fsmtype> {};
 #endif
 
 template <typename S>
+/// State
 struct _state_instance {
   /// State instance
   using value_type = S;
@@ -201,6 +202,7 @@ template <typename... FF>
 struct FsmList;
 
 template <>
+/// Finite state machine list
 struct FsmList<> {
   /// \brief Set the inital state
   static void set_initial_state() {}
@@ -212,6 +214,7 @@ struct FsmList<> {
 };
 
 template <typename F, typename... FF>
+/// Finite state machine list
 struct FsmList<F, FF...> {
   /// Finite state machine template
   using fsmtype = Fsm<F>;
@@ -276,6 +279,7 @@ struct StateList<> {
   static void Reset() {}
 };
 template <typename S, typename... SS>
+/// State list
 struct StateList<S, SS...> {
   /// \brief Reset state
   static void Reset() {
@@ -287,6 +291,7 @@ struct StateList<S, SS...> {
 // --------------------------------------------------------------------------
 
 template <typename F>
+/// Moore machine
 struct MooreMachine : tinyfsm::Fsm<F> {
   /// \brief entry actions in some states
   virtual void entry(void) {}
@@ -295,6 +300,7 @@ struct MooreMachine : tinyfsm::Fsm<F> {
 };
 
 template <typename F>
+/// Mealy machine
 struct MealyMachine : tinyfsm::Fsm<F> {
   // input actions are modeled in react():
   // - conditional dependent of event type or payload

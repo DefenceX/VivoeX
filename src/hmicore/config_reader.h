@@ -252,6 +252,7 @@ class ConfigDataTheme : public ConfigDataBase {
   std::string GetThemeFont() const;
 };
 
+/// Class defining the config data
 class ConfigData : public ConfigDataTheme {
  public:
   ///

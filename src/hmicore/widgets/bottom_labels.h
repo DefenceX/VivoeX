@@ -22,6 +22,7 @@
 
 namespace gva {
 
+/// Class defining the bottom labels widget
 class WidgetBottomLabels : public WidgetX {
  public:
   ///

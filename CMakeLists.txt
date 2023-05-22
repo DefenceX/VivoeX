@@ -55,6 +55,7 @@ cpplint_add_subdirectory(src)
 # Setup tests
 enable_testing()
 add_test(NAME HMI_Tests COMMAND tests --gtest_output=xml:./test-results/hello_test.xml)
+add_test(NAME Doxygen COMMAND ${CMAKE_SOURCE_DIR}/scripts/doxygencheck.sh)
 
 # Uninstall target
 if(NOT TARGET uninstall)

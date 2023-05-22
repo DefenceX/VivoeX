@@ -55,6 +55,7 @@ class LabelAction {
   std::function<int(int parentId, GvaKeyEnum key)> privateCallback;  // Callback
 };
 
+/// Class defining the view
 class ViewGva {
  public:
   ///

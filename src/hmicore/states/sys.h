@@ -25,6 +25,7 @@
 
 namespace gva {
 
+/// The SYS state
 struct StateSYS : Hmi {
   void entry() override;
   void react(EventKeyPowerOn const &) override;

@@ -25,6 +25,7 @@
 
 namespace gva {
 
+/// The BMS state
 struct StateBMS : Hmi {
   virtual ~StateBMS() = default;
   void entry() override;

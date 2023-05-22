@@ -7,7 +7,7 @@
 // License. See the LICENSE file in the project root for full license details.
 //
 ///
-/// \file alarms_indicator.cc
+/// \file alarm_indicator.cc
 ///
 
 #include "alarm_indicator.h"

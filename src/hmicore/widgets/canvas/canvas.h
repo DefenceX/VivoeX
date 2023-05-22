@@ -22,6 +22,7 @@
 
 namespace gva {
 
+/// Class defining the mode widget
 class WidgetCanvas : public WidgetX {
  public:
   ///

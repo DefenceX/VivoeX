@@ -21,6 +21,7 @@
 
 namespace gva {
 
+/// Class defining the render base
 class Hotspot : public RenderBase {
  public:
   ///
@@ -66,6 +67,7 @@ class Hotspot : public RenderBase {
   uint32_t binding_;
 };
 
+/// Class defining the touch screen events
 class TouchGva {
  public:
   ///

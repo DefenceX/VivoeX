@@ -7,7 +7,7 @@
 // License. See the LICENSE file in the project root for full license details.
 //
 ///
-/// \file events_gva.cpp
+/// \file events_gva.cc
 ///
 
 #include "events_gva.h"

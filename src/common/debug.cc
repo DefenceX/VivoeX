@@ -12,13 +12,19 @@
 
 #include "debug.h"
 
+#include <array>
 #include <cstring>
 #include <iomanip>
 #include <iostream>
-#include <array>
 
 namespace gva {
 
+///
+/// \brief pad the hex dump
+///
+/// \param i
+/// \param j
+///
 void Pad(size_t i, size_t j) {
   if ((i + 1) % 16 <= 8) {
     std::cout << ' ';

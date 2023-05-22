@@ -8,6 +8,7 @@
    - \ref os
        - \ref ubuntu
        - \ref centos
+       - \ref win
    - \ref build
    - \ref install
    - \ref developers
@@ -102,7 +103,7 @@ And install these additional packages to build the documentation:
 $ sudo dnf install doxygen plantuml ImageMagick
 \endcode
 
-\subsubsection centos Windows 11
+\subsubsection win Windows 11
 Cross compilation for Windows systems is achieved using MSYS2 (https://www.msys2.org/). Using the pacman package manager you can install all the required dependancies:
 ```
 pacman -S base-devel \

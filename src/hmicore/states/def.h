@@ -25,6 +25,7 @@
 
 namespace gva {
 
+/// The DEF state
 struct StateDEF : Hmi {
   void entry() override;
   void react(EventKeyPowerOn const &) override;
