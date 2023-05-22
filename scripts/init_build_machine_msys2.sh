@@ -9,6 +9,7 @@ pacman -S base-devel \
   mingw-w64-x86_64-graphviz \
   mingw-w64-x86_64-imagemagick \
   mingw-w64-x86_64-meson \
+  mingw-w64-x86_64-gtkmm \
   libtool \
   automake \
   autoconf \
