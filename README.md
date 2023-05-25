@@ -1,23 +1,23 @@
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=DefenceX_vivoe-lite&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=DefenceX_vivoe-lite)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=DefenceX_vivoe-lite&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=DefenceX_vivoe-lite)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=DefenceX_vivoe-lite&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=DefenceX_vivoe-lite)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=DefenceX_vivoe-lite&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=DefenceX_vivoe-lite)
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=DefenceX_vivoe-lite&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=DefenceX_vivoe-lite)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=DefenceX_vivoe-lite&metric=coverage)](https://sonarcloud.io/summary/new_code?id=DefenceX_vivoe-lite)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=DefenceX_VivoeX&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=DefenceX_VivoeX)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=DefenceX_VivoeX&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=DefenceX_VivoeX)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=DefenceX_VivoeX&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=DefenceX_VivoeX)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=DefenceX_VivoeX&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=DefenceX_VivoeX)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=DefenceX_VivoeX&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=DefenceX_VivoeX)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=DefenceX_VivoeX&metric=coverage)](https://sonarcloud.io/summary/new_code?id=DefenceX_VivoeX)
 
-[![Action cyclone](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-ubuntu-amd64-cyclone.yaml/badge.svg)](https://github.com/DefenceX/vivoe-lite/actions/workflows/build-ubuntu-amd64-cyclone.yaml)
-[![Action cyclone](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-centos-amd64-cyclone.yaml/badge.svg)](https://github.com/DefenceX/vivoe-lite/actions/workflows/build-centos-amd64-cyclone.yaml)
-[![Action cyclone](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-debian-arm64-cyclone.yaml/badge.svg)](https://github.com/DefenceX/vivoe-lite/actions/workflows/build-debian-arm64-cyclone.yaml)
-[![Action cyclone](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-msys2-amd64-cyclone.yaml/badge.svg)](https://github.com/DefenceX/vivoe-lite/actions/workflows/build-msys2-amd64-cyclone.yaml)
-[![Action doxygen](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-doxygen.yaml/badge.svg)](https://github.com/ross-newman/vivoe-lite/actions/workflows/build-doxygen.yaml)
+[![Action cyclone](https://github.com/ross-newman/VivoeX/actions/workflows/build-ubuntu-amd64-cyclone.yaml/badge.svg)](https://github.com/DefenceX/VivoeX/actions/workflows/build-ubuntu-amd64-cyclone.yaml)
+[![Action cyclone](https://github.com/ross-newman/VivoeX/actions/workflows/build-centos-amd64-cyclone.yaml/badge.svg)](https://github.com/DefenceX/VivoeX/actions/workflows/build-centos-amd64-cyclone.yaml)
+[![Action cyclone](https://github.com/ross-newman/VivoeX/actions/workflows/build-debian-arm64-cyclone.yaml/badge.svg)](https://github.com/DefenceX/VivoeX/actions/workflows/build-debian-arm64-cyclone.yaml)
+[![Action cyclone](https://github.com/ross-newman/VivoeX/actions/workflows/build-msys2-amd64-cyclone.yaml/badge.svg)](https://github.com/DefenceX/VivoeX/actions/workflows/build-msys2-amd64-cyclone.yaml)
+[![Action doxygen](https://github.com/ross-newman/VivoeX/actions/workflows/build-doxygen.yaml/badge.svg)](https://github.com/ross-newman/VivoeX/actions/workflows/build-doxygen.yaml)
 
 
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/2927/badge)](https://bestpractices.coreinfrastructure.org/projects/2927)
 [![License](https://img.shields.io/badge/licence-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
-![Version](https://defencex.github.io/vivoe-lite/version.svg)
+![Version](https://defencex.github.io/VivoeX/version.svg)
 
 
-# vivoe-lite
+# VivoeX
 
 ![GVA HMI](images/screen/ScreenshotSaFront.png)
 
@@ -31,7 +31,7 @@ For msys2 under Windows 11 run [scripts/init_build_machine_msys2.sh](scripts/ini
 For CentOS Stream 8 run [scripts/init_build_machine_centos.sh](scripts/init_build_machine_centos.sh)
 
 # Documentation
-Documentation can be generated using doxygen after cloning or see latest documentation on [Github Pages](https://defencex.github.io/vivoe-lite/).
+Documentation can be generated using doxygen after cloning or see latest documentation on [Github Pages](https://defencex.github.io/VivoeX/).
 
 
 # Build
@@ -59,7 +59,7 @@ Table below is a summary of the libraries used in this project:
 | glog                  | https://github.com/google/glog                                 | v0.6.0      | 05/04/2022 |
 | libosmscout           | https://github.com/Framstag/libosmscout                        | 1.1.0       | 22/11/2018 |
 | lttng-ust             | https://github.com/lttng/lttng-ust                             | v2.13.5     | 01/10/2022 |
-| vivoe-media-framework | https://github.com/DefenceX/vivoe-media-framework              | v0.4.156      | 12/02/2023 |
+| vivoe-media-framework | https://github.com/DefenceX/vivoe-media-framework              | v0.4.157      | 12/02/2023 |
 | nmea                  | https://nmea.sourceforge.net/                                  | 0.5.3       | 11/03/2008 |
 | pango                 | https://github.com/GNOME/pango                                 | 1.50.12     | 19/11/2022 |
 | protobuf              | https://github.com/protocolbuffers/protobuf                    | v21.12      | 13/12/2022 |
@@ -134,7 +134,7 @@ I will be testing FastRTPS as this is the default choice for [ROS2](https://inde
 ## GPS source
 Application supports locally connected NMEA (USB virtual serial) GPS source. The only tested device is currently the [GlobalSat BU-353-S4 USB](https://www.amazon.co.uk/GlobalSat-BU-353-S4-Receiver-SiRF-Black/dp/B008200LHW/ref=sr_1_1?keywords=GlobalSat+BU-353-S4+USB&qid=1560375523&s=electronics&sr=1-1) available from Amazon and Robotshop. This outputs [NMEA](https://en.wikipedia.org/wiki/NMEA_0183) formatted strings as shown below. These are read, converted and displayed on the display in the status bar if present. This is done by the same thread that updates the clock on the HMI. If no device is present then a dummy location is used which will place you in London at a famous landmark.
 ```
-newmanr@dell-lnx:~/git/vivoe-lite$ cat /dev/ttyUSB0 | hexdump -C
+newmanr@dell-lnx:~/git/VivoeX$ cat /dev/ttyUSB0 | hexdump -C
 00000000  24 47 50 47 47 41 2c 32  32 31 34 32 38 2e 30 30  |$GPGGA,221428.00|
 00000010  30 2c 35 32 31 32 2e 38  35 37 36 2c 4e 2c 30 30  |0,5212.8576,N,00|
 00000020  30 35 33 2e 33 39 30 37  2c 57 2c 31 2c 30 36 2c  |053.3907,W,1,06,|
