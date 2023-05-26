@@ -317,6 +317,10 @@
         "WORKSPACE_ROOT": "${workspaceFolder}",
         "PATH": "${env:PATH}:${workspaceFolder}/scripts"
     },
+    "terminal.integrated.env.windows": {
+        "WORKSPACE_ROOT": "${workspaceFolder}",
+        "PATH": "${env:PATH}:${workspaceFolder}/scripts"
+    },
     "sonarlint.output.showAnalyzerLogs": true,
     "sonarlint.output.showVerboseLogs": true,
     "sonarlint.trace.server": "off",
