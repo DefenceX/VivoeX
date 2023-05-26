@@ -11,6 +11,9 @@
 ///
 
 #include "hmicore/widgets/table/cell_type.h"
+#include <string>
+#include <string_view>
+#include <stdint.h>
 
 // Class CellType
 
