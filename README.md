@@ -5,11 +5,11 @@
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=DefenceX_VivoeX&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=DefenceX_VivoeX)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=DefenceX_VivoeX&metric=coverage)](https://sonarcloud.io/summary/new_code?id=DefenceX_VivoeX)
 
-[![Action cyclone](https://github.com/ross-newman/VivoeX/actions/workflows/build-ubuntu-amd64-cyclone.yaml/badge.svg)](https://github.com/DefenceX/VivoeX/actions/workflows/build-ubuntu-amd64-cyclone.yaml)
-[![Action cyclone](https://github.com/ross-newman/VivoeX/actions/workflows/build-centos-amd64-cyclone.yaml/badge.svg)](https://github.com/DefenceX/VivoeX/actions/workflows/build-centos-amd64-cyclone.yaml)
-[![Action cyclone](https://github.com/ross-newman/VivoeX/actions/workflows/build-debian-arm64-cyclone.yaml/badge.svg)](https://github.com/DefenceX/VivoeX/actions/workflows/build-debian-arm64-cyclone.yaml)
-[![Action cyclone](https://github.com/ross-newman/VivoeX/actions/workflows/build-msys2-amd64-cyclone.yaml/badge.svg)](https://github.com/DefenceX/VivoeX/actions/workflows/build-msys2-amd64-cyclone.yaml)
-[![Action doxygen](https://github.com/ross-newman/VivoeX/actions/workflows/build-doxygen.yaml/badge.svg)](https://github.com/ross-newman/VivoeX/actions/workflows/build-doxygen.yaml)
+[![Action cyclone](https://github.com/DefenceX/VivoeX/actions/workflows/build-ubuntu-amd64-cyclone.yaml/badge.svg)](https://github.com/DefenceX/VivoeX/actions/workflows/build-ubuntu-amd64-cyclone.yaml)
+[![Action cyclone](https://github.com/DefenceX/VivoeX/actions/workflows/build-centos-amd64-cyclone.yaml/badge.svg)](https://github.com/DefenceX/VivoeX/actions/workflows/build-centos-amd64-cyclone.yaml)
+[![Action cyclone](https://github.com/DefenceX/VivoeX/actions/workflows/build-debian-arm64-cyclone.yaml/badge.svg)](https://github.com/DefenceX/VivoeX/actions/workflows/build-debian-arm64-cyclone.yaml)
+[![Action cyclone](https://github.com/DefenceX/VivoeX/actions/workflows/build-msys2-amd64-cyclone.yaml/badge.svg)](https://github.com/DefenceX/VivoeX/actions/workflows/build-msys2-amd64-cyclone.yaml)
+[![Action doxygen](https://github.com/DefenceX/VivoeX/actions/workflows/build-doxygen.yaml/badge.svg)](https://github.com/DefenceX/VivoeX/actions/workflows/build-doxygen.yaml)
 
 
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/2927/badge)](https://bestpractices.coreinfrastructure.org/projects/2927)
@@ -157,7 +157,7 @@ $ cat /dev/ttyUSB0 | hexdump -C
 00000130  2c 2c 2c 2c 2c 2c 2c 32  2e 34 2c 31 2e 34 2c 32  |,,,,,,,2.4,1.4,2|
 00000140  2e 30 2a 33 42 0a 0a 24  47 50 52 4d 43 2c 32 32  |.0*3B..$GPRMC,22|
 ```
-Internally [libnema](https://github.com/ross-newman/nmealib) is used aquire [NMEA](https://en.wikipedia.org/wiki/NMEA_0183) messages from the GPS source. Once aquired conversion from decimal long/lat to degrees minutes seconds is required for the internal representation. Conversions to many other formats are possible using [libGeographic](https://geographiclib.sourceforge.io), currently the only conversion implemented is [MGRS](https://en.wikipedia.org/wiki/Military_Grid_Reference_System).
+Internally [libnema](https://github.com/DefenceX/nmealib) is used aquire [NMEA](https://en.wikipedia.org/wiki/NMEA_0183) messages from the GPS source. Once aquired conversion from decimal long/lat to degrees minutes seconds is required for the internal representation. Conversions to many other formats are possible using [libGeographic](https://geographiclib.sourceforge.io), currently the only conversion implemented is [MGRS](https://en.wikipedia.org/wiki/Military_Grid_Reference_System).
 
 # ODB Source
 For CAN messages can be read via the ELM 327 compatible USB dongle such as this one on [Amazon](https://www.amazon.co.uk/Weddecor-Interface-Diagnostic-Scanner-Adapter/dp/B0798LK2C2/ref=asc_df_B0798LK2C2/?tag=googshopuk-21&linkCode=df0&hvadid=310513207083&hvpos=1o2&hvnetw=g&hvrand=13476710392809007404&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=1007089&hvtargid=pla-765104732771&psc=1). This is primerially used to drive the screen widgets on the DRV (Drivers) display. Currently no support for MilCAN hardware is planned, automotive CAN only.
@@ -168,7 +168,7 @@ If a valid GPS source is present then an offline map will be available rendered 
 ![GVA Dataflow](images/screen/ScreenshotBms.png)<br>
 **Example of the Battle Management System (BMS) screen**
 
-You can render maps using servers provided by [Google Colaboratory](https://colab.research.google.com/notebooks/welcome.ipynb) using my [juypter notebook](https://gist.github.com/ross-newman/8634f69e98ac2aded46552e7b0768dbb) for processing the data and depositing the results on to a Google Drive account. 
+You can render maps using servers provided by [Google Colaboratory](https://colab.research.google.com/notebooks/welcome.ipynb) using my [juypter notebook](https://gist.github.com/DefenceX/8634f69e98ac2aded46552e7b0768dbb) for processing the data and depositing the results on to a Google Drive account. 
 
 Tutorial [documentation for libosmscout](http://libosmscout.sourceforge.net/tutorials/importing/) contains a full description on how to prepare the maps database.
 # Screenshots
