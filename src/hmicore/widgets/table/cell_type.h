@@ -13,10 +13,9 @@
 #ifndef HMICORE_WIDGETS_TABLE_CELL_TYPE_H_
 #define HMICORE_WIDGETS_TABLE_CELL_TYPE_H_
 
+#include <stdint.h>
 #include <string>
 #include <string_view>
-#include <stdint.h>
- 
 #include "hmicore/widgets/widget_types.h"
 
 namespace gva {
