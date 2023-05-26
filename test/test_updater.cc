@@ -29,6 +29,7 @@ TEST(TestUpdater, Start) {
   //
   // Setup the required widgets
   //
+  
   gva::RendererGva renderer(640, 480);
   gva::TouchGva touch;
 

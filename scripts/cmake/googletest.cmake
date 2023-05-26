@@ -23,10 +23,10 @@ ExternalProject_Add(
 if (MSYS)
   set(GTEST_LIBRARY_DIRS "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/googletest-distribution/${CMAKE_INSTALL_LIBDIR}")
 else()
-  set(GTEST_LIBRARY_DIRS
-    GTEST_LIBRARY_DIRS ${CMAKE_BINARY_DIR}/external/install/usr/local/lib
-    GTEST_LIBRARY_DIRS ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64
-    GTEST_LIBRARY_DIRS ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/aarch64-linux-gnu
+  set(GTEST_LIBRARY_DIRS 
+    ${CMAKE_BINARY_DIR}/external/install/usr/local/lib
+    ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64
+    ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/aarch64-linux-gnu
   )
 endif()
 set(GTEST_LIBARAIES gmock_main gmock gtest pthread)
