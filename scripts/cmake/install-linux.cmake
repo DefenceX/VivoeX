@@ -1,4 +1,5 @@
 install(TARGETS hmi-display DESTINATION /opt/gva/hmi)
+include(GNUInstallDirs)
 
 # Create systems integration files
 file(WRITE ${CMAKE_BINARY_DIR}/etc/ld.so.conf.d/vivoe-lite.conf "/opt/gva/${CMAKE_INSTALL_LIBDIR}/\n") 
@@ -7,8 +8,8 @@ file(WRITE ${CMAKE_BINARY_DIR}/etc/profile.d/vivoe-lite.sh "export PATH=$PATH:/o
 # install(DIRECTORY DESTINATION /etc/profile.d)
 # Install binaries with external libs
 install(FILES  
-            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libmediax.so
-            ${CMAKE_BINARY_DIR}/external/install/usr/local/lib/libmediax.so.1
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/${CMAKE_INSTALL_LIBDIR}/libmediax.so
+            ${CMAKE_BINARY_DIR}/external/install/usr/local/${CMAKE_INSTALL_LIBDIR}/libmediax.so.1
             ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libGeographicLib.so
             ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libGeographicLib.so.23
             ${CMAKE_BINARY_DIR}/external/install/usr/local/lib64/libGeographicLib.so.23.1.0
