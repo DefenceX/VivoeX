@@ -27,7 +27,7 @@ static const uint32_t kSemVerMajor = 0;
 /// minor version number
 static const uint32_t kSemVerMinor = 4;
 /// patch version number
-static const uint32_t kSemVerPatch = 469;
+static const uint32_t kSemVerPatch = 470;
 /// minimum height
 static const uint32_t kMinimumHeight = 480;
 /// minimum width
