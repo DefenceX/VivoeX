@@ -39,6 +39,7 @@ TEST(TestUpdater, Start) {
   widget_list[gva::widget::WidgetEnum::kWidgetTypeDialSpeedometer] =
       std::make_shared<gva::WidgetDriverSpeedometer>(renderer);
   widget_list[gva::widget::WidgetEnum::KWidgetTypeDialRpmFuel] = std::make_shared<gva::WidgetDriverRpmFuel>(renderer);
+  widget_list[gva::widget::WidgetEnum::KWidgetTypeBatteryBar] = std::make_shared<gva::WidgetDriverBatteryBar>(renderer);
   widget_list[gva::widget::WidgetEnum::KWidgetTypeAlarmIndicator] =
       std::make_shared<gva::WidgetAlarmIndicator>(renderer, &touch);
   widget_list[gva::widget::WidgetEnum::KWidgetTypeTopLabels] = std::make_shared<gva::WidgetTopLabels>(renderer, &touch);

@@ -89,6 +89,7 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
   widget_list_[widget::WidgetEnum::KWidgetTypeKeyboard] = std::make_shared<WidgetKeyboard>(*renderer);
   widget_list_[widget::WidgetEnum::kWidgetTypeDialSpeedometer] = std::make_shared<WidgetDriverSpeedometer>(*renderer);
   widget_list_[widget::WidgetEnum::KWidgetTypeDialRpmFuel] = std::make_shared<WidgetDriverRpmFuel>(*renderer);
+  widget_list_[widget::WidgetEnum::KWidgetTypeBatteryBar] = std::make_shared<WidgetDriverBatteryBar>(*renderer);
   widget_list_[widget::WidgetEnum::KWidgetTypeAlarmIndicator] =
       std::make_shared<WidgetAlarmIndicator>(*renderer, touch);
   widget_list_[widget::WidgetEnum::KWidgetTypeTopLabels] = std::make_shared<WidgetTopLabels>(*renderer, touch);
