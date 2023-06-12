@@ -33,6 +33,12 @@ static const uint32_t kMinimumHeight = 480;
 /// minimum width
 static const uint32_t kMinimumWidth = 640;
 
+/// Onscreen Bezel button Dimensions
+/// height
+static const uint32_t kBezelBtnHeight = kMinimumHeight*0.12;
+/// width
+static const uint32_t kBezelBtnWidth = kMinimumWidth;
+
 ///
 /// Enumerated type definition
 ///
@@ -336,7 +342,8 @@ class FunctionSelect : public StateBase {
   struct Labels {
     /// The label state
     LabelStates state;
-  };
+
+    };
   /// The labels
   std::array<Labels, 8> labels;
 
