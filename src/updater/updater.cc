@@ -24,6 +24,7 @@
 #include "hmicore/widgets/bottom_labels.h"
 #include "hmicore/widgets/driver/rpm_fuel.h"
 #include "hmicore/widgets/driver/speedometer.h"
+#include "hmicore/widgets/driver/battery_bar.h"
 #include "hmicore/widgets/plan_position_indicator.h"
 
 namespace gva {
@@ -87,6 +88,9 @@ void Updater::WidgetUpdaterThread(std::map<widget::WidgetEnum, std::shared_ptr<W
 
   std::shared_ptr<gva::WidgetDriverRpmFuel> rpm =
       std::static_pointer_cast<gva::WidgetDriverRpmFuel>(widget_list->at(widget::WidgetEnum::KWidgetTypeDialRpmFuel));
+  
+  std::shared_ptr<gva::WidgetDriverBatteryBar> gauge_bar =
+      std::static_pointer_cast<gva::WidgetDriverBatteryBar>(widget_list->at(widget::WidgetEnum::KWidgetTypeBatteryBar));
 
   std::shared_ptr<gva::WidgetPlanPositionIndicator> compass =
       std::static_pointer_cast<gva::WidgetPlanPositionIndicator>(

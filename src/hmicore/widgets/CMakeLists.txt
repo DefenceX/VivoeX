@@ -9,6 +9,7 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/bottom_labels.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/driver/rpm_fuel.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/driver/speedometer.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/driver/battery_bar.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/table/message_box.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/canvas/canvas.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/canvas/video.cc

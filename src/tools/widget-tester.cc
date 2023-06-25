@@ -56,6 +56,7 @@
 #include "hmicore/widgets/bottom_labels.h"
 #include "hmicore/widgets/driver/rpm_fuel.h"
 #include "hmicore/widgets/driver/speedometer.h"
+#include "hmicore/widgets/driver/battery_bar.h"
 #include "hmicore/widgets/keyboard.h"
 #include "hmicore/widgets/mode.h"
 #include "hmicore/widgets/plan_position_indicator.h"
@@ -128,6 +129,7 @@ static gva::WidgetMode mode(renderer);
 static gva::WidgetTable table(renderer, &touch, gva::ConfigData::GetInstance()->GetThemeBackground());
 static gva::WidgetDriverSpeedometer driver_speed(renderer);
 static gva::WidgetDriverRpmFuel driver_rpm(renderer);
+static gva::WidgetDriverBatteryBar battery_gauge(renderer);
 static gva::WidgetObjectLocalisation objects(renderer, &touch);
 /// Array of threats
 std::array<gva::WidgetPlanPositionIndicator::ThreatType, 5> threats;
@@ -577,6 +579,15 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       objects.Draw();
       renderer.Draw();
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/objects_people_01.png").c_str());
+    } break;
+    case 36: {
+      cairo_translate(cr, width / 2, height / 2);
+      cairo_scale(cr, 2, 2);
+      battery_gauge.SetVisible(true);
+      battery_gauge.SetValue(4000);
+      battery_gauge.Draw();
+      renderer.Draw();
+      cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/battery_gauge.png").c_str());
     } break;
     default:
       counter = 9999;  // Cause loop to end and terminate

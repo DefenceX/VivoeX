@@ -20,6 +20,7 @@
 #include "hmicore/widgets/canvas/video.h"
 #include "hmicore/widgets/driver/rpm_fuel.h"
 #include "hmicore/widgets/driver/speedometer.h"
+#include "hmicore/widgets/driver/battery_bar.h"
 #include "hmicore/widgets/keyboard.h"
 #include "hmicore/widgets/mode.h"
 #include "hmicore/widgets/plan_position_indicator.h"
