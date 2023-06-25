@@ -184,4 +184,33 @@ void HmiHelper::TableAlarms(WidgetTable *table) {
   table->AddCell("Page 1 of 1", 100, widget::CellAlignType::kAlignRight);
 }
 
+void HmiHelper::bezelButtons(WidgetOnscreenBezelBtns *onscreenBezelBtns) {
+
+
+  //resize drawable canvas down
+
+  // turn visible
+  onscreenBezelBtns->SetVisible(true);
+
+
+  // stay with a 4:3 aspect ratio
+
+  // table->Reset();
+  // table->SetVisible(true);
+
+
+
+  // if (bezelEnabled) {
+  //   // int height = gva::kMinimumHeight * 0.9583;
+  //   // int width = gva::kMinimumWidth * 0.9583;
+  //   // (480-20)/480 = 0.9583. buttons are 20
+  //   RendererCairo::Configure(400,300);
+  // }
+  // else {
+  //   current_config_->set_height(current_config_->height());
+  //   current_config_->set_width(current_config_->width());
+  // }
+  
+}
+
 }  // namespace gva

@@ -19,6 +19,7 @@ GvaKeyEnum Hmi::KeySYS(GvaKeyEnum keypress) {
   screen_.function_left.visible = true;
   screen_.function_right.visible = true;
   auto table = (WidgetTable *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable);
+  auto bezelBtns = (WidgetOnscreenBezelBtns *)screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeBezelButtons);
 
   KeySide(keypress);
   Key(keypress);
@@ -34,7 +35,10 @@ GvaKeyEnum Hmi::KeySYS(GvaKeyEnum keypress) {
     case GvaKeyEnum::kKeyF3:
     case GvaKeyEnum::kKeyF4:
     case GvaKeyEnum::kKeyF6:
+    // Bezel button toggle
     case GvaKeyEnum::kKeyF7:
+      HmiHelper::bezelButtons(bezelBtns);
+      break;
     case GvaKeyEnum::kKeyF8:
     case GvaKeyEnum::kKeyF9:
     case GvaKeyEnum::kKeyF10:

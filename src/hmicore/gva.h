@@ -27,11 +27,17 @@ static const uint32_t kSemVerMajor = 0;
 /// minor version number
 static const uint32_t kSemVerMinor = 4;
 /// patch version number
-static const uint32_t kSemVerPatch = 496;
+static const uint32_t kSemVerPatch = 497;
 /// minimum height
 static const uint32_t kMinimumHeight = 480;
 /// minimum width
 static const uint32_t kMinimumWidth = 640;
+
+/// Onscreen Bezel button Dimensions
+/// height
+static const uint32_t kBezelBtnHeight = kMinimumHeight*0.12;
+/// width
+static const uint32_t kBezelBtnWidth = kMinimumWidth;
 
 ///
 /// Enumerated type definition
@@ -336,7 +342,8 @@ class FunctionSelect : public StateBase {
   struct Labels {
     /// The label state
     LabelStates state;
-  };
+
+    };
   /// The labels
   std::array<Labels, 8> labels;
 

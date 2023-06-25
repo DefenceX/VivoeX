@@ -112,8 +112,8 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeysSituationalAwarenessLeft() {
 FunctionKeys DefaultSettings::GetDefaultFunctionKeysSituationalAwarenessRight() {
   FunctionKeys keys;
   keys.visible = true;
-  keys.labels[0].state = LabelStates::kLabelHidden;
-  keys.labels[0].text = "Unused";
+  keys.labels[0].state = LabelStates::kLabelEnabled;
+  keys.labels[0].text = "Bezel Btns";
   keys.labels[0].toggleActive = false;
   keys.labels[1].state = LabelStates::kLabelHidden;
   keys.labels[1].text = "Unused";
@@ -161,13 +161,13 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeysWeaponsRight() {
   FunctionKeys keys;
   keys.visible = true;
   keys.labels[0].state = LabelStates::kLabelEnabled;
-  keys.labels[0].text = "icon:waterfall";
+  keys.labels[0].text = "Bezel Btns";
   keys.labels[0].toggleActive = false;
   keys.labels[1].state = LabelStates::kLabelEnabled;
-  keys.labels[1].text = "icon:cross";
+  keys.labels[1].text = "icon:waterfall";
   keys.labels[1].toggleActive = false;
-  keys.labels[2].state = LabelStates::kLabelHidden;
-  keys.labels[2].text = "Unused";
+  keys.labels[2].state = LabelStates::kLabelEnabled;
+  keys.labels[2].text = "icon:cross";
   keys.labels[2].toggleActive = false;
   keys.labels[3].state = LabelStates::kLabelHidden;
   keys.labels[3].text = "Unused";
@@ -212,16 +212,16 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeysDefensiveSystemsLeft() {
 FunctionKeys DefaultSettings::GetDefaultFunctionKeySystemsRight() {
   FunctionKeys keys;
   keys.visible = true;
-  keys.labels[0].text = "Commander.Health";
+  keys.labels[0].state = LabelStates::kLabelEnabled;
+  keys.labels[0].text = "Bezel Btns";
   keys.labels[0].toggleActive = false;
-  keys.labels[1].state = LabelStates::kLabelDisabled;
-  keys.labels[1].text = "Gunner.Health";
+  keys.labels[1].text = "Commander.Health";
   keys.labels[1].toggleActive = false;
   keys.labels[2].state = LabelStates::kLabelDisabled;
-  keys.labels[2].text = "Driver.Health";
+  keys.labels[2].text = "Gunner.Health";
   keys.labels[2].toggleActive = false;
   keys.labels[3].state = LabelStates::kLabelDisabled;
-  keys.labels[3].text = "Roll.Allocation";
+  keys.labels[3].text = "Driver.Health";
   keys.labels[3].toggleActive = false;
   keys.labels[4].state = LabelStates::kLabelEnabled;
   keys.labels[4].text = "Blackout";
@@ -245,8 +245,9 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeySystemsLeft() {
   keys.labels[2].text = "HUMS";
   keys.labels[2].toggleActive = false;
   keys.labels[2].state = LabelStates::kLabelDisabled;
-  keys.labels[3].text = "System";
+  keys.labels[3].text = "Roll.Allocation";
   keys.labels[3].toggleActive = false;
+  keys.labels[3].state = LabelStates::kLabelDisabled;
   keys.labels[4].state = LabelStates::kLabelEnabled;
   keys.labels[4].text = "Licences";
   keys.labels[4].toggleActive = false;
@@ -259,14 +260,14 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeySystemsLeft() {
 FunctionKeys DefaultSettings::GetDefaultFunctionKeyDriverRight() {
   FunctionKeys keys;
   keys.visible = true;
-  keys.labels[0].state = LabelStates::kLabelEnabledSelected;
-  keys.labels[0].text = "Assist";
+  keys.labels[0].state = LabelStates::kLabelEnabled;
+  keys.labels[0].text = "Bezel Btns";
   keys.labels[0].toggleActive = false;
-  keys.labels[1].state = LabelStates::kLabelEnabled;
-  keys.labels[1].text = "PPI Mode";
+  keys.labels[1].state = LabelStates::kLabelEnabledSelected;
+  keys.labels[1].text = "Assist";
   keys.labels[1].toggleActive = false;
-  keys.labels[2].state = LabelStates::kLabelHidden;
-  keys.labels[2].text = "Unused";
+  keys.labels[2].state = LabelStates::kLabelEnabled;
+  keys.labels[2].text = "PPI Mode";
   keys.labels[2].toggleActive = false;
   keys.labels[3].state = LabelStates::kLabelHidden;
   keys.labels[3].text = "Unused";
@@ -341,8 +342,8 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeyBattlefieldManagementSystemRi
     state = LabelStates::kLabelEnabled;
   else
     state = LabelStates::kLabelDisabled;
-  keys.labels[0].state = LabelStates::kLabelHidden;
-  keys.labels[0].text = "Unused";
+  keys.labels[0].state = LabelStates::kLabelEnabled;
+  keys.labels[0].text = "Bezel Btns";
   keys.labels[0].toggleActive = false;
   keys.labels[1].state = LabelStates::kLabelHidden;
   keys.labels[1].text = "Unused";
@@ -390,16 +391,16 @@ FunctionKeys DefaultSettings::GetDefaultFunctionKeyAlarmsRight() {
   FunctionKeys keys;
   keys.visible = true;
   keys.labels[0].state = LabelStates::kLabelEnabled;
-  keys.labels[0].text = "Override";
+  keys.labels[0].text = "Bezel Btns";
   keys.labels[0].toggleActive = false;
   keys.labels[1].state = LabelStates::kLabelEnabled;
-  keys.labels[1].text = "Clear";
+  keys.labels[1].text = "Override";
   keys.labels[1].toggleActive = false;
   keys.labels[2].state = LabelStates::kLabelEnabled;
-  keys.labels[2].text = "Add Note";
+  keys.labels[2].text = "Clear";
   keys.labels[2].toggleActive = false;
-  keys.labels[3].state = LabelStates::kLabelHidden;
-  keys.labels[3].text = "Unused";
+  keys.labels[3].state = LabelStates::kLabelEnabled;
+  keys.labels[3].text = "Add Note";
   keys.labels[3].toggleActive = false;
   keys.labels[4].state = LabelStates::kLabelEnabled;
   keys.labels[4].text = "Page.Up";

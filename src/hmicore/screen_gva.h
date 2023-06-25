@@ -25,6 +25,7 @@
 #include "nmea/nmea.h"
 #include "updater/updater.h"
 #include "widgets/table/table.h"
+#include "widgets/onscreen_bezel_btns.h"
 #include "widgets/widget.h"
 #include "widgets/widget_types.h"
 #include "widgets/widgets.h"
