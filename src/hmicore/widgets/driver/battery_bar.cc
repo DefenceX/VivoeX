@@ -65,6 +65,19 @@ void WidgetDriverBatteryBar::Draw() {
   GetRenderer()->SetColourForeground(kHmiBlack);
   GetRenderer()->SetLineThickness(1, LineType::kLineSolid);
   for (uint16_t i = 0; i < numBoxes; ++i) {
+    // Determine the color based on battery percentage range
+    uint16_t batteryPercentage = i * 10;
+    switch (batteryPercentage) {
+      case 0 ... 20:
+        GetRenderer()->SetColourBackground(kHmiRed);
+        break;
+      case 21 ... 40:
+        GetRenderer()->SetColourBackground(kHmiYellow);
+        break;
+      default:
+        GetRenderer()->SetColourBackground(kHmiGreen);
+        break;
+    }
     uint16_t boxY = (height - frameThickness*2) - (i * (height / maxBoxes)) - spacing;
     GetRenderer()->DrawRectangle(spacing, boxY, width - 2 * spacing, height / maxBoxes - spacing, true);
   }
