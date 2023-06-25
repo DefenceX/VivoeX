@@ -13,6 +13,11 @@
 #ifndef HMICORE_HMI_GVA_HELPERS_H_
 #define HMICORE_HMI_GVA_HELPERS_H_
 #include "hmicore/screen_gva.h"
+#include "hmicore/renderer_cairo.h"
+#include "gva.h"
+#include "config_reader.h"
+#include "states/base_hmi.h"
+
 
 namespace gva {
 
@@ -25,6 +30,8 @@ class HmiHelper {
   static void TableSystem(WidgetTable *table);
   /// Construct a table of alarms
   static void TableAlarms(WidgetTable *table);
+  /// Change canvas size to accomdate bezel buttons
+  static void bezelButtons(WidgetOnscreenBezelBtns *onscreenBezelBtns);
 };
 
 }  // namespace gva
