@@ -445,13 +445,6 @@ void GvaApplication::BrightnessAdjust(double value) {
   gva::ConfigData::GetInstance()->SetBrightness(brightness);
 }
 
-void GvaApplication::ScreenSizeSet(std::string value) {
-  """ Get screensize and set it in the proto """
-  std::string screenSizeStr = gva::ConfigData::GetInstance()->GetBrightness();
-  gva::ConfigData::GetInstance()->SetScreenSize(screenSizeStr);
-}
-
-
 bool GvaApplication::SetKeyReleased(gva::HandleType *render, gva::GvaKeyEnum key) {
   auto *compass = static_cast<gva::WidgetPlanPositionIndicator *>(
       gva::hmi::GetRendrer()->GetWidget(gva::widget::WidgetEnum::KWidgetTypeCompass));
