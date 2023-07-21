@@ -38,6 +38,10 @@ class GvaApplication {
     bool videoEnabled_ = false;
     /// Window enabled flag (default false)
     bool windowEnabled_ = false;
+    /// Window enabled flag (default 640x480)
+    std::string screenSizeStr_ = "640x480";
+    /// Window enabled flag (default false)
+    bool bezelbtns_ = false;
     /// The config file location
     std::string config;
   };

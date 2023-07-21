@@ -64,6 +64,27 @@ void GvaApplication::Activate(GtkApplication *app, gpointer user_data [[maybe_un
   gtk_.win = gtk_application_window_new(app);
   gtk_window_set_title(GTK_WINDOW(gtk_.win), "HMI vivoe-lite");
 
+  // Parse screensize gflag option : Default: 640x480
+  std::string screenSizeStr = options_.screenSizeStr_;
+  size_t delimiterPos = screenSizeStr.find('x');
+    if (delimiterPos != std::string::npos) {
+        std::string widthString = screenSizeStr.substr(0, delimiterPos);
+        std::string heightString = screenSizeStr.substr(delimiterPos + 1);
+
+        uint32_t width = std::atoi(widthString.c_str());
+        uint32_t height = std::atoi(heightString.c_str());
+
+        gva::kMinimumWidth = width;
+        gva::kMinimumHeight = height;
+
+        std::cout << "Width: " << width << std::endl;
+        std::cout << "Height: " << height << std::endl;
+    } else {
+        LOG(ERROR) << "Invalid input format.";
+        std::cout << "Invalid input format." << std::endl;
+    }
+
+
   gtk_.draw = gtk_drawing_area_new();
   gtk_container_add(GTK_CONTAINER(gtk_.win), gtk_.draw);
   // set a minimum size
@@ -423,6 +444,13 @@ void GvaApplication::BrightnessAdjust(double value) {
   gva::SetBrightness(brightness);
   gva::ConfigData::GetInstance()->SetBrightness(brightness);
 }
+
+void GvaApplication::ScreenSizeSet(std::string value) {
+  """ Get screensize and set it in the proto """
+  std::string screenSizeStr = gva::ConfigData::GetInstance()->GetBrightness();
+  gva::ConfigData::GetInstance()->SetScreenSize(screenSizeStr);
+}
+
 
 bool GvaApplication::SetKeyReleased(gva::HandleType *render, gva::GvaKeyEnum key) {
   auto *compass = static_cast<gva::WidgetPlanPositionIndicator *>(

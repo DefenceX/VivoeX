@@ -29,9 +29,9 @@ static const uint32_t kSemVerMinor = 4;
 /// patch version number
 static const uint32_t kSemVerPatch = 496;
 /// minimum height
-static const uint32_t kMinimumHeight = 480;
+extern uint32_t kMinimumHeight;
 /// minimum width
-static const uint32_t kMinimumWidth = 640;
+extern uint32_t kMinimumWidth;
 
 ///
 /// Enumerated type definition
