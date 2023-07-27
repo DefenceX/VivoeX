@@ -24,7 +24,12 @@ void StateOn::entry() {
   DLOG(INFO) << "Entering the On State";
 
   /* 4:3 aspect ratio @ lowest resolution */
-  view_ = {kMinimumWidth, kMinimumHeight, 24};
+  hmiScreenSize& minimumSizeInstance = hmiScreenSize::getInstance();
+  std::tuple<int, int> currentScreenSize = minimumSizeInstance.getMinimumSize();
+  int width_ = std::get<0>(currentScreenSize);
+  int height_ = std::get<0>(currentScreenSize);
+
+  view_ = {width_, height_, 24};
 
   if (!manager_) manager_ = std::make_shared<ViewGvaManager>();
 
@@ -38,7 +43,7 @@ void StateOn::entry() {
   if (ConfigData::GetInstance()->GetMapEnabled()) {
     // Render a map for BMS
     map_ = std::make_shared<rendererMap>(ConfigData::GetInstance()->GetMapPath(),
-                                         ConfigData::GetInstance()->GetStylesheetPath(), kMinimumWidth, kMinimumHeight);
+                                         ConfigData::GetInstance()->GetStylesheetPath(), width_, height_);
   }
   top_ = DefaultSettings::GetDefaultFunctionSelect();
   bottom_ = DefaultSettings::GetDefaultCommonTaskKeys();

@@ -23,6 +23,7 @@
 #include "hmicore/events_gva.h"
 #include "hmicore/gva.h"
 #include "hmicore/hmi_gva.h"
+#include "hmicore/hmi_gva_helpers.h"
 #include "hmicore/renderer_map.h"
 #include "hmicore/widgets/alarm_indicator.h"
 #include "hmicore/widgets/keyboard.h"
@@ -38,6 +39,10 @@ class GvaApplication {
     bool videoEnabled_ = false;
     /// Window enabled flag (default false)
     bool windowEnabled_ = false;
+    /// Window enabled flag (default 640x480)
+    std::string screenSizeStr_ = "640x480";
+    /// Window enabled flag (default false)
+    bool bezelbtns_ = false;
     /// The config file location
     std::string config;
   };

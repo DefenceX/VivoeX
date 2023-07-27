@@ -27,6 +27,39 @@ class HmiHelper {
   static void TableAlarms(WidgetTable *table);
 };
 
+class hmiScreenSize {
+public:
+    // Function to get the instance of the hmiScreenSize class
+    static hmiScreenSize& getInstance() {
+        static hmiScreenSize instance; // The only instance of hmiScreenSize will be created once
+        return instance;
+    }
+
+    // Getter function for the tuple containing hmiScreenWidth and hmiScreenHeight
+    std::tuple<int, int> getMinimumSize() const {
+        return minimumSize;
+    }
+
+    // Setter function for the tuple containing hmiScreenWidth and hmiScreenHeight
+    void setMinimumSize(int width, int height) {
+        minimumSize = std::make_tuple(width, height);
+    }
+
+private:
+    // Private constructor to prevent direct instantiation
+    hmiScreenSize() {
+        // Initialize the default values for hmiScreenWidth and hmiScreenHeight
+        minimumSize = std::make_tuple(480, 300);
+    }
+
+    // Private copy constructor and assignment operator to prevent cloning
+    hmiScreenSize(const hmiScreenSize&) = delete;
+    hmiScreenSize& operator=(const hmiScreenSize&) = delete;
+
+    // hmiScreenSize variable as a tuple
+    std::tuple<int, int> minimumSize;
+};
+
 }  // namespace gva
 
 #endif  // HMICORE_HMI_GVA_HELPERS_H_

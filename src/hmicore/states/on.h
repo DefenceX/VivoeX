@@ -19,6 +19,7 @@
 #include "hmicore/gva.h"
 #include "hmicore/hmi_gva.h"
 #include "hmicore/states/base_hmi.h"
+#include "hmicore/hmi_gva_helpers.h"
 #include "hmicore/view_gva.h"
 #include "hmicore/widgets/alarm_indicator.h"
 #include "hmicore/widgets/plan_position_indicator.h"

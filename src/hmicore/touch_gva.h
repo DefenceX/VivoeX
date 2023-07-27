@@ -17,6 +17,7 @@
 #include <vector>
 
 #include "hmicore/gva.h"
+#include "hmicore/hmi_gva_helpers.h"
 #include "hmicore/renderer_base.h"
 
 namespace gva {

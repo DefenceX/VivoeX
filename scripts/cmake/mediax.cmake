@@ -8,7 +8,7 @@ ExternalProject_Add(
     GIT_REPOSITORY      https://github.com/DefenceX/MediaX
     GIT_SHALLOW         1
     CMAKE_ARGS          -DEXAMPLES=OFF -DBUILD_TESTING=OFF -DCMAKE_INSTALL_LIBDIR=${CMAKE_INSTALL_LIBDIR}
-	GIT_TAG             main
+	GIT_TAG             v0.6.0
     PREFIX              ${CMAKE_BINARY_DIR}/external/mediax/prefix
     TMP_DIR             ${CMAKE_BINARY_DIR}/external/mediax/tmp
     STAMP_DIR           ${CMAKE_BINARY_DIR}/external/mediax/stamp

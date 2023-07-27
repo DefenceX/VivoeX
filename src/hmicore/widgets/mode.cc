@@ -19,7 +19,13 @@ WidgetMode::WidgetMode(const RendererGva& renderer) : WidgetX(renderer, widget::
 }
 
 void WidgetMode::Draw() {
-  uint32_t y = kMinimumHeight - (kMinimumHeight * 0.12);
+
+  hmiScreenSize& minimumSizeInstance = hmiScreenSize::getInstance();
+  std::tuple<int, int> currentScreenSize = minimumSizeInstance.getMinimumSize();
+  int width_ = std::get<0>(currentScreenSize);
+  int height_ = std::get<0>(currentScreenSize);
+
+  uint32_t y = height_ - (height_ * 0.12);
 
   GetRenderer()->SetColourForeground(kHmiWhite);
   GetRenderer()->SetColourBackground(kHmiDarkBlue);
@@ -31,8 +37,8 @@ void WidgetMode::Draw() {
   uint32_t w = GetRenderer()->GetTextWidth(mode_, 12);
   uint32_t h = GetRenderer()->GetTextHeight(mode_, 12);
 
-  GetRenderer()->DrawRoundedRectangle(kMinimumWidth / 2 - (w / 2) - 5, y, w + 10, (h) + 15, 6, true);
-  GetRenderer()->DrawString(kMinimumWidth / 2 - (w / 2), y + 16, mode_);
+  GetRenderer()->DrawRoundedRectangle(width_ / 2 - (w / 2) - 5, y, w + 10, (h) + 15, 6, true);
+  GetRenderer()->DrawString(width_ / 2 - (w / 2), y + 16, mode_);
 }
 
 void WidgetMode::SetMode(const std::string mode) { mode_ = mode; }

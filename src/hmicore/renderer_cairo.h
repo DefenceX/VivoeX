@@ -27,6 +27,8 @@
 #include "hmicore/renderer.h"
 #include "hmicore/renderer_cairo_types.h"
 #include "hmicore/widgets/widget_types.h"
+#include "hmicore/hmi_gva_helpers.h"
+
 
 namespace gva {
 

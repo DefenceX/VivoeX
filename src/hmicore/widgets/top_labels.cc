@@ -25,8 +25,13 @@ void WidgetTopLabels::Draw() {
 
 void WidgetTopLabels::DrawTopLabels(uint32_t y, const std::array<FunctionSelect::Labels, 8>& labels) {
   uint32_t i = 0;
-  uint32_t offset = kMinimumWidth * 0.02;
-  uint32_t width = (kMinimumWidth - offset * 2) / 8;
+  hmiScreenSize& minimumSizeInstance = hmiScreenSize::getInstance();
+  std::tuple<int, int> currentScreenSize = minimumSizeInstance.getMinimumSize();
+  int width_ = std::get<0>(currentScreenSize);
+  int height_ = std::get<0>(currentScreenSize);
+
+  uint32_t offset = width_ * 0.02;
+  uint32_t width = (height_ - offset * 2) / 8;
   uint32_t spacing = width * 0.1;
 
   GetRenderer()->SetColourForeground(ConfigData::GetInstance()->GetThemeLabelBorderEnabled());

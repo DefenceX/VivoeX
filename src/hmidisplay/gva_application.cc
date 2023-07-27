@@ -64,11 +64,36 @@ void GvaApplication::Activate(GtkApplication *app, gpointer user_data [[maybe_un
   gtk_.win = gtk_application_window_new(app);
   gtk_window_set_title(GTK_WINDOW(gtk_.win), "HMI vivoe-lite");
 
+  // Parse screensize gflag option : Default: 640x480
+  std::string screenSizeStr = options_.screenSizeStr_;
+  size_t delimiterPos = screenSizeStr.find('x');
+    if (delimiterPos != std::string::npos) {
+        std::string widthString = screenSizeStr.substr(0, delimiterPos);
+        std::string heightString = screenSizeStr.substr(delimiterPos + 1);
+
+        uint32_t width = std::atoi(widthString.c_str());
+        uint32_t height = std::atoi(heightString.c_str());
+
+        gva::hmiScreenSize& minimumSizeInstance = gva::hmiScreenSize::getInstance();
+        minimumSizeInstance.setMinimumSize(width, height);
+
+        std::cout << "Width: " << width << std::endl;
+        std::cout << "Height: " << height << std::endl;
+    } else {
+        LOG(ERROR) << "Invalid input format.";
+        std::cout << "Invalid input format." << std::endl;
+    }
+
+
   gtk_.draw = gtk_drawing_area_new();
   gtk_container_add(GTK_CONTAINER(gtk_.win), gtk_.draw);
   // set a minimum size
-  gtk_widget_set_size_request(gtk_.draw, gva::kMinimumWidth, gva::kMinimumHeight);
-  gtk_window_set_default_size(GTK_WINDOW(gtk_.win), gva::kMinimumWidth, gva::kMinimumHeight);
+  std::tuple<int, int> currentScreenSize = minimumSizeInstance.getMinimumSize();
+  width_ = std::get<0>(currentScreenSize);
+  height_ = std::get<0>(currentScreenSize);
+
+  gtk_widget_set_size_request(gtk_.draw, width_, height_);
+  gtk_window_set_default_size(GTK_WINDOW(gtk_.win), width_, height_);
 
   //
   // Event signals
@@ -172,8 +197,11 @@ void GvaApplication::Fullscreen(gva::HandleType *render) {
   if (render->fullscreen) {
     LOG(INFO) << "Un-fullscreen";
     gtk_window_unfullscreen(GTK_WINDOW(gtk_.win));
-    gva::hmi::GetRendrer()->GetTouch()->SetResolution(gva::kMinimumWidth, gva::kMinimumHeight);
-    gtk_window_resize(GTK_WINDOW(gtk_.win), gva::kMinimumWidth, gva::kMinimumHeight);
+    std::tuple<int, int> currentScreenSize = minimumSizeInstance.getMinimumSize();
+    width_ = std::get<0>(currentScreenSize);
+    height_ = std::get<0>(currentScreenSize);
+    gva::hmi::GetRendrer()->GetTouch()->SetResolution(width_, height_);
+    gtk_window_resize(GTK_WINDOW(gtk_.win), width_, height_);
   } else {
     LOG(INFO) << "Switch to fullscreen";
     gtk_window_fullscreen(GTK_WINDOW(gtk_.win));

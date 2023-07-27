@@ -28,6 +28,8 @@
 #include "widgets/widget.h"
 #include "widgets/widget_types.h"
 #include "widgets/widgets.h"
+#include "hmicore/hmi_gva_helpers.h"
+
 
 namespace gva {
 

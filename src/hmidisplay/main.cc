@@ -33,6 +33,11 @@
 DEFINE_bool(fullscreen, false, "Start the application fullscreen");
 /// Flag for live video
 DEFINE_bool(live, false, "Show live video streams");
+/// Flag for screen size
+DEFINE_string(screensize, "640x480", "Set the screen size for the display");
+/// Flag for bezel buttons
+DEFINE_bool(bezelbtns, false, "Start bezel simulator");
+
 
 int main(int argc, char* argv[]) {
   google::SetUsageMessage(
@@ -56,7 +61,7 @@ int main(int argc, char* argv[]) {
   std::cout << "hmi_display (By defencex.com.au)..." << std::endl;
   SYSLOG(INFO) << "HMI Display application started";
 
-  GvaApplication::Options options = {FLAGS_live, FLAGS_fullscreen, ""};
+  GvaApplication::Options options = {FLAGS_live, FLAGS_fullscreen, FLAGS_screensize, FLAGS_bezelbtns, ""};
 
   auto app = GvaApplication(options, ipaddr, port);
 

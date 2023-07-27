@@ -484,7 +484,9 @@ static void do_drawing(cairo_t *cr, int width, int height) {
     case 28: {
       gva::WidgetTable message_box_table(renderer, &touch,
                                          gva::ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
-      message_box_table.SetX((gva::kMinimumWidth / 2) - 150);
+      std::tuple<int, int> currentScreenSize = minimumSizeInstance.getMinimumSize();
+      width_ = std::get<0>(currentScreenSize);
+      message_box_table.SetX((width_ / 2) - 150);
       message_box_table.SetY(20);
       message_box_table.SetWidth(300);
       message_box_table.SetBackgroundColour(gva::ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
