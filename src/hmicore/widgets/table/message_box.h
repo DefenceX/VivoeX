@@ -20,6 +20,8 @@
 #include "hmicore/renderer_cairo_types.h"
 #include "hmicore/widgets/table/table.h"
 #include "hmicore/widgets/widget.h"
+#include "hmicore/hmi_gva_helpers.h"
+
 
 namespace gva {
 

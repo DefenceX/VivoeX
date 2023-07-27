@@ -11,13 +11,15 @@
 ///
 
 #include "hmicore/renderer.h"
+#include "tuple"
 
 #include "hmicore/gva.h"
 
 namespace gva {
-
-uint32_t Renderer::height_ = kMinimumHeight;
-uint32_t Renderer::width_ = kMinimumWidth;
+hmiScreenSize& minimumSizeInstance = hmiScreenSize::getInstance();
+std::tuple<int, int> currentScreenSize = minimumSizeInstance.getMinimumSize();
+height_ = std::get<0>(currentScreenSize);
+width_ = std::get<1>(currentScreenSize);
 
 Renderer::Renderer(uint32_t width, uint32_t height) {
   width_ = width;

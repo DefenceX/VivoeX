@@ -28,7 +28,6 @@ set(SOURCES ../common/debug.cc
     states/wpn.cc
     touch_gva.cc 
     view_gva.cc 
-    gva.cc
 )
 
 include_directories (

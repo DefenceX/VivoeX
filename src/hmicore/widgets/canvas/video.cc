@@ -64,7 +64,11 @@ void WidgetVideo::Draw() {
     }
     uint32_t w = GetRenderer()->GetTextWidth(stream, 12); 
 
-    GetRenderer()->DrawString(kMinimumWidth / 2 - (w / 2), 300 + 16, stream);
+    hmiScreenSize& minimumSizeInstance = hmiScreenSize::getInstance();
+    std::tuple<int, int> currentScreenSize = minimumSizeInstance.getMinimumSize();
+    int width_ = std::get<0>(currentScreenSize);
+
+    GetRenderer()->DrawString(width_ / 2 - (w / 2), 300 + 16, stream);
   }
 }
 

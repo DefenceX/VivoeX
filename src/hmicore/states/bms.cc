@@ -127,6 +127,11 @@ GvaKeyEnum Hmi::KeyBMS(GvaKeyEnum keypress) {
 void StateBMS::entry() {
   DLOG(INFO) << "Entering the BMS State";
 
+  hmiScreenSize& minimumSizeInstance = hmiScreenSize::getInstance();
+  std::tuple<int, int> currentScreenSize = minimumSizeInstance.getMinimumSize();
+  int width_ = std::get<0>(currentScreenSize);
+  int height_ = std::get<0>(currentScreenSize);
+
   if (screen_.function_top->labels[7].state != LabelStates::kLabelHidden) {
     manager_->SetScreen(&screen_, GvaFunctionEnum::kBattlefieldManagementSystem);
     Reset();
@@ -134,8 +139,8 @@ void StateBMS::entry() {
     screen_.function_top->SetEnabled(7);
     screen_.canvas.visible = true;
     if (ConfigData::GetInstance()->GetMapEnabled()) {
-      map_->SetWidth(kMinimumWidth);
-      map_->SetHeight(kMinimumHeight);
+      map_->SetWidth(width_);
+      map_->SetHeight(height_);
       map_->Project(ConfigData::GetInstance()->GetZoom(), ConfigData::GetInstance()->GetTestLon(),
                     ConfigData::GetInstance()->GetTestLat(), &screen_.canvas.surface);
       auto canvas = (gva::WidgetCanvas *)(screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCanvas));

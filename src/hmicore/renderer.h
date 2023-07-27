@@ -17,6 +17,7 @@
 #include <string>
 
 #include "hmicore/gva.h"
+#include "hmicore/hmi_gva_helpers.h"
 
 /// The RGB values for amber
 const gva::ColourType kHmiAmber = {255, 153, 0};

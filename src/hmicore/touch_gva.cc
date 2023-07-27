@@ -43,8 +43,13 @@ void TouchGva::Reset() { hotspots_.clear(); }
 
 bool TouchGva::Check(GvaFunctionGroupEnum groupId, uint32_t *binding, uint32_t x, uint32_t y) const {
   // Adjust for resized windows
-  x = (uint32_t)((float)x / ((float)Renderer::GetWidth() / kMinimumWidth));
-  y = (uint32_t)((float)y / ((float)Renderer::GetHeight() / kMinimumHeight));
+  hmiScreenSize& minimumSizeInstance = hmiScreenSize::getInstance();
+  std::tuple<int, int> currentScreenSize = minimumSizeInstance.getMinimumSize();
+  int width_ = std::get<0>(currentScreenSize);
+  int height_ = std::get<0>(currentScreenSize);
+
+  x = (uint32_t)((float)x / ((float)Renderer::GetWidth() / width_));
+  y = (uint32_t)((float)y / ((float)Renderer::GetHeight() / height_));
 
   for (auto i = hotspots_.begin(); i != hotspots_.end(); ++i) {
     if ((x > i->GetX()) && (x < (i->GetX() + i->GetWidth())) && (y > i->GetY()) && (y < (i->GetY() + i->GetHeight())) &&

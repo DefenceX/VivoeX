@@ -14,6 +14,7 @@
 #define HMICORE_HMI_GVA_H_
 #include <iostream>
 #include <string>
+#include <tuple>
 
 #include "hmicore/config_reader.h"
 #include "hmicore/gva.h"

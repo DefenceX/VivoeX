@@ -23,6 +23,7 @@
 #include "hmicore/events_gva.h"
 #include "hmicore/gva.h"
 #include "hmicore/hmi_gva.h"
+#include "hmicore/hmi_gva_helpers.h"
 #include "hmicore/renderer_map.h"
 #include "hmicore/widgets/alarm_indicator.h"
 #include "hmicore/widgets/keyboard.h"

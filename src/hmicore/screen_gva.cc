@@ -122,9 +122,12 @@ ScreenGva::ScreenGva(Screen *screen, uint32_t width, uint32_t height) : Renderer
   //
   // Initialise right labels
   //
+  hmiScreenSize& minimumSizeInstance = hmiScreenSize::getInstance();
+  std::tuple<int, int> currentScreenSize = minimumSizeInstance.getMinimumSize();
+  width_ = std::get<0>(currentScreenSize);
   auto right_labels = (WidgetSideLabels *)GetWidget(widget::WidgetEnum::KWidgetTypeRightLabels);
   right_labels->SetLabels(&screen_->function_right.labels);
-  right_labels->SetX(kMinimumWidth - 100 - 1);
+  right_labels->SetX(width_ - 100 - 1);
 
   //
   // Initialise left labels
