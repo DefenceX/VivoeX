@@ -21,6 +21,7 @@ include_directories(${CMAKE_SOURCE_DIR}
 link_directories(${CMAKE_BINARY_DIR}/external/mediax/build)
 link_directories(${CMAKE_BINARY_DIR}/external/libnmea/build/src)
 
+
 add_executable(hmi-display main.cc gva_application.cc)
 
 link_directories( ${NMEA_LIBRARY_DIR} ${CMAKE_BINARY_DIR}/external/libnmea/src/lib)

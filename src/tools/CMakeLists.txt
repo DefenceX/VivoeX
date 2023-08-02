@@ -14,6 +14,7 @@ set(SOURCE_FILES widget-tester.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../hmicore/touch_gva.cc 
     ${CMAKE_CURRENT_SOURCE_DIR}/../hmicore/hmi_gva_helpers.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/../hmicore/gva_functions_common.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/../hmicore/gva.cc
 )
 
 include_directories(

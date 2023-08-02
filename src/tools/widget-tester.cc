@@ -482,9 +482,11 @@ static void do_drawing(cairo_t *cr, int width, int height) {
       cairo_surface_write_to_png(cairo_get_group_target(cr), (path + "/mode_01.png").c_str());
       break;
     case 28: {
+      gva::hmiScreenSize& hmiScreenSize = gva::hmiScreenSize::getInstance();
+      std::tuple<int, int> size = hmiScreenSize.getMinimumSize(); 
       gva::WidgetTable message_box_table(renderer, &touch,
                                          gva::ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());
-      message_box_table.SetX((gva::kMinimumWidth / 2) - 150);
+      message_box_table.SetX((std::get<0>(size) / 2) - 150);
       message_box_table.SetY(20);
       message_box_table.SetWidth(300);
       message_box_table.SetBackgroundColour(gva::ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());

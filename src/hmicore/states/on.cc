@@ -23,8 +23,11 @@ namespace gva {
 void StateOn::entry() {
   DLOG(INFO) << "Entering the On State";
 
+  hmiScreenSize& hmiScreenSize = hmiScreenSize::getInstance();
+  std::tuple<int, int> size = hmiScreenSize.getMinimumSize(); 
+
   /* 4:3 aspect ratio @ lowest resolution */
-  view_ = {kMinimumWidth, kMinimumHeight, 24};
+  view_ = {static_cast<uint32_t>(std::get<0>(size)), static_cast<uint32_t>(std::get<1>(size)), 24};
 
   if (!manager_) manager_ = std::make_shared<ViewGvaManager>();
 
@@ -38,7 +41,7 @@ void StateOn::entry() {
   if (ConfigData::GetInstance()->GetMapEnabled()) {
     // Render a map for BMS
     map_ = std::make_shared<rendererMap>(ConfigData::GetInstance()->GetMapPath(),
-                                         ConfigData::GetInstance()->GetStylesheetPath(), kMinimumWidth, kMinimumHeight);
+                                         ConfigData::GetInstance()->GetStylesheetPath(), std::get<0>(size), std::get<1>(size));
   }
   top_ = DefaultSettings::GetDefaultFunctionSelect();
   bottom_ = DefaultSettings::GetDefaultCommonTaskKeys();

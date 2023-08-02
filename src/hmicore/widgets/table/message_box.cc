@@ -20,7 +20,9 @@ WidgetMessageBox::WidgetMessageBox(const RendererGva &renderer, TouchGva *touch)
 }
 
 void WidgetMessageBox::Draw() {
-  SetX((gva::kMinimumWidth / 2) - 150);
+  hmiScreenSize& hmiScreenSize = hmiScreenSize::getInstance();
+  std::tuple<int, int> size = hmiScreenSize.getMinimumSize(); 
+  SetX((std::get<0>(size) / 2) - 150);
   SetY(220);
   SetWidth(300);
   SetBackgroundColour(ConfigData::GetInstance()->GetThemeLabelBackgroundEnabled());

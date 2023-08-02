@@ -134,8 +134,10 @@ void StateBMS::entry() {
     screen_.function_top->SetEnabled(7);
     screen_.canvas.visible = true;
     if (ConfigData::GetInstance()->GetMapEnabled()) {
-      map_->SetWidth(kMinimumWidth);
-      map_->SetHeight(kMinimumHeight);
+      hmiScreenSize& hmiScreenSize = hmiScreenSize::getInstance();
+      std::tuple<int, int> size = hmiScreenSize.getMinimumSize(); 
+      map_->SetWidth(std::get<0>(size));
+      map_->SetHeight(std::get<1>(size));
       map_->Project(ConfigData::GetInstance()->GetZoom(), ConfigData::GetInstance()->GetTestLon(),
                     ConfigData::GetInstance()->GetTestLat(), &screen_.canvas.surface);
       auto canvas = (gva::WidgetCanvas *)(screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCanvas));

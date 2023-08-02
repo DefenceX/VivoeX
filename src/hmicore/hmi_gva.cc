@@ -155,6 +155,9 @@ void Hmi::Reset() {
 }
 
 void Hmi::Labels(LabelModeEnum labels) {
+  hmiScreenSize& hmiScreenSize = hmiScreenSize::getInstance();
+  std::tuple<int, int> size = hmiScreenSize.getMinimumSize();    
+
   switch (labels) {
     case LabelModeEnum::kLabelAll:
       if ((screen_.currentFunction == GvaFunctionEnum::kSituationalAwareness) ||
@@ -190,9 +193,9 @@ void Hmi::Labels(LabelModeEnum labels) {
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeStatusBar)->SetY(2);
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetY(160);
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetX(120);
-      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetWidth(kMinimumWidth - 40);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetWidth(std::get<0>(size) - 40);
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetX(20);
-      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic)->SetWidth(kMinimumWidth - 40);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic)->SetWidth(std::get<0>(size) - 40);
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic)->SetX(20);
       break;
     case LabelModeEnum::kLabelMinimal:
@@ -202,9 +205,9 @@ void Hmi::Labels(LabelModeEnum labels) {
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeBottomLabels)->SetVisible(false);
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeStatusBar)->SetVisible(false);
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeCompass)->SetVisible(false);
-      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetWidth(kMinimumWidth - 40);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetWidth(std::get<0>(size) - 40);
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTable)->SetX(20);
-      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic)->SetWidth(kMinimumWidth - 40);
+      screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic)->SetWidth(std::get<0>(size) - 40);
       screen_render_->GetWidget(widget::WidgetEnum::KWidgetTypeTableDynamic)->SetX(20);
       break;
   }

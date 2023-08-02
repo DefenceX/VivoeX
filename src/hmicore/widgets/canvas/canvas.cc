@@ -16,8 +16,10 @@
 namespace gva {
 
 WidgetCanvas::WidgetCanvas(const RendererGva& renderer) : WidgetX(renderer, widget::WidgetEnum::KWidgetTypeCanvas) {
-  width_ = kMinimumWidth;
-  height_ = kMinimumHeight;
+  hmiScreenSize& hmiScreenSize = hmiScreenSize::getInstance();
+  std::tuple<int, int> size = hmiScreenSize.getMinimumSize(); 
+  width_ = std::get<0>(size);
+  height_ = std::get<1>(size);
 }
 
 void WidgetCanvas::Draw() {

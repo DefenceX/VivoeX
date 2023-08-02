@@ -74,9 +74,6 @@ void GvaApplication::Activate(GtkApplication *app, gpointer user_data [[maybe_un
         uint32_t width = std::atoi(widthString.c_str());
         uint32_t height = std::atoi(heightString.c_str());
 
-        gva::kMinimumWidth = width;
-        gva::kMinimumHeight = height;
-
         std::cout << "Width: " << width << std::endl;
         std::cout << "Height: " << height << std::endl;
     } else {
@@ -88,8 +85,10 @@ void GvaApplication::Activate(GtkApplication *app, gpointer user_data [[maybe_un
   gtk_.draw = gtk_drawing_area_new();
   gtk_container_add(GTK_CONTAINER(gtk_.win), gtk_.draw);
   // set a minimum size
-  gtk_widget_set_size_request(gtk_.draw, gva::kMinimumWidth, gva::kMinimumHeight);
-  gtk_window_set_default_size(GTK_WINDOW(gtk_.win), gva::kMinimumWidth, gva::kMinimumHeight);
+  gva::hmiScreenSize& hmiScreenSize = gva::hmiScreenSize::getInstance();
+  std::tuple<int, int> size = hmiScreenSize.getMinimumSize(); 
+  gtk_widget_set_size_request(gtk_.draw, std::get<0>(size), std::get<1>(size));
+  gtk_window_set_default_size(GTK_WINDOW(gtk_.win), std::get<0>(size), std::get<1>(size));
 
   //
   // Event signals
@@ -190,11 +189,14 @@ void GvaApplication::Dispatch(gva::GvaKeyEnum key) {
 void GvaApplication::Fullscreen(gva::HandleType *render) {
   GdkRectangle workarea;
 
+  gva::hmiScreenSize& hmiScreenSize = gva::hmiScreenSize::getInstance();
+  std::tuple<int, int> size = hmiScreenSize.getMinimumSize(); 
+
   if (render->fullscreen) {
     LOG(INFO) << "Un-fullscreen";
     gtk_window_unfullscreen(GTK_WINDOW(gtk_.win));
-    gva::hmi::GetRendrer()->GetTouch()->SetResolution(gva::kMinimumWidth, gva::kMinimumHeight);
-    gtk_window_resize(GTK_WINDOW(gtk_.win), gva::kMinimumWidth, gva::kMinimumHeight);
+    gva::hmi::GetRendrer()->GetTouch()->SetResolution(std::get<0>(size), std::get<1>(size));
+    gtk_window_resize(GTK_WINDOW(gtk_.win), std::get<0>(size), std::get<1>(size));
   } else {
     LOG(INFO) << "Switch to fullscreen";
     gtk_window_fullscreen(GTK_WINDOW(gtk_.win));
@@ -445,13 +447,6 @@ void GvaApplication::BrightnessAdjust(double value) {
   gva::ConfigData::GetInstance()->SetBrightness(brightness);
 }
 
-void GvaApplication::ScreenSizeSet(std::string value) {
-  """ Get screensize and set it in the proto """
-  std::string screenSizeStr = gva::ConfigData::GetInstance()->GetBrightness();
-  gva::ConfigData::GetInstance()->SetScreenSize(screenSizeStr);
-}
-
-
 bool GvaApplication::SetKeyReleased(gva::HandleType *render, gva::GvaKeyEnum key) {
   auto *compass = static_cast<gva::WidgetPlanPositionIndicator *>(
       gva::hmi::GetRendrer()->GetWidget(gva::widget::WidgetEnum::KWidgetTypeCompass));
@@ -566,5 +561,4 @@ void GvaApplication::Update(gpointer user_data) {
   if (update) {
     gva::hmi::GetRendrer()->Update();
   }
-
-}  // namespace gva
+} // namespace gva

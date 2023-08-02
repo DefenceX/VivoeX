@@ -16,8 +16,11 @@
 
 namespace gva {
 
-uint32_t Renderer::height_ = kMinimumHeight;
-uint32_t Renderer::width_ = kMinimumWidth;
+hmiScreenSize& hmiScreenSize = hmiScreenSize::getInstance();
+std::tuple<int, int> size = hmiScreenSize.getMinimumSize();    
+
+uint32_t Renderer::height_ = std::get<0>(size);
+uint32_t Renderer::width_ = std::get<1>(size);
 
 Renderer::Renderer(uint32_t width, uint32_t height) {
   width_ = width;

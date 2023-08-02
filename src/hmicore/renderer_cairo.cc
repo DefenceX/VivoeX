@@ -30,8 +30,12 @@ RendererCairo::RendererCairo(uint32_t width, uint32_t height) : Renderer(width, 
   foreground_colour_ = {255, 255, 255};
   background_colour_ = {0, 0, 0};
   config_ = gva::ConfigData::GetInstance();
-  render_.size.width = gva::kMinimumWidth;
-  render_.size.height = gva::kMinimumHeight;
+
+  hmiScreenSize& hmiScreenSize = hmiScreenSize::getInstance();
+  std::tuple<int, int> size = hmiScreenSize.getMinimumSize();    
+  
+  render_.size.width = std::get<0>(size);
+  render_.size.height = std::get<1>(size);
 }
 
 RendererCairo::~RendererCairo() { DestroySurface(); }
@@ -645,9 +649,13 @@ uint32_t RendererCairo::TextureRGB(uint32_t x, uint32_t y, unsigned char *buffer
     }
     int width = cairo_image_surface_get_width(surf);
 
+    // Access the hmiScreenSize instance from AnotherFile.cpp
+    hmiScreenSize& hmiScreenSize = hmiScreenSize::getInstance();
+    std::tuple<int, int> size = hmiScreenSize.getMinimumSize();    
+    
     if (int height = cairo_image_surface_get_height(surf);
-        (height != gva::kMinimumHeight) || (width != gva::kMinimumWidth)) {
-      cairo_surface_set_device_scale(surf, (double)width / kMinimumWidth, (double)height / kMinimumHeight);
+        (height != std::get<1>(size)) || (width != std::get<0>(size))) {
+      cairo_surface_set_device_scale(surf, (double)width / std::get<0>(size), (double)height / std::get<1>(size));
     }
 
     // Add the image to the cache
@@ -711,7 +719,10 @@ void RendererCairo::SetSurface(cairo_surface_t *surface) { render_.surface = sur
 
 void RendererCairo::Configure(uint32_t height, uint32_t width) {
   render_.cr = cairo_create(render_.surface);
-  cairo_scale(render_.cr, (double)width / kMinimumWidth, (double)height / kMinimumHeight);
+  hmiScreenSize& hmiScreenSize = hmiScreenSize::getInstance();
+  std::tuple<int, int> size = hmiScreenSize.getMinimumSize();    
+
+  cairo_scale(render_.cr, (double)width / std::get<0>(size), (double)height / std::get<1>(size));
   Renderer::SetWidth(width);
   Renderer::SetHeight(height);
 }

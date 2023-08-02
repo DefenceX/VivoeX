@@ -15,6 +15,7 @@
 
 #include <array>
 #include <string>
+#include <tuple>
 
 namespace gva {
 
@@ -27,11 +28,7 @@ static const uint32_t kSemVerMajor = 0;
 /// minor version number
 static const uint32_t kSemVerMinor = 4;
 /// patch version number
-static const uint32_t kSemVerPatch = 496;
-/// minimum height
-extern uint32_t kMinimumHeight;
-/// minimum width
-extern uint32_t kMinimumWidth;
+static const uint32_t kSemVerPatch = 497;
 
 ///
 /// Enumerated type definition
@@ -648,6 +645,63 @@ class EventGvaType {
   TouchType touch_;
   /// The resize dimensions
   ResolutionType resize_;
+};
+
+///
+/// \brief The hmiScreenSize class provides a global point of access to a single instance.
+///
+/// This class implements the hmiScreenSize design pattern to ensure that only one instance
+/// of the class is created and accessed throughout the application's lifetime.
+///
+class hmiScreenSize {
+  public:
+
+    ///
+    /// \brief Create or fetch instance of screen size
+    ///
+    ///
+    static hmiScreenSize& getInstance();
+
+    ///
+    /// \brief Gets the minimum size as a tuple.
+    ///
+    ///This function returns the minimum width and height as a std::tuple<int, int>.
+    /// The first element of the tuple represents the minimum width,
+    /// and the second element represents the minimum height.
+    ///
+    /// \return std::tuple<int, int> containing minimum width and height.
+    ///
+    std::tuple<int, int> getMinimumSize() const;
+
+    ///
+    /// \brief This function allows modifying the minimum width and height by passing new values.
+    ///
+    /// \param width The new minimum width value to set.
+    /// \param height The new minimum height value to set.
+    ///
+    void setMinimumSize(int width, int height);
+
+  private:
+
+    ///
+    /// \brief The constructor is private to ensure that the hmiScreenSize instance
+    /// can only be created and accessed through the getInstance() method.
+    ///
+    ///
+    hmiScreenSize();
+
+    ///
+    /// \brief Private copy constructor and assignment operator to prevent cloning
+    ///
+    ///
+    hmiScreenSize(const hmiScreenSize&) = delete;
+    hmiScreenSize& operator=(const hmiScreenSize&) = delete;
+
+    ///
+    /// \brief hmiScreenSize variable as a tuple
+    ///
+    ///
+    std::tuple<int, int> minimumSize;
 };
 
 }  // namespace gva

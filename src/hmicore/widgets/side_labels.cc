@@ -93,9 +93,12 @@ void WidgetSideLabels::DrawFunctionLabels() {
   GetRenderer()->SetTextFont((uint32_t)CAIRO_FONT_SLANT_NORMAL, widget::WeightType::kWeightNormal,
                              ConfigData::GetInstance()->GetThemeFont(), 14);
 
-  uint32_t firstKey = (GetX() < kMinimumWidth / 2) ? int(GvaKeyEnum::kKeyF1) : int(GvaKeyEnum::kKeyF7);
+  hmiScreenSize& hmiScreenSize = hmiScreenSize::getInstance();
+  std::tuple<int, int> size = hmiScreenSize.getMinimumSize(); 
+
+  uint32_t firstKey = (GetX() < static_cast<uint32_t>(std::get<0>(size)) / 2) ? int(GvaKeyEnum::kKeyF1) : int(GvaKeyEnum::kKeyF7);
   GvaFunctionGroupEnum group =
-      (GetX() < kMinimumWidth / 2) ? GvaFunctionGroupEnum::kLeft : GvaFunctionGroupEnum::kRight;
+      (GetX() < static_cast<uint32_t>(std::get<0>(size)) / 2) ? GvaFunctionGroupEnum::kLeft : GvaFunctionGroupEnum::kRight;
 
   for (auto label : *labels_) {
     if (label.state != LabelStates::kLabelHidden) {

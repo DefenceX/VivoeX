@@ -19,6 +19,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <tuple>
 
 #include "hmicore/events_gva.h"
 #include "hmicore/gva.h"

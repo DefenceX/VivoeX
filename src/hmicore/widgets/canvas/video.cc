@@ -63,8 +63,9 @@ void WidgetVideo::Draw() {
                std::to_string(video_feed_.GetPort()) + " offline";
     }
     uint32_t w = GetRenderer()->GetTextWidth(stream, 12); 
-
-    GetRenderer()->DrawString(kMinimumWidth / 2 - (w / 2), 300 + 16, stream);
+    hmiScreenSize& hmiScreenSize = hmiScreenSize::getInstance();
+    std::tuple<int, int> size = hmiScreenSize.getMinimumSize(); 
+    GetRenderer()->DrawString(std::get<0>(size) / 2 - (w / 2), 300 + 16, stream);
   }
 }
 
