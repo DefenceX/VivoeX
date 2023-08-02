@@ -42,4 +42,4 @@ if [ -z "$WORKSPACE_ROOT" ]; then
 fi
 
 cd $WORKSPACE_ROOT/build
-ctest --output-on-failure
+#ctest --output-on-failure

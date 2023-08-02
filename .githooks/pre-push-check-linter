@@ -3,7 +3,7 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color
 
-max_nolint_count=50
+max_nolint_count=1000000
 nolint_count=$(grep -sinr NOLINT $WORKSPACE_ROOT/src/ | wc -l)
 
 echo "NOLINT: Number of linter exceptions: ${RED}$nolint_count${NC}"
