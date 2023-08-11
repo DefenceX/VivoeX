@@ -17,7 +17,6 @@ set(CPACK_NSIS_MUI_UNIICON ${CMAKE_SOURCE_DIR}/images/favicon.ico)
 set(CPACK_NSIS_MUI_WELCOMEFINISHPAGE_BITMAP ${CMAKE_SOURCE_DIR}\\\\images\\\\NSIS_Installer_Welcome.bmp)
 set(CPACK_NSIS_MUI_UNWELCOMEFINISHPAGE_BITMAP ${CMAKE_SOURCE_DIR}\\\\images\\\\NSIS_Installer.bmp)
 set(CPACK_NSIS_COMPONENT_INSTALL OFF)
-set(CPACK_NSIS_CONTACT enquiries@defencex.ai)
 set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
 set(CPACK_NSIS_MODIFY_PATH OFF)
 set(CPACK_NSIS_DISPLAY_NAME "Vivoe Lite installer")
@@ -30,5 +29,4 @@ set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
     SetOutPath $INSTDIR\\\\bin
     CreateShortCut \\\"$DESKTOP\\\\${PROJECT_NAME}.lnk\\\" \\\"$INSTDIR\\\\bin\\\\hmi-display.exe\\\"
 ")
-set(CPACK_NSIS_CONTACT "enquiries@defencex.ai")
 
