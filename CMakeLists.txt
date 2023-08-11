@@ -3,7 +3,6 @@ project(vivoe-lite)
 add_custom_target(vivoe-lite)
 add_dependencies(vivoe-lite hmi-display)
 include(GNUInstallDirs)
-message(STATUS >>>>>>>>>>>>>>>>>>>><<< ${CMAKE_INSTALL_LIBDIR})
 
 include(scripts/cmake/version.cmake) # Always include this first
 include(scripts/cmake/cpp.cmake)     # Always include this second

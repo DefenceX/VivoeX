@@ -13,7 +13,7 @@
 ///
 
 syntax = "proto2";
-
+ 
 package config;
 
 // Theme RGB colours
@@ -287,8 +287,8 @@ message Gva {
   // Map Options
   optional OsmScout osm = 11;
 
-  // optional ThemeDefault theme = 12;
-  optional ThemeModernBlue theme = 12; 
+  optional ThemeDefault theme = 12;
+  // optional ThemeModernBlue theme = 12; 
   
   optional File file = 13;
   

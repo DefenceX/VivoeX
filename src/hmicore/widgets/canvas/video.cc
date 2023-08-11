@@ -41,7 +41,8 @@ void WidgetVideo::SetReceiveTimeout(uint32_t timeout_ms) { timeout_ms_ = timeout
 void WidgetVideo::Draw() {
   uint8_t *cpu_buffer;
   if (video_feed_.Receive(&cpu_buffer, 1) == true) {
-    video::YuvToRgba(480, 640, cpu_buffer, rgb_buffer_.data());
+    video::ColourSpace convert;
+    convert.YuvToRgba(480, 640, cpu_buffer, rgb_buffer_.data());
     GetRenderer()->TextureRGB(0, 0, rgb_buffer_.data());
   } else {
     const std::string video_background_filename = ConfigData::GetInstance()->GetImagePath() + "/VideoBackground.png";
