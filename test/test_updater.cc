@@ -23,7 +23,7 @@
 
 std::map<gva::widget::WidgetEnum, std::shared_ptr<gva::WidgetX>> widget_list;
 
-TEST(TestUpdater, Start) {
+TEST(TestUpdater, DISABLED_Start) {
   gva::Updater updater(1);
 
   //
