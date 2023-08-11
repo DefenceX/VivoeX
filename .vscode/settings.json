@@ -52,8 +52,6 @@
     "doxdocgen.file.fileTemplate": "\\file {name}",
     // Version number for the file.
     "doxdocgen.file.versionTag": "\\version 0.1",
-    // Set the e-mail address of the author.  Replaces {email}.
-    "doxdocgen.generic.authorEmail": "enquiries@defencex.ai",
     // Set the name of the author.  Replaces {author}.
     "doxdocgen.generic.authorName": "Ross Newman",
     // Set the style of the author tag and your name.  Can template {author} and {email}.
