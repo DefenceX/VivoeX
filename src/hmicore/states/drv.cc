@@ -12,8 +12,6 @@
 
 #include "drv.h"
 
-#include <colourspace.h>
-
 #include "hmicore/widgets/driver/rpm_fuel.h"
 #include "hmicore/widgets/driver/speedometer.h"
 

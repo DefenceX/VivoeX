@@ -13,7 +13,7 @@
 #ifndef HMIDISPLAY_GVA_APPLICATION_H_
 #define HMIDISPLAY_GVA_APPLICATION_H_
 #include <gtk/gtk.h>
-#include <rtpvraw_depayloader.h>
+#include <raw/rtpvraw_depayloader.h>
 #include <unistd.h>
 
 #include <iostream>

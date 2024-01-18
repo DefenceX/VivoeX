@@ -11,24 +11,25 @@
 ///
 
 #include "hmicore/widgets/canvas/video.h"
-#include "hmicore/renderer_cairo.h"
 
-#include <colourspace.h>
-#include <rtp_types.h>
-#include <rtpvraw_depayloader.h>
+#include <raw/rtpvraw_depayloader.h>
+#include <rtp/rtp_types.h>
+#include <utils/colourspace_cpu.h>
+
+#include "hmicore/renderer_cairo.h"
 
 namespace gva {
 
 WidgetVideo::WidgetVideo(const RendererGva &renderer) : WidgetCanvas(renderer) {
   std::string session_name = "TestVideo1";
   std::string ip_address = "239.192.1.1";
-  RtpvrawDepayloader test;
+  mediax::RtpvrawDepayloader test;
   if (kSapEnabled == true) {
     // Listed for SAP/SDP
-    video_feed_.SetStreamInfo(session_name);
+    // video_feed_.SetStreamInfo(session_name);
   } else {
     // No SAP/SDP so define it now in code
-    video_feed_.SetStreamInfo(session_name, ColourspaceType::kColourspaceYuv, 640, 480, ip_address);
+    video_feed_.SetStreamInfo(session_name, mediax::ColourspaceType::kColourspaceYuv, 640, 480, ip_address);
     video_feed_.Open();
   }
   Start();
@@ -41,7 +42,7 @@ void WidgetVideo::SetReceiveTimeout(uint32_t timeout_ms) { timeout_ms_ = timeout
 void WidgetVideo::Draw() {
   uint8_t *cpu_buffer;
   if (video_feed_.Receive(&cpu_buffer, 1) == true) {
-    video::ColourSpace convert;
+    video::ColourSpaceCpu convert;
     convert.YuvToRgba(480, 640, cpu_buffer, rgb_buffer_.data());
     GetRenderer()->TextureRGB(0, 0, rgb_buffer_.data());
   } else {
@@ -56,14 +57,14 @@ void WidgetVideo::Draw() {
                                ConfigData::GetInstance()->GetThemeFont(), 12);
     std::string stream;
     if (kSapEnabled) {
-      stream =
-          "sap://" + kIpaddr + "@" + std::to_string(kPort) + ":" + std::to_string(video_feed_.GetPort()) + " offline ";
+      stream = "sap://" + std::string(kIpaddr) + "@" + std::to_string(mediax::kPort) + ":" +
+               std::to_string(video_feed_.GetPort()) + " offline ";
 
     } else {
       stream = "rtp://" + video_feed_.GetSessionName() + "@" + video_feed_.GetIpAddress() + ":" +
                std::to_string(video_feed_.GetPort()) + " offline";
     }
-    uint32_t w = GetRenderer()->GetTextWidth(stream, 12); 
+    uint32_t w = GetRenderer()->GetTextWidth(stream, 12);
 
     GetRenderer()->DrawString(kMinimumWidth / 2 - (w / 2), 300 + 16, stream);
   }
@@ -73,8 +74,8 @@ void WidgetVideo::Stop() { video_feed_.Stop(); }
 
 void WidgetVideo::Start() { video_feed_.Start(); }
 
-void WidgetVideo::SetSessionName(std::string_view session_name) const { video_feed_.SetSessionName(session_name); }
+void WidgetVideo::SetSessionName(std::string_view session_name) { video_feed_.SetSessionName(session_name); }
 
-void WidgetVideo::SetIpAddress(std::string_view ip_address) const { video_feed_.SetIpAddress(ip_address); }
+void WidgetVideo::SetIpAddress(std::string_view ip_address) { video_feed_.SetIpAddress(ip_address); }
 
 }  // namespace gva

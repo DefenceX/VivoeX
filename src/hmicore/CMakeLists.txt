@@ -44,6 +44,7 @@ include_directories (
     ${NMEA_INCLUDE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/..
     ${CMAKE_BINARY_DIR}/external/mediax/src/src
+    ${CMAKE_BINARY_DIR}/external/mediax/src/src/raw
     "${CMAKE_BINARY_DIR}/external/install/Program Files (x86)/mediax/lib"
 )
 

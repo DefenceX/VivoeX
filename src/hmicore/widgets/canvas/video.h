@@ -13,7 +13,7 @@
 #ifndef HMICORE_WIDGETS_CANVAS_VIDEO_H_
 #define HMICORE_WIDGETS_CANVAS_VIDEO_H_
 
-#include <rtpvraw_depayloader.h>
+#include <raw/rtpvraw_depayloader.h>
 
 #include <cstdint>
 #include <string>
@@ -70,20 +70,20 @@ class WidgetVideo : public WidgetCanvas {
   ///
   /// \param session_name The SAP/SDP session name
   ///
-  void SetSessionName(std::string_view session_name) const;
+  void SetSessionName(std::string_view session_name);
 
   ///
   /// \brief Set the Ipaddress attribute
   ///
   /// \param ip_address the IPV4 address of the video stream
   ///
-  void SetIpAddress(std::string_view ip_address) const;
+  void SetIpAddress(std::string_view ip_address);
 
  private:
   /// The RGB video buffer
   std::array<uint8_t, 640 * 480 * 3> rgb_buffer_;
   /// The video feed object
-  RtpvrawDepayloader video_feed_;
+  mediax::RtpvrawDepayloader video_feed_;
   /// The timeout for receiving video frames
   uint32_t timeout_ms_ = 5;
   /// The SAP/SDP announcement flag
